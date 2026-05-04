@@ -244,13 +244,6 @@ main().catch(err => {
   process.exit(1);
 });
 
-
-// ═══════════════════════════════════════════════════════
-//  ÜBERSETZUNGEN
-// ═══════════════════════════════════════════════════════
-
-const TRANSLATIONS = [
-  { code: 'vulgate',    lang: 'la', name: 'Latin',       display: 'Vulgata Clementina',          isBase: true  },
   { code: 'kjv',        lang: 'en', name: 'Englisch',    display: 'King James Version (1611)'                  },
   { code: 'german',     lang: 'de', name: 'Deutsch',     display: 'Luther Bibel (1912)'                        },
   { code: 'french',     lang: 'fr', name: 'Français',    display: 'Louis Segond (1910)'                        },
