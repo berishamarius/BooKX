@@ -93,18 +93,32 @@ const BOOKS = [
   {nr:73, name:'Baruch'},
 ];
 
-// Alias-Namen zum Buch-Matching
+// Alias-Namen zum Buch-Matching (scrollmapper nutzt römische Zahlen)
 const ALIASES = {
-  'songofsolomon': ['song of songs','canticles','canticum'],
-  'revelation':    ['apocalypse'],
-  'psalms':        ['psalm'],
-  '1samuel':       ['1. samuel'],
-  '2samuel':       ['2. samuel'],
-  '1kings':        ['1. könige','3. könige','3kings'],
-  '2kings':        ['2. könige','4. könige','4kings'],
-  'acts':          ['acts of the apostles'],
-  'sirach':        ['ecclesiasticus'],
-  'wisdom':        ['book of wisdom','wisdom of solomon'],
+  '1samuel':        ['i samuel'],
+  '2samuel':        ['ii samuel'],
+  '1kings':         ['i kings'],
+  '2kings':         ['ii kings'],
+  '1chronicles':    ['i chronicles'],
+  '2chronicles':    ['ii chronicles'],
+  '1corinthians':   ['i corinthians'],
+  '2corinthians':   ['ii corinthians'],
+  '1thessalonians': ['i thessalonians'],
+  '2thessalonians': ['ii thessalonians'],
+  '1timothy':       ['i timothy'],
+  '2timothy':       ['ii timothy'],
+  '1peter':         ['i peter'],
+  '2peter':         ['ii peter'],
+  '1john':          ['i john'],
+  '2john':          ['ii john'],
+  '3john':          ['iii john'],
+  '1maccabees':     ['i maccabees'],
+  '2maccabees':     ['ii maccabees'],
+  'songofsolomon':  ['song of songs','canticles','canticum'],
+  'revelation':     ['revelation of john','apocalypse'],
+  'acts':           ['acts of the apostles'],
+  'sirach':         ['ecclesiasticus'],
+  'wisdom':         ['book of wisdom','wisdom of solomon'],
 };
 
 // ═══════════════════════════════════════════════════════
