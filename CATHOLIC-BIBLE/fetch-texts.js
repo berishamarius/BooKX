@@ -36,7 +36,7 @@ const path   = require('path');
 //  KONFIGURATION
 // ═══════════════════════════════════════════════════════
 
-const BASE_URL  = 'https://getbible.net/v2';
+const BASE_URL  = 'https://gatekeeper.getbible.life/v2';
 const DATA_DIR  = path.join(__dirname, 'data');
 const DELAY_MS  = 500;
 const RETRY_MAX = 3;
