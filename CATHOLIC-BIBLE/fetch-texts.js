@@ -58,6 +58,7 @@ const TRANSLATIONS = [
   { code: 'swedish',    sc: 'Swe1917',        lang: 'sv', name: 'Svenska Bibeln (1917)'                 },
   { code: 'tagalog',    sc: 'TagAngBiblia',   lang: 'tl', name: 'Ang Biblia (1905)'                     },
   { code: 'ukrainian',  sc: 'UkrOgienko',     lang: 'uk', name: 'Біблія Огієнка (1962)'                },
+  { code: 'albanian',   sc: 'AlbUFSHB',       lang: 'sq', name: 'Bibla (UFSHB)'                          },
 ];
 
 // ═══════════════════════════════════════════════════════
