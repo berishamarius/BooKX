@@ -244,9 +244,6 @@ main().catch(err => {
   process.exit(1);
 });
 
-const DATA_DIR  = path.join(__dirname, 'data');
-const DELAY_MS  = 500;
-const RETRY_MAX = 3;
 
 // ═══════════════════════════════════════════════════════
 //  ÜBERSETZUNGEN
