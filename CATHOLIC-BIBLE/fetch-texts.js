@@ -155,16 +155,27 @@ const BOOKS_DEUTEROCANON = [
 //  HELFER
 // ═══════════════════════════════════════════════════════
 
-function apiGet(url) {
+function apiGet(url, redirects = 0) {
   return new Promise((resolve, reject) => {
-    const req = https.get(url, {
+    const lib = url.startsWith('https') ? require('https') : require('http');
+    const req = lib.get(url, {
       headers: {
         'Accept':     'application/json',
         'User-Agent': 'BibliaInterlinearis/1.0 (BooKX eBook Project)',
       },
     }, (res) => {
-      if (res.statusCode === 404) { reject(new Error('NOT_FOUND'));            return; }
-      if (res.statusCode === 429) { reject(new Error('RATE_LIMIT'));           return; }
+      // Weiterleitungen (301, 302, 307, 308) folgen
+      if ([301, 302, 307, 308].includes(res.statusCode)) {
+        res.resume();
+        if (redirects >= 5) { reject(new Error('TOO_MANY_REDIRECTS')); return; }
+        const loc = res.headers.location;
+        if (!loc) { reject(new Error('REDIRECT_NO_LOCATION')); return; }
+        const next = loc.startsWith('http') ? loc : new URL(loc, url).href;
+        resolve(apiGet(next, redirects + 1));
+        return;
+      }
+      if (res.statusCode === 404) { reject(new Error('NOT_FOUND'));             return; }
+      if (res.statusCode === 429) { reject(new Error('RATE_LIMIT'));            return; }
       if (res.statusCode !== 200) { reject(new Error('HTTP_' + res.statusCode)); return; }
       let raw = '';
       res.on('data', c => raw += c);
