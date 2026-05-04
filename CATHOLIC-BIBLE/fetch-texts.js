@@ -159,6 +159,7 @@ function apiGet(url, redirects = 0) {
   return new Promise((resolve, reject) => {
     const lib = url.startsWith('https') ? require('https') : require('http');
     const req = lib.get(url, {
+      rejectUnauthorized: false,   // getbible.life hat abgelaufenes Zertifikat
       headers: {
         'Accept':     'application/json',
         'User-Agent': 'BibliaInterlinearis/1.0 (BooKX eBook Project)',
