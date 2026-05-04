@@ -1,5 +1,8 @@
 'use strict';
 
+// getbible.life hat ein abgelaufenes SSL-Zertifikat → Prüfung deaktivieren
+process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
+
 /**
  * BIBLIA CATHOLICA INTERLINEARIS – TEXT DOWNLOADER
  * ──────────────────────────────────────────────────
