@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>II Petri · Deutsch · Biblia Catholica</title>
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
+
+:root {
+  --gold:        #C8A96E;
+  --gold-light:  #EDD58A;
+  --gold-dark:   #8B6914;
+  --navy:        #3d2800;
+  --navy-mid:    #4d3500;
+  --navy-light:  #5c4010;
+  --parchment:   #F5E9CC;
+  --parchment-d: #EDD9A3;
+  --cream:       #FDF6E3;
+  --latin-color: #6B1E0E;
+  --trans-color: #0F1D2E;
+  --border:      rgba(200,169,110,.35);
+  --font-title:  'Cinzel Decorative', 'Cinzel', Georgia, serif;
+  --font-sub:    'Cinzel', Georgia, serif;
+  --font-body:   'EB Garamond', Georgia, serif;
+}
+
+*,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+html { font-size:16px; scroll-behavior:smooth; }
+body { background:var(--cream); color:var(--trans-color); font-family:var(--font-body); }
+
+/* ── NAV ─────────────────────────────────────────────── */
+.nav-bar {
+  background:var(--navy); padding:10px 28px;
+  display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  border-bottom:2px solid var(--gold);
+  position:sticky; top:0; z-index:100;
+  box-shadow:0 3px 12px rgba(0,0,0,.45);
+}
+.nav-bar a {
+  color:var(--gold); text-decoration:none;
+  font-family:var(--font-sub); font-size:.75rem; letter-spacing:.05em;
+  transition:color .15s;
+}
+.nav-bar a:hover { color:var(--gold-light); }
+.nav-bar .home { font-weight:700; font-size:.82rem; }
+.nav-bar .spacer { flex:1; }
+.nav-bar .pos { color:rgba(200,169,110,.45); font-size:.7rem; font-family:var(--font-sub); }
+
+/* ── BUCHKOPF ────────────────────────────────────────── */
+.book-header {
+  background:linear-gradient(160deg,var(--navy) 0%,var(--navy-mid) 55%,var(--navy-light) 100%);
+  padding:44px 36px 34px; text-align:center;
+  border-bottom:4px solid var(--gold);
+  position:relative; overflow:hidden;
+}
+.book-header::before {
+  content:'';
+  position:absolute; inset:0;
+  background-image:
+    repeating-linear-gradient( 45deg,transparent,transparent 30px,rgba(200,169,110,.038) 30px,rgba(200,169,110,.038) 31px),
+    repeating-linear-gradient(-45deg,transparent,transparent 30px,rgba(200,169,110,.038) 30px,rgba(200,169,110,.038) 31px);
+  pointer-events:none;
+}
+.testament-badge {
+  display:inline-block;
+  border:1px solid rgba(200,169,110,.4); color:rgba(200,169,110,.65);
+  font-family:var(--font-sub); font-size:.62rem; letter-spacing:.25em;
+  padding:4px 14px; border-radius:2px; margin-bottom:14px; position:relative;
+}
+.book-name-latin {
+  font-family:var(--font-title); font-size:3rem; color:var(--gold-light);
+  text-shadow:0 3px 18px rgba(0,0,0,.55); letter-spacing:.08em; position:relative;
+}
+.book-name-trans {
+  font-family:var(--font-sub); font-size:1.1rem; color:var(--gold);
+  margin-top:8px; letter-spacing:.12em; position:relative;
+}
+.book-meta {
+  font-size:.74rem; color:rgba(200,169,110,.5); margin-top:7px;
+  font-family:var(--font-sub); letter-spacing:.07em; position:relative;
+}
+
+/* ── ORNAMENT-TRENNLINIE ─────────────────────────────── */
+.ornament-bar {
+  text-align:center; padding:16px 0 4px;
+  color:var(--gold); font-size:1.1rem; letter-spacing:.7em;
+}
+
+/* ── HAUPT-CONTAINER ─────────────────────────────────── */
+.content { max-width:960px; margin:0 auto; padding:0 24px 80px; }
+
+/* ── KAPITEL-MARKER ──────────────────────────────────── */
+.chapter-marker {
+  display:flex; align-items:center; gap:16px;
+  padding:28px 6px 12px; margin-bottom:4px;
+  border-bottom:2px solid var(--border);
+}
+.ch-roman {
+  font-family:var(--font-title); font-size:2.2rem; color:var(--gold);
+  min-width:56px; text-align:center; flex-shrink:0;
+  text-shadow:0 1px 8px rgba(200,169,110,.3);
+}
+.ch-label {
+  font-family:var(--font-sub); font-size:.72rem; color:rgba(200,169,110,.6);
+  letter-spacing:.22em; text-transform:uppercase;
+}
+
+/* ── VERS-BLOCK ──────────────────────────────────────── */
+.verse-block {
+  display:flex; gap:0; border-bottom:1px solid rgba(200,169,110,.15);
+}
+.verse-block:nth-child(odd)  { background:var(--cream); }
+.verse-block:nth-child(even) { background:var(--parchment); }
+
+.verse-num-col {
+  flex-shrink:0; width:42px; padding:16px 6px 16px 0; text-align:right;
+}
+.verse-num {
+  display:inline-block; width:28px; height:28px; border-radius:50%;
+  background:var(--gold-dark); color:var(--cream);
+  font-family:var(--font-sub); font-size:.64rem; font-weight:700;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 1px 5px rgba(0,0,0,.25);
+}
+
+.verse-texts { flex:1; padding:16px 16px 18px 8px; }
+
+/* ── LATEINISCHER TEXT (oben / primär) ───────────────── */
+.latin {
+  font-family:var(--font-body); font-size:1.12rem; line-height:1.9;
+  color:var(--latin-color); font-weight:500;
+  border-left:3px solid var(--gold); padding-left:12px;
+  margin-bottom:8px;
+}
+
+/* ── ÜBERSETZUNGS-TEXT (unten / sekundär) ────────────── */
+.trans-label {
+  font-family:var(--font-sub); font-size:.6rem; letter-spacing:.17em;
+  text-transform:uppercase; color:var(--gold-dark); margin-bottom:5px; opacity:.78;
+}
+.trans {
+  font-family:var(--font-body); font-size:1.04rem; line-height:1.85;
+  color:var(--trans-color); font-style:italic;
+  padding-left:15px;
+}
+
+/* Erste Vers jedes Kapitels: Drop-Cap */
+.verse-block:first-of-type .latin::first-letter {
+  font-size:4.2em; float:left; line-height:.72;
+  padding-right:.08em; margin-top:.06em;
+  font-family:var(--font-title); color:var(--gold);
+}
+
+/* ── NAVIGATION ZWISCHEN BÜCHERN ─────────────────────── */
+.book-nav {
+  display:flex; justify-content:space-between; align-items:center;
+  background:var(--navy); border-top:3px solid var(--gold);
+  padding:12px 26px; gap:12px;
+}
+.book-nav a {
+  color:var(--gold); text-decoration:none;
+  font-family:var(--font-sub); font-size:.78rem; letter-spacing:.07em;
+  padding:6px 14px; border:1px solid rgba(200,169,110,.3); border-radius:3px;
+  transition:background .18s;
+}
+.book-nav a:hover { background:rgba(200,169,110,.15); }
+.book-nav .center {
+  font-family:var(--font-sub); font-size:.7rem; color:rgba(200,169,110,.55);
+  letter-spacing:.1em; text-align:center;
+}
+
+/* ── FUßZEILE ────────────────────────────────────────── */
+.page-footer {
+  background:var(--navy); border-top:2px solid rgba(200,169,110,.3);
+  padding:18px 28px; text-align:center;
+  color:rgba(200,169,110,.45); font-family:var(--font-sub);
+  font-size:.68rem; letter-spacing:.1em;
+}
+
+/* ── DRUCK ───────────────────────────────────────────── */
+@media print {
+  .nav-bar, .book-nav { display:none; }
+  .verse-block { break-inside:avoid; }
+  .book-header { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+}
+
+/* ── MOBIL ───────────────────────────────────────────── */
+@media (max-width:640px) {
+  .book-name-latin { font-size:2.1rem; }
+  .ch-roman { font-size:1.6rem; }
+  .latin { font-size:.98rem; }
+  .trans { font-size:.93rem; }
+  .content { padding:0 12px 60px; }
+}
+</style>
+</head>
+<body>
+
+  <nav class="nav-bar">
+    <a class="home" href="../../../index.html">✞ BIBLIA CATHOLICA</a>
+    <a href="../index.html">🇩🇪 Deutsch</a>
+    <span class="spacer"></span>
+    <span class="pos">061 / 066</span>
+  </nav>
+
+  <header class="book-header">
+    <div class="testament-badge">NOVUM TESTAMENTUM</div>
+    <div class="book-name-latin">II PETRI</div>
+    <div class="book-name-trans">2 Peter</div>
+    <div class="book-meta">Vulgata Clementina · Luther Bibel (1912) · 3 Capita · 61 Versus</div>
+  </header>
+
+  <div class="ornament-bar">❧ ✦ ❧ ✦ ❧</div>
+
+  <main class="content">
+
+  <section class="chapter" id="ch1">
+    <div class="chapter-marker">
+      <span class="ch-roman">I</span>
+      <span class="ch-label">Caput 1</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v1-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Simon Petrus, servus et apostolus Jesu Christi, iis qui coæqualem nobiscum sortiti sunt fidem in justitia Dei nostri, et Salvatoris Jesu Christi.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Symeon Petrus, Knecht und Apostel Jesus Christus an die, welche denselben kostbaren Glauben wie wir zugeteilt bekommen haben durch Gerechtigkeit unseres Gottes und Heilandes Jesus Christus.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Gratia vobis, et pax adimpleatur in cognitione Dei, et Christi Jesu Domini nostri :</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Gnade und Friede werde euch in Fülle durch die Erkenntnis Gottes und unseres Herrn Jesus.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quomodo omnia nobis divinæ virtutis suæ, quæ ad vitam et pietatem donata sunt, per cognitionem ejus, qui vocavit nos propria gloria, et virtute,</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Wie uns seine göttliche Kraft alles, was zum Leben und zur Frömmigkeit gehört, geschenkt hat, mittelst der Erkenntnis dessen, der uns berufen hat, durch seine eigene Herrlichkeit und Tugend,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">per quem maxima, et pretiosa nobis promissa donavit : ut per hæc efficiamini divinæ consortes naturæ : fugientes ejus, quæ in mundo est, concupiscentiæ corruptionem.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">wodurch uns die größten kostbaren Verheißungen geschenkt sind, damit ihr dadurch an der göttlichen Natur Anteil habet, entronnen dem Lustverderben in der Welt;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vos autem curam omnem subinferentes, ministrate in fide vestra virtutem, in virtute autem scientiam,</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">so bringet nun eben darum mit Aufwendung alles Fleißes in eurem Glauben dar die Tugend, in der Tugend die Erkenntnis,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">in scientia autem abstinentiam, in abstinentia autem patientiam, in patientia autem pietatem,</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">in der Erkenntnis die Enthaltsamkeit, in der Enthaltsamkeit die Geduld, in der Geduld die Frömmigkeit,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">in pietate autem amorem fraternitatis, in amore autem fraternitatis caritatem.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">in der Frömmigkeit die Freundschaft, in der Freundschaft die Liebe.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hæc enim si vobiscum adsint, et superent, non vacuos nec sine fructu vos constituent in Domini nostri Jesu Christi cognitione.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Denn wo diese Dinge bei euch vorhanden sind und wachsen, lassen sie euch nicht müßig noch ohne Frucht sein für die Erkenntnis unseres Herrn Jesus Christus.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Cui enim non præsto sunt hæc, cæcus est, et manu tentans, oblivionem accipiens purgationis veterum suorum delictorum.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Denn bei wem sie nicht sind, der ist blind in Kurzsichtigkeit, und hat die Reinigung seiner früheren Sünden in Vergessenheit kommen lassen.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quapropter fratres, magis satagite ut per bona opera certam vestram vocationem, et electionem faciatis : hæc enim facientes, non peccabitis aliquando.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Darum Brüder, wendet vielmehr Fleiß an, eure Berufung und Erwählung beständig zu machen; denn thut ihr dies, so werdet ihr nimmermehr fallen.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sic enim abundanter ministrabitur vobis introitus in æternum regnum Domini nostri et Salvatoris Jesu Christi.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Denn so wird euch reichlich gewährt werden der Eingang in das ewige Reich unseres Herrn und Heilandes Jesus Christus.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Propter quod incipiam vos semper commonere de his : et quidem scientes et confirmatos vos in præsenti veritate.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Darum will ich euch stets an diese Dinge erinnern, wenn ihr sie auch schon wisset und in der vorhandenen Wahrheit fest gegründet seid.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Justum autem arbitror quamdiu sum in hoc tabernaculo, suscitare vos in commonitione :</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Ich achte es aber für Pflicht, so lange ich in dieser Hütte bin, euch durch Erinnerung wach zu halten,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">certus quod velox est depositio tabernaculi mei secundum quod et Dominus noster Jesus Christus significavit mihi.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">in dem Bewußtsein, daß es bald zur Ablegung meiner Hütte kommt, wie es mir auch unser Herr Jesus Christus kund gethan hat.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Dabo autem operam et frequenter habere vos post obitum meum, ut horum memoriam faciatis.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Ich werde euch aber auch dafür sorgen, daß ihr jederzeit nach meinem Hingang im Stande seid, daran zu denken.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non enim doctas fabulas secuti notam fecimus vobis Domini nostri Jesu Christi virtutem et præsentiam : sed speculatores facti illius magnitudinis.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Denn nicht, weil wir wohlausgesonnenen Fabeln folgten, haben wir euch die Macht und Gegenwart unseres Herrn Jesus Christus kund gethan, sondern weil wir Augenzeugen seiner Majestät waren.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Accipiens enim a Deo Patre honorem et gloriam, voce delapsa ad eum hujuscemodi a magnifica gloria : Hic est Filius meus dilectus, in quo mihi complacui, ipsum audite.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Nämlich wie er von Gott dem Vater Ehre und Ruhm empfangen hat, da von der hocherhabenen Herrlichkeit eine solche Stimme an ihn gelangte: dies ist mein geliebter Sohn, an welchem ich Wohlgefallen habe.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et hanc vocem nos audivimus de cælo allatam, cum essemus cum ipso in monte sancto.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Und diese Stimme haben wir vom Himmel kommen hören, da wir mit ihm waren auf dem heiligen Berge.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et habemus firmiorem propheticum sermonem : cui benefacitis attendentes quasi lucernæ lucenti in caliginoso loco donec dies elucescat, et lucifer oriatur in cordibus vestris :</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Und so ist uns das prophetische Wort fest - woran ihr gut thut euch zu halten als an eine Leuchte, die da scheint an finsterem Ort, bis der Tag durchbricht und lichtbringend aufgeht in euren Herzen,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">hoc primum intelligentes quod omnis prophetia Scripturæ propria interpretatione non fit.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">darüber vor allem klar, daß keine Schriftweissagung eigene Lösung zuläßt,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non enim voluntate humana allata est aliquando prophetia : sed Spiritu Sancto inspirati, locuti sunt sancti Dei homines.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">denn nie ist eine Weissagung durch menschlichen Willen geschehen, sondern getragen vom heiligen Geist haben von Gott aus Menschen geredet.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch2">
+    <div class="chapter-marker">
+      <span class="ch-roman">II</span>
+      <span class="ch-label">Caput 2</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v2-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Fuerunt vero et pseudoprophetæ in populo, sicut et in vobis erunt magistri mendaces, qui introducent sectas perditionis : et eum qui emit eos, Dominum negant, superducentes sibi celerem perditionem.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Es traten aber auch falsche Propheten unter dem Volke auf, wie auch unter euch falsche Lehrer sein werden, die da werden Absonderungen zum Verderben einführen, indem sie sogar den Herrn, der sie erkauft hat, verleugnen, sich selbst jähes Verderben zuziehend.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et multi sequentur eorum luxurias, per quos via veritatis blasphemabitur :</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Und viele werden ihnen in ihren Ausschweifungen nachlaufen, um ihretwillen wird der Weg der Wahrheit gelästert werden,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">et in avaritia fictis verbis de vobis negotiabuntur : quibus judicium jam olim non cessat : et perditio eorum non dormitat.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">und sie werden an euch aus Habsucht mit trügerischen Worten Geschäfte machen; ihr Gericht aber ruht von alters her nicht, und ihr Verderben schlummert nicht.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si enim Deus angelis peccantibus non pepercit, sed rudentibus inferni detractos in tartarum tradidit cruciandos, in judicium reservari.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Hat doch Gott der Engel nicht geschont, die gesündigt hatten, sondern sie in die Hölle gestoßen, in die Gruben der Finsternis, zur Verwahrung auf das Gericht;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et originali mundo non pepercit, sed octavum Noë justitiæ præconem custodivit, diluvium mundo impiorum inducens.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">und hat der alten Welt nicht geschont, sondern nur Noah den Herold der Gerechtigkeit selbacht geschützt, da er über die Welt der Gottlosen die Flut hereinführte;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et civitates Sodomorum et Gomorrhæorum in cinerem redigens, eversione damnavit : exemplum eorum, qui impie acturi sunt, ponens :</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">auch die Städte Sodom und Gomorrha hat er verurteilt, indem er sie in Asche legte, ein Vorbild des Kommenden gebend für die Gottlosen;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">et justum Lot oppressum a nefandorum injuria, ac luxuriosa conversatione eripuit :</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">doch den gerechten vom Wandel der Zuchtlosen in Ausschweifungen geplagten Lot hat er errettet;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">aspectu enim, et auditu justus erat : habitans apud eos, qui de die in diem animam justam iniquis operibus cruciabant.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">denn mit Sehen und Hören schöpfte der Gerechte, da er unter ihnen wohnte, Tag für Tag für seine gerechte Seele Qual durch frevelhafte Werke.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Novit Dominus pios de tentatione eripere : iniquos vero in diem judicii reservare cruciandos.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Der Herr weiß Fromme aus Versuchung zu erretten, Ungerechte aber auf den Tag des Gerichtes zur Strafe zu bewahren,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Magis autem eos, qui post carnem in concupiscentia immunditiæ ambulant, dominationemque contemnunt, audaces, sibi placentes, sectas non metuunt introducere blasphemantes :</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">vornämlich die hinter dem Fleische her sind mit Begierde nach Befleckung, und Hoheit verachten: verwegen, frech, haben sie keine Scheu vor Herrlichkeiten: lästernd,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">ubi angeli fortitudine, et virtute cum sint majores, non portant adversum se execrabile judicium.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">wo doch Engel, die an Kraft und Macht größer sind, kein lästerndes Urteil gegen sie beim Herrn anbringen.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hi vero velut irrationabilia pecora, naturaliter in captionem, et in perniciem in his quæ ignorant blasphemantes in corruptione sua peribunt,</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Diese aber wie unvernünftige von Natur zu Fang und Verderben geborene Tiere, lästernd über das, wovon sie nichts wissen, werden in ihrem Verderben selbst verderben,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">percipientes mercedem injustitiæ, voluptatem existimantes diei delicias : coinquinationes, et maculæ deliciis affluentes, in conviviis suis luxuriantes vobiscum,</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">zum Lohn empfangend ihre eigene Ungerechtigkeit: die da die Schlemmerei des Tages für Genuß achten, Schmutz- und Schandflecken, die bei ihren Liebesmahlen schwelgend mit euch zusammen tafeln,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">oculos habentes plenos adulterii, et incessabilis delicti. Pellicientes animas instabiles, cor exercitatum avaritia habentes, maledictionis filii :</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">die Augen erfüllt von der Ehebrecherin und unersättlich in der Sünde, unbefestigte Seelen verlockend, das Herz ausgebildet in den Künsten der Habsucht, Kinder des Fluches.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">derelinquentes rectam viam erraverunt, secuti viam Balaam ex Bosor, qui mercedem iniquitatis amavit :</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Den geraden Weg verlassend, sind sie irre gegangen, ausweichend auf den Weg des Balaam, des Sohnes des Bosor, der den Lohn der Ungerechtigkeit liebte,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">correptionem vero habuit suæ vesaniæ : subjugale mutum animal, hominis voce loquens, prohibuit prophetæ insipientiam.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">aber auch die Zurechtweisung seiner Gesetzesübertretung davon hatte: ein stummes Lasttier, in menschlicher Sprache redend, wehrte der Sinnesverkehrtheit des Propheten.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hi sunt fontes sine aqua, et nebulæ turbinibus exagitatæ, quibus caligo tenebrarum reservatur.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Wasserlose Quellen sind sie, Nebel vom Sturmwinde getrieben, die Nacht der Finsternis ist für sie bereit gehalten.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Superba enim vanitatis loquentes, pelliciunt in desideriis carnis luxuriæ eos, qui paululum effugiunt, qui in errore conversantur :</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Denn indem sie überschwängliche Reden nichtigen Inhalts ertönen lassen, verlocken sie durch Fleisches Lüste und Schwelgereien die, welche kaum der Gesellschaft des Irrwegs entflohen sind,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">libertatem illis promittentes, cum ipsi servi sint corruptionem : a quo enim quis superatus est, hujus et servus est.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">ihnen Freiheit versprechend, die sie selbst Sklaven des Verderbens sind. Denn von wem einer besiegt ist, dem ist er auch als Sklave verfallen.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si enim refugientes coinquinationes mundi in cognitione Domini nostri, et Salvatoris Jesu Christi, his rursus implicati superantur : facta sunt eis posteriora deteriora prioribus.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Denn wenn die, welche die Befleckungen der Welt durch die Erkenntnis des Herrn und Heilandes Jesus Christus meiden gelernt hatten, neuer Verstrickung darin erliegen, so ist bei ihnen das letzte schlimmer geworden, als das erste.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">Melius enim erat illis non cognoscere viam justitiæ, quam post agnitionem, retrorsum converti ab eo, quod illis traditum est, sancto mandato.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Denn es wäre besser für sie, sie hätten den Weg der Gerechtigkeit nicht kennen gelernt, als daß sie ihn erkannt, und sich dann von dem ihnen mitgeteilten heiligen Gebote wieder abgewendet haben.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-22">
+      <div class="verse-num-col"><div class="verse-num">22</div></div>
+      <div class="verse-texts">
+        <div class="latin">Contigit enim eis illud veri proverbii : Canis reversus ad suum vomitum : et, Sus lota in volutabro luti.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Es ist bei ihnen eingetroffen, was das wahre Sprichwort sagt: der Hund, der sich zu seinem Auswurf wendet, und die Sau, die sich zum Kotwälzen badet.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch3">
+    <div class="chapter-marker">
+      <span class="ch-roman">III</span>
+      <span class="ch-label">Caput 3</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v3-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hanc ecce vobis, carissimi, secundam scribo epistolam, in quibus vestram excito in commonitione sinceram mentem :</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Dies ist schon der zweite Brief, Geliebte, welchen ich euch schreibe, um euch durch Erinnerung den reinen Sinn wachzuhalten,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">ut memores sitis eorum, quæ prædixi, verborum, a sanctis prophetis et apostolorum vestrorum, præceptorum Domini et Salvatoris.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">daß ihr gedenket der voraus von den heiligen Propheten gesprochenen Worte, und des von euren Aposteln mitgeteilten Gebotes des Herrn und Heilandes,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hoc primum scientes, quod venient in novissimis diebus in deceptione illusores, juxta proprias concupiscentias ambulantes,</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">darüber vor allem klar, daß am Ende der Tage mit Spott kommen werden die Spötter, die nach ihren eigenen Lüsten wandeln</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">dicentes : Ubi est promissio, aut adventus ejus ? ex quo enim patres dormierunt, omnia sic perseverant ab initio creaturæ.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">und sagen: wo ist die Verheißung seiner Ankunft? Seit der Zeit daß die Väter schlafen gegangen sind, bleibt ja alles so vom Anfang der Welt her.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Latet enim eos hoc volentes, quod cæli erant prius, et terra de aqua, et per aquam consistens Dei verbo :</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Denn sie merken nicht bei dieser Behauptung, daß vormals die Himmel und die Erde bestanden aus Wasser und mittelst Wassers durch das Wort Gottes,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">per quæ, ille tunc mundus aqua inundatus, periit.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">zufolge dessen die damalige Welt durch Wasserflut zu Grunde gieng,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Cæli autem, qui nunc sunt, et terra eodem verbo repositi sunt, igni reservati in diem judicii, et perditionis impiorum hominum.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">die jetztigen Himmel aber und die Erde durch das nämliche Wort aufgespart sind fürs Feuer, bewahrt auf den Tag des Gerichtes und Verderbens der gottlosen Menschen.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Unum vero hoc non lateat vos, carissimi, quia unus dies apud Dominum sicut mille anni, et mille anni sicut dies unus.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Das eine aber möge euch nicht verborgen bleiben, Geliebte, daß ein Tag bei dem Herrn wie tausend Jahre und tausend Jahre wie ein Tag.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non tardat Dominus promissionem suam, sicut quidam existimant : sed patienter agit propter vos, nolens aliquos perire, sed omnes ad pœnitentiam reverti.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Der Herr ist nicht langsam mit der Verheißung, wie es einige für Langsamkeit halten, sondern er ist langmütig für uns, und will nicht daß etliche verloren gehen, sondern daß alle zur Buße gelangen.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Adveniet autem dies Domini ut fur : in quo cæli magno impetu transient, elementa vero calore solventur, terra autem et quæ in ipsa sunt opera, exurentur.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Es wird aber der Tag des Herrn kommen, wie ein Dieb, wo die Himmel mit Krachen verschwinden, die Elemente im Brand sich auflösen, ebenso die Erde, und es wird sich zeigen, welche Werke auf ihr sind.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Cum igitur hæc omnia dissolvenda sunt, quales oportet vos esse in sanctis conversationibus, et pietatibus,</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Wenn nun dies alles sich auflöst, wie müssen sich in heiligem Wandel und Frömmigkeit halten,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">exspectantes, et properantes in adventum diei Domini, per quem cæli ardentes solventur, et elementa ignis ardore tabescent ?</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">die da erwarten und ersehnen die Ankunft des Tages Gottes, um deswillen die Himmel im Feuer vergehen und die Elemente im Brande schmelzen werden,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Novos vero cælos, et novam terram secundum promissa ipsius exspectamus, in quibus justitia habitat.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">wir aber gemäß seiner Verheißung auf neue Himmel und eine neue Erde warten, in welchen Gerechtigkeit wohnt.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Propter quod, carissimi, hæc exspectantes, satagite immaculati, et inviolati ei inveniri in pace :</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Darum, Geliebte, indem ihr solches erwartet, trachtet unbefleckt und ohne Fehl bei ihm erfunden zu werden im Frieden;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">et Domini nostri longanimitatem, salutem arbitremini : sicut et carissimus frater noster Paulus secundum datam sibi sapientiam scripsit vobis,</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">und achtet die Langmut des Herrn für Heil, wie auch unser geliebter Bruder Paulus nach der ihm verliehenen Weisheit an euch geschrieben hat,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">sicut et omnibus epistolis, loquens in eis de his in quibus sunt quædam difficilia intellectu, quæ indocti et instabiles depravant, sicut et ceteras Scripturas, ad suam ipsorum perditionem.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">ebenso wie in allen seinen Briefen, da er von diesen Dingen redet, worin wohl einiges Schwerverständliche vorkommt, was die Ungelehrten und Unbefestigten verdrehen wie auch die übrigen Schriften, zu ihrem eigenen Verderben.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vos igitur fratres, præscientes custodite, ne insipientium errore traducti excidatis a propria firmitate :</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Ihr nun, Geliebte, nehmet euch, da ihr es vorauswisset, in acht, daß ihr euch nicht durch den Irrtum der Zuchtlosen mit fortreißen lasset, und euren festen Halt verlieret.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">crescite vero in gratia, et in cognitione Domini nostri, et Salvatoris Jesu Christi. Ipsi gloria et nunc, et in diem æternitatis. Amen.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Wachset dagegen in der Gnade und Erkenntnis unseres Herrn und Heilandes Jesus Christus. Sein ist die Herrlichkeit jetzt und am Tage der Ewigkeit.</div>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <nav class="book-nav">
+    <a href="060-1pe.html">← I Petri</a>
+    <span class="center">II Petri · Deutsch</span>
+    <a href="062-1jo.html">I Ioannis →</a>
+  </nav>
+
+  <footer class="page-footer">
+    BIBLIA CATHOLICA INTERLINEARIS &nbsp;·&nbsp; Vulgata Clementina &amp; Luther Bibel (1912)
+    &nbsp;·&nbsp; Gemeinfreie Texte / Public Domain
+  </footer>
+
+</body>
+</html>

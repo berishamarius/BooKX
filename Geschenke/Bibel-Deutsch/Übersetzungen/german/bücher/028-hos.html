@@ -1,0 +1,1927 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Osee · Deutsch · Biblia Catholica</title>
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
+
+:root {
+  --gold:        #C8A96E;
+  --gold-light:  #EDD58A;
+  --gold-dark:   #8B6914;
+  --navy:        #3d2800;
+  --navy-mid:    #4d3500;
+  --navy-light:  #5c4010;
+  --parchment:   #F5E9CC;
+  --parchment-d: #EDD9A3;
+  --cream:       #FDF6E3;
+  --latin-color: #6B1E0E;
+  --trans-color: #0F1D2E;
+  --border:      rgba(200,169,110,.35);
+  --font-title:  'Cinzel Decorative', 'Cinzel', Georgia, serif;
+  --font-sub:    'Cinzel', Georgia, serif;
+  --font-body:   'EB Garamond', Georgia, serif;
+}
+
+*,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+html { font-size:16px; scroll-behavior:smooth; }
+body { background:var(--cream); color:var(--trans-color); font-family:var(--font-body); }
+
+/* ── NAV ─────────────────────────────────────────────── */
+.nav-bar {
+  background:var(--navy); padding:10px 28px;
+  display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  border-bottom:2px solid var(--gold);
+  position:sticky; top:0; z-index:100;
+  box-shadow:0 3px 12px rgba(0,0,0,.45);
+}
+.nav-bar a {
+  color:var(--gold); text-decoration:none;
+  font-family:var(--font-sub); font-size:.75rem; letter-spacing:.05em;
+  transition:color .15s;
+}
+.nav-bar a:hover { color:var(--gold-light); }
+.nav-bar .home { font-weight:700; font-size:.82rem; }
+.nav-bar .spacer { flex:1; }
+.nav-bar .pos { color:rgba(200,169,110,.45); font-size:.7rem; font-family:var(--font-sub); }
+
+/* ── BUCHKOPF ────────────────────────────────────────── */
+.book-header {
+  background:linear-gradient(160deg,var(--navy) 0%,var(--navy-mid) 55%,var(--navy-light) 100%);
+  padding:44px 36px 34px; text-align:center;
+  border-bottom:4px solid var(--gold);
+  position:relative; overflow:hidden;
+}
+.book-header::before {
+  content:'';
+  position:absolute; inset:0;
+  background-image:
+    repeating-linear-gradient( 45deg,transparent,transparent 30px,rgba(200,169,110,.038) 30px,rgba(200,169,110,.038) 31px),
+    repeating-linear-gradient(-45deg,transparent,transparent 30px,rgba(200,169,110,.038) 30px,rgba(200,169,110,.038) 31px);
+  pointer-events:none;
+}
+.testament-badge {
+  display:inline-block;
+  border:1px solid rgba(200,169,110,.4); color:rgba(200,169,110,.65);
+  font-family:var(--font-sub); font-size:.62rem; letter-spacing:.25em;
+  padding:4px 14px; border-radius:2px; margin-bottom:14px; position:relative;
+}
+.book-name-latin {
+  font-family:var(--font-title); font-size:3rem; color:var(--gold-light);
+  text-shadow:0 3px 18px rgba(0,0,0,.55); letter-spacing:.08em; position:relative;
+}
+.book-name-trans {
+  font-family:var(--font-sub); font-size:1.1rem; color:var(--gold);
+  margin-top:8px; letter-spacing:.12em; position:relative;
+}
+.book-meta {
+  font-size:.74rem; color:rgba(200,169,110,.5); margin-top:7px;
+  font-family:var(--font-sub); letter-spacing:.07em; position:relative;
+}
+
+/* ── ORNAMENT-TRENNLINIE ─────────────────────────────── */
+.ornament-bar {
+  text-align:center; padding:16px 0 4px;
+  color:var(--gold); font-size:1.1rem; letter-spacing:.7em;
+}
+
+/* ── HAUPT-CONTAINER ─────────────────────────────────── */
+.content { max-width:960px; margin:0 auto; padding:0 24px 80px; }
+
+/* ── KAPITEL-MARKER ──────────────────────────────────── */
+.chapter-marker {
+  display:flex; align-items:center; gap:16px;
+  padding:28px 6px 12px; margin-bottom:4px;
+  border-bottom:2px solid var(--border);
+}
+.ch-roman {
+  font-family:var(--font-title); font-size:2.2rem; color:var(--gold);
+  min-width:56px; text-align:center; flex-shrink:0;
+  text-shadow:0 1px 8px rgba(200,169,110,.3);
+}
+.ch-label {
+  font-family:var(--font-sub); font-size:.72rem; color:rgba(200,169,110,.6);
+  letter-spacing:.22em; text-transform:uppercase;
+}
+
+/* ── VERS-BLOCK ──────────────────────────────────────── */
+.verse-block {
+  display:flex; gap:0; border-bottom:1px solid rgba(200,169,110,.15);
+}
+.verse-block:nth-child(odd)  { background:var(--cream); }
+.verse-block:nth-child(even) { background:var(--parchment); }
+
+.verse-num-col {
+  flex-shrink:0; width:42px; padding:16px 6px 16px 0; text-align:right;
+}
+.verse-num {
+  display:inline-block; width:28px; height:28px; border-radius:50%;
+  background:var(--gold-dark); color:var(--cream);
+  font-family:var(--font-sub); font-size:.64rem; font-weight:700;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 1px 5px rgba(0,0,0,.25);
+}
+
+.verse-texts { flex:1; padding:16px 16px 18px 8px; }
+
+/* ── LATEINISCHER TEXT (oben / primär) ───────────────── */
+.latin {
+  font-family:var(--font-body); font-size:1.12rem; line-height:1.9;
+  color:var(--latin-color); font-weight:500;
+  border-left:3px solid var(--gold); padding-left:12px;
+  margin-bottom:8px;
+}
+
+/* ── ÜBERSETZUNGS-TEXT (unten / sekundär) ────────────── */
+.trans-label {
+  font-family:var(--font-sub); font-size:.6rem; letter-spacing:.17em;
+  text-transform:uppercase; color:var(--gold-dark); margin-bottom:5px; opacity:.78;
+}
+.trans {
+  font-family:var(--font-body); font-size:1.04rem; line-height:1.85;
+  color:var(--trans-color); font-style:italic;
+  padding-left:15px;
+}
+
+/* Erste Vers jedes Kapitels: Drop-Cap */
+.verse-block:first-of-type .latin::first-letter {
+  font-size:4.2em; float:left; line-height:.72;
+  padding-right:.08em; margin-top:.06em;
+  font-family:var(--font-title); color:var(--gold);
+}
+
+/* ── NAVIGATION ZWISCHEN BÜCHERN ─────────────────────── */
+.book-nav {
+  display:flex; justify-content:space-between; align-items:center;
+  background:var(--navy); border-top:3px solid var(--gold);
+  padding:12px 26px; gap:12px;
+}
+.book-nav a {
+  color:var(--gold); text-decoration:none;
+  font-family:var(--font-sub); font-size:.78rem; letter-spacing:.07em;
+  padding:6px 14px; border:1px solid rgba(200,169,110,.3); border-radius:3px;
+  transition:background .18s;
+}
+.book-nav a:hover { background:rgba(200,169,110,.15); }
+.book-nav .center {
+  font-family:var(--font-sub); font-size:.7rem; color:rgba(200,169,110,.55);
+  letter-spacing:.1em; text-align:center;
+}
+
+/* ── FUßZEILE ────────────────────────────────────────── */
+.page-footer {
+  background:var(--navy); border-top:2px solid rgba(200,169,110,.3);
+  padding:18px 28px; text-align:center;
+  color:rgba(200,169,110,.45); font-family:var(--font-sub);
+  font-size:.68rem; letter-spacing:.1em;
+}
+
+/* ── DRUCK ───────────────────────────────────────────── */
+@media print {
+  .nav-bar, .book-nav { display:none; }
+  .verse-block { break-inside:avoid; }
+  .book-header { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+}
+
+/* ── MOBIL ───────────────────────────────────────────── */
+@media (max-width:640px) {
+  .book-name-latin { font-size:2.1rem; }
+  .ch-roman { font-size:1.6rem; }
+  .latin { font-size:.98rem; }
+  .trans { font-size:.93rem; }
+  .content { padding:0 12px 60px; }
+}
+</style>
+</head>
+<body>
+
+  <nav class="nav-bar">
+    <a class="home" href="../../../index.html">✞ BIBLIA CATHOLICA</a>
+    <a href="../index.html">🇩🇪 Deutsch</a>
+    <span class="spacer"></span>
+    <span class="pos">028 / 066</span>
+  </nav>
+
+  <header class="book-header">
+    <div class="testament-badge">VETUS TESTAMENTUM</div>
+    <div class="book-name-latin">OSEE</div>
+    <div class="book-name-trans">Hosea</div>
+    <div class="book-meta">Vulgata Clementina · Luther Bibel (1912) · 14 Capita · 198 Versus</div>
+  </header>
+
+  <div class="ornament-bar">❧ ✦ ❧ ✦ ❧</div>
+
+  <main class="content">
+
+  <section class="chapter" id="ch1">
+    <div class="chapter-marker">
+      <span class="ch-roman">I</span>
+      <span class="ch-label">Caput 1</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v1-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Verbum Domini, quod factum est ad Osee, filium Beeri, in diebus Oziæ, Joathan, Achaz, Ezechiæ, regum Juda ; et in diebus Jeroboam, filii Joas, regis Israël.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Das Wort Jahwes, das an Hosea, den Sohn Beeris, erging - zur Zeit der judäischen Könige Usia, Ahas und Hiskia und zur Zeit des israelitischen Königs Jerobema, des Sohnes des Joas.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Principium loquendi Domino in Osee. Et dixit Dominus ad Osee : Vade, sume tibi uxorem fornicationum, et fac tibi filios fornicationum, quia fornicans fornicabitur terra a Domino.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Als Jahwe anfing, mit Hosea zu reden, sprach Jahwe zu Hosea: Wohlan, heirate ein Hurenweib, daß du Hurenkinder bekommest! Denn nach Art einer Hure verläßt das Land Jahwe und folgt ihm nicht mehr nach.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et abiit, et accepit Gomer, filiam Debelaim : et concepit, et peperit ei filium.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Da ging er hin und heiratete Gomer, die Tochter Diblaims; die ward schwanger und gebar ihm einen Sohn.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et dixit Dominus ad eum : Voca nomen ejus Jezrahel, quoniam adhuc modicum, et visitabo sanguinem Jezrahel super domum Jehu, et quiescere faciam regnum domus Israël.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Da sprach Jahwe zu ihm: Nenne ihn Jesreel! Denn nur noch eine kleine Weile, so will ich die Blutschuld von Jesreel an Jehus Familie heimsuchen und dem Königtume des Hauses Israel ein Ende machen;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et in illa die conteram arcum Israël in valle Jezrahel.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">jenes Tags will ich den Bogen Israels in der Ebene Jesreel zerschmettern!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et concepit adhuc, et peperit filiam. Et dixit ei : Voca nomen ejus, Absque misericordia, quia non addam ultra misereri domui Israël, sed oblivione obliviscar eorum.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Da wurde sie abermals schwanger und gebar eine Tochter. Da wies er ihn an: Nenne sie: Nichtgeliebt! Denn ich will dem Hause Israel fortan keine Vaterliebe mehr erzeigen, daß ich ihnen volle Vergebung gewähren sollte.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et domui Juda miserebor, et salvabo eos in Domino Deo suo ; et non salvabo eos in arcu et gladio, et in bello, et in equis, et in equitibus.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Dem Hause Juda aber will ich Vaterliebe erzeigen und ihnen Rettung schaffen durch Jahwe, ihren Gott; aber nicht will ich ihnen durch Bogen, noch durch Schwert, noch durch Kampf, noch durch Rosse und Reiter Rettung schaffen!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et ablactavit eam quæ erat Absque misericordia. Et concepit, et peperit filium.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Als sie nun “Nichtgeliebt” entwöhnt hatte, wurde sie wieder schwanger und gebar einen Sohn.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et dixit : Voca nomen ejus, Non populus meus, quia vos non populus meus, et ego non ero vester.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Da sprach er: Nenne ihn: Nichtmeinvolk! Denn ihr seid nicht mein Volk und ich gehöre nicht zu euch.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et erit numerus filiorum Israël quasi arena maris, quæ sine mensura est, et non numerabitur. Et erit in loco ubi dicetur eis : Non populus meus vos : dicetur eis : Filii Dei viventis.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et congregabuntur filii Juda et filii Israël pariter ; et ponent sibimet caput unum, et ascendent de terra, quia magnus dies Jezrahel.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch2">
+    <div class="chapter-marker">
+      <span class="ch-roman">II</span>
+      <span class="ch-label">Caput 2</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v2-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Dicite fratribus vestris : Populus meus ; et sorori vestræ : Misericordiam consecuta.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Es soll aber die Zahl der Israeliten dem Sande des Meeres gleich werden, der sich nicht messen und nicht zählen läßt. Und statt daß man von ihnen sagt: Ihr seid Nichtmeinvolk! soll man sie Söhne des lebendigen Gottes nennen!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Judicate matrem vestram, judicate,  quoniam ipsa non uxor mea,  et ego non vir ejus.  Auferat fornicationes suas a facie sua,  et adulteria sua de medio uberum suorum ;</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Und die Judäer und die Israeliten sollen sich zusammenscharen und sich ein Oberhaupt wählen und aus dem Lande heranziehen; denn der Tag von Jesreel wird gewaltig sein.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">ne forte expoliem eam nudam,  et statuam eam secundum diem nativitatis suæ,  et ponam eam quasi solitudinem,  et statuam eam velut terram inviam,  et interficiam eam siti.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Benennt eure Brüder: Mein Volk! und eure Schwestern: Geliebt!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et filiorum illius non miserebor,  quoniam filii fornicationum sunt.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Zieht eure Mutter vor Gericht, zieht sie vor Gericht - sie ist ja nicht mein Weib und ich bin nicht ihr Mann - daß sie die Zeichen ihrer Hurerei aus ihrem Gesichte wegschaffe und die Zeichen ihrer Ehebrecherei zwischen ihren Brüsten!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quia fornicata est mater eorum,  confusa est quæ concepit eos ;  quia dixit : Vadam post amatores meos,  qui dant panes mihi, et aquas meas,  lanam meam, et linum meum,  oleum meum, et potum meum.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Sonst werde ich sie nackt ausziehen und sie hinstellen, wie damals, als sie geboren ward, sie der Steppe gleich werden lassen, sie einem dürren Boden gleich machen und sie sterben lassen vor Durst.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Propter hoc ecce ego sepiam viam tuam spinis,  et sepiam eam maceria, et semitas suas non inveniet.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Ihren Kindern aber will ich keine Vaterliebe erzeigen; sie sind ja Hurenkinder,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et sequetur amatores suos, et non apprehendet eos ;  et quæret eos, et non inveniet :  et dicet : Vadam, et revertar ad virum meum priorem,  quia bene mihi erat tunc magis quam nunc.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">weil ihre Mutter gehurt, ihre Erzeugerin sich der Schande ergeben hat. Denn sie sagte: Ich will doch meinen Buhlen folgen, die mir Brot und Wasser, Wolle und Flachs, Öl und Getränke spenden!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et hæc nescivit, quia ego dedi ei frumentum, et vinum, et oleum,  et argentum multiplicavi ei, et aurum,  quæ fecerunt Baal.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Darum will ich ihr den Weg mit Dornen verzäunen und mit Mauern versperren, daß sie ihre Pfade nicht finden soll.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Idcirco convertar, et sumam frumentum meum in tempore suo,  et vinum meum in tempore suo.  Et liberabo lanam meam et linum meum,  quæ operiebant ignominiam ejus.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Wenn sie dann ihren Buhlen nacheilt, soll sie sie nicht erreichen, und wenn sie nach ihnen sucht, sie nicht treffen, vielmehr sich entschließen: Ich will doch zu meinem früheren Manne zurückkehren; denn damals ging es mir besser als jetzt!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et nunc revelabo stultitiam ejus in oculis amatorum ejus ;  et vir non eruet eam de manu mea ;</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Sie also weiß nicht, daß ich es bin, der ihr das Getreide und den Most und das Öl gespendet und ihr Silber und Gold in Menge gegeben hat - für den Baal haben sie es verwandt!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">et cessare faciam omne gaudium ejus,  solemnitatem ejus, neomeniam ejus, sabbatum ejus,  et omnia festa tempora ejus.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">So will nun auch ich mein Getreide, wenn es fällig ist, und meinen Most, wenn seine Zeit da ist, an mich nehmen und meine Wolle und meinen Flachs, womit sie ihre Blöße bedecken sollte, ihr entziehen.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et corrumpam vineam ejus, et ficum ejus,  de quibus dixit : Mercedes hæ meæ sunt,  quas dederunt mihi amatores mei ;  et ponam eam in saltum,  et comedet eam bestia agri.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Dazu will ich ihre Scham vor den Augen ihrer Buhlen enthüllen - niemand soll sie aus meiner Gewalt befreien! -</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et visitabo super eam dies Baalim,  quibus accendebat incensum,  et ornabatur in aure sua, et monili suo.  Et ibat post amatores suos,  et mei obliviscebatur, dicit Dominus.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">und will aller ihrer Fröhlichkeit ein Ende machen, ihrem Fest, ihren Neumonden und ihren Sabbaten und allen ihren Festzeiten,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Propter hoc ecce ego lactabo eam,  et ducam eam in solitudinem,  et loquar ad cor ejus.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">und will ihre Weinstöcke und ihre Feigenbäume vernichten, von denen sie dachte: das ist ein Geschenk für mich, das mir meine Buhlen gespendet haben! und will sie in eine Wildnis verwandeln, daß die wilden Tiere sich davon nähren sollen.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et dabo ei vinitores ejus ex eodem loco,  et vallem Achor, ad aperiendam spem ;  et canet ibi juxta dies juventutis suæ,  et juxta dies ascensionis suæ de terra Ægypti.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Ich will die Zeit der Baale an ihr heimsuchen, in der sie ihnen opferte und sich Ringe und Geschmeide anlegte und ihren Buhlen nachfolgte, während sie ich vergaß, ist der Spruch Jahwes.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et erit in die illa, ait Dominus :  vocabit me, Vir meus,  et non vocabit me ultra Baali.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Darum will ich fürwahr sie locken und in die Wüste führen und ihr Mut einsprechen.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et auferam nomina Baalim de ore ejus,  et non recordabitur ultra nominis eorum.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Und ich gebe ihr dort ihre Weinberge und mache ihr das Thal der Trübsal zu einer Pforte der Hoffnung, daß sie dort willfährig werde, wie in der Zeit ihrer Jugend und wie damals, als sie aus Ägypten heraufzog.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et percutiam cum eis fœdus in die illa, cum bestia agri,  et cum volucre cæli, et cum reptili terræ ;  et arcum, et gladium, et bellum conteram de terra,  et dormire eos faciam fiducialiter.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">An jenem Tag, ist der Spruch Jahwes, wirst du mich “mein Mann”, aber nicht mehr “mein Baal nennen.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et sponsabo te mihi in sempiternum ;  et sponsabo te mihi in justitia, et judicio,  et in misericordia, et in miserationibus.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Dann will ich die Namen der Baale aus ihrem Munde verschwinden lassen, daß sie nicht mehr mit ihrem Namen erwähnt werden sollen.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et sponsabo te mihi in fide ;  et scies quia ego Dominus.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Jenes Tags will ich zu ihren Gunsten die wilden Tiere und die Vögel unter dem Himmel und das Gewürm auf der Erde in Pflicht nehmen und will Bogen und Schwerter und Krieg aus dem Lande hinwegtilgen und will sie sicher wohnen lassen.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et erit in die illa :  exaudiam, dicit Dominus, exaudiam cælos,  et illi exaudient terram.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Und ich werde dich mir verloben auf immer; ich werde dich mir verloben auf Grund von Recht und Gerechtigkeit und in Güte und Liebe;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-22">
+      <div class="verse-num-col"><div class="verse-num">22</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et terra exaudiet triticum, et vinum, et oleum,  et hæc exaudient Jezrahel.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">ich werde dich mir verloben in Treue, daß du Jahwe erkennest!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-23">
+      <div class="verse-num-col"><div class="verse-num">23</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et seminabo eam mihi in terra,  et miserebor ejus quæ fuit Absque misericordia.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Zu jener Zeit aber werde ich willfahren, ist der Spruch Jahwes, werde ich willfahren dem Himmel, und der wird der Erde willfahren,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-24">
+      <div class="verse-num-col"><div class="verse-num">24</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et dicam Non populo meo : Populus meus es tu ;  et ipse dicet : Deus meus es tu.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">und die Erde wird dem Getreide und dem Most und dem Öl willfahren, und die werden Jesreel willfahren.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch3">
+    <div class="chapter-marker">
+      <span class="ch-roman">III</span>
+      <span class="ch-label">Caput 3</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v3-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et dixit Dominus ad me : Adhuc vade, et dilige mulierem dilectam amico et adulteram, sicut diligit Dominus filios Israël, et ipsi respiciunt ad deos alienos, et diligunt vinacia uvarum.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Und Jahwe sprach zu mir: Gehe noch einmal ein Weib lieben, das einen anderen lieb hat und die Ehe gebrochen hat, gleichwie Jahwe die Israeliten lieb hat, obwohl sie sich anderen Göttern zuneigen und Traubenkuchen gern haben.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et fodi eam mihi quindecim argenteis, et coro hordei, et dimidio coro hordæi.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Da erkaufte ich sie mir um 15 Sekel und einen Chomer und einen Letech Gerste</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et dixi ad eam : Dies multos exspectabis me ; non fornicaberis, et non eris viro ; sed et ego exspectabo te.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">und sprach zu ihr: Lange Zeit sollst du mir einsam dasitzen, ohne zu huren und ohne einem Manne zu teil zu werden; und auch ich will nicht zu dir kommen.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quia dies multos sedebunt filii Israël sine rege, et sine principe, et sine sacrificio, et sine altari, et sine ephod, et sine theraphim.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Denn lange Zeit sollen die Israeliten einsam sitzen ohne Könige und ohne Obrigkeit und ohne Opfer und ohne Malsstein und ohne Ephod und Teraphim.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et post hæc revertentur filii Israël, et quærent Dominum Deum suum, et David regem suum : et pavebunt ad Dominum, et ad bonum ejus, in novissimo dierum.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Darnach werden die Israeliten umkehren und Jahwe, ihren Gott, und David, ihren König, suchen und werden in der alsdann folgenden Zeit voll Furcht zu Jahwe und zu seinem Segen eilen!</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch4">
+    <div class="chapter-marker">
+      <span class="ch-roman">IV</span>
+      <span class="ch-label">Caput 4</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v4-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Audite verbum Domini, filii Israël,  quia judicium Domino cum habitatoribus terræ :  non est enim veritas, et non est misericordia,  et non est scientia Dei in terra.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Hört das Wort Jahwes, ihr Israeliten! Denn Jahwe geht ins Gericht mit den Bewohnern des Landes, weil keine Treue und keine Liebe und keine Gotteserkenntnis im Lande ist:</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Maledictum, et mendacium,  et homicidium, et furtum, et adulterium inundaverunt,  et sanguis sanguinem tetigit.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">sie schwören falsch, sie morden und stehlen und ehebrechen; sie brechen in die Häuser ein, und Blutschuld reiht sich an Blutschuld.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Propter hoc lugebit terra,  et infirmabitur omnis qui habitat in ea,  in bestia agri, et in volucre cæli ;  sed et pisces maris congregabuntur.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Deshalb trauert das Land, und schmachten alle seine Bewohner dahin, samt den wilden Tieren und den Vögeln unter dem Himmel; ja selbst die Fische im Meere werden dahingerafft!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Verumtamen unusquisque non judicet,  et non arguatur vir :  populus enim tuus sicut hi qui contradicunt sacerdoti.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Doch hadere nur niemand und tadle nur niemand! Aber mit euch, ihr Priester, gehe ich ins Gericht!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et corrues hodie,  et corruet etiam propheta tecum.  Nocte tacere feci matrem tuam.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Ihr sollt am Tage zu Falle kommen, und auch die Propheten sollen mit euch in der Nacht zu Falle kommen, und ich will eure Mutter vernichten!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Conticuit populus meus,  eo quod non habuerit scientiam :  quia tu scientiam repulisti,  repellam te, ne sacerdotio fungaris mihi ;  et oblita es legis Dei tui,  obliviscar filiorum tuorum et ego.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Mein Volk fällt der Vernichtung anheim, weil es keine Erkenntnis hat. Weil ihr Priester die Erkenntnis verworfen habt, so will ich euch verwerfen, daß ihr nicht mehr meine Priester sein sollt; und da ihr euch die Weisung eures Gottes aus dem Sinne geschlagen habt, will auch ich mir eure Kinder aus dem Sinne schlagen.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Secundum multitudinem eorum sic peccaverunt mihi :  gloriam eorum in ignominiam commutabo.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Je mächtiger sie geworden sind, desto mehr haben sie gegen mich gesündigt; an Stelle ihres Ansehens will ich Schande setzen.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Peccata populi mei comedent,  et ad iniquitatem eorum sublevabunt animas eorum.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Von der Sünde meines Volks nähren sie sich und nach seiner Verschuldung steht ihr Verlangen!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et erit sicut populus, sic sacerdos ;  et visitabo super eum vias ejus,  et cogitationes ejus reddam ei.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Aber ebenso wie den Priestern soll es dem Volk ergehen: Ich will ihren Wandel an ihnen heimsuchen und ihre Thaten auf sie zurückfallen lassen.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et comedent, et non saturabuntur ;  fornicati sunt, et non cessaverunt :  quoniam Dominum dereliquerunt in non custodiendo.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Wenn sie essen, sollen sie nicht satt werden; wenn sie der Wollust pflegen, sollen sie sich nicht vermehren. Denn sie haben davon abgelassen, auf Jahwe zu achten.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Fornicatio, et vinum, et ebrietas auferunt cor.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Hurerei und Wein und Most benehmen den Verstand:</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Populus meus in ligno suo interrogavit,  et baculus ejus annuntiavit ei ;  spiritus enim fornicationum decepit eos,  et fornicati sunt a Deo suo.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Mein Volk befragt sein Stück Holz, und sein Stab giebt ihm Bescheid! Denn ein hurerischer Geist hat sie bethört, daß sie den Götzen statt ihrem Gotte dienen.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Super capita montium sacrificabant,  et super colles ascendebant thymiama ;  subtus quercum, et populum, et terebinthum,  quia bona erat umbra ejus ;  ideo fornicabuntur filiæ vestræ,  et sponsæ vestræ adulteræ erunt.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Auf den Gipfeln der Berge schlachten sie ihre Opferstiere und opfern auf den Hügeln unter Eichen und Weißpappeln und Terebinthen - ihr Schatten ist ja so lieblich! So kommt es, daß eure Töchter huren, und eure jungen Weiber Ehebrecherinnen werden!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non visitabo super filias vestras cum fuerint fornicatæ,  et super sponsas vestras cum adulteraverint,  quoniam ipsi cum meretricibus conversabantur,  et cum effeminatis sacrificabant ;  et populus non intelligens vapulabit.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">An euren Töchtern will ich's nicht heimsuchen, daß sie huren, noch an euren jungen Weibern, daß sie die Ehe brechen. Denn sie selbst, die Priester gehen mit den Huren abseits und bringen zusammen mit den geweihten Lustdirnen Schlachtopfer dar, so daß das einsichtslose Volk zu Falle kommt!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si fornicaris tu, Israël,  non delinquat saltem Juda ;  et nolite ingredi in Galgala,  et ne ascenderitis in Bethaven,  neque juraveritis : Vivit Dominus !</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Wenn ihr Israeliten Götzendienst treibt, so mögen sich doch die Judäer nicht versündigen. Besucht doch nicht Gilgal, zieht doch nicht hinauf nach Bethaven und schwört nicht: “So wahr Jahwe lebt!”</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quoniam sicut vacca lasciviens declinavit Israël ;  nunc pascet eos Dominus, quasi agnum in latitudine.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Wenn die Israeliten störrig sind gleich einer störrigen Kuh, soll sie da Jahwe wie Lämmer auf weiter Aue weiden?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Particeps idolorum Ephraim : dimitte eum.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Ein Götzengesell ist Ephraim geworden! Laß es!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Separatum est convivium eorum ;  fornicatione fornicati sunt :  dilexerunt afferre ignominiam protectores ejus.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Ausgeartet ist ihr Saufen! Hurerei treiben sie; dem, der ihr Ruhm ist, ziehen sie die Schande vor.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ligavit eum spiritus in alis suis,  et confundentur a sacrificiis suis.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Ein Sturm verwickelt sie in seine Wirbel, daß ihr Vertrauen auf ihre Opferstätten zu Schanden werden soll!</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch5">
+    <div class="chapter-marker">
+      <span class="ch-roman">V</span>
+      <span class="ch-label">Caput 5</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v5-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Audite hoc, sacerdotes,  et attendite, domus Israël,  et domus regis, auscultate :  quia vobis judicium est,  quoniam laqueus facti estis speculationi,  et rete expansum super Thabor.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Hört dieses, ihr Priester! Merkt auf, ihr Israeliten, und gebt acht, ihr Männer am Königshofe! Denn euch geht der Handel an, weil ihr eine Schlinge für Mizpa geworden seid und ein Fangnetz, ausgespannt auf dem Thabor,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et victimas declinastis in profundum ;  et ego eruditor omnium eorum.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">und eine tiefe Fallgrube in Sittim. Ich aber willl für sie alle eine Zuchtrute werden!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ego scio Ephraim,  et Israël non est absconditus a me :  quia nunc fornicatus est Ephraim ;  contaminatus est Israël.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Ich kenne ja Ephraim, und Israel kann sich nicht vor mir verbergen; denn eben jetzt hast du, Ephraim, dem Götzendienste gehuldigt, hat sich Israel mit Unreinem befleckt.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non dabunt cogitationes suas ut revertantur ad Deum suum,  quia spiritus fornicationum in medio eorum,  et Dominum non cognoverunt.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Ihre eigenen Handlungen erlauben ihnen nicht, zu ihrem Gotte zurückzukehren; denn ein hurerischer Geist wohnt in ihnen und Erkenntnis Jahwes besitzen sie nicht.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et respondebit arrogantia Israël in facie ejus,  et Israël et Ephraim ruent in iniquitate sua :  ruet etiam Judas cum eis.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Aber der, der Israels Ruhm ist, wird gegen sie Zeugnis ablegen, daß Israel und Ephraim ob ihrer Verschuldung zu Falle kommen; - zu Falle kommen wird auch Juda mit ihnen.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">In gregibus suis et in armentis suis vadent ad quærendum Dominum,  et non invenient :  ablatus est ab eis.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Wenn sie sich dann mit ihren Schafen und Rindern aufmachen, um Jahwe zu suchen, werden sie ihn nicht finden: er hat sich von ihnen losgesagt.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">In Dominum prævaricati sunt,  quia filios alienos genuerunt :  nunc devorabit eos mensis, cum partibus suis.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Gegen Jahwe sind sie treulos gewesen; denn sie haben ihm unechte Kinder erzeugt. Daher soll eine Neumondfeier sie samt ihren Äckern verzehren!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Clangite buccina in Gabaa,  tuba in Rama ;  ululate in Bethaven,  post tergum tuum, Benjamin.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Stoßt in die Posaune in Gibea, in die Trompete zu Rama! Erhebt Kriegsgeschrei in Bethaven! Nimm dich in acht, Benjamin!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ephraim in desolatione erit in die correptionis ;  in tribubus Israël ostendi fidem.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Ephraim soll zu einer Einöde werden am Tage der Züchtigung. Sicheres verkündige ich über die Stämme Israels!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Facti sunt principes Juda quasi assumentes terminum ;  super eos effundam quasi aquam iram meam.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Die Häupter der Judäer gleichen solchen, die Grenzsteine verrücken; über sie will ich meinen Zorn ausschütten, wie man Wasser ausschüttet.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Calumniam patiens est Ephraim, fractus judicio,  quoniam cœpit abire post sordes.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">In Ephraim läßt man das Recht Gewalt leiden, läßt man es mit Füßen treten; denn es hat sich unterstanden, den nichtigen Götzen zu folgen.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et ego quasi tinea Ephraim,  et quasi putredo domui Juda.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">So ward ich für Ephraim zur Motte und für die Judäer zum nagenden Wurm.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et vidit Ephraim languorem suum,  et Juda vinculum suum ;  et abiit Ephraim ad Assur,  et misit ad regem ultorem :  et ipse non poterit sanare vos,  nec solvere poterit a vobis vinculum.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Als da Ephraim seine Krankheit merkte, und Juda seine Beule, wandte sich Ephraim an Assur und sandte zum König von Jareb. Der aber vermag euch nicht Genesung zu bringen und eurer Beule nicht Heilung,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quoniam ego quasi leæna Ephraim,  et quasi catulus leonis domui Juda.  Ego, ego capiam, et vadam ;  tollam, et non est qui eruat.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">weil ich selbst wie ein Löwe gegen Ephraim auftreten werde und wie ein Jungleu gegen das Reich Juda! Ich, ich werde rauben und abziehen, werde wegschleppen, ohne daß jemand errettet,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vadens revertar ad locum meum,  donec deficiatis, et quæratis faciem meam.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">werde abziehen und zu meiner Stätte zurückkehren. Denn endlich werden sie ihre Schuld fühlen und mein Antlitz suchen; wenn sie in Not sind, werden sie sich nach mir sehnen:</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch6">
+    <div class="chapter-marker">
+      <span class="ch-roman">VI</span>
+      <span class="ch-label">Caput 6</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v6-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">In tribulatione sua mane consurgent ad me :  Venite, et revertamur ad Dominum,</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">“Wohlan, laßt uns umkehren zu Jahwe! Denn nur er wird uns, wenn er uns zerfleischt hat, auch wieder heilen, wenn er verwundet hat, auch verbinden.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">quia ipse cepit, et sanabit nos ;  percutiet, et curabit nos.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Er wird uns nach zwei Tagen neu beleben, am dritten Tag uns wieder aufrichten, daß wir in seiner Hut neues Leben haben.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vivificabit nos post duos dies ;  in die tertia suscitabit nos,  et vivemus in conspectu ejus.  Sciemus, sequemurque ut cognoscamus Dominum :  quasi diluculum præparatus est egressus ejus,  et veniet quasi imber nobis temporaneus et serotinus terræ.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Laßt uns Jahwe erkennen, laßt uns eifrig darnach trachten, Jahwe zu erkennen, - er wird so sicher kommen, wie die Morgenröte aufgeht! damit er über uns komme wie ein Regenguß, wie ein Spätregen, der das Land befeuchtet.”</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quid faciam tibi, Ephraim ?  quid faciam tibi, Juda ?  misericordia vestra quasi nubes matutina,  et quasi ros mane pertransiens.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Was soll ich dir thun, Ephraim? Was soll ich dir thun, Juda, da doch eure Liebe flüchtig ist wie Morgengewölk, wie der Tau, der früh wieder vergeht?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Propter hoc dolavi in prophetis ;  occidi eos in verbis oris mei :  et judicia tua quasi lux egredientur.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Weil dem so ist, muß ich dreinschlagen durch die Propheten, sie hinstrecken durch die Machtsprüche meines Mundes, und muß mein Gericht so sicher erscheinen wie die Sonne aufgeht.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quia misericordiam volui, et non sacrificium ;  et scientiam Dei plus quam holocausta.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Denn an Liebe habe ich Wohlgefallen, nicht an Schlachtopfern, an Gotteserkenntnis und nicht an Brandopfern!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ipsi autem sicut Adam transgressi sunt pactum :  ibi prævaricati sunt in me.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Diese aber haben nach Menschenweise meine Gebote übertreten; dort sind sie mir untreu geworden!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Galaad civitas operantium idolum,  supplantata sanguine.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Gilead ist eine Stadt von Übelthätern, befleckt von vergossenem Blut,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et quasi fauces virorum latronum,  particeps sacerdotum, in via interficientium pergentes de Sichem :  quia scelus operati sunt.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">und gleich lauernden Räubern ist die Priesterbande. Am Wege morden sie bei Sichem; ja, Schandthat haben sie verübt!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">In domo Israël vidi horrendum :  ibi fornicationes Ephraim,  contaminatus est Israël.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Im Reiche Israel habe ich Grauenhaftes gesehen: Dort hat Ephraim Götzendienst getrieben, hat sich Israel verunreinigt.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sed et Juda, pone messem tibi,  cum convertero captivitatem populi mei.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Auch Dir, Juda, hat er eine Ernte bereitet. Wenn ich das Geschick meines Volkes wende,</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch7">
+    <div class="chapter-marker">
+      <span class="ch-roman">VII</span>
+      <span class="ch-label">Caput 7</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v7-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Cum sanare vellem Israël,  revelata est iniquitas Ephraim,  et malitia Samariæ,  quia operati sunt mendacium ;  et fur ingressus est spolians,  latrunculus foris.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">so oft ich Israel Heilung verschaffen will, so zeigen sich erst die Sünden Ephraims und die Übelthaten Samariens, daß sie Falschheit üben, und Diebe einbrechen, Räuberbanden draußen plündern.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et ne forte dicant in cordibus suis,  omnem malitiam eorum me recordatum,  nunc circumdederunt eos adinventiones suæ :  coram facie mea factæ sunt.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Dabei bedenken sie nicht in ihrem Herzen, daß mir all' ihr böses Wesen nicht aus dem Sinne kommt. Nun sind sie im Bann ihrer Handlungen; ich habe diese stets vor Augen!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">In malitia sua lætificaverunt regem,  et in mendaciis suis principes.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Voll Arglist halten sie den König und voll Heuchelei die hohen Herrn in guter Laune.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Omnes adulterantes,  quasi clibanus succensus a coquente ;  quievit paululum civitas a commistione fermenti,  donec fermentaretur totum.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Sie alle sind Ehebrecher; sie gleichen einem glühenden Ofen, dessen Heizung der Bäcker nur unterbricht, bis der geknetete Teig gegohren hat.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Dies regis nostri : cœperunt principes furere a vino ;  extendit manum suam cum illusoribus.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Am Festtag unseres Königs saufen sich die hohen Herren wie fieberkrank von Wein. Er pflegt Gemeinschaft mit Gewissenlosen.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quia applicuerunt quasi clibanum cor suum,  cum insidiaretur eis ;  tota nocte dormivit coquens eos :  mane ipse succensus quasi ignis flammæ.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Denn einem Ofen gleicht ihr Herz in ihrer Tücke. Die ganze Nacht schläft ihr Bäcker, am Morgen glüht er wie flammendes Feuer.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Omnes calefacti sunt quasi clibanus,  et devoraverunt judices suos :  omnes reges eorum ceciderunt ;  non est qui clamat in eis ad me.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Sie alle sind wie ein Ofen in Glut, so daß sie ihre Obrigkeit verzehren. Alle ihre Könige wurden gestürzt, ohne daß einer von diesen Leuten die Sache an mich gebracht hätte.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ephraim in populis ipse commiscebatur ;  Ephraim factus est subcinericius panis, qui non reversatur.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Ephraim hat sich mit den andern Völkern vermengt; Ephraim ist wie ein Brotfladen geworden, den man nicht umgewendet hat.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Comederunt alieni robur ejus, et ipse nescivit ;  sed et cani effusi sunt in eo, et ipse ignoravit.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Ausländer haben seine Kraft verzehrt, ohne daß er etwas davon merkte; schon ist ihm graues Haar eingesprengt, ohne daß er etwas davon merkte.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et humiliabitur superbia Israël in facie ejus ;  nec reversi sunt ad Dominum Deum suum,  et non quæsierunt eum in omnibus his.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Trotzdem daß er, der Ruhm Israels, Zeugnis gegen sie abgelegt hat, haben sie sich nicht zu Jahwe, ihrem Gotte, bekehrt und haben ihn trotz alledem nicht gesucht.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et factus est Ephraim quasi columba seducta non habens cor.  Ægyptum invocabant ; ad Assyrios abierunt.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Sondern Ephraim benahm sich wie eine einfältige, unverständige Taube: die Ägypter haben sie herbeigerufen, haben sich an Assur gewandt.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et cum profecti fuerint,  expandam super eos rete meum :  quasi volucrem cæli detraham eos ;  cædam eos secundum auditionem cœtus eorum.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Wenn sie sich wenden, breite ich mein Fangnetz über sie aus, hole sie wie die Vögel am Himmel herab, züchtige sie gemäß der Verkündigung an ihre Gemeinde.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Væ eis, quoniam recesserunt a me !  vastabuntur, quia prævaricati sunt in me,  et ego redemi eos,  et ipsi locuti sunt contra me mendacia.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Wehe ihnen, daß sie sich fern von mir umhertreiben! Verheerung über sie, daß sie sich gegen mich empört haben! Ich erlöste sie so oft, sie aber führten lügnerische Reden über mich</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et non clamaverunt ad me in corde suo,  sed ululabant in cubilibus suis :  super triticum et vinum ruminabant ;  recesserunt a me.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">und schrieen nicht von Herzen zu mir, sondern heulten auf ihrem Lager. Um Getreide und Most zu erlangen, ritzten sie sich die Haut in Auflehnung gegen mich.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et ego erudivi eos, et confortavi brachia eorum,  et in me cogitaverunt malitiam.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Und doch war ich es, der sie unterwiesen, der ihre Arme gestärkt hat. Aber sie haben Arges gegen mich im Sinne;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Reversi sunt ut essent absque jugo ;  facti sunt quasi arcus dolosus :  cadent in gladio principes eorum, a furore linguæ suæ.  Ista subsannatio eorum in terra Ægypti.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">sie machen wohl eine Wendung, aber nicht nach oben. Sie sind wie ein Bogen, der versagt! Ihre hohen Herren sollen durchs Schwert fallen wegen ihrer wutschäumenden Reden - dafür wird man sie verhöhnen in Ägyptenland!</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch8">
+    <div class="chapter-marker">
+      <span class="ch-roman">VIII</span>
+      <span class="ch-label">Caput 8</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v8-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">In gutture tuo sit tuba  quasi aquila super domum Domini,  pro eo quod transgressi sunt fœdus meum,  et legem meam prævaricati sunt.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Setze die Posaune an deinen Mund! Einem Geier gleich kommt einer über das Haus Jahwes! Denn sie haben meine Gebote übertreten und gegen meine Weisung sich empört.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Me invocabunt : Deus meus,  cognovimus te Israël.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Dabei schreien sie zu mir: Mein Gott! Wir Israeliten kennen dich ja!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Projecit Israël bonum :  inimicus persequetur eum.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Die Israeliten haben das Heil verschmäht - darum sollen die Feinde sie jagen!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ipsi regnaverunt, et non ex me ;  principes exstiterunt, et non cognovi :  argentum suum et aurum suum fecerunt sibi idola,  ut interirent.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Sie allein haben Könige gemacht, die doch nicht von mir berufen wurden, haben sich Häupter erwählt, ohne daß ich darum wußte. Aus ihrem Silber und Gold haben sie sich Götzenbilder gemacht, bloß zu dem Zwecke, daß sie zu Grunde gehen.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Projectus est vitulus tuus, Samaria ;  iratus est furor meus in eos.  Usquequo non poterunt emundari ?</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Dein Stierdienst, Samarien, stinkt zum Himmel; mein Zorn ist gegen sie entbrannt. Wie lange wird es ihnen unmöglich sein, Schuldlosigkeit zu erringen!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quia ex Israël et ipse est :  artifex fecit illum, et non est deus ;  quoniam in aranearum telas erit vitulus Samariæ.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Denn aus Israel stammt er; ein Künstler hat ihn angefertigt, aber Gott ist er nicht. Vielmehr, in Stücke soll er gehen, der Stier Samariens!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quia ventum seminabunt,  et turbinem metent :  culmus stans non est in eo ;  germen non faciet farinam :  quod etsi fecerit, alieni comedent eam.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Denn Wind säen sie und Sturm werden sie ernten. Da giebt es keine Halme; das Aufgesproßte giebt kein Mehl, und sollte es welches geben, so würden es die Ausländer verschlingen.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Devoratus est Israël ;  nunc factus est in nationibus quasi vas immundum.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Verschlungen wird Israel selbst! Schon steht es unter den Völkern da wie wertloses Gerät!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quia ipsi ascenderunt ad Assur,  onager solitarius sibi ;  Ephraim munera dederunt amatoribus.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Denn damit, daß sie sich nach Assyrien wandten, wie ein Wildesel, der für sich läuft, haben die Ephraimiten mit Geld um Buhlschaft geworben.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sed et cum mercede conduxerint nationes,  nunc congregabo eos,  et quiescent paulisper ab onere regis et principum.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Aber mögen sie auch mit Geld und Buhlschaft unter den Völkern werben, ich will sie nun in die Enge treiben, daß sie gar bald unter dem Tribut an den Großkönig sich winden wollen.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quia multiplicavit Ephraim altaria ad peccandum ;  factæ sunt ei aræ in delictum.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Ja, Ephraim hat zahlreiche Altäre gebaut - zur Sünde sind ihm die Altäre ausgeschlagen!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Scribam ei multiplices leges meas,  quæ velut alienæ computatæ sunt.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Mag ich ihm auch meine Weisungen in Mengen aufzeichnen, so werden sie wie die eines Fremden angesehen.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hostias offerent,  immolabunt carnes et comedent,  et Dominus non suscipiet eas :  nunc recordabitur iniquitatis eorum,  et visitabit peccata eorum :  ipsi in Ægyptum convertentur.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Schlachtopfer schlachten sie und essen Fleisch - Jahwe hat an ihnen kein Wohlgefallen. So kommt ihm denn ihre Verkehrtheit nicht aus dem Sinn, und ihre Sünden wird er heimsuchen. Gerade diese Leute sollen wieder nach Ägypten zurück müssen und sich in Assyrien von unreinen Speisen nähren.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et oblitus est Israël factoris sui,  et ædificavit delubra ;  et Judas multiplicavit urbes munitas ;  et mittam ignem in civitates ejus,  et devorabit ædes illius.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Weil sich Israel seinen Schöpfer aus dem Sinne schlug und sich Paläste baute, und weil sich Juda viele feste Städte anlegte, will ich Feuer wider seine Städte entsenden, das soll ihre Burgen verzehren.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch9">
+    <div class="chapter-marker">
+      <span class="ch-roman">IX</span>
+      <span class="ch-label">Caput 9</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v9-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Noli lætari, Israël ;  noli exsultare sicut populi :  quia fornicatus es a Deo tuo ;  dilexisti mercedem super omnes areas tritici.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Freue dich doch nicht, Israel, juble nicht nach Weise der Heiden! Denn du hast treulos deinen Gott verlassen, auf allen Getreidetennen zogst du Buhlerlohn vor.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Area et torcular non pascet eos,  et vinum mentietur eis :</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Aber Tenne und Kelter werden nichts von ihnen wissen wollen, und der Most wird sie im Stiche lassen.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">non habitabunt in terra Domini.  Reversus est Ephraim in Ægyptum,  et in Assyriis pollutum comedit.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Sie werden im Lande Jahwes nicht wohnen bleiben. Vielmehr werden die Ephraimiten wieder nach Ägypten zurück müssen und sich in Assyrien von unreinen Speisen nähren.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non libabunt Domino vinum,  et non placebunt ei.  Sacrificia eorum quasi panis lugentium ;  omnes qui comedent eum, contaminabuntur :  quia panis eorum animæ ipsorum :  non intrabit in domum Domini.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Sie werden für Jahwe keine Weinspende mehr ausgießen und ihm ihre Schlachtopfer nicht mehr zurichten. Wie Trauerbrot wird ihr Brot sein; alle, die davon essen, werden sich verunreinigen. Denn ihr Brot wird nur ihren Hunger stillen, aber nicht in das Haus Jahwes gelangen.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quid facietis in die solemni,  in die festivitatis Domini ?</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Was wollt ihr beginnen, wenn Feiertage nahen und das Fest Jahwes?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ecce enim profecti sunt a vastitate :  Ægyptus congregabit eos ;  Memphis sepeliet eos :  desiderabile argentum eorum urtica hæreditabit,  lappa in tabernaculis eorum.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Wenn sie ja der Verwüstung entgangen sind, wird Ägypten sie einsammeln, Memphis sie in seine Gräber aufnehmen, werden ihre silbernen Kleinode den Disteln anheimfallen, den Dornen in ihren Hütten.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Venerunt dies visitationis,  venerunt dies retributionis.  Scitote, Israël,  stultum prophetam,  insanum virum spiritualem,  propter multitudinem iniquitatis tuæ,  et multitudinem amentiæ.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Es kommen die Tage der Heimsuchung, es kommen die Tage der Vergeltung, an denen die Israeliten zur Einsicht kommen über ihren Spott: Ein Narr ist der Prophet, verrückt ist der Geistesvolle - weil deine Verschuldung groß und die Nachstellung groß ist.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Speculator Ephraim cum Deo meo,  propheta laqueus ruinæ factus est super omnes vias ejus ;  insania in domo Dei ejus.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Ephraim liegt auf der Lauer gegenüber meinem Gott. Dem Propheten sind Schlingen wie die eines Vogelstellers auf allen seinen Wegen gelegt, Fußeisen im Hause seines Gottes.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Profunde peccaverunt, sicut in diebus Gabaa.  Recordabitur iniquitatis eorum,  et visitabit peccata eorum.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Schwere Schandthaten haben sie begangen wie damals in Gibea: ihre Verschuldung kommt ihm nicht aus dem Sinn, ihre Sünden wird er heimsuchen!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quasi uvas in deserto inveni Israël,  quasi prima poma ficulneæ in cacumine ejus vidi patres eorum :  ipsi autem intraverunt ad Beelphegor,  et abalienati sunt in confusionem,  et facti sunt abominabiles sicut ea quæ dilexerunt.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Einst habe ich Israel gefunden wie Trauben in der Steppe, eure Vorfahren erblickt wie eine Frühfrucht an einem jungtragenden Feigenbaum. Als sie aber nach Baal Peor kamen, weihten sie sich dem Götzendient und wurden abscheulich wie der Gott, dem sie anhingen.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ephraim quasi avis avolavit ;  gloria eorum a partu, et ab utero, et a conceptu.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Gleich Vögeln wird die Volksmenge Ephraims davonfliegen; aus ist es mit Gebären, mit Schwangerschaft und Empfängnis.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quod etsi enutrierint filios suos,  absque liberis eos faciam in hominibus ;  sed et væ eis cum recessero ab eis !</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Selbst wenn sie ihre Söhne großziehen, will ich sie derselben berauben, so daß es an Menschen fehlt. Ja, auch wehe über sie selbst, wenn ich meinen Blick von ihnen abwende!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ephraim, ut vidi, Tyrus erat fundata in pulchritudine ;  et Ephraim educet ad interfectorem filios suos.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Ephraim ist, wie ich's erblicke bis Tyrus hin, in einer Aue gepflanzt, und die Ephraimiten werden ihre Söhne Mördern überliefern müssen.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Da eis, Domine. Quid dabis eis ?  da eis vulvam sine liberis, et ubera arentia.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Gieb ihnen, Jahwe, was du geben willst! Gieb ihnen einen unfruchtbaren Schoß und trockene Brüste!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Omnes nequitiæ eorum in Galgal,  quia ibi exosos habui eos.  Propter malitiam adinventionum eorum,  de domo mea ejiciam eos ;  non addam ut diligam eos :  omnes principes eorum recedentes.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Alle ihre Schandthaten geschahen im Gilgal. Ja, dort warf ich Haß auf sie. Wegen ihrer schändlichen Handlungen will ich sie aus meinem Hause vertreiben. Ich will ihnen keine Liebe mehr erweisen! Alle ihre Oberen sind Abtrünnige.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Percussus est Ephraim ;  radix eorum exsiccata est :  fructum nequaquam facient,  quod etsi genuerint,  interficiam amantissima uteri eorum.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Zu Boden gestreckt wird Ephraim; seine Wurzeln verdorren, sie sollen keine Frucht tragen! Wenn sie auch Söhne bekommen, so will ich doch die Lieblinge, die sie zeugen, dem Tod überliefern.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Abjiciet eos Deus meus, quia non audierunt eum,  et erunt vagi in nationibus.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Mein Gott wird sie verwerfen; denn sie haben nicht auf ihn gehört: ruhelos sollen sie unter den Völkern werden!</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch10">
+    <div class="chapter-marker">
+      <span class="ch-roman">X</span>
+      <span class="ch-label">Caput 10</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v10-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vitis frondosa Israël,  fructus adæquatus est ei :  secundum multitudinem fructus sui multiplicavit altaria,  juxta ubertatem terræ suæ exuberavit simulacris.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Ein wuchernder Weinstock war Israel, dessen Früchte gediehen. Je zahlreicher seine Früchte wurden, desto mehr Altäre baute es; je schöner sein Land trug, desto schönere Malsteine fertigten sie an.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Divisum est cor eorum, nunc interibunt ;  ipse confringet simulacra eorum,  depopulabitur aras eorum.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Unzuverlässig war ihr Sinn; darum sollen sie nun büßen. Er selbst wird ihre Altäre zerbrechen, ihre Malsteine zertrümmern.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quia nunc dicent : Non est rex nobis,  non enim timemus Dominum ;  et rex quid faciet nobis ?</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Ja, dann werden sie sprechen: Wir haben keinen König mehr, weil wir keine Furcht vor Jahwe gehabt haben; und was soll uns ein König leisten? -</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Loquimini verba visionis inutilis, et ferietis fœdus ;  et germinabit quasi amaritudo judicium super sulcos agri.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Abkommen treffen mit falschen Eiden, Verträge schließen, damit Rechte erwüchsen wie Giftpflanzen in den Furchen des Ackers!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vaccas Bethaven coluerunt habitatores Samariæ ;  quia luxit super eum populus ejus,  et æditui ejus super eum exsultaverunt  in gloria ejus, quia migravit ab eo.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Um den Stier Bethavens werden sich die Bewohner Samarias sorgen; ja, seine Anhänger werden um ihn trauern, und seine Pfaffen für ihn zittern, - für den Ruhm Bethavens, daß er von ihm fortwandert.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Siquidem et ipse in Assur delatus est,  munus regi ultori.  Confusio Ephraim capiet,  et confundetur Israël in voluntate sua.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Sogar ihn selbst wird man nach Assyrien schleppen als eine Gabe für den König von Jareb; Schmach wird Ephraim davon tragen, und das Vertrauen der Israeliten auf ihren Plan zu Schanden werden.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Transire fecit Samaria regem suum  quasi spumam super faciem aquæ.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Samarien wird zu nichte; sein König gleicht einem Holzsplitter, der auf der Wasserfläche dahinschwimmt.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et disperdentur excelsa idoli, peccatum Israël ;  lappa et tribulus ascendet super aras eorum :  et dicent montibus : Operite nos,  et collibus : Cadite super nos.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Verwüstet werden die Unheilshöhen, die Sünde der Israeliten, daß Dornen und Gestrüpp auf ihren Altären emporwuchern. Da werden sie dann zu den Bergen sprechen: Bedeckt uns! und zu den Hügeln: Fallt auf uns!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ex diebus Gabaa peccavit Israël ;  ibi steterunt.  Non comprehendet eos in Gabaa  prælium super filios iniquitatis.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Seit den Tagen von Gibea hast du, Israel, gesündigt! Dort standen sie! Wird sie in Gibea der Krieg wider die Rotte der Frevler erreichen?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Juxta desiderium meum corripiam eos :  congregabuntur super eos populi,  cum corripientur propter duas iniquitates suas.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Nach meiner Lust will ich sie züchtigen; Völker sollen gegen sie versammelt werden, wenn sie für ihre zwei Verschuldungen Züchtigung empfangen.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ephraim vitula docta diligere trituram,  et ego transivi super pulchritudinem colli ejus :  ascendam super Ephraim,  arabit Judas ;  confringet sibi sulcos Jacob.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Ephraim aber gleicht einem Rinde, das wohl angelernt ist, das gern drischt. Wohl habe ich seinen schönen Hals bisher verschont, nun aber will ich Ephraim ins Joch spannen; Juda soll pflügen, Jakob soll ackern müssen!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Seminate vobis in justitia,  et metite in ore misericordiæ.  Innovate vobis novale ;  tempus autem requirendi Dominum,  cum venerit qui docebit vos justitiam.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Wohlthaten laßt eure Aussaat sein, dann werdet ihr Güte ernten! Pflügt euch doch einen Neubruch, da es an der Zeit ist, Jahwe zu suchen, damit er endlich komme und euch Heil regnen lasse.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Arastis impietatem,  iniquitatem messuistis :  comedistis frugem mendacii,  quia confisus es in viis tuis,  in multitudine fortium tuorum.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Da ihr aber Frevel eingepflügt hat, habt ihr Unheil geerntet, habt ihr die Früchte der Falschheit essen müssen! Hast du doch auf deine Streitwagen dein Vertrauen gesetzt, auf die Menge deiner Krieger!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Consurget tumultus in populo tuo ;  et omnes munitiones tuæ vastabuntur,  sicut vastatus est Salmana a domo ejus qui judicavit Baal  in die prælii, matre super filios allisa.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">So soll sich denn Kriegsgetümmel wider deine Scharen erheben, und alle deine Festungen sollen zerstört werden, wie Salman Beth Arbel zur Kriegszeit zerstörte, als die Mütter samt den Kindern zerschmettert wurden.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sic fecit vobis Bethel,  a facie malitiæ nequitiarum vestrarum.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Gerade so wird er mit euch, ihr Israeliten, verfahren, weil ihr so durch und durch böse seid. In der Frühe wird der König von Israel dahingerafft!</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch11">
+    <div class="chapter-marker">
+      <span class="ch-roman">XI</span>
+      <span class="ch-label">Caput 11</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v11-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sicut mane transiit, pertransiit rex Israël.  Quia puer Israël, et dilexi eum ;  et ex Ægypto vocavi filium meum.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Als Israel jung war, gewann ich es lieb und rief seine Scharen aus Ägypten.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vocaverunt eos, sic abierunt a facie eorum ;  Baalim immolabant, et simulacris sacrificabant.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Wenn ich sie rief, dann zogen sie sich vor mir zurück. Während sie den Götzen schlachteten und den Bildern opferten,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et ego quasi nutritius Ephraim :  portabam eos in brachiis meis,  et nescierunt quod curarem eos.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">gängelte ich die Ephraimiten wie Kinder und nahm sie auf meine Arme. Aber sie merkten nicht, daß ich ihre Schäden heilte.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">In funiculis Adam traham eos,  in vinculis caritatis ;  et ero eis quasi exaltans jugum super maxillas eorum,  et declinavi ad eum ut vesceretur.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Mit Seilen, wie ein Mensch sie braucht, zog ich sie zu mir, mit Banden der Liebe, und verhielt mich gegen sie wie einer, der das Joch an ihren Kinnladen lüpft, und bot ihnen ihre Nahrung dar.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non revertetur in terram Ægypti, et Assur ipse rex ejus,  quoniam noluerunt converti.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Nach Ägypten sollen sie zurückkehren, und der Assyrier soll ihr König werden; denn sie weigern sich, zu mir umzukehren.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Cœpit gladius in civitatibus ejus,  et consumet electos ejus,  et comedet capita eorum.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">So soll denn das Schwert gegen ihre Städte gezückt werden und ihre Riegel vernichten und ihre Burgen verzehren.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et populus meus pendebit ad reditum meum ;  jugum autem imponetur eis simul, quod non auferetur.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Mein Volk hat nun einmal den Hang, sich von mir abzuwenden; und mag man ihnen ein aufwärts! zurufen, es strebt keiner empor.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quomodo dabo te, Ephraim ?  protegam te, Israël ?  Quomodo dabo te sicut Adama,  ponam te ut Seboim ?  Conversum est in me cor meum,  pariter conturbata est pœnitudo mea.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Wie könnte ich dich darangeben, Ephraim, dich preisgeben, Israel! Wie könnte ich dich darangeben wie einst Adma, ein Zeboim aus dir machen! Mein Sinn in mir verwandelt sich, all' mein Mitleid ist entbrannt!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non faciam furorem iræ meæ ;  non convertar ut disperdam Ephraim,  quoniam Deus ego, et non homo ;  in medio tui sanctus,  et non ingrediar civitatem.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Mein heißer Zorn soll nicht zur That werden; ich will den Schritt nicht thun, Ephraim zu verderben. Denn ich bin Gott und nicht ein Mensch; als heiliger Gott wohne ich unter Euch und komme nicht zu euch in Wut.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Post Dominum ambulabunt ;  quasi leo rugiet,  quia ipse rugiet,  et formidabunt filii maris.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Sie werden Jahwe folgen, der wird gleich einem Löwen brüllen; ja, er wird brüllen, und Söhne werden zitternd herbeieilen.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et avolabunt quasi avis ex Ægypto,  et quasi columba de terra Assyriorum :  et collocabo eos in domibus suis, dicit Dominus.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Wie Vögel werden sie zitternd aus Ägypten herbeieilen und wie Tauben aus dem Lande Assyrien. Dann will ich sie in ihren Häusern friedlich wohnen lassen, ist der Spruch Jahwes.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Circumdedit me in negatione Ephraim,  et in dolo domus Israël ;  Judas autem testis descendit cum Deo,  et cum sanctis fidelis.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch12">
+    <div class="chapter-marker">
+      <span class="ch-roman">XII</span>
+      <span class="ch-label">Caput 12</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v12-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ephraim pascit ventum,  et sequitur æstum ;  tota die mendacium et vastitatem multiplicat :  et fœdus cum Assyriis iniit,  et oleum in Ægyptum ferebat.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Von allen Seiten bieten mir die Ephraimiten Falschheit und die Israeliten Täuschung, Juda aber schwankt noch immer hin und her Gott gegenüber und gegenüber dem Hochheiligen, der beständig ist.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Judicium ergo Domini cum Juda,  et visitatio super Jacob :  juxta vias ejus, et juxta adinventiones ejus reddet ei.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Die Ephraimiten haben ihr Gefallen an Sturm und jagen dem Ostwinde nach; jeden Tag häufen sie Lüge und Gewaltthat: sie schließen ein Bündnis mit den Assyriern, und zu den Ägyptern wird Öl gebracht.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">In utero supplantavit fratrem suum,  et in fortitudine sua directus est cum angelo.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Aber Jahwe wird mit Juda ins Gericht gehen und wird Jakob nach seinem Wandel heimsuchen, ihm nach seinen Handlungen vergelten.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et invaluit ad angelum, et confortatus est ;  flevit, et rogavit eum.  In Bethel invenit eum,  et ibi locutus est nobiscum.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Im Mutterschoße schon überlistete er seinen Bruder und als kräftiger Mann kämpfte er mit Gott.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et Dominus Deus exercituum,  Dominus memoriale ejus.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Er kämpfte gegen eine Gotteserscheinung und siegte; er weinte und bat sie um Erbarmen. Sie fand ihn in Bethel und dort redete sie mit ihm -</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et tu ad Deum tuum converteris ;  misericordiam et judicium custodi,  et spera in Deo tuo semper.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">nämlich Jahwe, der Gott der Heerscharen, er, der Jahwe heißt -</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Chanaan, in manu ejus statera dolosa,  calumniam dilexit.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Du sollst durch deinen Gott zurückkehren! Halte auf Liebe und Recht und harre beständig deines Gottes!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et dixit Ephraim : Verumtamen dives effectus sum ;  inveni idolum mihi :  omnes labores mei non invenient mihi iniquitatem quam peccavi.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Aber der Kanaaniter führte falsche Wage; er liebt es, zu übervorteilen!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et ego Dominus Deus tuus ex terra Ægypti :  adhuc sedere te faciam in tabernaculis, sicut in diebus festivitatis.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Und auch der Ephraimit sprach: Bin ich doch reich geworden, habe mir Vermögen erworben! Bei all' meinem Gewinne kann man mir keine Verschuldung nachweisen, die Sünde wäre!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et locutus sum super prophetas,  et ego visionem multiplicavi,  et in manu prophetarum assimilatus sum.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Aber ich, Jahwe, bin doch dein Gott von Ägypten her - aufs neue kann ich dich in Zelten wohnen lassen wie zur Zeit der Versammlung -</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si Galaad idolum, ergo frustra erant in Galgal bobus immolantes ;  nam et altaria eorum quasi acervi super sulcos agri.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">und habe wiederholt zu den Propheten geredet; ich war es, der zahlreiche Gesichte gab und die Propheten in Gleichnissen sprechen ließ.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Fugit Jacob in regionem Syriæ,  et servivit Israël in uxorem,  et in uxorem servavit.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Wenn die Gileaditen nichtswürdig sind, so werden sie vernichtet werden; weil sie im Gilgal Stiere opferten, sollen eben ihre Opferstätten wie Steinhaufen an den Furchen des Ackers werden.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">In propheta autem eduxit Dominus Israël de Ægypto,  et in propheta servatus est.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Als Jakob in das Land der Aramäer floh, ward Israel um ein Weib Knecht und um ein Weib hütete er die Herde.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ad iracundiam me provocavit Ephraim in amaritudinibus suis :  et sanguis ejus super eum veniet,  et opprobrium ejus restituet ei Dominus suus.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Durch einen Propheten hat Jahwe die Israeliten aus Ägypten hergeführt, und durch einen Propheten ward es behütet.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch13">
+    <div class="chapter-marker">
+      <span class="ch-roman">XIII</span>
+      <span class="ch-label">Caput 13</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v13-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Loquente Ephraim, horror invasit Israël ;  et deliquit in Baal, et mortuus est.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Wenn Ephraim redete, herrschte Schrecken; es war Fürst in Israel. Aber es verschuldete sich durch Götzendienst und starb dahin.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et nunc addiderunt ad peccandum ;  feceruntque sibi conflatile de argento suo  quasi similitudinem idolorum :  factura artificum totum est :  his ipsi dicunt : Immolate homines, vitulos adorantes.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Und gegenwärtig sündigen sie immer von Neuem: sie haben sich aus ihrem Silber Gußbilder gemacht nach dem Muster von Götzen - Arbeit von Künstlern ist das alles! Das ist's, was diese anreden! Opfernde Menschen küssen Stiere!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Idcirco erunt quasi nubes matutina,  et sicut ros matutinus præteriens ;  sicut pulvis turbine raptus ex area,  et sicut fumus de fumario.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Deshalb werden sie dem Morgengewölke gleich werden und wie der Tau, der früh wieder vergeht, wie Spreu, die von der Tenne verweht wird, und wie Rauch, der durch das Gitter abzieht.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ego autem Dominus Deus tuus, ex terra Ægypti ;  et Deum absque me nescies,  et salvator non est præter me.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Aber ich, Jahwe, bin doch dein Gott von Ägypten her - einen andern, der Gott wäre, kennst du nicht; einen andern, der Heiland wäre, giebt es nicht.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ego cognovi te in deserto,  in terra solitudinis.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">ich war es, der dir in der Steppe, im Lande der Dürre, Weide gab.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Juxta pascua sua adimpleti sunt et saturati sunt ;  et levaverunt cor suum, et obliti sunt mei.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Aber je mehr Weide sie hatten, desto mehr fraßen sie sich satt. Als sie sich satt gefressen hatten, wurden sie übermütig; so kam es, daß sie mich vergaßen.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et ego ero eis quasi leæna,  sicut pardus in via Assyriorum.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Daher erzeige ich mich gegen sie wie ein Löwe, laure ihnen am Wege auf wie ein Panther,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Occurram eis quasi ursa raptis catulis,  et dirumpam interiora jecoris eorum,  et consumam eos ibi quasi leo :  bestia agri scindet eos.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">überfalle sie wie eine der Jungen beraubte Bärin und zerreiße den Panzer ihres Herzens. Dort sollen Jungleuen sie verzehren, die wilden Tiere sie aufschlitzen.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Perditio tua, Israël : tantummodo in me auxilium tuum.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Wenn ich dich verderbe, Israel, wer könnte dir da helfen?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ubi est rex tuus ?  maxime nunc salvet te in omnibus urbibus tuis ;  et judices tui, de quibus dixisti :  Da mihi regem et principes.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Wo ist denn nun dein König, daß er dich rette, und alle deine Oberhäupter, daß sie dir Recht schaffen? von denen du sagtest: Man schaffe mir einen König und Oberhäupter!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Dabo tibi regem in furore meo,  et auferam in indignatione mea.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Ja, ich schaffe dir einen König in meinem Zorn und nehme ihn wieder in meinem Grimm!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Colligata est iniquitas Ephraim ;  absconditum peccatum ejus.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Ephraims Schuld ist sicher verschlossen, seine Sünde wohl verwahrt.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Dolores parturientis venient ei :  ipse filius non sapiens :  nunc enim non stabit in contritione filiorum.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Geburtswehen erfassen es; aber es gleicht einem unfügsamen Kinde. Denn wenn es Zeit ist, tritt es nicht in den Muttermund.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">De manu mortis liberabo eos ;  de morte redimam eos.  Ero mors tua, o mors !  morsus tuus ero, inferne !  consolatio abscondita est ab oculis meis.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Sollte ich sie aus der Gewalt der Unterwelt befreien, sollte ich sie vom Tod erlösen? Wo sind deine Seuchen, o Tod? Wo sind deine Qualen, o Unterwelt? Meine Augen kennen kein Mitleid mehr!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quia ipse inter fratres dividet :  adducet urentem ventum Dominus de deserto ascendentem,  et siccabit venas ejus,  et desolabit fontem ejus :  et ipse diripiet thesaurum omnis vasis desiderabilis.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Denn mag Ephraim auch als Fruchtbaum unter den Bruderstämmen dastehen, es bricht ein Ostwind herein, ein Sturm Jahwes, aus der Steppe sich erhebend, daß seine Brunnen vertrocknen, und seine Quellen versiegen. Er selbst wird seinen Schatz aller kostbaren Kleinode berauben müssen.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch14">
+    <div class="chapter-marker">
+      <span class="ch-roman">XIV</span>
+      <span class="ch-label">Caput 14</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v14-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Pereat Samaria, quoniam ad amaritudinem concitavit Deum suum !  in gladio pereant,  parvuli eorum elidantur,  et fœtæ ejus discindantur !</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Samaria muß es büßen, daß es gegen seinen Gott widerspenstig war; durch das Schwert sollen sie fallen, die zarten Kinder sollen zerschmettert, die Schwangeren aufgeschlitzt werden.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v14-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Convertere, Israël, ad Dominum Deum tuum,  quoniam corruisti in iniquitate tua.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Kehre um, o Israel, zu Jahwe, deinem Gott! Denn durch deine Verschuldung kamst du zu Fall.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v14-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Tollite vobiscum verba,  et convertimini ad Dominum ; et dicite ei :  Omnem aufer iniquitatem, accipe bonum,  et reddemus vitulos labiorum nostrorum.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Nehmt reuige Worte mit euch und kehrt damit um zu Jahwe! Sprecht zu ihm: Verzeihe doch ganz und gar die Schuld und greife zur Güte, so wollen wir dir als Farren die Gelübde unserer Lippen entrichten:</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v14-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Assur non salvabit nos :  super equum non ascendemus,  nec dicemus ultra, Dii nostri opera manuum nostrarum :  quia ejus, qui in te est, misereberis pupilli.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">“Wir wollen nicht mehr unsere Zuflucht zu Assur nehmen, wollen nicht mehr auf Rossen reiten und ferner nicht mehr “unser Gott” sagen zum Machwerk unserer Hände; denn bei dir finden die Verwaisten Erbarmen!”</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v14-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sanabo contritiones eorum ;  diligam eos spontanee :  quia aversus est furor meus ab eis.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Ich will die Folgen ihres Abfalls wieder gut machen, aus freien Stücken ihnen Liebe erzeigen, denn mein Zorn hast sich von ihnen gewandt.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v14-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ero quasi ros ;  Israël germinabit sicut lilium,  et erumpet radix ejus ut Libani.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Ich will wie ein Tau für Israel werden: es soll blühen wie eine Lilie und Wurzel schlagen wie der Wald des Libanon.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v14-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ibunt rami ejus,  et erit quasi oliva gloria ejus,  et odor ejus ut Libani.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Seine Schößlinge sollen wuchern; seine Krone soll der des Ölbaums gleichen und sein Duft dem des Libanon.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v14-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Convertentur sedentes in umbra ejus ;  vivent tritico, et germinabunt quasi vinea ;  memoriale ejus sicut vinum Libani.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Die in seinem Schatten wohnen, sollen dann wieder Getreide erzielen und blühen wie der Weinstock: Sein Ruhm soll werden wie der des Weins vom Libanon.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v14-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ephraim, quid mihi ultra idola ?  Ego exaudiam, et dirigam eum ego ut abietem virentem ;  ex me fructus tuus inventus est.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">O Ephraim! Was gehen ich und die Götzen in Zukunft uns an? Ich allein will ihm willfahren und es im Auge haben; ich bin wie eine grünende Cypresse! Als mein Werk sollen deine Früchte sich erweisen!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v14-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quis sapiens, et intelliget ista ? intelligens, et sciet hæc ?  quia rectæ viæ Domini,  et justi ambulabunt in eis ;  prævaricatores vero corruent in eis.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Wer ist weise, daß er dieses einsehe, und verständig, daß er es erkenne? Ja, gerade sind Jahwes Wege! Die Frommen wandeln sicher darauf, aber die Abtrünnigen kommen auf ihnen zu Fall.</div>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <nav class="book-nav">
+    <a href="027-dan.html">← Daniel</a>
+    <span class="center">Osee · Deutsch</span>
+    <a href="029-joe.html">Ioel →</a>
+  </nav>
+
+  <footer class="page-footer">
+    BIBLIA CATHOLICA INTERLINEARIS &nbsp;·&nbsp; Vulgata Clementina &amp; Luther Bibel (1912)
+    &nbsp;·&nbsp; Gemeinfreie Texte / Public Domain
+  </footer>
+
+</body>
+</html>

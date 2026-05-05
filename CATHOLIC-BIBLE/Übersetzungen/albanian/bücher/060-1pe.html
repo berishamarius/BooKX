@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>I Petri · Shqip · Biblia Catholica</title>
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
+
+:root {
+  --gold:        #C8A96E;
+  --gold-light:  #EDD58A;
+  --gold-dark:   #8B6914;
+  --navy:        #1A1F3A;
+  --navy-mid:    #252B4A;
+  --navy-light:  #2E3560;
+  --parchment:   #F5E9CC;
+  --parchment-d: #EDD9A3;
+  --cream:       #FDF6E3;
+  --latin-color: #6B1E0E;
+  --trans-color: #0F1D2E;
+  --border:      rgba(200,169,110,.35);
+  --font-title:  'Cinzel Decorative', 'Cinzel', Georgia, serif;
+  --font-sub:    'Cinzel', Georgia, serif;
+  --font-body:   'EB Garamond', Georgia, serif;
+}
+
+*,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+html { font-size:16px; scroll-behavior:smooth; }
+body { background:var(--cream); color:var(--trans-color); font-family:var(--font-body); }
+
+/* ── NAV ─────────────────────────────────────────────── */
+.nav-bar {
+  background:var(--navy); padding:10px 28px;
+  display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  border-bottom:2px solid var(--gold);
+  position:sticky; top:0; z-index:100;
+  box-shadow:0 3px 12px rgba(0,0,0,.45);
+}
+.nav-bar a {
+  color:var(--gold); text-decoration:none;
+  font-family:var(--font-sub); font-size:.75rem; letter-spacing:.05em;
+  transition:color .15s;
+}
+.nav-bar a:hover { color:var(--gold-light); }
+.nav-bar .home { font-weight:700; font-size:.82rem; }
+.nav-bar .spacer { flex:1; }
+.nav-bar .pos { color:rgba(200,169,110,.45); font-size:.7rem; font-family:var(--font-sub); }
+
+/* ── BUCHKOPF ────────────────────────────────────────── */
+.book-header {
+  background:linear-gradient(160deg,var(--navy) 0%,var(--navy-mid) 55%,var(--navy-light) 100%);
+  padding:44px 36px 34px; text-align:center;
+  border-bottom:4px solid var(--gold);
+  position:relative; overflow:hidden;
+}
+.book-header::before {
+  content:'';
+  position:absolute; inset:0;
+  background-image:
+    repeating-linear-gradient( 45deg,transparent,transparent 30px,rgba(200,169,110,.038) 30px,rgba(200,169,110,.038) 31px),
+    repeating-linear-gradient(-45deg,transparent,transparent 30px,rgba(200,169,110,.038) 30px,rgba(200,169,110,.038) 31px);
+  pointer-events:none;
+}
+.testament-badge {
+  display:inline-block;
+  border:1px solid rgba(200,169,110,.4); color:rgba(200,169,110,.65);
+  font-family:var(--font-sub); font-size:.62rem; letter-spacing:.25em;
+  padding:4px 14px; border-radius:2px; margin-bottom:14px; position:relative;
+}
+.book-name-latin {
+  font-family:var(--font-title); font-size:3rem; color:var(--gold-light);
+  text-shadow:0 3px 18px rgba(0,0,0,.55); letter-spacing:.08em; position:relative;
+}
+.book-name-trans {
+  font-family:var(--font-sub); font-size:1.1rem; color:var(--gold);
+  margin-top:8px; letter-spacing:.12em; position:relative;
+}
+.book-meta {
+  font-size:.74rem; color:rgba(200,169,110,.5); margin-top:7px;
+  font-family:var(--font-sub); letter-spacing:.07em; position:relative;
+}
+
+/* ── ORNAMENT-TRENNLINIE ─────────────────────────────── */
+.ornament-bar {
+  text-align:center; padding:16px 0 4px;
+  color:var(--gold); font-size:1.1rem; letter-spacing:.7em;
+}
+
+/* ── HAUPT-CONTAINER ─────────────────────────────────── */
+.content { max-width:960px; margin:0 auto; padding:0 24px 80px; }
+
+/* ── KAPITEL-MARKER ──────────────────────────────────── */
+.chapter-marker {
+  display:flex; align-items:center; gap:16px;
+  padding:28px 6px 12px; margin-bottom:4px;
+  border-bottom:2px solid var(--border);
+}
+.ch-roman {
+  font-family:var(--font-title); font-size:2.2rem; color:var(--gold);
+  min-width:56px; text-align:center; flex-shrink:0;
+  text-shadow:0 1px 8px rgba(200,169,110,.3);
+}
+.ch-label {
+  font-family:var(--font-sub); font-size:.72rem; color:rgba(200,169,110,.6);
+  letter-spacing:.22em; text-transform:uppercase;
+}
+
+/* ── VERS-BLOCK ──────────────────────────────────────── */
+.verse-block {
+  display:flex; gap:0; border-bottom:1px solid rgba(200,169,110,.15);
+}
+.verse-block:nth-child(odd)  { background:var(--cream); }
+.verse-block:nth-child(even) { background:var(--parchment); }
+
+.verse-num-col {
+  flex-shrink:0; width:42px; padding:16px 6px 16px 0; text-align:right;
+}
+.verse-num {
+  display:inline-block; width:28px; height:28px; border-radius:50%;
+  background:var(--gold-dark); color:var(--cream);
+  font-family:var(--font-sub); font-size:.64rem; font-weight:700;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 1px 5px rgba(0,0,0,.25);
+}
+
+.verse-texts { flex:1; padding:16px 16px 18px 8px; }
+
+/* ── LATEINISCHER TEXT (oben / primär) ───────────────── */
+.latin {
+  font-family:var(--font-body); font-size:1.12rem; line-height:1.9;
+  color:var(--latin-color); font-weight:500;
+  border-left:3px solid var(--gold); padding-left:12px;
+  margin-bottom:8px;
+}
+
+/* ── ÜBERSETZUNGS-TEXT (unten / sekundär) ────────────── */
+.trans-label {
+  font-family:var(--font-sub); font-size:.6rem; letter-spacing:.17em;
+  text-transform:uppercase; color:var(--gold-dark); margin-bottom:5px; opacity:.78;
+}
+.trans {
+  font-family:var(--font-body); font-size:1.04rem; line-height:1.85;
+  color:var(--trans-color); font-style:italic;
+  padding-left:15px;
+}
+
+/* Erste Vers jedes Kapitels: Drop-Cap */
+.verse-block:first-of-type .latin::first-letter {
+  font-size:4.2em; float:left; line-height:.72;
+  padding-right:.08em; margin-top:.06em;
+  font-family:var(--font-title); color:var(--gold);
+}
+
+/* ── NAVIGATION ZWISCHEN BÜCHERN ─────────────────────── */
+.book-nav {
+  display:flex; justify-content:space-between; align-items:center;
+  background:var(--navy); border-top:3px solid var(--gold);
+  padding:12px 26px; gap:12px;
+}
+.book-nav a {
+  color:var(--gold); text-decoration:none;
+  font-family:var(--font-sub); font-size:.78rem; letter-spacing:.07em;
+  padding:6px 14px; border:1px solid rgba(200,169,110,.3); border-radius:3px;
+  transition:background .18s;
+}
+.book-nav a:hover { background:rgba(200,169,110,.15); }
+.book-nav .center {
+  font-family:var(--font-sub); font-size:.7rem; color:rgba(200,169,110,.55);
+  letter-spacing:.1em; text-align:center;
+}
+
+/* ── FUßZEILE ────────────────────────────────────────── */
+.page-footer {
+  background:var(--navy); border-top:2px solid rgba(200,169,110,.3);
+  padding:18px 28px; text-align:center;
+  color:rgba(200,169,110,.45); font-family:var(--font-sub);
+  font-size:.68rem; letter-spacing:.1em;
+}
+
+/* ── DRUCK ───────────────────────────────────────────── */
+@media print {
+  .nav-bar, .book-nav { display:none; }
+  .verse-block { break-inside:avoid; }
+  .book-header { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+}
+
+/* ── MOBIL ───────────────────────────────────────────── */
+@media (max-width:640px) {
+  .book-name-latin { font-size:2.1rem; }
+  .ch-roman { font-size:1.6rem; }
+  .latin { font-size:.98rem; }
+  .trans { font-size:.93rem; }
+  .content { padding:0 12px 60px; }
+}
+</style>
+</head>
+<body>
+
+  <nav class="nav-bar">
+    <a class="home" href="../../../index.html">✞ BIBLIA CATHOLICA</a>
+    <a href="../index.html">🇦🇱 Shqip</a>
+    <span class="spacer"></span>
+    <span class="pos">060 / 066</span>
+  </nav>
+
+  <header class="book-header">
+    <div class="testament-badge">NOVUM TESTAMENTUM</div>
+    <div class="book-name-latin">I PETRI</div>
+    <div class="book-name-trans">1 Peter</div>
+    <div class="book-meta">Vulgata Clementina · Bibla e Shenjtë (PD) · 5 Capita · 105 Versus</div>
+  </header>
+
+  <div class="ornament-bar">❧ ✦ ❧ ✦ ❧</div>
+
+  <main class="content">
+
+  <section class="chapter" id="ch1">
+    <div class="chapter-marker">
+      <span class="ch-roman">I</span>
+      <span class="ch-label">Caput 1</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v1-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Petrus Apostolus Jesu Christi, electis advenis dispersionis Ponti, Galatiæ, Cappadociæ, Asiæ, et Bithyniæ,</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Pjetri, apostull i Jezu Krishtit, të zgjedhurve që rrijnë në diasporën e Pontit, të Galatisë, të Kapadokisë, të Azisë dhe të Bitinisë,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">secundum præscientiam Dei Patris, in sanctificationem Spiritus, in obedientiam, et aspersionem sanguinis Jesu Christi. Gratia vobis, et pax multiplicetur.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">të zgjedhurve sipas paranjohjes së Perëndisë, Atit, me anë të shenjtërimit të Frymës, për t'u bindur dhe për t'u spërkatur me gjakun e Jezu Krishtit; hiri dhe paqja u shtoftë mbi ju.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Benedictus Deus et Pater Domini nostri Jesu Christi, qui secundum misericordiam suam magnam regeneravit nos in spem vivam, per resurrectionem Jesu Christi ex mortuis,</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Qoftë bekuar Perëndia edhe Ati i Zotit tonë Jezu Krisht, i cili me anë të mëshirës së tij të madhe na rilindi për një shpresë të gjallë me anë të ringjalljes së Jezu Krishtit prej së vdekurish,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">in hæreditatem incorruptibilem, et incontaminatam, et immarcescibilem, conservatam in cælis in vobis,</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">për një trashëgim të paprishshëm, të panjollë dhe të pafishkur, që është ruajtur në qiejt për ju,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui in virtute Dei custodimini per fidem in salutem, paratam revelari in tempore novissimo.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">që nga fuqia e Perëndisë me anë të besimit jeni të ruajtur, për shpëtimin gati për t'u zbuluar në kohët e fundit.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">In quo exsultabis, modicum nunc si oportet contristari in variis tentationibus :</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Për këtë gëzohuni, ndonëse, në qoftë se duhet, për pak kohë, tani duhet të trishtoheni nga prova të ndryshme,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">ut probatio vestræ fidei multo pretiosior auro (quod per ignem probatur) inveniatur in laudem, et gloriam, et honorem in revelatione Jesu Christi :</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">që prova e besimit tuaj, që është shumë më i çmuar nga ari që prishet, edhe pse provohet me zjarr, të dalë për lëvdim, nder e lavdi në zbulesën e Jezu Krishtit,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">quem cum non videritis, diligitis : in quem nunc quoque non videntes creditis : credentes autem exsultabitis lætitia inenarrabili, et glorificata :</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">të cilin, megjithëse ju nuk e keni parë, e doni, duke besuar në të, megithëse tani nuk e shihni, dhe ngazëllohuni nga një hare e patregueshme dhe e lavdishme,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">reportantes finem fidei vestræ, salutem animarum.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">duke arritur përmbushjen e besimit tuaj, shpëtimin e shpirtrave.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">De qua salute exquisierunt, atque scrutati sunt prophetæ, qui de futura in vobis gratia prophetaverunt :</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Për këtë shpëtim kërkuan dhe hetuan profetët që profetizuan nga hirin për ju,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">scrutantes in quod vel quale tempus significaret in eis Spiritus Christi : prænuntians eas quæ in Christo sunt passiones, et posteriores glorias :</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">duke kërkuar të njohin kohën dhe rrethanat që tregonte Fryma e Krishtit që ishte në ta, dhe që dëshmonte që më parë për vuajtjet që do të vinin mbi Krishtin dhe për lavditë që do të pasonin.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">quibus revelatum est quia non sibimetipsis, vobis autem ministrabant ea quæ nunc nuntiata sunt vobis per eos qui evangelizaverunt vobis, Spiritu Sancto misso de cælo, in quem desiderant angeli prospicere.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Dhe atyre iu zbulua se ata i administronin jo për vete, po për ne, ato gjëra që po ju rrëfehen tani nga ata që ju kanë predikuar ungjillin, me anë të Frymës së Shenjtë të dërguar nga qielli; gjëra të cilat engjëjt dëshirojnë t'i vëzhgojnë.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Propter quod succincti lumbos mentis vestræ, sobrii, perfecte sperate in eam, quæ offertur vobis, gratiam, in revelationem Jesu Christi :</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Prandaj, ngjeshni ijët e mendjes suaj, rrini zgjuar dhe mbani shpresë të plotë në hirin që do vijë mbi ju në zbulesën e Jezu Krishtit.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">quasi filii obedientiæ, non configurati prioribus ignorantiæ vestræ desideriis :</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Si bij të bindur, mos iu përshtatni lakmive të mëparshme kur ishit në padijen tuaj,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">sed secundum eum qui vocavit vos, Sanctum : et ipsi in omni conversatione sancti sitis :</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">por ashtu si është i shenjtë ai që ju thirri, të jini edhe ju të shenjtë në gjithë sjelljen tuaj,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">quoniam scriptum est : Sancti eritis, quoniam ego sanctus sum.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">sepse është shkruar: ''Jini të shenjtë, sepse unë jam i shenjtë''.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et si patrem invocatis eum, qui sine acceptione personarum judicat secundum uniuscujusque opus, in timore incolatus vestri tempore conversamini.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Dhe në qoftë se thërrisni si Atë atë që, pa favorizuar njeri, gjykon sipas veprës së gjithsecilit, kalojeni kohën e shtegtimit tuaj mbi dhe me frikë,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Scientes quod non corruptibilibus, auro vel argento, redempti estis de vana vestra conversatione paternæ traditionis :</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">duke ditur se jo me anë gjërash që prishen, si argjendi ose ari, jeni shpenguar nga mënyra e kotë e të jetuarit të trashëguar nga etërit,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">sed pretioso sanguine quasi agni immaculati Christi, et incontaminati :</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">por nga gjaku i çmuar i Krishtit, si të Qengjit të patëmetë dhe të panjollë,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">præcogniti quidem ante mundi constitutionem, manifestati autem novissimis temporibus propter vos,</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">të paranjohur përpara krijimit të botës, por të shfaqur kohët e fundit për ju,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui per ipsum fideles estis in Deo, qui suscitavit eum a mortuis, et dedit ei gloriam, ut fides vestra et spes esset in Deo :</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">që, nëpërmjet tij, të besoni në Perëndinë që e ringjalli prej së vdekurish dhe i dha lavdi, që besimi juaj dhe shpresa të jenë në Perëndinë.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-22">
+      <div class="verse-num-col"><div class="verse-num">22</div></div>
+      <div class="verse-texts">
+        <div class="latin">animas vestras castificantes in obedientia caritatis, in fraternitatis amore, simplici ex corde invicem diligite attentius :</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Mbasi të pastroni shpirtrat tuaj me bindjen ndaj së vërtetës me anë të Frymës, për të pasur një dashuri vëllazërore pa hipokrizi, të doni fort njeri tjetrin me zemër të pastër,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-23">
+      <div class="verse-num-col"><div class="verse-num">23</div></div>
+      <div class="verse-texts">
+        <div class="latin">renati non ex semine corruptibili, sed incorruptibili per verbum Dei vivi, et permanentis in æternum :</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">sepse jeni ringjizur jo nga një farë që prishet, por që nuk prishet, me anë të fjalës së Perëndisë së gjallë dhe që mbetet përjetë.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-24">
+      <div class="verse-num-col"><div class="verse-num">24</div></div>
+      <div class="verse-texts">
+        <div class="latin">quia omnis caro ut fœnum : et omnis gloria ejus tamquam flos fœni : exaruit fœnum, et flos ejus decidit.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Sepse çdo mish është si bari dhe çdo lavdi njeriu si lule e barit; bari thahet dhe lulja bie,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-25">
+      <div class="verse-num-col"><div class="verse-num">25</div></div>
+      <div class="verse-texts">
+        <div class="latin">Verbum autem Domini manet in æternum : hoc est autem verbum, quod evangelizatum est in vos.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">por fjala e Zotit mbetet përjetë, dhe kjo është fjala që ju është shpallur.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch2">
+    <div class="chapter-marker">
+      <span class="ch-roman">II</span>
+      <span class="ch-label">Caput 2</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v2-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Deponentes igitur omnem malitiam, et omnem dolum, et simulationes, et invidias, et omnes detractiones,</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Hiqni tej, pra, çdo ligësi dhe çdo mashtrim, hipokrizitë, smirat dhe çdo shpifje,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">sicut modo geniti infantes, rationabile, sine dolo lac concupiscite : ut in eo crescatis in salutem :</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">posi foshnja të sapolindura, të dëshironi fort qumështin e pastër të fjalës, që të rriteni me anë të tij,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">si tamen gustastis quoniam dulcis est Dominus.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">nëse e keni shijuar se Zoti është i mirë.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ad quem accedentes lapidem vivum, ab hominibus quidem reprobatum, a Deo autem electum, et honorificatum :</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Duke iu afruar atij, si te guri i gjallë, i flakur tej nga njerëzit, por i zgjedhur dhe i çmuar përpara Perëndisë,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">et ipsi tamquam lapides vivi superædificamini, domus spiritualis, sacerdotium sanctum, offerre spirituales hostias, acceptabiles Deo per Jesum Christum.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">edhe ju, si gurë të gjallë, ndërtoheni për të qenë një shtëpi frymërore, një priftëri e shenjtë, për të ofruar flijime frymërore, që i pëlqejnë Perëndisë me anë të Jezu Krishtit.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Propter quod continet Scriptura : Ecce pono in Sion lapidem summum angularem, electum, pretiosum : et qui crediderit in eum, non confundetur.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Sepse në Shkrimet lexohet: ''Ja, unë po vë në Sion një gur çipi, të zgjedhur, dhe ai që beson në të nuk do të turpërohet aspak''.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vobis igitur honor credentibus : non credentibus autem lapis, quem reprobaverunt ædificantes : hic factus est in caput anguli,</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Sepse për ju që besoni ai është i çmuar, po për ata të pabindurit: ''Guri, që u hoq mënjanë nga ndërtuesit, u bë guri i qoshes, gur pengese dhe shkëmb skandali që i bën të rrëzohen''.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">et lapis offensionis, et petra scandali, his qui offendunt verbo, nec credunt in quo et positi sunt.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Duke qenë të pabindur, ata pengohen në fjalë, dhe për këtë ata ishin të caktuar.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vos autem genus electum, regale sacerdotium, gens sancta, populus acquisitionis : ut virtutes annuntietis ejus qui de tenebris vos vocavit in admirabile lumen suum.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Por ju jeni fis i zgjedhur, priftëri mbretërore, një komb i shenjtë, një popull i fituar, që të shpallni mrekullitë e atij që ju thirri nga terri në dritën e tij të mrekullueshme;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui aliquando non populus, nunc autem populus Dei : qui non consecuti misericordiam, nunc autem misericordiam consecuti.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">ju, që dikur nuk ishit një popull, kurse tani jeni populli i Perëndisë; ju, dikur të pamëshiruar, por tani të mëshiruar.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Carissimi, obsecro vos tamquam advenas et peregrinos abstinere vos a carnalibus desideriis, quæ militant adversus animam,</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Shumë të dashur, unë ju këshilloj, si të huaj dhe shtegtarë, të hiqni dorë nga lakmitë e mishit, që luftojnë kundër shpirtit.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">conversationem vestram inter gentes habentes bonam : ut in eo quod detrectant de vobis tamquam de malefactoribus, ex bonis operibus vos considerantes, glorificent Deum in die visitationis.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Silluni mirë ndër johebrenjtë, që aty ku do t'ju paditin si keqbërës, të përlëvdojnë Perëndinë ditën e ardhjes së tij, për shkak të veprave tuaja të mira.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Subjecti igitur estote omni humanæ creaturæ propter Deum : sive regi quasi præcellenti :</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Nënshtrohuni, pra, për hir të Zotit, çdo pushteti njerëzor, qoftë mbretit, si më të lartit,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">sive ducibus tamquam ab eo missis ad vindictam malefactorum, laudem vero bonorum :</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">qoftë qeveritarëve, si të dërguar prej tij për të ndëshkuar keqbërësit dhe për të lavdëruar ata që bëjnë të mirën,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">quia sic est voluntas Dei, ut benefacientes obmutescere faciatis imprudentium hominum ignorantiam :</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">sepse ky është vullneti i Perëndisë, që ju, duke bërë mirë, t'ia mbyllni gojën paditurisë së njerëzve të pamend.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">quasi liberi, et non quasi velamen habentes malitiæ libertatem, sed sicut servi Dei.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Silluni si njerëz të lirë, por jo duke për-dorur lirinë si një pretekst për të mbuluar ligësinë, por si shërbëtorë të Perëndisë.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Omnes honorate : fraternitatem diligite : Deum timete : regem honorificate.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Nderoni të gjithë, doni vëllazërinë, druani Perëndinë, nderoni mbretin.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Servi, subditi estote in omni timore dominis, non tantum bonis et modestis, sed etiam dyscolis.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Ju, shërbëtorë, nënshtrohuni me plot druajtje zotërinjve tuaj, jo vetëm të mirëve dhe të drejtëve, por edhe të padrejtëve,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hæc est enim gratia, si propter Dei conscientiam sustinet quis tristitias, patiens injuste.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">sepse është gjë e ladërueshme, nëse dikush, për ndërgjegje ndaj Perëndisë, duron shtrengime duke vuajtur padrejtësisht.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quæ enim est gloria, si peccantes, et colaphizati suffertis ? sed si bene facientes patienter sustinetis, hæc est gratia apud Deum.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Sepse çfarë lavdie do të ishte po të duronit në qoftë se ju rrahin sepse keni bërë faje? Ndërsa, po të bëni të mirë dhe të duroni vuajtje, kjo është hir para Perëndisë.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">In hoc enim vocati estis : quia et Christus passus est pro nobis, vobis relinquens exemplum ut sequamini vestigia ejus :</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Sepse për këtë ju u thirrët, sepse edhe Krishti e vuajti për ne, duke ju lënë një shembull, që të ecni pas gjurmës së tij.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-22">
+      <div class="verse-num-col"><div class="verse-num">22</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui peccatum non fecit, nec inventus est dolus in ore ejus :</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">''Ai nuk bëri asnjë mëkat dhe nuk u gjet asnjë mashtrim në gojë të tij''.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-23">
+      <div class="verse-num-col"><div class="verse-num">23</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui cum malediceretur, non maledicebat : cum pateretur, non comminabatur : tradebat autem judicanti se injuste :</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Kur e fyenin, nuk e kthente fyerjen, kur vuante, nuk kërcënonte, po dorëzohej tek ai që gjykon drejtësisht.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-24">
+      <div class="verse-num-col"><div class="verse-num">24</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui peccata nostra ipse pertulit in corpore suo super lignum ; ut peccatis mortui, justitiæ vivamus : cujus livore sanati estis.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Ai vet i barti mëkatet tona në trupin e tij mbi drurin e kryqit që ne, të vdekur për mëkate, të rrojmë për drejtësi; dhe me vurratat e tij ju u shëruat.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-25">
+      <div class="verse-num-col"><div class="verse-num">25</div></div>
+      <div class="verse-texts">
+        <div class="latin">Eratis enim sicut oves errantes, sed conversi estis nunc ad pastorem, et episcopum animarum vestrarum.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Sepse ju ishit si dele endacake por tani ju u kthyet te bariu dhe ruajtësi i shpirtrave tuaj.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch3">
+    <div class="chapter-marker">
+      <span class="ch-roman">III</span>
+      <span class="ch-label">Caput 3</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v3-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Similiter et mulieres subditæ sint viris suis : ut etsi qui non credunt verbo, per mulierem conversationem sine verbo lucrifiant :</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Gjithashtu dhe ju, gra, nënshtrojuni burrave tuaj, që, edhe nëse disa nuk i binden fjalës, të fitohen pa fjalë, nga sjellja e grave të tyre,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">considerantes in timore castam conversationem vestram.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">kur të shohin sjelljen tuaj të dlirë dhe me frikë.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quarum non sit extrinsecus capillatura, aut circumdatio auri, aut indumenti vestimentorum cultus :</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Stolia juaj të mos jetë e jashtme: gërshëtimi i flokëve, stolisja me ar ose veshja me rroba të bukura,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">sed qui absconditus est cordis homo, in incorruptibilitate quieti, et modesti spiritus, qui est in conspectu Dei locuples.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">por njeriu i fshehur i zemrës, me pastërtinë që nuk prishet të një shpirti të butë dhe të qetë, që ka vlerë të madhe përpara Perëndisë.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sic enim aliquando et sanctæ mulieres, sperantes in Deo, ornabant se, subjectæ propriis viris.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Sepse kështu stoliseshin dikur gratë e shenjta që shpresonin në Perëndinë, duke iu nënshtruar burrave të tyre,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sicut Sara obediebat Abrahæ, dominum eum vocans : cujus estis filiæ benefacientes, et non pertimentes ullam perturbationem.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">ashtu si Sara, që i bindej Abrahamit duke e quajtur &quot;zot&quot;; bija të saj ju jeni, në qoftë se bëni mirë dhe nuk trembeni nga ndonjë frikë.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Viri similiter cohabitantes secundum scientiam, quasi infirmiori vasculo muliebri impartientes honorem, tamquam et cohæredibus gratiæ vitæ : ut non impediantur orationes vestræ.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Ju burra, gjithashtu, jetoni me gratë tuaja me urtësi, duke e çmuar gruan si një enë më delikate dhe e nderoni sepse janë bashkëtrashëgimtare me ju të hirit të jetës, që të mos pengohen lutjet tuaja.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">In fine autem omnes unanimes, compatientes fraternitatis amatores, misericordes, modesti, humiles :</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Dhe më në fund jini të gjithë të një mendjeje, të dhembshur, plot dashuri vëllazërore, të mëshirshëm dhe dashamirës,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">non reddentes malum pro malo, nec maledictum pro maledicto, sed e contrario benedicentes : quia in hoc vocati estis, ut benedictionem hæreditate possideatis.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">pa e kthyer të keqen me të keqe ose fyerjen me fyerje, po, përkundrazi, bekoni, duke e ditur se për këtë u thirrët, që të trashëgoni bekimin.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui enim vult vitam diligere, et dies videre bonos, coërceat linguam suam a malo, et labia ejus ne loquantur dolum.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Sepse ''kush don ta dojë jetën dhe të shohë ditë të mira, le ta ruajë gojën e tij nga e keqja dhe buzët e tij nga të folurit me mashtrim;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Declinet a malo, et faciat bonum : inquirat pacem, et sequatur eam :</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">të largohet nga e keqja dhe të bëjë të mirën, të kërkojë paqen dhe të ndjekë atë,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">quia oculi Domini super justos, et aures ejus in preces eorum : vultus autem Domini super facientes mala.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">sepse sytë e Zotit janë mbi të drejtët dhe veshët e tij janë në lutjen e tyre; por fytyra e Zotit është kundër atyre që bëjnë të keqen''.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et quis est qui vobis noceat, si boni æmulatores fueritis ?</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Dhe kush do t'ju bëjë keq, në qoftë se ju ndiqni të mirën?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sed et si quid patimini propter justitiam, beati. Timorem autem eorum ne timueritis, et non conturbemini.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Por, edhe sikur të vuani për drejtësinë, lum ju! ''Pra, mos kini asnjë druajtje prej tyre dhe mos u shqetësoni'',</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Dominum autem Christum sanctificate in cordibus vestris, parati semper ad satisfactionem omni poscenti vos rationem de ea, quæ in vobis est, spe.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">madje shenjtëroni Zotin Perëndinë në zemrat tuaja dhe jini gjithnjë gati për t'u përgjigjur në mbrojtjen tuaj kujtdo që ju kërkon shpjegime për shpresën që është në ju, por me butësi e me druajtje,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sed cum modestia, et timore, conscientiam habentes bonam : ut in eo, quod detrahunt vobis, confundantur, qui calumniantur vestram bonam in Christo conversationem.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">duke pasur ndërgjegje të mirë, që, kur t'ju padisin si keqbërës, të turpërohen ata që shpifin për sjelljen tuaj të mirë në Krishtin.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Melius est enim benefacientes (si voluntas Dei velit) pati, quam malefacientes.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Sepse është më mirë, nëse është i tillë vullneti i Perëndisë, të vuani duke bërë mirë, se sa duke bërë keq,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quia et Christus semel pro peccatis nostris mortuus est, justus pro injustis, ut nos offerret Deo, mortificatus quidem carne, vivificatus autem spiritu.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">sepse edhe Krishti ka vuajtur një herë për mëkatet, i drejti për të padrejtët, për të na çuar te Perëndia. U vra në mish, por u ngjall nga Fryma,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">In quo et his, qui in carcere erant, spiritibus veniens prædicavit :</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">me anë të së cilës ai shkoi t'u predikojë frymërave që ishin në burg,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui increduli fuerant aliquando, quando exspectabant Dei patientiam in diebus Noë, cum fabricaretur arca : in qua pauci, id est octo animæ, salvæ factæ sunt per aquam.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">që dikur ishin rebelë, kur durimi i Perëndisë i priste në ditët e Noeut, ndërsa po ndërtohej arka, në të cilën, pak vetë, gjithsejt tetë, shpëtuan nëpërmjet ujit,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quod et vos nunc similis formæ salvos fecit baptisma : non carnis depositio sordium, sed conscientiæ bonæ interrogatio in Deum per resurrectionem Jesu Christi.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">i cili është shëmbëllesa e pagëzimit (jo heqja e ndyrësisë së mishit, po kërkesa e një ndërgjegjeje të mirë te Perëndia), që tani na shpëton edhe ne me anë të ringjalljes së Jezu Krishtit,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-22">
+      <div class="verse-num-col"><div class="verse-num">22</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui est in dextera Dei, deglutiens mortem ut vitæ æternæ hæredes efficeremur : profectus in cælum subjectis sibi angelis, et potestatibus, et virtutibus.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">i cili shkoi në qiell dhe është në të djathtën e Perëndisë ku i janë nënshtruar engjëj, pushtete dhe fuqie.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch4">
+    <div class="chapter-marker">
+      <span class="ch-roman">IV</span>
+      <span class="ch-label">Caput 4</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v4-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Christo igitur passo in carne, et vos eadem cogitatione armamini : quia qui passus est in carne, desiit a peccatis :</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Sepse duke qenë se Krishti ka vuajtur për ne në mish, armatosuni edhe ju me të njëjtin mendim, sepse ai që ka vuajtur në mish pushoi së mëkatuari,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">ut jam non desideriis hominum, sed voluntati Dei, quod reliquum est in carne vivat temporis.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">për të jetuar kohën që mbetet në mish jo më në pasionet e njerëzve, por sipas vullnetit të Perëndisë.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sufficit enim præteritum tempus ad voluntatem gentium consummandam his qui ambulaverunt in luxuriis, desideriis, vinolentiis, comessationibus, potationibus, et illicitis idolorum cultibus.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Sepse për ne është e mjaftueshme koha e jetës që shkuam për të kënaqur gjërat e dëshiruara nga johebrenjtë, kur ecnim në shthurje, në pasione, në dehje, në teprime, në të ngrëna e në të pira dhe në idhujtari të neveritshme.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">In quo admirantur non concurrentibus vobis in eamdem luxuriæ confusionem, blasphemantes.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Prandaj u duket çudi që ju nuk rendni me ta në po ato teprime shthurjeje dhe flasin keq për ju.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui reddent rationem ei qui paratus est judicare vivos et mortuos.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Ata do të japin llogari para atij që është gati të gjykojë të gjallë e të vdekur.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Propter hoc enim et mortuis evangelizatum est : ut judicentur quidem secundum homines in carne, vivant autem secundum Deum in spiritu.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Për këtë në fakt, ungjilli u është predikuar edhe të vdekurve, që ata të gjykohen në mish sipas njerëzve, por të jetojnë në frymë sipas Perëndisë.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Omnium autem finis appropinquavit. Estote itaque prudentes, et vigilate in orationibus.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Tashmë fundi i të gjithave u afrua; jini, pra, të përkorë dhe rrini zgjuar për t'iu kushtuar lutjeve.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ante omnia autem, mutuam in vobismetipsis caritatem continuam habentes : quia caritas operit multitudinem peccatorum.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">dhe të keni para së gjithash një dashuri të madhe për njeri tjetrin, sepse ''dashuria do të mbulojë një shumicë mëkatesh''.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hospitales invicem sine murmuratione.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Jini mikpritës njëri për tjetrin, pa murmuritje.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Unusquisque, sicut accepit gratiam, in alterutrum illam administrantes, sicut boni dispensatores multiformis gratiæ Dei.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Gjithsecili le ta vërë në shërbim të tjetrit dhuntinë që ka marrë, si kujdestarë të mirë të hirit të shumëfarshëm të Perëndisë.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si quis loquitur, quasi sermones Dei : si quis ministrat, tamquam ex virtute, quam administrat Deus : ut in omnibus honorificetur Deus per Jesum Christum : cui est gloria et imperium in sæcula sæculorum. Amen.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Nëse dikush flet, le ta bëjë si të shpa-llë orakullit të Perëndisë; kush bën një shërbim, le të bëjë në forcën që i jep Perëndia, që në gjithçka të përlëvdohet Perëndia nëpërmjet Jezu Krishtit, të cilit i takon lavdia dhe pushteti për shekuj të shekujve. Amen.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Carissimi, nolite peregrinari in fervore, qui ad tentationem vobis fit, quasi novi aliquid vobis contingat :</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Shumë të dashur, mos ju duket çudi për provën e zjarrit që u bë ndër ju për t'ju provuar, se si ju ndodhi diçka e jashtëzakonshme.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">sed communicantes Christi passionibus gaudete, ut et in revelatione gloriæ ejus gaudeatis exsultantes.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Por gëzohuni, duke qenë pjestarë të mundimeve të Krishtit, që edhe në zbulesën e lavdisë së tij të mund të gëzoheni dhe të ngazëlloheni.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si exprobramini in nomine Christi, beati eritis : quoniam quod est honoris, gloriæ, et virtutis Dei, et qui est ejus Spiritus, super vos requiescit.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Në qoftë se ju fyejnë për emrin e Krishtit, lum ju, sepse Fryma e lavdisë dhe Fryma e Perëndisë prehet mbi ju; nga ana e tyre ai blasfemohet, kurse nga ana juaj ai përlëvdohet.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nemo autem vestrum patiatur ut homicida, aut fur, aut maledicus, aut alienorum appetitor.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Por asnjë nga ju le të mos vuajë si vrasës ose vjedhës ose keqbërës, o sepse përzihet në punët e të tjerëve.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si autem ut christianus, non erubescat : glorificet autem Deum in isto nomine :</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">por, nëse dikush vuan si i krishterë, le të mos ketë turp, por le të përlëvdojë Perëndinë për këtë.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">quoniam tempus est ut incipiat judicium a domo Dei. Si autem primum a nobis, quis finis eorum, qui non credunt Dei Evangelio ?</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Sepse erdhi koha që të fillojë gjyqi nga shtëpia e Perëndisë; dhe nëse fillon më përpara nga ne, cili do të jetë fundi i atyre që nuk i binden ungjillit të Perëndisë?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">et si justus vix salvabitur, impius et peccator ubi parebunt ?</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Dhe ''nëse i drejti mezi shpëton, ku do të duket i pabesi dhe mëkatari?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">Itaque et hi, qui patiuntur secundum voluntatem Dei, fideli Creatori commendent animas suas in benefactis.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Prandaj edhe ata që vuajnë sipas vullnetit të Perëndisë, le t'i besojnë shpirtrat e vet atij, si te Krijuesi besnik, duke bërë të mirën.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch5">
+    <div class="chapter-marker">
+      <span class="ch-roman">V</span>
+      <span class="ch-label">Caput 5</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v5-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Seniores ergo, qui in vobis sunt, obsecro, consenior et testis Christi passionum : qui et ejus, quæ in futuro revelanda est, gloriæ communicator :</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">U bëj thirrje pleqve që janë midis jush, unë që jam plak bashkë me ta dhe dëshmitar i vuajtjeve të Krishtit dhe që jam gjithashtu pjesëmarrës i lavdisë që ka për t'u zbuluar:</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">pascite qui in vobis est gregem Dei, providentes non coacte, sed spontanee secundum Deum : neque turpis lucri gratia, sed voluntarie :</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">ruani tufën e Perëndisë që është midis jush, duke e mbikqyrur jo me detyrim, por me dëshirë, jo për përfitim të pandershëm, po me vullnet të mirë,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">neque ut dominantes in cleris, sed forma facti gregis ex animo.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">dhe jo si zotëronjës mbi ata që ju janë besuar, por duke u bërë shembull për tufën.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et cum apparuerit princeps pastorum, percipietis immarcescibilem gloriæ coronam.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Dhe kur të shfaqet kryebariu, do të merrni kurorën e lavdisë që nuk fishket.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Similiter adolescentes subditi estote senioribus.   Omnes autem invicem humilitatem insinuate, quia Deus superbis resistit, humilibus autem dat gratiam.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Gjithashtu ju, të rinjtë, nënshtrojuni pleqëve. Po, nënshtrojuni të gjithënjeri tjetrit dhe vishuni me përulje, sepse Perëndia i kundërshton krenarët, por u jep hir të përulurve.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Humiliamini igitur sub potenti manu Dei, ut vos exaltet in tempore visitationis :</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Përuluni, pra, nën dorën e fuqishme të Perëndisë, që ai t'ju lartësojë ne kohën e duhur,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">omnem sollicitudinem vestram projicientes in eum, quoniam ipsi cura est de vobis.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">dhe gjithë merakun tuaj hidheni mbi të, sepse ai merakoset për ju.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sobrii estote, et vigilate : quia adversarius vester diabolus tamquam leo rugiens circuit, quærens quem devoret :</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Jini të përmbajtur, rrini zgjuar; sepse kundërshtari juaj, djalli, sillet rreth e qark si një luan vrumbullues, duke kërkuar cilin mund të përpijë.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">cui resistite fortes in fide : scientes eamdem passionem ei quæ in mundo est vestræ fraternitati fieri.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Kundërshtojeni, duke qëndruar të patundur në besim, sepse e dini se të njëjtat vuajtje po i heqin vëllezërit tuaj të shpërndarë nëpër botë.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Deus autem omnis gratiæ, qui vocavit nos in æternam suam gloriam in Christo Jesu, modicum passos ipse perficiet, confirmabit, solidabitque.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Dhe Perëndia i çdo hiri, që ju thirri në lavdinë e tij të përjetshme në Krishtin Jezus, mbasi të keni vuajtur për pak kohë, do t'ju bëjë të përsosur ai vetë, do t'ju bëjë të patundur, do t'ju forcojë dhe do t'ju vërë themel.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ipsi gloria, et imperium in sæcula sæculorum. Amen.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Atij i qoftë lavdia dhe pushteti për shekuj të shekujve. Amen.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Per Silvanum fidelem fratrem vobis, ut arbitror, breviter scripsi : obsecrans et contestans, hanc esse veram gratiam Dei, in qua statis.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Ju shkrova shkurt me anë të Silvanit, që më duket një vëlla besnik, duke ju bërë thirrje dhe duke ju dëshmuar se hiri i vërtetë i Perëndisë është ai në të cilin qëndroni.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Salutat vos ecclesia quæ est in Babylone coëlecta, et Marcus filius meus.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Kisha që është në Babiloni, që është zgjedhur bashkë me ju, ju përshëndet. Edhe Marku, biri im, ju përshëndet.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Salutate invicem in osculo sancto. Gratia vobis omnibus qui estis in Christo Jesu. Amen.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Përshëndetni njeri tjetrin me një të puthur dashurie. Paqja mbi ju të gjithë që jeni në Krishtin Jezus Amen.</div>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <nav class="book-nav">
+    <a href="059-jam.html">← Iacobi</a>
+    <span class="center">I Petri · Shqip</span>
+    <a href="061-2pe.html">II Petri →</a>
+  </nav>
+
+  <footer class="page-footer">
+    BIBLIA CATHOLICA INTERLINEARIS &nbsp;·&nbsp; Vulgata Clementina &amp; Bibla e Shenjtë (PD)
+    &nbsp;·&nbsp; Gemeinfreie Texte / Public Domain
+  </footer>
+
+</body>
+</html>

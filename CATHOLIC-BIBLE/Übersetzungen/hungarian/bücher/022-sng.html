@@ -1,1125 +1,1223 @@
 <!DOCTYPE html>
 <html lang="hu">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Canticum Canticorum &middot; Magyar &middot; Biblia Catholica</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&display=swap" rel="stylesheet">
-<style>
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
-body{
-  background:#2C0810;
-  background-image:radial-gradient(ellipse at 50% 20%,#4A1020 0%,#1A0407 100%);
-  font-family:'EB Garamond',serif;
-  color:#1A0E06;
-  font-size:17px;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Canticum Canticorum · Magyar · Biblia Catholica</title>
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
+
+:root {
+  --gold:        #C8A96E;
+  --gold-light:  #EDD58A;
+  --gold-dark:   #8B6914;
+  --navy:        #1A1F3A;
+  --navy-mid:    #252B4A;
+  --navy-light:  #2E3560;
+  --parchment:   #F5E9CC;
+  --parchment-d: #EDD9A3;
+  --cream:       #FDF6E3;
+  --latin-color: #6B1E0E;
+  --trans-color: #0F1D2E;
+  --border:      rgba(200,169,110,.35);
+  --font-title:  'Cinzel Decorative', 'Cinzel', Georgia, serif;
+  --font-sub:    'Cinzel', Georgia, serif;
+  --font-body:   'EB Garamond', Georgia, serif;
 }
 
-/* ──────────────────────────────────────────
-   BUCHKOPF
-────────────────────────────────────────── */
-.bhead{
-  background:
-    repeating-linear-gradient( 45deg,transparent,transparent 36px,rgba(200,160,48,.028) 36px,rgba(200,160,48,.028) 37px),
-    repeating-linear-gradient(-45deg,transparent,transparent 36px,rgba(200,160,48,.028) 36px,rgba(200,160,48,.028) 37px),
-    linear-gradient(162deg,#2C0810 0%,#4A1020 45%,#5C1828 65%,#4A1020 85%,#2C0810 100%);
-  padding:36px 28px 28px;
-  text-align:center;
-  border-bottom:4px solid #B8962E;
-  position:relative;overflow:hidden;
-}
-/* Innerer Rahmen — äußerer Ring */
-.bhead::before{
-  content:'';position:absolute;inset:14px;
-  border:1px solid rgba(200,160,48,.22);
-  pointer-events:none;
-}
-/* Innerer Rahmen — innerer Ring */
-.bhead::after{
-  content:'';position:absolute;inset:22px;
-  border:1px solid rgba(200,160,48,.08);
-  pointer-events:none;
-}
-.btestament{
-  display:inline-block;
-  border:1px solid rgba(200,160,48,.32);
-  color:rgba(200,160,48,.52);
-  font-family:'Cinzel',serif;font-size:.55rem;
-  letter-spacing:.3em;padding:4px 18px;
-  border-radius:2px;margin-bottom:16px;
-  position:relative;
-}
-.blatin{
-  font-family:'Cinzel Decorative',serif;
-  font-size:clamp(1.9rem,7vw,3.4rem);
-  color:#EDD882;
-  text-shadow:0 3px 20px rgba(0,0,0,.55);
-  letter-spacing:.06em;position:relative;
-}
-.btrans{
-  font-family:'Cinzel',serif;
-  font-size:.88rem;
-  color:#C8A030;margin-top:10px;
-  letter-spacing:.16em;position:relative;
-}
-.bmeta{
-  font-family:'Cinzel',serif;font-size:.62rem;
-  color:rgba(200,160,48,.4);margin-top:6px;
-  letter-spacing:.08em;position:relative;
-}
+*,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+html { font-size:16px; scroll-behavior:smooth; }
+body { background:var(--cream); color:var(--trans-color); font-family:var(--font-body); }
 
-/* ──────────────────────────────────────────
-   KAPITELINHALT
-────────────────────────────────────────── */
-.content{
-  max-width:960px;
-  margin:36px auto 36px;
-  padding:48px 72px 100px;
-  background:#FAF5E8;
+/* ── NAV ─────────────────────────────────────────────── */
+.nav-bar {
+  background:var(--navy); padding:10px 28px;
+  display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  border-bottom:2px solid var(--gold);
+  position:sticky; top:0; z-index:100;
+  box-shadow:0 3px 12px rgba(0,0,0,.45);
+}
+.nav-bar a {
+  color:var(--gold); text-decoration:none;
+  font-family:var(--font-sub); font-size:.75rem; letter-spacing:.05em;
+  transition:color .15s;
+}
+.nav-bar a:hover { color:var(--gold-light); }
+.nav-bar .home { font-weight:700; font-size:.82rem; }
+.nav-bar .spacer { flex:1; }
+.nav-bar .pos { color:rgba(200,169,110,.45); font-size:.7rem; font-family:var(--font-sub); }
+
+/* ── BUCHKOPF ────────────────────────────────────────── */
+.book-header {
+  background:linear-gradient(160deg,var(--navy) 0%,var(--navy-mid) 55%,var(--navy-light) 100%);
+  padding:44px 36px 34px; text-align:center;
+  border-bottom:4px solid var(--gold);
+  position:relative; overflow:hidden;
+}
+.book-header::before {
+  content:'';
+  position:absolute; inset:0;
   background-image:
-    radial-gradient(ellipse at top left,rgba(184,150,46,.06) 0%,transparent 55%),
-    radial-gradient(ellipse at bottom right,rgba(184,150,46,.05) 0%,transparent 55%);
-  box-shadow:0 8px 80px rgba(0,0,0,.55),0 2px 12px rgba(0,0,0,.35),inset 0 0 0 1px rgba(184,150,46,.18);
-  border-left:4px solid #B8962E;
-  border-right:4px solid #B8962E;
-  border-top:2px solid rgba(184,150,46,.4);
-  border-bottom:2px solid rgba(184,150,46,.4);
-  position:relative;
-}
-.content::before{
-  content:'';
-  position:absolute;
-  inset:12px;
-  border:1px solid rgba(184,150,46,.08);
+    repeating-linear-gradient( 45deg,transparent,transparent 30px,rgba(200,169,110,.038) 30px,rgba(200,169,110,.038) 31px),
+    repeating-linear-gradient(-45deg,transparent,transparent 30px,rgba(200,169,110,.038) 30px,rgba(200,169,110,.038) 31px);
   pointer-events:none;
 }
-
-.chap{margin-top:0;}
-
-.chhead{
-  text-align:center;
-  padding:40px 0 20px;
-  margin-bottom:16px;
-  position:relative;
+.testament-badge {
+  display:inline-block;
+  border:1px solid rgba(200,169,110,.4); color:rgba(200,169,110,.65);
+  font-family:var(--font-sub); font-size:.62rem; letter-spacing:.25em;
+  padding:4px 14px; border-radius:2px; margin-bottom:14px; position:relative;
 }
-.chhead::before{
-  content:'——— ✦ ✦ ✦ ———';
-  display:block;
-  font-size:.7rem;
-  color:rgba(184,150,46,.45);
-  letter-spacing:.35em;
-  margin-bottom:16px;
+.book-name-latin {
+  font-family:var(--font-title); font-size:3rem; color:var(--gold-light);
+  text-shadow:0 3px 18px rgba(0,0,0,.55); letter-spacing:.08em; position:relative;
 }
-.chhead::after{
-  content:'';
-  display:block;
-  width:200px;
-  height:1px;
-  margin:14px auto 0;
-  background:linear-gradient(to right,transparent,#B8962E,transparent);
+.book-name-trans {
+  font-family:var(--font-sub); font-size:1.1rem; color:var(--gold);
+  margin-top:8px; letter-spacing:.12em; position:relative;
 }
-.chrom{
-  font-family:'Cinzel Decorative',serif;
-  font-size:4rem;color:#8B6914;
-  display:block;
-  text-shadow:0 2px 18px rgba(184,150,46,.2);
-  line-height:1;
-}
-.chlbl{
-  font-family:'Cinzel',serif;font-size:.58rem;
-  color:rgba(184,150,46,.42);letter-spacing:.32em;
-  display:block;margin-top:8px;
+.book-meta {
+  font-size:.74rem; color:rgba(200,169,110,.5); margin-top:7px;
+  font-family:var(--font-sub); letter-spacing:.07em; position:relative;
 }
 
-/* ──────────────────────────────────────────
-   VERSE
-────────────────────────────────────────── */
-.vb{
-  display:flex;
-  padding:20px 6px;
-  border-bottom:1px solid rgba(184,150,46,.12);
-  background:none;
-  border-radius:2px;
-  transition:background .15s;
-}
-.vb:hover{
-  background:rgba(184,150,46,.04);
+/* ── ORNAMENT-TRENNLINIE ─────────────────────────────── */
+.ornament-bar {
+  text-align:center; padding:16px 0 4px;
+  color:var(--gold); font-size:1.1rem; letter-spacing:.7em;
 }
 
-/* Versnummer */
-.vn{
-  flex-shrink:0;
-  width:38px;
-  padding-top:4px;
-  font-family:'Cinzel',serif;font-size:.56rem;
-  color:rgba(184,150,46,.52);text-align:right;
-  padding-right:12px;line-height:2.4;
+/* ── HAUPT-CONTAINER ─────────────────────────────────── */
+.content { max-width:960px; margin:0 auto; padding:0 24px 80px; }
+
+/* ── KAPITEL-MARKER ──────────────────────────────────── */
+.chapter-marker {
+  display:flex; align-items:center; gap:16px;
+  padding:28px 6px 12px; margin-bottom:4px;
+  border-bottom:2px solid var(--border);
+}
+.ch-roman {
+  font-family:var(--font-title); font-size:2.2rem; color:var(--gold);
+  min-width:56px; text-align:center; flex-shrink:0;
+  text-shadow:0 1px 8px rgba(200,169,110,.3);
+}
+.ch-label {
+  font-family:var(--font-sub); font-size:.72rem; color:rgba(200,169,110,.6);
+  letter-spacing:.22em; text-transform:uppercase;
 }
 
-.vt{
-  flex:1;
-  padding:0 20px 0 4px;
+/* ── VERS-BLOCK ──────────────────────────────────────── */
+.verse-block {
+  display:flex; gap:0; border-bottom:1px solid rgba(200,169,110,.15);
+}
+.verse-block:nth-child(odd)  { background:var(--cream); }
+.verse-block:nth-child(even) { background:var(--parchment); }
+
+.verse-num-col {
+  flex-shrink:0; width:42px; padding:16px 6px 16px 0; text-align:right;
+}
+.verse-num {
+  display:inline-block; width:28px; height:28px; border-radius:50%;
+  background:var(--gold-dark); color:var(--cream);
+  font-family:var(--font-sub); font-size:.64rem; font-weight:700;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 1px 5px rgba(0,0,0,.25);
 }
 
-/* LATEIN — PRIMÄR: groß, warm, maßgebend */
-.lat{
-  font-family:'EB Garamond',serif;
-  font-size:1.2rem;
-  font-weight:500;
-  line-height:2.1;
-  color:#3D1A08;
+.verse-texts { flex:1; padding:16px 16px 18px 8px; }
+
+/* ── LATEINISCHER TEXT (oben / primär) ───────────────── */
+.latin {
+  font-family:var(--font-body); font-size:1.12rem; line-height:1.9;
+  color:var(--latin-color); font-weight:500;
+  border-left:3px solid var(--gold); padding-left:12px;
+  margin-bottom:8px;
 }
 
-/* ÜBERSETZUNG — SEKUNDÄR: kleiner, kursiv, unter dem Latein */
-.tra{
-  font-family:'EB Garamond',serif;
-  font-size:.93rem;
-  font-style:italic;
-  line-height:1.95;
-  color:#1E2848;
-  margin-top:5px;
-  padding-left:14px;
-  border-left:2px solid rgba(90,110,170,.2);
+/* ── ÜBERSETZUNGS-TEXT (unten / sekundär) ────────────── */
+.trans-label {
+  font-family:var(--font-sub); font-size:.6rem; letter-spacing:.17em;
+  text-transform:uppercase; color:var(--gold-dark); margin-bottom:5px; opacity:.78;
+}
+.trans {
+  font-family:var(--font-body); font-size:1.04rem; line-height:1.85;
+  color:var(--trans-color); font-style:italic;
+  padding-left:15px;
 }
 
-/* Drop-Cap: erster Vers eines Kapitels — auf dem Latein */
-.vb.first .lat::first-letter{
-  font-family:'Cinzel Decorative',serif;
-  font-size:4em;
-  float:left;
-  line-height:.7;
-  padding-right:.08em;
-  margin-top:.07em;
-  color:#B8962E;
-  text-shadow:1px 2px 6px rgba(0,0,0,.12);
+/* Erste Vers jedes Kapitels: Drop-Cap */
+.verse-block:first-of-type .latin::first-letter {
+  font-size:4.2em; float:left; line-height:.72;
+  padding-right:.08em; margin-top:.06em;
+  font-family:var(--font-title); color:var(--gold);
 }
 
-/* ──────────────────────────────────────────
-   BUCH-NAVIGATION (unten)
-────────────────────────────────────────── */
-.bnav{
-  display:flex;justify-content:space-between;align-items:center;
-  background:#2C0810;border-top:3px solid #B8962E;
-  padding:12px 24px;gap:12px;
+/* ── NAVIGATION ZWISCHEN BÜCHERN ─────────────────────── */
+.book-nav {
+  display:flex; justify-content:space-between; align-items:center;
+  background:var(--navy); border-top:3px solid var(--gold);
+  padding:12px 26px; gap:12px;
 }
-.bnav a,.bnav .dim{
-  color:#C8A030;text-decoration:none;
-  font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:.07em;
-  padding:6px 16px;
-  border:1px solid rgba(200,160,48,.28);
-  border-radius:2px;transition:background .18s;
+.book-nav a {
+  color:var(--gold); text-decoration:none;
+  font-family:var(--font-sub); font-size:.78rem; letter-spacing:.07em;
+  padding:6px 14px; border:1px solid rgba(200,169,110,.3); border-radius:3px;
+  transition:background .18s;
 }
-.bnav a:hover{background:rgba(200,160,48,.12);}
-.bnav .dim{color:rgba(200,160,48,.2);border-color:rgba(200,160,48,.1);}
-.bnav .center{
-  font-family:'Cinzel',serif;font-size:.68rem;
-  color:rgba(200,160,48,.65);text-align:center;
-  letter-spacing:.06em;text-decoration:none;
-  border:1px solid rgba(200,160,48,.28);border-radius:2px;
-  padding:6px 20px;transition:background .18s;
-}
-.bnav .center:hover{background:rgba(200,160,48,.1);}
-
-/* DRUCK */
-@media print{
-  .bnav{display:none;}
-  .bhead{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-  .vb{break-inside:avoid;}
+.book-nav a:hover { background:rgba(200,169,110,.15); }
+.book-nav .center {
+  font-family:var(--font-sub); font-size:.7rem; color:rgba(200,169,110,.55);
+  letter-spacing:.1em; text-align:center;
 }
 
-/* MOBIL */
-@media(max-width:600px){
-  .blatin{font-size:1.8rem;}
-  .lat{font-size:1rem;}
-  .tra{font-size:.84rem;}
-  .content{padding:16px 18px 60px;margin:0;border-left:none;border-right:none;border-radius:0;}
-  .chrom{font-size:1.8rem;}
+/* ── FUßZEILE ────────────────────────────────────────── */
+.page-footer {
+  background:var(--navy); border-top:2px solid rgba(200,169,110,.3);
+  padding:18px 28px; text-align:center;
+  color:rgba(200,169,110,.45); font-family:var(--font-sub);
+  font-size:.68rem; letter-spacing:.1em;
+}
+
+/* ── DRUCK ───────────────────────────────────────────── */
+@media print {
+  .nav-bar, .book-nav { display:none; }
+  .verse-block { break-inside:avoid; }
+  .book-header { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+}
+
+/* ── MOBIL ───────────────────────────────────────────── */
+@media (max-width:640px) {
+  .book-name-latin { font-size:2.1rem; }
+  .ch-roman { font-size:1.6rem; }
+  .latin { font-size:.98rem; }
+  .trans { font-size:.93rem; }
+  .content { padding:0 12px 60px; }
 }
 </style>
 </head>
 <body>
 
-<header class="bhead">
-  <div class="btestament">VETUS TESTAMENTUM</div>
-  <div class="blatin">CANTICUM CANTICORUM</div>
-  <div class="btrans">Énekek éneke &nbsp;&middot;&nbsp; <em>Magyar</em></div>
-  <div class="bmeta">8 Capita &nbsp;&middot;&nbsp; 116 Versus</div>
-</header>
+  <nav class="nav-bar">
+    <a class="home" href="../../../index.html">✞ BIBLIA CATHOLICA</a>
+    <a href="../index.html">🇭🇺 Magyar</a>
+    <span class="spacer"></span>
+    <span class="pos">022 / 066</span>
+  </nav>
 
-<main class="content">
-<section class="chap" id="c1">
-  <div class="chhead">
-    <span class="chrom">I</span>
-    <span class="chlbl">Caput 1</span>
-  </div>
-<div class="vb first" id="v1-1">
-  <span class="vn">1</span>
-  <div class="vt">
-    <p class="lat">Osculetur me osculo oris sui ;  quia meliora sunt ubera tua vino,</p>
-    <p class="tra">Énekek éneke, mely Salamoné.</p>
-  </div>
-</div>
-<div class="vb" id="v1-2">
-  <span class="vn">2</span>
-  <div class="vt">
-    <p class="lat">fragrantia unguentis optimis.  Oleum effusum nomen tuum ;  ideo adolescentulæ dilexerunt te.</p>
-    <p class="tra">Csókoljon meg engem az ő szájának csókjaival; mert a te szerelmeid jobbak a bornál.</p>
-  </div>
-</div>
-<div class="vb" id="v1-3">
-  <span class="vn">3</span>
-  <div class="vt">
-    <p class="lat">Trahe me, post te curremus  in odorem unguentorum tuorum.  Introduxit me rex in cellaria sua ;  exsultabimus et lætabimur in te,  memores uberum tuorum super vinum.  Recti diligunt te.</p>
-    <p class="tra">A te drága kenetid jók illatozásra; a te neved kiöntött drága kenet; azért szeretnek téged a leányok.</p>
-  </div>
-</div>
-<div class="vb" id="v1-4">
-  <span class="vn">4</span>
-  <div class="vt">
-    <p class="lat">Nigra sum, sed formosa, filiæ Jerusalem,  sicut tabernacula Cedar, sicut pelles Salomonis.</p>
-    <p class="tra">Vonj engemet te utánad, hadd fussunk! Bevitt engem a király az ő ágyasházába; örvendezünk és vígadunk te benned, előszámláljuk a te szerelmeidet, melyek jobbak a bornál, méltán szeretnek téged.</p>
-  </div>
-</div>
-<div class="vb" id="v1-5">
-  <span class="vn">5</span>
-  <div class="vt">
-    <p class="lat">Nolite me considerare quod fusca sim,  quia decoloravit me sol.  Filii matris meæ pugnaverunt contra me ;  posuerunt me custodem in vineis :  vineam meam non custodivi.</p>
-    <p class="tra">Fekete vagyok, de szép, Jeruzsálem leányai; mint Kédár sátrai és Salamon szőnyegei.</p>
-  </div>
-</div>
-<div class="vb" id="v1-6">
-  <span class="vn">6</span>
-  <div class="vt">
-    <p class="lat">Indica mihi, quem diligit anima mea, ubi pascas,  ubi cubes in meridie,  ne vagari incipiam post greges sodalium tuorum.</p>
-    <p class="tra">Ne nézzetek engem, hogy én fekete vagyok, hogy a nap lesütött engem; az én anyámnak fiai ellenem megharagudtak, a szőlőknek őrizőjévé tettek engem, – a magam szőlőjét nem őriztem.</p>
-  </div>
-</div>
-<div class="vb" id="v1-7">
-  <span class="vn">7</span>
-  <div class="vt">
-    <p class="lat">Si ignoras te, o pulcherrima inter mulieres,  egredere, et abi post vestigia gregum,  et pasce hædos tuos juxta tabernacula pastorum.</p>
-    <p class="tra">Mondd meg nékem, te, a kit az én lelkem szeret, hol legeltetsz, hol deleltetsz délben; mert miért legyek én olyan, mint a ki elfátyolozza magát, társaid nyájainál?</p>
-  </div>
-</div>
-<div class="vb" id="v1-8">
-  <span class="vn">8</span>
-  <div class="vt">
-    <p class="lat">Equitatui meo in curribus Pharaonis  assimilavi te, amica mea.</p>
-    <p class="tra">Mivelhogy nem tudod, oh asszonyok között legszebb! jőjj ki a nyájnak nyomdokain, és őrizd a te kecskéidet a pásztoroknak sátorai körül.</p>
-  </div>
-</div>
-<div class="vb" id="v1-9">
-  <span class="vn">9</span>
-  <div class="vt">
-    <p class="lat">Pulchræ sunt genæ tuæ sicut turturis ;  collum tuum sicut monilia.</p>
-    <p class="tra">A Faraó szekereiben való paripákhoz hasonlítlak téged, én mátkám.</p>
-  </div>
-</div>
-<div class="vb" id="v1-10">
-  <span class="vn">10</span>
-  <div class="vt">
-    <p class="lat">Murenulas aureas faciemus tibi,  vermiculatas argento.</p>
-    <p class="tra">Szépek a te orczáid a halántékra valólánczokban, a te nyakad a gyöngysorokban.</p>
-  </div>
-</div>
-<div class="vb" id="v1-11">
-  <span class="vn">11</span>
-  <div class="vt">
-    <p class="lat">Dum esset rex in accubitu suo,  nardus mea dedit odorem suum.</p>
-    <p class="tra">Arany lánczokat csinálunk néked, ezüstből csinált gyöngyökkel.</p>
-  </div>
-</div>
-<div class="vb" id="v1-12">
-  <span class="vn">12</span>
-  <div class="vt">
-    <p class="lat">Fasciculus myrrhæ dilectus meus mihi ;  inter ubera mea commorabitur.</p>
-    <p class="tra">Mikor a király az ő asztalánál ül, nárdusnak jóillatja származik én tőlem.</p>
-  </div>
-</div>
-<div class="vb" id="v1-13">
-  <span class="vn">13</span>
-  <div class="vt">
-    <p class="lat">Botrus cypri dilectus meus mihi  in vineis Engaddi.</p>
-    <p class="tra">Olyanaz én szerelmesem nékem, mint egy kötés mirha, mely az én kebeleim között hál.</p>
-  </div>
-</div>
-<div class="vb" id="v1-14">
-  <span class="vn">14</span>
-  <div class="vt">
-    <p class="lat">Ecce tu pulchra es, amica mea ! ecce tu pulchra es !  Oculi tui columbarum.</p>
-    <p class="tra">Mint az Engedi szőlőiben a cziprusfürt, olyannékem az én szerelmesem.</p>
-  </div>
-</div>
-<div class="vb" id="v1-15">
-  <span class="vn">15</span>
-  <div class="vt">
-    <p class="lat">Ecce tu pulcher es, dilecte mi, et decorus !  Lectulus noster floridus.</p>
-    <p class="tra">Ímé, szép vagy én mátkám, ímé, szép vagy, a te szemeid olyanok, mint a galambok.</p>
-  </div>
-</div>
-<div class="vb" id="v1-16">
-  <span class="vn">16</span>
-  <div class="vt">
-    <p class="lat">Tigna domorum nostrarum cedrina,  laquearia nostra cypressina.</p>
-    <p class="tra">Ímé, te is szép vagy én szerelmesem, gyönyörűséges, és a mi nyoszolyánk zöldellő.</p>
-  </div>
-</div>
-</section>
+  <header class="book-header">
+    <div class="testament-badge">VETUS TESTAMENTUM</div>
+    <div class="book-name-latin">CANTICUM CANTICORUM</div>
+    <div class="book-name-trans">Song of Solomon</div>
+    <div class="book-meta">Vulgata Clementina · Károli (1908) · 8 Capita · 116 Versus</div>
+  </header>
 
-<section class="chap" id="c2">
-  <div class="chhead">
-    <span class="chrom">II</span>
-    <span class="chlbl">Caput 2</span>
-  </div>
-<div class="vb first" id="v2-1">
-  <span class="vn">1</span>
-  <div class="vt">
-    <p class="lat">Ego flos campi,  et lilium convallium.</p>
-    <p class="tra">Én Sáronnak rózsája vagyok, és a völgyek lilioma.</p>
-  </div>
-</div>
-<div class="vb" id="v2-2">
-  <span class="vn">2</span>
-  <div class="vt">
-    <p class="lat">Sicut lilium inter spinas,  sic amica mea inter filias.</p>
-    <p class="tra">Mint a liliom a tövisek közt, olyan az én mátkám a leányok közt.</p>
-  </div>
-</div>
-<div class="vb" id="v2-3">
-  <span class="vn">3</span>
-  <div class="vt">
-    <p class="lat">Sicut malus inter ligna silvarum,  sic dilectus meus inter filios.  Sub umbra illius quem desideraveram sedi,  et fructus ejus dulcis gutturi meo.</p>
-    <p class="tra">Mint az almafa az erdőnek fái közt, olyan az én szerelmesem az ifjak közt. Az ő árnyékában felette igen kivánok ülni; és az ő gyümölcse gyönyörűséges az én ínyemnek.</p>
-  </div>
-</div>
-<div class="vb" id="v2-4">
-  <span class="vn">4</span>
-  <div class="vt">
-    <p class="lat">Introduxit me in cellam vinariam ;  ordinavit in me caritatem.</p>
-    <p class="tra">Bevisz engem a borozó házba, és zászló felettem a szerelme.</p>
-  </div>
-</div>
-<div class="vb" id="v2-5">
-  <span class="vn">5</span>
-  <div class="vt">
-    <p class="lat">Fulcite me floribus,  stipate me malis,  quia amore langueo.</p>
-    <p class="tra">Erősítsetek engem szőlővel, üdítsetek fel engem almákkal; mert betege vagyok a szerelemnek.</p>
-  </div>
-</div>
-<div class="vb" id="v2-6">
-  <span class="vn">6</span>
-  <div class="vt">
-    <p class="lat">Læva ejus sub capite meo,  et dextera illius amplexabitur me.</p>
-    <p class="tra">Az ő bal keze az én fejem alatt van, és jobb kezével megölel engem.</p>
-  </div>
-</div>
-<div class="vb" id="v2-7">
-  <span class="vn">7</span>
-  <div class="vt">
-    <p class="lat">Adjuro vos, filiæ Jerusalem,  per capreas cervosque camporum,  ne suscitetis, neque evigilare faciatis dilectam,  quoadusque ipsa velit.</p>
-    <p class="tra">Kényszerítlek titeket, Jeruzsálemnek leányai, a vadkecskékre és a mezőnek szarvasira: fel ne költsétek és fel ne serkentsétek a szerelmet addig, a míg akarja.</p>
-  </div>
-</div>
-<div class="vb" id="v2-8">
-  <span class="vn">8</span>
-  <div class="vt">
-    <p class="lat">Vox dilecti mei ; ecce iste venit,  saliens in montibus, transiliens colles.</p>
-    <p class="tra">Az én szerelmesemnek szavát hallom, ímé, ő jő, ugrálva a hegyeken, szökellve a halmokon!</p>
-  </div>
-</div>
-<div class="vb" id="v2-9">
-  <span class="vn">9</span>
-  <div class="vt">
-    <p class="lat">Similis est dilectus meus capreæ,  hinnuloque cervorum.  En ipse stat post parietem nostrum,  respiciens per fenestras,  prospiciens per cancellos.</p>
-    <p class="tra">Hasonlatos az én szerelmesem az őzhöz, vagy a szarvasoknak fiához. Ímé, ott áll a mi falunkon túl, néz az ablakon keresztül, tekintget a rostélyokon keresztül,</p>
-  </div>
-</div>
-<div class="vb" id="v2-10">
-  <span class="vn">10</span>
-  <div class="vt">
-    <p class="lat">En dilectus meus loquitur mihi.     Surge, propera, amica mea,  columba mea, formosa mea, et veni :</p>
-    <p class="tra">Szóla az én szerelmesem nékem, és monda: kelj fel én mátkám, én szépem, és jöszte.</p>
-  </div>
-</div>
-<div class="vb" id="v2-11">
-  <span class="vn">11</span>
-  <div class="vt">
-    <p class="lat">jam enim hiems transiit ;  imber abiit, et recessit.</p>
-    <p class="tra">Mert ímé a tél elmult, az eső elmult, elment.</p>
-  </div>
-</div>
-<div class="vb" id="v2-12">
-  <span class="vn">12</span>
-  <div class="vt">
-    <p class="lat">Flores apparuerunt in terra nostra ;  tempus putationis advenit :  vox turturis audita est in terra nostra ;</p>
-    <p class="tra">Virágok láttatnak a földön, az éneklésnek ideje eljött, és a gerliczének szava hallatik a mi földünkön.</p>
-  </div>
-</div>
-<div class="vb" id="v2-13">
-  <span class="vn">13</span>
-  <div class="vt">
-    <p class="lat">ficus protulit grossos suos ;  vineæ florentes dederunt odorem suum.  Surge, amica mea, speciosa mea, et veni :</p>
-    <p class="tra">A fügefa érleli első gyümölcsét, és a szőlők virágzásban vannak, jóillatot adnak; kelj fel én mátkám, én szépem, és jőjj hozzám!</p>
-  </div>
-</div>
-<div class="vb" id="v2-14">
-  <span class="vn">14</span>
-  <div class="vt">
-    <p class="lat">columba mea, in foraminibus petræ, in caverna maceriæ,  ostende mihi faciem tuam,  sonet vox tua in auribus meis :  vox enim tua dulcis, et facies tua decora.</p>
-    <p class="tra">Én galambom, a kősziklának hasadékiban, a magas kőszálnak rejtekében, mutasd meg nékem a te orczádat, hadd halljam a te szódat; mert a te szód gyönyörűséges, és a te tekinteted ékes!</p>
-  </div>
-</div>
-<div class="vb" id="v2-15">
-  <span class="vn">15</span>
-  <div class="vt">
-    <p class="lat">Capite nobis vulpes parvulas  quæ demoliuntur vineas :  nam vinea nostra floruit.</p>
-    <p class="tra">Fogjátok meg nékünk a rókákat, a rókafiakat, a kik a szőlőket elpusztítják; mert a mi szőlőink virágban vannak.</p>
-  </div>
-</div>
-<div class="vb" id="v2-16">
-  <span class="vn">16</span>
-  <div class="vt">
-    <p class="lat">Dilectus meus mihi, et ego illi,  qui pascitur inter lilia,</p>
-    <p class="tra">Az én szerelmesem enyém, és én az övé, a ki a liliomok közt legeltet.</p>
-  </div>
-</div>
-<div class="vb" id="v2-17">
-  <span class="vn">17</span>
-  <div class="vt">
-    <p class="lat">donec aspiret dies, et inclinentur umbræ.  Revertere ; similis esto, dilecte mi, capreæ,  hinnuloque cervorum super montes Bether.</p>
-    <p class="tra">Míglen meghűsül a nap és az árnyékok elmúlnak: térj meg és légy hasonló, én szerelmesem, az őzhöz, vagy a szarvasoknak fiához a Béther hegyein.</p>
-  </div>
-</div>
-</section>
+  <div class="ornament-bar">❧ ✦ ❧ ✦ ❧</div>
 
-<section class="chap" id="c3">
-  <div class="chhead">
-    <span class="chrom">III</span>
-    <span class="chlbl">Caput 3</span>
-  </div>
-<div class="vb first" id="v3-1">
-  <span class="vn">1</span>
-  <div class="vt">
-    <p class="lat">In lectulo meo, per noctes,  quæsivi quem diligit anima mea :  quæsivi illum, et non inveni.</p>
-    <p class="tra">Az én ágyasházamban éjjeleken keresém azt, a kit szeret az én lelkem, keresém őt, és meg nem találtam.</p>
-  </div>
-</div>
-<div class="vb" id="v3-2">
-  <span class="vn">2</span>
-  <div class="vt">
-    <p class="lat">Surgam, et circuibo civitatem :  per vicos et plateas  quæram quem diligit anima mea :  quæsivi illum, et non inveni.</p>
-    <p class="tra">Immár felkelek és eljárom a várost, a tereket és az utczákat, keresem azt, a kit szeret az én lelkem; keresém őt, és nem találám.</p>
-  </div>
-</div>
-<div class="vb" id="v3-3">
-  <span class="vn">3</span>
-  <div class="vt">
-    <p class="lat">Invenerunt me vigiles qui custodiunt civitatem :  Num quem diligit anima mea vidistis ?</p>
-    <p class="tra">Megtalálának engem az őrizők, a kik a várost kerülik. Mondék nékik: Láttátok-é azt, a kit az én lelkem szeret?</p>
-  </div>
-</div>
-<div class="vb" id="v3-4">
-  <span class="vn">4</span>
-  <div class="vt">
-    <p class="lat">Paululum cum pertransissem eos,  inveni quem diligit anima mea :  tenui eum, nec dimittam,  donec introducam illum in domum matris meæ,  et in cubiculum genetricis meæ.</p>
-    <p class="tra">Alig mentem vala el azoktól, mikor megtaláltam azt, a kit az én lelkem szeret. Megragadám őt, el sem bocsátám, mígnem bevivém őt anyám házába, és az én szülőmnek ágyasházába.</p>
-  </div>
-</div>
-<div class="vb" id="v3-5">
-  <span class="vn">5</span>
-  <div class="vt">
-    <p class="lat">Adjuro vos, filiæ Jerusalem,  per capreas cervosque camporum,  ne suscitetis, neque evigilare faciatis dilectam,  donec ipsa velit.</p>
-    <p class="tra">Kényszerítelek titeket, Jeruzsálemnek leányai, a vadkecskékre, és a mezőnek szarvasira, fel ne költsétek és fel ne serkentsétek a szerelmet, valamíg ő akarja.</p>
-  </div>
-</div>
-<div class="vb" id="v3-6">
-  <span class="vn">6</span>
-  <div class="vt">
-    <p class="lat">Quæ est ista quæ ascendit per desertum  sicut virgula fumi ex aromatibus myrrhæ,  et thuris, et universi pulveris pigmentarii ?</p>
-    <p class="tra">Kicsoda az, a ki feljő a pusztából, mint a füstnek oszlopa? Mirhától és tömjéntől illatos, a patikáriusnak minden jó illatú porától.</p>
-  </div>
-</div>
-<div class="vb" id="v3-7">
-  <span class="vn">7</span>
-  <div class="vt">
-    <p class="lat">En lectulum Salomonis sexaginta fortes ambiunt  ex fortissimis Israël,</p>
-    <p class="tra">Ímé, ez a Salamon gyaloghintaja, hatvan erős férfi van körülötte, Izráelnek erősei közül!</p>
-  </div>
-</div>
-<div class="vb" id="v3-8">
-  <span class="vn">8</span>
-  <div class="vt">
-    <p class="lat">omnes tenentes gladios, et ad bella doctissimi :  uniuscujusque ensis super femur suum  propter timores nocturnos.</p>
-    <p class="tra">Mindnyájan fegyverfogók, hadakozásban bölcsek, kinek-kinek oldalán fegyvere, az éjszakának félelme ellen.</p>
-  </div>
-</div>
-<div class="vb" id="v3-9">
-  <span class="vn">9</span>
-  <div class="vt">
-    <p class="lat">Ferculum fecit sibi rex Salomon  de lignis Libani ;</p>
-    <p class="tra">Hálóágyat csinált magának Salamon király a Libánus fáiból.</p>
-  </div>
-</div>
-<div class="vb" id="v3-10">
-  <span class="vn">10</span>
-  <div class="vt">
-    <p class="lat">columnas ejus fecit argenteas,  reclinatorium aureum, ascensum purpureum ;  media caritate constravit,  propter filias Jerusalem.</p>
-    <p class="tra">Oszlopait ezüstből csinálta, oldalát aranyból, ágyát biborból, belső része ki van rakva szeretettel, a Jeruzsálemnek leányi által.</p>
-  </div>
-</div>
-<div class="vb" id="v3-11">
-  <span class="vn">11</span>
-  <div class="vt">
-    <p class="lat">Egredimini et videte, filiæ Sion,  regem Salomonem in diademate quo coronavit illum mater sua  in die desponsationis illius,  et in die lætitiæ cordis ejus.</p>
-    <p class="tra">Jőjjetek ki, és nézzétek, Sionnak leányai, Salamon királyt a koronában, melylyel megkoronázta őt az anyja, az ő eljegyzésének napjára, és az ő szíve vígasságának napjára!</p>
-  </div>
-</div>
-</section>
+  <main class="content">
 
-<section class="chap" id="c4">
-  <div class="chhead">
-    <span class="chrom">IV</span>
-    <span class="chlbl">Caput 4</span>
-  </div>
-<div class="vb first" id="v4-1">
-  <span class="vn">1</span>
-  <div class="vt">
-    <p class="lat">Quam pulchra es, amica mea ! quam pulchra es !  Oculi tui columbarum,  absque eo quod intrinsecus latet.  Capilli tui sicut greges caprarum  quæ ascenderunt de monte Galaad.</p>
-    <p class="tra">Ímé szép vagy, én mátkám, ímé szép vagy, a te szemeid galambok a te fátyolod mögött; a te hajad hasonló a kecskéknek nyájához, melyek a Gileád hegyéről szállanak alá.</p>
-  </div>
-</div>
-<div class="vb" id="v4-2">
-  <span class="vn">2</span>
-  <div class="vt">
-    <p class="lat">Dentes tui sicut greges tonsarum  quæ ascenderunt de lavacro ;  omnes gemellis fœtibus,  et sterilis non est inter eas.</p>
-    <p class="tra">A te fogaid hasonlók a megnyirt juhoknyájához, melyek a fördőből feljőnek, melyek mind kettősöket ellenek, és nincsen azok között meddő.</p>
-  </div>
-</div>
-<div class="vb" id="v4-3">
-  <span class="vn">3</span>
-  <div class="vt">
-    <p class="lat">Sicut vitta coccinea labia tua,  et eloquium tuum dulce.  Sicut fragmen mali punici, ita genæ tuæ,  absque eo quod intrinsecus latet.</p>
-    <p class="tra">Mint a karmazsin czérna, a te ajkaid, és a te beszéded kedves, mint a pomagránátnak darabja, olyan a te vakszemed a te fátyolod alatt.</p>
-  </div>
-</div>
-<div class="vb" id="v4-4">
-  <span class="vn">4</span>
-  <div class="vt">
-    <p class="lat">Sicut turris David collum tuum,  quæ ædificata est cum propugnaculis ;  mille clypei pendent ex ea,  omnis armatura fortium.</p>
-    <p class="tra">Hasonló a te nyakad a Dávid tornyához, a mely építtetett fegyveres háznak, a melyben ezer paizs függesztetett fel, mind az erős vitézek paizsai.</p>
-  </div>
-</div>
-<div class="vb" id="v4-5">
-  <span class="vn">5</span>
-  <div class="vt">
-    <p class="lat">Duo ubera tua sicut duo hinnuli,  capreæ gemelli, qui pascuntur in liliis.</p>
-    <p class="tra">A te két emlőd olyan, mint két vadkecske, egy zergének kettős fia, a melyek a liliomok közt legelnek.</p>
-  </div>
-</div>
-<div class="vb" id="v4-6">
-  <span class="vn">6</span>
-  <div class="vt">
-    <p class="lat">Donec aspiret dies, et inclinentur umbræ,  vadam ad montem myrrhæ, et ad collem thuris.</p>
-    <p class="tra">Míg meghűsül a nap, és elmulnak az árnyékok, elmegyek a mirhának hegyére, és a tömjénnek halmára.</p>
-  </div>
-</div>
-<div class="vb" id="v4-7">
-  <span class="vn">7</span>
-  <div class="vt">
-    <p class="lat">Tota pulchra es, amica mea,  et macula non est in te.</p>
-    <p class="tra">Mindenestől szép vagy, én mátkám, és semmi szeplő nincs benned!</p>
-  </div>
-</div>
-<div class="vb" id="v4-8">
-  <span class="vn">8</span>
-  <div class="vt">
-    <p class="lat">Veni de Libano, sponsa mea :  veni de Libano, veni, coronaberis :  de capite Amana, de vertice Sanir et Hermon,  de cubilibus leonum, de montibus pardorum.</p>
-    <p class="tra">Én velem a Libánusról, én jegyesem, én velem a Libánusról eljőjj; nézz az Amanának hegyéről, a Sénirnek és Hermonnak tetejéről, az oroszlánoknak barlangjokból, a párduczoknak hegyeiről.</p>
-  </div>
-</div>
-<div class="vb" id="v4-9">
-  <span class="vn">9</span>
-  <div class="vt">
-    <p class="lat">Vulnerasti cor meum, soror mea, sponsa ;  vulnerasti cor meum in uno oculorum tuorum,  et in uno crine colli tui.</p>
-    <p class="tra">Megsebesítetted az én szívemet, én húgom, jegyesem, megsebesítetted az én szívemet a te szemeidnek egy tekintésével, a te nyakadon való egy aranylánczczal!</p>
-  </div>
-</div>
-<div class="vb" id="v4-10">
-  <span class="vn">10</span>
-  <div class="vt">
-    <p class="lat">Quam pulchræ sunt mammæ tuæ, soror mea sponsa !  pulchriora sunt ubera tua vino,  et odor unguentorum tuorum super omnia aromata.</p>
-    <p class="tra">Mely igen szépek a te szerelmeid, én húgom, jegyesem! mely igen jók a te szerelmeid! jobbak a bornál, és a te keneteidnek illatja minden fűszerszámnál!</p>
-  </div>
-</div>
-<div class="vb" id="v4-11">
-  <span class="vn">11</span>
-  <div class="vt">
-    <p class="lat">Favus distillans labia tua, sponsa ;  mel et lac sub lingua tua :  et odor vestimentorum tuorum sicut odor thuris.</p>
-    <p class="tra">Színmézet csepegnek a te ajkaid, én jegyesem, méz és tej van a te nyelved alatt, és a te ruháidnak illatja, mint a Libánusnak illatja.</p>
-  </div>
-</div>
-<div class="vb" id="v4-12">
-  <span class="vn">12</span>
-  <div class="vt">
-    <p class="lat">Hortus conclusus soror mea, sponsa,  hortus conclusus, fons signatus.</p>
-    <p class="tra">Olyan, mint a berekesztett kert az én húgom, jegyesem! mint a befoglaltatott forrás, bepecsételt kútfő!</p>
-  </div>
-</div>
-<div class="vb" id="v4-13">
-  <span class="vn">13</span>
-  <div class="vt">
-    <p class="lat">Emissiones tuæ paradisus malorum punicorum,  cum pomorum fructibus, cypri cum nardo.</p>
-    <p class="tra">A te csemetéid gránátalmás kert, édes gyümölcsökkel egybe, cziprusok nárdusokkal egybe.</p>
-  </div>
-</div>
-<div class="vb" id="v4-14">
-  <span class="vn">14</span>
-  <div class="vt">
-    <p class="lat">Nardus et crocus, fistula et cinnamomum,  cum universis lignis Libani ;  myrrha et aloë, cum omnibus primis unguentis.</p>
-    <p class="tra">Nárdus és sáfrány, jóillatú nád és fahéj, mindenféle temjéntermő fákkal, mirha és áloes, minden drága fűszerszámokkal.</p>
-  </div>
-</div>
-<div class="vb" id="v4-15">
-  <span class="vn">15</span>
-  <div class="vt">
-    <p class="lat">Fons hortorum, puteus aquarum viventium,  quæ fluunt impetu de Libano.</p>
-    <p class="tra">Kerteknek forrása, élő vizeknek kútfeje, melyek folynak a Libánusról.</p>
-  </div>
-</div>
-<div class="vb" id="v4-16">
-  <span class="vn">16</span>
-  <div class="vt">
-    <p class="lat">Surge, aquilo, et veni, auster :  perfla hortum meum, et fluant aromata illius.</p>
-    <p class="tra">Serkenj fel északi szél, és jőjj el déli szél, fújj az én kertemre, folyjanak annak drága illatú szerszámai, jőjjön el az én szerelmesem az ő kertébe, és egye annak drágalátos gyümölcsét.</p>
-  </div>
-</div>
-</section>
+  <section class="chapter" id="ch1">
+    <div class="chapter-marker">
+      <span class="ch-roman">I</span>
+      <span class="ch-label">Caput 1</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v1-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Osculetur me osculo oris sui ;  quia meliora sunt ubera tua vino,</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Énekek éneke, mely Salamoné.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">fragrantia unguentis optimis.  Oleum effusum nomen tuum ;  ideo adolescentulæ dilexerunt te.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Csókoljon meg engem az ő szájának csókjaival; mert a te szerelmeid jobbak a bornál.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Trahe me, post te curremus  in odorem unguentorum tuorum.  Introduxit me rex in cellaria sua ;  exsultabimus et lætabimur in te,  memores uberum tuorum super vinum.  Recti diligunt te.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">A te drága kenetid jók illatozásra; a te neved kiöntött drága kenet; azért szeretnek téged a leányok.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nigra sum, sed formosa, filiæ Jerusalem,  sicut tabernacula Cedar, sicut pelles Salomonis.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Vonj engemet te utánad, hadd fussunk! Bevitt engem a király az ő ágyasházába; örvendezünk és vígadunk te benned, előszámláljuk a te szerelmeidet, melyek jobbak a bornál, méltán szeretnek téged.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nolite me considerare quod fusca sim,  quia decoloravit me sol.  Filii matris meæ pugnaverunt contra me ;  posuerunt me custodem in vineis :  vineam meam non custodivi.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Fekete vagyok, de szép, Jeruzsálem leányai; mint Kédár sátrai és Salamon szőnyegei.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Indica mihi, quem diligit anima mea, ubi pascas,  ubi cubes in meridie,  ne vagari incipiam post greges sodalium tuorum.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Ne nézzetek engem, hogy én fekete vagyok, hogy a nap lesütött engem; az én anyámnak fiai ellenem megharagudtak, a szőlőknek őrizőjévé tettek engem, – a magam szőlőjét nem őriztem.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si ignoras te, o pulcherrima inter mulieres,  egredere, et abi post vestigia gregum,  et pasce hædos tuos juxta tabernacula pastorum.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Mondd meg nékem, te, a kit az én lelkem szeret, hol legeltetsz, hol deleltetsz délben; mert miért legyek én olyan, mint a ki elfátyolozza magát, társaid nyájainál?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Equitatui meo in curribus Pharaonis  assimilavi te, amica mea.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Mivelhogy nem tudod, oh asszonyok között legszebb! jőjj ki a nyájnak nyomdokain, és őrizd a te kecskéidet a pásztoroknak sátorai körül.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Pulchræ sunt genæ tuæ sicut turturis ;  collum tuum sicut monilia.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">A Faraó szekereiben való paripákhoz hasonlítlak téged, én mátkám.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Murenulas aureas faciemus tibi,  vermiculatas argento.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Szépek a te orczáid a halántékra valólánczokban, a te nyakad a gyöngysorokban.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Dum esset rex in accubitu suo,  nardus mea dedit odorem suum.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Arany lánczokat csinálunk néked, ezüstből csinált gyöngyökkel.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Fasciculus myrrhæ dilectus meus mihi ;  inter ubera mea commorabitur.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Mikor a király az ő asztalánál ül, nárdusnak jóillatja származik én tőlem.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Botrus cypri dilectus meus mihi  in vineis Engaddi.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Olyanaz én szerelmesem nékem, mint egy kötés mirha, mely az én kebeleim között hál.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ecce tu pulchra es, amica mea ! ecce tu pulchra es !  Oculi tui columbarum.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Mint az Engedi szőlőiben a cziprusfürt, olyannékem az én szerelmesem.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ecce tu pulcher es, dilecte mi, et decorus !  Lectulus noster floridus.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Ímé, szép vagy én mátkám, ímé, szép vagy, a te szemeid olyanok, mint a galambok.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Tigna domorum nostrarum cedrina,  laquearia nostra cypressina.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Ímé, te is szép vagy én szerelmesem, gyönyörűséges, és a mi nyoszolyánk zöldellő.</div>
+      </div>
+    </div>
+  </section>
 
-<section class="chap" id="c5">
-  <div class="chhead">
-    <span class="chrom">V</span>
-    <span class="chlbl">Caput 5</span>
-  </div>
-<div class="vb first" id="v5-1">
-  <span class="vn">1</span>
-  <div class="vt">
-    <p class="lat">Veniat dilectus meus in hortum suum,  et comedat fructum pomorum suorum.     Veni in hortum meum, soror mea, sponsa ;  messui myrrham meam cum aromatibus meis ;  comedi favum cum melle meo ;  bibi vinum meum cum lacte meo ;  comedite, amici, et bibite,  et inebriamini, carissimi.</p>
-    <p class="tra">Bementem az én kertembe, én húgom, jegyesem, szedem az én mirhámat, az én balzsamommal, eszem az én lépesmézemet az én mézemmel, iszom az én boromat az én tejemmel. Egyetek barátim, igyatok, és részegedjetek meg, szerelmesim!</p>
-  </div>
-</div>
-<div class="vb" id="v5-2">
-  <span class="vn">2</span>
-  <div class="vt">
-    <p class="lat">Ego dormio, et cor meum vigilat.  Vox dilecti mei pulsantis :     Aperi mihi, soror mea, amica mea,  columba mea, immaculata mea,  quia caput meum plenum est rore,  et cincinni mei guttis noctium.</p>
-    <p class="tra">Én elaludtam, de lelkemben vigyázok vala, és ímé az én szerelmesemnek szava, a ki zörget, mondván: Nyisd meg nékem, én húgom, én mátkám, én galambom, én tökéletesem; mert az én fejem megrakodott harmattal, az én hajam az éjszakának harmatjával!</p>
-  </div>
-</div>
-<div class="vb" id="v5-3">
-  <span class="vn">3</span>
-  <div class="vt">
-    <p class="lat">Expoliavi me tunica mea : quomodo induar illa ?  lavi pedes meos : quomodo inquinabo illos ?</p>
-    <p class="tra">Felelék én: Levetettem ruhámat, hogy-hogy öltözhetném fel? Megmostam lábaimat, mi módon keverném azokat a porba?</p>
-  </div>
-</div>
-<div class="vb" id="v5-4">
-  <span class="vn">4</span>
-  <div class="vt">
-    <p class="lat">Dilectus meus misit manum suam per foramen,  et venter meus intremuit ad tactum ejus.</p>
-    <p class="tra">Az én szerelmesem kezét benyujtá az ajtónakhasadékán, és az én belső részeim megindulának ő rajta.</p>
-  </div>
-</div>
-<div class="vb" id="v5-5">
-  <span class="vn">5</span>
-  <div class="vt">
-    <p class="lat">Surrexi ut aperirem dilecto meo ;  manus meæ stillaverunt myrrham,  et digiti mei pleni myrrha probatissima.</p>
-    <p class="tra">Felkelék én, hogy az én szerelmesemnek megnyissam, és az én kezeimről mirha csepeg vala, és az én ujjaimról folyó mirha a závár kilincsére.</p>
-  </div>
-</div>
-<div class="vb" id="v5-6">
-  <span class="vn">6</span>
-  <div class="vt">
-    <p class="lat">Pessulum ostii mei aperui dilecto meo,  at ille declinaverat, atque transierat.  Anima mea liquefacta est, ut locutus est ;  quæsivi, et non inveni illum ;  vocavi, et non respondit mihi.</p>
-    <p class="tra">Megnyitám az én szerelmesemnek; de az én szerelmesem elfordult, elment; az én lelkem megindult az ő beszédén: keresém őt, de nem találám, kiáltám őt, de nem felele nékem!</p>
-  </div>
-</div>
-<div class="vb" id="v5-7">
-  <span class="vn">7</span>
-  <div class="vt">
-    <p class="lat">Invenerunt me custodes qui circumeunt civitatem ;  percusserunt me, et vulneraverunt me.  Tulerunt pallium meum mihi custodes murorum.</p>
-    <p class="tra">Megtalálának engem az őrizők, a kik a várost kerülik, megverének engem, megsebesítének engem, elvevék az én felöltőmet tőlem a kőfalnak őrizői.</p>
-  </div>
-</div>
-<div class="vb" id="v5-8">
-  <span class="vn">8</span>
-  <div class="vt">
-    <p class="lat">Adjuro vos, filiæ Jerusalem,  si inveneritis dilectum meum,  ut nuntietis ei quia amore langueo.</p>
-    <p class="tra">Kényszerítelek titeket, Jeruzsálemnek leányai, ha megtaláljátok az én szerelmesemet, mit mondotok néki? hogy én a szerelem betege vagyok!</p>
-  </div>
-</div>
-<div class="vb" id="v5-9">
-  <span class="vn">9</span>
-  <div class="vt">
-    <p class="lat">Qualis est dilectus tuus ex dilecto, o pulcherrima mulierum ?  qualis est dilectus tuus ex dilecto, quia sic adjurasti nos ?</p>
-    <p class="tra">Micsoda a te szerelmesed egyéb szerelmesek felett, oh asszonyoknak szépe? Micsoda a te szerelmesed egyéb szerelmesek felett, hogy minket ilyen igen kényszerítesz?</p>
-  </div>
-</div>
-<div class="vb" id="v5-10">
-  <span class="vn">10</span>
-  <div class="vt">
-    <p class="lat">Dilectus meus candidus et rubicundus ;  electus ex millibus.</p>
-    <p class="tra">Az én szerelmesem fejér és piros, tízezer közül is kitetszik.</p>
-  </div>
-</div>
-<div class="vb" id="v5-11">
-  <span class="vn">11</span>
-  <div class="vt">
-    <p class="lat">Caput ejus aurum optimum ;  comæ ejus sicut elatæ palmarum, nigræ quasi corvus.</p>
-    <p class="tra">Az ő feje, mint a választott drága megtisztított arany; fodor haja fekete, mint a hollónak.</p>
-  </div>
-</div>
-<div class="vb" id="v5-12">
-  <span class="vn">12</span>
-  <div class="vt">
-    <p class="lat">Oculi ejus sicut columbæ super rivulos aquarum,  quæ lacte sunt lotæ, et resident juxta fluenta plenissima.</p>
-    <p class="tra">Az ő szemei mint a vízfolyás mellett való galambok, melyek tejben fürödnek, szépteljesen helyheztettek.</p>
-  </div>
-</div>
-<div class="vb" id="v5-13">
-  <span class="vn">13</span>
-  <div class="vt">
-    <p class="lat">Genæ illius sicut areolæ aromatum,  consitæ a pigmentariis.  Labia ejus lilia,  distillantia myrrham primam.</p>
-    <p class="tra">Az ő orczája hasonlatos a drága füveknek táblájához, a melyek illatos plántákat nevelnek; az ő ajkai liliomok, melyekről csepegő mirha foly.</p>
-  </div>
-</div>
-<div class="vb" id="v5-14">
-  <span class="vn">14</span>
-  <div class="vt">
-    <p class="lat">Manus illius tornatiles, aureæ,  plenæ hyacinthis.  Venter ejus eburneus,  distinctus sapphiris.</p>
-    <p class="tra">Az ő kezei aranyhengerek; melyek befoglaltattak topázba; az ő teste elefántcsontból való mű, zafirokkal megrakva.</p>
-  </div>
-</div>
-<div class="vb" id="v5-15">
-  <span class="vn">15</span>
-  <div class="vt">
-    <p class="lat">Crura illius columnæ marmoreæ  quæ fundatæ sunt super bases aureas.  Species ejus ut Libani,  electus ut cedri.</p>
-    <p class="tra">Az ő szárai márványoszlopok; melyek tiszta arany talpakra fundáltattak; az ő tekinteti, mint a Libánus; tetszetes mint a czédrusfa.</p>
-  </div>
-</div>
-<div class="vb" id="v5-16">
-  <span class="vn">16</span>
-  <div class="vt">
-    <p class="lat">Guttur illius suavissimum,  et totus desiderabilis.  Talis est dilectus meus,  et ipse est amicus meus, filiæ Jerusalem.</p>
-    <p class="tra">Az ő ínye édességek, és ő mindenestől fogva kívánatos! Ez az én szerelmesem, és ez az én barátom, oh Jeruzsálemnek leányai! Hová ment a te szerelmesed, oh asszonyoknak szépe? hová fordult a te szerelmesed, hogy keressük őt veled együtt? Az én szerelmesem, elment az ő kertébe, a drága füveknek táblái közé, hogy lakozzék a kertekben, és liliomokat szedjen. Én az én szerelmesemé vagyok, és az én szerelmesem enyim, a ki a liliomok közt legeltet.</p>
-  </div>
-</div>
-<div class="vb" id="v5-17">
-  <span class="vn">17</span>
-  <div class="vt">
-    <p class="lat">Quo abiit dilectus tuus, o pulcherrima mulierum ?  quo declinavit dilectus tuus ?  et quæremus eum tecum.</p>
-  </div>
-</div>
-</section>
+  <section class="chapter" id="ch2">
+    <div class="chapter-marker">
+      <span class="ch-roman">II</span>
+      <span class="ch-label">Caput 2</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v2-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ego flos campi,  et lilium convallium.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Én Sáronnak rózsája vagyok, és a völgyek lilioma.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sicut lilium inter spinas,  sic amica mea inter filias.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Mint a liliom a tövisek közt, olyan az én mátkám a leányok közt.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sicut malus inter ligna silvarum,  sic dilectus meus inter filios.  Sub umbra illius quem desideraveram sedi,  et fructus ejus dulcis gutturi meo.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Mint az almafa az erdőnek fái közt, olyan az én szerelmesem az ifjak közt. Az ő árnyékában felette igen kivánok ülni; és az ő gyümölcse gyönyörűséges az én ínyemnek.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Introduxit me in cellam vinariam ;  ordinavit in me caritatem.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Bevisz engem a borozó házba, és zászló felettem a szerelme.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Fulcite me floribus,  stipate me malis,  quia amore langueo.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Erősítsetek engem szőlővel, üdítsetek fel engem almákkal; mert betege vagyok a szerelemnek.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Læva ejus sub capite meo,  et dextera illius amplexabitur me.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Az ő bal keze az én fejem alatt van, és jobb kezével megölel engem.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Adjuro vos, filiæ Jerusalem,  per capreas cervosque camporum,  ne suscitetis, neque evigilare faciatis dilectam,  quoadusque ipsa velit.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Kényszerítlek titeket, Jeruzsálemnek leányai, a vadkecskékre és a mezőnek szarvasira: fel ne költsétek és fel ne serkentsétek a szerelmet addig, a míg akarja.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vox dilecti mei ; ecce iste venit,  saliens in montibus, transiliens colles.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Az én szerelmesemnek szavát hallom, ímé, ő jő, ugrálva a hegyeken, szökellve a halmokon!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Similis est dilectus meus capreæ,  hinnuloque cervorum.  En ipse stat post parietem nostrum,  respiciens per fenestras,  prospiciens per cancellos.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Hasonlatos az én szerelmesem az őzhöz, vagy a szarvasoknak fiához. Ímé, ott áll a mi falunkon túl, néz az ablakon keresztül, tekintget a rostélyokon keresztül,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">En dilectus meus loquitur mihi.     Surge, propera, amica mea,  columba mea, formosa mea, et veni :</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Szóla az én szerelmesem nékem, és monda: kelj fel én mátkám, én szépem, és jöszte.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">jam enim hiems transiit ;  imber abiit, et recessit.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Mert ímé a tél elmult, az eső elmult, elment.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Flores apparuerunt in terra nostra ;  tempus putationis advenit :  vox turturis audita est in terra nostra ;</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Virágok láttatnak a földön, az éneklésnek ideje eljött, és a gerliczének szava hallatik a mi földünkön.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">ficus protulit grossos suos ;  vineæ florentes dederunt odorem suum.  Surge, amica mea, speciosa mea, et veni :</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">A fügefa érleli első gyümölcsét, és a szőlők virágzásban vannak, jóillatot adnak; kelj fel én mátkám, én szépem, és jőjj hozzám!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">columba mea, in foraminibus petræ, in caverna maceriæ,  ostende mihi faciem tuam,  sonet vox tua in auribus meis :  vox enim tua dulcis, et facies tua decora.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Én galambom, a kősziklának hasadékiban, a magas kőszálnak rejtekében, mutasd meg nékem a te orczádat, hadd halljam a te szódat; mert a te szód gyönyörűséges, és a te tekinteted ékes!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Capite nobis vulpes parvulas  quæ demoliuntur vineas :  nam vinea nostra floruit.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Fogjátok meg nékünk a rókákat, a rókafiakat, a kik a szőlőket elpusztítják; mert a mi szőlőink virágban vannak.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Dilectus meus mihi, et ego illi,  qui pascitur inter lilia,</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Az én szerelmesem enyém, és én az övé, a ki a liliomok közt legeltet.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">donec aspiret dies, et inclinentur umbræ.  Revertere ; similis esto, dilecte mi, capreæ,  hinnuloque cervorum super montes Bether.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Míglen meghűsül a nap és az árnyékok elmúlnak: térj meg és légy hasonló, én szerelmesem, az őzhöz, vagy a szarvasoknak fiához a Béther hegyein.</div>
+      </div>
+    </div>
+  </section>
 
-<section class="chap" id="c6">
-  <div class="chhead">
-    <span class="chrom">VI</span>
-    <span class="chlbl">Caput 6</span>
-  </div>
-<div class="vb first" id="v6-1">
-  <span class="vn">1</span>
-  <div class="vt">
-    <p class="lat">Dilectus meus descendit in hortum suum ad areolam aromatum,  ut pascatur in hortis, et lilia colligat.</p>
-    <p class="tra">Szép vagy én mátkám, mint Tirsa városa, kedves, mint Jeruzsálem, rettenetes, mint a zászlós tábor.</p>
-  </div>
-</div>
-<div class="vb" id="v6-2">
-  <span class="vn">2</span>
-  <div class="vt">
-    <p class="lat">Ego dilecto meo, et dilectus meus mihi,  qui pascitur inter lilia.</p>
-    <p class="tra">Fordítsd el a te szemeidet én tőlem, mert azok megzavarnak engem. A te hajad olyan, mint a kecskéknek nyája, melyek a Gileádról szállanak alá.</p>
-  </div>
-</div>
-<div class="vb" id="v6-3">
-  <span class="vn">3</span>
-  <div class="vt">
-    <p class="lat">Pulchra es, amica mea ;  suavis, et decora sicut Jerusalem ;  terribilis ut castrorum acies ordinata.</p>
-    <p class="tra">A te fogaid hasonlók a juhok nyájához, melyek feljőnek a fördőből, melyek mind kettősöket ellenek, és meddő azok között nincsen.</p>
-  </div>
-</div>
-<div class="vb" id="v6-4">
-  <span class="vn">4</span>
-  <div class="vt">
-    <p class="lat">Averte oculos tuos a me,  quia ipsi me avolare fecerunt.  Capilli tui sicut grex caprarum  quæ apparuerunt de Galaad.</p>
-    <p class="tra">Mint a pomagránát darabja a te vakszemed, a te fátyolod alatt.</p>
-  </div>
-</div>
-<div class="vb" id="v6-5">
-  <span class="vn">5</span>
-  <div class="vt">
-    <p class="lat">Dentes tui sicut grex ovium  quæ ascenderunt de lavacro :  omnes gemellis fœtibus,  et sterilis non est in eis.</p>
-    <p class="tra">Hatvanan vannak a királynék, és nyolczvanan az ágyasok és számtalan a leányzó.</p>
-  </div>
-</div>
-<div class="vb" id="v6-6">
-  <span class="vn">6</span>
-  <div class="vt">
-    <p class="lat">Sicut cortex mali punici, sic genæ tuæ,  absque occultis tuis.</p>
-    <p class="tra">És az én galambom, az én tökéletesem, az ő anyjának egyetlenegye, az ő szülőjének választottja. Látják a leányok, és boldognak mondják őt, a királynéasszonyok és az ágyasok, és dicsérik őt.</p>
-  </div>
-</div>
-<div class="vb" id="v6-7">
-  <span class="vn">7</span>
-  <div class="vt">
-    <p class="lat">Sexaginta sunt reginæ, et octoginta concubinæ,  et adolescentularum non est numerus.</p>
-    <p class="tra">Kicsoda az, a ki úgy láttatik mintegy hajnal, szép, mint a hold, tiszta, mint a nap, rettenetes, mint a zászlós tábor?</p>
-  </div>
-</div>
-<div class="vb" id="v6-8">
-  <span class="vn">8</span>
-  <div class="vt">
-    <p class="lat">Una est columba mea, perfecta mea,  una est matris suæ, electa genetrici suæ.  Viderunt eam filiæ, et beatissimam prædicaverunt ;  reginæ et concubinæ, et laudaverunt eam.</p>
-    <p class="tra">A diófás kertekbe mentem vala alá, hogy a völgynek zöld fűveit lássam; hogy megnézzem, ha fakad-é a szőlő, és a pomagránátfák virágzanak-é?</p>
-  </div>
-</div>
-<div class="vb" id="v6-9">
-  <span class="vn">9</span>
-  <div class="vt">
-    <p class="lat">Quæ est ista quæ progreditur quasi aurora consurgens,  pulchra ut luna, electa ut sol,  terribilis ut castrorum acies ordinata ?</p>
-    <p class="tra">Nem tudtam, hogy az én elmém ültete engem az én nemes népemnek díszhintajába.</p>
-  </div>
-</div>
-<div class="vb" id="v6-10">
-  <span class="vn">10</span>
-  <div class="vt">
-    <p class="lat">Descendi in hortum nucum,  ut viderem poma convallium,  et inspicerem si floruisset vinea,  et germinassent mala punica.</p>
-    <p class="tra">Térj meg, oh Sulamit! térj meg, térj meg, hogy nézzünk téged! Mit néztek Sulamiton? mintegy Machanaimbeli körtánczot!</p>
-  </div>
-</div>
-<div class="vb" id="v6-11">
-  <span class="vn">11</span>
-  <div class="vt">
-    <p class="lat">Nescivi : anima mea conturbavit me,  propter quadrigas Aminadab.</p>
-  </div>
-</div>
-<div class="vb" id="v6-12">
-  <span class="vn">12</span>
-  <div class="vt">
-    <p class="lat">Revertere, revertere, Sulamitis !  revertere, revertere ut intueamur te.</p>
-  </div>
-</div>
-</section>
+  <section class="chapter" id="ch3">
+    <div class="chapter-marker">
+      <span class="ch-roman">III</span>
+      <span class="ch-label">Caput 3</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v3-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">In lectulo meo, per noctes,  quæsivi quem diligit anima mea :  quæsivi illum, et non inveni.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Az én ágyasházamban éjjeleken keresém azt, a kit szeret az én lelkem, keresém őt, és meg nem találtam.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Surgam, et circuibo civitatem :  per vicos et plateas  quæram quem diligit anima mea :  quæsivi illum, et non inveni.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Immár felkelek és eljárom a várost, a tereket és az utczákat, keresem azt, a kit szeret az én lelkem; keresém őt, és nem találám.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Invenerunt me vigiles qui custodiunt civitatem :  Num quem diligit anima mea vidistis ?</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Megtalálának engem az őrizők, a kik a várost kerülik. Mondék nékik: Láttátok-é azt, a kit az én lelkem szeret?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Paululum cum pertransissem eos,  inveni quem diligit anima mea :  tenui eum, nec dimittam,  donec introducam illum in domum matris meæ,  et in cubiculum genetricis meæ.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Alig mentem vala el azoktól, mikor megtaláltam azt, a kit az én lelkem szeret. Megragadám őt, el sem bocsátám, mígnem bevivém őt anyám házába, és az én szülőmnek ágyasházába.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Adjuro vos, filiæ Jerusalem,  per capreas cervosque camporum,  ne suscitetis, neque evigilare faciatis dilectam,  donec ipsa velit.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Kényszerítelek titeket, Jeruzsálemnek leányai, a vadkecskékre, és a mezőnek szarvasira, fel ne költsétek és fel ne serkentsétek a szerelmet, valamíg ő akarja.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quæ est ista quæ ascendit per desertum  sicut virgula fumi ex aromatibus myrrhæ,  et thuris, et universi pulveris pigmentarii ?</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Kicsoda az, a ki feljő a pusztából, mint a füstnek oszlopa? Mirhától és tömjéntől illatos, a patikáriusnak minden jó illatú porától.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">En lectulum Salomonis sexaginta fortes ambiunt  ex fortissimis Israël,</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Ímé, ez a Salamon gyaloghintaja, hatvan erős férfi van körülötte, Izráelnek erősei közül!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">omnes tenentes gladios, et ad bella doctissimi :  uniuscujusque ensis super femur suum  propter timores nocturnos.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Mindnyájan fegyverfogók, hadakozásban bölcsek, kinek-kinek oldalán fegyvere, az éjszakának félelme ellen.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ferculum fecit sibi rex Salomon  de lignis Libani ;</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Hálóágyat csinált magának Salamon király a Libánus fáiból.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">columnas ejus fecit argenteas,  reclinatorium aureum, ascensum purpureum ;  media caritate constravit,  propter filias Jerusalem.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Oszlopait ezüstből csinálta, oldalát aranyból, ágyát biborból, belső része ki van rakva szeretettel, a Jeruzsálemnek leányi által.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Egredimini et videte, filiæ Sion,  regem Salomonem in diademate quo coronavit illum mater sua  in die desponsationis illius,  et in die lætitiæ cordis ejus.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Jőjjetek ki, és nézzétek, Sionnak leányai, Salamon királyt a koronában, melylyel megkoronázta őt az anyja, az ő eljegyzésének napjára, és az ő szíve vígasságának napjára!</div>
+      </div>
+    </div>
+  </section>
 
-<section class="chap" id="c7">
-  <div class="chhead">
-    <span class="chrom">VII</span>
-    <span class="chlbl">Caput 7</span>
-  </div>
-<div class="vb first" id="v7-1">
-  <span class="vn">1</span>
-  <div class="vt">
-    <p class="lat">Quid videbis in Sulamite, nisi choros castrorum ?     Quam pulchri sunt gressus tui in calceamentis, filia principis !  Juncturæ femorum tuorum sicut monilia  quæ fabricata sunt manu artificis.</p>
-    <p class="tra">Oh mely szépek a te lépéseid a sarukban, oh fejedelem leánya! A te csípőd hajlásai olyanok, mint a kösöntyűk, mesteri kezeknek míve.</p>
-  </div>
-</div>
-<div class="vb" id="v7-2">
-  <span class="vn">2</span>
-  <div class="vt">
-    <p class="lat">Umbilicus tuus crater tornatilis,  numquam indigens poculis.  Venter tuus sicut acervus tritici vallatus liliis.</p>
-    <p class="tra">A te köldököd, mint a kerekded csésze, nem szűkölködik nedvesség nélkül; a te hasad mint a gabonaasztag, liliomokkal körül kerítve.</p>
-  </div>
-</div>
-<div class="vb" id="v7-3">
-  <span class="vn">3</span>
-  <div class="vt">
-    <p class="lat">Duo ubera tua sicut duo hinnuli,  gemelli capreæ.</p>
-    <p class="tra">A te két emlőd, mintkét őzike, a vadkecskének kettős fiai.</p>
-  </div>
-</div>
-<div class="vb" id="v7-4">
-  <span class="vn">4</span>
-  <div class="vt">
-    <p class="lat">Collum tuum sicut turris eburnea ;  oculi tui sicut piscinæ in Hesebon  quæ sunt in porta filiæ multitudinis.  Nasus tuus sicut turris Libani,  quæ respicit contra Damascum.</p>
-    <p class="tra">A te nyakad, mint az elefánttetemből csinált torony; a te szemeid, mint a Hesbonbeli halastók, a sok népű kapunál; a te orrod hasonló a Libánus tornyához, mely néz Damaskus felé.</p>
-  </div>
-</div>
-<div class="vb" id="v7-5">
-  <span class="vn">5</span>
-  <div class="vt">
-    <p class="lat">Caput tuum ut Carmelus ;  et comæ capitis tui sicut purpura regis  vincta canalibus.</p>
-    <p class="tra">A te fejed hasonló rajtad a Kármelhez, és a te fejeden hajadnak fonatékja a biborhoz, a király is megköttetnék fürteid által!</p>
-  </div>
-</div>
-<div class="vb" id="v7-6">
-  <span class="vn">6</span>
-  <div class="vt">
-    <p class="lat">Quam pulchra es, et quam decora,  carissima, in deliciis !</p>
-    <p class="tra">Mely igen szép vagy és mely kedves, oh szerelem, a gyönyörűségek közt!</p>
-  </div>
-</div>
-<div class="vb" id="v7-7">
-  <span class="vn">7</span>
-  <div class="vt">
-    <p class="lat">Statura tua assimilata est palmæ,  et ubera tua botris.</p>
-    <p class="tra">Ez a te termeted hasonló a pálmafához, és a te emlőid a szőlőgerézdekhez.</p>
-  </div>
-</div>
-<div class="vb" id="v7-8">
-  <span class="vn">8</span>
-  <div class="vt">
-    <p class="lat">Dixi : Ascendam in palmam,  et apprehendam fructus ejus ;  et erunt ubera tua sicut botri vineæ,  et odor oris tui sicut malorum.</p>
-    <p class="tra">Azt mondám: felhágok a pálmafára, megfogom annak ágait: és lesznek a te emlőid, mint a szőlőnek gerézdei, és a te orrodnak illatja, mint az almának.</p>
-  </div>
-</div>
-<div class="vb" id="v7-9">
-  <span class="vn">9</span>
-  <div class="vt">
-    <p class="lat">Guttur tuum sicut vinum optimum,  dignum dilecto meo ad potandum,  labiisque et dentibus illius ad ruminandum.</p>
-    <p class="tra">És a te ínyed, mint a legjobb bor, melyet szerelmesem kedvére szürcsöl, mely szóra nyitja az alvók ajkait.</p>
-  </div>
-</div>
-<div class="vb" id="v7-10">
-  <span class="vn">10</span>
-  <div class="vt">
-    <p class="lat">Ego dilecto meo,  et ad me conversio ejus.</p>
-    <p class="tra">Én az én szerelmesemé vagyok, és engem kiván ő!</p>
-  </div>
-</div>
-<div class="vb" id="v7-11">
-  <span class="vn">11</span>
-  <div class="vt">
-    <p class="lat">Veni, dilecte mi, egrediamur in agrum,  commoremur in villis.</p>
-    <p class="tra">No, én szerelmesem, menjünk ki a mezőre, háljunk a falukban.</p>
-  </div>
-</div>
-<div class="vb" id="v7-12">
-  <span class="vn">12</span>
-  <div class="vt">
-    <p class="lat">Mane surgamus ad vineas :  videamus si floruit vinea,  si flores fructus parturiunt,  si floruerunt mala punica ;  ibi dabo tibi ubera mea.</p>
-    <p class="tra">Felkelvén menjünk a szőlőkbe, lássuk meg, ha fakad-é a szőlő, ha kinyílott-é virágja, ha virágzanak-é a gránátalmafák: ott közlöm az én szerelmimet veled.</p>
-  </div>
-</div>
-<div class="vb" id="v7-13">
-  <span class="vn">13</span>
-  <div class="vt">
-    <p class="lat">Mandragoræ dederunt odorem  in portis nostris omnia poma :  nova et vetera, dilecte mi, servavi tibi.</p>
-    <p class="tra">A mandragórák illatoznak, és a mi ajtónk előtt vannak minden drágalátos gyümölcsök, ók és újak, melyeket ohén szerelmesem, néked megtartottam!</p>
-  </div>
-</div>
-</section>
+  <section class="chapter" id="ch4">
+    <div class="chapter-marker">
+      <span class="ch-roman">IV</span>
+      <span class="ch-label">Caput 4</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v4-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quam pulchra es, amica mea ! quam pulchra es !  Oculi tui columbarum,  absque eo quod intrinsecus latet.  Capilli tui sicut greges caprarum  quæ ascenderunt de monte Galaad.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Ímé szép vagy, én mátkám, ímé szép vagy, a te szemeid galambok a te fátyolod mögött; a te hajad hasonló a kecskéknek nyájához, melyek a Gileád hegyéről szállanak alá.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Dentes tui sicut greges tonsarum  quæ ascenderunt de lavacro ;  omnes gemellis fœtibus,  et sterilis non est inter eas.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">A te fogaid hasonlók a megnyirt juhoknyájához, melyek a fördőből feljőnek, melyek mind kettősöket ellenek, és nincsen azok között meddő.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sicut vitta coccinea labia tua,  et eloquium tuum dulce.  Sicut fragmen mali punici, ita genæ tuæ,  absque eo quod intrinsecus latet.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Mint a karmazsin czérna, a te ajkaid, és a te beszéded kedves, mint a pomagránátnak darabja, olyan a te vakszemed a te fátyolod alatt.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sicut turris David collum tuum,  quæ ædificata est cum propugnaculis ;  mille clypei pendent ex ea,  omnis armatura fortium.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Hasonló a te nyakad a Dávid tornyához, a mely építtetett fegyveres háznak, a melyben ezer paizs függesztetett fel, mind az erős vitézek paizsai.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Duo ubera tua sicut duo hinnuli,  capreæ gemelli, qui pascuntur in liliis.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">A te két emlőd olyan, mint két vadkecske, egy zergének kettős fia, a melyek a liliomok közt legelnek.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Donec aspiret dies, et inclinentur umbræ,  vadam ad montem myrrhæ, et ad collem thuris.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Míg meghűsül a nap, és elmulnak az árnyékok, elmegyek a mirhának hegyére, és a tömjénnek halmára.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Tota pulchra es, amica mea,  et macula non est in te.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Mindenestől szép vagy, én mátkám, és semmi szeplő nincs benned!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Veni de Libano, sponsa mea :  veni de Libano, veni, coronaberis :  de capite Amana, de vertice Sanir et Hermon,  de cubilibus leonum, de montibus pardorum.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Én velem a Libánusról, én jegyesem, én velem a Libánusról eljőjj; nézz az Amanának hegyéről, a Sénirnek és Hermonnak tetejéről, az oroszlánoknak barlangjokból, a párduczoknak hegyeiről.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vulnerasti cor meum, soror mea, sponsa ;  vulnerasti cor meum in uno oculorum tuorum,  et in uno crine colli tui.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Megsebesítetted az én szívemet, én húgom, jegyesem, megsebesítetted az én szívemet a te szemeidnek egy tekintésével, a te nyakadon való egy aranylánczczal!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quam pulchræ sunt mammæ tuæ, soror mea sponsa !  pulchriora sunt ubera tua vino,  et odor unguentorum tuorum super omnia aromata.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Mely igen szépek a te szerelmeid, én húgom, jegyesem! mely igen jók a te szerelmeid! jobbak a bornál, és a te keneteidnek illatja minden fűszerszámnál!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Favus distillans labia tua, sponsa ;  mel et lac sub lingua tua :  et odor vestimentorum tuorum sicut odor thuris.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Színmézet csepegnek a te ajkaid, én jegyesem, méz és tej van a te nyelved alatt, és a te ruháidnak illatja, mint a Libánusnak illatja.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hortus conclusus soror mea, sponsa,  hortus conclusus, fons signatus.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Olyan, mint a berekesztett kert az én húgom, jegyesem! mint a befoglaltatott forrás, bepecsételt kútfő!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Emissiones tuæ paradisus malorum punicorum,  cum pomorum fructibus, cypri cum nardo.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">A te csemetéid gránátalmás kert, édes gyümölcsökkel egybe, cziprusok nárdusokkal egybe.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nardus et crocus, fistula et cinnamomum,  cum universis lignis Libani ;  myrrha et aloë, cum omnibus primis unguentis.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Nárdus és sáfrány, jóillatú nád és fahéj, mindenféle temjéntermő fákkal, mirha és áloes, minden drága fűszerszámokkal.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Fons hortorum, puteus aquarum viventium,  quæ fluunt impetu de Libano.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Kerteknek forrása, élő vizeknek kútfeje, melyek folynak a Libánusról.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Surge, aquilo, et veni, auster :  perfla hortum meum, et fluant aromata illius.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Serkenj fel északi szél, és jőjj el déli szél, fújj az én kertemre, folyjanak annak drága illatú szerszámai, jőjjön el az én szerelmesem az ő kertébe, és egye annak drágalátos gyümölcsét.</div>
+      </div>
+    </div>
+  </section>
 
-<section class="chap" id="c8">
-  <div class="chhead">
-    <span class="chrom">VIII</span>
-    <span class="chlbl">Caput 8</span>
-  </div>
-<div class="vb first" id="v8-1">
-  <span class="vn">1</span>
-  <div class="vt">
-    <p class="lat">Quis mihi det te fratrem meum,  sugentem ubera matris meæ,  ut inveniam te foris, et deosculer te,  et jam me nemo despiciat ?</p>
-    <p class="tra">Vajha lennél nékem én atyámfia, ki az én anyámnak emlőjét szopta, hogy téged kivül találván megcsókolnálak; még sem útálnának meg engem.</p>
-  </div>
-</div>
-<div class="vb" id="v8-2">
-  <span class="vn">2</span>
-  <div class="vt">
-    <p class="lat">Apprehendam te, et ducam in domum matris meæ :  ibi me docebis,  et dabo tibi poculum ex vino condito,  et mustum malorum granatorum meorum.</p>
-    <p class="tra">Elvinnélek, bevinnélek anyámnak házába, te oktatgatnál engem, én meg borral itatnálak, fűszeressel, gránátalma borral.</p>
-  </div>
-</div>
-<div class="vb" id="v8-3">
-  <span class="vn">3</span>
-  <div class="vt">
-    <p class="lat">Læva ejus sub capite meo,  et dextera illius amplexabitur me.</p>
-    <p class="tra">Az ő balkeze az én fejem alatt, és jobbkezével megölel engem.</p>
-  </div>
-</div>
-<div class="vb" id="v8-4">
-  <span class="vn">4</span>
-  <div class="vt">
-    <p class="lat">Adjuro vos, filiæ Jerusalem,  ne suscitetis, neque evigilare faciatis dilectam,  donec ipsa velit.</p>
-    <p class="tra">Kényszerítlek titeket, Jeruzsálemnek leányai, miért költenétek és miért serkentenétek fel a szerelmet, mígnem ő akarja?</p>
-  </div>
-</div>
-<div class="vb" id="v8-5">
-  <span class="vn">5</span>
-  <div class="vt">
-    <p class="lat">Quæ est ista quæ ascendit de deserto, deliciis affluens,  innixa super dilectum suum ?     Sub arbore malo suscitavi te ;  ibi corrupta est mater tua,  ibi violata est genitrix tua.</p>
-    <p class="tra">Kicsoda ez a ki feljő a pusztából, a ki az ő szerelmeséhez támaszkodik? Az almafa alatt költöttelek fel téged, ott szült téged a te anyád, ott szült téged a te szülőd!</p>
-  </div>
-</div>
-<div class="vb" id="v8-6">
-  <span class="vn">6</span>
-  <div class="vt">
-    <p class="lat">Pone me ut signaculum super cor tuum,  ut signaculum super brachium tuum,  quia fortis est ut mors dilectio,  dura sicut infernus æmulatio :  lampades ejus lampades ignis atque flammarum.</p>
-    <p class="tra">Tégy engem mintegy pecsétet a te szívedre, mintegy pecsétet a te karodra; mert erős a szeretet, mint a halál, kemény, mint a sír a buzgó szerelem; lángjai tűznek lángjai, az Úrnak lángjai.</p>
-  </div>
-</div>
-<div class="vb" id="v8-7">
-  <span class="vn">7</span>
-  <div class="vt">
-    <p class="lat">Aquæ multæ non potuerunt extinguere caritatem,  nec flumina obruent illam.  Si dederit homo omnem substantiam domus suæ pro dilectione,  quasi nihil despiciet eam.</p>
-    <p class="tra">Sok vizek el nem olthatnák e szeretetet: a folyóvizek sem boríthatnák azt el: ha az ember minden házabeli marháját adná is e szeretetért, mégismegvetnék azt.</p>
-  </div>
-</div>
-<div class="vb" id="v8-8">
-  <span class="vn">8</span>
-  <div class="vt">
-    <p class="lat">Soror nostra parva,  et ubera non habet ;  quid faciemus sorori nostræ  in die quando alloquenda est ?</p>
-    <p class="tra">Kicsiny húgunk van nékünk, a kinek nincsen még emlője; mit cselekedjünk a mi húgunk felől, a napon, melyen arról szót tesznek?</p>
-  </div>
-</div>
-<div class="vb" id="v8-9">
-  <span class="vn">9</span>
-  <div class="vt">
-    <p class="lat">Si murus est,  ædificemus super eum propugnacula argentea ;  si ostium est, compingamus illud tabulis cedrinis.</p>
-    <p class="tra">Ha ő kőfal, építünk azon ezüstből palotát; ha pedig ajtó ő, elrekesztjük őt czédrus-deszkával.</p>
-  </div>
-</div>
-<div class="vb" id="v8-10">
-  <span class="vn">10</span>
-  <div class="vt">
-    <p class="lat">Ego murus, et ubera mea sicut turris,  ex quo facta sum coram eo, quasi pacem reperiens.</p>
-    <p class="tra">Mikor én olyan leszek, minta kőfal, és az én emlőim, mint a tornyok; akkor olyan leszek ő előtte, mint a ki békességet nyer.</p>
-  </div>
-</div>
-<div class="vb" id="v8-11">
-  <span class="vn">11</span>
-  <div class="vt">
-    <p class="lat">Vinea fuit pacifico in ea quæ habet populos :  tradidit eam custodibus ;  vir affert pro fructu ejus mille argenteos.</p>
-    <p class="tra">Szőlője volt Salamonnak Baálhamonban, adta az ő szőlejét a pásztoroknak, kiki annak gyümölcséért hoz ezer-ezer ezüst siklust.</p>
-  </div>
-</div>
-<div class="vb" id="v8-12">
-  <span class="vn">12</span>
-  <div class="vt">
-    <p class="lat">Vinea mea coram me est.  Mille tui pacifici,  et ducenti his qui custodiunt fructus ejus.</p>
-    <p class="tra">Az én szőlőmre, mely én reám néz, nékem gondom lesz: az ezer siklus, Salamon, tiéd legyen, a kétszáz annak gyümölcsének őrizőié.</p>
-  </div>
-</div>
-<div class="vb" id="v8-13">
-  <span class="vn">13</span>
-  <div class="vt">
-    <p class="lat">Quæ habitas in hortis, amici auscultant ;  fac me audire vocem tuam.</p>
-    <p class="tra">Oh te, a ki lakol a kertekben! A te társaid a te szódra figyelmeznek; hadd halljam én is.</p>
-  </div>
-</div>
-<div class="vb" id="v8-14">
-  <span class="vn">14</span>
-  <div class="vt">
-    <p class="lat">Fuge, dilecte mi, et assimilare capreæ,  hinnuloque cervorum super montes aromatum.</p>
-    <p class="tra">Fuss én szerelmesem, és légy hasonló a vadkecskéhez, vagy a szarvasnak fiához, a drága füveknek hegyein!</p>
-  </div>
-</div>
-</section>
-</main>
+  <section class="chapter" id="ch5">
+    <div class="chapter-marker">
+      <span class="ch-roman">V</span>
+      <span class="ch-label">Caput 5</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v5-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Veniat dilectus meus in hortum suum,  et comedat fructum pomorum suorum.     Veni in hortum meum, soror mea, sponsa ;  messui myrrham meam cum aromatibus meis ;  comedi favum cum melle meo ;  bibi vinum meum cum lacte meo ;  comedite, amici, et bibite,  et inebriamini, carissimi.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Bementem az én kertembe, én húgom, jegyesem, szedem az én mirhámat, az én balzsamommal, eszem az én lépesmézemet az én mézemmel, iszom az én boromat az én tejemmel. Egyetek barátim, igyatok, és részegedjetek meg, szerelmesim!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ego dormio, et cor meum vigilat.  Vox dilecti mei pulsantis :     Aperi mihi, soror mea, amica mea,  columba mea, immaculata mea,  quia caput meum plenum est rore,  et cincinni mei guttis noctium.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Én elaludtam, de lelkemben vigyázok vala, és ímé az én szerelmesemnek szava, a ki zörget, mondván: Nyisd meg nékem, én húgom, én mátkám, én galambom, én tökéletesem; mert az én fejem megrakodott harmattal, az én hajam az éjszakának harmatjával!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Expoliavi me tunica mea : quomodo induar illa ?  lavi pedes meos : quomodo inquinabo illos ?</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Felelék én: Levetettem ruhámat, hogy-hogy öltözhetném fel? Megmostam lábaimat, mi módon keverném azokat a porba?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Dilectus meus misit manum suam per foramen,  et venter meus intremuit ad tactum ejus.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Az én szerelmesem kezét benyujtá az ajtónakhasadékán, és az én belső részeim megindulának ő rajta.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Surrexi ut aperirem dilecto meo ;  manus meæ stillaverunt myrrham,  et digiti mei pleni myrrha probatissima.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Felkelék én, hogy az én szerelmesemnek megnyissam, és az én kezeimről mirha csepeg vala, és az én ujjaimról folyó mirha a závár kilincsére.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Pessulum ostii mei aperui dilecto meo,  at ille declinaverat, atque transierat.  Anima mea liquefacta est, ut locutus est ;  quæsivi, et non inveni illum ;  vocavi, et non respondit mihi.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Megnyitám az én szerelmesemnek; de az én szerelmesem elfordult, elment; az én lelkem megindult az ő beszédén: keresém őt, de nem találám, kiáltám őt, de nem felele nékem!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Invenerunt me custodes qui circumeunt civitatem ;  percusserunt me, et vulneraverunt me.  Tulerunt pallium meum mihi custodes murorum.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Megtalálának engem az őrizők, a kik a várost kerülik, megverének engem, megsebesítének engem, elvevék az én felöltőmet tőlem a kőfalnak őrizői.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Adjuro vos, filiæ Jerusalem,  si inveneritis dilectum meum,  ut nuntietis ei quia amore langueo.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Kényszerítelek titeket, Jeruzsálemnek leányai, ha megtaláljátok az én szerelmesemet, mit mondotok néki? hogy én a szerelem betege vagyok!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qualis est dilectus tuus ex dilecto, o pulcherrima mulierum ?  qualis est dilectus tuus ex dilecto, quia sic adjurasti nos ?</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Micsoda a te szerelmesed egyéb szerelmesek felett, oh asszonyoknak szépe? Micsoda a te szerelmesed egyéb szerelmesek felett, hogy minket ilyen igen kényszerítesz?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Dilectus meus candidus et rubicundus ;  electus ex millibus.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Az én szerelmesem fejér és piros, tízezer közül is kitetszik.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Caput ejus aurum optimum ;  comæ ejus sicut elatæ palmarum, nigræ quasi corvus.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Az ő feje, mint a választott drága megtisztított arany; fodor haja fekete, mint a hollónak.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Oculi ejus sicut columbæ super rivulos aquarum,  quæ lacte sunt lotæ, et resident juxta fluenta plenissima.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Az ő szemei mint a vízfolyás mellett való galambok, melyek tejben fürödnek, szépteljesen helyheztettek.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Genæ illius sicut areolæ aromatum,  consitæ a pigmentariis.  Labia ejus lilia,  distillantia myrrham primam.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Az ő orczája hasonlatos a drága füveknek táblájához, a melyek illatos plántákat nevelnek; az ő ajkai liliomok, melyekről csepegő mirha foly.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Manus illius tornatiles, aureæ,  plenæ hyacinthis.  Venter ejus eburneus,  distinctus sapphiris.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Az ő kezei aranyhengerek; melyek befoglaltattak topázba; az ő teste elefántcsontból való mű, zafirokkal megrakva.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Crura illius columnæ marmoreæ  quæ fundatæ sunt super bases aureas.  Species ejus ut Libani,  electus ut cedri.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Az ő szárai márványoszlopok; melyek tiszta arany talpakra fundáltattak; az ő tekinteti, mint a Libánus; tetszetes mint a czédrusfa.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Guttur illius suavissimum,  et totus desiderabilis.  Talis est dilectus meus,  et ipse est amicus meus, filiæ Jerusalem.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Az ő ínye édességek, és ő mindenestől fogva kívánatos! Ez az én szerelmesem, és ez az én barátom, oh Jeruzsálemnek leányai! Hová ment a te szerelmesed, oh asszonyoknak szépe? hová fordult a te szerelmesed, hogy keressük őt veled együtt? Az én szerelmesem, elment az ő kertébe, a drága füveknek táblái közé, hogy lakozzék a kertekben, és liliomokat szedjen. Én az én szerelmesemé vagyok, és az én szerelmesem enyim, a ki a liliomok közt legeltet.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quo abiit dilectus tuus, o pulcherrima mulierum ?  quo declinavit dilectus tuus ?  et quæremus eum tecum.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+  </section>
 
-<nav class="bnav">
-  <a href="021-ecc.html">&#8592; Ecclesiastes</a>
-  <a href="../index.html" class="center">↑ &nbsp; Inhaltsverzeichnis</a>
-  <a href="023-isa.html">Isaias &#8594;</a>
-</nav>
+  <section class="chapter" id="ch6">
+    <div class="chapter-marker">
+      <span class="ch-roman">VI</span>
+      <span class="ch-label">Caput 6</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v6-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Dilectus meus descendit in hortum suum ad areolam aromatum,  ut pascatur in hortis, et lilia colligat.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Szép vagy én mátkám, mint Tirsa városa, kedves, mint Jeruzsálem, rettenetes, mint a zászlós tábor.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ego dilecto meo, et dilectus meus mihi,  qui pascitur inter lilia.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Fordítsd el a te szemeidet én tőlem, mert azok megzavarnak engem. A te hajad olyan, mint a kecskéknek nyája, melyek a Gileádról szállanak alá.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Pulchra es, amica mea ;  suavis, et decora sicut Jerusalem ;  terribilis ut castrorum acies ordinata.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">A te fogaid hasonlók a juhok nyájához, melyek feljőnek a fördőből, melyek mind kettősöket ellenek, és meddő azok között nincsen.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Averte oculos tuos a me,  quia ipsi me avolare fecerunt.  Capilli tui sicut grex caprarum  quæ apparuerunt de Galaad.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Mint a pomagránát darabja a te vakszemed, a te fátyolod alatt.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Dentes tui sicut grex ovium  quæ ascenderunt de lavacro :  omnes gemellis fœtibus,  et sterilis non est in eis.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Hatvanan vannak a királynék, és nyolczvanan az ágyasok és számtalan a leányzó.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sicut cortex mali punici, sic genæ tuæ,  absque occultis tuis.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">És az én galambom, az én tökéletesem, az ő anyjának egyetlenegye, az ő szülőjének választottja. Látják a leányok, és boldognak mondják őt, a királynéasszonyok és az ágyasok, és dicsérik őt.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sexaginta sunt reginæ, et octoginta concubinæ,  et adolescentularum non est numerus.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Kicsoda az, a ki úgy láttatik mintegy hajnal, szép, mint a hold, tiszta, mint a nap, rettenetes, mint a zászlós tábor?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Una est columba mea, perfecta mea,  una est matris suæ, electa genetrici suæ.  Viderunt eam filiæ, et beatissimam prædicaverunt ;  reginæ et concubinæ, et laudaverunt eam.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">A diófás kertekbe mentem vala alá, hogy a völgynek zöld fűveit lássam; hogy megnézzem, ha fakad-é a szőlő, és a pomagránátfák virágzanak-é?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quæ est ista quæ progreditur quasi aurora consurgens,  pulchra ut luna, electa ut sol,  terribilis ut castrorum acies ordinata ?</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Nem tudtam, hogy az én elmém ültete engem az én nemes népemnek díszhintajába.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Descendi in hortum nucum,  ut viderem poma convallium,  et inspicerem si floruisset vinea,  et germinassent mala punica.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Térj meg, oh Sulamit! térj meg, térj meg, hogy nézzünk téged! Mit néztek Sulamiton? mintegy Machanaimbeli körtánczot!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nescivi : anima mea conturbavit me,  propter quadrigas Aminadab.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Revertere, revertere, Sulamitis !  revertere, revertere ut intueamur te.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch7">
+    <div class="chapter-marker">
+      <span class="ch-roman">VII</span>
+      <span class="ch-label">Caput 7</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v7-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quid videbis in Sulamite, nisi choros castrorum ?     Quam pulchri sunt gressus tui in calceamentis, filia principis !  Juncturæ femorum tuorum sicut monilia  quæ fabricata sunt manu artificis.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Oh mely szépek a te lépéseid a sarukban, oh fejedelem leánya! A te csípőd hajlásai olyanok, mint a kösöntyűk, mesteri kezeknek míve.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Umbilicus tuus crater tornatilis,  numquam indigens poculis.  Venter tuus sicut acervus tritici vallatus liliis.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">A te köldököd, mint a kerekded csésze, nem szűkölködik nedvesség nélkül; a te hasad mint a gabonaasztag, liliomokkal körül kerítve.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Duo ubera tua sicut duo hinnuli,  gemelli capreæ.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">A te két emlőd, mintkét őzike, a vadkecskének kettős fiai.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Collum tuum sicut turris eburnea ;  oculi tui sicut piscinæ in Hesebon  quæ sunt in porta filiæ multitudinis.  Nasus tuus sicut turris Libani,  quæ respicit contra Damascum.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">A te nyakad, mint az elefánttetemből csinált torony; a te szemeid, mint a Hesbonbeli halastók, a sok népű kapunál; a te orrod hasonló a Libánus tornyához, mely néz Damaskus felé.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Caput tuum ut Carmelus ;  et comæ capitis tui sicut purpura regis  vincta canalibus.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">A te fejed hasonló rajtad a Kármelhez, és a te fejeden hajadnak fonatékja a biborhoz, a király is megköttetnék fürteid által!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quam pulchra es, et quam decora,  carissima, in deliciis !</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Mely igen szép vagy és mely kedves, oh szerelem, a gyönyörűségek közt!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Statura tua assimilata est palmæ,  et ubera tua botris.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Ez a te termeted hasonló a pálmafához, és a te emlőid a szőlőgerézdekhez.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Dixi : Ascendam in palmam,  et apprehendam fructus ejus ;  et erunt ubera tua sicut botri vineæ,  et odor oris tui sicut malorum.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Azt mondám: felhágok a pálmafára, megfogom annak ágait: és lesznek a te emlőid, mint a szőlőnek gerézdei, és a te orrodnak illatja, mint az almának.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Guttur tuum sicut vinum optimum,  dignum dilecto meo ad potandum,  labiisque et dentibus illius ad ruminandum.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">És a te ínyed, mint a legjobb bor, melyet szerelmesem kedvére szürcsöl, mely szóra nyitja az alvók ajkait.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ego dilecto meo,  et ad me conversio ejus.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Én az én szerelmesemé vagyok, és engem kiván ő!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Veni, dilecte mi, egrediamur in agrum,  commoremur in villis.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">No, én szerelmesem, menjünk ki a mezőre, háljunk a falukban.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Mane surgamus ad vineas :  videamus si floruit vinea,  si flores fructus parturiunt,  si floruerunt mala punica ;  ibi dabo tibi ubera mea.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Felkelvén menjünk a szőlőkbe, lássuk meg, ha fakad-é a szőlő, ha kinyílott-é virágja, ha virágzanak-é a gránátalmafák: ott közlöm az én szerelmimet veled.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Mandragoræ dederunt odorem  in portis nostris omnia poma :  nova et vetera, dilecte mi, servavi tibi.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">A mandragórák illatoznak, és a mi ajtónk előtt vannak minden drágalátos gyümölcsök, ók és újak, melyeket ohén szerelmesem, néked megtartottam!</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch8">
+    <div class="chapter-marker">
+      <span class="ch-roman">VIII</span>
+      <span class="ch-label">Caput 8</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v8-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quis mihi det te fratrem meum,  sugentem ubera matris meæ,  ut inveniam te foris, et deosculer te,  et jam me nemo despiciat ?</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Vajha lennél nékem én atyámfia, ki az én anyámnak emlőjét szopta, hogy téged kivül találván megcsókolnálak; még sem útálnának meg engem.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Apprehendam te, et ducam in domum matris meæ :  ibi me docebis,  et dabo tibi poculum ex vino condito,  et mustum malorum granatorum meorum.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Elvinnélek, bevinnélek anyámnak házába, te oktatgatnál engem, én meg borral itatnálak, fűszeressel, gránátalma borral.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Læva ejus sub capite meo,  et dextera illius amplexabitur me.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Az ő balkeze az én fejem alatt, és jobbkezével megölel engem.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Adjuro vos, filiæ Jerusalem,  ne suscitetis, neque evigilare faciatis dilectam,  donec ipsa velit.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Kényszerítlek titeket, Jeruzsálemnek leányai, miért költenétek és miért serkentenétek fel a szerelmet, mígnem ő akarja?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quæ est ista quæ ascendit de deserto, deliciis affluens,  innixa super dilectum suum ?     Sub arbore malo suscitavi te ;  ibi corrupta est mater tua,  ibi violata est genitrix tua.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Kicsoda ez a ki feljő a pusztából, a ki az ő szerelmeséhez támaszkodik? Az almafa alatt költöttelek fel téged, ott szült téged a te anyád, ott szült téged a te szülőd!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Pone me ut signaculum super cor tuum,  ut signaculum super brachium tuum,  quia fortis est ut mors dilectio,  dura sicut infernus æmulatio :  lampades ejus lampades ignis atque flammarum.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Tégy engem mintegy pecsétet a te szívedre, mintegy pecsétet a te karodra; mert erős a szeretet, mint a halál, kemény, mint a sír a buzgó szerelem; lángjai tűznek lángjai, az Úrnak lángjai.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Aquæ multæ non potuerunt extinguere caritatem,  nec flumina obruent illam.  Si dederit homo omnem substantiam domus suæ pro dilectione,  quasi nihil despiciet eam.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Sok vizek el nem olthatnák e szeretetet: a folyóvizek sem boríthatnák azt el: ha az ember minden házabeli marháját adná is e szeretetért, mégismegvetnék azt.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Soror nostra parva,  et ubera non habet ;  quid faciemus sorori nostræ  in die quando alloquenda est ?</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Kicsiny húgunk van nékünk, a kinek nincsen még emlője; mit cselekedjünk a mi húgunk felől, a napon, melyen arról szót tesznek?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si murus est,  ædificemus super eum propugnacula argentea ;  si ostium est, compingamus illud tabulis cedrinis.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Ha ő kőfal, építünk azon ezüstből palotát; ha pedig ajtó ő, elrekesztjük őt czédrus-deszkával.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ego murus, et ubera mea sicut turris,  ex quo facta sum coram eo, quasi pacem reperiens.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Mikor én olyan leszek, minta kőfal, és az én emlőim, mint a tornyok; akkor olyan leszek ő előtte, mint a ki békességet nyer.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vinea fuit pacifico in ea quæ habet populos :  tradidit eam custodibus ;  vir affert pro fructu ejus mille argenteos.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Szőlője volt Salamonnak Baálhamonban, adta az ő szőlejét a pásztoroknak, kiki annak gyümölcséért hoz ezer-ezer ezüst siklust.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vinea mea coram me est.  Mille tui pacifici,  et ducenti his qui custodiunt fructus ejus.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Az én szőlőmre, mely én reám néz, nékem gondom lesz: az ezer siklus, Salamon, tiéd legyen, a kétszáz annak gyümölcsének őrizőié.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quæ habitas in hortis, amici auscultant ;  fac me audire vocem tuam.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Oh te, a ki lakol a kertekben! A te társaid a te szódra figyelmeznek; hadd halljam én is.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Fuge, dilecte mi, et assimilare capreæ,  hinnuloque cervorum super montes aromatum.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Fuss én szerelmesem, és légy hasonló a vadkecskéhez, vagy a szarvasnak fiához, a drága füveknek hegyein!</div>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <nav class="book-nav">
+    <a href="021-ecc.html">← Ecclesiastes</a>
+    <span class="center">Canticum Canticorum · Magyar</span>
+    <a href="023-isa.html">Isaias →</a>
+  </nav>
+
+  <footer class="page-footer">
+    BIBLIA CATHOLICA INTERLINEARIS &nbsp;·&nbsp; Vulgata Clementina &amp; Károli (1908)
+    &nbsp;·&nbsp; Gemeinfreie Texte / Public Domain
+  </footer>
 
 </body>
 </html>

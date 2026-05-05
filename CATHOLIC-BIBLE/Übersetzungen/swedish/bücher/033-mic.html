@@ -1,1037 +1,1119 @@
 <!DOCTYPE html>
 <html lang="sv">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Micheas &middot; Svenska &middot; Biblia Catholica</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&display=swap" rel="stylesheet">
-<style>
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
-body{
-  background:#2C0810;
-  background-image:radial-gradient(ellipse at 50% 20%,#4A1020 0%,#1A0407 100%);
-  font-family:'EB Garamond',serif;
-  color:#1A0E06;
-  font-size:17px;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Micheas · Svenska · Biblia Catholica</title>
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
+
+:root {
+  --gold:        #C8A96E;
+  --gold-light:  #EDD58A;
+  --gold-dark:   #8B6914;
+  --navy:        #1A1F3A;
+  --navy-mid:    #252B4A;
+  --navy-light:  #2E3560;
+  --parchment:   #F5E9CC;
+  --parchment-d: #EDD9A3;
+  --cream:       #FDF6E3;
+  --latin-color: #6B1E0E;
+  --trans-color: #0F1D2E;
+  --border:      rgba(200,169,110,.35);
+  --font-title:  'Cinzel Decorative', 'Cinzel', Georgia, serif;
+  --font-sub:    'Cinzel', Georgia, serif;
+  --font-body:   'EB Garamond', Georgia, serif;
 }
 
-/* ──────────────────────────────────────────
-   BUCHKOPF
-────────────────────────────────────────── */
-.bhead{
-  background:
-    repeating-linear-gradient( 45deg,transparent,transparent 36px,rgba(200,160,48,.028) 36px,rgba(200,160,48,.028) 37px),
-    repeating-linear-gradient(-45deg,transparent,transparent 36px,rgba(200,160,48,.028) 36px,rgba(200,160,48,.028) 37px),
-    linear-gradient(162deg,#2C0810 0%,#4A1020 45%,#5C1828 65%,#4A1020 85%,#2C0810 100%);
-  padding:36px 28px 28px;
-  text-align:center;
-  border-bottom:4px solid #B8962E;
-  position:relative;overflow:hidden;
-}
-/* Innerer Rahmen — äußerer Ring */
-.bhead::before{
-  content:'';position:absolute;inset:14px;
-  border:1px solid rgba(200,160,48,.22);
-  pointer-events:none;
-}
-/* Innerer Rahmen — innerer Ring */
-.bhead::after{
-  content:'';position:absolute;inset:22px;
-  border:1px solid rgba(200,160,48,.08);
-  pointer-events:none;
-}
-.btestament{
-  display:inline-block;
-  border:1px solid rgba(200,160,48,.32);
-  color:rgba(200,160,48,.52);
-  font-family:'Cinzel',serif;font-size:.55rem;
-  letter-spacing:.3em;padding:4px 18px;
-  border-radius:2px;margin-bottom:16px;
-  position:relative;
-}
-.blatin{
-  font-family:'Cinzel Decorative',serif;
-  font-size:clamp(1.9rem,7vw,3.4rem);
-  color:#EDD882;
-  text-shadow:0 3px 20px rgba(0,0,0,.55);
-  letter-spacing:.06em;position:relative;
-}
-.btrans{
-  font-family:'Cinzel',serif;
-  font-size:.88rem;
-  color:#C8A030;margin-top:10px;
-  letter-spacing:.16em;position:relative;
-}
-.bmeta{
-  font-family:'Cinzel',serif;font-size:.62rem;
-  color:rgba(200,160,48,.4);margin-top:6px;
-  letter-spacing:.08em;position:relative;
-}
+*,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+html { font-size:16px; scroll-behavior:smooth; }
+body { background:var(--cream); color:var(--trans-color); font-family:var(--font-body); }
 
-/* ──────────────────────────────────────────
-   KAPITELINHALT
-────────────────────────────────────────── */
-.content{
-  max-width:960px;
-  margin:36px auto 36px;
-  padding:48px 72px 100px;
-  background:#FAF5E8;
+/* ── NAV ─────────────────────────────────────────────── */
+.nav-bar {
+  background:var(--navy); padding:10px 28px;
+  display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  border-bottom:2px solid var(--gold);
+  position:sticky; top:0; z-index:100;
+  box-shadow:0 3px 12px rgba(0,0,0,.45);
+}
+.nav-bar a {
+  color:var(--gold); text-decoration:none;
+  font-family:var(--font-sub); font-size:.75rem; letter-spacing:.05em;
+  transition:color .15s;
+}
+.nav-bar a:hover { color:var(--gold-light); }
+.nav-bar .home { font-weight:700; font-size:.82rem; }
+.nav-bar .spacer { flex:1; }
+.nav-bar .pos { color:rgba(200,169,110,.45); font-size:.7rem; font-family:var(--font-sub); }
+
+/* ── BUCHKOPF ────────────────────────────────────────── */
+.book-header {
+  background:linear-gradient(160deg,var(--navy) 0%,var(--navy-mid) 55%,var(--navy-light) 100%);
+  padding:44px 36px 34px; text-align:center;
+  border-bottom:4px solid var(--gold);
+  position:relative; overflow:hidden;
+}
+.book-header::before {
+  content:'';
+  position:absolute; inset:0;
   background-image:
-    radial-gradient(ellipse at top left,rgba(184,150,46,.06) 0%,transparent 55%),
-    radial-gradient(ellipse at bottom right,rgba(184,150,46,.05) 0%,transparent 55%);
-  box-shadow:0 8px 80px rgba(0,0,0,.55),0 2px 12px rgba(0,0,0,.35),inset 0 0 0 1px rgba(184,150,46,.18);
-  border-left:4px solid #B8962E;
-  border-right:4px solid #B8962E;
-  border-top:2px solid rgba(184,150,46,.4);
-  border-bottom:2px solid rgba(184,150,46,.4);
-  position:relative;
-}
-.content::before{
-  content:'';
-  position:absolute;
-  inset:12px;
-  border:1px solid rgba(184,150,46,.08);
+    repeating-linear-gradient( 45deg,transparent,transparent 30px,rgba(200,169,110,.038) 30px,rgba(200,169,110,.038) 31px),
+    repeating-linear-gradient(-45deg,transparent,transparent 30px,rgba(200,169,110,.038) 30px,rgba(200,169,110,.038) 31px);
   pointer-events:none;
 }
-
-.chap{margin-top:0;}
-
-.chhead{
-  text-align:center;
-  padding:40px 0 20px;
-  margin-bottom:16px;
-  position:relative;
+.testament-badge {
+  display:inline-block;
+  border:1px solid rgba(200,169,110,.4); color:rgba(200,169,110,.65);
+  font-family:var(--font-sub); font-size:.62rem; letter-spacing:.25em;
+  padding:4px 14px; border-radius:2px; margin-bottom:14px; position:relative;
 }
-.chhead::before{
-  content:'——— ✦ ✦ ✦ ———';
-  display:block;
-  font-size:.7rem;
-  color:rgba(184,150,46,.45);
-  letter-spacing:.35em;
-  margin-bottom:16px;
+.book-name-latin {
+  font-family:var(--font-title); font-size:3rem; color:var(--gold-light);
+  text-shadow:0 3px 18px rgba(0,0,0,.55); letter-spacing:.08em; position:relative;
 }
-.chhead::after{
-  content:'';
-  display:block;
-  width:200px;
-  height:1px;
-  margin:14px auto 0;
-  background:linear-gradient(to right,transparent,#B8962E,transparent);
+.book-name-trans {
+  font-family:var(--font-sub); font-size:1.1rem; color:var(--gold);
+  margin-top:8px; letter-spacing:.12em; position:relative;
 }
-.chrom{
-  font-family:'Cinzel Decorative',serif;
-  font-size:4rem;color:#8B6914;
-  display:block;
-  text-shadow:0 2px 18px rgba(184,150,46,.2);
-  line-height:1;
-}
-.chlbl{
-  font-family:'Cinzel',serif;font-size:.58rem;
-  color:rgba(184,150,46,.42);letter-spacing:.32em;
-  display:block;margin-top:8px;
+.book-meta {
+  font-size:.74rem; color:rgba(200,169,110,.5); margin-top:7px;
+  font-family:var(--font-sub); letter-spacing:.07em; position:relative;
 }
 
-/* ──────────────────────────────────────────
-   VERSE
-────────────────────────────────────────── */
-.vb{
-  display:flex;
-  padding:20px 6px;
-  border-bottom:1px solid rgba(184,150,46,.12);
-  background:none;
-  border-radius:2px;
-  transition:background .15s;
-}
-.vb:hover{
-  background:rgba(184,150,46,.04);
+/* ── ORNAMENT-TRENNLINIE ─────────────────────────────── */
+.ornament-bar {
+  text-align:center; padding:16px 0 4px;
+  color:var(--gold); font-size:1.1rem; letter-spacing:.7em;
 }
 
-/* Versnummer */
-.vn{
-  flex-shrink:0;
-  width:38px;
-  padding-top:4px;
-  font-family:'Cinzel',serif;font-size:.56rem;
-  color:rgba(184,150,46,.52);text-align:right;
-  padding-right:12px;line-height:2.4;
+/* ── HAUPT-CONTAINER ─────────────────────────────────── */
+.content { max-width:960px; margin:0 auto; padding:0 24px 80px; }
+
+/* ── KAPITEL-MARKER ──────────────────────────────────── */
+.chapter-marker {
+  display:flex; align-items:center; gap:16px;
+  padding:28px 6px 12px; margin-bottom:4px;
+  border-bottom:2px solid var(--border);
+}
+.ch-roman {
+  font-family:var(--font-title); font-size:2.2rem; color:var(--gold);
+  min-width:56px; text-align:center; flex-shrink:0;
+  text-shadow:0 1px 8px rgba(200,169,110,.3);
+}
+.ch-label {
+  font-family:var(--font-sub); font-size:.72rem; color:rgba(200,169,110,.6);
+  letter-spacing:.22em; text-transform:uppercase;
 }
 
-.vt{
-  flex:1;
-  padding:0 20px 0 4px;
+/* ── VERS-BLOCK ──────────────────────────────────────── */
+.verse-block {
+  display:flex; gap:0; border-bottom:1px solid rgba(200,169,110,.15);
+}
+.verse-block:nth-child(odd)  { background:var(--cream); }
+.verse-block:nth-child(even) { background:var(--parchment); }
+
+.verse-num-col {
+  flex-shrink:0; width:42px; padding:16px 6px 16px 0; text-align:right;
+}
+.verse-num {
+  display:inline-block; width:28px; height:28px; border-radius:50%;
+  background:var(--gold-dark); color:var(--cream);
+  font-family:var(--font-sub); font-size:.64rem; font-weight:700;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 1px 5px rgba(0,0,0,.25);
 }
 
-/* LATEIN — PRIMÄR: groß, warm, maßgebend */
-.lat{
-  font-family:'EB Garamond',serif;
-  font-size:1.2rem;
-  font-weight:500;
-  line-height:2.1;
-  color:#3D1A08;
+.verse-texts { flex:1; padding:16px 16px 18px 8px; }
+
+/* ── LATEINISCHER TEXT (oben / primär) ───────────────── */
+.latin {
+  font-family:var(--font-body); font-size:1.12rem; line-height:1.9;
+  color:var(--latin-color); font-weight:500;
+  border-left:3px solid var(--gold); padding-left:12px;
+  margin-bottom:8px;
 }
 
-/* ÜBERSETZUNG — SEKUNDÄR: kleiner, kursiv, unter dem Latein */
-.tra{
-  font-family:'EB Garamond',serif;
-  font-size:.93rem;
-  font-style:italic;
-  line-height:1.95;
-  color:#1E2848;
-  margin-top:5px;
-  padding-left:14px;
-  border-left:2px solid rgba(90,110,170,.2);
+/* ── ÜBERSETZUNGS-TEXT (unten / sekundär) ────────────── */
+.trans-label {
+  font-family:var(--font-sub); font-size:.6rem; letter-spacing:.17em;
+  text-transform:uppercase; color:var(--gold-dark); margin-bottom:5px; opacity:.78;
+}
+.trans {
+  font-family:var(--font-body); font-size:1.04rem; line-height:1.85;
+  color:var(--trans-color); font-style:italic;
+  padding-left:15px;
 }
 
-/* Drop-Cap: erster Vers eines Kapitels — auf dem Latein */
-.vb.first .lat::first-letter{
-  font-family:'Cinzel Decorative',serif;
-  font-size:4em;
-  float:left;
-  line-height:.7;
-  padding-right:.08em;
-  margin-top:.07em;
-  color:#B8962E;
-  text-shadow:1px 2px 6px rgba(0,0,0,.12);
+/* Erste Vers jedes Kapitels: Drop-Cap */
+.verse-block:first-of-type .latin::first-letter {
+  font-size:4.2em; float:left; line-height:.72;
+  padding-right:.08em; margin-top:.06em;
+  font-family:var(--font-title); color:var(--gold);
 }
 
-/* ──────────────────────────────────────────
-   BUCH-NAVIGATION (unten)
-────────────────────────────────────────── */
-.bnav{
-  display:flex;justify-content:space-between;align-items:center;
-  background:#2C0810;border-top:3px solid #B8962E;
-  padding:12px 24px;gap:12px;
+/* ── NAVIGATION ZWISCHEN BÜCHERN ─────────────────────── */
+.book-nav {
+  display:flex; justify-content:space-between; align-items:center;
+  background:var(--navy); border-top:3px solid var(--gold);
+  padding:12px 26px; gap:12px;
 }
-.bnav a,.bnav .dim{
-  color:#C8A030;text-decoration:none;
-  font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:.07em;
-  padding:6px 16px;
-  border:1px solid rgba(200,160,48,.28);
-  border-radius:2px;transition:background .18s;
+.book-nav a {
+  color:var(--gold); text-decoration:none;
+  font-family:var(--font-sub); font-size:.78rem; letter-spacing:.07em;
+  padding:6px 14px; border:1px solid rgba(200,169,110,.3); border-radius:3px;
+  transition:background .18s;
 }
-.bnav a:hover{background:rgba(200,160,48,.12);}
-.bnav .dim{color:rgba(200,160,48,.2);border-color:rgba(200,160,48,.1);}
-.bnav .center{
-  font-family:'Cinzel',serif;font-size:.68rem;
-  color:rgba(200,160,48,.65);text-align:center;
-  letter-spacing:.06em;text-decoration:none;
-  border:1px solid rgba(200,160,48,.28);border-radius:2px;
-  padding:6px 20px;transition:background .18s;
-}
-.bnav .center:hover{background:rgba(200,160,48,.1);}
-
-/* DRUCK */
-@media print{
-  .bnav{display:none;}
-  .bhead{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-  .vb{break-inside:avoid;}
+.book-nav a:hover { background:rgba(200,169,110,.15); }
+.book-nav .center {
+  font-family:var(--font-sub); font-size:.7rem; color:rgba(200,169,110,.55);
+  letter-spacing:.1em; text-align:center;
 }
 
-/* MOBIL */
-@media(max-width:600px){
-  .blatin{font-size:1.8rem;}
-  .lat{font-size:1rem;}
-  .tra{font-size:.84rem;}
-  .content{padding:16px 18px 60px;margin:0;border-left:none;border-right:none;border-radius:0;}
-  .chrom{font-size:1.8rem;}
+/* ── FUßZEILE ────────────────────────────────────────── */
+.page-footer {
+  background:var(--navy); border-top:2px solid rgba(200,169,110,.3);
+  padding:18px 28px; text-align:center;
+  color:rgba(200,169,110,.45); font-family:var(--font-sub);
+  font-size:.68rem; letter-spacing:.1em;
+}
+
+/* ── DRUCK ───────────────────────────────────────────── */
+@media print {
+  .nav-bar, .book-nav { display:none; }
+  .verse-block { break-inside:avoid; }
+  .book-header { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+}
+
+/* ── MOBIL ───────────────────────────────────────────── */
+@media (max-width:640px) {
+  .book-name-latin { font-size:2.1rem; }
+  .ch-roman { font-size:1.6rem; }
+  .latin { font-size:.98rem; }
+  .trans { font-size:.93rem; }
+  .content { padding:0 12px 60px; }
 }
 </style>
 </head>
 <body>
 
-<header class="bhead">
-  <div class="btestament">VETUS TESTAMENTUM</div>
-  <div class="blatin">MICHEAS</div>
-  <div class="btrans">Mika &nbsp;&middot;&nbsp; <em>Svenska</em></div>
-  <div class="bmeta">7 Capita &nbsp;&middot;&nbsp; 104 Versus</div>
-</header>
+  <nav class="nav-bar">
+    <a class="home" href="../../../index.html">✞ BIBLIA CATHOLICA</a>
+    <a href="../index.html">🇸🇪 Svenska</a>
+    <span class="spacer"></span>
+    <span class="pos">033 / 073</span>
+  </nav>
 
-<main class="content">
-<section class="chap" id="c1">
-  <div class="chhead">
-    <span class="chrom">I</span>
-    <span class="chlbl">Caput 1</span>
-  </div>
-<div class="vb first" id="v1-1">
-  <span class="vn">1</span>
-  <div class="vt">
-    <p class="lat">Verbum Domini, quod factum est ad Michæam Morasthiten, in diebus Joathan, Achaz, et Ezechiæ, regum Juda, quod vidit super Samariam et Jerusalem.</p>
-    <p class="tra">Detta är HERRENS ord som kom till morastiten Mika i Jotams, Ahas' och Hiskias, Juda konungars, tid, vad han skådade angående Samaria och Jerusalem.</p>
-  </div>
-</div>
-<div class="vb" id="v1-2">
-  <span class="vn">2</span>
-  <div class="vt">
-    <p class="lat">Audite, populi omnes,  et attendat terra, et plenitudo ejus :  et sit Dominus Deus vobis in testem,  Dominus de templo sancto suo.</p>
-    <p class="tra">Hören, I folk, allasammans; akta härpå, du jord med allt vad på dig är. Och vare Herren, HERREN ett vittne mot eder, Herren i sitt heliga tempel.</p>
-  </div>
-</div>
-<div class="vb" id="v1-3">
-  <span class="vn">3</span>
-  <div class="vt">
-    <p class="lat">Quia ecce Dominus egredietur de loco suo,  et descendet, et calcabit super excelsa terræ.</p>
-    <p class="tra">Ty se, HERREN träder ut ur sin boning, han far ned och går fram över jordens höjder.</p>
-  </div>
-</div>
-<div class="vb" id="v1-4">
-  <span class="vn">4</span>
-  <div class="vt">
-    <p class="lat">Et consumentur montes subtus eum,  et valles scindentur sicut cera a facie ignis,  et sicut aquæ quæ decurrunt in præceps.</p>
-    <p class="tra">Bergen smälta under hans fötter, och dalar bryta sig fram -- såsom vaxet gör för elden, såsom vattnet, när det störtar utför branten.</p>
-  </div>
-</div>
-<div class="vb" id="v1-5">
-  <span class="vn">5</span>
-  <div class="vt">
-    <p class="lat">In scelere Jacob omne istud,  et in peccatis domus Israël.  Quod scelus Jacob ? nonne Samaria ?  et quæ excelsa Judæ ? nonne Jerusalem ?</p>
-    <p class="tra">Genom Jakobs överträdelse sker allt detta och genom Israels hus' synder. Vem är då upphovet till Jakobs överträdelse? Är det icke Samaria? Och vem till Juda offerhöjder? Är det icke Jerusalem?</p>
-  </div>
-</div>
-<div class="vb" id="v1-6">
-  <span class="vn">6</span>
-  <div class="vt">
-    <p class="lat">Et ponam Samariam quasi acervum lapidum in agro,  cum plantatur vinea ;  et detraham in vallem lapides ejus,  et fundamenta ejus revelabo.</p>
-    <p class="tra">Så skall jag då göra Samaria till en stenhop på marken, till en plats för vingårdsplanteringar; jag skall vräka hennes stenar ned i dalen, och hennes grundvalar skall jag blotta.</p>
-  </div>
-</div>
-<div class="vb" id="v1-7">
-  <span class="vn">7</span>
-  <div class="vt">
-    <p class="lat">Et omnia sculptilia ejus concidentur,  et omnes mercedes ejus comburentur igne,  et omnia idola ejus ponam in perditionem,  quia de mercedibus meretricis congregata sunt,  et usque ad mercedem meretricis revertentur.</p>
-    <p class="tra">Alla hennes beläten skola bliva krossade, alla hennes skökoskänker uppbrända i eld, alla hennes avgudar skall jag förstöra; ty av skökolön har hon hopsamlat dem, och skökolön skola de åter bliva.</p>
-  </div>
-</div>
-<div class="vb" id="v1-8">
-  <span class="vn">8</span>
-  <div class="vt">
-    <p class="lat">Super hoc plangam, et ululabo ;  vadam spoliatus, et nudus ;  faciam planctum velut draconum,  et luctum quasi struthionum :</p>
-    <p class="tra">Fördenskull måste jag klaga och jämra mig, jag måste gå barfota och naken; jag måste upphäva klagoskri såsom en schakal och sorgelåt såsom en struts.</p>
-  </div>
-</div>
-<div class="vb" id="v1-9">
-  <span class="vn">9</span>
-  <div class="vt">
-    <p class="lat">quia desperata est plaga ejus,  quia venit usque ad Judam ;  tetigit portam populi mei usque ad Jerusalem.</p>
-    <p class="tra">Ty ohelbara äro hennes sår; slaget har nått ända till Juda, det har drabbat ända till mitt folks port, ända till Jerusalem.</p>
-  </div>
-</div>
-<div class="vb" id="v1-10">
-  <span class="vn">10</span>
-  <div class="vt">
-    <p class="lat">In Geth nolite annuntiare ;  lacrimis ne ploretis ;  in domo pulveris pulvere vos conspergite.</p>
-    <p class="tra">Förkunnen det icke i Gat; gråten icke så bittert. I Bet-Leafra vältrar jag mig i stoftet.</p>
-  </div>
-</div>
-<div class="vb" id="v1-11">
-  <span class="vn">11</span>
-  <div class="vt">
-    <p class="lat">Et transite vobis, habitatio pulchra, confusa ignominia :  non est egressa quæ habitat in exitu :  planctum domus vicina accipiet ex vobis, quæ stetit sibimet.</p>
-    <p class="tra">Dragen åstad, I Safirs invånare, i nakenhet och skam. Saanans invånare våga sig icke ut. Klagolåten i Bet-Haesel tillstädjer eder ej att dröja där.</p>
-  </div>
-</div>
-<div class="vb" id="v1-12">
-  <span class="vn">12</span>
-  <div class="vt">
-    <p class="lat">Quia infirmata est in bonum,  quæ habitat in amaritudinibus ;  quia descendit malum a Domino in portam Jerusalem.</p>
-    <p class="tra">Ty Marots invånare våndas efter tröst; ned ifrån HERREN har ju en olycka kommit, intill Jerusalems port.</p>
-  </div>
-</div>
-<div class="vb" id="v1-13">
-  <span class="vn">13</span>
-  <div class="vt">
-    <p class="lat">Tumultus quadrigæ stuporis habitanti Lachis :  principium peccati est filiæ Sion,  quia in te inventa sunt scelera Israël.</p>
-    <p class="tra">Spännen travare för vagnen, I Lakis' invånare, I som voren upphovet till dottern Sions synd; ty hos eder var det som Israels överträdelser först funnos.</p>
-  </div>
-</div>
-<div class="vb" id="v1-14">
-  <span class="vn">14</span>
-  <div class="vt">
-    <p class="lat">Propterea dabit emissarios super hæreditatem Geth,  domus mendacii in deceptionem regibus Israël.</p>
-    <p class="tra">Därför måste du giva skiljebrev åt Moreset-Gat. Husen i Aksib hava för Israels konungar blivit såsom en försinande bäck.</p>
-  </div>
-</div>
-<div class="vb" id="v1-15">
-  <span class="vn">15</span>
-  <div class="vt">
-    <p class="lat">Adhuc hæredem adducam tibi quæ habitas in Maresa ;  usque ad Odollam veniet gloria Israël.</p>
-    <p class="tra">Ännu en gång skall jag låta erövraren komma över eder, I Maresas invånare. Ända till Adullam skall Israels härlighet komma.</p>
-  </div>
-</div>
-<div class="vb" id="v1-16">
-  <span class="vn">16</span>
-  <div class="vt">
-    <p class="lat">Decalvare, et tondere super filios deliciarum tuarum ;  dilata calvitium tuum sicut aquila,  quoniam captivi ducti sunt ex te.</p>
-    <p class="tra">Raka dig skallig och skär av ditt hår, i sorg över barnen, som voro din lust; gör ditt huvud så kalt som gamens, ty de skola föras bort ifrån dig.</p>
-  </div>
-</div>
-</section>
+  <header class="book-header">
+    <div class="testament-badge">VETUS TESTAMENTUM</div>
+    <div class="book-name-latin">MICHEAS</div>
+    <div class="book-name-trans">Micah</div>
+    <div class="book-meta">Vulgata Clementina · Svenska Bibeln · 7 Capita · 104 Versus</div>
+  </header>
 
-<section class="chap" id="c2">
-  <div class="chhead">
-    <span class="chrom">II</span>
-    <span class="chlbl">Caput 2</span>
-  </div>
-<div class="vb first" id="v2-1">
-  <span class="vn">1</span>
-  <div class="vt">
-    <p class="lat">Væ qui cogitatis inutile,  et operamini malum in cubilibus vestris !  In luce matutina faciunt illud,  quoniam contra Deum est manus eorum.</p>
-    <p class="tra">Ve dessa som tänka ut vad fördärvligt är och bereda vad ont är på sina läger, och som sätta det i verket, så snart morgonen gryr, allenast det står i deras makt;</p>
-  </div>
-</div>
-<div class="vb" id="v2-2">
-  <span class="vn">2</span>
-  <div class="vt">
-    <p class="lat">Et concupierunt agros, et violenter tulerunt :  et rapuerunt domos,  et calumniabantur virum, et domum ejus :  virum, et hæreditatem ejus.</p>
-    <p class="tra">dessa som hava begärelse till sin nästas åkrar och röva dem, eller till hans hus och tillägna sig dem; dessa som öva våld mot både människor och hus, mot både ägare och egendom!</p>
-  </div>
-</div>
-<div class="vb" id="v2-3">
-  <span class="vn">3</span>
-  <div class="vt">
-    <p class="lat">Idcirco hæc dicit Dominus :  Ecce ego cogito super familiam istam malum,  unde non auferetis colla vestra,  et non ambulabitis superbi :  quoniam tempus pessimum est.</p>
-    <p class="tra">Därför säger HERREN så: Se, jag tänker ut mot detta släkte vad ont är; och I skolen icke kunna draga eder hals därur, ej heller skolen I sedan gå så stolta, ty det bliver en ond tid.</p>
-  </div>
-</div>
-<div class="vb" id="v2-4">
-  <span class="vn">4</span>
-  <div class="vt">
-    <p class="lat">In die illa sumetur super vos parabola,  et cantabitur canticum cum suavitate, dicentium :  Depopulatione vastati sumus ;  pars populi mei commutata est :  quomodo recedet a me, cum revertatur,  qui regiones nostras dividat ?</p>
-    <p class="tra">På den dagen skall man stämma upp en visa över eder och sjunga en sorgesång; man skall säga:  »Det är ute med oss, vi äro förstörda i grund! Mitt folks arvslott bliver nu given åt en annan. Ja i sanning, den ryckes ifrån mig, och åt avfällingar utskiftas våra åkrar.»</p>
-  </div>
-</div>
-<div class="vb" id="v2-5">
-  <span class="vn">5</span>
-  <div class="vt">
-    <p class="lat">Propter hoc non erit tibi mittens funiculum sortis in cœtu Domini.</p>
-    <p class="tra">Så sker det att hos dig icke mer finnes någon som får spänna mätsnöre över en lott i HERRENS församling.</p>
-  </div>
-</div>
-<div class="vb" id="v2-6">
-  <span class="vn">6</span>
-  <div class="vt">
-    <p class="lat">Ne loquamini loquentes ;  non stillabit super istos, non comprehendet confusio.</p>
-    <p class="tra">»Hören då upp att predika», så är deras predikan; »om sådant får man icke predika; det är ju ingen ände på smädelser!»</p>
-  </div>
-</div>
-<div class="vb" id="v2-7">
-  <span class="vn">7</span>
-  <div class="vt">
-    <p class="lat">Dicit domus Jacob :  Numquid abbreviatus est spiritus Domini,  aut tales sunt cogitationes ejus ?  nonne verba mea bona sunt cum eo qui recte graditur ?</p>
-    <p class="tra">Är detta ett tillbörligt tal, du Jakobs hus? Har då HERREN varit snar till vrede? Hava hans gärningar visat något sådant? Äro icke fastmer mina ord milda mot den som vandrar redligt?</p>
-  </div>
-</div>
-<div class="vb" id="v2-8">
-  <span class="vn">8</span>
-  <div class="vt">
-    <p class="lat">et e contrario populus meus in adversarium consurrexit.  Desuper tunica pallium sustulistis :  et eos qui transibant simpliciter convertistis in bellum.</p>
-    <p class="tra">Men nu sedan en tid uppreser sig mitt folk såsom en fiende. I sliten manteln bort ifrån kläderna på människor som trygga gå sin väg fram och ej vilja veta av strid.</p>
-  </div>
-</div>
-<div class="vb" id="v2-9">
-  <span class="vn">9</span>
-  <div class="vt">
-    <p class="lat">Mulieres populi mei ejecistis de domo deliciarum suarum ;  a parvulis earum tulistis laudem meam in perpetuum.</p>
-    <p class="tra">Mitt folks kvinnor driven I ut från de hem där de hade sin lust; deras barn beröven I för alltid den berömmelse de hade av mig.</p>
-  </div>
-</div>
-<div class="vb" id="v2-10">
-  <span class="vn">10</span>
-  <div class="vt">
-    <p class="lat">Surgite, et ite, quia non habetis hic requiem :  propter immunditiam ejus corrumpetur putredine pessima.</p>
-    <p class="tra">Stån upp och gån eder väg! Här skolen I icke hava någon vilostad, för eder orenhets skull, som drager i fördärv, ja, i gruvligt fördärv.</p>
-  </div>
-</div>
-<div class="vb" id="v2-11">
-  <span class="vn">11</span>
-  <div class="vt">
-    <p class="lat">Utinam non essem vir habens spiritum,  et mendacium potius loquerer !  Stillabo tibi in vinum et in ebrietatem ;  et erit super quem stillatur populus iste.</p>
-    <p class="tra">Om någon som fore med munväder och falskhet sade i sin lögnaktighet: »Jag vill predika för dig om vin och starka drycker» -- det vore en predikare för detta folk!</p>
-  </div>
-</div>
-<div class="vb" id="v2-12">
-  <span class="vn">12</span>
-  <div class="vt">
-    <p class="lat">Congregatione congregabo, Jacob, totum te ;  in unum conducam reliquias Israël :  pariter ponam illum quasi gregem in ovili,  quasi pecus in medio caularum :  tumultuabuntur a multitudine hominum.</p>
-    <p class="tra">Jag vill församla dig, Jakob, ja, hela ditt folk. Jag vill hämta tillhopa Israels kvarlevor, jag vill föra dem tillsammans såsom fåren till fållan, såsom en hjord till dess betesmark, så att där uppstår ett gny av människor.</p>
-  </div>
-</div>
-<div class="vb" id="v2-13">
-  <span class="vn">13</span>
-  <div class="vt">
-    <p class="lat">Ascendet enim pandens iter ante eos :  divident, et transibunt portam,  et ingredientur per eam :  et transibit rex eorum coram eis,  et Dominus in capite eorum.</p>
-    <p class="tra">En vägbrytare drager ut framför dem; de bryta sig igenom och tåga fram, genom porten vandra de ut. Deras konung tågar framför dem, HERREN går i spetsen för dem.</p>
-  </div>
-</div>
-</section>
+  <div class="ornament-bar">❧ ✦ ❧ ✦ ❧</div>
 
-<section class="chap" id="c3">
-  <div class="chhead">
-    <span class="chrom">III</span>
-    <span class="chlbl">Caput 3</span>
-  </div>
-<div class="vb first" id="v3-1">
-  <span class="vn">1</span>
-  <div class="vt">
-    <p class="lat">Et dixi : Audite, princeps Jacob,  et duces domus Israël :  numquid non vestrum est scire judicium,</p>
-    <p class="tra">Och jag sade: Hören, I Jakobs hövdingar och I furstar av Israels hus. Tillkommer det ej eder att veta vad rätt är,</p>
-  </div>
-</div>
-<div class="vb" id="v3-2">
-  <span class="vn">2</span>
-  <div class="vt">
-    <p class="lat">qui odio habetis bonum, et diligitis malum ;  qui violenter tollitis pelles eorum desuper eis,  et carnem eorum desuper ossibus eorum ;</p>
-    <p class="tra">I som haten det goda och älsken det onda, I som sliten huden av kroppen på människorna och köttet från deras ben?</p>
-  </div>
-</div>
-<div class="vb" id="v3-3">
-  <span class="vn">3</span>
-  <div class="vt">
-    <p class="lat">qui comederunt carnem populi mei,  et pellem eorum desuper excoriaverunt,  et ossa eorum confregerunt,  et conciderunt sicut in lebete,  et quasi carnem in medio ollæ ?</p>
-    <p class="tra">Men eftersom dessa äta mitt folks kött och riva huden av deras kropp och bryta sönder deras ben, för att stycka dem likasom det man kastar i grytan, ja, likasom kött som lägges i kitteln,</p>
-  </div>
-</div>
-<div class="vb" id="v3-4">
-  <span class="vn">4</span>
-  <div class="vt">
-    <p class="lat">Tunc clamabunt ad Dominum, et non exaudiet eos,  et abscondet faciem suam ab eis in tempore illo,  sicut nequiter egerunt in adinventionibus suis.</p>
-    <p class="tra">därför skall HERREN icke svara dem, när de ropa till honom; han skall dölja sitt ansikte för dem på den tiden, för deras onda väsendes skull.</p>
-  </div>
-</div>
-<div class="vb" id="v3-5">
-  <span class="vn">5</span>
-  <div class="vt">
-    <p class="lat">Hæc dicit Dominus super prophetas,  qui seducunt populum meum :  qui mordent dentibus suis,  et prædicant pacem ;  et si quis non dederit in ore eorum quippiam,  sanctificant super eum prælium.</p>
-    <p class="tra">Så talar HERREN mot de profeter som föra mitt folk vilse, mot dem som ropa: »Allt står väl till!», så länge de hava något att tugga med sina tänder, men båda upp folket till helig strid mot den som ej giver dem något i gapet.</p>
-  </div>
-</div>
-<div class="vb" id="v3-6">
-  <span class="vn">6</span>
-  <div class="vt">
-    <p class="lat">Propterea nox vobis pro visione erit,  et tenebræ vobis pro divinatione ;  et occumbet sol super prophetas,  et obtenebrabitur super eos dies.</p>
-    <p class="tra">Därför skall natt komma över eder, så att det bliver slut på     Ja, solen skall gå ned över profeterna och dagen varda mörk över dem.</p>
-  </div>
-</div>
-<div class="vb" id="v3-7">
-  <span class="vn">7</span>
-  <div class="vt">
-    <p class="lat">Et confundentur qui vident visiones,  et confundentur divini ;  et operient omnes vultos suos,  quia non est responsum Dei.</p>
-    <p class="tra">Siarna skola stå där med skam, och spåmännen skola få blygas; de skola alla nödgas skyla sitt skägg, då nu intet svar mer kommer från Gud.</p>
-  </div>
-</div>
-<div class="vb" id="v3-8">
-  <span class="vn">8</span>
-  <div class="vt">
-    <p class="lat">Verumtamen ego repletus sum fortitudine spiritus Domini,  judicio, et virtute,  ut annuntiem Jacob scelus suum,  et Israël peccatum suum.</p>
-    <p class="tra">Men jag, jag är uppfylld med kraft, ja, med HERRENS Ande, med rättsinne och frimodighet, så att jag kan förkunna för Jakob hans överträdelse och för Israel hans synd.</p>
-  </div>
-</div>
-<div class="vb" id="v3-9">
-  <span class="vn">9</span>
-  <div class="vt">
-    <p class="lat">Audite hoc, principes domus Jacob,  et judices domus Israël,  qui abominamini judicium,  et omnia recta pervertitis :</p>
-    <p class="tra">Hören då detta, I hövdingar av Jakobs hus och I furstar av Israels hus, I som hållen för styggelse vad rätt är och gören krokigt allt vad rakt är,</p>
-  </div>
-</div>
-<div class="vb" id="v3-10">
-  <span class="vn">10</span>
-  <div class="vt">
-    <p class="lat">qui ædificatis Sion in sanguinibus,  et Jerusalem in iniquitate.</p>
-    <p class="tra">I som byggen upp Sion med blodsdåd och Jerusalem med orättfärdighet --</p>
-  </div>
-</div>
-<div class="vb" id="v3-11">
-  <span class="vn">11</span>
-  <div class="vt">
-    <p class="lat">Principes ejus in muneribus judicabant,  et sacerdotes ejus in mercede docebant,  et prophetæ ejus in pecunia divinabant :  et super Dominum requiescebant, dicentes :  Numquid non Dominus in medio nostrum ?  non venient super nos mala.</p>
-    <p class="tra">den stad vars hövdingar döma för mutor, vars präster undervisa för betalning, och vars profeter spå för penningar, allt under det de stödja sig på HERREN och säga: »Är icke HERREN mitt ibland oss? Olycka skall ej komma över oss.»</p>
-  </div>
-</div>
-<div class="vb" id="v3-12">
-  <span class="vn">12</span>
-  <div class="vt">
-    <p class="lat">Propter hoc, causa vestri, Sion quasi ager arabitur,  et Jerusalem quasi acervus lapidum erit,  et mons templi in excelsa silvarum.</p>
-    <p class="tra">Därför skall för eder skull Sion varda upplöjt till en åker och Jerusalem bliva en stenhop och tempelberget en skogbevuxen höjd.</p>
-  </div>
-</div>
-</section>
+  <main class="content">
 
-<section class="chap" id="c4">
-  <div class="chhead">
-    <span class="chrom">IV</span>
-    <span class="chlbl">Caput 4</span>
-  </div>
-<div class="vb first" id="v4-1">
-  <span class="vn">1</span>
-  <div class="vt">
-    <p class="lat">Et erit : in novissimo dierum  erit mons domus Domini præparatus in vertice montium,  et sublimis super colles :  et fluent ad eum populi,</p>
-    <p class="tra">Men det skall ske i kommande dagar att det berg där HERRENS hus är skall stå där fast grundat, ypperst ibland bergen, och vara upphöjt över andra höjder; och folk skall strömma ditupp,</p>
-  </div>
-</div>
-<div class="vb" id="v4-2">
-  <span class="vn">2</span>
-  <div class="vt">
-    <p class="lat">et properabunt gentes multæ, et dicent :  Venite, ascendamus ad montem Domini,  et ad domum Dei Jacob :  et docebit nos de viis suis,  et ibimus in semitis ejus,  quia de Sion egredietur lex,  et verbum Domini de Jerusalem.</p>
-    <p class="tra">ja, många hednafolk skola gå åstad och skola säga: »Upp, låt oss draga åstad till HERRENS berg, upp till Jakobs Guds hus, för att han må undervisa oss om sina vägar, så att vi kunna vandra på hans stigar.» Ty från Sion skall lag utgå, och HERRENS ord från Jerusalem.</p>
-  </div>
-</div>
-<div class="vb" id="v4-3">
-  <span class="vn">3</span>
-  <div class="vt">
-    <p class="lat">Et judicabit inter populos multos,  et corripiet gentes fortes usque in longinquum :  et concident gladios suos in vomeres,  et hastas suas in ligones :  non sumet gens adversus gentem gladium,  et non discent ultra belligerare.</p>
-    <p class="tra">Och han skall döma mellan många folk och skipa rätt åt mäktiga hednafolk, ända bort i fjärran land. Då skola de smida sina svärd till plogbillar och sina spjut till vingårdsknivar. Folken skola ej mer lyfta svärd mot varandra och icke mer lära sig att strida.</p>
-  </div>
-</div>
-<div class="vb" id="v4-4">
-  <span class="vn">4</span>
-  <div class="vt">
-    <p class="lat">Et sedebit vir subtus vitem suam et subtus ficum suam,  et non erit qui deterreat,  quia os Domini exercituum locutum est.</p>
-    <p class="tra">Och var och en skall sitta under sitt vinträd och sitt fikonträd, och ingen skall förskräcka honom; ty så har HERREN Sebaots mun talat.</p>
-  </div>
-</div>
-<div class="vb" id="v4-5">
-  <span class="vn">5</span>
-  <div class="vt">
-    <p class="lat">Quia omnes populi ambulabunt  unusquisque in nomine dei sui ;  nos autem ambulabimus  in nomine Domini Dei nostri,  in æternum et ultra.</p>
-    <p class="tra">Ja, alla andra folk vandra vart och ett i sin guds namn, men vi vilja vandra i HERRENS, vår Guds, namn, alltid och evinnerligen.</p>
-  </div>
-</div>
-<div class="vb" id="v4-6">
-  <span class="vn">6</span>
-  <div class="vt">
-    <p class="lat">In die illa, dicit Dominus,  congregabo claudicantem,  et eam quam ejeceram colligam,  et quam afflixeram :</p>
-    <p class="tra">På den dagen, säger HERREN, skall jag församla de haltande och hämta tillhopa de fördrivna och dem som jag har hemsökt med olyckor.</p>
-  </div>
-</div>
-<div class="vb" id="v4-7">
-  <span class="vn">7</span>
-  <div class="vt">
-    <p class="lat">et ponam claudicantem in reliquias,  et eam quæ laboraverat, in gentem robustam :  et regnabit Dominus super eos in monte Sion,  ex hoc nunc et usque in æternum.</p>
-    <p class="tra">Och jag skall låta de haltande bliva en kvarleva och de långt bort förjagade ett mäktigt folk; och HERREN skall vara konung över dem på Sions berg från nu och till evig tid.</p>
-  </div>
-</div>
-<div class="vb" id="v4-8">
-  <span class="vn">8</span>
-  <div class="vt">
-    <p class="lat">Et tu, turris gregis nebulosa filiæ Sion,  usque ad te veniet,  et veniet potestas prima,  regnum filiæ Jerusalem.</p>
-    <p class="tra">Och du Herdetorn, du dotter Sions kulle, till dig skall det komma, ja, till dig skall det återvända, det forna herradömet, dottern Jerusalems konungavälde.</p>
-  </div>
-</div>
-<div class="vb" id="v4-9">
-  <span class="vn">9</span>
-  <div class="vt">
-    <p class="lat">Nunc quare mœrore contraheris ?  numquid rex non est tibi,  aut consiliarius tuus periit,  quia comprehendit te dolor sicut parturientem ?</p>
-    <p class="tra">Men varför skriar du nu så högt? Finnes då ingen konung i dig, har du icke mer någon rådklok man, eftersom ångest, lik en barnaföderskas, har gripit dig?</p>
-  </div>
-</div>
-<div class="vb" id="v4-10">
-  <span class="vn">10</span>
-  <div class="vt">
-    <p class="lat">Dole et satage, filia Sion, quasi parturiens,  quia nunc egredieris de civitate,  et habitabis in regione,  et venies usque ad Babylonem :  ibi liberaberis,  ibi redimet te Dominus de manu inimicorum tuorum.</p>
-    <p class="tra">Ja, väl må du vrida dig i födslosmärtor såsom en barnaföderska, du dotter Sion; ty nu måste du ut ur staden, du måste bo på öppna fältet; ja, du skall komma ända till Babel -- där skall du finna räddning, där skall HERREN förlossa dig ur dina fienders hand.</p>
-  </div>
-</div>
-<div class="vb" id="v4-11">
-  <span class="vn">11</span>
-  <div class="vt">
-    <p class="lat">Et nunc congregatæ sunt super te gentes multæ, quæ dicunt :  Lapidetur, et aspiciat in Sion oculus noster.</p>
-    <p class="tra">Nu hava många hednafolk församlat sig mot dig, och de säga: »Må hon varda skändad, så att våra ögon få skåda med lust på Sion.»</p>
-  </div>
-</div>
-<div class="vb" id="v4-12">
-  <span class="vn">12</span>
-  <div class="vt">
-    <p class="lat">Ipsi autem non cognoverunt cogitationes Domini,  et non intellexerunt consilium ejus,  quia congregavit eos quasi fœnum areæ.</p>
-    <p class="tra">Men dessa känna icke HERRENS tankar, de förstå icke hans rådslut, att han har samlat dem såsom kärvar till tröskplatsen.</p>
-  </div>
-</div>
-<div class="vb" id="v4-13">
-  <span class="vn">13</span>
-  <div class="vt">
-    <p class="lat">Surge, et tritura, filia Sion,  quia cornu tuum ponam ferreum,  et ungulas tuas ponam æreas ;  et comminues populos multos,  et interficies Domino rapinas eorum,  et fortitudinem eorum Domino universæ terræ.</p>
-    <p class="tra">Upp då och tröska, du dotter Sion! Ty jag skall giva dig horn av järn och giva dig klövar av koppar, för att du må sönderkrossa många folk. Och deras byte skall du giva till spillo åt HERREN och deras skatter åt hela jordens HERRE.</p>
-  </div>
-</div>
-</section>
+  <section class="chapter" id="ch1">
+    <div class="chapter-marker">
+      <span class="ch-roman">I</span>
+      <span class="ch-label">Caput 1</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v1-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Verbum Domini, quod factum est ad Michæam Morasthiten, in diebus Joathan, Achaz, et Ezechiæ, regum Juda, quod vidit super Samariam et Jerusalem.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Detta är HERRENS ord som kom till morastiten Mika i Jotams, Ahas' och Hiskias, Juda konungars, tid, vad han skådade angående Samaria och Jerusalem.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Audite, populi omnes,  et attendat terra, et plenitudo ejus :  et sit Dominus Deus vobis in testem,  Dominus de templo sancto suo.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Hören, I folk, allasammans; akta härpå, du jord med allt vad på dig är. Och vare Herren, HERREN ett vittne mot eder, Herren i sitt heliga tempel.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quia ecce Dominus egredietur de loco suo,  et descendet, et calcabit super excelsa terræ.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Ty se, HERREN träder ut ur sin boning, han far ned och går fram över jordens höjder.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et consumentur montes subtus eum,  et valles scindentur sicut cera a facie ignis,  et sicut aquæ quæ decurrunt in præceps.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Bergen smälta under hans fötter, och dalar bryta sig fram -- såsom vaxet gör för elden, såsom vattnet, när det störtar utför branten.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">In scelere Jacob omne istud,  et in peccatis domus Israël.  Quod scelus Jacob ? nonne Samaria ?  et quæ excelsa Judæ ? nonne Jerusalem ?</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Genom Jakobs överträdelse sker allt detta och genom Israels hus' synder. Vem är då upphovet till Jakobs överträdelse? Är det icke Samaria? Och vem till Juda offerhöjder? Är det icke Jerusalem?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et ponam Samariam quasi acervum lapidum in agro,  cum plantatur vinea ;  et detraham in vallem lapides ejus,  et fundamenta ejus revelabo.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Så skall jag då göra Samaria till en stenhop på marken, till en plats för vingårdsplanteringar; jag skall vräka hennes stenar ned i dalen, och hennes grundvalar skall jag blotta.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et omnia sculptilia ejus concidentur,  et omnes mercedes ejus comburentur igne,  et omnia idola ejus ponam in perditionem,  quia de mercedibus meretricis congregata sunt,  et usque ad mercedem meretricis revertentur.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Alla hennes beläten skola bliva krossade, alla hennes skökoskänker uppbrända i eld, alla hennes avgudar skall jag förstöra; ty av skökolön har hon hopsamlat dem, och skökolön skola de åter bliva.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Super hoc plangam, et ululabo ;  vadam spoliatus, et nudus ;  faciam planctum velut draconum,  et luctum quasi struthionum :</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Fördenskull måste jag klaga och jämra mig, jag måste gå barfota och naken; jag måste upphäva klagoskri såsom en schakal och sorgelåt såsom en struts.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">quia desperata est plaga ejus,  quia venit usque ad Judam ;  tetigit portam populi mei usque ad Jerusalem.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Ty ohelbara äro hennes sår; slaget har nått ända till Juda, det har drabbat ända till mitt folks port, ända till Jerusalem.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">In Geth nolite annuntiare ;  lacrimis ne ploretis ;  in domo pulveris pulvere vos conspergite.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Förkunnen det icke i Gat; gråten icke så bittert. I Bet-Leafra vältrar jag mig i stoftet.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et transite vobis, habitatio pulchra, confusa ignominia :  non est egressa quæ habitat in exitu :  planctum domus vicina accipiet ex vobis, quæ stetit sibimet.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Dragen åstad, I Safirs invånare, i nakenhet och skam. Saanans invånare våga sig icke ut. Klagolåten i Bet-Haesel tillstädjer eder ej att dröja där.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quia infirmata est in bonum,  quæ habitat in amaritudinibus ;  quia descendit malum a Domino in portam Jerusalem.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Ty Marots invånare våndas efter tröst; ned ifrån HERREN har ju en olycka kommit, intill Jerusalems port.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Tumultus quadrigæ stuporis habitanti Lachis :  principium peccati est filiæ Sion,  quia in te inventa sunt scelera Israël.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Spännen travare för vagnen, I Lakis' invånare, I som voren upphovet till dottern Sions synd; ty hos eder var det som Israels överträdelser först funnos.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Propterea dabit emissarios super hæreditatem Geth,  domus mendacii in deceptionem regibus Israël.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Därför måste du giva skiljebrev åt Moreset-Gat. Husen i Aksib hava för Israels konungar blivit såsom en försinande bäck.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Adhuc hæredem adducam tibi quæ habitas in Maresa ;  usque ad Odollam veniet gloria Israël.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Ännu en gång skall jag låta erövraren komma över eder, I Maresas invånare. Ända till Adullam skall Israels härlighet komma.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Decalvare, et tondere super filios deliciarum tuarum ;  dilata calvitium tuum sicut aquila,  quoniam captivi ducti sunt ex te.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Raka dig skallig och skär av ditt hår, i sorg över barnen, som voro din lust; gör ditt huvud så kalt som gamens, ty de skola föras bort ifrån dig.</div>
+      </div>
+    </div>
+  </section>
 
-<section class="chap" id="c5">
-  <div class="chhead">
-    <span class="chrom">V</span>
-    <span class="chlbl">Caput 5</span>
-  </div>
-<div class="vb first" id="v5-1">
-  <span class="vn">1</span>
-  <div class="vt">
-    <p class="lat">Nunc vastaberis, filia latronis.  Obsidionem posuerunt super nos :  in virga percutient maxillam judicis Israël.</p>
-    <p class="tra">Nu må du samla dina skaror, du skarornas stad. Bålverk har man rest upp mot oss; Israels domare slår man med ris på kinden.</p>
-  </div>
-</div>
-<div class="vb" id="v5-2">
-  <span class="vn">2</span>
-  <div class="vt">
-    <p class="lat">Et tu, Bethlehem Ephrata,  parvulus es in millibus Juda ;  ex te mihi egredietur qui sit dominator in Israël,  et egressus ejus ab initio,  a diebus æternitatis.</p>
-    <p class="tra">Men du Bet-Lehem Efrata, som är så ringa för att vara bland Juda släkter, av dig skall åt mig utgå en som skall bliva en furste i Israel, en vilkens härkomst tillhör förgångna åldrar, forntidens dagar.</p>
-  </div>
-</div>
-<div class="vb" id="v5-3">
-  <span class="vn">3</span>
-  <div class="vt">
-    <p class="lat">Propter hoc dabit eos usque ad tempus in quo parturiens pariet,  et reliquiæ fratrum ejus convertentur ad filios Israël.</p>
-    <p class="tra">Därför skola de prisgivas intill den tid då hon som skall föda har fött; då skall återstoden av hans bröder få vända tillbaka till Israels barn.</p>
-  </div>
-</div>
-<div class="vb" id="v5-4">
-  <span class="vn">4</span>
-  <div class="vt">
-    <p class="lat">Et stabit, et pascet in fortitudine Domini,  in sublimitate nominis Domini Dei sui :  et convertentur,  quia nunc magnificabitur usque ad terminos terræ.</p>
-    <p class="tra">Och han skall träda fram och vakta sin hjord i HERRENS kraft, i HERRENS, sin Guds, namns höghet; och den skall hava ro, ty han skall då vara stor intill jordens ändar.</p>
-  </div>
-</div>
-<div class="vb" id="v5-5">
-  <span class="vn">5</span>
-  <div class="vt">
-    <p class="lat">Et erit iste pax :  cum venerit Assyrius in terram nostram,  et quando calcaverit domibus nostris,  et suscitabimus super eum septem pastores  et octo primates homines ;</p>
-    <p class="tra">Och tryggheten skall vara sådan, att om Assur vill falla in i vårt land och tränga in i våra palats, så kunna vi ställa upp mot honom sju herdar, ja, åtta furstliga herrar;</p>
-  </div>
-</div>
-<div class="vb" id="v5-6">
-  <span class="vn">6</span>
-  <div class="vt">
-    <p class="lat">et pascent terram Assur in gladio,  et terram Nemrod in lanceis ejus,  et liberabit ab Assur cum venerit in terram nostram,  et cum calcaverit in finibus nostris.</p>
-    <p class="tra">och dessa skola avbeta Assurs land med svärd och Nimrods land ända in i dess portar. Så skall han rädda oss från Assur, om denne vill falla in i vårt land och tränga fram över våra gränser.</p>
-  </div>
-</div>
-<div class="vb" id="v5-7">
-  <span class="vn">7</span>
-  <div class="vt">
-    <p class="lat">Et erunt reliquiæ Jacob in medio populorum multorum  quasi ros a Domino,  et quasi stillæ super herbam,  quæ non exspectat virum,  et non præstolatur filios hominum.</p>
-    <p class="tra">Då skall Jakobs kvarleva vara bland många folk såsom dagg från HERREN, såsom en regnskur på gräs, vilken icke dröjer för någon mans skull eller väntar för människobarns skull.</p>
-  </div>
-</div>
-<div class="vb" id="v5-8">
-  <span class="vn">8</span>
-  <div class="vt">
-    <p class="lat">Et erunt reliquiæ Jacob in gentibus,  in medio populorum multorum,  quasi leo in jumentis silvarum,  et quasi catulus leonis in gregibus pecorum,  qui cum transierit, et conculcaverit, et ceperit,  non est qui eruat.</p>
-    <p class="tra">Och Jakobs kvarleva skall då vara bland hedningarna, mitt ibland många folk, såsom ett lejon bland boskap i skogen, såsom ett ungt lejon bland fårhjordar, vilket förtrampar, var det går fram, och griper sitt rov utan räddning.</p>
-  </div>
-</div>
-<div class="vb" id="v5-9">
-  <span class="vn">9</span>
-  <div class="vt">
-    <p class="lat">Exaltabitur manus tua super hostes tuos,  et omnes inimici tui interibunt.</p>
-    <p class="tra">Ja, må din hand vara upplyft över dina ovänner, och må alla dina fiender bliva utrotade!</p>
-  </div>
-</div>
-<div class="vb" id="v5-10">
-  <span class="vn">10</span>
-  <div class="vt">
-    <p class="lat">Et erit in die illa, dicit Dominus :  auferam equos tuos de medio tui,  et disperdam quadrigas tuas.</p>
-    <p class="tra">Och det skall ske på den dagen, säger HERREN, att jag skall utrota dina hästar ur ditt land och förstöra dina vagnar;</p>
-  </div>
-</div>
-<div class="vb" id="v5-11">
-  <span class="vn">11</span>
-  <div class="vt">
-    <p class="lat">Et perdam civitates terræ tuæ,  et destruam omnes munitiones tuas :  et auferam maleficia de manu tua,  et divinationes non erunt in te :</p>
-    <p class="tra">jag skall utrota städerna i ditt land och riva ned alla dina fästen;</p>
-  </div>
-</div>
-<div class="vb" id="v5-12">
-  <span class="vn">12</span>
-  <div class="vt">
-    <p class="lat">et perire faciam sculptilia tua et statuas tuas de medio tui,  et non adorabis ultra opera manuum tuarum :</p>
-    <p class="tra">jag skall utrota all trolldom hos dig, och inga teckentydare skola mer träffas hos dig;</p>
-  </div>
-</div>
-<div class="vb" id="v5-13">
-  <span class="vn">13</span>
-  <div class="vt">
-    <p class="lat">et evellam lucos tuos de medio tui,  et conteram civitates tuas.</p>
-    <p class="tra">jag skall utrota dina beläten och dina stoder ur ditt land, så att du icke mer skall tillbedja dina händers verk;</p>
-  </div>
-</div>
-<div class="vb" id="v5-14">
-  <span class="vn">14</span>
-  <div class="vt">
-    <p class="lat">Et faciam, in furore et in indignatione, ultionem  in omnibus gentibus quæ non audierunt.</p>
-    <p class="tra">jag skall omstörta dina Aseror och skaffa dem bort ur ditt land; och dina städer skall jag ödelägga.</p>
-  </div>
-</div>
-</section>
+  <section class="chapter" id="ch2">
+    <div class="chapter-marker">
+      <span class="ch-roman">II</span>
+      <span class="ch-label">Caput 2</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v2-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Væ qui cogitatis inutile,  et operamini malum in cubilibus vestris !  In luce matutina faciunt illud,  quoniam contra Deum est manus eorum.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Ve dessa som tänka ut vad fördärvligt är och bereda vad ont är på sina läger, och som sätta det i verket, så snart morgonen gryr, allenast det står i deras makt;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et concupierunt agros, et violenter tulerunt :  et rapuerunt domos,  et calumniabantur virum, et domum ejus :  virum, et hæreditatem ejus.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">dessa som hava begärelse till sin nästas åkrar och röva dem, eller till hans hus och tillägna sig dem; dessa som öva våld mot både människor och hus, mot både ägare och egendom!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Idcirco hæc dicit Dominus :  Ecce ego cogito super familiam istam malum,  unde non auferetis colla vestra,  et non ambulabitis superbi :  quoniam tempus pessimum est.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Därför säger HERREN så: Se, jag tänker ut mot detta släkte vad ont är; och I skolen icke kunna draga eder hals därur, ej heller skolen I sedan gå så stolta, ty det bliver en ond tid.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">In die illa sumetur super vos parabola,  et cantabitur canticum cum suavitate, dicentium :  Depopulatione vastati sumus ;  pars populi mei commutata est :  quomodo recedet a me, cum revertatur,  qui regiones nostras dividat ?</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">På den dagen skall man stämma upp en visa över eder och sjunga en sorgesång; man skall säga:  »Det är ute med oss, vi äro förstörda i grund! Mitt folks arvslott bliver nu given åt en annan. Ja i sanning, den ryckes ifrån mig, och åt avfällingar utskiftas våra åkrar.»</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Propter hoc non erit tibi mittens funiculum sortis in cœtu Domini.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Så sker det att hos dig icke mer finnes någon som får spänna mätsnöre över en lott i HERRENS församling.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ne loquamini loquentes ;  non stillabit super istos, non comprehendet confusio.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">»Hören då upp att predika», så är deras predikan; »om sådant får man icke predika; det är ju ingen ände på smädelser!»</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Dicit domus Jacob :  Numquid abbreviatus est spiritus Domini,  aut tales sunt cogitationes ejus ?  nonne verba mea bona sunt cum eo qui recte graditur ?</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Är detta ett tillbörligt tal, du Jakobs hus? Har då HERREN varit snar till vrede? Hava hans gärningar visat något sådant? Äro icke fastmer mina ord milda mot den som vandrar redligt?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">et e contrario populus meus in adversarium consurrexit.  Desuper tunica pallium sustulistis :  et eos qui transibant simpliciter convertistis in bellum.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Men nu sedan en tid uppreser sig mitt folk såsom en fiende. I sliten manteln bort ifrån kläderna på människor som trygga gå sin väg fram och ej vilja veta av strid.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Mulieres populi mei ejecistis de domo deliciarum suarum ;  a parvulis earum tulistis laudem meam in perpetuum.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Mitt folks kvinnor driven I ut från de hem där de hade sin lust; deras barn beröven I för alltid den berömmelse de hade av mig.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Surgite, et ite, quia non habetis hic requiem :  propter immunditiam ejus corrumpetur putredine pessima.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Stån upp och gån eder väg! Här skolen I icke hava någon vilostad, för eder orenhets skull, som drager i fördärv, ja, i gruvligt fördärv.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Utinam non essem vir habens spiritum,  et mendacium potius loquerer !  Stillabo tibi in vinum et in ebrietatem ;  et erit super quem stillatur populus iste.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Om någon som fore med munväder och falskhet sade i sin lögnaktighet: »Jag vill predika för dig om vin och starka drycker» -- det vore en predikare för detta folk!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Congregatione congregabo, Jacob, totum te ;  in unum conducam reliquias Israël :  pariter ponam illum quasi gregem in ovili,  quasi pecus in medio caularum :  tumultuabuntur a multitudine hominum.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Jag vill församla dig, Jakob, ja, hela ditt folk. Jag vill hämta tillhopa Israels kvarlevor, jag vill föra dem tillsammans såsom fåren till fållan, såsom en hjord till dess betesmark, så att där uppstår ett gny av människor.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ascendet enim pandens iter ante eos :  divident, et transibunt portam,  et ingredientur per eam :  et transibit rex eorum coram eis,  et Dominus in capite eorum.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">En vägbrytare drager ut framför dem; de bryta sig igenom och tåga fram, genom porten vandra de ut. Deras konung tågar framför dem, HERREN går i spetsen för dem.</div>
+      </div>
+    </div>
+  </section>
 
-<section class="chap" id="c6">
-  <div class="chhead">
-    <span class="chrom">VI</span>
-    <span class="chlbl">Caput 6</span>
-  </div>
-<div class="vb first" id="v6-1">
-  <span class="vn">1</span>
-  <div class="vt">
-    <p class="lat">Audite quæ Dominus loquitur :  Surge, contende judicio adversum montes,  et audiant colles vocem tuam.</p>
-    <p class="tra">Hören vad HERREN säger: Stå upp och utför din sak inför bergen, och låt höjderna höra din röst.</p>
-  </div>
-</div>
-<div class="vb" id="v6-2">
-  <span class="vn">2</span>
-  <div class="vt">
-    <p class="lat">Audiant montes judicium Domini,  et fortia fundamenta terræ ;  quia judicium Domini cum populo suo,  et cum Israël dijudicabitur.</p>
-    <p class="tra">Ja, hören HERRENS sak, I berg och I fasta klippor, jordens grundvalar! Ty HERREN har sak mot sitt folk, och med Israel vill han gå till rätta.</p>
-  </div>
-</div>
-<div class="vb" id="v6-3">
-  <span class="vn">3</span>
-  <div class="vt">
-    <p class="lat">Popule meus, quid feci tibi ?  aut quid molestus fui tibi ? Responde mihi.</p>
-    <p class="tra">Mitt folk, vad har jag gjort mot dig, och varmed har jag betungat dig? Svara mig!</p>
-  </div>
-</div>
-<div class="vb" id="v6-4">
-  <span class="vn">4</span>
-  <div class="vt">
-    <p class="lat">Quia eduxi te de terra Ægypti,  et de domo servientium liberavi te,  et misi ante faciem tuam Moysen, et Aaron, et Mariam.</p>
-    <p class="tra">Jag förde dig ju upp ur Egyptens land, och ur träldomshuset förlossade jag dig; och Mose, Aron och Mirjam lät jag gå framför dig.</p>
-  </div>
-</div>
-<div class="vb" id="v6-5">
-  <span class="vn">5</span>
-  <div class="vt">
-    <p class="lat">Popule meus, memento, quæso,  quid cogitaverit Balach, rex Moab,  et quid responderit ei Balaam, filius Beor,  de Setim usque ad Galgalam,  ut cognosceres justitias Domini.</p>
-    <p class="tra">Mitt folk, kom ihåg vad Balak, konungen i Moab, hade i sinnet, och vad Bileam, Beors son, svarade honom; kom ihåg huru det var mellan Sittim och Gilgal, och lär dig så förstå HERRENS rättfärdighets gärningar.</p>
-  </div>
-</div>
-<div class="vb" id="v6-6">
-  <span class="vn">6</span>
-  <div class="vt">
-    <p class="lat">Quid dignum offeram Domino ?  curvabo genu Deo excelso ?  Numquid offeram ei holocautomata et vitulos anniculos ?</p>
-    <p class="tra">Varmed skall jag träda fram inför HERREN, och varmed böja mig ned inför Gud i höjden? Skall jag träda fram inför honom med brännoffer, med årsgamla kalvar?</p>
-  </div>
-</div>
-<div class="vb" id="v6-7">
-  <span class="vn">7</span>
-  <div class="vt">
-    <p class="lat">numquid placari potest Dominus in millibus arietum,  aut in multis millibus hircorum pinguium ?  numquid dabo primogenitum meum pro scelere meo,  fructum ventris mei pro peccato animæ meæ ?</p>
-    <p class="tra">Har HERREN behag till vädurar i tusental, till oljeströmmar i tiotusental? Skall jag giva min förstfödde till offer för min överträdelse, min livsfrukt till syndoffer för min själ?</p>
-  </div>
-</div>
-<div class="vb" id="v6-8">
-  <span class="vn">8</span>
-  <div class="vt">
-    <p class="lat">Indicabo tibi, o homo, quid sit bonum,  et quid Dominus requirat a te :  utique facere judicium,  et diligere misericordiam,  et sollicitum ambulare cum Deo tuo.</p>
-    <p class="tra">Nej, vad gott är har han kungjort för dig, o människa. Ty vad annat begär HERREN av dig, än att du gör vad rätt är och vinnlägger dig om kärlek och vandrar i ödmjukhet inför din Gud?</p>
-  </div>
-</div>
-<div class="vb" id="v6-9">
-  <span class="vn">9</span>
-  <div class="vt">
-    <p class="lat">Vox Domini ad civitatem clamat,  et salus erit timentibus nomen tuum :  audite, tribus, et quis approbabit illud ?</p>
-    <p class="tra">Hör huru HERREN ropar till staden! Ja, säll är den som aktar på ditt namn. Hören om straffet, och vem han är, som har bestämt det.</p>
-  </div>
-</div>
-<div class="vb" id="v6-10">
-  <span class="vn">10</span>
-  <div class="vt">
-    <p class="lat">Adhuc ignis in domo impii thesauri iniquitatis,  et mensura minor iræ plena.</p>
-    <p class="tra">Kunna ogudaktighetens skatter framgent få stanna i den ogudaktiges hus? Kan där få finnas ett undermåligt efa-mått, värt att förbannas?</p>
-  </div>
-</div>
-<div class="vb" id="v6-11">
-  <span class="vn">11</span>
-  <div class="vt">
-    <p class="lat">Numquid justificabo stateram impiam,  et saccelli pondera dolosa ?</p>
-    <p class="tra">Vore jag rättfärdig, om jag fördroge orätt våg och falska vikter i pungen,</p>
-  </div>
-</div>
-<div class="vb" id="v6-12">
-  <span class="vn">12</span>
-  <div class="vt">
-    <p class="lat">In quibus divites ejus repleti sunt iniquitate,  et habitantes in ea loquebantur mendacium,  et lingua eorum fraudulenta in ore eorum.</p>
-    <p class="tra">om de rika i staden finge vara fulla av orättrådighet, om dess invånare finge tala lögn och hava falsk tunga i sin mun?</p>
-  </div>
-</div>
-<div class="vb" id="v6-13">
-  <span class="vn">13</span>
-  <div class="vt">
-    <p class="lat">Et ego ergo cœpi percutere te perditione super peccatis tuis.</p>
-    <p class="tra">Nej, och därför måste jag slå dig med oläkliga sår, hemsöka dig med förödelse för dina synders skull.</p>
-  </div>
-</div>
-<div class="vb" id="v6-14">
-  <span class="vn">14</span>
-  <div class="vt">
-    <p class="lat">Tu comedes, et non saturaberis,  et humiliatio tua in medio tui :  et apprehendes, et non salvabis,  et quos salvaveris, in gladium dabo.</p>
-    <p class="tra">När du äter något, skall du icke bliva mätt, och tomhet skall råda i din buk. Vad du skaffar undan skall du ändå icke kunna rädda, och vad du räddar skall jag giva åt svärdet.</p>
-  </div>
-</div>
-<div class="vb" id="v6-15">
-  <span class="vn">15</span>
-  <div class="vt">
-    <p class="lat">Tu seminabis, et non metes :  tu calcabis olivam, et non ungeris oleo ;  et mustum, et non bibes vinum.</p>
-    <p class="tra">Du skall så, men icke få skörda; du skall pressa oliver, men icke få smörja din kropp med oljan, du skall pressa ut druvmust, men icke få dricka vinet.</p>
-  </div>
-</div>
-<div class="vb" id="v6-16">
-  <span class="vn">16</span>
-  <div class="vt">
-    <p class="lat">Et custodisti præcepta Amri,  et omne opus domus Achab,  et ambulasti in voluntatibus eorum :  ut darem te in perditionem,  et habitantes in ea in sibilum,  et opprobrium populi mei portabitis.</p>
-    <p class="tra">Vid Omris stadgar håller man fast, man efterföljer alla Ahabs hus' gärningar; ty efter dessas rådslag är det I vandren. Därför skall jag göra dig till ett föremål för häpnad, och invånarna i staden till ett mål för begabberi; ja, mitt folks smälek skolen I få bära.</p>
-  </div>
-</div>
-</section>
+  <section class="chapter" id="ch3">
+    <div class="chapter-marker">
+      <span class="ch-roman">III</span>
+      <span class="ch-label">Caput 3</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v3-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et dixi : Audite, princeps Jacob,  et duces domus Israël :  numquid non vestrum est scire judicium,</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Och jag sade: Hören, I Jakobs hövdingar och I furstar av Israels hus. Tillkommer det ej eder att veta vad rätt är,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui odio habetis bonum, et diligitis malum ;  qui violenter tollitis pelles eorum desuper eis,  et carnem eorum desuper ossibus eorum ;</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">I som haten det goda och älsken det onda, I som sliten huden av kroppen på människorna och köttet från deras ben?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui comederunt carnem populi mei,  et pellem eorum desuper excoriaverunt,  et ossa eorum confregerunt,  et conciderunt sicut in lebete,  et quasi carnem in medio ollæ ?</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Men eftersom dessa äta mitt folks kött och riva huden av deras kropp och bryta sönder deras ben, för att stycka dem likasom det man kastar i grytan, ja, likasom kött som lägges i kitteln,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Tunc clamabunt ad Dominum, et non exaudiet eos,  et abscondet faciem suam ab eis in tempore illo,  sicut nequiter egerunt in adinventionibus suis.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">därför skall HERREN icke svara dem, när de ropa till honom; han skall dölja sitt ansikte för dem på den tiden, för deras onda väsendes skull.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hæc dicit Dominus super prophetas,  qui seducunt populum meum :  qui mordent dentibus suis,  et prædicant pacem ;  et si quis non dederit in ore eorum quippiam,  sanctificant super eum prælium.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Så talar HERREN mot de profeter som föra mitt folk vilse, mot dem som ropa: »Allt står väl till!», så länge de hava något att tugga med sina tänder, men båda upp folket till helig strid mot den som ej giver dem något i gapet.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Propterea nox vobis pro visione erit,  et tenebræ vobis pro divinatione ;  et occumbet sol super prophetas,  et obtenebrabitur super eos dies.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Därför skall natt komma över eder, så att det bliver slut på     Ja, solen skall gå ned över profeterna och dagen varda mörk över dem.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et confundentur qui vident visiones,  et confundentur divini ;  et operient omnes vultos suos,  quia non est responsum Dei.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Siarna skola stå där med skam, och spåmännen skola få blygas; de skola alla nödgas skyla sitt skägg, då nu intet svar mer kommer från Gud.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Verumtamen ego repletus sum fortitudine spiritus Domini,  judicio, et virtute,  ut annuntiem Jacob scelus suum,  et Israël peccatum suum.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Men jag, jag är uppfylld med kraft, ja, med HERRENS Ande, med rättsinne och frimodighet, så att jag kan förkunna för Jakob hans överträdelse och för Israel hans synd.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Audite hoc, principes domus Jacob,  et judices domus Israël,  qui abominamini judicium,  et omnia recta pervertitis :</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Hören då detta, I hövdingar av Jakobs hus och I furstar av Israels hus, I som hållen för styggelse vad rätt är och gören krokigt allt vad rakt är,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui ædificatis Sion in sanguinibus,  et Jerusalem in iniquitate.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">I som byggen upp Sion med blodsdåd och Jerusalem med orättfärdighet --</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Principes ejus in muneribus judicabant,  et sacerdotes ejus in mercede docebant,  et prophetæ ejus in pecunia divinabant :  et super Dominum requiescebant, dicentes :  Numquid non Dominus in medio nostrum ?  non venient super nos mala.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">den stad vars hövdingar döma för mutor, vars präster undervisa för betalning, och vars profeter spå för penningar, allt under det de stödja sig på HERREN och säga: »Är icke HERREN mitt ibland oss? Olycka skall ej komma över oss.»</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Propter hoc, causa vestri, Sion quasi ager arabitur,  et Jerusalem quasi acervus lapidum erit,  et mons templi in excelsa silvarum.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Därför skall för eder skull Sion varda upplöjt till en åker och Jerusalem bliva en stenhop och tempelberget en skogbevuxen höjd.</div>
+      </div>
+    </div>
+  </section>
 
-<section class="chap" id="c7">
-  <div class="chhead">
-    <span class="chrom">VII</span>
-    <span class="chlbl">Caput 7</span>
-  </div>
-<div class="vb first" id="v7-1">
-  <span class="vn">1</span>
-  <div class="vt">
-    <p class="lat">Væ mihi, quia factus sum sicut qui colligit in autumno racemos vindemiæ !  non est botrus ad comedendum,  præcoquas ficus desideravit anima mea.</p>
-    <p class="tra">Ve mig! Det är mig, såsom när frukten är insamlad om sommaren, eller såsom när efterskörden efter vinbärgningen är slut och ingen druvklase mer finnes att äta, intet förstlingsfikon av dem jag hade haft lust till.</p>
-  </div>
-</div>
-<div class="vb" id="v7-2">
-  <span class="vn">2</span>
-  <div class="vt">
-    <p class="lat">Periit sanctus de terra,  et rectus in hominibus non est :  omnes in sanguine insidiantur ;  vir fratrem suum ad mortem venatur.</p>
-    <p class="tra">De fromma äro försvunna ur landet, och ingen redlig man finnes bland människorna. Alla ligga de på lur efter blod; envar vill fånga den andre i sitt nät.</p>
-  </div>
-</div>
-<div class="vb" id="v7-3">
-  <span class="vn">3</span>
-  <div class="vt">
-    <p class="lat">Malum manuum suarum dicunt bonum :  princeps postulat, et judex in reddendo est ;  et magnus locutus est desiderium animæ suæ,  et conturbaverunt eam.</p>
-    <p class="tra">Till att främja det onda äro deras händer redo: fursten begär gåvor, och domaren står efter vinning; den mäktige kräver öppet vad honom lyster; så bedriva de vrånghet.</p>
-  </div>
-</div>
-<div class="vb" id="v7-4">
-  <span class="vn">4</span>
-  <div class="vt">
-    <p class="lat">Qui optimus in eis est, quasi paliurus,  et qui rectus, quasi spina de sepe.  Dies speculationis tuæ, visitatio tua venit :  nunc erit vastitas eorum.</p>
-    <p class="tra">Den bäste ibland dem är såsom ett törnsnår, den redligaste värre än en taggig häck. Men när dina siares dag är inne, ja, när hemsökelsen når dig, då skall bestörtning komma ibland dem.</p>
-  </div>
-</div>
-<div class="vb" id="v7-5">
-  <span class="vn">5</span>
-  <div class="vt">
-    <p class="lat">Nolite credere amico,  et nolite confidere in duce :  ab ea quæ dormit in sinu tuo custodi claustra oris tui.</p>
-    <p class="tra">Man får icke tro på någon vän, icke lita på någon förtrogen; för henne som vilar i din famn måste du vakta din muns dörrar.</p>
-  </div>
-</div>
-<div class="vb" id="v7-6">
-  <span class="vn">6</span>
-  <div class="vt">
-    <p class="lat">Quia filius contumeliam facit patri,  et filia consurgit adversus matrem suam :  nurus adversus socrum suam,  et inimici hominis domestici ejus.</p>
-    <p class="tra">Ty sonen föraktar sin fader, dottern sätter sig upp mot sin moder, sonhustrun mot sin svärmoder, och envar har sitt eget husfolk till fiender.</p>
-  </div>
-</div>
-<div class="vb" id="v7-7">
-  <span class="vn">7</span>
-  <div class="vt">
-    <p class="lat">Ego autem ad Dominum aspiciam ;  exspectabo Deum, salvatorem meum :  audiet me Deus meus.</p>
-    <p class="tra">Men jag vill skåda efter HERREN, jag vill hoppas på min frälsnings Gud; min Gud skall höra mig.</p>
-  </div>
-</div>
-<div class="vb" id="v7-8">
-  <span class="vn">8</span>
-  <div class="vt">
-    <p class="lat">Ne læteris, inimica mea, super me, quia cecidi :  consurgam cum sedero in tenebris :  Dominus lux mea est.</p>
-    <p class="tra">Glädjens icke över mig, I mina fiender. Om jag än har fallit, skall jag dock stå upp igen; om jag än sitter i mörkret, är dock HERREN mitt ljus.</p>
-  </div>
-</div>
-<div class="vb" id="v7-9">
-  <span class="vn">9</span>
-  <div class="vt">
-    <p class="lat">Iram Domini portabo,  quoniam peccavi ei,  donec causam meam judicet,  et faciat judicium meum.  Educet me in lucem :  videbo justitiam ejus.</p>
-    <p class="tra">Eftersom jag har syndat mot HERREN, vill jag bära hans vrede, till dess att han utför min sak och skaffar mig rätt, till dess att han för mig ut i ljuset, så att jag med lust får se på hans rättfärdighet.</p>
-  </div>
-</div>
-<div class="vb" id="v7-10">
-  <span class="vn">10</span>
-  <div class="vt">
-    <p class="lat">Et aspiciet inimica mea,  et operietur confusione,  quæ dicit ad me : Ubi est Dominus Deus tuus ?  Oculi mei videbunt in eam :  nunc erit in conculcationem ut lutum platearum.</p>
-    <p class="tra">När mina fiender se det, skola de höljas med skam, desamma som säga till mig: »Var är nu HERREN, din Gud?» Mina ögon skola se med lust på dem; ty då skola de bliva nedtrampade såsom orenlighet på gatan.</p>
-  </div>
-</div>
-<div class="vb" id="v7-11">
-  <span class="vn">11</span>
-  <div class="vt">
-    <p class="lat">Dies, ut ædificentur maceriæ tuæ ;  in die illa longe fiet lex.</p>
-    <p class="tra">En dag skall komma, då dina murar skola byggas upp; på den dagen skola dina gränser sträcka sig vida.</p>
-  </div>
-</div>
-<div class="vb" id="v7-12">
-  <span class="vn">12</span>
-  <div class="vt">
-    <p class="lat">In die illa et usque ad te veniet de Assur,  et usque ad civitates munitas,  et a civitatibus munitis usque ad flumen,  et ad mare de mari,  et ad montem de monte.</p>
-    <p class="tra">På den dagen skall man komma till dig både från Assur och från Egyptens städer, ja från Egypten och ända ifrån floden, och från hav till hav, och från berg till berg.</p>
-  </div>
-</div>
-<div class="vb" id="v7-13">
-  <span class="vn">13</span>
-  <div class="vt">
-    <p class="lat">Et terra erit in desolationem propter habitatores suos,  et propter fructum cogitationum eorum.</p>
-    <p class="tra">Men eljest skall jorden bliva en ödemark för sina inbyggares skull; det skall vara deras gärningars frukt.</p>
-  </div>
-</div>
-<div class="vb" id="v7-14">
-  <span class="vn">14</span>
-  <div class="vt">
-    <p class="lat">Pasce populum tuum in virga tua,  gregem hæreditatis tuæ, habitantes solos, in saltu, in medio Carmeli.  Pascentur Basan et Galaad juxta dies antiquos.</p>
-    <p class="tra">Vakta med din stav ditt folk, din arvedels hjord, så att den får hava sin avskilda boning i skogen på Karmel; låt den gå i bet i Basan och i Gilead, likasom under forna dagar.</p>
-  </div>
-</div>
-<div class="vb" id="v7-15">
-  <span class="vn">15</span>
-  <div class="vt">
-    <p class="lat">Secundum dies egressionis tuæ de terra Ægypti,  ostendam ei mirabilia.</p>
-    <p class="tra">Ja, likasom i de dagar då du drog ut ur Egyptens land skall jag låta dem se underbara ting.</p>
-  </div>
-</div>
-<div class="vb" id="v7-16">
-  <span class="vn">16</span>
-  <div class="vt">
-    <p class="lat">Videbunt gentes,  et confundentur super omni fortitudine sua.  Ponent manum super os,  aures eorum surdæ erunt.</p>
-    <p class="tra">Hedningarna skola se det och komma på skam med all sin makt. De skola nödgas lägga handen på munnen, deras öron skola vara bedövade.</p>
-  </div>
-</div>
-<div class="vb" id="v7-17">
-  <span class="vn">17</span>
-  <div class="vt">
-    <p class="lat">Lingent pulverem sicut serpentes ;  velut reptilia terræ perturbabuntur in ædibus suis.  Dominum Deum nostrum formidabunt,  et timebunt te.</p>
-    <p class="tra">De skola slicka stoftet såsom ormar; lika maskar som kräla på jorden skola de med bävan övergiva sina borgar. Med förskräckelse skola de söka HERREN, vår Gud; Ja, för dig skola de frukta.</p>
-  </div>
-</div>
-<div class="vb" id="v7-18">
-  <span class="vn">18</span>
-  <div class="vt">
-    <p class="lat">Quis, Deus, similis tui,  qui aufers iniquitatem,  et transis peccatum reliquiarum hæreditatis tuæ ?  Non immittet ultra furorem suum,  quoniam volens misericordiam est.</p>
-    <p class="tra">Vem är en sådan Gud som du? -- du som förlåter kvarlevan av din arvedel dess missgärning och tillgiver den dess överträdelse, du som icke behåller vrede evinnerligen, ty du har lust till nåd,</p>
-  </div>
-</div>
-<div class="vb" id="v7-19">
-  <span class="vn">19</span>
-  <div class="vt">
-    <p class="lat">Revertetur, et miserebitur nostri ;  deponet iniquitates nostras,  et projiciet in profundum maris omnia peccata nostra.</p>
-    <p class="tra">och du skall åter förbarma dig över oss och trampa våra missgärningar under fötterna. Ja, du skall kasta alla deras synder i havets djup.</p>
-  </div>
-</div>
-<div class="vb" id="v7-20">
-  <span class="vn">20</span>
-  <div class="vt">
-    <p class="lat">Dabis veritatem Jacob,  misericordiam Abraham,  quæ jurasti patribus nostris a diebus antiquis.</p>
-    <p class="tra">Du skall bevisa trofasthet mot Jakob och nåd mot Abraham, såsom du med ed har lovat våra fäder i forntidens dagar.</p>
-  </div>
-</div>
-</section>
-</main>
+  <section class="chapter" id="ch4">
+    <div class="chapter-marker">
+      <span class="ch-roman">IV</span>
+      <span class="ch-label">Caput 4</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v4-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et erit : in novissimo dierum  erit mons domus Domini præparatus in vertice montium,  et sublimis super colles :  et fluent ad eum populi,</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Men det skall ske i kommande dagar att det berg där HERRENS hus är skall stå där fast grundat, ypperst ibland bergen, och vara upphöjt över andra höjder; och folk skall strömma ditupp,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">et properabunt gentes multæ, et dicent :  Venite, ascendamus ad montem Domini,  et ad domum Dei Jacob :  et docebit nos de viis suis,  et ibimus in semitis ejus,  quia de Sion egredietur lex,  et verbum Domini de Jerusalem.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">ja, många hednafolk skola gå åstad och skola säga: »Upp, låt oss draga åstad till HERRENS berg, upp till Jakobs Guds hus, för att han må undervisa oss om sina vägar, så att vi kunna vandra på hans stigar.» Ty från Sion skall lag utgå, och HERRENS ord från Jerusalem.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et judicabit inter populos multos,  et corripiet gentes fortes usque in longinquum :  et concident gladios suos in vomeres,  et hastas suas in ligones :  non sumet gens adversus gentem gladium,  et non discent ultra belligerare.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Och han skall döma mellan många folk och skipa rätt åt mäktiga hednafolk, ända bort i fjärran land. Då skola de smida sina svärd till plogbillar och sina spjut till vingårdsknivar. Folken skola ej mer lyfta svärd mot varandra och icke mer lära sig att strida.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et sedebit vir subtus vitem suam et subtus ficum suam,  et non erit qui deterreat,  quia os Domini exercituum locutum est.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Och var och en skall sitta under sitt vinträd och sitt fikonträd, och ingen skall förskräcka honom; ty så har HERREN Sebaots mun talat.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quia omnes populi ambulabunt  unusquisque in nomine dei sui ;  nos autem ambulabimus  in nomine Domini Dei nostri,  in æternum et ultra.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Ja, alla andra folk vandra vart och ett i sin guds namn, men vi vilja vandra i HERRENS, vår Guds, namn, alltid och evinnerligen.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">In die illa, dicit Dominus,  congregabo claudicantem,  et eam quam ejeceram colligam,  et quam afflixeram :</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">På den dagen, säger HERREN, skall jag församla de haltande och hämta tillhopa de fördrivna och dem som jag har hemsökt med olyckor.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">et ponam claudicantem in reliquias,  et eam quæ laboraverat, in gentem robustam :  et regnabit Dominus super eos in monte Sion,  ex hoc nunc et usque in æternum.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Och jag skall låta de haltande bliva en kvarleva och de långt bort förjagade ett mäktigt folk; och HERREN skall vara konung över dem på Sions berg från nu och till evig tid.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et tu, turris gregis nebulosa filiæ Sion,  usque ad te veniet,  et veniet potestas prima,  regnum filiæ Jerusalem.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Och du Herdetorn, du dotter Sions kulle, till dig skall det komma, ja, till dig skall det återvända, det forna herradömet, dottern Jerusalems konungavälde.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nunc quare mœrore contraheris ?  numquid rex non est tibi,  aut consiliarius tuus periit,  quia comprehendit te dolor sicut parturientem ?</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Men varför skriar du nu så högt? Finnes då ingen konung i dig, har du icke mer någon rådklok man, eftersom ångest, lik en barnaföderskas, har gripit dig?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Dole et satage, filia Sion, quasi parturiens,  quia nunc egredieris de civitate,  et habitabis in regione,  et venies usque ad Babylonem :  ibi liberaberis,  ibi redimet te Dominus de manu inimicorum tuorum.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Ja, väl må du vrida dig i födslosmärtor såsom en barnaföderska, du dotter Sion; ty nu måste du ut ur staden, du måste bo på öppna fältet; ja, du skall komma ända till Babel -- där skall du finna räddning, där skall HERREN förlossa dig ur dina fienders hand.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et nunc congregatæ sunt super te gentes multæ, quæ dicunt :  Lapidetur, et aspiciat in Sion oculus noster.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Nu hava många hednafolk församlat sig mot dig, och de säga: »Må hon varda skändad, så att våra ögon få skåda med lust på Sion.»</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ipsi autem non cognoverunt cogitationes Domini,  et non intellexerunt consilium ejus,  quia congregavit eos quasi fœnum areæ.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Men dessa känna icke HERRENS tankar, de förstå icke hans rådslut, att han har samlat dem såsom kärvar till tröskplatsen.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Surge, et tritura, filia Sion,  quia cornu tuum ponam ferreum,  et ungulas tuas ponam æreas ;  et comminues populos multos,  et interficies Domino rapinas eorum,  et fortitudinem eorum Domino universæ terræ.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Upp då och tröska, du dotter Sion! Ty jag skall giva dig horn av järn och giva dig klövar av koppar, för att du må sönderkrossa många folk. Och deras byte skall du giva till spillo åt HERREN och deras skatter åt hela jordens HERRE.</div>
+      </div>
+    </div>
+  </section>
 
-<nav class="bnav">
-  <a href="032-jon.html">&#8592; Ionas</a>
-  <a href="../index.html" class="center">↑ &nbsp; Inhaltsverzeichnis</a>
-  <a href="034-nah.html">Nahum &#8594;</a>
-</nav>
+  <section class="chapter" id="ch5">
+    <div class="chapter-marker">
+      <span class="ch-roman">V</span>
+      <span class="ch-label">Caput 5</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v5-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nunc vastaberis, filia latronis.  Obsidionem posuerunt super nos :  in virga percutient maxillam judicis Israël.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Nu må du samla dina skaror, du skarornas stad. Bålverk har man rest upp mot oss; Israels domare slår man med ris på kinden.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et tu, Bethlehem Ephrata,  parvulus es in millibus Juda ;  ex te mihi egredietur qui sit dominator in Israël,  et egressus ejus ab initio,  a diebus æternitatis.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Men du Bet-Lehem Efrata, som är så ringa för att vara bland Juda släkter, av dig skall åt mig utgå en som skall bliva en furste i Israel, en vilkens härkomst tillhör förgångna åldrar, forntidens dagar.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Propter hoc dabit eos usque ad tempus in quo parturiens pariet,  et reliquiæ fratrum ejus convertentur ad filios Israël.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Därför skola de prisgivas intill den tid då hon som skall föda har fött; då skall återstoden av hans bröder få vända tillbaka till Israels barn.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et stabit, et pascet in fortitudine Domini,  in sublimitate nominis Domini Dei sui :  et convertentur,  quia nunc magnificabitur usque ad terminos terræ.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Och han skall träda fram och vakta sin hjord i HERRENS kraft, i HERRENS, sin Guds, namns höghet; och den skall hava ro, ty han skall då vara stor intill jordens ändar.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et erit iste pax :  cum venerit Assyrius in terram nostram,  et quando calcaverit domibus nostris,  et suscitabimus super eum septem pastores  et octo primates homines ;</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Och tryggheten skall vara sådan, att om Assur vill falla in i vårt land och tränga in i våra palats, så kunna vi ställa upp mot honom sju herdar, ja, åtta furstliga herrar;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">et pascent terram Assur in gladio,  et terram Nemrod in lanceis ejus,  et liberabit ab Assur cum venerit in terram nostram,  et cum calcaverit in finibus nostris.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">och dessa skola avbeta Assurs land med svärd och Nimrods land ända in i dess portar. Så skall han rädda oss från Assur, om denne vill falla in i vårt land och tränga fram över våra gränser.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et erunt reliquiæ Jacob in medio populorum multorum  quasi ros a Domino,  et quasi stillæ super herbam,  quæ non exspectat virum,  et non præstolatur filios hominum.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Då skall Jakobs kvarleva vara bland många folk såsom dagg från HERREN, såsom en regnskur på gräs, vilken icke dröjer för någon mans skull eller väntar för människobarns skull.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et erunt reliquiæ Jacob in gentibus,  in medio populorum multorum,  quasi leo in jumentis silvarum,  et quasi catulus leonis in gregibus pecorum,  qui cum transierit, et conculcaverit, et ceperit,  non est qui eruat.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Och Jakobs kvarleva skall då vara bland hedningarna, mitt ibland många folk, såsom ett lejon bland boskap i skogen, såsom ett ungt lejon bland fårhjordar, vilket förtrampar, var det går fram, och griper sitt rov utan räddning.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Exaltabitur manus tua super hostes tuos,  et omnes inimici tui interibunt.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Ja, må din hand vara upplyft över dina ovänner, och må alla dina fiender bliva utrotade!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et erit in die illa, dicit Dominus :  auferam equos tuos de medio tui,  et disperdam quadrigas tuas.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Och det skall ske på den dagen, säger HERREN, att jag skall utrota dina hästar ur ditt land och förstöra dina vagnar;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et perdam civitates terræ tuæ,  et destruam omnes munitiones tuas :  et auferam maleficia de manu tua,  et divinationes non erunt in te :</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">jag skall utrota städerna i ditt land och riva ned alla dina fästen;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">et perire faciam sculptilia tua et statuas tuas de medio tui,  et non adorabis ultra opera manuum tuarum :</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">jag skall utrota all trolldom hos dig, och inga teckentydare skola mer träffas hos dig;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">et evellam lucos tuos de medio tui,  et conteram civitates tuas.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">jag skall utrota dina beläten och dina stoder ur ditt land, så att du icke mer skall tillbedja dina händers verk;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et faciam, in furore et in indignatione, ultionem  in omnibus gentibus quæ non audierunt.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">jag skall omstörta dina Aseror och skaffa dem bort ur ditt land; och dina städer skall jag ödelägga.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch6">
+    <div class="chapter-marker">
+      <span class="ch-roman">VI</span>
+      <span class="ch-label">Caput 6</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v6-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Audite quæ Dominus loquitur :  Surge, contende judicio adversum montes,  et audiant colles vocem tuam.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Hören vad HERREN säger: Stå upp och utför din sak inför bergen, och låt höjderna höra din röst.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Audiant montes judicium Domini,  et fortia fundamenta terræ ;  quia judicium Domini cum populo suo,  et cum Israël dijudicabitur.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Ja, hören HERRENS sak, I berg och I fasta klippor, jordens grundvalar! Ty HERREN har sak mot sitt folk, och med Israel vill han gå till rätta.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Popule meus, quid feci tibi ?  aut quid molestus fui tibi ? Responde mihi.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Mitt folk, vad har jag gjort mot dig, och varmed har jag betungat dig? Svara mig!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quia eduxi te de terra Ægypti,  et de domo servientium liberavi te,  et misi ante faciem tuam Moysen, et Aaron, et Mariam.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Jag förde dig ju upp ur Egyptens land, och ur träldomshuset förlossade jag dig; och Mose, Aron och Mirjam lät jag gå framför dig.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Popule meus, memento, quæso,  quid cogitaverit Balach, rex Moab,  et quid responderit ei Balaam, filius Beor,  de Setim usque ad Galgalam,  ut cognosceres justitias Domini.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Mitt folk, kom ihåg vad Balak, konungen i Moab, hade i sinnet, och vad Bileam, Beors son, svarade honom; kom ihåg huru det var mellan Sittim och Gilgal, och lär dig så förstå HERRENS rättfärdighets gärningar.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quid dignum offeram Domino ?  curvabo genu Deo excelso ?  Numquid offeram ei holocautomata et vitulos anniculos ?</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Varmed skall jag träda fram inför HERREN, och varmed böja mig ned inför Gud i höjden? Skall jag träda fram inför honom med brännoffer, med årsgamla kalvar?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">numquid placari potest Dominus in millibus arietum,  aut in multis millibus hircorum pinguium ?  numquid dabo primogenitum meum pro scelere meo,  fructum ventris mei pro peccato animæ meæ ?</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Har HERREN behag till vädurar i tusental, till oljeströmmar i tiotusental? Skall jag giva min förstfödde till offer för min överträdelse, min livsfrukt till syndoffer för min själ?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Indicabo tibi, o homo, quid sit bonum,  et quid Dominus requirat a te :  utique facere judicium,  et diligere misericordiam,  et sollicitum ambulare cum Deo tuo.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Nej, vad gott är har han kungjort för dig, o människa. Ty vad annat begär HERREN av dig, än att du gör vad rätt är och vinnlägger dig om kärlek och vandrar i ödmjukhet inför din Gud?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vox Domini ad civitatem clamat,  et salus erit timentibus nomen tuum :  audite, tribus, et quis approbabit illud ?</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Hör huru HERREN ropar till staden! Ja, säll är den som aktar på ditt namn. Hören om straffet, och vem han är, som har bestämt det.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Adhuc ignis in domo impii thesauri iniquitatis,  et mensura minor iræ plena.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Kunna ogudaktighetens skatter framgent få stanna i den ogudaktiges hus? Kan där få finnas ett undermåligt efa-mått, värt att förbannas?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Numquid justificabo stateram impiam,  et saccelli pondera dolosa ?</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Vore jag rättfärdig, om jag fördroge orätt våg och falska vikter i pungen,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">In quibus divites ejus repleti sunt iniquitate,  et habitantes in ea loquebantur mendacium,  et lingua eorum fraudulenta in ore eorum.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">om de rika i staden finge vara fulla av orättrådighet, om dess invånare finge tala lögn och hava falsk tunga i sin mun?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et ego ergo cœpi percutere te perditione super peccatis tuis.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Nej, och därför måste jag slå dig med oläkliga sår, hemsöka dig med förödelse för dina synders skull.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Tu comedes, et non saturaberis,  et humiliatio tua in medio tui :  et apprehendes, et non salvabis,  et quos salvaveris, in gladium dabo.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">När du äter något, skall du icke bliva mätt, och tomhet skall råda i din buk. Vad du skaffar undan skall du ändå icke kunna rädda, och vad du räddar skall jag giva åt svärdet.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Tu seminabis, et non metes :  tu calcabis olivam, et non ungeris oleo ;  et mustum, et non bibes vinum.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Du skall så, men icke få skörda; du skall pressa oliver, men icke få smörja din kropp med oljan, du skall pressa ut druvmust, men icke få dricka vinet.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et custodisti præcepta Amri,  et omne opus domus Achab,  et ambulasti in voluntatibus eorum :  ut darem te in perditionem,  et habitantes in ea in sibilum,  et opprobrium populi mei portabitis.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Vid Omris stadgar håller man fast, man efterföljer alla Ahabs hus' gärningar; ty efter dessas rådslag är det I vandren. Därför skall jag göra dig till ett föremål för häpnad, och invånarna i staden till ett mål för begabberi; ja, mitt folks smälek skolen I få bära.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch7">
+    <div class="chapter-marker">
+      <span class="ch-roman">VII</span>
+      <span class="ch-label">Caput 7</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v7-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Væ mihi, quia factus sum sicut qui colligit in autumno racemos vindemiæ !  non est botrus ad comedendum,  præcoquas ficus desideravit anima mea.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Ve mig! Det är mig, såsom när frukten är insamlad om sommaren, eller såsom när efterskörden efter vinbärgningen är slut och ingen druvklase mer finnes att äta, intet förstlingsfikon av dem jag hade haft lust till.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Periit sanctus de terra,  et rectus in hominibus non est :  omnes in sanguine insidiantur ;  vir fratrem suum ad mortem venatur.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">De fromma äro försvunna ur landet, och ingen redlig man finnes bland människorna. Alla ligga de på lur efter blod; envar vill fånga den andre i sitt nät.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Malum manuum suarum dicunt bonum :  princeps postulat, et judex in reddendo est ;  et magnus locutus est desiderium animæ suæ,  et conturbaverunt eam.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Till att främja det onda äro deras händer redo: fursten begär gåvor, och domaren står efter vinning; den mäktige kräver öppet vad honom lyster; så bedriva de vrånghet.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui optimus in eis est, quasi paliurus,  et qui rectus, quasi spina de sepe.  Dies speculationis tuæ, visitatio tua venit :  nunc erit vastitas eorum.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Den bäste ibland dem är såsom ett törnsnår, den redligaste värre än en taggig häck. Men när dina siares dag är inne, ja, när hemsökelsen når dig, då skall bestörtning komma ibland dem.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nolite credere amico,  et nolite confidere in duce :  ab ea quæ dormit in sinu tuo custodi claustra oris tui.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Man får icke tro på någon vän, icke lita på någon förtrogen; för henne som vilar i din famn måste du vakta din muns dörrar.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quia filius contumeliam facit patri,  et filia consurgit adversus matrem suam :  nurus adversus socrum suam,  et inimici hominis domestici ejus.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Ty sonen föraktar sin fader, dottern sätter sig upp mot sin moder, sonhustrun mot sin svärmoder, och envar har sitt eget husfolk till fiender.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ego autem ad Dominum aspiciam ;  exspectabo Deum, salvatorem meum :  audiet me Deus meus.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Men jag vill skåda efter HERREN, jag vill hoppas på min frälsnings Gud; min Gud skall höra mig.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ne læteris, inimica mea, super me, quia cecidi :  consurgam cum sedero in tenebris :  Dominus lux mea est.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Glädjens icke över mig, I mina fiender. Om jag än har fallit, skall jag dock stå upp igen; om jag än sitter i mörkret, är dock HERREN mitt ljus.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Iram Domini portabo,  quoniam peccavi ei,  donec causam meam judicet,  et faciat judicium meum.  Educet me in lucem :  videbo justitiam ejus.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Eftersom jag har syndat mot HERREN, vill jag bära hans vrede, till dess att han utför min sak och skaffar mig rätt, till dess att han för mig ut i ljuset, så att jag med lust får se på hans rättfärdighet.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et aspiciet inimica mea,  et operietur confusione,  quæ dicit ad me : Ubi est Dominus Deus tuus ?  Oculi mei videbunt in eam :  nunc erit in conculcationem ut lutum platearum.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">När mina fiender se det, skola de höljas med skam, desamma som säga till mig: »Var är nu HERREN, din Gud?» Mina ögon skola se med lust på dem; ty då skola de bliva nedtrampade såsom orenlighet på gatan.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Dies, ut ædificentur maceriæ tuæ ;  in die illa longe fiet lex.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">En dag skall komma, då dina murar skola byggas upp; på den dagen skola dina gränser sträcka sig vida.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">In die illa et usque ad te veniet de Assur,  et usque ad civitates munitas,  et a civitatibus munitis usque ad flumen,  et ad mare de mari,  et ad montem de monte.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">På den dagen skall man komma till dig både från Assur och från Egyptens städer, ja från Egypten och ända ifrån floden, och från hav till hav, och från berg till berg.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et terra erit in desolationem propter habitatores suos,  et propter fructum cogitationum eorum.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Men eljest skall jorden bliva en ödemark för sina inbyggares skull; det skall vara deras gärningars frukt.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Pasce populum tuum in virga tua,  gregem hæreditatis tuæ, habitantes solos, in saltu, in medio Carmeli.  Pascentur Basan et Galaad juxta dies antiquos.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Vakta med din stav ditt folk, din arvedels hjord, så att den får hava sin avskilda boning i skogen på Karmel; låt den gå i bet i Basan och i Gilead, likasom under forna dagar.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Secundum dies egressionis tuæ de terra Ægypti,  ostendam ei mirabilia.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Ja, likasom i de dagar då du drog ut ur Egyptens land skall jag låta dem se underbara ting.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Videbunt gentes,  et confundentur super omni fortitudine sua.  Ponent manum super os,  aures eorum surdæ erunt.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Hedningarna skola se det och komma på skam med all sin makt. De skola nödgas lägga handen på munnen, deras öron skola vara bedövade.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Lingent pulverem sicut serpentes ;  velut reptilia terræ perturbabuntur in ædibus suis.  Dominum Deum nostrum formidabunt,  et timebunt te.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">De skola slicka stoftet såsom ormar; lika maskar som kräla på jorden skola de med bävan övergiva sina borgar. Med förskräckelse skola de söka HERREN, vår Gud; Ja, för dig skola de frukta.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quis, Deus, similis tui,  qui aufers iniquitatem,  et transis peccatum reliquiarum hæreditatis tuæ ?  Non immittet ultra furorem suum,  quoniam volens misericordiam est.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Vem är en sådan Gud som du? -- du som förlåter kvarlevan av din arvedel dess missgärning och tillgiver den dess överträdelse, du som icke behåller vrede evinnerligen, ty du har lust till nåd,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">Revertetur, et miserebitur nostri ;  deponet iniquitates nostras,  et projiciet in profundum maris omnia peccata nostra.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">och du skall åter förbarma dig över oss och trampa våra missgärningar under fötterna. Ja, du skall kasta alla deras synder i havets djup.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">Dabis veritatem Jacob,  misericordiam Abraham,  quæ jurasti patribus nostris a diebus antiquis.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Du skall bevisa trofasthet mot Jakob och nåd mot Abraham, såsom du med ed har lovat våra fäder i forntidens dagar.</div>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <nav class="book-nav">
+    <a href="032-jon.html">← Ionas</a>
+    <span class="center">Micheas · Svenska</span>
+    <a href="034-nah.html">Nahum →</a>
+  </nav>
+
+  <footer class="page-footer">
+    BIBLIA CATHOLICA INTERLINEARIS &nbsp;·&nbsp; Vulgata Clementina &amp; Svenska Bibeln
+    &nbsp;·&nbsp; Gemeinfreie Texte / Public Domain
+  </footer>
 
 </body>
 </html>

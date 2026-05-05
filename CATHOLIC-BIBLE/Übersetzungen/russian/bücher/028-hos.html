@@ -1,1743 +1,1927 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Osee &middot; Русский &middot; Biblia Catholica</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&display=swap" rel="stylesheet">
-<style>
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
-body{
-  background:#2C0810;
-  background-image:radial-gradient(ellipse at 50% 20%,#4A1020 0%,#1A0407 100%);
-  font-family:'EB Garamond',serif;
-  color:#1A0E06;
-  font-size:17px;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Osee · Русский · Biblia Catholica</title>
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
+
+:root {
+  --gold:        #C8A96E;
+  --gold-light:  #EDD58A;
+  --gold-dark:   #8B6914;
+  --navy:        #1A1F3A;
+  --navy-mid:    #252B4A;
+  --navy-light:  #2E3560;
+  --parchment:   #F5E9CC;
+  --parchment-d: #EDD9A3;
+  --cream:       #FDF6E3;
+  --latin-color: #6B1E0E;
+  --trans-color: #0F1D2E;
+  --border:      rgba(200,169,110,.35);
+  --font-title:  'Cinzel Decorative', 'Cinzel', Georgia, serif;
+  --font-sub:    'Cinzel', Georgia, serif;
+  --font-body:   'EB Garamond', Georgia, serif;
 }
 
-/* ──────────────────────────────────────────
-   BUCHKOPF
-────────────────────────────────────────── */
-.bhead{
-  background:
-    repeating-linear-gradient( 45deg,transparent,transparent 36px,rgba(200,160,48,.028) 36px,rgba(200,160,48,.028) 37px),
-    repeating-linear-gradient(-45deg,transparent,transparent 36px,rgba(200,160,48,.028) 36px,rgba(200,160,48,.028) 37px),
-    linear-gradient(162deg,#2C0810 0%,#4A1020 45%,#5C1828 65%,#4A1020 85%,#2C0810 100%);
-  padding:36px 28px 28px;
-  text-align:center;
-  border-bottom:4px solid #B8962E;
-  position:relative;overflow:hidden;
-}
-/* Innerer Rahmen — äußerer Ring */
-.bhead::before{
-  content:'';position:absolute;inset:14px;
-  border:1px solid rgba(200,160,48,.22);
-  pointer-events:none;
-}
-/* Innerer Rahmen — innerer Ring */
-.bhead::after{
-  content:'';position:absolute;inset:22px;
-  border:1px solid rgba(200,160,48,.08);
-  pointer-events:none;
-}
-.btestament{
-  display:inline-block;
-  border:1px solid rgba(200,160,48,.32);
-  color:rgba(200,160,48,.52);
-  font-family:'Cinzel',serif;font-size:.55rem;
-  letter-spacing:.3em;padding:4px 18px;
-  border-radius:2px;margin-bottom:16px;
-  position:relative;
-}
-.blatin{
-  font-family:'Cinzel Decorative',serif;
-  font-size:clamp(1.9rem,7vw,3.4rem);
-  color:#EDD882;
-  text-shadow:0 3px 20px rgba(0,0,0,.55);
-  letter-spacing:.06em;position:relative;
-}
-.btrans{
-  font-family:'Cinzel',serif;
-  font-size:.88rem;
-  color:#C8A030;margin-top:10px;
-  letter-spacing:.16em;position:relative;
-}
-.bmeta{
-  font-family:'Cinzel',serif;font-size:.62rem;
-  color:rgba(200,160,48,.4);margin-top:6px;
-  letter-spacing:.08em;position:relative;
-}
+*,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+html { font-size:16px; scroll-behavior:smooth; }
+body { background:var(--cream); color:var(--trans-color); font-family:var(--font-body); }
 
-/* ──────────────────────────────────────────
-   KAPITELINHALT
-────────────────────────────────────────── */
-.content{
-  max-width:960px;
-  margin:36px auto 36px;
-  padding:48px 72px 100px;
-  background:#FAF5E8;
+/* ── NAV ─────────────────────────────────────────────── */
+.nav-bar {
+  background:var(--navy); padding:10px 28px;
+  display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  border-bottom:2px solid var(--gold);
+  position:sticky; top:0; z-index:100;
+  box-shadow:0 3px 12px rgba(0,0,0,.45);
+}
+.nav-bar a {
+  color:var(--gold); text-decoration:none;
+  font-family:var(--font-sub); font-size:.75rem; letter-spacing:.05em;
+  transition:color .15s;
+}
+.nav-bar a:hover { color:var(--gold-light); }
+.nav-bar .home { font-weight:700; font-size:.82rem; }
+.nav-bar .spacer { flex:1; }
+.nav-bar .pos { color:rgba(200,169,110,.45); font-size:.7rem; font-family:var(--font-sub); }
+
+/* ── BUCHKOPF ────────────────────────────────────────── */
+.book-header {
+  background:linear-gradient(160deg,var(--navy) 0%,var(--navy-mid) 55%,var(--navy-light) 100%);
+  padding:44px 36px 34px; text-align:center;
+  border-bottom:4px solid var(--gold);
+  position:relative; overflow:hidden;
+}
+.book-header::before {
+  content:'';
+  position:absolute; inset:0;
   background-image:
-    radial-gradient(ellipse at top left,rgba(184,150,46,.06) 0%,transparent 55%),
-    radial-gradient(ellipse at bottom right,rgba(184,150,46,.05) 0%,transparent 55%);
-  box-shadow:0 8px 80px rgba(0,0,0,.55),0 2px 12px rgba(0,0,0,.35),inset 0 0 0 1px rgba(184,150,46,.18);
-  border-left:4px solid #B8962E;
-  border-right:4px solid #B8962E;
-  border-top:2px solid rgba(184,150,46,.4);
-  border-bottom:2px solid rgba(184,150,46,.4);
-  position:relative;
-}
-.content::before{
-  content:'';
-  position:absolute;
-  inset:12px;
-  border:1px solid rgba(184,150,46,.08);
+    repeating-linear-gradient( 45deg,transparent,transparent 30px,rgba(200,169,110,.038) 30px,rgba(200,169,110,.038) 31px),
+    repeating-linear-gradient(-45deg,transparent,transparent 30px,rgba(200,169,110,.038) 30px,rgba(200,169,110,.038) 31px);
   pointer-events:none;
 }
-
-.chap{margin-top:0;}
-
-.chhead{
-  text-align:center;
-  padding:40px 0 20px;
-  margin-bottom:16px;
-  position:relative;
+.testament-badge {
+  display:inline-block;
+  border:1px solid rgba(200,169,110,.4); color:rgba(200,169,110,.65);
+  font-family:var(--font-sub); font-size:.62rem; letter-spacing:.25em;
+  padding:4px 14px; border-radius:2px; margin-bottom:14px; position:relative;
 }
-.chhead::before{
-  content:'——— ✦ ✦ ✦ ———';
-  display:block;
-  font-size:.7rem;
-  color:rgba(184,150,46,.45);
-  letter-spacing:.35em;
-  margin-bottom:16px;
+.book-name-latin {
+  font-family:var(--font-title); font-size:3rem; color:var(--gold-light);
+  text-shadow:0 3px 18px rgba(0,0,0,.55); letter-spacing:.08em; position:relative;
 }
-.chhead::after{
-  content:'';
-  display:block;
-  width:200px;
-  height:1px;
-  margin:14px auto 0;
-  background:linear-gradient(to right,transparent,#B8962E,transparent);
+.book-name-trans {
+  font-family:var(--font-sub); font-size:1.1rem; color:var(--gold);
+  margin-top:8px; letter-spacing:.12em; position:relative;
 }
-.chrom{
-  font-family:'Cinzel Decorative',serif;
-  font-size:4rem;color:#8B6914;
-  display:block;
-  text-shadow:0 2px 18px rgba(184,150,46,.2);
-  line-height:1;
-}
-.chlbl{
-  font-family:'Cinzel',serif;font-size:.58rem;
-  color:rgba(184,150,46,.42);letter-spacing:.32em;
-  display:block;margin-top:8px;
+.book-meta {
+  font-size:.74rem; color:rgba(200,169,110,.5); margin-top:7px;
+  font-family:var(--font-sub); letter-spacing:.07em; position:relative;
 }
 
-/* ──────────────────────────────────────────
-   VERSE
-────────────────────────────────────────── */
-.vb{
-  display:flex;
-  padding:20px 6px;
-  border-bottom:1px solid rgba(184,150,46,.12);
-  background:none;
-  border-radius:2px;
-  transition:background .15s;
-}
-.vb:hover{
-  background:rgba(184,150,46,.04);
+/* ── ORNAMENT-TRENNLINIE ─────────────────────────────── */
+.ornament-bar {
+  text-align:center; padding:16px 0 4px;
+  color:var(--gold); font-size:1.1rem; letter-spacing:.7em;
 }
 
-/* Versnummer */
-.vn{
-  flex-shrink:0;
-  width:38px;
-  padding-top:4px;
-  font-family:'Cinzel',serif;font-size:.56rem;
-  color:rgba(184,150,46,.52);text-align:right;
-  padding-right:12px;line-height:2.4;
+/* ── HAUPT-CONTAINER ─────────────────────────────────── */
+.content { max-width:960px; margin:0 auto; padding:0 24px 80px; }
+
+/* ── KAPITEL-MARKER ──────────────────────────────────── */
+.chapter-marker {
+  display:flex; align-items:center; gap:16px;
+  padding:28px 6px 12px; margin-bottom:4px;
+  border-bottom:2px solid var(--border);
+}
+.ch-roman {
+  font-family:var(--font-title); font-size:2.2rem; color:var(--gold);
+  min-width:56px; text-align:center; flex-shrink:0;
+  text-shadow:0 1px 8px rgba(200,169,110,.3);
+}
+.ch-label {
+  font-family:var(--font-sub); font-size:.72rem; color:rgba(200,169,110,.6);
+  letter-spacing:.22em; text-transform:uppercase;
 }
 
-.vt{
-  flex:1;
-  padding:0 20px 0 4px;
+/* ── VERS-BLOCK ──────────────────────────────────────── */
+.verse-block {
+  display:flex; gap:0; border-bottom:1px solid rgba(200,169,110,.15);
+}
+.verse-block:nth-child(odd)  { background:var(--cream); }
+.verse-block:nth-child(even) { background:var(--parchment); }
+
+.verse-num-col {
+  flex-shrink:0; width:42px; padding:16px 6px 16px 0; text-align:right;
+}
+.verse-num {
+  display:inline-block; width:28px; height:28px; border-radius:50%;
+  background:var(--gold-dark); color:var(--cream);
+  font-family:var(--font-sub); font-size:.64rem; font-weight:700;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 1px 5px rgba(0,0,0,.25);
 }
 
-/* LATEIN — PRIMÄR: groß, warm, maßgebend */
-.lat{
-  font-family:'EB Garamond',serif;
-  font-size:1.2rem;
-  font-weight:500;
-  line-height:2.1;
-  color:#3D1A08;
+.verse-texts { flex:1; padding:16px 16px 18px 8px; }
+
+/* ── LATEINISCHER TEXT (oben / primär) ───────────────── */
+.latin {
+  font-family:var(--font-body); font-size:1.12rem; line-height:1.9;
+  color:var(--latin-color); font-weight:500;
+  border-left:3px solid var(--gold); padding-left:12px;
+  margin-bottom:8px;
 }
 
-/* ÜBERSETZUNG — SEKUNDÄR: kleiner, kursiv, unter dem Latein */
-.tra{
-  font-family:'EB Garamond',serif;
-  font-size:.93rem;
-  font-style:italic;
-  line-height:1.95;
-  color:#1E2848;
-  margin-top:5px;
-  padding-left:14px;
-  border-left:2px solid rgba(90,110,170,.2);
+/* ── ÜBERSETZUNGS-TEXT (unten / sekundär) ────────────── */
+.trans-label {
+  font-family:var(--font-sub); font-size:.6rem; letter-spacing:.17em;
+  text-transform:uppercase; color:var(--gold-dark); margin-bottom:5px; opacity:.78;
+}
+.trans {
+  font-family:var(--font-body); font-size:1.04rem; line-height:1.85;
+  color:var(--trans-color); font-style:italic;
+  padding-left:15px;
 }
 
-/* Drop-Cap: erster Vers eines Kapitels — auf dem Latein */
-.vb.first .lat::first-letter{
-  font-family:'Cinzel Decorative',serif;
-  font-size:4em;
-  float:left;
-  line-height:.7;
-  padding-right:.08em;
-  margin-top:.07em;
-  color:#B8962E;
-  text-shadow:1px 2px 6px rgba(0,0,0,.12);
+/* Erste Vers jedes Kapitels: Drop-Cap */
+.verse-block:first-of-type .latin::first-letter {
+  font-size:4.2em; float:left; line-height:.72;
+  padding-right:.08em; margin-top:.06em;
+  font-family:var(--font-title); color:var(--gold);
 }
 
-/* ──────────────────────────────────────────
-   BUCH-NAVIGATION (unten)
-────────────────────────────────────────── */
-.bnav{
-  display:flex;justify-content:space-between;align-items:center;
-  background:#2C0810;border-top:3px solid #B8962E;
-  padding:12px 24px;gap:12px;
+/* ── NAVIGATION ZWISCHEN BÜCHERN ─────────────────────── */
+.book-nav {
+  display:flex; justify-content:space-between; align-items:center;
+  background:var(--navy); border-top:3px solid var(--gold);
+  padding:12px 26px; gap:12px;
 }
-.bnav a,.bnav .dim{
-  color:#C8A030;text-decoration:none;
-  font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:.07em;
-  padding:6px 16px;
-  border:1px solid rgba(200,160,48,.28);
-  border-radius:2px;transition:background .18s;
+.book-nav a {
+  color:var(--gold); text-decoration:none;
+  font-family:var(--font-sub); font-size:.78rem; letter-spacing:.07em;
+  padding:6px 14px; border:1px solid rgba(200,169,110,.3); border-radius:3px;
+  transition:background .18s;
 }
-.bnav a:hover{background:rgba(200,160,48,.12);}
-.bnav .dim{color:rgba(200,160,48,.2);border-color:rgba(200,160,48,.1);}
-.bnav .center{
-  font-family:'Cinzel',serif;font-size:.68rem;
-  color:rgba(200,160,48,.65);text-align:center;
-  letter-spacing:.06em;text-decoration:none;
-  border:1px solid rgba(200,160,48,.28);border-radius:2px;
-  padding:6px 20px;transition:background .18s;
-}
-.bnav .center:hover{background:rgba(200,160,48,.1);}
-
-/* DRUCK */
-@media print{
-  .bnav{display:none;}
-  .bhead{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-  .vb{break-inside:avoid;}
+.book-nav a:hover { background:rgba(200,169,110,.15); }
+.book-nav .center {
+  font-family:var(--font-sub); font-size:.7rem; color:rgba(200,169,110,.55);
+  letter-spacing:.1em; text-align:center;
 }
 
-/* MOBIL */
-@media(max-width:600px){
-  .blatin{font-size:1.8rem;}
-  .lat{font-size:1rem;}
-  .tra{font-size:.84rem;}
-  .content{padding:16px 18px 60px;margin:0;border-left:none;border-right:none;border-radius:0;}
-  .chrom{font-size:1.8rem;}
+/* ── FUßZEILE ────────────────────────────────────────── */
+.page-footer {
+  background:var(--navy); border-top:2px solid rgba(200,169,110,.3);
+  padding:18px 28px; text-align:center;
+  color:rgba(200,169,110,.45); font-family:var(--font-sub);
+  font-size:.68rem; letter-spacing:.1em;
+}
+
+/* ── DRUCK ───────────────────────────────────────────── */
+@media print {
+  .nav-bar, .book-nav { display:none; }
+  .verse-block { break-inside:avoid; }
+  .book-header { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+}
+
+/* ── MOBIL ───────────────────────────────────────────── */
+@media (max-width:640px) {
+  .book-name-latin { font-size:2.1rem; }
+  .ch-roman { font-size:1.6rem; }
+  .latin { font-size:.98rem; }
+  .trans { font-size:.93rem; }
+  .content { padding:0 12px 60px; }
 }
 </style>
 </head>
 <body>
 
-<header class="bhead">
-  <div class="btestament">VETUS TESTAMENTUM</div>
-  <div class="blatin">OSEE</div>
-  <div class="btrans">Осия &nbsp;&middot;&nbsp; <em>Русский</em></div>
-  <div class="bmeta">14 Capita &nbsp;&middot;&nbsp; 198 Versus</div>
-</header>
+  <nav class="nav-bar">
+    <a class="home" href="../../../index.html">✞ BIBLIA CATHOLICA</a>
+    <a href="../index.html">🇷🇺 Русский</a>
+    <span class="spacer"></span>
+    <span class="pos">028 / 073</span>
+  </nav>
 
-<main class="content">
-<section class="chap" id="c1">
-  <div class="chhead">
-    <span class="chrom">I</span>
-    <span class="chlbl">Caput 1</span>
-  </div>
-<div class="vb first" id="v1-1">
-  <span class="vn">1</span>
-  <div class="vt">
-    <p class="lat">Verbum Domini, quod factum est ad Osee, filium Beeri, in diebus Oziæ, Joathan, Achaz, Ezechiæ, regum Juda ; et in diebus Jeroboam, filii Joas, regis Israël.</p>
-    <p class="tra">Слово Господне, которое было к Осии, сыну Беериину, во дни Озии, Иоафама, Ахаза, Езекии, царей Иудейских, и во дни Иеровоама, сына Иоасова, царя Израильского.</p>
-  </div>
-</div>
-<div class="vb" id="v1-2">
-  <span class="vn">2</span>
-  <div class="vt">
-    <p class="lat">Principium loquendi Domino in Osee. Et dixit Dominus ad Osee : Vade, sume tibi uxorem fornicationum, et fac tibi filios fornicationum, quia fornicans fornicabitur terra a Domino.</p>
-    <p class="tra">Начало слова Господня к Осии. И сказал Господь Осии: иди, возьми себе жену блудницу и детей блуда; ибо сильно блудодействует земля сия, отступив от Господа.</p>
-  </div>
-</div>
-<div class="vb" id="v1-3">
-  <span class="vn">3</span>
-  <div class="vt">
-    <p class="lat">Et abiit, et accepit Gomer, filiam Debelaim : et concepit, et peperit ei filium.</p>
-    <p class="tra">И пошел он и взял Гомерь, дочь Дивлаима; и она зачала и родила ему сына.</p>
-  </div>
-</div>
-<div class="vb" id="v1-4">
-  <span class="vn">4</span>
-  <div class="vt">
-    <p class="lat">Et dixit Dominus ad eum : Voca nomen ejus Jezrahel, quoniam adhuc modicum, et visitabo sanguinem Jezrahel super domum Jehu, et quiescere faciam regnum domus Israël.</p>
-    <p class="tra">И Господь сказал ему: нареки ему имя Изреель, потому что еще немного пройдет, и Я взыщу кровь Изрееля с дома Ииуева, и положу конец царству дома Израилева,</p>
-  </div>
-</div>
-<div class="vb" id="v1-5">
-  <span class="vn">5</span>
-  <div class="vt">
-    <p class="lat">Et in illa die conteram arcum Israël in valle Jezrahel.</p>
-    <p class="tra">и будет в тот день, Я сокрушу лук Израилев в долине Изреель.</p>
-  </div>
-</div>
-<div class="vb" id="v1-6">
-  <span class="vn">6</span>
-  <div class="vt">
-    <p class="lat">Et concepit adhuc, et peperit filiam. Et dixit ei : Voca nomen ejus, Absque misericordia, quia non addam ultra misereri domui Israël, sed oblivione obliviscar eorum.</p>
-    <p class="tra">И зачала еще, и родила дочь, и Он сказал ему: нареки ей имя Лорухама; ибо Я уже не буду более миловать дома Израилева, чтобы прощать им.</p>
-  </div>
-</div>
-<div class="vb" id="v1-7">
-  <span class="vn">7</span>
-  <div class="vt">
-    <p class="lat">Et domui Juda miserebor, et salvabo eos in Domino Deo suo ; et non salvabo eos in arcu et gladio, et in bello, et in equis, et in equitibus.</p>
-    <p class="tra">А дом Иудин помилую и спасу их в Господе Боге их, спасу их ни луком, ни мечом, ни войною, ни конями и всадниками.</p>
-  </div>
-</div>
-<div class="vb" id="v1-8">
-  <span class="vn">8</span>
-  <div class="vt">
-    <p class="lat">Et ablactavit eam quæ erat Absque misericordia. Et concepit, et peperit filium.</p>
-    <p class="tra">И, откормив грудью Непомилованную, она зачала, и родила сына.</p>
-  </div>
-</div>
-<div class="vb" id="v1-9">
-  <span class="vn">9</span>
-  <div class="vt">
-    <p class="lat">Et dixit : Voca nomen ejus, Non populus meus, quia vos non populus meus, et ego non ero vester.</p>
-    <p class="tra">И сказал Он: нареки ему имя Лоамми, потому что вы не Мой народ, и Я не буду вашим [Богом].</p>
-  </div>
-</div>
-<div class="vb" id="v1-10">
-  <span class="vn">10</span>
-  <div class="vt">
-    <p class="lat">Et erit numerus filiorum Israël quasi arena maris, quæ sine mensura est, et non numerabitur. Et erit in loco ubi dicetur eis : Non populus meus vos : dicetur eis : Filii Dei viventis.</p>
-    <p class="tra">Но будет число сынов Израилевых как песок морской, которого нельзя ни измерить, ни исчислить; и там, где говорили им: &quot;вы не Мой народ&quot;, будут говорить им: &quot;вы сыны Бога живаго&quot;.</p>
-  </div>
-</div>
-<div class="vb" id="v1-11">
-  <span class="vn">11</span>
-  <div class="vt">
-    <p class="lat">Et congregabuntur filii Juda et filii Israël pariter ; et ponent sibimet caput unum, et ascendent de terra, quia magnus dies Jezrahel.</p>
-    <p class="tra">И соберутся сыны Иудины и сыны Израилевы вместе, и поставят себе одну главу, и выйдут из земли переселения; ибо велик день Изрееля!</p>
-  </div>
-</div>
-</section>
+  <header class="book-header">
+    <div class="testament-badge">VETUS TESTAMENTUM</div>
+    <div class="book-name-latin">OSEE</div>
+    <div class="book-name-trans">Hosea</div>
+    <div class="book-meta">Vulgata Clementina · Синодальный перевод (1876) · 14 Capita · 198 Versus</div>
+  </header>
 
-<section class="chap" id="c2">
-  <div class="chhead">
-    <span class="chrom">II</span>
-    <span class="chlbl">Caput 2</span>
-  </div>
-<div class="vb first" id="v2-1">
-  <span class="vn">1</span>
-  <div class="vt">
-    <p class="lat">Dicite fratribus vestris : Populus meus ; et sorori vestræ : Misericordiam consecuta.</p>
-    <p class="tra">Говорите братьям вашим: &quot;Мой народ&quot;, и сестрам вашим: &quot;Помилованная&quot;.</p>
-  </div>
-</div>
-<div class="vb" id="v2-2">
-  <span class="vn">2</span>
-  <div class="vt">
-    <p class="lat">Judicate matrem vestram, judicate,  quoniam ipsa non uxor mea,  et ego non vir ejus.  Auferat fornicationes suas a facie sua,  et adulteria sua de medio uberum suorum ;</p>
-    <p class="tra">Судитесь с вашею матерью, судитесь; ибо она не жена Моя, и Я не муж ее; пусть она удалит блуд от лица своего и прелюбодеяние от грудей своих,</p>
-  </div>
-</div>
-<div class="vb" id="v2-3">
-  <span class="vn">3</span>
-  <div class="vt">
-    <p class="lat">ne forte expoliem eam nudam,  et statuam eam secundum diem nativitatis suæ,  et ponam eam quasi solitudinem,  et statuam eam velut terram inviam,  et interficiam eam siti.</p>
-    <p class="tra">дабы Я не разоблачил ее донага и не выставил ее, как в день рождения ее, не сделал ее пустынею, не обратил ее в землю сухую и не уморил ее жаждою.</p>
-  </div>
-</div>
-<div class="vb" id="v2-4">
-  <span class="vn">4</span>
-  <div class="vt">
-    <p class="lat">Et filiorum illius non miserebor,  quoniam filii fornicationum sunt.</p>
-    <p class="tra">И детей ее не помилую, потому что они дети блуда.</p>
-  </div>
-</div>
-<div class="vb" id="v2-5">
-  <span class="vn">5</span>
-  <div class="vt">
-    <p class="lat">Quia fornicata est mater eorum,  confusa est quæ concepit eos ;  quia dixit : Vadam post amatores meos,  qui dant panes mihi, et aquas meas,  lanam meam, et linum meum,  oleum meum, et potum meum.</p>
-    <p class="tra">Ибо блудодействовала мать их и осрамила себя зачавшая их; ибо говорила: &quot;пойду за любовниками моими, которые дают мне хлеб и воду, шерсть и лен, елей и напитки&quot;.</p>
-  </div>
-</div>
-<div class="vb" id="v2-6">
-  <span class="vn">6</span>
-  <div class="vt">
-    <p class="lat">Propter hoc ecce ego sepiam viam tuam spinis,  et sepiam eam maceria, et semitas suas non inveniet.</p>
-    <p class="tra">За то вот, Я загорожу путь ее тернами и обнесу ее оградою, и она не найдет стезей своих,</p>
-  </div>
-</div>
-<div class="vb" id="v2-7">
-  <span class="vn">7</span>
-  <div class="vt">
-    <p class="lat">Et sequetur amatores suos, et non apprehendet eos ;  et quæret eos, et non inveniet :  et dicet : Vadam, et revertar ad virum meum priorem,  quia bene mihi erat tunc magis quam nunc.</p>
-    <p class="tra">и погонится за любовниками своими, но не догонит их, и будет искать их, но не найдет, и скажет: &quot;пойду я, и возвращусь к первому мужу моему; ибо тогда лучше было мне, нежели теперь&quot;.</p>
-  </div>
-</div>
-<div class="vb" id="v2-8">
-  <span class="vn">8</span>
-  <div class="vt">
-    <p class="lat">Et hæc nescivit, quia ego dedi ei frumentum, et vinum, et oleum,  et argentum multiplicavi ei, et aurum,  quæ fecerunt Baal.</p>
-    <p class="tra">А не знала она, что Я, Я давал ей хлеб и вино и елей и умножил у нее серебро и золото, из которого сделали истукана Ваала.</p>
-  </div>
-</div>
-<div class="vb" id="v2-9">
-  <span class="vn">9</span>
-  <div class="vt">
-    <p class="lat">Idcirco convertar, et sumam frumentum meum in tempore suo,  et vinum meum in tempore suo.  Et liberabo lanam meam et linum meum,  quæ operiebant ignominiam ejus.</p>
-    <p class="tra">За то Я возьму назад хлеб Мой в его время и вино Мое в его пору и отниму шерсть и лен Мой, чем покрывается нагота ее.</p>
-  </div>
-</div>
-<div class="vb" id="v2-10">
-  <span class="vn">10</span>
-  <div class="vt">
-    <p class="lat">Et nunc revelabo stultitiam ejus in oculis amatorum ejus ;  et vir non eruet eam de manu mea ;</p>
-    <p class="tra">И ныне открою срамоту ее пред глазами любовников ее, и никто не исторгнет ее из руки Моей.</p>
-  </div>
-</div>
-<div class="vb" id="v2-11">
-  <span class="vn">11</span>
-  <div class="vt">
-    <p class="lat">et cessare faciam omne gaudium ejus,  solemnitatem ejus, neomeniam ejus, sabbatum ejus,  et omnia festa tempora ejus.</p>
-    <p class="tra">И прекращу у нее всякое веселье, праздники ее и новомесячия ее, и субботы ее, и все торжества ее.</p>
-  </div>
-</div>
-<div class="vb" id="v2-12">
-  <span class="vn">12</span>
-  <div class="vt">
-    <p class="lat">Et corrumpam vineam ejus, et ficum ejus,  de quibus dixit : Mercedes hæ meæ sunt,  quas dederunt mihi amatores mei ;  et ponam eam in saltum,  et comedet eam bestia agri.</p>
-    <p class="tra">И опустошу виноградные лозы ее и смоковницы ее, о которых она говорит: &quot;это у меня подарки, которые надарили мне любовники мои&quot;; и Я превращу их в лес, и полевые звери поедят их.</p>
-  </div>
-</div>
-<div class="vb" id="v2-13">
-  <span class="vn">13</span>
-  <div class="vt">
-    <p class="lat">Et visitabo super eam dies Baalim,  quibus accendebat incensum,  et ornabatur in aure sua, et monili suo.  Et ibat post amatores suos,  et mei obliviscebatur, dicit Dominus.</p>
-    <p class="tra">И накажу ее за дни служения Ваалам, когда она кадила им и, украсив себя серьгами и ожерельями, ходила за любовниками своими, а Меня забывала, говорит Господь.</p>
-  </div>
-</div>
-<div class="vb" id="v2-14">
-  <span class="vn">14</span>
-  <div class="vt">
-    <p class="lat">Propter hoc ecce ego lactabo eam,  et ducam eam in solitudinem,  et loquar ad cor ejus.</p>
-    <p class="tra">Посему вот, и Я увлеку ее, приведу ее в пустыню, и буду говорить к сердцу ее.</p>
-  </div>
-</div>
-<div class="vb" id="v2-15">
-  <span class="vn">15</span>
-  <div class="vt">
-    <p class="lat">Et dabo ei vinitores ejus ex eodem loco,  et vallem Achor, ad aperiendam spem ;  et canet ibi juxta dies juventutis suæ,  et juxta dies ascensionis suæ de terra Ægypti.</p>
-    <p class="tra">И дам ей оттуда виноградники ее и долину Ахор, в преддверие надежды; и она будет петь там, как во дни юности своей и как в день выхода своего из земли Египетской.</p>
-  </div>
-</div>
-<div class="vb" id="v2-16">
-  <span class="vn">16</span>
-  <div class="vt">
-    <p class="lat">Et erit in die illa, ait Dominus :  vocabit me, Vir meus,  et non vocabit me ultra Baali.</p>
-    <p class="tra">И будет в тот день, говорит Господь, ты будешь звать Меня: &quot;муж мой&quot;, и не будешь более звать Меня: &quot;Ваали&quot;.</p>
-  </div>
-</div>
-<div class="vb" id="v2-17">
-  <span class="vn">17</span>
-  <div class="vt">
-    <p class="lat">Et auferam nomina Baalim de ore ejus,  et non recordabitur ultra nominis eorum.</p>
-    <p class="tra">И удалю имена Ваалов от уст ее, и не будут более вспоминаемы имена их.</p>
-  </div>
-</div>
-<div class="vb" id="v2-18">
-  <span class="vn">18</span>
-  <div class="vt">
-    <p class="lat">Et percutiam cum eis fœdus in die illa, cum bestia agri,  et cum volucre cæli, et cum reptili terræ ;  et arcum, et gladium, et bellum conteram de terra,  et dormire eos faciam fiducialiter.</p>
-    <p class="tra">И заключу в то время для них союз с полевыми зверями и с птицами небесными, и с пресмыкающимися по земле; и лук, и меч, и войну истреблю от земли той, и дам им жить в безопасности.</p>
-  </div>
-</div>
-<div class="vb" id="v2-19">
-  <span class="vn">19</span>
-  <div class="vt">
-    <p class="lat">Et sponsabo te mihi in sempiternum ;  et sponsabo te mihi in justitia, et judicio,  et in misericordia, et in miserationibus.</p>
-    <p class="tra">И обручу тебя Мне навек, и обручу тебя Мне в правде и суде, в благости и милосердии.</p>
-  </div>
-</div>
-<div class="vb" id="v2-20">
-  <span class="vn">20</span>
-  <div class="vt">
-    <p class="lat">Et sponsabo te mihi in fide ;  et scies quia ego Dominus.</p>
-    <p class="tra">И обручу тебя Мне в верности, и ты познаешь Господа.</p>
-  </div>
-</div>
-<div class="vb" id="v2-21">
-  <span class="vn">21</span>
-  <div class="vt">
-    <p class="lat">Et erit in die illa :  exaudiam, dicit Dominus, exaudiam cælos,  et illi exaudient terram.</p>
-    <p class="tra">И будет в тот день, Я услышу, говорит Господь, услышу небо, и оно услышит землю,</p>
-  </div>
-</div>
-<div class="vb" id="v2-22">
-  <span class="vn">22</span>
-  <div class="vt">
-    <p class="lat">Et terra exaudiet triticum, et vinum, et oleum,  et hæc exaudient Jezrahel.</p>
-    <p class="tra">и земля услышит хлеб и вино и елей; а сии услышат Изреель.</p>
-  </div>
-</div>
-<div class="vb" id="v2-23">
-  <span class="vn">23</span>
-  <div class="vt">
-    <p class="lat">Et seminabo eam mihi in terra,  et miserebor ejus quæ fuit Absque misericordia.</p>
-    <p class="tra">И посею ее для Себя на земле, и помилую Непомилованную, и скажу не Моему народу: &quot;ты Мой народ&quot;, а он скажет: &quot;Ты мой Бог!&quot;</p>
-  </div>
-</div>
-<div class="vb" id="v2-24">
-  <span class="vn">24</span>
-  <div class="vt">
-    <p class="lat">Et dicam Non populo meo : Populus meus es tu ;  et ipse dicet : Deus meus es tu.</p>
-  </div>
-</div>
-</section>
+  <div class="ornament-bar">❧ ✦ ❧ ✦ ❧</div>
 
-<section class="chap" id="c3">
-  <div class="chhead">
-    <span class="chrom">III</span>
-    <span class="chlbl">Caput 3</span>
-  </div>
-<div class="vb first" id="v3-1">
-  <span class="vn">1</span>
-  <div class="vt">
-    <p class="lat">Et dixit Dominus ad me : Adhuc vade, et dilige mulierem dilectam amico et adulteram, sicut diligit Dominus filios Israël, et ipsi respiciunt ad deos alienos, et diligunt vinacia uvarum.</p>
-    <p class="tra">И сказал мне Господь: иди еще, и полюби женщину, любимую мужем, но прелюбодействующую, подобно тому, как любит Господь сынов Израилевых, а они обращаются к другим богам и любят виноградные лепешки их.</p>
-  </div>
-</div>
-<div class="vb" id="v3-2">
-  <span class="vn">2</span>
-  <div class="vt">
-    <p class="lat">Et fodi eam mihi quindecim argenteis, et coro hordei, et dimidio coro hordæi.</p>
-    <p class="tra">И приобрел я ее себе за пятнадцать сребренников и за хомер ячменя и полхомера ячменя</p>
-  </div>
-</div>
-<div class="vb" id="v3-3">
-  <span class="vn">3</span>
-  <div class="vt">
-    <p class="lat">Et dixi ad eam : Dies multos exspectabis me ; non fornicaberis, et non eris viro ; sed et ego exspectabo te.</p>
-    <p class="tra">и сказал ей: много дней оставайся у меня; не блуди, и не будь с другим; так же и я буду для тебя.</p>
-  </div>
-</div>
-<div class="vb" id="v3-4">
-  <span class="vn">4</span>
-  <div class="vt">
-    <p class="lat">Quia dies multos sedebunt filii Israël sine rege, et sine principe, et sine sacrificio, et sine altari, et sine ephod, et sine theraphim.</p>
-    <p class="tra">Ибо долгое время сыны Израилевы будут оставаться без царя и без князя и без жертвы, без жертвенника, без ефода и терафима.</p>
-  </div>
-</div>
-<div class="vb" id="v3-5">
-  <span class="vn">5</span>
-  <div class="vt">
-    <p class="lat">Et post hæc revertentur filii Israël, et quærent Dominum Deum suum, et David regem suum : et pavebunt ad Dominum, et ad bonum ejus, in novissimo dierum.</p>
-    <p class="tra">После того обратятся сыны Израилевы и взыщут Господа Бога своего и Давида, царя своего, и будут благоговеть пред Господом и благостью Его в последние дни.</p>
-  </div>
-</div>
-</section>
+  <main class="content">
 
-<section class="chap" id="c4">
-  <div class="chhead">
-    <span class="chrom">IV</span>
-    <span class="chlbl">Caput 4</span>
-  </div>
-<div class="vb first" id="v4-1">
-  <span class="vn">1</span>
-  <div class="vt">
-    <p class="lat">Audite verbum Domini, filii Israël,  quia judicium Domino cum habitatoribus terræ :  non est enim veritas, et non est misericordia,  et non est scientia Dei in terra.</p>
-    <p class="tra">Слушайте слово Господне, сыны Израилевы; ибо суд у Господа с жителями сей земли, потому что нет ни истины, ни милосердия, ни Богопознания на земле.</p>
-  </div>
-</div>
-<div class="vb" id="v4-2">
-  <span class="vn">2</span>
-  <div class="vt">
-    <p class="lat">Maledictum, et mendacium,  et homicidium, et furtum, et adulterium inundaverunt,  et sanguis sanguinem tetigit.</p>
-    <p class="tra">Клятва и обман, убийство и воровство, и прелюбодейство крайне распространились, и кровопролитие следует за кровопролитием.</p>
-  </div>
-</div>
-<div class="vb" id="v4-3">
-  <span class="vn">3</span>
-  <div class="vt">
-    <p class="lat">Propter hoc lugebit terra,  et infirmabitur omnis qui habitat in ea,  in bestia agri, et in volucre cæli ;  sed et pisces maris congregabuntur.</p>
-    <p class="tra">За то восплачет земля сия, и изнемогут все, живущие на ней, со зверями полевыми и птицами небесными, даже и рыбы морские погибнут.</p>
-  </div>
-</div>
-<div class="vb" id="v4-4">
-  <span class="vn">4</span>
-  <div class="vt">
-    <p class="lat">Verumtamen unusquisque non judicet,  et non arguatur vir :  populus enim tuus sicut hi qui contradicunt sacerdoti.</p>
-    <p class="tra">Но никто не спорь, никто не обличай другого; и твой народ - как спорящие со священником.</p>
-  </div>
-</div>
-<div class="vb" id="v4-5">
-  <span class="vn">5</span>
-  <div class="vt">
-    <p class="lat">Et corrues hodie,  et corruet etiam propheta tecum.  Nocte tacere feci matrem tuam.</p>
-    <p class="tra">И ты падешь днем, и пророк падет с тобою ночью, и истреблю матерь твою.</p>
-  </div>
-</div>
-<div class="vb" id="v4-6">
-  <span class="vn">6</span>
-  <div class="vt">
-    <p class="lat">Conticuit populus meus,  eo quod non habuerit scientiam :  quia tu scientiam repulisti,  repellam te, ne sacerdotio fungaris mihi ;  et oblita es legis Dei tui,  obliviscar filiorum tuorum et ego.</p>
-    <p class="tra">Истреблен будет народ Мой за недостаток ведения: так как ты отверг ведение, то и Я отвергну тебя от священнодействия предо Мною; и как ты забыл закон Бога твоего то и Я забуду детей твоих.</p>
-  </div>
-</div>
-<div class="vb" id="v4-7">
-  <span class="vn">7</span>
-  <div class="vt">
-    <p class="lat">Secundum multitudinem eorum sic peccaverunt mihi :  gloriam eorum in ignominiam commutabo.</p>
-    <p class="tra">Чем больше они умножаются, тем больше грешат против Меня; славу их обращу в бесславие.</p>
-  </div>
-</div>
-<div class="vb" id="v4-8">
-  <span class="vn">8</span>
-  <div class="vt">
-    <p class="lat">Peccata populi mei comedent,  et ad iniquitatem eorum sublevabunt animas eorum.</p>
-    <p class="tra">Грехами народа Моего кормятся они, и к беззаконию его стремится душа их.</p>
-  </div>
-</div>
-<div class="vb" id="v4-9">
-  <span class="vn">9</span>
-  <div class="vt">
-    <p class="lat">Et erit sicut populus, sic sacerdos ;  et visitabo super eum vias ejus,  et cogitationes ejus reddam ei.</p>
-    <p class="tra">И что будет с народом, то и со священником; и накажу его по путям его, и воздам ему по делам его.</p>
-  </div>
-</div>
-<div class="vb" id="v4-10">
-  <span class="vn">10</span>
-  <div class="vt">
-    <p class="lat">Et comedent, et non saturabuntur ;  fornicati sunt, et non cessaverunt :  quoniam Dominum dereliquerunt in non custodiendo.</p>
-    <p class="tra">Будут есть, и не насытятся; будут блудить, и не размножатся; ибо оставили служение Господу.</p>
-  </div>
-</div>
-<div class="vb" id="v4-11">
-  <span class="vn">11</span>
-  <div class="vt">
-    <p class="lat">Fornicatio, et vinum, et ebrietas auferunt cor.</p>
-    <p class="tra">Блуд, вино и напитки завладели сердцем их.</p>
-  </div>
-</div>
-<div class="vb" id="v4-12">
-  <span class="vn">12</span>
-  <div class="vt">
-    <p class="lat">Populus meus in ligno suo interrogavit,  et baculus ejus annuntiavit ei ;  spiritus enim fornicationum decepit eos,  et fornicati sunt a Deo suo.</p>
-    <p class="tra">Народ Мой вопрошает свое дерево и жезл его дает ему ответ; ибо дух блуда ввел их в заблуждение, и, блудодействуя, они отступили от Бога своего.</p>
-  </div>
-</div>
-<div class="vb" id="v4-13">
-  <span class="vn">13</span>
-  <div class="vt">
-    <p class="lat">Super capita montium sacrificabant,  et super colles ascendebant thymiama ;  subtus quercum, et populum, et terebinthum,  quia bona erat umbra ejus ;  ideo fornicabuntur filiæ vestræ,  et sponsæ vestræ adulteræ erunt.</p>
-    <p class="tra">На вершинах гор они приносят жертвы и на холмах совершают каждение под дубом и тополем и теревинфом, потому что хороша от них тень; поэтому любодействуют дочери ваши и прелюбодействуют невестки ваши.</p>
-  </div>
-</div>
-<div class="vb" id="v4-14">
-  <span class="vn">14</span>
-  <div class="vt">
-    <p class="lat">Non visitabo super filias vestras cum fuerint fornicatæ,  et super sponsas vestras cum adulteraverint,  quoniam ipsi cum meretricibus conversabantur,  et cum effeminatis sacrificabant ;  et populus non intelligens vapulabit.</p>
-    <p class="tra">Я оставлю наказывать дочерей ваших, когда они блудодействуют, и невесток ваших, когда они прелюбодействуют, потому что вы сами на стороне блудниц и с любодейцами приносите жертвы, а невежественный народ гибнет.</p>
-  </div>
-</div>
-<div class="vb" id="v4-15">
-  <span class="vn">15</span>
-  <div class="vt">
-    <p class="lat">Si fornicaris tu, Israël,  non delinquat saltem Juda ;  et nolite ingredi in Galgala,  et ne ascenderitis in Bethaven,  neque juraveritis : Vivit Dominus !</p>
-    <p class="tra">Если ты, Израиль, блудодействуешь, то пусть не грешил бы Иуда; и не ходите в Галгал, и не восходите в Беф-Авен, и не клянитесь: &quot;жив Господь!&quot;</p>
-  </div>
-</div>
-<div class="vb" id="v4-16">
-  <span class="vn">16</span>
-  <div class="vt">
-    <p class="lat">Quoniam sicut vacca lasciviens declinavit Israël ;  nunc pascet eos Dominus, quasi agnum in latitudine.</p>
-    <p class="tra">Ибо как упрямая телица, упорен стал Израиль; посему будет ли теперь Господь пасти их, как агнцев на пространном пастбище?</p>
-  </div>
-</div>
-<div class="vb" id="v4-17">
-  <span class="vn">17</span>
-  <div class="vt">
-    <p class="lat">Particeps idolorum Ephraim : dimitte eum.</p>
-    <p class="tra">Привязался к идолам Ефрем; оставь его!</p>
-  </div>
-</div>
-<div class="vb" id="v4-18">
-  <span class="vn">18</span>
-  <div class="vt">
-    <p class="lat">Separatum est convivium eorum ;  fornicatione fornicati sunt :  dilexerunt afferre ignominiam protectores ejus.</p>
-    <p class="tra">Отвратительно пьянство их, совершенно предались блудодеянию; князья их любят постыдное.</p>
-  </div>
-</div>
-<div class="vb" id="v4-19">
-  <span class="vn">19</span>
-  <div class="vt">
-    <p class="lat">Ligavit eum spiritus in alis suis,  et confundentur a sacrificiis suis.</p>
-    <p class="tra">Охватит их ветер своими крыльями, и устыдятся они жертв своих.</p>
-  </div>
-</div>
-</section>
+  <section class="chapter" id="ch1">
+    <div class="chapter-marker">
+      <span class="ch-roman">I</span>
+      <span class="ch-label">Caput 1</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v1-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Verbum Domini, quod factum est ad Osee, filium Beeri, in diebus Oziæ, Joathan, Achaz, Ezechiæ, regum Juda ; et in diebus Jeroboam, filii Joas, regis Israël.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Слово Господне, которое было к Осии, сыну Беериину, во дни Озии, Иоафама, Ахаза, Езекии, царей Иудейских, и во дни Иеровоама, сына Иоасова, царя Израильского.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Principium loquendi Domino in Osee. Et dixit Dominus ad Osee : Vade, sume tibi uxorem fornicationum, et fac tibi filios fornicationum, quia fornicans fornicabitur terra a Domino.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Начало слова Господня к Осии. И сказал Господь Осии: иди, возьми себе жену блудницу и детей блуда; ибо сильно блудодействует земля сия, отступив от Господа.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et abiit, et accepit Gomer, filiam Debelaim : et concepit, et peperit ei filium.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">И пошел он и взял Гомерь, дочь Дивлаима; и она зачала и родила ему сына.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et dixit Dominus ad eum : Voca nomen ejus Jezrahel, quoniam adhuc modicum, et visitabo sanguinem Jezrahel super domum Jehu, et quiescere faciam regnum domus Israël.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">И Господь сказал ему: нареки ему имя Изреель, потому что еще немного пройдет, и Я взыщу кровь Изрееля с дома Ииуева, и положу конец царству дома Израилева,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et in illa die conteram arcum Israël in valle Jezrahel.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">и будет в тот день, Я сокрушу лук Израилев в долине Изреель.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et concepit adhuc, et peperit filiam. Et dixit ei : Voca nomen ejus, Absque misericordia, quia non addam ultra misereri domui Israël, sed oblivione obliviscar eorum.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">И зачала еще, и родила дочь, и Он сказал ему: нареки ей имя Лорухама; ибо Я уже не буду более миловать дома Израилева, чтобы прощать им.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et domui Juda miserebor, et salvabo eos in Domino Deo suo ; et non salvabo eos in arcu et gladio, et in bello, et in equis, et in equitibus.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">А дом Иудин помилую и спасу их в Господе Боге их, спасу их ни луком, ни мечом, ни войною, ни конями и всадниками.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et ablactavit eam quæ erat Absque misericordia. Et concepit, et peperit filium.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">И, откормив грудью Непомилованную, она зачала, и родила сына.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et dixit : Voca nomen ejus, Non populus meus, quia vos non populus meus, et ego non ero vester.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">И сказал Он: нареки ему имя Лоамми, потому что вы не Мой народ, и Я не буду вашим [Богом].</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et erit numerus filiorum Israël quasi arena maris, quæ sine mensura est, et non numerabitur. Et erit in loco ubi dicetur eis : Non populus meus vos : dicetur eis : Filii Dei viventis.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Но будет число сынов Израилевых как песок морской, которого нельзя ни измерить, ни исчислить; и там, где говорили им: &quot;вы не Мой народ&quot;, будут говорить им: &quot;вы сыны Бога живаго&quot;.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et congregabuntur filii Juda et filii Israël pariter ; et ponent sibimet caput unum, et ascendent de terra, quia magnus dies Jezrahel.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">И соберутся сыны Иудины и сыны Израилевы вместе, и поставят себе одну главу, и выйдут из земли переселения; ибо велик день Изрееля!</div>
+      </div>
+    </div>
+  </section>
 
-<section class="chap" id="c5">
-  <div class="chhead">
-    <span class="chrom">V</span>
-    <span class="chlbl">Caput 5</span>
-  </div>
-<div class="vb first" id="v5-1">
-  <span class="vn">1</span>
-  <div class="vt">
-    <p class="lat">Audite hoc, sacerdotes,  et attendite, domus Israël,  et domus regis, auscultate :  quia vobis judicium est,  quoniam laqueus facti estis speculationi,  et rete expansum super Thabor.</p>
-    <p class="tra">Слушайте это, священники, и внимайте, дом Израилев, и приклоните ухо, дом царя; ибо вам будет суд, потому что вы были западнею в Массифе и сетью, раскинутою на Фаворе.</p>
-  </div>
-</div>
-<div class="vb" id="v5-2">
-  <span class="vn">2</span>
-  <div class="vt">
-    <p class="lat">Et victimas declinastis in profundum ;  et ego eruditor omnium eorum.</p>
-    <p class="tra">Глубоко погрязли они в распутстве; но Я накажу всех их.</p>
-  </div>
-</div>
-<div class="vb" id="v5-3">
-  <span class="vn">3</span>
-  <div class="vt">
-    <p class="lat">Ego scio Ephraim,  et Israël non est absconditus a me :  quia nunc fornicatus est Ephraim ;  contaminatus est Israël.</p>
-    <p class="tra">Ефрема Я знаю, и Израиль не сокрыт от Меня; ибо ты блудодействуешь, Ефрем, и Израиль осквернился.</p>
-  </div>
-</div>
-<div class="vb" id="v5-4">
-  <span class="vn">4</span>
-  <div class="vt">
-    <p class="lat">Non dabunt cogitationes suas ut revertantur ad Deum suum,  quia spiritus fornicationum in medio eorum,  et Dominum non cognoverunt.</p>
-    <p class="tra">Дела их не допускают их обратиться к Богу своему, ибо дух блуда внутри них, и Господа они не познали.</p>
-  </div>
-</div>
-<div class="vb" id="v5-5">
-  <span class="vn">5</span>
-  <div class="vt">
-    <p class="lat">Et respondebit arrogantia Israël in facie ejus,  et Israël et Ephraim ruent in iniquitate sua :  ruet etiam Judas cum eis.</p>
-    <p class="tra">И гордость Израиля унижена в глазах их; и Израиль и Ефрем падут от нечестия своего; падет и Иуда с ними.</p>
-  </div>
-</div>
-<div class="vb" id="v5-6">
-  <span class="vn">6</span>
-  <div class="vt">
-    <p class="lat">In gregibus suis et in armentis suis vadent ad quærendum Dominum,  et non invenient :  ablatus est ab eis.</p>
-    <p class="tra">С овцами своими и волами своими пойдут искать Господа и не найдут Его: Он удалился от них.</p>
-  </div>
-</div>
-<div class="vb" id="v5-7">
-  <span class="vn">7</span>
-  <div class="vt">
-    <p class="lat">In Dominum prævaricati sunt,  quia filios alienos genuerunt :  nunc devorabit eos mensis, cum partibus suis.</p>
-    <p class="tra">Господу они изменили, потому что родили чужих детей; ныне новый месяц поест их с их имуществом.</p>
-  </div>
-</div>
-<div class="vb" id="v5-8">
-  <span class="vn">8</span>
-  <div class="vt">
-    <p class="lat">Clangite buccina in Gabaa,  tuba in Rama ;  ululate in Bethaven,  post tergum tuum, Benjamin.</p>
-    <p class="tra">Вострубите рогом в Гиве, трубою в Раме; возглашайте в Беф- Авене: &quot;за тобою, Вениамин!&quot;</p>
-  </div>
-</div>
-<div class="vb" id="v5-9">
-  <span class="vn">9</span>
-  <div class="vt">
-    <p class="lat">Ephraim in desolatione erit in die correptionis ;  in tribubus Israël ostendi fidem.</p>
-    <p class="tra">Ефрем сделается пустынею в день наказания; между коленами Израилевыми Я возвестил это.</p>
-  </div>
-</div>
-<div class="vb" id="v5-10">
-  <span class="vn">10</span>
-  <div class="vt">
-    <p class="lat">Facti sunt principes Juda quasi assumentes terminum ;  super eos effundam quasi aquam iram meam.</p>
-    <p class="tra">Вожди Иудины стали подобны передвигающим межи: изолью на них гнев Мой, как воду.</p>
-  </div>
-</div>
-<div class="vb" id="v5-11">
-  <span class="vn">11</span>
-  <div class="vt">
-    <p class="lat">Calumniam patiens est Ephraim, fractus judicio,  quoniam cœpit abire post sordes.</p>
-    <p class="tra">Угнетен Ефрем, поражен судом; ибо захотел ходить вслед суетных.</p>
-  </div>
-</div>
-<div class="vb" id="v5-12">
-  <span class="vn">12</span>
-  <div class="vt">
-    <p class="lat">Et ego quasi tinea Ephraim,  et quasi putredo domui Juda.</p>
-    <p class="tra">И буду как моль для Ефрема и как червь для дома Иудина.</p>
-  </div>
-</div>
-<div class="vb" id="v5-13">
-  <span class="vn">13</span>
-  <div class="vt">
-    <p class="lat">Et vidit Ephraim languorem suum,  et Juda vinculum suum ;  et abiit Ephraim ad Assur,  et misit ad regem ultorem :  et ipse non poterit sanare vos,  nec solvere poterit a vobis vinculum.</p>
-    <p class="tra">И увидел Ефрем болезнь свою, и Иуда - свою рану, и пошел Ефрем к Ассуру, и послал к царю Иареву; но он не может исцелить вас, и не излечит вас от раны.</p>
-  </div>
-</div>
-<div class="vb" id="v5-14">
-  <span class="vn">14</span>
-  <div class="vt">
-    <p class="lat">Quoniam ego quasi leæna Ephraim,  et quasi catulus leonis domui Juda.  Ego, ego capiam, et vadam ;  tollam, et non est qui eruat.</p>
-    <p class="tra">Ибо Я как лев для Ефрема и как скимен для дома Иудина; Я, Я растерзаю, и уйду; унесу, и никто не спасет.</p>
-  </div>
-</div>
-<div class="vb" id="v5-15">
-  <span class="vn">15</span>
-  <div class="vt">
-    <p class="lat">Vadens revertar ad locum meum,  donec deficiatis, et quæratis faciem meam.</p>
-    <p class="tra">Пойду, возвращусь в Мое место, доколе они не признают себя виновными и не взыщут лица Моего.</p>
-  </div>
-</div>
-</section>
+  <section class="chapter" id="ch2">
+    <div class="chapter-marker">
+      <span class="ch-roman">II</span>
+      <span class="ch-label">Caput 2</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v2-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Dicite fratribus vestris : Populus meus ; et sorori vestræ : Misericordiam consecuta.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Говорите братьям вашим: &quot;Мой народ&quot;, и сестрам вашим: &quot;Помилованная&quot;.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Judicate matrem vestram, judicate,  quoniam ipsa non uxor mea,  et ego non vir ejus.  Auferat fornicationes suas a facie sua,  et adulteria sua de medio uberum suorum ;</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Судитесь с вашею матерью, судитесь; ибо она не жена Моя, и Я не муж ее; пусть она удалит блуд от лица своего и прелюбодеяние от грудей своих,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">ne forte expoliem eam nudam,  et statuam eam secundum diem nativitatis suæ,  et ponam eam quasi solitudinem,  et statuam eam velut terram inviam,  et interficiam eam siti.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">дабы Я не разоблачил ее донага и не выставил ее, как в день рождения ее, не сделал ее пустынею, не обратил ее в землю сухую и не уморил ее жаждою.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et filiorum illius non miserebor,  quoniam filii fornicationum sunt.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">И детей ее не помилую, потому что они дети блуда.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quia fornicata est mater eorum,  confusa est quæ concepit eos ;  quia dixit : Vadam post amatores meos,  qui dant panes mihi, et aquas meas,  lanam meam, et linum meum,  oleum meum, et potum meum.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Ибо блудодействовала мать их и осрамила себя зачавшая их; ибо говорила: &quot;пойду за любовниками моими, которые дают мне хлеб и воду, шерсть и лен, елей и напитки&quot;.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Propter hoc ecce ego sepiam viam tuam spinis,  et sepiam eam maceria, et semitas suas non inveniet.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">За то вот, Я загорожу путь ее тернами и обнесу ее оградою, и она не найдет стезей своих,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et sequetur amatores suos, et non apprehendet eos ;  et quæret eos, et non inveniet :  et dicet : Vadam, et revertar ad virum meum priorem,  quia bene mihi erat tunc magis quam nunc.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">и погонится за любовниками своими, но не догонит их, и будет искать их, но не найдет, и скажет: &quot;пойду я, и возвращусь к первому мужу моему; ибо тогда лучше было мне, нежели теперь&quot;.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et hæc nescivit, quia ego dedi ei frumentum, et vinum, et oleum,  et argentum multiplicavi ei, et aurum,  quæ fecerunt Baal.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">А не знала она, что Я, Я давал ей хлеб и вино и елей и умножил у нее серебро и золото, из которого сделали истукана Ваала.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Idcirco convertar, et sumam frumentum meum in tempore suo,  et vinum meum in tempore suo.  Et liberabo lanam meam et linum meum,  quæ operiebant ignominiam ejus.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">За то Я возьму назад хлеб Мой в его время и вино Мое в его пору и отниму шерсть и лен Мой, чем покрывается нагота ее.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et nunc revelabo stultitiam ejus in oculis amatorum ejus ;  et vir non eruet eam de manu mea ;</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">И ныне открою срамоту ее пред глазами любовников ее, и никто не исторгнет ее из руки Моей.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">et cessare faciam omne gaudium ejus,  solemnitatem ejus, neomeniam ejus, sabbatum ejus,  et omnia festa tempora ejus.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">И прекращу у нее всякое веселье, праздники ее и новомесячия ее, и субботы ее, и все торжества ее.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et corrumpam vineam ejus, et ficum ejus,  de quibus dixit : Mercedes hæ meæ sunt,  quas dederunt mihi amatores mei ;  et ponam eam in saltum,  et comedet eam bestia agri.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">И опустошу виноградные лозы ее и смоковницы ее, о которых она говорит: &quot;это у меня подарки, которые надарили мне любовники мои&quot;; и Я превращу их в лес, и полевые звери поедят их.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et visitabo super eam dies Baalim,  quibus accendebat incensum,  et ornabatur in aure sua, et monili suo.  Et ibat post amatores suos,  et mei obliviscebatur, dicit Dominus.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">И накажу ее за дни служения Ваалам, когда она кадила им и, украсив себя серьгами и ожерельями, ходила за любовниками своими, а Меня забывала, говорит Господь.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Propter hoc ecce ego lactabo eam,  et ducam eam in solitudinem,  et loquar ad cor ejus.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Посему вот, и Я увлеку ее, приведу ее в пустыню, и буду говорить к сердцу ее.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et dabo ei vinitores ejus ex eodem loco,  et vallem Achor, ad aperiendam spem ;  et canet ibi juxta dies juventutis suæ,  et juxta dies ascensionis suæ de terra Ægypti.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">И дам ей оттуда виноградники ее и долину Ахор, в преддверие надежды; и она будет петь там, как во дни юности своей и как в день выхода своего из земли Египетской.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et erit in die illa, ait Dominus :  vocabit me, Vir meus,  et non vocabit me ultra Baali.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">И будет в тот день, говорит Господь, ты будешь звать Меня: &quot;муж мой&quot;, и не будешь более звать Меня: &quot;Ваали&quot;.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et auferam nomina Baalim de ore ejus,  et non recordabitur ultra nominis eorum.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">И удалю имена Ваалов от уст ее, и не будут более вспоминаемы имена их.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et percutiam cum eis fœdus in die illa, cum bestia agri,  et cum volucre cæli, et cum reptili terræ ;  et arcum, et gladium, et bellum conteram de terra,  et dormire eos faciam fiducialiter.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">И заключу в то время для них союз с полевыми зверями и с птицами небесными, и с пресмыкающимися по земле; и лук, и меч, и войну истреблю от земли той, и дам им жить в безопасности.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et sponsabo te mihi in sempiternum ;  et sponsabo te mihi in justitia, et judicio,  et in misericordia, et in miserationibus.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">И обручу тебя Мне навек, и обручу тебя Мне в правде и суде, в благости и милосердии.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et sponsabo te mihi in fide ;  et scies quia ego Dominus.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">И обручу тебя Мне в верности, и ты познаешь Господа.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et erit in die illa :  exaudiam, dicit Dominus, exaudiam cælos,  et illi exaudient terram.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">И будет в тот день, Я услышу, говорит Господь, услышу небо, и оно услышит землю,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-22">
+      <div class="verse-num-col"><div class="verse-num">22</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et terra exaudiet triticum, et vinum, et oleum,  et hæc exaudient Jezrahel.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">и земля услышит хлеб и вино и елей; а сии услышат Изреель.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-23">
+      <div class="verse-num-col"><div class="verse-num">23</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et seminabo eam mihi in terra,  et miserebor ejus quæ fuit Absque misericordia.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">И посею ее для Себя на земле, и помилую Непомилованную, и скажу не Моему народу: &quot;ты Мой народ&quot;, а он скажет: &quot;Ты мой Бог!&quot;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-24">
+      <div class="verse-num-col"><div class="verse-num">24</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et dicam Non populo meo : Populus meus es tu ;  et ipse dicet : Deus meus es tu.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+  </section>
 
-<section class="chap" id="c6">
-  <div class="chhead">
-    <span class="chrom">VI</span>
-    <span class="chlbl">Caput 6</span>
-  </div>
-<div class="vb first" id="v6-1">
-  <span class="vn">1</span>
-  <div class="vt">
-    <p class="lat">In tribulatione sua mane consurgent ad me :  Venite, et revertamur ad Dominum,</p>
-    <p class="tra">В скорби своей они с раннего утра будут искать Меня и говорить: &quot;пойдем и возвратимся к Господу! ибо Он уязвил - и Он исцелит нас, поразил - и перевяжет наши раны;</p>
-  </div>
-</div>
-<div class="vb" id="v6-2">
-  <span class="vn">2</span>
-  <div class="vt">
-    <p class="lat">quia ipse cepit, et sanabit nos ;  percutiet, et curabit nos.</p>
-    <p class="tra">оживит нас через два дня, в третий день восставит нас, и мы будем жить пред лицем Его.</p>
-  </div>
-</div>
-<div class="vb" id="v6-3">
-  <span class="vn">3</span>
-  <div class="vt">
-    <p class="lat">Vivificabit nos post duos dies ;  in die tertia suscitabit nos,  et vivemus in conspectu ejus.  Sciemus, sequemurque ut cognoscamus Dominum :  quasi diluculum præparatus est egressus ejus,  et veniet quasi imber nobis temporaneus et serotinus terræ.</p>
-    <p class="tra">Итак познаем, будем стремиться познать Господа; как утренняя заря - явление Его, и Он придет к нам, как дождь, как поздний дождь оросит землю&quot;.</p>
-  </div>
-</div>
-<div class="vb" id="v6-4">
-  <span class="vn">4</span>
-  <div class="vt">
-    <p class="lat">Quid faciam tibi, Ephraim ?  quid faciam tibi, Juda ?  misericordia vestra quasi nubes matutina,  et quasi ros mane pertransiens.</p>
-    <p class="tra">Что сделаю тебе, Ефрем? что сделаю тебе, Иуда? благочестие ваше, как утренний туман и как роса, скоро исчезающая.</p>
-  </div>
-</div>
-<div class="vb" id="v6-5">
-  <span class="vn">5</span>
-  <div class="vt">
-    <p class="lat">Propter hoc dolavi in prophetis ;  occidi eos in verbis oris mei :  et judicia tua quasi lux egredientur.</p>
-    <p class="tra">Посему Я поражал через пророков и бил их словами уст Моих, и суд Мой, как восходящий свет.</p>
-  </div>
-</div>
-<div class="vb" id="v6-6">
-  <span class="vn">6</span>
-  <div class="vt">
-    <p class="lat">Quia misericordiam volui, et non sacrificium ;  et scientiam Dei plus quam holocausta.</p>
-    <p class="tra">Ибо Я милости хочу, а не жертвы, и Боговедения более, нежели всесожжений.</p>
-  </div>
-</div>
-<div class="vb" id="v6-7">
-  <span class="vn">7</span>
-  <div class="vt">
-    <p class="lat">Ipsi autem sicut Adam transgressi sunt pactum :  ibi prævaricati sunt in me.</p>
-    <p class="tra">Они же, подобно Адаму, нарушили завет и там изменили Мне.</p>
-  </div>
-</div>
-<div class="vb" id="v6-8">
-  <span class="vn">8</span>
-  <div class="vt">
-    <p class="lat">Galaad civitas operantium idolum,  supplantata sanguine.</p>
-    <p class="tra">Галаад - город нечестивцев, запятнанный кровью.</p>
-  </div>
-</div>
-<div class="vb" id="v6-9">
-  <span class="vn">9</span>
-  <div class="vt">
-    <p class="lat">Et quasi fauces virorum latronum,  particeps sacerdotum, in via interficientium pergentes de Sichem :  quia scelus operati sunt.</p>
-    <p class="tra">Как разбойники подстерегают человека, так сборище священников убивают на пути в Сихем и совершают мерзости.</p>
-  </div>
-</div>
-<div class="vb" id="v6-10">
-  <span class="vn">10</span>
-  <div class="vt">
-    <p class="lat">In domo Israël vidi horrendum :  ibi fornicationes Ephraim,  contaminatus est Israël.</p>
-    <p class="tra">В доме Израиля Я вижу ужасное; там блудодеяние у Ефрема, осквернился Израиль.</p>
-  </div>
-</div>
-<div class="vb" id="v6-11">
-  <span class="vn">11</span>
-  <div class="vt">
-    <p class="lat">Sed et Juda, pone messem tibi,  cum convertero captivitatem populi mei.</p>
-    <p class="tra">И тебе, Иуда, назначена жатва, когда Я возвращу плен народа Моего.</p>
-  </div>
-</div>
-</section>
+  <section class="chapter" id="ch3">
+    <div class="chapter-marker">
+      <span class="ch-roman">III</span>
+      <span class="ch-label">Caput 3</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v3-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et dixit Dominus ad me : Adhuc vade, et dilige mulierem dilectam amico et adulteram, sicut diligit Dominus filios Israël, et ipsi respiciunt ad deos alienos, et diligunt vinacia uvarum.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">И сказал мне Господь: иди еще, и полюби женщину, любимую мужем, но прелюбодействующую, подобно тому, как любит Господь сынов Израилевых, а они обращаются к другим богам и любят виноградные лепешки их.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et fodi eam mihi quindecim argenteis, et coro hordei, et dimidio coro hordæi.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">И приобрел я ее себе за пятнадцать сребренников и за хомер ячменя и полхомера ячменя</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et dixi ad eam : Dies multos exspectabis me ; non fornicaberis, et non eris viro ; sed et ego exspectabo te.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">и сказал ей: много дней оставайся у меня; не блуди, и не будь с другим; так же и я буду для тебя.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quia dies multos sedebunt filii Israël sine rege, et sine principe, et sine sacrificio, et sine altari, et sine ephod, et sine theraphim.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Ибо долгое время сыны Израилевы будут оставаться без царя и без князя и без жертвы, без жертвенника, без ефода и терафима.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et post hæc revertentur filii Israël, et quærent Dominum Deum suum, et David regem suum : et pavebunt ad Dominum, et ad bonum ejus, in novissimo dierum.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">После того обратятся сыны Израилевы и взыщут Господа Бога своего и Давида, царя своего, и будут благоговеть пред Господом и благостью Его в последние дни.</div>
+      </div>
+    </div>
+  </section>
 
-<section class="chap" id="c7">
-  <div class="chhead">
-    <span class="chrom">VII</span>
-    <span class="chlbl">Caput 7</span>
-  </div>
-<div class="vb first" id="v7-1">
-  <span class="vn">1</span>
-  <div class="vt">
-    <p class="lat">Cum sanare vellem Israël,  revelata est iniquitas Ephraim,  et malitia Samariæ,  quia operati sunt mendacium ;  et fur ingressus est spolians,  latrunculus foris.</p>
-    <p class="tra">Когда Я врачевал Израиля, открылась неправда Ефрема и злодейство Самарии: ибо они поступают лживо; и входит вор, и разбойник грабит по улицам.</p>
-  </div>
-</div>
-<div class="vb" id="v7-2">
-  <span class="vn">2</span>
-  <div class="vt">
-    <p class="lat">Et ne forte dicant in cordibus suis,  omnem malitiam eorum me recordatum,  nunc circumdederunt eos adinventiones suæ :  coram facie mea factæ sunt.</p>
-    <p class="tra">Не помышляют они в сердце своем, что Я помню все злодеяния их; теперь окружают их дела их; они пред лицем Моим.</p>
-  </div>
-</div>
-<div class="vb" id="v7-3">
-  <span class="vn">3</span>
-  <div class="vt">
-    <p class="lat">In malitia sua lætificaverunt regem,  et in mendaciis suis principes.</p>
-    <p class="tra">Злодейством своим они увеселяют царя и обманами своими - князей.</p>
-  </div>
-</div>
-<div class="vb" id="v7-4">
-  <span class="vn">4</span>
-  <div class="vt">
-    <p class="lat">Omnes adulterantes,  quasi clibanus succensus a coquente ;  quievit paululum civitas a commistione fermenti,  donec fermentaretur totum.</p>
-    <p class="tra">Все они пылают прелюбодейством, как печь, растопленная пекарем, который перестает поджигать ее, когда замесит тесто и оно вскиснет.</p>
-  </div>
-</div>
-<div class="vb" id="v7-5">
-  <span class="vn">5</span>
-  <div class="vt">
-    <p class="lat">Dies regis nostri : cœperunt principes furere a vino ;  extendit manum suam cum illusoribus.</p>
-    <p class="tra">&quot;День нашего царя!&quot; говорят князья, разгоряченные до болезни вином, а он протягивает руку свою к кощунам.</p>
-  </div>
-</div>
-<div class="vb" id="v7-6">
-  <span class="vn">6</span>
-  <div class="vt">
-    <p class="lat">Quia applicuerunt quasi clibanum cor suum,  cum insidiaretur eis ;  tota nocte dormivit coquens eos :  mane ipse succensus quasi ignis flammæ.</p>
-    <p class="tra">Ибо они коварством своим делают сердце свое подобным печи: пекарь их спит всю ночь, а утром она горит, как пылающий огонь.</p>
-  </div>
-</div>
-<div class="vb" id="v7-7">
-  <span class="vn">7</span>
-  <div class="vt">
-    <p class="lat">Omnes calefacti sunt quasi clibanus,  et devoraverunt judices suos :  omnes reges eorum ceciderunt ;  non est qui clamat in eis ad me.</p>
-    <p class="tra">Все они распалены, как печь, и пожирают судей своих; все цари их падают, и никто из них не взывает ко Мне.</p>
-  </div>
-</div>
-<div class="vb" id="v7-8">
-  <span class="vn">8</span>
-  <div class="vt">
-    <p class="lat">Ephraim in populis ipse commiscebatur ;  Ephraim factus est subcinericius panis, qui non reversatur.</p>
-    <p class="tra">Ефрем смешался с народами, Ефрем стал, как неповороченный хлеб.</p>
-  </div>
-</div>
-<div class="vb" id="v7-9">
-  <span class="vn">9</span>
-  <div class="vt">
-    <p class="lat">Comederunt alieni robur ejus, et ipse nescivit ;  sed et cani effusi sunt in eo, et ipse ignoravit.</p>
-    <p class="tra">Чужие пожирали силу его и он не замечал; седина покрыла его, а он не знает.</p>
-  </div>
-</div>
-<div class="vb" id="v7-10">
-  <span class="vn">10</span>
-  <div class="vt">
-    <p class="lat">Et humiliabitur superbia Israël in facie ejus ;  nec reversi sunt ad Dominum Deum suum,  et non quæsierunt eum in omnibus his.</p>
-    <p class="tra">И гордость Израиля унижена в глазах их и при всем том они не обратились к Господу Богу своему и не взыскали Его.</p>
-  </div>
-</div>
-<div class="vb" id="v7-11">
-  <span class="vn">11</span>
-  <div class="vt">
-    <p class="lat">Et factus est Ephraim quasi columba seducta non habens cor.  Ægyptum invocabant ; ad Assyrios abierunt.</p>
-    <p class="tra">И стал Ефрем, как глупый голубь, без сердца: зовут Египтян, идут в Ассирию.</p>
-  </div>
-</div>
-<div class="vb" id="v7-12">
-  <span class="vn">12</span>
-  <div class="vt">
-    <p class="lat">Et cum profecti fuerint,  expandam super eos rete meum :  quasi volucrem cæli detraham eos ;  cædam eos secundum auditionem cœtus eorum.</p>
-    <p class="tra">Когда они пойдут, Я закину на них сеть Мою; как птиц небесных низвергну их; накажу их, как слышало собрание их.</p>
-  </div>
-</div>
-<div class="vb" id="v7-13">
-  <span class="vn">13</span>
-  <div class="vt">
-    <p class="lat">Væ eis, quoniam recesserunt a me !  vastabuntur, quia prævaricati sunt in me,  et ego redemi eos,  et ipsi locuti sunt contra me mendacia.</p>
-    <p class="tra">Горе им, что они удалились от Меня; гибель им, что они отпали от Меня! Я спасал их, а они ложь говорили на Меня.</p>
-  </div>
-</div>
-<div class="vb" id="v7-14">
-  <span class="vn">14</span>
-  <div class="vt">
-    <p class="lat">Et non clamaverunt ad me in corde suo,  sed ululabant in cubilibus suis :  super triticum et vinum ruminabant ;  recesserunt a me.</p>
-    <p class="tra">И не взывали ко Мне сердцем своим, когда вопили на ложах своих; собираются из-за хлеба и вина, а от Меня удаляются.</p>
-  </div>
-</div>
-<div class="vb" id="v7-15">
-  <span class="vn">15</span>
-  <div class="vt">
-    <p class="lat">Et ego erudivi eos, et confortavi brachia eorum,  et in me cogitaverunt malitiam.</p>
-    <p class="tra">Я вразумлял их и укреплял мышцы их, а они умышляли злое против Меня.</p>
-  </div>
-</div>
-<div class="vb" id="v7-16">
-  <span class="vn">16</span>
-  <div class="vt">
-    <p class="lat">Reversi sunt ut essent absque jugo ;  facti sunt quasi arcus dolosus :  cadent in gladio principes eorum, a furore linguæ suæ.  Ista subsannatio eorum in terra Ægypti.</p>
-    <p class="tra">Они обращались, но не к Всевышнему, стали - как неверный лук; падут от меча князья их за дерзость языка своего; это будет посмеянием над ними в земле Египетской.</p>
-  </div>
-</div>
-</section>
+  <section class="chapter" id="ch4">
+    <div class="chapter-marker">
+      <span class="ch-roman">IV</span>
+      <span class="ch-label">Caput 4</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v4-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Audite verbum Domini, filii Israël,  quia judicium Domino cum habitatoribus terræ :  non est enim veritas, et non est misericordia,  et non est scientia Dei in terra.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Слушайте слово Господне, сыны Израилевы; ибо суд у Господа с жителями сей земли, потому что нет ни истины, ни милосердия, ни Богопознания на земле.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Maledictum, et mendacium,  et homicidium, et furtum, et adulterium inundaverunt,  et sanguis sanguinem tetigit.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Клятва и обман, убийство и воровство, и прелюбодейство крайне распространились, и кровопролитие следует за кровопролитием.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Propter hoc lugebit terra,  et infirmabitur omnis qui habitat in ea,  in bestia agri, et in volucre cæli ;  sed et pisces maris congregabuntur.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">За то восплачет земля сия, и изнемогут все, живущие на ней, со зверями полевыми и птицами небесными, даже и рыбы морские погибнут.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Verumtamen unusquisque non judicet,  et non arguatur vir :  populus enim tuus sicut hi qui contradicunt sacerdoti.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Но никто не спорь, никто не обличай другого; и твой народ - как спорящие со священником.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et corrues hodie,  et corruet etiam propheta tecum.  Nocte tacere feci matrem tuam.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">И ты падешь днем, и пророк падет с тобою ночью, и истреблю матерь твою.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Conticuit populus meus,  eo quod non habuerit scientiam :  quia tu scientiam repulisti,  repellam te, ne sacerdotio fungaris mihi ;  et oblita es legis Dei tui,  obliviscar filiorum tuorum et ego.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Истреблен будет народ Мой за недостаток ведения: так как ты отверг ведение, то и Я отвергну тебя от священнодействия предо Мною; и как ты забыл закон Бога твоего то и Я забуду детей твоих.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Secundum multitudinem eorum sic peccaverunt mihi :  gloriam eorum in ignominiam commutabo.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Чем больше они умножаются, тем больше грешат против Меня; славу их обращу в бесславие.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Peccata populi mei comedent,  et ad iniquitatem eorum sublevabunt animas eorum.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Грехами народа Моего кормятся они, и к беззаконию его стремится душа их.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et erit sicut populus, sic sacerdos ;  et visitabo super eum vias ejus,  et cogitationes ejus reddam ei.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">И что будет с народом, то и со священником; и накажу его по путям его, и воздам ему по делам его.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et comedent, et non saturabuntur ;  fornicati sunt, et non cessaverunt :  quoniam Dominum dereliquerunt in non custodiendo.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Будут есть, и не насытятся; будут блудить, и не размножатся; ибо оставили служение Господу.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Fornicatio, et vinum, et ebrietas auferunt cor.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Блуд, вино и напитки завладели сердцем их.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Populus meus in ligno suo interrogavit,  et baculus ejus annuntiavit ei ;  spiritus enim fornicationum decepit eos,  et fornicati sunt a Deo suo.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Народ Мой вопрошает свое дерево и жезл его дает ему ответ; ибо дух блуда ввел их в заблуждение, и, блудодействуя, они отступили от Бога своего.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Super capita montium sacrificabant,  et super colles ascendebant thymiama ;  subtus quercum, et populum, et terebinthum,  quia bona erat umbra ejus ;  ideo fornicabuntur filiæ vestræ,  et sponsæ vestræ adulteræ erunt.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">На вершинах гор они приносят жертвы и на холмах совершают каждение под дубом и тополем и теревинфом, потому что хороша от них тень; поэтому любодействуют дочери ваши и прелюбодействуют невестки ваши.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non visitabo super filias vestras cum fuerint fornicatæ,  et super sponsas vestras cum adulteraverint,  quoniam ipsi cum meretricibus conversabantur,  et cum effeminatis sacrificabant ;  et populus non intelligens vapulabit.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Я оставлю наказывать дочерей ваших, когда они блудодействуют, и невесток ваших, когда они прелюбодействуют, потому что вы сами на стороне блудниц и с любодейцами приносите жертвы, а невежественный народ гибнет.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si fornicaris tu, Israël,  non delinquat saltem Juda ;  et nolite ingredi in Galgala,  et ne ascenderitis in Bethaven,  neque juraveritis : Vivit Dominus !</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Если ты, Израиль, блудодействуешь, то пусть не грешил бы Иуда; и не ходите в Галгал, и не восходите в Беф-Авен, и не клянитесь: &quot;жив Господь!&quot;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quoniam sicut vacca lasciviens declinavit Israël ;  nunc pascet eos Dominus, quasi agnum in latitudine.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Ибо как упрямая телица, упорен стал Израиль; посему будет ли теперь Господь пасти их, как агнцев на пространном пастбище?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Particeps idolorum Ephraim : dimitte eum.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Привязался к идолам Ефрем; оставь его!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Separatum est convivium eorum ;  fornicatione fornicati sunt :  dilexerunt afferre ignominiam protectores ejus.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Отвратительно пьянство их, совершенно предались блудодеянию; князья их любят постыдное.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ligavit eum spiritus in alis suis,  et confundentur a sacrificiis suis.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Охватит их ветер своими крыльями, и устыдятся они жертв своих.</div>
+      </div>
+    </div>
+  </section>
 
-<section class="chap" id="c8">
-  <div class="chhead">
-    <span class="chrom">VIII</span>
-    <span class="chlbl">Caput 8</span>
-  </div>
-<div class="vb first" id="v8-1">
-  <span class="vn">1</span>
-  <div class="vt">
-    <p class="lat">In gutture tuo sit tuba  quasi aquila super domum Domini,  pro eo quod transgressi sunt fœdus meum,  et legem meam prævaricati sunt.</p>
-    <p class="tra">Трубу к устам твоим! Как орел налетит на дом Господень за то, что они нарушили завет Мой и преступили закон Мой!</p>
-  </div>
-</div>
-<div class="vb" id="v8-2">
-  <span class="vn">2</span>
-  <div class="vt">
-    <p class="lat">Me invocabunt : Deus meus,  cognovimus te Israël.</p>
-    <p class="tra">Ко Мне будут взывать: &quot;Боже мой! мы познали Тебя, мы - Израиль&quot;.</p>
-  </div>
-</div>
-<div class="vb" id="v8-3">
-  <span class="vn">3</span>
-  <div class="vt">
-    <p class="lat">Projecit Israël bonum :  inimicus persequetur eum.</p>
-    <p class="tra">Отверг Израиль доброе; враг будет преследовать его.</p>
-  </div>
-</div>
-<div class="vb" id="v8-4">
-  <span class="vn">4</span>
-  <div class="vt">
-    <p class="lat">Ipsi regnaverunt, et non ex me ;  principes exstiterunt, et non cognovi :  argentum suum et aurum suum fecerunt sibi idola,  ut interirent.</p>
-    <p class="tra">Поставляли царей сами, без Меня; ставили князей, но без Моего ведома; из серебра своего и золота своего сделали для себя идолов: оттуда гибель.</p>
-  </div>
-</div>
-<div class="vb" id="v8-5">
-  <span class="vn">5</span>
-  <div class="vt">
-    <p class="lat">Projectus est vitulus tuus, Samaria ;  iratus est furor meus in eos.  Usquequo non poterunt emundari ?</p>
-    <p class="tra">Оставил тебя телец твой, Самария! воспылал гнев Мой на них; доколе не могут они очиститься?</p>
-  </div>
-</div>
-<div class="vb" id="v8-6">
-  <span class="vn">6</span>
-  <div class="vt">
-    <p class="lat">Quia ex Israël et ipse est :  artifex fecit illum, et non est deus ;  quoniam in aranearum telas erit vitulus Samariæ.</p>
-    <p class="tra">Ибо и он - дело Израиля: художник сделал его, и потому он не бог; в куски обратится телец Самарийский!</p>
-  </div>
-</div>
-<div class="vb" id="v8-7">
-  <span class="vn">7</span>
-  <div class="vt">
-    <p class="lat">Quia ventum seminabunt,  et turbinem metent :  culmus stans non est in eo ;  germen non faciet farinam :  quod etsi fecerit, alieni comedent eam.</p>
-    <p class="tra">Так как они сеяли ветер, то и пожнут бурю: хлеба на корню не будет у него; зерно не даст муки; а если и даст, то чужие проглотят ее.</p>
-  </div>
-</div>
-<div class="vb" id="v8-8">
-  <span class="vn">8</span>
-  <div class="vt">
-    <p class="lat">Devoratus est Israël ;  nunc factus est in nationibus quasi vas immundum.</p>
-    <p class="tra">Поглощен Израиль; теперь они будут среди народов, как негодный сосуд.</p>
-  </div>
-</div>
-<div class="vb" id="v8-9">
-  <span class="vn">9</span>
-  <div class="vt">
-    <p class="lat">Quia ipsi ascenderunt ad Assur,  onager solitarius sibi ;  Ephraim munera dederunt amatoribus.</p>
-    <p class="tra">Они пошли к Ассуру, как дикий осел, одиноко бродящий; Ефрем приобретал подарками расположение к себе.</p>
-  </div>
-</div>
-<div class="vb" id="v8-10">
-  <span class="vn">10</span>
-  <div class="vt">
-    <p class="lat">Sed et cum mercede conduxerint nationes,  nunc congregabo eos,  et quiescent paulisper ab onere regis et principum.</p>
-    <p class="tra">Хотя они и посылали дары к народам, но скоро Я соберу их, и они начнут страдать от бремени царя князей;</p>
-  </div>
-</div>
-<div class="vb" id="v8-11">
-  <span class="vn">11</span>
-  <div class="vt">
-    <p class="lat">Quia multiplicavit Ephraim altaria ad peccandum ;  factæ sunt ei aræ in delictum.</p>
-    <p class="tra">ибо много жертвенников настроил Ефрем для греха, - ко греху послужили ему эти жертвенники.</p>
-  </div>
-</div>
-<div class="vb" id="v8-12">
-  <span class="vn">12</span>
-  <div class="vt">
-    <p class="lat">Scribam ei multiplices leges meas,  quæ velut alienæ computatæ sunt.</p>
-    <p class="tra">Написал Я ему важные законы Мои, но они сочтены им как бы чужие.</p>
-  </div>
-</div>
-<div class="vb" id="v8-13">
-  <span class="vn">13</span>
-  <div class="vt">
-    <p class="lat">Hostias offerent,  immolabunt carnes et comedent,  et Dominus non suscipiet eas :  nunc recordabitur iniquitatis eorum,  et visitabit peccata eorum :  ipsi in Ægyptum convertentur.</p>
-    <p class="tra">В жертвоприношениях Мне они приносят мясо и едят его; Господу неугодны они; ныне Он вспомнит нечестие их и накажет их за грехи их: они возвратятся в Египет.</p>
-  </div>
-</div>
-<div class="vb" id="v8-14">
-  <span class="vn">14</span>
-  <div class="vt">
-    <p class="lat">Et oblitus est Israël factoris sui,  et ædificavit delubra ;  et Judas multiplicavit urbes munitas ;  et mittam ignem in civitates ejus,  et devorabit ædes illius.</p>
-    <p class="tra">Забыл Израиль Создателя своего и устроил капища, и Иуда настроил много укрепленных городов; но Я пошлю огонь на города его, и пожрет чертоги его.</p>
-  </div>
-</div>
-</section>
+  <section class="chapter" id="ch5">
+    <div class="chapter-marker">
+      <span class="ch-roman">V</span>
+      <span class="ch-label">Caput 5</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v5-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Audite hoc, sacerdotes,  et attendite, domus Israël,  et domus regis, auscultate :  quia vobis judicium est,  quoniam laqueus facti estis speculationi,  et rete expansum super Thabor.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Слушайте это, священники, и внимайте, дом Израилев, и приклоните ухо, дом царя; ибо вам будет суд, потому что вы были западнею в Массифе и сетью, раскинутою на Фаворе.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et victimas declinastis in profundum ;  et ego eruditor omnium eorum.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Глубоко погрязли они в распутстве; но Я накажу всех их.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ego scio Ephraim,  et Israël non est absconditus a me :  quia nunc fornicatus est Ephraim ;  contaminatus est Israël.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Ефрема Я знаю, и Израиль не сокрыт от Меня; ибо ты блудодействуешь, Ефрем, и Израиль осквернился.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non dabunt cogitationes suas ut revertantur ad Deum suum,  quia spiritus fornicationum in medio eorum,  et Dominum non cognoverunt.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Дела их не допускают их обратиться к Богу своему, ибо дух блуда внутри них, и Господа они не познали.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et respondebit arrogantia Israël in facie ejus,  et Israël et Ephraim ruent in iniquitate sua :  ruet etiam Judas cum eis.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">И гордость Израиля унижена в глазах их; и Израиль и Ефрем падут от нечестия своего; падет и Иуда с ними.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">In gregibus suis et in armentis suis vadent ad quærendum Dominum,  et non invenient :  ablatus est ab eis.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">С овцами своими и волами своими пойдут искать Господа и не найдут Его: Он удалился от них.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">In Dominum prævaricati sunt,  quia filios alienos genuerunt :  nunc devorabit eos mensis, cum partibus suis.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Господу они изменили, потому что родили чужих детей; ныне новый месяц поест их с их имуществом.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Clangite buccina in Gabaa,  tuba in Rama ;  ululate in Bethaven,  post tergum tuum, Benjamin.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Вострубите рогом в Гиве, трубою в Раме; возглашайте в Беф- Авене: &quot;за тобою, Вениамин!&quot;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ephraim in desolatione erit in die correptionis ;  in tribubus Israël ostendi fidem.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Ефрем сделается пустынею в день наказания; между коленами Израилевыми Я возвестил это.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Facti sunt principes Juda quasi assumentes terminum ;  super eos effundam quasi aquam iram meam.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Вожди Иудины стали подобны передвигающим межи: изолью на них гнев Мой, как воду.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Calumniam patiens est Ephraim, fractus judicio,  quoniam cœpit abire post sordes.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Угнетен Ефрем, поражен судом; ибо захотел ходить вслед суетных.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et ego quasi tinea Ephraim,  et quasi putredo domui Juda.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">И буду как моль для Ефрема и как червь для дома Иудина.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et vidit Ephraim languorem suum,  et Juda vinculum suum ;  et abiit Ephraim ad Assur,  et misit ad regem ultorem :  et ipse non poterit sanare vos,  nec solvere poterit a vobis vinculum.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">И увидел Ефрем болезнь свою, и Иуда - свою рану, и пошел Ефрем к Ассуру, и послал к царю Иареву; но он не может исцелить вас, и не излечит вас от раны.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quoniam ego quasi leæna Ephraim,  et quasi catulus leonis domui Juda.  Ego, ego capiam, et vadam ;  tollam, et non est qui eruat.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Ибо Я как лев для Ефрема и как скимен для дома Иудина; Я, Я растерзаю, и уйду; унесу, и никто не спасет.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vadens revertar ad locum meum,  donec deficiatis, et quæratis faciem meam.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Пойду, возвращусь в Мое место, доколе они не признают себя виновными и не взыщут лица Моего.</div>
+      </div>
+    </div>
+  </section>
 
-<section class="chap" id="c9">
-  <div class="chhead">
-    <span class="chrom">IX</span>
-    <span class="chlbl">Caput 9</span>
-  </div>
-<div class="vb first" id="v9-1">
-  <span class="vn">1</span>
-  <div class="vt">
-    <p class="lat">Noli lætari, Israël ;  noli exsultare sicut populi :  quia fornicatus es a Deo tuo ;  dilexisti mercedem super omnes areas tritici.</p>
-    <p class="tra">Не радуйся, Израиль, до восторга, как другие народы, ибо ты блудодействуешь, удалившись от Бога твоего: любишь блудодейные дары на всех гумнах.</p>
-  </div>
-</div>
-<div class="vb" id="v9-2">
-  <span class="vn">2</span>
-  <div class="vt">
-    <p class="lat">Area et torcular non pascet eos,  et vinum mentietur eis :</p>
-    <p class="tra">Гумно и точило не будут питать их, и надежда на виноградный сок обманет их.</p>
-  </div>
-</div>
-<div class="vb" id="v9-3">
-  <span class="vn">3</span>
-  <div class="vt">
-    <p class="lat">non habitabunt in terra Domini.  Reversus est Ephraim in Ægyptum,  et in Assyriis pollutum comedit.</p>
-    <p class="tra">Не будут они жить на земле Господней: Ефрем возвратится в Египет, и в Ассирии будут есть нечистое.</p>
-  </div>
-</div>
-<div class="vb" id="v9-4">
-  <span class="vn">4</span>
-  <div class="vt">
-    <p class="lat">Non libabunt Domino vinum,  et non placebunt ei.  Sacrificia eorum quasi panis lugentium ;  omnes qui comedent eum, contaminabuntur :  quia panis eorum animæ ipsorum :  non intrabit in domum Domini.</p>
-    <p class="tra">Не будут возливать Господу вина, и неугодны Ему будут жертвы их; они будут для них, как хлеб похоронный: все, которые будут есть его, осквернятся, ибо хлеб их - для души их, а в дом Господень он не войдет.</p>
-  </div>
-</div>
-<div class="vb" id="v9-5">
-  <span class="vn">5</span>
-  <div class="vt">
-    <p class="lat">Quid facietis in die solemni,  in die festivitatis Domini ?</p>
-    <p class="tra">Что будете делать в день торжества и в день праздника Господня?</p>
-  </div>
-</div>
-<div class="vb" id="v9-6">
-  <span class="vn">6</span>
-  <div class="vt">
-    <p class="lat">Ecce enim profecti sunt a vastitate :  Ægyptus congregabit eos ;  Memphis sepeliet eos :  desiderabile argentum eorum urtica hæreditabit,  lappa in tabernaculis eorum.</p>
-    <p class="tra">Ибо вот, они уйдут по причине опустошения; Египет соберет их, Мемфис похоронит их; драгоценностями их из серебра завладеет крапива, колючий терн будет в шатрах их.</p>
-  </div>
-</div>
-<div class="vb" id="v9-7">
-  <span class="vn">7</span>
-  <div class="vt">
-    <p class="lat">Venerunt dies visitationis,  venerunt dies retributionis.  Scitote, Israël,  stultum prophetam,  insanum virum spiritualem,  propter multitudinem iniquitatis tuæ,  et multitudinem amentiæ.</p>
-    <p class="tra">Пришли дни посещения, пришли дни воздаяния; да узнает Израиль, что глуп прорицатель, безумен выдающий себя за вдохновенного, по причине множества беззаконий твоих и великой враждебности.</p>
-  </div>
-</div>
-<div class="vb" id="v9-8">
-  <span class="vn">8</span>
-  <div class="vt">
-    <p class="lat">Speculator Ephraim cum Deo meo,  propheta laqueus ruinæ factus est super omnes vias ejus ;  insania in domo Dei ejus.</p>
-    <p class="tra">Ефрем - страж подле Бога моего; пророк - сеть птицелова на всех путях его; соблазн в доме Бога его.</p>
-  </div>
-</div>
-<div class="vb" id="v9-9">
-  <span class="vn">9</span>
-  <div class="vt">
-    <p class="lat">Profunde peccaverunt, sicut in diebus Gabaa.  Recordabitur iniquitatis eorum,  et visitabit peccata eorum.</p>
-    <p class="tra">Глубоко упали они, развратились, как во дни Гивы; Он вспомнит нечестие их, накажет их за грехи их.</p>
-  </div>
-</div>
-<div class="vb" id="v9-10">
-  <span class="vn">10</span>
-  <div class="vt">
-    <p class="lat">Quasi uvas in deserto inveni Israël,  quasi prima poma ficulneæ in cacumine ejus vidi patres eorum :  ipsi autem intraverunt ad Beelphegor,  et abalienati sunt in confusionem,  et facti sunt abominabiles sicut ea quæ dilexerunt.</p>
-    <p class="tra">Как виноград в пустыне, Я нашел Израиля; как первую ягоду на смоковнице, в первое время ее, увидел Я отцов ваших, - но они пошли к Ваал-Фегору и предались постыдному, и сами стали мерзкими, как те, которых возлюбили.</p>
-  </div>
-</div>
-<div class="vb" id="v9-11">
-  <span class="vn">11</span>
-  <div class="vt">
-    <p class="lat">Ephraim quasi avis avolavit ;  gloria eorum a partu, et ab utero, et a conceptu.</p>
-    <p class="tra">У Ефремлян, как птица улетит слава [чадородия]: ни рождения, ни беременности, ни зачатия [не будет].</p>
-  </div>
-</div>
-<div class="vb" id="v9-12">
-  <span class="vn">12</span>
-  <div class="vt">
-    <p class="lat">Quod etsi enutrierint filios suos,  absque liberis eos faciam in hominibus ;  sed et væ eis cum recessero ab eis !</p>
-    <p class="tra">А хотя бы они и воспитали детей своих, отниму их; ибо горе им, когда удалюсь от них!</p>
-  </div>
-</div>
-<div class="vb" id="v9-13">
-  <span class="vn">13</span>
-  <div class="vt">
-    <p class="lat">Ephraim, ut vidi, Tyrus erat fundata in pulchritudine ;  et Ephraim educet ad interfectorem filios suos.</p>
-    <p class="tra">Ефрем, как Я видел его до Тира, насажден на прекрасной местности; однако Ефрем выведет детей своих к убийце.</p>
-  </div>
-</div>
-<div class="vb" id="v9-14">
-  <span class="vn">14</span>
-  <div class="vt">
-    <p class="lat">Da eis, Domine. Quid dabis eis ?  da eis vulvam sine liberis, et ubera arentia.</p>
-    <p class="tra">Дай им, Господи: что Ты дашь им? дай им утробу нерождающую и сухие сосцы.</p>
-  </div>
-</div>
-<div class="vb" id="v9-15">
-  <span class="vn">15</span>
-  <div class="vt">
-    <p class="lat">Omnes nequitiæ eorum in Galgal,  quia ibi exosos habui eos.  Propter malitiam adinventionum eorum,  de domo mea ejiciam eos ;  non addam ut diligam eos :  omnes principes eorum recedentes.</p>
-    <p class="tra">Все зло их в Галгале: там Я возненавидел их за злые дела их; изгоню их из дома Моего, не буду больше любить их; все князья их - отступники.</p>
-  </div>
-</div>
-<div class="vb" id="v9-16">
-  <span class="vn">16</span>
-  <div class="vt">
-    <p class="lat">Percussus est Ephraim ;  radix eorum exsiccata est :  fructum nequaquam facient,  quod etsi genuerint,  interficiam amantissima uteri eorum.</p>
-    <p class="tra">Поражен Ефрем; иссох корень их, - не будут приносить они плода, а если и будут рождать, Я умерщвлю вожделенный плод утробы их.</p>
-  </div>
-</div>
-<div class="vb" id="v9-17">
-  <span class="vn">17</span>
-  <div class="vt">
-    <p class="lat">Abjiciet eos Deus meus, quia non audierunt eum,  et erunt vagi in nationibus.</p>
-    <p class="tra">Отвергнет их Бог мой, потому что они не послушались Его, и будут скитальцами между народами.</p>
-  </div>
-</div>
-</section>
+  <section class="chapter" id="ch6">
+    <div class="chapter-marker">
+      <span class="ch-roman">VI</span>
+      <span class="ch-label">Caput 6</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v6-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">In tribulatione sua mane consurgent ad me :  Venite, et revertamur ad Dominum,</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">В скорби своей они с раннего утра будут искать Меня и говорить: &quot;пойдем и возвратимся к Господу! ибо Он уязвил - и Он исцелит нас, поразил - и перевяжет наши раны;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">quia ipse cepit, et sanabit nos ;  percutiet, et curabit nos.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">оживит нас через два дня, в третий день восставит нас, и мы будем жить пред лицем Его.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vivificabit nos post duos dies ;  in die tertia suscitabit nos,  et vivemus in conspectu ejus.  Sciemus, sequemurque ut cognoscamus Dominum :  quasi diluculum præparatus est egressus ejus,  et veniet quasi imber nobis temporaneus et serotinus terræ.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Итак познаем, будем стремиться познать Господа; как утренняя заря - явление Его, и Он придет к нам, как дождь, как поздний дождь оросит землю&quot;.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quid faciam tibi, Ephraim ?  quid faciam tibi, Juda ?  misericordia vestra quasi nubes matutina,  et quasi ros mane pertransiens.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Что сделаю тебе, Ефрем? что сделаю тебе, Иуда? благочестие ваше, как утренний туман и как роса, скоро исчезающая.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Propter hoc dolavi in prophetis ;  occidi eos in verbis oris mei :  et judicia tua quasi lux egredientur.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Посему Я поражал через пророков и бил их словами уст Моих, и суд Мой, как восходящий свет.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quia misericordiam volui, et non sacrificium ;  et scientiam Dei plus quam holocausta.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Ибо Я милости хочу, а не жертвы, и Боговедения более, нежели всесожжений.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ipsi autem sicut Adam transgressi sunt pactum :  ibi prævaricati sunt in me.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Они же, подобно Адаму, нарушили завет и там изменили Мне.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Galaad civitas operantium idolum,  supplantata sanguine.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Галаад - город нечестивцев, запятнанный кровью.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et quasi fauces virorum latronum,  particeps sacerdotum, in via interficientium pergentes de Sichem :  quia scelus operati sunt.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Как разбойники подстерегают человека, так сборище священников убивают на пути в Сихем и совершают мерзости.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">In domo Israël vidi horrendum :  ibi fornicationes Ephraim,  contaminatus est Israël.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">В доме Израиля Я вижу ужасное; там блудодеяние у Ефрема, осквернился Израиль.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sed et Juda, pone messem tibi,  cum convertero captivitatem populi mei.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">И тебе, Иуда, назначена жатва, когда Я возвращу плен народа Моего.</div>
+      </div>
+    </div>
+  </section>
 
-<section class="chap" id="c10">
-  <div class="chhead">
-    <span class="chrom">X</span>
-    <span class="chlbl">Caput 10</span>
-  </div>
-<div class="vb first" id="v10-1">
-  <span class="vn">1</span>
-  <div class="vt">
-    <p class="lat">Vitis frondosa Israël,  fructus adæquatus est ei :  secundum multitudinem fructus sui multiplicavit altaria,  juxta ubertatem terræ suæ exuberavit simulacris.</p>
-    <p class="tra">Израиль - ветвистый виноград, умножает для себя плод: чем более у него плодов, тем более умножает жертвенники; чем лучше земля у него, тем более украшают они кумиры.</p>
-  </div>
-</div>
-<div class="vb" id="v10-2">
-  <span class="vn">2</span>
-  <div class="vt">
-    <p class="lat">Divisum est cor eorum, nunc interibunt ;  ipse confringet simulacra eorum,  depopulabitur aras eorum.</p>
-    <p class="tra">Разделилось сердце их, за то они и будут наказаны: Он разрушит жертвенники их, сокрушит кумиры их.</p>
-  </div>
-</div>
-<div class="vb" id="v10-3">
-  <span class="vn">3</span>
-  <div class="vt">
-    <p class="lat">Quia nunc dicent : Non est rex nobis,  non enim timemus Dominum ;  et rex quid faciet nobis ?</p>
-    <p class="tra">Теперь они говорят: &quot;нет у нас царя, ибо мы не убоялись Господа; а царь, - что он нам сделает?&quot;</p>
-  </div>
-</div>
-<div class="vb" id="v10-4">
-  <span class="vn">4</span>
-  <div class="vt">
-    <p class="lat">Loquimini verba visionis inutilis, et ferietis fœdus ;  et germinabit quasi amaritudo judicium super sulcos agri.</p>
-    <p class="tra">Говорят слова пустые, клянутся ложно, заключают союзы; за то явится суд над ними, как ядовитая трава на бороздах поля.</p>
-  </div>
-</div>
-<div class="vb" id="v10-5">
-  <span class="vn">5</span>
-  <div class="vt">
-    <p class="lat">Vaccas Bethaven coluerunt habitatores Samariæ ;  quia luxit super eum populus ejus,  et æditui ejus super eum exsultaverunt  in gloria ejus, quia migravit ab eo.</p>
-    <p class="tra">За тельца Беф-Авена вострепещут жители Самарии; восплачет о нем народ его, и жрецы его, радовавшиеся о нем, будут плакать о славе его, потому что она отойдет от него.</p>
-  </div>
-</div>
-<div class="vb" id="v10-6">
-  <span class="vn">6</span>
-  <div class="vt">
-    <p class="lat">Siquidem et ipse in Assur delatus est,  munus regi ultori.  Confusio Ephraim capiet,  et confundetur Israël in voluntate sua.</p>
-    <p class="tra">И сам он отнесен будет в Ассирию, в дар царю Иареву; постыжен будет Ефрем, и посрамится Израиль от замысла своего.</p>
-  </div>
-</div>
-<div class="vb" id="v10-7">
-  <span class="vn">7</span>
-  <div class="vt">
-    <p class="lat">Transire fecit Samaria regem suum  quasi spumam super faciem aquæ.</p>
-    <p class="tra">Исчезнет в Самарии царь ее, как пена на поверхности воды.</p>
-  </div>
-</div>
-<div class="vb" id="v10-8">
-  <span class="vn">8</span>
-  <div class="vt">
-    <p class="lat">Et disperdentur excelsa idoli, peccatum Israël ;  lappa et tribulus ascendet super aras eorum :  et dicent montibus : Operite nos,  et collibus : Cadite super nos.</p>
-    <p class="tra">И истреблены будут высоты Авена, грех Израиля; терние и волчцы вырастут на жертвенниках их, и скажут они горам: &quot;покройте нас&quot;, и холмам: &quot;падите на нас&quot;.</p>
-  </div>
-</div>
-<div class="vb" id="v10-9">
-  <span class="vn">9</span>
-  <div class="vt">
-    <p class="lat">Ex diebus Gabaa peccavit Israël ;  ibi steterunt.  Non comprehendet eos in Gabaa  prælium super filios iniquitatis.</p>
-    <p class="tra">Больше, нежели во дни Гивы, грешил ты, Израиль; там они устояли; война в Гаваоне против сынов нечестия не постигла их.</p>
-  </div>
-</div>
-<div class="vb" id="v10-10">
-  <span class="vn">10</span>
-  <div class="vt">
-    <p class="lat">Juxta desiderium meum corripiam eos :  congregabuntur super eos populi,  cum corripientur propter duas iniquitates suas.</p>
-    <p class="tra">По желанию Моему накажу их, и соберутся против них народы, и они будут связаны за двойное преступление их.</p>
-  </div>
-</div>
-<div class="vb" id="v10-11">
-  <span class="vn">11</span>
-  <div class="vt">
-    <p class="lat">Ephraim vitula docta diligere trituram,  et ego transivi super pulchritudinem colli ejus :  ascendam super Ephraim,  arabit Judas ;  confringet sibi sulcos Jacob.</p>
-    <p class="tra">Ефрем - обученная телица, привычная к молотьбе, и Я Сам возложу ярмо на тучную шею его; на Ефреме будут верхом ездить, Иуда будет пахать, Иаков будет боронить.</p>
-  </div>
-</div>
-<div class="vb" id="v10-12">
-  <span class="vn">12</span>
-  <div class="vt">
-    <p class="lat">Seminate vobis in justitia,  et metite in ore misericordiæ.  Innovate vobis novale ;  tempus autem requirendi Dominum,  cum venerit qui docebit vos justitiam.</p>
-    <p class="tra">Сейте себе в правду, и пожнете милость; распахивайте у себя новину, ибо время взыскать Господа, чтобы Он, когда придет, дождем пролил на вас правду.</p>
-  </div>
-</div>
-<div class="vb" id="v10-13">
-  <span class="vn">13</span>
-  <div class="vt">
-    <p class="lat">Arastis impietatem,  iniquitatem messuistis :  comedistis frugem mendacii,  quia confisus es in viis tuis,  in multitudine fortium tuorum.</p>
-    <p class="tra">Вы возделывали нечестие, пожинаете беззаконие, едите плод лжи, потому что ты надеялся на путь твой, на множество ратников твоих.</p>
-  </div>
-</div>
-<div class="vb" id="v10-14">
-  <span class="vn">14</span>
-  <div class="vt">
-    <p class="lat">Consurget tumultus in populo tuo ;  et omnes munitiones tuæ vastabuntur,  sicut vastatus est Salmana a domo ejus qui judicavit Baal  in die prælii, matre super filios allisa.</p>
-    <p class="tra">И произойдет смятение в народе твоем, и все твердыни твои будут разрушены, как Салман разрушил Бет-Арбел в день брани: мать была убита с детьми.</p>
-  </div>
-</div>
-<div class="vb" id="v10-15">
-  <span class="vn">15</span>
-  <div class="vt">
-    <p class="lat">Sic fecit vobis Bethel,  a facie malitiæ nequitiarum vestrarum.</p>
-    <p class="tra">Вот что причинит вам Вефиль за крайнее нечестие ваше.</p>
-  </div>
-</div>
-</section>
+  <section class="chapter" id="ch7">
+    <div class="chapter-marker">
+      <span class="ch-roman">VII</span>
+      <span class="ch-label">Caput 7</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v7-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Cum sanare vellem Israël,  revelata est iniquitas Ephraim,  et malitia Samariæ,  quia operati sunt mendacium ;  et fur ingressus est spolians,  latrunculus foris.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Когда Я врачевал Израиля, открылась неправда Ефрема и злодейство Самарии: ибо они поступают лживо; и входит вор, и разбойник грабит по улицам.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et ne forte dicant in cordibus suis,  omnem malitiam eorum me recordatum,  nunc circumdederunt eos adinventiones suæ :  coram facie mea factæ sunt.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Не помышляют они в сердце своем, что Я помню все злодеяния их; теперь окружают их дела их; они пред лицем Моим.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">In malitia sua lætificaverunt regem,  et in mendaciis suis principes.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Злодейством своим они увеселяют царя и обманами своими - князей.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Omnes adulterantes,  quasi clibanus succensus a coquente ;  quievit paululum civitas a commistione fermenti,  donec fermentaretur totum.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Все они пылают прелюбодейством, как печь, растопленная пекарем, который перестает поджигать ее, когда замесит тесто и оно вскиснет.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Dies regis nostri : cœperunt principes furere a vino ;  extendit manum suam cum illusoribus.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">&quot;День нашего царя!&quot; говорят князья, разгоряченные до болезни вином, а он протягивает руку свою к кощунам.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quia applicuerunt quasi clibanum cor suum,  cum insidiaretur eis ;  tota nocte dormivit coquens eos :  mane ipse succensus quasi ignis flammæ.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Ибо они коварством своим делают сердце свое подобным печи: пекарь их спит всю ночь, а утром она горит, как пылающий огонь.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Omnes calefacti sunt quasi clibanus,  et devoraverunt judices suos :  omnes reges eorum ceciderunt ;  non est qui clamat in eis ad me.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Все они распалены, как печь, и пожирают судей своих; все цари их падают, и никто из них не взывает ко Мне.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ephraim in populis ipse commiscebatur ;  Ephraim factus est subcinericius panis, qui non reversatur.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Ефрем смешался с народами, Ефрем стал, как неповороченный хлеб.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Comederunt alieni robur ejus, et ipse nescivit ;  sed et cani effusi sunt in eo, et ipse ignoravit.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Чужие пожирали силу его и он не замечал; седина покрыла его, а он не знает.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et humiliabitur superbia Israël in facie ejus ;  nec reversi sunt ad Dominum Deum suum,  et non quæsierunt eum in omnibus his.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">И гордость Израиля унижена в глазах их и при всем том они не обратились к Господу Богу своему и не взыскали Его.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et factus est Ephraim quasi columba seducta non habens cor.  Ægyptum invocabant ; ad Assyrios abierunt.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">И стал Ефрем, как глупый голубь, без сердца: зовут Египтян, идут в Ассирию.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et cum profecti fuerint,  expandam super eos rete meum :  quasi volucrem cæli detraham eos ;  cædam eos secundum auditionem cœtus eorum.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Когда они пойдут, Я закину на них сеть Мою; как птиц небесных низвергну их; накажу их, как слышало собрание их.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Væ eis, quoniam recesserunt a me !  vastabuntur, quia prævaricati sunt in me,  et ego redemi eos,  et ipsi locuti sunt contra me mendacia.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Горе им, что они удалились от Меня; гибель им, что они отпали от Меня! Я спасал их, а они ложь говорили на Меня.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et non clamaverunt ad me in corde suo,  sed ululabant in cubilibus suis :  super triticum et vinum ruminabant ;  recesserunt a me.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">И не взывали ко Мне сердцем своим, когда вопили на ложах своих; собираются из-за хлеба и вина, а от Меня удаляются.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et ego erudivi eos, et confortavi brachia eorum,  et in me cogitaverunt malitiam.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Я вразумлял их и укреплял мышцы их, а они умышляли злое против Меня.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Reversi sunt ut essent absque jugo ;  facti sunt quasi arcus dolosus :  cadent in gladio principes eorum, a furore linguæ suæ.  Ista subsannatio eorum in terra Ægypti.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Они обращались, но не к Всевышнему, стали - как неверный лук; падут от меча князья их за дерзость языка своего; это будет посмеянием над ними в земле Египетской.</div>
+      </div>
+    </div>
+  </section>
 
-<section class="chap" id="c11">
-  <div class="chhead">
-    <span class="chrom">XI</span>
-    <span class="chlbl">Caput 11</span>
-  </div>
-<div class="vb first" id="v11-1">
-  <span class="vn">1</span>
-  <div class="vt">
-    <p class="lat">Sicut mane transiit, pertransiit rex Israël.  Quia puer Israël, et dilexi eum ;  et ex Ægypto vocavi filium meum.</p>
-    <p class="tra">На заре погибнет царь Израилев! Когда Израиль был юн, Я любил его и из Египта вызвал сына Моего.</p>
-  </div>
-</div>
-<div class="vb" id="v11-2">
-  <span class="vn">2</span>
-  <div class="vt">
-    <p class="lat">Vocaverunt eos, sic abierunt a facie eorum ;  Baalim immolabant, et simulacris sacrificabant.</p>
-    <p class="tra">Звали их, а они уходили прочь от лица их: приносили жертву Ваалам и кадили истуканам.</p>
-  </div>
-</div>
-<div class="vb" id="v11-3">
-  <span class="vn">3</span>
-  <div class="vt">
-    <p class="lat">Et ego quasi nutritius Ephraim :  portabam eos in brachiis meis,  et nescierunt quod curarem eos.</p>
-    <p class="tra">Я Сам приучал Ефрема ходить, носил его на руках Своих, а они не сознавали, что Я врачевал их.</p>
-  </div>
-</div>
-<div class="vb" id="v11-4">
-  <span class="vn">4</span>
-  <div class="vt">
-    <p class="lat">In funiculis Adam traham eos,  in vinculis caritatis ;  et ero eis quasi exaltans jugum super maxillas eorum,  et declinavi ad eum ut vesceretur.</p>
-    <p class="tra">Узами человеческими влек Я их, узами любви, и был для них как бы поднимающий ярмо с челюстей их, и ласково подкладывал пищу им.</p>
-  </div>
-</div>
-<div class="vb" id="v11-5">
-  <span class="vn">5</span>
-  <div class="vt">
-    <p class="lat">Non revertetur in terram Ægypti, et Assur ipse rex ejus,  quoniam noluerunt converti.</p>
-    <p class="tra">Не возвратится он в Египет, но Ассур - он будет царем его, потому что они не захотели обратиться ко Мне.</p>
-  </div>
-</div>
-<div class="vb" id="v11-6">
-  <span class="vn">6</span>
-  <div class="vt">
-    <p class="lat">Cœpit gladius in civitatibus ejus,  et consumet electos ejus,  et comedet capita eorum.</p>
-    <p class="tra">И падет меч на города его, и истребит затворы его, и пожрет их за умыслы их.</p>
-  </div>
-</div>
-<div class="vb" id="v11-7">
-  <span class="vn">7</span>
-  <div class="vt">
-    <p class="lat">Et populus meus pendebit ad reditum meum ;  jugum autem imponetur eis simul, quod non auferetur.</p>
-    <p class="tra">Народ Мой закоснел в отпадении от Меня, и хотя призывают его к горнему, он не возвышается единодушно.</p>
-  </div>
-</div>
-<div class="vb" id="v11-8">
-  <span class="vn">8</span>
-  <div class="vt">
-    <p class="lat">Quomodo dabo te, Ephraim ?  protegam te, Israël ?  Quomodo dabo te sicut Adama,  ponam te ut Seboim ?  Conversum est in me cor meum,  pariter conturbata est pœnitudo mea.</p>
-    <p class="tra">Как поступлю с тобою, Ефрем? как предам тебя, Израиль? Поступлю ли с тобою, как с Адамою, сделаю ли тебе, что Севоиму? Повернулось во Мне сердце Мое, возгорелась вся жалость Моя!</p>
-  </div>
-</div>
-<div class="vb" id="v11-9">
-  <span class="vn">9</span>
-  <div class="vt">
-    <p class="lat">Non faciam furorem iræ meæ ;  non convertar ut disperdam Ephraim,  quoniam Deus ego, et non homo ;  in medio tui sanctus,  et non ingrediar civitatem.</p>
-    <p class="tra">Не сделаю по ярости гнева Моего, не истреблю Ефрема, ибо Я Бог, а не человек; среди тебя Святый; Я не войду в город.</p>
-  </div>
-</div>
-<div class="vb" id="v11-10">
-  <span class="vn">10</span>
-  <div class="vt">
-    <p class="lat">Post Dominum ambulabunt ;  quasi leo rugiet,  quia ipse rugiet,  et formidabunt filii maris.</p>
-    <p class="tra">Вслед Господа пойдут они; как лев, Он даст глас Свой, даст глас Свой, и встрепенутся к Нему сыны с запада,</p>
-  </div>
-</div>
-<div class="vb" id="v11-11">
-  <span class="vn">11</span>
-  <div class="vt">
-    <p class="lat">Et avolabunt quasi avis ex Ægypto,  et quasi columba de terra Assyriorum :  et collocabo eos in domibus suis, dicit Dominus.</p>
-    <p class="tra">встрепенутся из Египта, как птицы, и из земли Ассирийской, как голуби, и вселю их в домы их, говорит Господь.</p>
-  </div>
-</div>
-<div class="vb" id="v11-12">
-  <span class="vn">12</span>
-  <div class="vt">
-    <p class="lat">Circumdedit me in negatione Ephraim,  et in dolo domus Israël ;  Judas autem testis descendit cum Deo,  et cum sanctis fidelis.</p>
-    <p class="tra">Окружил Меня Ефрем ложью и дом Израилев лукавством; Иуда держался еще Бога и верен был со святыми.</p>
-  </div>
-</div>
-</section>
+  <section class="chapter" id="ch8">
+    <div class="chapter-marker">
+      <span class="ch-roman">VIII</span>
+      <span class="ch-label">Caput 8</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v8-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">In gutture tuo sit tuba  quasi aquila super domum Domini,  pro eo quod transgressi sunt fœdus meum,  et legem meam prævaricati sunt.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Трубу к устам твоим! Как орел налетит на дом Господень за то, что они нарушили завет Мой и преступили закон Мой!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Me invocabunt : Deus meus,  cognovimus te Israël.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Ко Мне будут взывать: &quot;Боже мой! мы познали Тебя, мы - Израиль&quot;.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Projecit Israël bonum :  inimicus persequetur eum.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Отверг Израиль доброе; враг будет преследовать его.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ipsi regnaverunt, et non ex me ;  principes exstiterunt, et non cognovi :  argentum suum et aurum suum fecerunt sibi idola,  ut interirent.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Поставляли царей сами, без Меня; ставили князей, но без Моего ведома; из серебра своего и золота своего сделали для себя идолов: оттуда гибель.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Projectus est vitulus tuus, Samaria ;  iratus est furor meus in eos.  Usquequo non poterunt emundari ?</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Оставил тебя телец твой, Самария! воспылал гнев Мой на них; доколе не могут они очиститься?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quia ex Israël et ipse est :  artifex fecit illum, et non est deus ;  quoniam in aranearum telas erit vitulus Samariæ.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Ибо и он - дело Израиля: художник сделал его, и потому он не бог; в куски обратится телец Самарийский!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quia ventum seminabunt,  et turbinem metent :  culmus stans non est in eo ;  germen non faciet farinam :  quod etsi fecerit, alieni comedent eam.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Так как они сеяли ветер, то и пожнут бурю: хлеба на корню не будет у него; зерно не даст муки; а если и даст, то чужие проглотят ее.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Devoratus est Israël ;  nunc factus est in nationibus quasi vas immundum.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Поглощен Израиль; теперь они будут среди народов, как негодный сосуд.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quia ipsi ascenderunt ad Assur,  onager solitarius sibi ;  Ephraim munera dederunt amatoribus.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Они пошли к Ассуру, как дикий осел, одиноко бродящий; Ефрем приобретал подарками расположение к себе.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sed et cum mercede conduxerint nationes,  nunc congregabo eos,  et quiescent paulisper ab onere regis et principum.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Хотя они и посылали дары к народам, но скоро Я соберу их, и они начнут страдать от бремени царя князей;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quia multiplicavit Ephraim altaria ad peccandum ;  factæ sunt ei aræ in delictum.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">ибо много жертвенников настроил Ефрем для греха, - ко греху послужили ему эти жертвенники.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Scribam ei multiplices leges meas,  quæ velut alienæ computatæ sunt.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Написал Я ему важные законы Мои, но они сочтены им как бы чужие.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hostias offerent,  immolabunt carnes et comedent,  et Dominus non suscipiet eas :  nunc recordabitur iniquitatis eorum,  et visitabit peccata eorum :  ipsi in Ægyptum convertentur.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">В жертвоприношениях Мне они приносят мясо и едят его; Господу неугодны они; ныне Он вспомнит нечестие их и накажет их за грехи их: они возвратятся в Египет.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et oblitus est Israël factoris sui,  et ædificavit delubra ;  et Judas multiplicavit urbes munitas ;  et mittam ignem in civitates ejus,  et devorabit ædes illius.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Забыл Израиль Создателя своего и устроил капища, и Иуда настроил много укрепленных городов; но Я пошлю огонь на города его, и пожрет чертоги его.</div>
+      </div>
+    </div>
+  </section>
 
-<section class="chap" id="c12">
-  <div class="chhead">
-    <span class="chrom">XII</span>
-    <span class="chlbl">Caput 12</span>
-  </div>
-<div class="vb first" id="v12-1">
-  <span class="vn">1</span>
-  <div class="vt">
-    <p class="lat">Ephraim pascit ventum,  et sequitur æstum ;  tota die mendacium et vastitatem multiplicat :  et fœdus cum Assyriis iniit,  et oleum in Ægyptum ferebat.</p>
-    <p class="tra">Ефрем пасет ветер и гоняется за восточным ветром, каждый день умножает ложь и разорение; заключают они союз с Ассуром, и в Египет отвозится елей.</p>
-  </div>
-</div>
-<div class="vb" id="v12-2">
-  <span class="vn">2</span>
-  <div class="vt">
-    <p class="lat">Judicium ergo Domini cum Juda,  et visitatio super Jacob :  juxta vias ejus, et juxta adinventiones ejus reddet ei.</p>
-    <p class="tra">Но и с Иудою у Господа суд и Он посетит Иакова по путям его, воздаст ему по делам его.</p>
-  </div>
-</div>
-<div class="vb" id="v12-3">
-  <span class="vn">3</span>
-  <div class="vt">
-    <p class="lat">In utero supplantavit fratrem suum,  et in fortitudine sua directus est cum angelo.</p>
-    <p class="tra">Еще во чреве матери запинал он брата своего, а возмужав боролся с Богом.</p>
-  </div>
-</div>
-<div class="vb" id="v12-4">
-  <span class="vn">4</span>
-  <div class="vt">
-    <p class="lat">Et invaluit ad angelum, et confortatus est ;  flevit, et rogavit eum.  In Bethel invenit eum,  et ibi locutus est nobiscum.</p>
-    <p class="tra">Он боролся с Ангелом - и превозмог; плакал и умолял Его; в Вефиле Он нашел нас и там говорил с нами.</p>
-  </div>
-</div>
-<div class="vb" id="v12-5">
-  <span class="vn">5</span>
-  <div class="vt">
-    <p class="lat">Et Dominus Deus exercituum,  Dominus memoriale ejus.</p>
-    <p class="tra">А Господь есть Бог Саваоф; Сущий [Иегова] - имя Его.</p>
-  </div>
-</div>
-<div class="vb" id="v12-6">
-  <span class="vn">6</span>
-  <div class="vt">
-    <p class="lat">Et tu ad Deum tuum converteris ;  misericordiam et judicium custodi,  et spera in Deo tuo semper.</p>
-    <p class="tra">Обратись и ты к Богу твоему; наблюдай милость и суд и уповай на Бога твоего всегда.</p>
-  </div>
-</div>
-<div class="vb" id="v12-7">
-  <span class="vn">7</span>
-  <div class="vt">
-    <p class="lat">Chanaan, in manu ejus statera dolosa,  calumniam dilexit.</p>
-    <p class="tra">Хананеянин с неверными весами в руке любит обижать;</p>
-  </div>
-</div>
-<div class="vb" id="v12-8">
-  <span class="vn">8</span>
-  <div class="vt">
-    <p class="lat">Et dixit Ephraim : Verumtamen dives effectus sum ;  inveni idolum mihi :  omnes labores mei non invenient mihi iniquitatem quam peccavi.</p>
-    <p class="tra">и Ефрем говорит: &quot;однако я разбогател; накопил себе имущества, хотя во всех моих трудах не найдут ничего незаконного, что было бы грехом&quot;.</p>
-  </div>
-</div>
-<div class="vb" id="v12-9">
-  <span class="vn">9</span>
-  <div class="vt">
-    <p class="lat">Et ego Dominus Deus tuus ex terra Ægypti :  adhuc sedere te faciam in tabernaculis, sicut in diebus festivitatis.</p>
-    <p class="tra">А Я, Господь Бог твой от самой земли Египетской, опять поселю тебя в кущах, как во дни праздника.</p>
-  </div>
-</div>
-<div class="vb" id="v12-10">
-  <span class="vn">10</span>
-  <div class="vt">
-    <p class="lat">Et locutus sum super prophetas,  et ego visionem multiplicavi,  et in manu prophetarum assimilatus sum.</p>
-    <p class="tra">Я говорил к пророкам, и умножал видения, и чрез пророков употреблял притчи.</p>
-  </div>
-</div>
-<div class="vb" id="v12-11">
-  <span class="vn">11</span>
-  <div class="vt">
-    <p class="lat">Si Galaad idolum, ergo frustra erant in Galgal bobus immolantes ;  nam et altaria eorum quasi acervi super sulcos agri.</p>
-    <p class="tra">Если Галаад сделался Авеном, то они стали суетны, в Галгалах заколали в жертву тельцов, и жертвенники их стояли как груды камней на межах поля.</p>
-  </div>
-</div>
-<div class="vb" id="v12-12">
-  <span class="vn">12</span>
-  <div class="vt">
-    <p class="lat">Fugit Jacob in regionem Syriæ,  et servivit Israël in uxorem,  et in uxorem servavit.</p>
-    <p class="tra">Убежал Иаков на поля Сирийские, и служил Израиль за жену, и за жену стерег овец.</p>
-  </div>
-</div>
-<div class="vb" id="v12-13">
-  <span class="vn">13</span>
-  <div class="vt">
-    <p class="lat">In propheta autem eduxit Dominus Israël de Ægypto,  et in propheta servatus est.</p>
-    <p class="tra">Чрез пророка вывел Господь Израиля из Египта, и чрез пророка Он охранял его.</p>
-  </div>
-</div>
-<div class="vb" id="v12-14">
-  <span class="vn">14</span>
-  <div class="vt">
-    <p class="lat">Ad iracundiam me provocavit Ephraim in amaritudinibus suis :  et sanguis ejus super eum veniet,  et opprobrium ejus restituet ei Dominus suus.</p>
-    <p class="tra">Сильно раздражил Ефрем Господа и за то кровь его оставит на нем, и поношение его обратит Господь на него.</p>
-  </div>
-</div>
-</section>
+  <section class="chapter" id="ch9">
+    <div class="chapter-marker">
+      <span class="ch-roman">IX</span>
+      <span class="ch-label">Caput 9</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v9-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Noli lætari, Israël ;  noli exsultare sicut populi :  quia fornicatus es a Deo tuo ;  dilexisti mercedem super omnes areas tritici.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Не радуйся, Израиль, до восторга, как другие народы, ибо ты блудодействуешь, удалившись от Бога твоего: любишь блудодейные дары на всех гумнах.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Area et torcular non pascet eos,  et vinum mentietur eis :</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Гумно и точило не будут питать их, и надежда на виноградный сок обманет их.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">non habitabunt in terra Domini.  Reversus est Ephraim in Ægyptum,  et in Assyriis pollutum comedit.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Не будут они жить на земле Господней: Ефрем возвратится в Египет, и в Ассирии будут есть нечистое.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non libabunt Domino vinum,  et non placebunt ei.  Sacrificia eorum quasi panis lugentium ;  omnes qui comedent eum, contaminabuntur :  quia panis eorum animæ ipsorum :  non intrabit in domum Domini.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Не будут возливать Господу вина, и неугодны Ему будут жертвы их; они будут для них, как хлеб похоронный: все, которые будут есть его, осквернятся, ибо хлеб их - для души их, а в дом Господень он не войдет.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quid facietis in die solemni,  in die festivitatis Domini ?</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Что будете делать в день торжества и в день праздника Господня?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ecce enim profecti sunt a vastitate :  Ægyptus congregabit eos ;  Memphis sepeliet eos :  desiderabile argentum eorum urtica hæreditabit,  lappa in tabernaculis eorum.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Ибо вот, они уйдут по причине опустошения; Египет соберет их, Мемфис похоронит их; драгоценностями их из серебра завладеет крапива, колючий терн будет в шатрах их.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Venerunt dies visitationis,  venerunt dies retributionis.  Scitote, Israël,  stultum prophetam,  insanum virum spiritualem,  propter multitudinem iniquitatis tuæ,  et multitudinem amentiæ.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Пришли дни посещения, пришли дни воздаяния; да узнает Израиль, что глуп прорицатель, безумен выдающий себя за вдохновенного, по причине множества беззаконий твоих и великой враждебности.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Speculator Ephraim cum Deo meo,  propheta laqueus ruinæ factus est super omnes vias ejus ;  insania in domo Dei ejus.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Ефрем - страж подле Бога моего; пророк - сеть птицелова на всех путях его; соблазн в доме Бога его.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Profunde peccaverunt, sicut in diebus Gabaa.  Recordabitur iniquitatis eorum,  et visitabit peccata eorum.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Глубоко упали они, развратились, как во дни Гивы; Он вспомнит нечестие их, накажет их за грехи их.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quasi uvas in deserto inveni Israël,  quasi prima poma ficulneæ in cacumine ejus vidi patres eorum :  ipsi autem intraverunt ad Beelphegor,  et abalienati sunt in confusionem,  et facti sunt abominabiles sicut ea quæ dilexerunt.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Как виноград в пустыне, Я нашел Израиля; как первую ягоду на смоковнице, в первое время ее, увидел Я отцов ваших, - но они пошли к Ваал-Фегору и предались постыдному, и сами стали мерзкими, как те, которых возлюбили.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ephraim quasi avis avolavit ;  gloria eorum a partu, et ab utero, et a conceptu.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">У Ефремлян, как птица улетит слава [чадородия]: ни рождения, ни беременности, ни зачатия [не будет].</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quod etsi enutrierint filios suos,  absque liberis eos faciam in hominibus ;  sed et væ eis cum recessero ab eis !</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">А хотя бы они и воспитали детей своих, отниму их; ибо горе им, когда удалюсь от них!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ephraim, ut vidi, Tyrus erat fundata in pulchritudine ;  et Ephraim educet ad interfectorem filios suos.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Ефрем, как Я видел его до Тира, насажден на прекрасной местности; однако Ефрем выведет детей своих к убийце.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Da eis, Domine. Quid dabis eis ?  da eis vulvam sine liberis, et ubera arentia.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Дай им, Господи: что Ты дашь им? дай им утробу нерождающую и сухие сосцы.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Omnes nequitiæ eorum in Galgal,  quia ibi exosos habui eos.  Propter malitiam adinventionum eorum,  de domo mea ejiciam eos ;  non addam ut diligam eos :  omnes principes eorum recedentes.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Все зло их в Галгале: там Я возненавидел их за злые дела их; изгоню их из дома Моего, не буду больше любить их; все князья их - отступники.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Percussus est Ephraim ;  radix eorum exsiccata est :  fructum nequaquam facient,  quod etsi genuerint,  interficiam amantissima uteri eorum.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Поражен Ефрем; иссох корень их, - не будут приносить они плода, а если и будут рождать, Я умерщвлю вожделенный плод утробы их.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Abjiciet eos Deus meus, quia non audierunt eum,  et erunt vagi in nationibus.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Отвергнет их Бог мой, потому что они не послушались Его, и будут скитальцами между народами.</div>
+      </div>
+    </div>
+  </section>
 
-<section class="chap" id="c13">
-  <div class="chhead">
-    <span class="chrom">XIII</span>
-    <span class="chlbl">Caput 13</span>
-  </div>
-<div class="vb first" id="v13-1">
-  <span class="vn">1</span>
-  <div class="vt">
-    <p class="lat">Loquente Ephraim, horror invasit Israël ;  et deliquit in Baal, et mortuus est.</p>
-    <p class="tra">Когда Ефрем говорил, все трепетали. Он был высок в Израиле; но сделался виновным через Ваала, и погиб.</p>
-  </div>
-</div>
-<div class="vb" id="v13-2">
-  <span class="vn">2</span>
-  <div class="vt">
-    <p class="lat">Et nunc addiderunt ad peccandum ;  feceruntque sibi conflatile de argento suo  quasi similitudinem idolorum :  factura artificum totum est :  his ipsi dicunt : Immolate homines, vitulos adorantes.</p>
-    <p class="tra">И ныне прибавили они ко греху: сделали для себя литых истуканов из серебра своего, по понятию своему, - полная работа художников, - и говорят они приносящим жертву людям: &quot;целуйте тельцов!&quot;</p>
-  </div>
-</div>
-<div class="vb" id="v13-3">
-  <span class="vn">3</span>
-  <div class="vt">
-    <p class="lat">Idcirco erunt quasi nubes matutina,  et sicut ros matutinus præteriens ;  sicut pulvis turbine raptus ex area,  et sicut fumus de fumario.</p>
-    <p class="tra">За то они будут как утренний туман, как роса, скоро исчезающая, как мякина, свеваемая с гумна, и как дым из трубы.</p>
-  </div>
-</div>
-<div class="vb" id="v13-4">
-  <span class="vn">4</span>
-  <div class="vt">
-    <p class="lat">Ego autem Dominus Deus tuus, ex terra Ægypti ;  et Deum absque me nescies,  et salvator non est præter me.</p>
-    <p class="tra">Но Я - Господь Бог твой от земли Египетской, - и ты не должен знать другого бога, кроме Меня, и нет спасителя, кроме Меня.</p>
-  </div>
-</div>
-<div class="vb" id="v13-5">
-  <span class="vn">5</span>
-  <div class="vt">
-    <p class="lat">Ego cognovi te in deserto,  in terra solitudinis.</p>
-    <p class="tra">Я признал тебя в пустыне, в земле жаждущей.</p>
-  </div>
-</div>
-<div class="vb" id="v13-6">
-  <span class="vn">6</span>
-  <div class="vt">
-    <p class="lat">Juxta pascua sua adimpleti sunt et saturati sunt ;  et levaverunt cor suum, et obliti sunt mei.</p>
-    <p class="tra">Имея пажити, они были сыты; а когда насыщались, то превозносилось сердце их, и потому они забывали Меня.</p>
-  </div>
-</div>
-<div class="vb" id="v13-7">
-  <span class="vn">7</span>
-  <div class="vt">
-    <p class="lat">Et ego ero eis quasi leæna,  sicut pardus in via Assyriorum.</p>
-    <p class="tra">И Я буду для них как лев, как скимен буду подстерегать при дороге.</p>
-  </div>
-</div>
-<div class="vb" id="v13-8">
-  <span class="vn">8</span>
-  <div class="vt">
-    <p class="lat">Occurram eis quasi ursa raptis catulis,  et dirumpam interiora jecoris eorum,  et consumam eos ibi quasi leo :  bestia agri scindet eos.</p>
-    <p class="tra">Буду нападать на них, как лишенная детей медведица, и раздирать вместилище сердца их, и поедать их там, как львица; полевые звери будут терзать их.</p>
-  </div>
-</div>
-<div class="vb" id="v13-9">
-  <span class="vn">9</span>
-  <div class="vt">
-    <p class="lat">Perditio tua, Israël : tantummodo in me auxilium tuum.</p>
-    <p class="tra">Погубил ты себя, Израиль, ибо только во Мне опора твоя.</p>
-  </div>
-</div>
-<div class="vb" id="v13-10">
-  <span class="vn">10</span>
-  <div class="vt">
-    <p class="lat">Ubi est rex tuus ?  maxime nunc salvet te in omnibus urbibus tuis ;  et judices tui, de quibus dixisti :  Da mihi regem et principes.</p>
-    <p class="tra">Где царь твой теперь? Пусть он спасет тебя во всех городах твоих! Где судьи твои, о которых говорил ты: &quot;дай нам царя и начальников&quot;?</p>
-  </div>
-</div>
-<div class="vb" id="v13-11">
-  <span class="vn">11</span>
-  <div class="vt">
-    <p class="lat">Dabo tibi regem in furore meo,  et auferam in indignatione mea.</p>
-    <p class="tra">И Я дал тебе царя во гневе Моем, и отнял в негодовании Моем.</p>
-  </div>
-</div>
-<div class="vb" id="v13-12">
-  <span class="vn">12</span>
-  <div class="vt">
-    <p class="lat">Colligata est iniquitas Ephraim ;  absconditum peccatum ejus.</p>
-    <p class="tra">Связано в узел беззаконие Ефрема, сбережен его грех.</p>
-  </div>
-</div>
-<div class="vb" id="v13-13">
-  <span class="vn">13</span>
-  <div class="vt">
-    <p class="lat">Dolores parturientis venient ei :  ipse filius non sapiens :  nunc enim non stabit in contritione filiorum.</p>
-    <p class="tra">Муки родильницы постигнут его; он - сын неразумный, иначе не стоял бы долго в положении рождающихся детей.</p>
-  </div>
-</div>
-<div class="vb" id="v13-14">
-  <span class="vn">14</span>
-  <div class="vt">
-    <p class="lat">De manu mortis liberabo eos ;  de morte redimam eos.  Ero mors tua, o mors !  morsus tuus ero, inferne !  consolatio abscondita est ab oculis meis.</p>
-    <p class="tra">От власти ада Я искуплю их, от смерти избавлю их. Смерть! где твое жало? ад! где твоя победа? Раскаяния в том не будет у Меня.</p>
-  </div>
-</div>
-<div class="vb" id="v13-15">
-  <span class="vn">15</span>
-  <div class="vt">
-    <p class="lat">Quia ipse inter fratres dividet :  adducet urentem ventum Dominus de deserto ascendentem,  et siccabit venas ejus,  et desolabit fontem ejus :  et ipse diripiet thesaurum omnis vasis desiderabilis.</p>
-    <p class="tra">Хотя Ефрем плодовит между братьями, но придет восточный ветер, поднимется ветер Господень из пустыни, и иссохнет родник его, и иссякнет источник его; он опустошит сокровищницу всех драгоценных сосудов.</p>
-  </div>
-</div>
-</section>
+  <section class="chapter" id="ch10">
+    <div class="chapter-marker">
+      <span class="ch-roman">X</span>
+      <span class="ch-label">Caput 10</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v10-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vitis frondosa Israël,  fructus adæquatus est ei :  secundum multitudinem fructus sui multiplicavit altaria,  juxta ubertatem terræ suæ exuberavit simulacris.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Израиль - ветвистый виноград, умножает для себя плод: чем более у него плодов, тем более умножает жертвенники; чем лучше земля у него, тем более украшают они кумиры.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Divisum est cor eorum, nunc interibunt ;  ipse confringet simulacra eorum,  depopulabitur aras eorum.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Разделилось сердце их, за то они и будут наказаны: Он разрушит жертвенники их, сокрушит кумиры их.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quia nunc dicent : Non est rex nobis,  non enim timemus Dominum ;  et rex quid faciet nobis ?</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Теперь они говорят: &quot;нет у нас царя, ибо мы не убоялись Господа; а царь, - что он нам сделает?&quot;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Loquimini verba visionis inutilis, et ferietis fœdus ;  et germinabit quasi amaritudo judicium super sulcos agri.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Говорят слова пустые, клянутся ложно, заключают союзы; за то явится суд над ними, как ядовитая трава на бороздах поля.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vaccas Bethaven coluerunt habitatores Samariæ ;  quia luxit super eum populus ejus,  et æditui ejus super eum exsultaverunt  in gloria ejus, quia migravit ab eo.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">За тельца Беф-Авена вострепещут жители Самарии; восплачет о нем народ его, и жрецы его, радовавшиеся о нем, будут плакать о славе его, потому что она отойдет от него.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Siquidem et ipse in Assur delatus est,  munus regi ultori.  Confusio Ephraim capiet,  et confundetur Israël in voluntate sua.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">И сам он отнесен будет в Ассирию, в дар царю Иареву; постыжен будет Ефрем, и посрамится Израиль от замысла своего.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Transire fecit Samaria regem suum  quasi spumam super faciem aquæ.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Исчезнет в Самарии царь ее, как пена на поверхности воды.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et disperdentur excelsa idoli, peccatum Israël ;  lappa et tribulus ascendet super aras eorum :  et dicent montibus : Operite nos,  et collibus : Cadite super nos.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">И истреблены будут высоты Авена, грех Израиля; терние и волчцы вырастут на жертвенниках их, и скажут они горам: &quot;покройте нас&quot;, и холмам: &quot;падите на нас&quot;.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ex diebus Gabaa peccavit Israël ;  ibi steterunt.  Non comprehendet eos in Gabaa  prælium super filios iniquitatis.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Больше, нежели во дни Гивы, грешил ты, Израиль; там они устояли; война в Гаваоне против сынов нечестия не постигла их.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Juxta desiderium meum corripiam eos :  congregabuntur super eos populi,  cum corripientur propter duas iniquitates suas.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">По желанию Моему накажу их, и соберутся против них народы, и они будут связаны за двойное преступление их.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ephraim vitula docta diligere trituram,  et ego transivi super pulchritudinem colli ejus :  ascendam super Ephraim,  arabit Judas ;  confringet sibi sulcos Jacob.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Ефрем - обученная телица, привычная к молотьбе, и Я Сам возложу ярмо на тучную шею его; на Ефреме будут верхом ездить, Иуда будет пахать, Иаков будет боронить.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Seminate vobis in justitia,  et metite in ore misericordiæ.  Innovate vobis novale ;  tempus autem requirendi Dominum,  cum venerit qui docebit vos justitiam.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Сейте себе в правду, и пожнете милость; распахивайте у себя новину, ибо время взыскать Господа, чтобы Он, когда придет, дождем пролил на вас правду.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Arastis impietatem,  iniquitatem messuistis :  comedistis frugem mendacii,  quia confisus es in viis tuis,  in multitudine fortium tuorum.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Вы возделывали нечестие, пожинаете беззаконие, едите плод лжи, потому что ты надеялся на путь твой, на множество ратников твоих.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Consurget tumultus in populo tuo ;  et omnes munitiones tuæ vastabuntur,  sicut vastatus est Salmana a domo ejus qui judicavit Baal  in die prælii, matre super filios allisa.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">И произойдет смятение в народе твоем, и все твердыни твои будут разрушены, как Салман разрушил Бет-Арбел в день брани: мать была убита с детьми.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sic fecit vobis Bethel,  a facie malitiæ nequitiarum vestrarum.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Вот что причинит вам Вефиль за крайнее нечестие ваше.</div>
+      </div>
+    </div>
+  </section>
 
-<section class="chap" id="c14">
-  <div class="chhead">
-    <span class="chrom">XIV</span>
-    <span class="chlbl">Caput 14</span>
-  </div>
-<div class="vb first" id="v14-1">
-  <span class="vn">1</span>
-  <div class="vt">
-    <p class="lat">Pereat Samaria, quoniam ad amaritudinem concitavit Deum suum !  in gladio pereant,  parvuli eorum elidantur,  et fœtæ ejus discindantur !</p>
-    <p class="tra">Опустошена будет Самария, потому что восстала против Бога своего; от меча падут они; младенцы их будут разбиты, и беременные их будут рассечены.</p>
-  </div>
-</div>
-<div class="vb" id="v14-2">
-  <span class="vn">2</span>
-  <div class="vt">
-    <p class="lat">Convertere, Israël, ad Dominum Deum tuum,  quoniam corruisti in iniquitate tua.</p>
-    <p class="tra">Обратись, Израиль, к Господу Богу твоему; ибо ты упал от нечестия твоего.</p>
-  </div>
-</div>
-<div class="vb" id="v14-3">
-  <span class="vn">3</span>
-  <div class="vt">
-    <p class="lat">Tollite vobiscum verba,  et convertimini ad Dominum ; et dicite ei :  Omnem aufer iniquitatem, accipe bonum,  et reddemus vitulos labiorum nostrorum.</p>
-    <p class="tra">Возьмите с собою молитвенные слова и обратитесь к Господу; говорите Ему: &quot;отними всякое беззаконие и прими во благо, и мы принесем жертву уст наших.</p>
-  </div>
-</div>
-<div class="vb" id="v14-4">
-  <span class="vn">4</span>
-  <div class="vt">
-    <p class="lat">Assur non salvabit nos :  super equum non ascendemus,  nec dicemus ultra, Dii nostri opera manuum nostrarum :  quia ejus, qui in te est, misereberis pupilli.</p>
-    <p class="tra">Ассур не будет уже спасать нас; не станем садиться на коня и не будем более говорить изделию рук наших: боги наши; потому что у Тебя милосердие для сирот&quot;.</p>
-  </div>
-</div>
-<div class="vb" id="v14-5">
-  <span class="vn">5</span>
-  <div class="vt">
-    <p class="lat">Sanabo contritiones eorum ;  diligam eos spontanee :  quia aversus est furor meus ab eis.</p>
-    <p class="tra">Уврачую отпадение их, возлюблю их по благоволению; ибо гнев Мой отвратился от них.</p>
-  </div>
-</div>
-<div class="vb" id="v14-6">
-  <span class="vn">6</span>
-  <div class="vt">
-    <p class="lat">Ero quasi ros ;  Israël germinabit sicut lilium,  et erumpet radix ejus ut Libani.</p>
-    <p class="tra">Я буду росою для Израиля; он расцветет, как лилия, и пустит корни свои, как Ливан.</p>
-  </div>
-</div>
-<div class="vb" id="v14-7">
-  <span class="vn">7</span>
-  <div class="vt">
-    <p class="lat">Ibunt rami ejus,  et erit quasi oliva gloria ejus,  et odor ejus ut Libani.</p>
-    <p class="tra">Расширятся ветви его, и будет красота его, как маслины, и благоухание от него, как от Ливана.</p>
-  </div>
-</div>
-<div class="vb" id="v14-8">
-  <span class="vn">8</span>
-  <div class="vt">
-    <p class="lat">Convertentur sedentes in umbra ejus ;  vivent tritico, et germinabunt quasi vinea ;  memoriale ejus sicut vinum Libani.</p>
-    <p class="tra">Возвратятся сидевшие под тенью его, будут изобиловать хлебом, и расцветут, как виноградная лоза, славны будут, как вино Ливанское.</p>
-  </div>
-</div>
-<div class="vb" id="v14-9">
-  <span class="vn">9</span>
-  <div class="vt">
-    <p class="lat">Ephraim, quid mihi ultra idola ?  Ego exaudiam, et dirigam eum ego ut abietem virentem ;  ex me fructus tuus inventus est.</p>
-    <p class="tra">&quot;Что мне еще за дело до идолов?&quot; - скажет Ефрем. - Я услышу его и призрю на него; Я буду как зеленеющий кипарис; от Меня будут тебе плоды.</p>
-  </div>
-</div>
-<div class="vb" id="v14-10">
-  <span class="vn">10</span>
-  <div class="vt">
-    <p class="lat">Quis sapiens, et intelliget ista ? intelligens, et sciet hæc ?  quia rectæ viæ Domini,  et justi ambulabunt in eis ;  prævaricatores vero corruent in eis.</p>
-    <p class="tra">Кто мудр, чтобы разуметь это? кто разумен, чтобы познать это? Ибо правы пути Господни, и праведники ходят по ним, а беззаконные падут на них.</p>
-  </div>
-</div>
-</section>
-</main>
+  <section class="chapter" id="ch11">
+    <div class="chapter-marker">
+      <span class="ch-roman">XI</span>
+      <span class="ch-label">Caput 11</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v11-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sicut mane transiit, pertransiit rex Israël.  Quia puer Israël, et dilexi eum ;  et ex Ægypto vocavi filium meum.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">На заре погибнет царь Израилев! Когда Израиль был юн, Я любил его и из Египта вызвал сына Моего.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vocaverunt eos, sic abierunt a facie eorum ;  Baalim immolabant, et simulacris sacrificabant.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Звали их, а они уходили прочь от лица их: приносили жертву Ваалам и кадили истуканам.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et ego quasi nutritius Ephraim :  portabam eos in brachiis meis,  et nescierunt quod curarem eos.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Я Сам приучал Ефрема ходить, носил его на руках Своих, а они не сознавали, что Я врачевал их.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">In funiculis Adam traham eos,  in vinculis caritatis ;  et ero eis quasi exaltans jugum super maxillas eorum,  et declinavi ad eum ut vesceretur.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Узами человеческими влек Я их, узами любви, и был для них как бы поднимающий ярмо с челюстей их, и ласково подкладывал пищу им.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non revertetur in terram Ægypti, et Assur ipse rex ejus,  quoniam noluerunt converti.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Не возвратится он в Египет, но Ассур - он будет царем его, потому что они не захотели обратиться ко Мне.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Cœpit gladius in civitatibus ejus,  et consumet electos ejus,  et comedet capita eorum.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">И падет меч на города его, и истребит затворы его, и пожрет их за умыслы их.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et populus meus pendebit ad reditum meum ;  jugum autem imponetur eis simul, quod non auferetur.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Народ Мой закоснел в отпадении от Меня, и хотя призывают его к горнему, он не возвышается единодушно.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quomodo dabo te, Ephraim ?  protegam te, Israël ?  Quomodo dabo te sicut Adama,  ponam te ut Seboim ?  Conversum est in me cor meum,  pariter conturbata est pœnitudo mea.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Как поступлю с тобою, Ефрем? как предам тебя, Израиль? Поступлю ли с тобою, как с Адамою, сделаю ли тебе, что Севоиму? Повернулось во Мне сердце Мое, возгорелась вся жалость Моя!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non faciam furorem iræ meæ ;  non convertar ut disperdam Ephraim,  quoniam Deus ego, et non homo ;  in medio tui sanctus,  et non ingrediar civitatem.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Не сделаю по ярости гнева Моего, не истреблю Ефрема, ибо Я Бог, а не человек; среди тебя Святый; Я не войду в город.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Post Dominum ambulabunt ;  quasi leo rugiet,  quia ipse rugiet,  et formidabunt filii maris.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Вслед Господа пойдут они; как лев, Он даст глас Свой, даст глас Свой, и встрепенутся к Нему сыны с запада,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et avolabunt quasi avis ex Ægypto,  et quasi columba de terra Assyriorum :  et collocabo eos in domibus suis, dicit Dominus.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">встрепенутся из Египта, как птицы, и из земли Ассирийской, как голуби, и вселю их в домы их, говорит Господь.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Circumdedit me in negatione Ephraim,  et in dolo domus Israël ;  Judas autem testis descendit cum Deo,  et cum sanctis fidelis.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Окружил Меня Ефрем ложью и дом Израилев лукавством; Иуда держался еще Бога и верен был со святыми.</div>
+      </div>
+    </div>
+  </section>
 
-<nav class="bnav">
-  <a href="027-dan.html">&#8592; Daniel</a>
-  <a href="../index.html" class="center">↑ &nbsp; Inhaltsverzeichnis</a>
-  <a href="029-joe.html">Ioel &#8594;</a>
-</nav>
+  <section class="chapter" id="ch12">
+    <div class="chapter-marker">
+      <span class="ch-roman">XII</span>
+      <span class="ch-label">Caput 12</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v12-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ephraim pascit ventum,  et sequitur æstum ;  tota die mendacium et vastitatem multiplicat :  et fœdus cum Assyriis iniit,  et oleum in Ægyptum ferebat.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Ефрем пасет ветер и гоняется за восточным ветром, каждый день умножает ложь и разорение; заключают они союз с Ассуром, и в Египет отвозится елей.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Judicium ergo Domini cum Juda,  et visitatio super Jacob :  juxta vias ejus, et juxta adinventiones ejus reddet ei.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Но и с Иудою у Господа суд и Он посетит Иакова по путям его, воздаст ему по делам его.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">In utero supplantavit fratrem suum,  et in fortitudine sua directus est cum angelo.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Еще во чреве матери запинал он брата своего, а возмужав боролся с Богом.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et invaluit ad angelum, et confortatus est ;  flevit, et rogavit eum.  In Bethel invenit eum,  et ibi locutus est nobiscum.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Он боролся с Ангелом - и превозмог; плакал и умолял Его; в Вефиле Он нашел нас и там говорил с нами.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et Dominus Deus exercituum,  Dominus memoriale ejus.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">А Господь есть Бог Саваоф; Сущий [Иегова] - имя Его.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et tu ad Deum tuum converteris ;  misericordiam et judicium custodi,  et spera in Deo tuo semper.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Обратись и ты к Богу твоему; наблюдай милость и суд и уповай на Бога твоего всегда.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Chanaan, in manu ejus statera dolosa,  calumniam dilexit.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Хананеянин с неверными весами в руке любит обижать;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et dixit Ephraim : Verumtamen dives effectus sum ;  inveni idolum mihi :  omnes labores mei non invenient mihi iniquitatem quam peccavi.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">и Ефрем говорит: &quot;однако я разбогател; накопил себе имущества, хотя во всех моих трудах не найдут ничего незаконного, что было бы грехом&quot;.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et ego Dominus Deus tuus ex terra Ægypti :  adhuc sedere te faciam in tabernaculis, sicut in diebus festivitatis.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">А Я, Господь Бог твой от самой земли Египетской, опять поселю тебя в кущах, как во дни праздника.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et locutus sum super prophetas,  et ego visionem multiplicavi,  et in manu prophetarum assimilatus sum.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Я говорил к пророкам, и умножал видения, и чрез пророков употреблял притчи.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si Galaad idolum, ergo frustra erant in Galgal bobus immolantes ;  nam et altaria eorum quasi acervi super sulcos agri.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Если Галаад сделался Авеном, то они стали суетны, в Галгалах заколали в жертву тельцов, и жертвенники их стояли как груды камней на межах поля.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Fugit Jacob in regionem Syriæ,  et servivit Israël in uxorem,  et in uxorem servavit.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Убежал Иаков на поля Сирийские, и служил Израиль за жену, и за жену стерег овец.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">In propheta autem eduxit Dominus Israël de Ægypto,  et in propheta servatus est.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Чрез пророка вывел Господь Израиля из Египта, и чрез пророка Он охранял его.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ad iracundiam me provocavit Ephraim in amaritudinibus suis :  et sanguis ejus super eum veniet,  et opprobrium ejus restituet ei Dominus suus.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Сильно раздражил Ефрем Господа и за то кровь его оставит на нем, и поношение его обратит Господь на него.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch13">
+    <div class="chapter-marker">
+      <span class="ch-roman">XIII</span>
+      <span class="ch-label">Caput 13</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v13-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Loquente Ephraim, horror invasit Israël ;  et deliquit in Baal, et mortuus est.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Когда Ефрем говорил, все трепетали. Он был высок в Израиле; но сделался виновным через Ваала, и погиб.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et nunc addiderunt ad peccandum ;  feceruntque sibi conflatile de argento suo  quasi similitudinem idolorum :  factura artificum totum est :  his ipsi dicunt : Immolate homines, vitulos adorantes.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">И ныне прибавили они ко греху: сделали для себя литых истуканов из серебра своего, по понятию своему, - полная работа художников, - и говорят они приносящим жертву людям: &quot;целуйте тельцов!&quot;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Idcirco erunt quasi nubes matutina,  et sicut ros matutinus præteriens ;  sicut pulvis turbine raptus ex area,  et sicut fumus de fumario.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">За то они будут как утренний туман, как роса, скоро исчезающая, как мякина, свеваемая с гумна, и как дым из трубы.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ego autem Dominus Deus tuus, ex terra Ægypti ;  et Deum absque me nescies,  et salvator non est præter me.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Но Я - Господь Бог твой от земли Египетской, - и ты не должен знать другого бога, кроме Меня, и нет спасителя, кроме Меня.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ego cognovi te in deserto,  in terra solitudinis.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Я признал тебя в пустыне, в земле жаждущей.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Juxta pascua sua adimpleti sunt et saturati sunt ;  et levaverunt cor suum, et obliti sunt mei.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Имея пажити, они были сыты; а когда насыщались, то превозносилось сердце их, и потому они забывали Меня.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et ego ero eis quasi leæna,  sicut pardus in via Assyriorum.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">И Я буду для них как лев, как скимен буду подстерегать при дороге.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Occurram eis quasi ursa raptis catulis,  et dirumpam interiora jecoris eorum,  et consumam eos ibi quasi leo :  bestia agri scindet eos.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Буду нападать на них, как лишенная детей медведица, и раздирать вместилище сердца их, и поедать их там, как львица; полевые звери будут терзать их.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Perditio tua, Israël : tantummodo in me auxilium tuum.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Погубил ты себя, Израиль, ибо только во Мне опора твоя.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ubi est rex tuus ?  maxime nunc salvet te in omnibus urbibus tuis ;  et judices tui, de quibus dixisti :  Da mihi regem et principes.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Где царь твой теперь? Пусть он спасет тебя во всех городах твоих! Где судьи твои, о которых говорил ты: &quot;дай нам царя и начальников&quot;?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Dabo tibi regem in furore meo,  et auferam in indignatione mea.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">И Я дал тебе царя во гневе Моем, и отнял в негодовании Моем.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Colligata est iniquitas Ephraim ;  absconditum peccatum ejus.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Связано в узел беззаконие Ефрема, сбережен его грех.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Dolores parturientis venient ei :  ipse filius non sapiens :  nunc enim non stabit in contritione filiorum.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Муки родильницы постигнут его; он - сын неразумный, иначе не стоял бы долго в положении рождающихся детей.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">De manu mortis liberabo eos ;  de morte redimam eos.  Ero mors tua, o mors !  morsus tuus ero, inferne !  consolatio abscondita est ab oculis meis.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">От власти ада Я искуплю их, от смерти избавлю их. Смерть! где твое жало? ад! где твоя победа? Раскаяния в том не будет у Меня.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quia ipse inter fratres dividet :  adducet urentem ventum Dominus de deserto ascendentem,  et siccabit venas ejus,  et desolabit fontem ejus :  et ipse diripiet thesaurum omnis vasis desiderabilis.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Хотя Ефрем плодовит между братьями, но придет восточный ветер, поднимется ветер Господень из пустыни, и иссохнет родник его, и иссякнет источник его; он опустошит сокровищницу всех драгоценных сосудов.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch14">
+    <div class="chapter-marker">
+      <span class="ch-roman">XIV</span>
+      <span class="ch-label">Caput 14</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v14-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Pereat Samaria, quoniam ad amaritudinem concitavit Deum suum !  in gladio pereant,  parvuli eorum elidantur,  et fœtæ ejus discindantur !</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Опустошена будет Самария, потому что восстала против Бога своего; от меча падут они; младенцы их будут разбиты, и беременные их будут рассечены.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v14-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Convertere, Israël, ad Dominum Deum tuum,  quoniam corruisti in iniquitate tua.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Обратись, Израиль, к Господу Богу твоему; ибо ты упал от нечестия твоего.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v14-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Tollite vobiscum verba,  et convertimini ad Dominum ; et dicite ei :  Omnem aufer iniquitatem, accipe bonum,  et reddemus vitulos labiorum nostrorum.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Возьмите с собою молитвенные слова и обратитесь к Господу; говорите Ему: &quot;отними всякое беззаконие и прими во благо, и мы принесем жертву уст наших.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v14-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Assur non salvabit nos :  super equum non ascendemus,  nec dicemus ultra, Dii nostri opera manuum nostrarum :  quia ejus, qui in te est, misereberis pupilli.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Ассур не будет уже спасать нас; не станем садиться на коня и не будем более говорить изделию рук наших: боги наши; потому что у Тебя милосердие для сирот&quot;.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v14-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sanabo contritiones eorum ;  diligam eos spontanee :  quia aversus est furor meus ab eis.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Уврачую отпадение их, возлюблю их по благоволению; ибо гнев Мой отвратился от них.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v14-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ero quasi ros ;  Israël germinabit sicut lilium,  et erumpet radix ejus ut Libani.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Я буду росою для Израиля; он расцветет, как лилия, и пустит корни свои, как Ливан.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v14-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ibunt rami ejus,  et erit quasi oliva gloria ejus,  et odor ejus ut Libani.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Расширятся ветви его, и будет красота его, как маслины, и благоухание от него, как от Ливана.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v14-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Convertentur sedentes in umbra ejus ;  vivent tritico, et germinabunt quasi vinea ;  memoriale ejus sicut vinum Libani.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Возвратятся сидевшие под тенью его, будут изобиловать хлебом, и расцветут, как виноградная лоза, славны будут, как вино Ливанское.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v14-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ephraim, quid mihi ultra idola ?  Ego exaudiam, et dirigam eum ego ut abietem virentem ;  ex me fructus tuus inventus est.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">&quot;Что мне еще за дело до идолов?&quot; - скажет Ефрем. - Я услышу его и призрю на него; Я буду как зеленеющий кипарис; от Меня будут тебе плоды.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v14-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quis sapiens, et intelliget ista ? intelligens, et sciet hæc ?  quia rectæ viæ Domini,  et justi ambulabunt in eis ;  prævaricatores vero corruent in eis.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Кто мудр, чтобы разуметь это? кто разумен, чтобы познать это? Ибо правы пути Господни, и праведники ходят по ним, а беззаконные падут на них.</div>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <nav class="book-nav">
+    <a href="027-dan.html">← Daniel</a>
+    <span class="center">Osee · Русский</span>
+    <a href="029-joe.html">Ioel →</a>
+  </nav>
+
+  <footer class="page-footer">
+    BIBLIA CATHOLICA INTERLINEARIS &nbsp;·&nbsp; Vulgata Clementina &amp; Синодальный перевод (1876)
+    &nbsp;·&nbsp; Gemeinfreie Texte / Public Domain
+  </footer>
 
 </body>
 </html>

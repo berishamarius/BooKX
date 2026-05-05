@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="tl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>I Ioannis · Filipino · Biblia Catholica</title>
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
+
+:root {
+  --gold:        #C8A96E;
+  --gold-light:  #EDD58A;
+  --gold-dark:   #8B6914;
+  --navy:        #1A1F3A;
+  --navy-mid:    #252B4A;
+  --navy-light:  #2E3560;
+  --parchment:   #F5E9CC;
+  --parchment-d: #EDD9A3;
+  --cream:       #FDF6E3;
+  --latin-color: #6B1E0E;
+  --trans-color: #0F1D2E;
+  --border:      rgba(200,169,110,.35);
+  --font-title:  'Cinzel Decorative', 'Cinzel', Georgia, serif;
+  --font-sub:    'Cinzel', Georgia, serif;
+  --font-body:   'EB Garamond', Georgia, serif;
+}
+
+*,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+html { font-size:16px; scroll-behavior:smooth; }
+body { background:var(--cream); color:var(--trans-color); font-family:var(--font-body); }
+
+/* ── NAV ─────────────────────────────────────────────── */
+.nav-bar {
+  background:var(--navy); padding:10px 28px;
+  display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  border-bottom:2px solid var(--gold);
+  position:sticky; top:0; z-index:100;
+  box-shadow:0 3px 12px rgba(0,0,0,.45);
+}
+.nav-bar a {
+  color:var(--gold); text-decoration:none;
+  font-family:var(--font-sub); font-size:.75rem; letter-spacing:.05em;
+  transition:color .15s;
+}
+.nav-bar a:hover { color:var(--gold-light); }
+.nav-bar .home { font-weight:700; font-size:.82rem; }
+.nav-bar .spacer { flex:1; }
+.nav-bar .pos { color:rgba(200,169,110,.45); font-size:.7rem; font-family:var(--font-sub); }
+
+/* ── BUCHKOPF ────────────────────────────────────────── */
+.book-header {
+  background:linear-gradient(160deg,var(--navy) 0%,var(--navy-mid) 55%,var(--navy-light) 100%);
+  padding:44px 36px 34px; text-align:center;
+  border-bottom:4px solid var(--gold);
+  position:relative; overflow:hidden;
+}
+.book-header::before {
+  content:'';
+  position:absolute; inset:0;
+  background-image:
+    repeating-linear-gradient( 45deg,transparent,transparent 30px,rgba(200,169,110,.038) 30px,rgba(200,169,110,.038) 31px),
+    repeating-linear-gradient(-45deg,transparent,transparent 30px,rgba(200,169,110,.038) 30px,rgba(200,169,110,.038) 31px);
+  pointer-events:none;
+}
+.testament-badge {
+  display:inline-block;
+  border:1px solid rgba(200,169,110,.4); color:rgba(200,169,110,.65);
+  font-family:var(--font-sub); font-size:.62rem; letter-spacing:.25em;
+  padding:4px 14px; border-radius:2px; margin-bottom:14px; position:relative;
+}
+.book-name-latin {
+  font-family:var(--font-title); font-size:3rem; color:var(--gold-light);
+  text-shadow:0 3px 18px rgba(0,0,0,.55); letter-spacing:.08em; position:relative;
+}
+.book-name-trans {
+  font-family:var(--font-sub); font-size:1.1rem; color:var(--gold);
+  margin-top:8px; letter-spacing:.12em; position:relative;
+}
+.book-meta {
+  font-size:.74rem; color:rgba(200,169,110,.5); margin-top:7px;
+  font-family:var(--font-sub); letter-spacing:.07em; position:relative;
+}
+
+/* ── ORNAMENT-TRENNLINIE ─────────────────────────────── */
+.ornament-bar {
+  text-align:center; padding:16px 0 4px;
+  color:var(--gold); font-size:1.1rem; letter-spacing:.7em;
+}
+
+/* ── HAUPT-CONTAINER ─────────────────────────────────── */
+.content { max-width:960px; margin:0 auto; padding:0 24px 80px; }
+
+/* ── KAPITEL-MARKER ──────────────────────────────────── */
+.chapter-marker {
+  display:flex; align-items:center; gap:16px;
+  padding:28px 6px 12px; margin-bottom:4px;
+  border-bottom:2px solid var(--border);
+}
+.ch-roman {
+  font-family:var(--font-title); font-size:2.2rem; color:var(--gold);
+  min-width:56px; text-align:center; flex-shrink:0;
+  text-shadow:0 1px 8px rgba(200,169,110,.3);
+}
+.ch-label {
+  font-family:var(--font-sub); font-size:.72rem; color:rgba(200,169,110,.6);
+  letter-spacing:.22em; text-transform:uppercase;
+}
+
+/* ── VERS-BLOCK ──────────────────────────────────────── */
+.verse-block {
+  display:flex; gap:0; border-bottom:1px solid rgba(200,169,110,.15);
+}
+.verse-block:nth-child(odd)  { background:var(--cream); }
+.verse-block:nth-child(even) { background:var(--parchment); }
+
+.verse-num-col {
+  flex-shrink:0; width:42px; padding:16px 6px 16px 0; text-align:right;
+}
+.verse-num {
+  display:inline-block; width:28px; height:28px; border-radius:50%;
+  background:var(--gold-dark); color:var(--cream);
+  font-family:var(--font-sub); font-size:.64rem; font-weight:700;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 1px 5px rgba(0,0,0,.25);
+}
+
+.verse-texts { flex:1; padding:16px 16px 18px 8px; }
+
+/* ── LATEINISCHER TEXT (oben / primär) ───────────────── */
+.latin {
+  font-family:var(--font-body); font-size:1.12rem; line-height:1.9;
+  color:var(--latin-color); font-weight:500;
+  border-left:3px solid var(--gold); padding-left:12px;
+  margin-bottom:8px;
+}
+
+/* ── ÜBERSETZUNGS-TEXT (unten / sekundär) ────────────── */
+.trans-label {
+  font-family:var(--font-sub); font-size:.6rem; letter-spacing:.17em;
+  text-transform:uppercase; color:var(--gold-dark); margin-bottom:5px; opacity:.78;
+}
+.trans {
+  font-family:var(--font-body); font-size:1.04rem; line-height:1.85;
+  color:var(--trans-color); font-style:italic;
+  padding-left:15px;
+}
+
+/* Erste Vers jedes Kapitels: Drop-Cap */
+.verse-block:first-of-type .latin::first-letter {
+  font-size:4.2em; float:left; line-height:.72;
+  padding-right:.08em; margin-top:.06em;
+  font-family:var(--font-title); color:var(--gold);
+}
+
+/* ── NAVIGATION ZWISCHEN BÜCHERN ─────────────────────── */
+.book-nav {
+  display:flex; justify-content:space-between; align-items:center;
+  background:var(--navy); border-top:3px solid var(--gold);
+  padding:12px 26px; gap:12px;
+}
+.book-nav a {
+  color:var(--gold); text-decoration:none;
+  font-family:var(--font-sub); font-size:.78rem; letter-spacing:.07em;
+  padding:6px 14px; border:1px solid rgba(200,169,110,.3); border-radius:3px;
+  transition:background .18s;
+}
+.book-nav a:hover { background:rgba(200,169,110,.15); }
+.book-nav .center {
+  font-family:var(--font-sub); font-size:.7rem; color:rgba(200,169,110,.55);
+  letter-spacing:.1em; text-align:center;
+}
+
+/* ── FUßZEILE ────────────────────────────────────────── */
+.page-footer {
+  background:var(--navy); border-top:2px solid rgba(200,169,110,.3);
+  padding:18px 28px; text-align:center;
+  color:rgba(200,169,110,.45); font-family:var(--font-sub);
+  font-size:.68rem; letter-spacing:.1em;
+}
+
+/* ── DRUCK ───────────────────────────────────────────── */
+@media print {
+  .nav-bar, .book-nav { display:none; }
+  .verse-block { break-inside:avoid; }
+  .book-header { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+}
+
+/* ── MOBIL ───────────────────────────────────────────── */
+@media (max-width:640px) {
+  .book-name-latin { font-size:2.1rem; }
+  .ch-roman { font-size:1.6rem; }
+  .latin { font-size:.98rem; }
+  .trans { font-size:.93rem; }
+  .content { padding:0 12px 60px; }
+}
+</style>
+</head>
+<body>
+
+  <nav class="nav-bar">
+    <a class="home" href="../../../index.html">✞ BIBLIA CATHOLICA</a>
+    <a href="../index.html">🇵🇭 Filipino</a>
+    <span class="spacer"></span>
+    <span class="pos">062 / 066</span>
+  </nav>
+
+  <header class="book-header">
+    <div class="testament-badge">NOVUM TESTAMENTUM</div>
+    <div class="book-name-latin">I IOANNIS</div>
+    <div class="book-name-trans">1 John</div>
+    <div class="book-meta">Vulgata Clementina · Ang Biblia (1905) · 5 Capita · 105 Versus</div>
+  </header>
+
+  <div class="ornament-bar">❧ ✦ ❧ ✦ ❧</div>
+
+  <main class="content">
+
+  <section class="chapter" id="ch1">
+    <div class="chapter-marker">
+      <span class="ch-roman">I</span>
+      <span class="ch-label">Caput 1</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v1-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quod fuit ab initio, quod audivimus, quod vidimus oculis nostris, quod perspeximus, et manus nostræ contrectaverunt de verbo vitæ :</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Yaong buhat sa pasimula, yaong aming narinig, yaong nakita ng aming mga mata, yaong aming namasdan, at nahipo ng aming mga kamay, tungkol sa salita ng buhay;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">et vita manifestata est, et vidimus, et testamur, et annuntiamus vobis vitam æternam, quæ erat apud Patrem, et apparuit nobis :</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">(At ang buhay ay nahayag, at aming nakita, at pinatotohanan, at sa inyo'y aming ibinabalita ang buhay, ang buhay na walang hanggan, na kasama ng Ama at sa atin ay nahayag);</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">quod vidimus et audivimus, annuntiamus vobis, ut et vos societatem habeatis nobiscum, et societas nostra sit cum Patre, et cum Filio ejus Jesu Christo.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Yaong aming nakita at narinig ay siya rin naming ibinabalita sa inyo, upang kayo naman ay magkaroon ng pakikisama sa amin: oo, at tayo ay may pakikisama sa Ama, at sa kaniyang Anak na si Jesucristo:</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et hæc scribimus vobis ut gaudeatis, et gaudium vestrum sit plenum.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">At ang mga bagay na ito ay aming isinusulat, upang ang ating kagalakan ay malubos.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et hæc est annuntiatio, quam audivimus ab eo, et annuntiamus vobis : quoniam Deus lux est, et tenebræ in eo non sunt ullæ.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">At ito ang pasabing aming narinig sa kaniya at sa inyo'y aming ibinabalita, na ang Dios ay ilaw, at sa kaniya'y walang anomang kadiliman.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si dixerimus quoniam societatem habemus cum eo, et in tenebris ambulamus, mentimur, et veritatem non facimus.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Kung sinasabi nating tayo'y may pakikisama sa kaniya at nagsisilakad tayo sa kadiliman, ay nangagbubulaan tayo, at hindi tayo nagsisigawa ng katotohanan:</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si autem in luce ambulamus sicut et ipse est in luce, societatem habemus ad invicem, et sanguis Jesu Christi, Filii ejus, emundat nos ab omni peccato.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Nguni't kung tayo'y nagsisilakad sa liwanag, na gaya niyang nasa liwanag, ay may pakikisama tayo sa isa't isa, at nililinis tayo ng dugo ni Jesus na kaniyang Anak sa lahat ng kasalanan.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si dixerimus quoniam peccatum non habemus, ipsi nos seducimus, et veritas in nobis non est.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Kung sinasabi nating tayo'y walang kasalanan, ay ating dinadaya ang ating sarili, at ang katotohanan ay wala sa atin.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si confiteamur peccata nostra : fidelis est, et justus, ut remittat nobis peccata nostra, et emundet nos ab omni iniquitate.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Kung ipinahahayag natin ang ating mga kasalanan, ay tapat at banal siya na tayo'y patatawarin sa ating mga kasalanan, at tayo'y lilinisin sa lahat ng kalikuan.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si dixerimus quoniam non peccavimus, mendacem facimus eum, et verbum ejus non est in nobis.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Kung sinasabi nating tayo'y hindi nangagkasala, ay ating ginagawang sinungaling siya, at ang kaniyang salita ay wala sa atin.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch2">
+    <div class="chapter-marker">
+      <span class="ch-roman">II</span>
+      <span class="ch-label">Caput 2</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v2-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Filioli mei, hæc scribo vobis, ut non peccetis. Sed et si quis peccaverit, advocatum habemus apud Patrem, Jesum Christum justum :</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Mumunti kong mga anak, ang mga bagay na ito ay isinusulat ko sa inyo upang kayo'y huwag mangagkasala. At kung ang sinoman ay magkasala, ay may Tagapamagitan tayo sa Ama, si Jesucristo ang matuwid:</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">et ipse est propitiatio pro peccatis nostris : non pro nostris autem tantum, sed etiam pro totius mundi.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">At siya ang pangpalubag-loob sa ating mga kasalanan; at hindi lamang sa ating mga kasalanan, kundi ng sa buong sanglibutan din naman.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et in hoc scimus quoniam cognovimus eum, si mandata ejus observemus.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">At sa ganito'y nalalaman natin na siya'y ating nakikilala, kung tinutupad natin ang kaniyang mga utos.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui dicit se nosse eum, et mandata ejus non custodit, mendax est, et in hoc veritas non est.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Ang nagsasabing, Nakikilala ko siya, at hindi tumutupad ng kaniyang mga utos, ay sinungaling, at ang katotohanan ay wala sa kaniya;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui autem servat verbum ejus, vere in hoc caritas Dei perfecta est : et in hoc scimus quoniam in ipso sumus.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Datapuwa't ang sinomang tumutupad ng kaniyang salita, tunay na sa kaniya ay naging sakdal ang pagibig ng Dios. Dahil dito'y nalalaman nating tayo'y nasa kaniya:</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui dicit se in ipso manere, debet, sicut ille ambulavit, et ipse ambulare.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Ang nagsasabing siya'y nananahan sa kaniya ay nararapat din namang lumakad na gaya ng inilakad niya.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Carissimi, non mandatum novum scribo vobis, sed mandatum vetus, quod habuistis ab initio. Mandatum vetus est verbum, quod audistis.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Mga minamahal, wala akong isinusulat sa inyo na anomang bagong utos, kundi ang dating utos na nasa inyo buhat nang pasimula; ang dating utos ay ang salita na inyong narinig.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Iterum mandatum novum scribo vobis, quod verum est et in ipso, et in vobis : quia tenebræ transierunt, et verum lumen jam lucet.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Muli, isang bagong utos ang isinusulat ko sa inyo, bagay na tunay sa kaniya at sa inyo; sapagka't ang kadiliman ay lumilipas, at ang tunay na ilaw ay lumiliwanag na.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui dicit se in luce esse, et fratrem suum odit, in tenebris est usque adhuc.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Ang nagsasabing siya'y nasa liwanag at napopoot sa kaniyang kapatid, ay nasa kadiliman pa hanggang ngayon.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui diligit fratrem suum, in lumine manet, et scandalum in eo non est.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Ang umiibig sa kaniyang kapatid ay nananahan sa liwanag, at sa kaniya'y walang anomang kadahilanang ikatitisod.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui autem odit fratrem suum, in tenebris est, et in tenebris ambulat, et nescit quo eat : quia tenebræ obcæcaverunt oculos ejus.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Nguni't ang napopoot sa kaniyang kapatid ay nasa kadiliman, at lumalakad sa kadiliman, at hindi niya nalalaman kung saan siya naparoroon, sapagka't ang kaniyang mga mata ay binulag ng kadiliman.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Scribo vobis, filioli, quoniam remittuntur vobis peccata propter nomen ejus.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Kayo'y sinusulatan ko, mumunti kong mga anak, sapagka't ipinatawad sa inyo ang inyong mga kasalanan dahil sa kaniyang pangalan.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Scribo vobis, patres, quoniam cognovistis eum, qui ab initio est. Scribo vobis, adolescentes, quoniam vicistis malignum.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Kayo'y sinusulatan ko, mga ama, sapagka't inyong nakikilala yaong buhat pa nang pasimula ay siya na. Kayo'y sinusulatan ko, mga binata, sapagka't inyong dinaig ang masama. Kayo'y aking sinulatan, mumunting mga anak, sapagka't inyong nakikilala ang Ama.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Scribo vobis, infantes, quoniam cognovistis patrem. Scribo vobis juvenes, quoniam fortes estis, et verbum Dei manet in vobis, et vicistis malignum.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Kayo'y aking sinulatan, mga ama, sapagka't inyong nakikilala yaong buhat pa nang pasimula ay siya na. Kayo'y aking sinulatan, mga binata, sapagka't kayo'y malalakas, at ang salita ng Dios ay nananahan sa inyo, at inyong dinaig ang masama.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nolite diligere mundum, neque ea quæ in mundo sunt. Si quis diligit mundum, non est caritas Patris in eo :</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Huwag ninyong ibigin ang sanglibutan, ni ang mga bagay na nasa sanglibutan. Kung ang sinoman ay umiibig sa sanglibutan, ay wala sa kaniya ang pagibig ng Ama.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">quoniam omne quod est in mundo, concupiscentia carnis est, et concupiscentia oculorum, et superbia vitæ : quæ non est ex Patre, sed ex mundo est.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Sapagka't ang lahat na nangasa sanglibutan, ang masamang pita ng laman at ang masamang pita ng mga mata at ang kapalaluan sa buhay, ay hindi mula sa Ama, kundi sa sanglibutan.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et mundus transit, et concupiscentia ejus : qui autem facit voluntatem Dei manet in æternum.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">At ang sanglibutan ay lumilipas, at ang masamang pita niyaon; datapuwa't ang gumagawa ng kalooban ng Dios ay nananahan magpakailan man.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Filioli, novissima hora est : et sicut audistis quia antichristus venit, et nunc antichristi multi facti sunt ; unde scimus, quia novissima hora est.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Mumunting mga anak, ito ang huling oras: at gaya ng inyong narinig na darating ang anticristo, kahit ngayon ay lumitaw ang marami nang anticristo; kaya nga nalalaman natin na ito na ang huling oras.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ex nobis prodierunt, sed non erant ex nobis, nam, si fuissent ex nobis, permansissent utique nobiscum : sed ut manifesti sint quoniam non sunt omnes ex nobis.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Sila'y nangagsilabas sa atin, nguni't sila'y hindi sa atin; sapagka't kung sila'y sa atin ay nagsipanatili sana sa atin: nguni't nangagsilabas, upang sila'y mahayag na silang lahat ay hindi sa atin.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sed vos unctionem habetis a Sancto, et nostis omnia.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">At kayo'y may pahid ng Banal, at nalalaman ninyo ang lahat ng mga bagay.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non scripsi vobis quasi ignorantibus veritatem, sed quasi scientibus eam : et quoniam omne mendacium ex veritate non est.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Hindi ko kayo sinulatan ng dahil sa hindi ninyo nalalaman ang katotohanan, kundi dahil sa inyong nalalaman, at sapagka't alin mang kasinungalingan ay hindi sa katotohanan.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-22">
+      <div class="verse-num-col"><div class="verse-num">22</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quis est mendax, nisi is qui negat quoniam Jesus est Christus ? Hic est antichristus, qui negat Patrem, et Filium.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Sino ang sinungaling kundi ang tumatanggi na si Jesus ay siyang Cristo? Ito ang anticristo, sa makatuwid ay ang tumatanggi sa Ama at sa Anak.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-23">
+      <div class="verse-num-col"><div class="verse-num">23</div></div>
+      <div class="verse-texts">
+        <div class="latin">Omnis qui negat Filium, nec Patrem habet : qui confitetur Filium, et Patrem habet.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Ang sinomang tumatanggi sa Anak, ay hindi sumasa kaniya ang Ama: ang nagpapahayag sa Anak ay sumasa kaniya naman ang Ama.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-24">
+      <div class="verse-num-col"><div class="verse-num">24</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vos quod audistis ab initio, in vobis permaneat : si in vobis permanserit quod audistis ab initio, et vos in Filio et Patre manebitis.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Tungkol sa inyo, ay manahan sa inyo ang inyong narinig buhat nang pasimula. Kung manahan sa inyo yaong buhat nang pasimula ay inyong narinig, kayo naman ay mananahan sa Anak, at sa Ama.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-25">
+      <div class="verse-num-col"><div class="verse-num">25</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et hæc est repromissio, quam ipse pollicitus est nobis, vitam æternam.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">At ito ang pangakong kaniyang ipinangako sa atin, ang buhay na walang hanggan.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-26">
+      <div class="verse-num-col"><div class="verse-num">26</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hæc scripsi vobis de his, qui seducant vos.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Isinulat ko sa inyo ang mga bagay na ito tungkol sa mga may ibig na magligaw sa inyo.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-27">
+      <div class="verse-num-col"><div class="verse-num">27</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et vos unctionem, quam accepistis ab eo, maneat in vobis. Et non necesse habetis ut aliquis doceat vos : sed sicut unctio ejus docet vos de omnibus, et verum est, et non est mendacium. Et sicut docuit vos : manete in eo.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">At tungkol sa inyo, ang pagkapahid na sa kaniya'y inyong tinanggap ay nananahan sa inyo, at hindi ninyo kailangang kayo'y turuan ng sinoman; nguni't kung paanong kayo'y tinuturuan ng kaniyang pahid tungkol sa lahat ng mga bagay, at siyang totoo, at hindi kasinungalingan, at kung paanong kayo'y tinuruan nito, ay gayon kayong nananahan sa kaniya.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-28">
+      <div class="verse-num-col"><div class="verse-num">28</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et nunc, filioli, manete in eo : ut cum apparuerit, habeamus fiduciam, et non confundamur ab eo in adventu ejus.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">At ngayon, mumunti kong mga anak, manahan kayo sa kaniya; upang, kung siya'y mahayag, ay magkaroon kayo ng pagkakatiwala, at huwag tayong mangapahiya sa harapan niya sa kaniyang pagparito.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-29">
+      <div class="verse-num-col"><div class="verse-num">29</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si scitis quoniam justus est, scitote quoniam et omnis, qui facit justitiam, ex ipso natus est.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Kung nalalaman ninyong siya'y matuwid, nalalaman naman ninyo na ang bawa't gumagawa ng katuwiran ay ipinanganak niya.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch3">
+    <div class="chapter-marker">
+      <span class="ch-roman">III</span>
+      <span class="ch-label">Caput 3</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v3-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Videte qualem caritatem dedit nobis Pater, ut filii Dei nominemur et simus. Propter hoc mundus non novit nos : quia non novit eum.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Masdan ninyo kung gaanong pagibig ang ipinagkaloob sa atin ng Ama, upang tayo'y mangatawag na mga anak ng Dios; at tayo'y gayon nga. Dahil dito'y hindi tayo nakikilala ng sanglibutan, sapagka't siya'y hindi nakilala nito.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Carissimi, nunc filii Dei sumus : et nondum apparuit quid erimus. Scimus quoniam cum apparuerit, similes ei erimus : quoniam videbimus eum sicuti est.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Mga minamahal, ngayon ay mga anak tayo ng Dios, at hindi pa nahahayag kung magiging ano tayo. Nalalaman natin, na kung siya'y mahayag, tayo'y magiging katulad niya: sapagka't siya'y ating makikitang gaya ng kaniyang sarili.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et omnis qui habet hanc spem in eo, sanctificat se, sicut et ille sanctus est.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">At sinomang mayroon ng pagasang ito sa kaniya ay naglilinis sa kaniyang sarili, gaya naman niyang malinis.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Omnis qui facit peccatum, et iniquitatem facit : et peccatum est iniquitas.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Ang sinomang gumagawa ng kasalanan ay sumasalangsang din naman sa kautusan: at ang kasalanan ay ang pagsalangsang sa kautusan.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et scitis quia ille apparuit ut peccata nostra tolleret : et peccatum in eo non est.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">At nalalaman ninyo na siya'y nahayag upang magalis ng mga kasalanan; at sa kaniya'y walang kasalanan.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Omnis qui in eo manet, non peccat : et omnis qui peccat, non vidit eum, nec cognovit eum.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Ang sinomang nananahan sa kaniya ay hindi nagkakasala; sinomang nagkakasala ay hindi nakakita sa kaniya, ni hindi man nakakilala sa kaniya.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Filioli, nemo vos seducat. Qui facit justitiam, justus est, sicut et ille justus est.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Mumunti kong mga anak, huwag kayong padaya kanino man: ang gumagawa ng katuwiran ay matuwid, gaya niya na matuwid:</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui facit peccatum, ex diabolo est : quoniam ab initio diabolus peccat. In hoc apparuit Filius Dei, ut dissolvat opera diaboli.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Ang gumagawa ng kasalanan ay sa diablo; sapagka't buhat pa nang pasimula ay nagkakasala ang diablo. Sa bagay na ito'y nahayag ang Anak ng Dios, upang iwasak ang mga gawa ng diablo.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Omnis qui natus est ex Deo, peccatum non facit : quoniam semen ipsius in eo manet, et non potest peccare, quoniam ex Deo natus est.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Ang sinomang ipinanganak ng Dios ay hindi nagkakasala, sapagka't ang kaniyang binhi ay nananahan sa kaniya: at siya'y hindi maaaring magkasala, sapagka't siya'y ipinanganak ng Dios.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">In hoc manifesti sunt filii Dei, et filii diaboli. Omnis qui non est justus, non est ex Deo, et qui non diligit fratrem suum :</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Dito nahahayag ang mga anak ng Dios, at ang mga anak ng diablo: ang sinomang hindi gumagawa ng katuwiran ay hindi sa Dios, ni ang hindi umiibig sa kaniyang kapatid.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">quoniam hæc est annuntiatio, quam audistis ab initio, ut diligatis alterutrum.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Sapagka't ito ang pasabing inyong narinig buhat ng pasimula, na mangagibigan tayo sa isa't isa:</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non sicut Cain, qui ex maligno erat, et occidit fratrem suum. Et propter quid occidit eum ? Quoniam opera ejus maligna erant : fratris autem ejus, justa.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Hindi gaya ni Cain na siya'y sa masama, at pinatay ang kaniyang kapatid. At bakit niya pinatay? Sapagka't ang kaniyang mga gawa ay masasama, at ang mga gawa ng kaniyang kapatid ay matuwid.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nolite mirari, fratres, si odit vos mundus.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Huwag kayong mangagtaka, mga kapatid, kung kayo'y kinapopootan ng sanglibutan.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nos scimus quoniam translati sumus de morte ad vitam, quoniam diligimus fratres. Qui non diligit, manet in morte :</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Nalalaman nating tayo'y nangalipat na sa buhay mula sa kamatayan, sapagka't tayo'y nagsisiibig sa mga kapatid. Ang hindi umiibig ay nananahan sa kamatayan.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">omnis qui odit fratrem suum, homicida est. Et scitis quoniam omnis homicida non habet vitam æternam in semetipso manentem.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Ang sinomang napopoot sa kaniyang kapatid ay mamamatay-tao: at nalalaman ninyong sinomang mamamatay-tao ay hindi pinananahanan ng buhay na walang hanggan.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">In hoc cognovimus caritatem Dei, quoniam ille animam suam pro nobis posuit : et nos debemus pro fratribus animas ponere.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Dito'y nakikilala natin ang pagibig, sapagka't kaniyang ibinigay ang kaniyang buhay dahil sa atin; at nararapat nating ibigay ang ating mga buhay dahil sa mga kapatid.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui habuerit substantiam hujus mundi, et viderit fratrem suum necessitatem habere, et clauserit viscera sua ab eo : quomodo caritas Dei manet in eo ?</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Datapuwa't ang sinomang mayroong mga pag-aari sa sanglibutang ito, at nakikita ang kaniyang kapatid na nangangailangan, at doo'y ipagkait ang kaniyang awa, paanong mananahan ang pagibig ng Dios sa kaniya?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Filioli mei, non diligamus verbo neque lingua, sed opere et veritate :</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Mumunti kong mga anak, huwag tayong magsiibig ng salita, ni ng dila man; kundi ng gawa at katotohanan.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">in hoc cognoscimus quoniam ex veritate sumus : et in conspectu ejus suadebimus corda nostra.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Dito'y makikilala nating tayo'y sa katotohanan, at papapanatagin natin ang ating mga puso sa harapan niya.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quoniam si reprehenderit nos cor nostrum : major est Deus corde nostro, et novit omnia.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Sapagka't kung hinahatulan tayo ng ating puso, ang Dios ay lalong dakila kay sa ating puso, at nalalaman niya ang lahat ng mga bagay.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">Carissimi, si cor nostrum non reprehenderit nos, fiduciam habemus ad Deum :</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Mga minamahal, kung tayo'y hindi hinahatulan ng ating puso, ay may pagkakatiwala tayo sa Dios;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-22">
+      <div class="verse-num-col"><div class="verse-num">22</div></div>
+      <div class="verse-texts">
+        <div class="latin">et quidquid petierimus, accipiemus ab eo : quoniam mandata ejus custodimus, et ea, quæ sunt placita coram eo, facimus.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">At anomang ating hingin ay tinatanggap natin sa kaniya, sapagka't tinutupad natin ang kaniyang mga utos at ginagawa natin ang mga bagay na kalugodlugod sa kaniyang paningin.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-23">
+      <div class="verse-num-col"><div class="verse-num">23</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et hoc est mandatum ejus : ut credamus in nomine Filii ejus Jesu Christi : et diligamus alterutrum, sicut dedit mandatum nobis.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">At ito ang kaniyang utos, na manampalataya tayo sa pangalan ng kaniyang Anak na si Jesucristo, at tayo'y mangagibigan, ayon sa ibinigay niyang utos sa atin.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-24">
+      <div class="verse-num-col"><div class="verse-num">24</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et qui servat mandata ejus, in illo manet, et ipse in eo : et in hoc scimus quoniam manet in nobis, de Spiritu quem dedit nobis.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">At ang tumutupad ng kaniyang mga utos ay mananahan sa kaniya, at siya ay sa kaniya. At dito'y nakikilala natin na siya'y nananahan sa atin, sa pamamagitan ng Espiritu na kaniyang ibinigay sa atin.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch4">
+    <div class="chapter-marker">
+      <span class="ch-roman">IV</span>
+      <span class="ch-label">Caput 4</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v4-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Carissimi, nolite omni spiritui credere, sed probate spiritus si ex Deo sint : quoniam multi pseudoprophetæ exierunt in mundum.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Mga minamahal, huwag kayong magsipaniwala sa bawa't espiritu, kundi inyong subukin ang mga espiritu, kung sila'y sa Dios: sapagka't maraming nagsilitaw na mga bulaang propeta sa sanglibutan.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">In hoc cognoscitur Spiritus Dei : omnis spiritus qui confitetur Jesum Christum in carne venisse, ex Deo est :</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Dito'y nakikilala ninyo ang Espiritu ng Dios: ang bawa't espiritung nagpapahayag na si Jesucristo ay naparitong nasa laman ay sa Dios:</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">et omnis spiritus qui solvit Jesum, ex Deo non est, et hic est antichristus, de quo audistis quoniam venit, et nunc jam in mundo est.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">At ang bawa't espiritung hindi ipinahahayag si Jesus, ay hindi sa Dios: at ito ang sa anticristo, na inyong narinig na darating; at ngayo'y nasa sanglibutan na.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vos ex Deo estis filioli, et vicistis eum, quoniam major est qui in vobis est, quam qui in mundo.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Kayo'y sa Dios, mumunti kong mga anak, at inyong dinaig sila: sapagka't lalong dakila siyang nasa inyo kay sa nasa sanglibutan.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ipsi de mundo sunt : ideo de mundo loquuntur, et mundus eos audit.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Sila'y sa sanglibutan: kaya't tungkol sa sanglibutan ang sinasalita nila, at sila'y dinidinig ng sanglibutan.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nos ex Deo sumus. Qui novit Deum, audit nos ; qui non est ex Deo, non audit nos : in hoc cognoscimus Spiritum veritatis, et spiritum erroris.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Tayo nga'y sa Dios: ang nakakakilala sa Dios ay dumirinig sa atin; ang hindi sa Dios ay hindi dumirinig sa atin. Dito'y ating nakikilala ang espiritu ng katotohanan, at ang espiritu ng kamalian.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Carissimi, diligamus nos invicem : quia caritas ex Deo est. Et omnis qui diligit, ex Deo natus est, et cognoscit Deum.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Mga minamahal, mangagibigan tayo sa isa't isa: sapagka't ang pagibig ay sa Dios; at ang bawa't umiibig ay ipinanganak ng Dios, at nakakakilala sa Dios.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui non diligit, non novit Deum : quoniam Deus caritas est.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Ang hindi umiibig ay hindi nakakakilala sa Dios; sapagka't ang Dios ay pagibig.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">In hoc apparuit caritas Dei in nobis, quoniam Filium suum unigenitum misit Deus in mundum, ut vivamus per eum.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Dito nahayag ang pagibig ng Dios sa atin, sapagka't sinugo ng Dios ang kaniyang bugtong na Anak sa sanglibutan upang tayo'y mabuhay sa pamamagitan niya.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">In hoc est caritas : non quasi nos dilexerimus Deum, sed quoniam ipse prior dilexit nos, et misit Filium suum propitiationem pro peccatis nostris.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Narito ang pagibig, hindi sa tayo'y umibig sa Dios, kundi siya ang umibig sa atin, at sinugo ang kaniyang Anak na pangpalubagloob sa ating mga kasalanan.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Carissimi, si sic Deus dilexit nos : et nos debemus alterutrum diligere.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Mga minamahal, kung tayo'y inibig ng Dios ng gayon, ay nararapat na mangagibigan din naman tayo.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Deum nemo vidit umquam. Si diligamus invicem, Deus in nobis manet, et caritas ejus in nobis perfecta est.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Sinoman ay hindi nakakita kailan man sa Dios: kung tayo'y nangagiibigan, ang Dios ay nananahan sa atin, at ang kaniyang pagibig ay nagiging sakdal sa atin:</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">In hoc cognoscimus quoniam in eo manemus, et ipse in nobis : quoniam de Spiritu suo dedit nobis.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Dito'y nakikilala natin na tayo'y nangananahan sa kaniya at siya'y sa atin, sapagka't binigyan niya tayo ng kaniyang Espiritu.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et nos vidimus, et testificamur quoniam Pater misit Filium suum Salvatorem mundi.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">At nakita natin at sinasaksihan na sinugo ng Ama ang Anak upang maging Tagapagligtas ng sanglibutan.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quisquis confessus fuerit quoniam Jesus est Filius Dei, Deus in eo manet, et ipse in Deo.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Ang sinomang nagpapahayag na si Jesus ay Anak ng Dios, ang Dios ay nananahan sa kaniya, at siya'y sa Dios.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et nos cognovimus, et credidimus caritati, quam habet Deus in nobis. Deus caritas est : et qui manet in caritate, in Deo manet, et Deus in eo.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">At ating nakilala at ating sinampalatayanan ang pagibig ng Dios sa atin. Ang Dios ay pagibig; at ang nananahan sa pagibig ay nananahan sa Dios, at ang Dios ay nananahan sa kaniya.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">In hoc perfecta est caritas Dei nobiscum, ut fiduciam habeamus in die judicii : quia sicut ille est, et nos sumus in hoc mundo.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Dito'y naging sakdal ang pagibig sa atin, upang tayo'y magkaroon ng pagkakatiwala sa araw ng paghuhukom; sapagka't kung ano siya, ay gayon din naman tayo sa sanglibutang ito.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Timor non est in caritate : sed perfecta caritas foras mittit timorem, quoniam timor pœnam habet : qui autem timet, non est perfectus in caritate.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Walang takot sa pagibig: kundi ang sakdal na pagibig ay nagpapalayas ng takot, sapagka't ang takot ay may kaparusahan; at ang natatakot ay hindi pa pinasasakdal sa pagibig.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nos ergo diligamus Deum, quoniam Deus prior dilexit nos.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Tayo'y nagsisiibig, sapagka't siya'y unang umibig sa atin.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si quis dixerit : Quoniam diligo Deum, et fratrem suum oderit, mendax est. Qui enim non diligit fratrem suum quem vidit, Deum, quem non vidit, quomodo potest diligere ?</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Kung sinasabi ng sinoman, Ako'y umiibig sa Dios, at napopoot sa kaniyang kapatid, ay sinungaling; sapagka't ang hindi umiibig sa kaniyang kapatid na kaniyang nakita, ay paanong makaiibig siya sa Dios na hindi niya nakita?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et hoc mandatum habemus a Deo : ut qui diligit Deum, diligat et fratrem suum.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">At ang utos na itong mula sa kaniya ay nasa atin, na ang umiibig sa Dios ay dapat umibig sa kaniyang kapatid.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch5">
+    <div class="chapter-marker">
+      <span class="ch-roman">V</span>
+      <span class="ch-label">Caput 5</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v5-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Omnis qui credit quoniam Jesus est Christus, ex Deo natus est. Et omnis qui diligit eum qui genuit, diligit et eum qui natus est ex eo.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Ang sinomang nananampalataya na si Jesus ay siyang Cristo ay ipinanganak ng Dios: at ang bawa't umiibig sa nanganak ay umiibig din naman sa ipinanganak niyaon.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">In hoc cognoscimus quoniam diligamus natos Dei, cum Deum diligamus, et mandata ejus faciamus.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Dito'y ating nakikilala na tayo'y nagsisiibig sa mga anak ng Dios, pagka tayo'y nagsisiibig sa Dios at tinutupad natin ang kaniyang mga utos.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hæc est enim caritas Dei, ut mandata ejus custodiamus : et mandata ejus gravia non sunt.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Sapagka't ito ang pagibig sa Dios, na ating tuparin ang kaniyang mga utos: at ang kaniyang mga utos ay hindi mabibigat.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quoniam omne quod natum est ex Deo, vincit mundum : et hæc est victoria, quæ vincit mundum, fides nostra.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Sapagka't ang sinomang ipinanganak ng Dios ay dumadaig sa sanglibutan: at ito ang pagtatagumpay na dumadaig sa sanglibutan, sa makatuwid ay ang ating pananampalataya.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quis est, qui vincit mundum, nisi qui credit quoniam Jesus est Filius Dei ?</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">At sino ang dumadaig sa sanglibutan, kundi yaong nananampalatayang si Jesus ay anak ng Dios?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hic est, qui venit per aquam et sanguinem, Jesus Christus : non in aqua solum, sed in aqua et sanguine. Et Spiritus est, qui testificatur quoniam Christus est veritas.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Ito yaong naparito sa pamamagitan ng tubig at dugo, sa makatuwid ay si Jesucristo; hindi sa tubig lamang, kundi sa tubig at sa dugo.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quoniam tres sunt, qui testimonium dant in cælo : Pater, Verbum, et Spiritus Sanctus : et hi tres unum sunt.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">At ang Espiritu ang nagpapatotoo, sapagka't ang Espiritu ay katotohanan.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et tres sunt, qui testimonium dant in terra : spiritus, et aqua, et sanguis : et hi tres unum sunt.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Sapagka't may tatlong nagpapatotoo, ang Espiritu, ang tubig, at ang dugo: at ang tatlo ay nagkakaisa.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si testimonium hominum accipimus, testimonium Dei majus est : quoniam hoc est testimonium Dei, quod majus est, quoniam testificatus est de Filio suo.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Kung tinatanggap natin ang patotoo ng mga tao, ay lalong dakila ang patotoo ng Dios, sapagka't ito ang patotoo ng Dios: sapagka't ito papatotoo tungkol sa kaniyang Anak.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui credit in Filium Dei, habet testimonium Dei in se. Qui non credit Filio, mendacem facit eum : quia non credit in testimonium quod testificatus est Deus de Filio suo.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Ang nananampalataya sa Anak ng Dios ay may patotoo sa kaniya: ang hindi nananampalataya sa Dios ay ginagawang isang sinungaling ang Dios: sapagka't hindi sumampalataya sa patotoo na ibinigay ng Dios tungkol sa kaniyang Anak.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et hoc est testimonium, quoniam vitam æternam dedit nobis Deus : et hæc vita in Filio ejus est.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">At ito ang patotoo, na tayo'y binigyan ng Dios ng buhay na walang hanggan, at ang buhay na ito ay nasa kaniyang Anak.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui habet Filium, habet vitam : qui non habet Filium, vitam non habet.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Ang kinaroroonan ng Anak ay kinaroroonan ng buhay; ang hindi kinaroroonan ng Anak ng Dios ay hindi kinaroroonan ng buhay.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hæc scribo vobis ut sciatis quoniam vitam habetis æternam, qui creditis in nomine Filii Dei.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Ang mga bagay na ito ay isinulat ko sa inyo, upang inyong maalaman na kayo'y mayroong buhay na walang hanggan, sa makatuwid ay sa inyong nananampalataya sa pangalan ng Anak ng Dios.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et hæc est fiducia, quam habemus ad eum : quia quodcumque petierimus, secundum voluntatem ejus, audit nos.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">At ito ang nasa ating pagkakatiwala sa kaniya, na kung tayo'y humingi ng anomang bagay na ayon sa kaniyang kalooban, ay dinidinig tayo niya:</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et scimus quia audit nos quidquid petierimus : scimus quoniam habemus petitiones quas postulamus ab eo.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">At kung ating nalalaman na tayo'y dinidinig niya sa anomang ating hingin, ay nalalaman natin na nasa atin ang mga kahilingang sa kaniya'y ating hiningi.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui scit fratrem suum peccare peccatum non ad mortem, petat, et dabitur ei vita peccanti non ad mortem. Est peccatum ad mortem : non pro illo dico ut roget quis.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Kung makita ng sinoman na ang kaniyang kapatid ay nagkakasala ng kasalanang hindi ikamamatay, ay idalangin siya at bibigyan siya ng Dios ng buhay, na ukol sa mga nagkakasala nang hindi ikamamatay. May kasalanang ikamamatay: hindi tungkol dito ang sinasabi ko na idalangin niya.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Omnis iniquitas, peccatum est : et est peccatum ad mortem.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Lahat ng kalikuan ay kasalanan: at may kasalanang hindi ikamamatay.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Scimus quia omnis qui natus est ex Deo, non peccat : sed generatio Dei conservat eum, et malignus non tangit eum.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Nalalaman natin na ang sinomang ipinanganak ng Dios ay hindi nagkakasala; datapuwa't ang ipinanganak ng Dios ay nagiingat sa kaniyang sarili, at hindi siya ginagalaw ng masama.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">Scimus quoniam ex Deo sumus : et mundus totus in maligno positus est.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Nalalaman natin na tayo'y sa Dios at ang buong sanglibutan ay nakahilig sa masama.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et scimus quoniam Filius Dei venit, et dedit nobis sensum ut cognoscamus verum Deum, et simus in vero Filio ejus. Hic est verus Deus, et vita æterna.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">At nalalaman natin na naparito ang Anak ng Dios, at tayo'y binigyan ng pagkaunawa, upang ating makilala siya na totoo, at tayo'y nasa kaniya na totoo, sa makatuwid ay sa kaniyang Anak na si Jesucristo. Ito ang tunay na Dios, at ang buhay na walang hanggan.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">Filioli, custodite vos a simulacris. Amen.</div>
+        <div class="trans-label">✦ Filipino</div>
+        <div class="trans">Mga anak ko, mangagingat kayo sa mga diosdiosan.</div>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <nav class="book-nav">
+    <a href="061-2pe.html">← II Petri</a>
+    <span class="center">I Ioannis · Filipino</span>
+    <a href="063-2jo.html">II Ioannis →</a>
+  </nav>
+
+  <footer class="page-footer">
+    BIBLIA CATHOLICA INTERLINEARIS &nbsp;·&nbsp; Vulgata Clementina &amp; Ang Biblia (1905)
+    &nbsp;·&nbsp; Gemeinfreie Texte / Public Domain
+  </footer>
+
+</body>
+</html>

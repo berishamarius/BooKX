@@ -1,623 +1,647 @@
 <!DOCTYPE html>
 <html lang="cs">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Ionas &middot; Čeština &middot; Biblia Catholica</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&display=swap" rel="stylesheet">
-<style>
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
-body{
-  background:#2C0810;
-  background-image:radial-gradient(ellipse at 50% 20%,#4A1020 0%,#1A0407 100%);
-  font-family:'EB Garamond',serif;
-  color:#1A0E06;
-  font-size:17px;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Ionas · Čeština · Biblia Catholica</title>
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
+
+:root {
+  --gold:        #C8A96E;
+  --gold-light:  #EDD58A;
+  --gold-dark:   #8B6914;
+  --navy:        #1A1F3A;
+  --navy-mid:    #252B4A;
+  --navy-light:  #2E3560;
+  --parchment:   #F5E9CC;
+  --parchment-d: #EDD9A3;
+  --cream:       #FDF6E3;
+  --latin-color: #6B1E0E;
+  --trans-color: #0F1D2E;
+  --border:      rgba(200,169,110,.35);
+  --font-title:  'Cinzel Decorative', 'Cinzel', Georgia, serif;
+  --font-sub:    'Cinzel', Georgia, serif;
+  --font-body:   'EB Garamond', Georgia, serif;
 }
 
-/* ──────────────────────────────────────────
-   BUCHKOPF
-────────────────────────────────────────── */
-.bhead{
-  background:
-    repeating-linear-gradient( 45deg,transparent,transparent 36px,rgba(200,160,48,.028) 36px,rgba(200,160,48,.028) 37px),
-    repeating-linear-gradient(-45deg,transparent,transparent 36px,rgba(200,160,48,.028) 36px,rgba(200,160,48,.028) 37px),
-    linear-gradient(162deg,#2C0810 0%,#4A1020 45%,#5C1828 65%,#4A1020 85%,#2C0810 100%);
-  padding:36px 28px 28px;
-  text-align:center;
-  border-bottom:4px solid #B8962E;
-  position:relative;overflow:hidden;
-}
-/* Innerer Rahmen — äußerer Ring */
-.bhead::before{
-  content:'';position:absolute;inset:14px;
-  border:1px solid rgba(200,160,48,.22);
-  pointer-events:none;
-}
-/* Innerer Rahmen — innerer Ring */
-.bhead::after{
-  content:'';position:absolute;inset:22px;
-  border:1px solid rgba(200,160,48,.08);
-  pointer-events:none;
-}
-.btestament{
-  display:inline-block;
-  border:1px solid rgba(200,160,48,.32);
-  color:rgba(200,160,48,.52);
-  font-family:'Cinzel',serif;font-size:.55rem;
-  letter-spacing:.3em;padding:4px 18px;
-  border-radius:2px;margin-bottom:16px;
-  position:relative;
-}
-.blatin{
-  font-family:'Cinzel Decorative',serif;
-  font-size:clamp(1.9rem,7vw,3.4rem);
-  color:#EDD882;
-  text-shadow:0 3px 20px rgba(0,0,0,.55);
-  letter-spacing:.06em;position:relative;
-}
-.btrans{
-  font-family:'Cinzel',serif;
-  font-size:.88rem;
-  color:#C8A030;margin-top:10px;
-  letter-spacing:.16em;position:relative;
-}
-.bmeta{
-  font-family:'Cinzel',serif;font-size:.62rem;
-  color:rgba(200,160,48,.4);margin-top:6px;
-  letter-spacing:.08em;position:relative;
-}
+*,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+html { font-size:16px; scroll-behavior:smooth; }
+body { background:var(--cream); color:var(--trans-color); font-family:var(--font-body); }
 
-/* ──────────────────────────────────────────
-   KAPITELINHALT
-────────────────────────────────────────── */
-.content{
-  max-width:960px;
-  margin:36px auto 36px;
-  padding:48px 72px 100px;
-  background:#FAF5E8;
+/* ── NAV ─────────────────────────────────────────────── */
+.nav-bar {
+  background:var(--navy); padding:10px 28px;
+  display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  border-bottom:2px solid var(--gold);
+  position:sticky; top:0; z-index:100;
+  box-shadow:0 3px 12px rgba(0,0,0,.45);
+}
+.nav-bar a {
+  color:var(--gold); text-decoration:none;
+  font-family:var(--font-sub); font-size:.75rem; letter-spacing:.05em;
+  transition:color .15s;
+}
+.nav-bar a:hover { color:var(--gold-light); }
+.nav-bar .home { font-weight:700; font-size:.82rem; }
+.nav-bar .spacer { flex:1; }
+.nav-bar .pos { color:rgba(200,169,110,.45); font-size:.7rem; font-family:var(--font-sub); }
+
+/* ── BUCHKOPF ────────────────────────────────────────── */
+.book-header {
+  background:linear-gradient(160deg,var(--navy) 0%,var(--navy-mid) 55%,var(--navy-light) 100%);
+  padding:44px 36px 34px; text-align:center;
+  border-bottom:4px solid var(--gold);
+  position:relative; overflow:hidden;
+}
+.book-header::before {
+  content:'';
+  position:absolute; inset:0;
   background-image:
-    radial-gradient(ellipse at top left,rgba(184,150,46,.06) 0%,transparent 55%),
-    radial-gradient(ellipse at bottom right,rgba(184,150,46,.05) 0%,transparent 55%);
-  box-shadow:0 8px 80px rgba(0,0,0,.55),0 2px 12px rgba(0,0,0,.35),inset 0 0 0 1px rgba(184,150,46,.18);
-  border-left:4px solid #B8962E;
-  border-right:4px solid #B8962E;
-  border-top:2px solid rgba(184,150,46,.4);
-  border-bottom:2px solid rgba(184,150,46,.4);
-  position:relative;
-}
-.content::before{
-  content:'';
-  position:absolute;
-  inset:12px;
-  border:1px solid rgba(184,150,46,.08);
+    repeating-linear-gradient( 45deg,transparent,transparent 30px,rgba(200,169,110,.038) 30px,rgba(200,169,110,.038) 31px),
+    repeating-linear-gradient(-45deg,transparent,transparent 30px,rgba(200,169,110,.038) 30px,rgba(200,169,110,.038) 31px);
   pointer-events:none;
 }
-
-.chap{margin-top:0;}
-
-.chhead{
-  text-align:center;
-  padding:40px 0 20px;
-  margin-bottom:16px;
-  position:relative;
+.testament-badge {
+  display:inline-block;
+  border:1px solid rgba(200,169,110,.4); color:rgba(200,169,110,.65);
+  font-family:var(--font-sub); font-size:.62rem; letter-spacing:.25em;
+  padding:4px 14px; border-radius:2px; margin-bottom:14px; position:relative;
 }
-.chhead::before{
-  content:'——— ✦ ✦ ✦ ———';
-  display:block;
-  font-size:.7rem;
-  color:rgba(184,150,46,.45);
-  letter-spacing:.35em;
-  margin-bottom:16px;
+.book-name-latin {
+  font-family:var(--font-title); font-size:3rem; color:var(--gold-light);
+  text-shadow:0 3px 18px rgba(0,0,0,.55); letter-spacing:.08em; position:relative;
 }
-.chhead::after{
-  content:'';
-  display:block;
-  width:200px;
-  height:1px;
-  margin:14px auto 0;
-  background:linear-gradient(to right,transparent,#B8962E,transparent);
+.book-name-trans {
+  font-family:var(--font-sub); font-size:1.1rem; color:var(--gold);
+  margin-top:8px; letter-spacing:.12em; position:relative;
 }
-.chrom{
-  font-family:'Cinzel Decorative',serif;
-  font-size:4rem;color:#8B6914;
-  display:block;
-  text-shadow:0 2px 18px rgba(184,150,46,.2);
-  line-height:1;
-}
-.chlbl{
-  font-family:'Cinzel',serif;font-size:.58rem;
-  color:rgba(184,150,46,.42);letter-spacing:.32em;
-  display:block;margin-top:8px;
+.book-meta {
+  font-size:.74rem; color:rgba(200,169,110,.5); margin-top:7px;
+  font-family:var(--font-sub); letter-spacing:.07em; position:relative;
 }
 
-/* ──────────────────────────────────────────
-   VERSE
-────────────────────────────────────────── */
-.vb{
-  display:flex;
-  padding:20px 6px;
-  border-bottom:1px solid rgba(184,150,46,.12);
-  background:none;
-  border-radius:2px;
-  transition:background .15s;
-}
-.vb:hover{
-  background:rgba(184,150,46,.04);
+/* ── ORNAMENT-TRENNLINIE ─────────────────────────────── */
+.ornament-bar {
+  text-align:center; padding:16px 0 4px;
+  color:var(--gold); font-size:1.1rem; letter-spacing:.7em;
 }
 
-/* Versnummer */
-.vn{
-  flex-shrink:0;
-  width:38px;
-  padding-top:4px;
-  font-family:'Cinzel',serif;font-size:.56rem;
-  color:rgba(184,150,46,.52);text-align:right;
-  padding-right:12px;line-height:2.4;
+/* ── HAUPT-CONTAINER ─────────────────────────────────── */
+.content { max-width:960px; margin:0 auto; padding:0 24px 80px; }
+
+/* ── KAPITEL-MARKER ──────────────────────────────────── */
+.chapter-marker {
+  display:flex; align-items:center; gap:16px;
+  padding:28px 6px 12px; margin-bottom:4px;
+  border-bottom:2px solid var(--border);
+}
+.ch-roman {
+  font-family:var(--font-title); font-size:2.2rem; color:var(--gold);
+  min-width:56px; text-align:center; flex-shrink:0;
+  text-shadow:0 1px 8px rgba(200,169,110,.3);
+}
+.ch-label {
+  font-family:var(--font-sub); font-size:.72rem; color:rgba(200,169,110,.6);
+  letter-spacing:.22em; text-transform:uppercase;
 }
 
-.vt{
-  flex:1;
-  padding:0 20px 0 4px;
+/* ── VERS-BLOCK ──────────────────────────────────────── */
+.verse-block {
+  display:flex; gap:0; border-bottom:1px solid rgba(200,169,110,.15);
+}
+.verse-block:nth-child(odd)  { background:var(--cream); }
+.verse-block:nth-child(even) { background:var(--parchment); }
+
+.verse-num-col {
+  flex-shrink:0; width:42px; padding:16px 6px 16px 0; text-align:right;
+}
+.verse-num {
+  display:inline-block; width:28px; height:28px; border-radius:50%;
+  background:var(--gold-dark); color:var(--cream);
+  font-family:var(--font-sub); font-size:.64rem; font-weight:700;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 1px 5px rgba(0,0,0,.25);
 }
 
-/* LATEIN — PRIMÄR: groß, warm, maßgebend */
-.lat{
-  font-family:'EB Garamond',serif;
-  font-size:1.2rem;
-  font-weight:500;
-  line-height:2.1;
-  color:#3D1A08;
+.verse-texts { flex:1; padding:16px 16px 18px 8px; }
+
+/* ── LATEINISCHER TEXT (oben / primär) ───────────────── */
+.latin {
+  font-family:var(--font-body); font-size:1.12rem; line-height:1.9;
+  color:var(--latin-color); font-weight:500;
+  border-left:3px solid var(--gold); padding-left:12px;
+  margin-bottom:8px;
 }
 
-/* ÜBERSETZUNG — SEKUNDÄR: kleiner, kursiv, unter dem Latein */
-.tra{
-  font-family:'EB Garamond',serif;
-  font-size:.93rem;
-  font-style:italic;
-  line-height:1.95;
-  color:#1E2848;
-  margin-top:5px;
-  padding-left:14px;
-  border-left:2px solid rgba(90,110,170,.2);
+/* ── ÜBERSETZUNGS-TEXT (unten / sekundär) ────────────── */
+.trans-label {
+  font-family:var(--font-sub); font-size:.6rem; letter-spacing:.17em;
+  text-transform:uppercase; color:var(--gold-dark); margin-bottom:5px; opacity:.78;
+}
+.trans {
+  font-family:var(--font-body); font-size:1.04rem; line-height:1.85;
+  color:var(--trans-color); font-style:italic;
+  padding-left:15px;
 }
 
-/* Drop-Cap: erster Vers eines Kapitels — auf dem Latein */
-.vb.first .lat::first-letter{
-  font-family:'Cinzel Decorative',serif;
-  font-size:4em;
-  float:left;
-  line-height:.7;
-  padding-right:.08em;
-  margin-top:.07em;
-  color:#B8962E;
-  text-shadow:1px 2px 6px rgba(0,0,0,.12);
+/* Erste Vers jedes Kapitels: Drop-Cap */
+.verse-block:first-of-type .latin::first-letter {
+  font-size:4.2em; float:left; line-height:.72;
+  padding-right:.08em; margin-top:.06em;
+  font-family:var(--font-title); color:var(--gold);
 }
 
-/* ──────────────────────────────────────────
-   BUCH-NAVIGATION (unten)
-────────────────────────────────────────── */
-.bnav{
-  display:flex;justify-content:space-between;align-items:center;
-  background:#2C0810;border-top:3px solid #B8962E;
-  padding:12px 24px;gap:12px;
+/* ── NAVIGATION ZWISCHEN BÜCHERN ─────────────────────── */
+.book-nav {
+  display:flex; justify-content:space-between; align-items:center;
+  background:var(--navy); border-top:3px solid var(--gold);
+  padding:12px 26px; gap:12px;
 }
-.bnav a,.bnav .dim{
-  color:#C8A030;text-decoration:none;
-  font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:.07em;
-  padding:6px 16px;
-  border:1px solid rgba(200,160,48,.28);
-  border-radius:2px;transition:background .18s;
+.book-nav a {
+  color:var(--gold); text-decoration:none;
+  font-family:var(--font-sub); font-size:.78rem; letter-spacing:.07em;
+  padding:6px 14px; border:1px solid rgba(200,169,110,.3); border-radius:3px;
+  transition:background .18s;
 }
-.bnav a:hover{background:rgba(200,160,48,.12);}
-.bnav .dim{color:rgba(200,160,48,.2);border-color:rgba(200,160,48,.1);}
-.bnav .center{
-  font-family:'Cinzel',serif;font-size:.68rem;
-  color:rgba(200,160,48,.65);text-align:center;
-  letter-spacing:.06em;text-decoration:none;
-  border:1px solid rgba(200,160,48,.28);border-radius:2px;
-  padding:6px 20px;transition:background .18s;
-}
-.bnav .center:hover{background:rgba(200,160,48,.1);}
-
-/* DRUCK */
-@media print{
-  .bnav{display:none;}
-  .bhead{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-  .vb{break-inside:avoid;}
+.book-nav a:hover { background:rgba(200,169,110,.15); }
+.book-nav .center {
+  font-family:var(--font-sub); font-size:.7rem; color:rgba(200,169,110,.55);
+  letter-spacing:.1em; text-align:center;
 }
 
-/* MOBIL */
-@media(max-width:600px){
-  .blatin{font-size:1.8rem;}
-  .lat{font-size:1rem;}
-  .tra{font-size:.84rem;}
-  .content{padding:16px 18px 60px;margin:0;border-left:none;border-right:none;border-radius:0;}
-  .chrom{font-size:1.8rem;}
+/* ── FUßZEILE ────────────────────────────────────────── */
+.page-footer {
+  background:var(--navy); border-top:2px solid rgba(200,169,110,.3);
+  padding:18px 28px; text-align:center;
+  color:rgba(200,169,110,.45); font-family:var(--font-sub);
+  font-size:.68rem; letter-spacing:.1em;
+}
+
+/* ── DRUCK ───────────────────────────────────────────── */
+@media print {
+  .nav-bar, .book-nav { display:none; }
+  .verse-block { break-inside:avoid; }
+  .book-header { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+}
+
+/* ── MOBIL ───────────────────────────────────────────── */
+@media (max-width:640px) {
+  .book-name-latin { font-size:2.1rem; }
+  .ch-roman { font-size:1.6rem; }
+  .latin { font-size:.98rem; }
+  .trans { font-size:.93rem; }
+  .content { padding:0 12px 60px; }
 }
 </style>
 </head>
 <body>
 
-<header class="bhead">
-  <div class="btestament">VETUS TESTAMENTUM</div>
-  <div class="blatin">IONAS</div>
-  <div class="btrans">Jonáš &nbsp;&middot;&nbsp; <em>Čeština</em></div>
-  <div class="bmeta">4 Capita &nbsp;&middot;&nbsp; 48 Versus</div>
-</header>
+  <nav class="nav-bar">
+    <a class="home" href="../../../index.html">✞ BIBLIA CATHOLICA</a>
+    <a href="../index.html">🇨🇿 Čeština</a>
+    <span class="spacer"></span>
+    <span class="pos">032 / 066</span>
+  </nav>
 
-<main class="content">
-<section class="chap" id="c1">
-  <div class="chhead">
-    <span class="chrom">I</span>
-    <span class="chlbl">Caput 1</span>
-  </div>
-<div class="vb first" id="v1-1">
-  <span class="vn">1</span>
-  <div class="vt">
-    <p class="lat">Et factum est verbum Domini ad Jonam, filium Amathi, dicens :</p>
-    <p class="tra">I stalo se slovo Hospodinovo k Jonášovi synu Amaty, řkoucí:</p>
-  </div>
-</div>
-<div class="vb" id="v1-2">
-  <span class="vn">2</span>
-  <div class="vt">
-    <p class="lat">Surge, et vade in Niniven, civitatem grandem, et prædica in ea, quia ascendit malitia ejus coram me.</p>
-    <p class="tra">Vstaň, jdi do Ninive města toho velikého, a volej proti němu; neboť jest vstoupila nešlechetnost jejich před oblíčej můj.</p>
-  </div>
-</div>
-<div class="vb" id="v1-3">
-  <span class="vn">3</span>
-  <div class="vt">
-    <p class="lat">Et surrexit Jonas, ut fugeret in Tharsis a facie Domini, et descendit in Joppen : et invenit navem euntem in Tharsis, et dedit naulum ejus, et descendit in eam ut iret cum eis in Tharsis a facie Domini.</p>
-    <p class="tra">Ale Jonáš vstal, aby utekl do Tarsu od tváři Hospodinovy. A přišed do Joppe, našel lodí, ana jde do Tarsu, a zaplativ od ní, vstoupil na ni, aby se plavil s nimi do Tarsu od tváři Hospodinovy.</p>
-  </div>
-</div>
-<div class="vb" id="v1-4">
-  <span class="vn">4</span>
-  <div class="vt">
-    <p class="lat">Dominus autem misit ventum magnum in mare : et facta est tempestas magna in mari, et navis periclitabatur conteri.</p>
-    <p class="tra">Ale Hospodin vzbudil vítr veliký na moři. I stala se bouře veliká na moři, až se domnívali, že se lodí ztroskoce.</p>
-  </div>
-</div>
-<div class="vb" id="v1-5">
-  <span class="vn">5</span>
-  <div class="vt">
-    <p class="lat">Et timuerunt nautæ, et clamaverunt viri ad deum suum, et miserunt vasa quæ erant in navi, in mare, ut alleviaretur ab eis ; et Jonas descendit ad interiora navis, et dormiebat sopore gravi.</p>
-    <p class="tra">A bojíce se plavci, volali jeden každý k bohu svému, a vyhazovali to, což měli na lodí, do moře, aby sobě tím polehčili. Jonáš pak byl sešel k bokům lodí, a položiv se, spal tvrdě.</p>
-  </div>
-</div>
-<div class="vb" id="v1-6">
-  <span class="vn">6</span>
-  <div class="vt">
-    <p class="lat">Et accessit ad eum gubernator, et dixit ei : Quid tu sopore deprimeris ? surge, invoca Deum tuum, si forte recogitet Deus de nobis, et non pereamus.</p>
-    <p class="tra">Tedy přišed k němu správce lodí, řekl jemu: Což ty děláš, ospalče? Vstaň, volej k Bohu svému. Snad ten Bůh rozpomene se na nás, abychom nezahynuli.</p>
-  </div>
-</div>
-<div class="vb" id="v1-7">
-  <span class="vn">7</span>
-  <div class="vt">
-    <p class="lat">Et dixit vir ad collegam suum : Venite et mittamus sortes, et sciamus quare hoc malum sit nobis. Et miserunt sortes, et cecidit sors super Jonam.</p>
-    <p class="tra">I řekli jeden druhému: Poďte, vrzme losy, abychom zvěděli, pro koho to zlé přišlo na nás. Tedy metali losy, a padl los na Jonáše.</p>
-  </div>
-</div>
-<div class="vb" id="v1-8">
-  <span class="vn">8</span>
-  <div class="vt">
-    <p class="lat">Et dixerunt ad eum : Indica nobis cujus causa malum istud sit nobis : quod est opus tuum ? quæ terra tua, et quo vadis ? vel ex quo populo es tu ?</p>
-    <p class="tra">I řekli jemu: Pověz nám medle, pro koho toto zlé na nás? Jaký jest obchod tvůj, a odkud jdeš? Z které jsi země a z kterého národu?</p>
-  </div>
-</div>
-<div class="vb" id="v1-9">
-  <span class="vn">9</span>
-  <div class="vt">
-    <p class="lat">Et dixit ad eos : Hebræus ego sum, et Dominum Deum cæli ego timeo, qui fecit mare et aridam.</p>
-    <p class="tra">I řekl jim: Hebrejský jsem, a Hospodina Boha nebes, kterýž učinil moře i zemi, já ctím.</p>
-  </div>
-</div>
-<div class="vb" id="v1-10">
-  <span class="vn">10</span>
-  <div class="vt">
-    <p class="lat">Et timuerunt viri timore magno, et dixerunt ad eum : Quid hoc fecisti ? cognoverunt enim viri quod a facie Domini fugeret, quia indicaverat eis.</p>
-    <p class="tra">Pročež báli se ti muži bázní velikou, a dověděvše se muži ti, že od tváři Hospodinovy utíká, (nebo jim byl oznámil,) řekli jemu: Což jsi to učinil?</p>
-  </div>
-</div>
-<div class="vb" id="v1-11">
-  <span class="vn">11</span>
-  <div class="vt">
-    <p class="lat">Et dixerunt ad eum : Quid faciemus tibi, et cessabit mare a nobis ? quia mare ibat, et intumescebat.</p>
-    <p class="tra">Řekli ještě k němu: Což máme učiniti s tebou, aby se moře spokojilo? (Nebo moře vždy více a více bouřilo se.)</p>
-  </div>
-</div>
-<div class="vb" id="v1-12">
-  <span class="vn">12</span>
-  <div class="vt">
-    <p class="lat">Et dixit ad eos : Tollite me, et mittite in mare, et cessabit mare a vobis : scio enim ego quoniam propter me tempestas hæc grandis venit super vos.</p>
-    <p class="tra">Jimžto řekl: Vezměte mne, a uvrzte mne do moře, a utichne moře před vámi; nebo já vím, že příčinou mou bouře tato veliká jest proti vám.</p>
-  </div>
-</div>
-<div class="vb" id="v1-13">
-  <span class="vn">13</span>
-  <div class="vt">
-    <p class="lat">Et remigabant viri ut reverterentur ad aridam, et non valebant, quia mare ibat, et intumescebat super eos.</p>
-    <p class="tra">Ale muži ti statečně táhli, chtíce k břehu přistati, však nemohli; nebo moře vždy více a více se bouřilo proti nim.</p>
-  </div>
-</div>
-<div class="vb" id="v1-14">
-  <span class="vn">14</span>
-  <div class="vt">
-    <p class="lat">Et clamaverunt ad Dominum, et dixerunt : Quæsumus, Domine, ne pereamus in anima viri istius, et ne des super nos sanguinem innocentem : quia tu, Domine, sicut voluisti, fecisti.</p>
-    <p class="tra">I zvolali k Hospodinu, řkouce: Prosímeť, ó Hospodine, abychom nezahynuli pro smrt člověka tohoto, aniž na nás vyhledávej krve nevinné; nebo ty, ó Hospodine, jakž chceš, tak činíš.</p>
-  </div>
-</div>
-<div class="vb" id="v1-15">
-  <span class="vn">15</span>
-  <div class="vt">
-    <p class="lat">Et tulerunt Jonam, et miserunt in mare : et stetit mare a fervore suo.</p>
-    <p class="tra">Tedy vzavše Jonáše, uvrhli ho do moře. I přestalo moře bouřiti se.</p>
-  </div>
-</div>
-<div class="vb" id="v1-16">
-  <span class="vn">16</span>
-  <div class="vt">
-    <p class="lat">Et timuerunt viri timore magno Dominum : et immolaverunt hostias Domino, et voverunt vota.</p>
-    <p class="tra">Pročež báli se muži ti bázní velikou Hospodina, a obětovali obět Hospodinu, a sliby činili.</p>
-  </div>
-</div>
-</section>
+  <header class="book-header">
+    <div class="testament-badge">VETUS TESTAMENTUM</div>
+    <div class="book-name-latin">IONAS</div>
+    <div class="book-name-trans">Jonah</div>
+    <div class="book-meta">Vulgata Clementina · Bible Kralická (1613) · 4 Capita · 48 Versus</div>
+  </header>
 
-<section class="chap" id="c2">
-  <div class="chhead">
-    <span class="chrom">II</span>
-    <span class="chlbl">Caput 2</span>
-  </div>
-<div class="vb first" id="v2-1">
-  <span class="vn">1</span>
-  <div class="vt">
-    <p class="lat">Et præparavit Dominus piscem grandem ut deglutiret Jonam : et erat Jonas in ventre piscis tribus diebus et tribus noctibus.</p>
-    <p class="tra">I modlil se Jonáš Hospodinu Bohu svému v střevách té ryby,</p>
-  </div>
-</div>
-<div class="vb" id="v2-2">
-  <span class="vn">2</span>
-  <div class="vt">
-    <p class="lat">Et oravit Jonas ad Dominum Deum suum de ventre piscis,</p>
-    <p class="tra">A řekl: Z ssoužení svého volal jsem k Hospodinu, a ozval se mi; z břicha hrobu křičel jsem, a vyslyšel jsi hlas můj.</p>
-  </div>
-</div>
-<div class="vb" id="v2-3">
-  <span class="vn">3</span>
-  <div class="vt">
-    <p class="lat">et dixit :   Clamavi de tribulatione mea ad Dominum,  et exaudivit me ;  de ventre inferi clamavi,  et exaudisti vocem meam.</p>
-    <p class="tra">Nebo jsi mne uvrhl do hlubiny, do prostřed moře, a řeka obklíčila mne; všecka vlnobití tvá i rozvodnění tvá na mne se svalila.</p>
-  </div>
-</div>
-<div class="vb" id="v2-4">
-  <span class="vn">4</span>
-  <div class="vt">
-    <p class="lat">Et projecisti me in profundum in corde maris,  et flumen circumdedit me :  omnes gurgites tui, et fluctus tui super me transierunt.</p>
-    <p class="tra">Bylť jsem již řekl: Vyhnán jsem od očí tvých, ale ještěť pohledím na tvůj svatý chrám.</p>
-  </div>
-</div>
-<div class="vb" id="v2-5">
-  <span class="vn">5</span>
-  <div class="vt">
-    <p class="lat">Et ego dixi :  Abjectus sum a conspectu oculorum tuorum ;  verumtamen rursus videbo templum sanctum tuum.</p>
-    <p class="tra">Obklíčily mne vody až k duši, propast obklíčila mne, lekno otočilo se okolo hlavy mé.</p>
-  </div>
-</div>
-<div class="vb" id="v2-6">
-  <span class="vn">6</span>
-  <div class="vt">
-    <p class="lat">Circumdederunt me aquæ usque ad animam :  abyssus vallavit me,  pelagus operuit caput meum.</p>
-    <p class="tra">Až k spodkům hor dostal jsem se, země závorami svými zalehla mi na věčnost, ty jsi však vysvobodil od porušení život můj, ó Hospodine Bože můj.</p>
-  </div>
-</div>
-<div class="vb" id="v2-7">
-  <span class="vn">7</span>
-  <div class="vt">
-    <p class="lat">Ad extrema montium descendi ;  terræ vectes concluserunt me in æternum :  et sublevabis de corruptione vitam meam, Domine Deus meus.</p>
-    <p class="tra">Když se svírala ve mně duše má, na Hospodina jsem se rozpomínal, i přišla k tobě modlitba má do chrámu svatého tvého.</p>
-  </div>
-</div>
-<div class="vb" id="v2-8">
-  <span class="vn">8</span>
-  <div class="vt">
-    <p class="lat">Cum angustiaretur in me anima mea,  Domini recordatus sum :  ut veniat ad te oratio mea,  ad templum sanctum tuum.</p>
-    <p class="tra">Kteříž ostříhají marností pouhých, dobroty Boží se zbavují.</p>
-  </div>
-</div>
-<div class="vb" id="v2-9">
-  <span class="vn">9</span>
-  <div class="vt">
-    <p class="lat">Qui custodiunt vanitates frustra,  misericordiam suam derelinquunt.</p>
-    <p class="tra">Já pak s hlasem díkčinění obětovati budu tobě; což jsem slíbil, splním. Hojné vysvobození jest u Hospodina.</p>
-  </div>
-</div>
-<div class="vb" id="v2-10">
-  <span class="vn">10</span>
-  <div class="vt">
-    <p class="lat">Ego autem in voce laudis immolabo tibi :  quæcumque vovi, reddam pro salute Domino.</p>
-    <p class="tra">Rozkázal pak byl Hospodin rybě té, i vyvrátila Jonáše na břeh.</p>
-  </div>
-</div>
-<div class="vb" id="v2-11">
-  <span class="vn">11</span>
-  <div class="vt">
-    <p class="lat">Et dixit Dominus pisci, et evomuit Jonam in aridam.</p>
-  </div>
-</div>
-</section>
+  <div class="ornament-bar">❧ ✦ ❧ ✦ ❧</div>
 
-<section class="chap" id="c3">
-  <div class="chhead">
-    <span class="chrom">III</span>
-    <span class="chlbl">Caput 3</span>
-  </div>
-<div class="vb first" id="v3-1">
-  <span class="vn">1</span>
-  <div class="vt">
-    <p class="lat">Et factum est verbum Domini ad Jonam secundo, dicens :</p>
-    <p class="tra">I stalo se slovo Hospodinovo k Jonášovi podruhé, řkoucí:</p>
-  </div>
-</div>
-<div class="vb" id="v3-2">
-  <span class="vn">2</span>
-  <div class="vt">
-    <p class="lat">Surge, et vade in Niniven, civitatem magnam, et prædica in ea prædicationem quam ego loquor ad te.</p>
-    <p class="tra">Vstaň, jdi do Ninive města toho velikého, a kaž proti němu to, což já poroučím tobě.</p>
-  </div>
-</div>
-<div class="vb" id="v3-3">
-  <span class="vn">3</span>
-  <div class="vt">
-    <p class="lat">Et surrexit Jonas, et abiit in Niniven juxta verbum Domini : et Ninive erat civitas magna, itinere trium dierum.</p>
-    <p class="tra">Tedy vstav Jonáš, šel do Ninive podlé slova Hospodinova. (Bylo pak Ninive město velmi veliké, cesty tří dnů.)</p>
-  </div>
-</div>
-<div class="vb" id="v3-4">
-  <span class="vn">4</span>
-  <div class="vt">
-    <p class="lat">Et cœpit Jonas introire in civitatem itinere diei unius : et clamavit, et dixit : Adhuc quadraginta dies, et Ninive subvertetur.</p>
-    <p class="tra">A jakž počal byl Jonáš jíti po městě cestou dne jednoho a volati, pravě: Po čtyřidcíti dnech Ninive vyvráceno bude,</p>
-  </div>
-</div>
-<div class="vb" id="v3-5">
-  <span class="vn">5</span>
-  <div class="vt">
-    <p class="lat">Et crediderunt viri Ninivitæ in Deum, et prædicaverunt jejunium, et vestiti sunt saccis, a majore usque ad minorem.</p>
-    <p class="tra">Tedy uvěřili Ninivitští Bohu, a vyhlásivše půst, oblékli se v žíně, od největšího z nich až do nejmenšího z nich.</p>
-  </div>
-</div>
-<div class="vb" id="v3-6">
-  <span class="vn">6</span>
-  <div class="vt">
-    <p class="lat">Et pervenit verbum ad regem Ninive : et surrexit de solio suo, et abjecit vestimentum suum a se, et indutus est sacco, et sedit in cinere.</p>
-    <p class="tra">Nebo jakž došla ta řeč krále Ninivitského, vstav s trůnu svého, složil s sebe oděv svůj, a přioděv se žíní, seděl v popele.</p>
-  </div>
-</div>
-<div class="vb" id="v3-7">
-  <span class="vn">7</span>
-  <div class="vt">
-    <p class="lat">Et clamavit, et dixit in Ninive ex ore regis et principum ejus, dicens : Homines, et jumenta, et boves, et pecora non gustent quidquam : nec pascantur, et aquam non bibant.</p>
-    <p class="tra">A dal provolati a oznámiti v Ninive z usouzení královského i knížat svých, takto řka: Lidé i hovada, volové i ovce, neokoušejte ničeho, nepaste se, ani vody nepíte.</p>
-  </div>
-</div>
-<div class="vb" id="v3-8">
-  <span class="vn">8</span>
-  <div class="vt">
-    <p class="lat">Et operiantur saccis homines et jumenta, et clament ad Dominum in fortitudine : et convertatur vir a via sua mala, et ab iniquitate quæ est in manibus eorum.</p>
-    <p class="tra">Ale přiodějte se žíněmi lidé i hovada, a volejte k Bohu horlivě, a odvrať se jeden každý od cesty své zlé, i loupeže, kteráž jest v rukou jeho.</p>
-  </div>
-</div>
-<div class="vb" id="v3-9">
-  <span class="vn">9</span>
-  <div class="vt">
-    <p class="lat">Quis scit si convertatur et ignoscat Deus, et revertatur a furore iræ suæ, et non peribimus ?</p>
-    <p class="tra">Kdo ví, neobrátí-li se a nebude-li želeti toho Bůh; neodvrátí-li se, pravím, od prchlivosti hněvu svého, abychom nezahynuli.</p>
-  </div>
-</div>
-<div class="vb" id="v3-10">
-  <span class="vn">10</span>
-  <div class="vt">
-    <p class="lat">Et vidit Deus opera eorum, quia conversi sunt de via sua mala : et misertus est Deus super malitiam quam locutus fuerat ut faceret eis, et non fecit.</p>
-    <p class="tra">I viděl Bůh skutky jejich, že se odvrátili od cesty své zlé, a lítost měl Bůh nad tím zlým, kteréž řekl učiniti jim. A neučinil.</p>
-  </div>
-</div>
-</section>
+  <main class="content">
 
-<section class="chap" id="c4">
-  <div class="chhead">
-    <span class="chrom">IV</span>
-    <span class="chlbl">Caput 4</span>
-  </div>
-<div class="vb first" id="v4-1">
-  <span class="vn">1</span>
-  <div class="vt">
-    <p class="lat">Et afflictus est Jonas afflictione magna, et iratus est :</p>
-    <p class="tra">I mrzelo to Jonáše velmi, a rozpálen byl hněv jeho.</p>
-  </div>
-</div>
-<div class="vb" id="v4-2">
-  <span class="vn">2</span>
-  <div class="vt">
-    <p class="lat">et oravit ad Dominum, et dixit : Obsecro, Domine, numquid non hoc est verbum meum cum adhuc essem in terra mea ? propter hoc præoccupavi ut fugerem in Tharsis : scio enim quia tu Deus clemens et misericors es, patiens et multæ miserationis, et ignoscens super malitia.</p>
-    <p class="tra">Pročež modlil se Hospodinu a řekl: Prosím, Hospodine, zdaliž jsem toho neřekl, když jsem ještě byl v zemi své? Protož jsem pospíšil uteci do Tarsu; nebo jsem věděl, že jsi ty Bůh milostivý a lítostivý, dlouhočekající a hojný v milosrdenství, a kterýž lituješ zlého.</p>
-  </div>
-</div>
-<div class="vb" id="v4-3">
-  <span class="vn">3</span>
-  <div class="vt">
-    <p class="lat">Et nunc, Domine, tolle, quæso, animam meam a me, quia melior est mihi mors quam vita.</p>
-    <p class="tra">Nyní tedy, ó Hospodine, vezmi, prosím, duši mou ode mne; nebo lépe jest mi umříti nežli živu býti.</p>
-  </div>
-</div>
-<div class="vb" id="v4-4">
-  <span class="vn">4</span>
-  <div class="vt">
-    <p class="lat">Et dixit Dominus : Putasne bene irasceris tu ?</p>
-    <p class="tra">I řekl Hospodin: Jest-liž to dobře, že tak horlíš?</p>
-  </div>
-</div>
-<div class="vb" id="v4-5">
-  <span class="vn">5</span>
-  <div class="vt">
-    <p class="lat">Et egressus est Jonas de civitate, et sedit contra orientem civitatis : et fecit sibimet umbraculum ibi, et sedebat subter illud in umbra, donec videret quid accideret civitati.</p>
-    <p class="tra">Nebo vyšel byl Jonáš z města, a seděl na východ proti městu, a udělav sobě tu boudu, seděl pod ní v stínu, ažby viděl, co se bude díti s tím městem.</p>
-  </div>
-</div>
-<div class="vb" id="v4-6">
-  <span class="vn">6</span>
-  <div class="vt">
-    <p class="lat">Et præparavit Dominus Deus hederam, et ascendit super caput Jonæ, ut esset umbra super caput ejus, et protegeret eum (laboraverat enim) : et lætatus est Jonas super hedera lætitia magna.</p>
-    <p class="tra">Přistrojil pak byl Hospodin Bůh břečtan, kterýž vyrostl nad Jonáše, aby zastěňoval hlavu jeho, a chránil ho před horkem. I radoval se Jonáš z toho břečtanu radostí velikou.</p>
-  </div>
-</div>
-<div class="vb" id="v4-7">
-  <span class="vn">7</span>
-  <div class="vt">
-    <p class="lat">Et paravit Deus vermen ascensu diluculi in crastinum : et percussit hederam, et exaruit.</p>
-    <p class="tra">V tom nazejtří v svitání nastrojil Bůh červa, kterýž ranil ten břečtan, tak že uschl.</p>
-  </div>
-</div>
-<div class="vb" id="v4-8">
-  <span class="vn">8</span>
-  <div class="vt">
-    <p class="lat">Et cum ortus fuisset sol, præcepit Dominus vento calido et urenti : et percussit sol super caput Jonæ, et æstuabat : et petivit animæ suæ ut moreretur, et dixit : Melius est mihi mori quam vivere.</p>
-    <p class="tra">I stalo se, že když vzešlo slunce, nastrojil Bůh vítr východní žhoucí, a bilo slunce na hlavu Jonášovu, tak že umdléval, a žádal sobě, aby umřel, řka: Lépeť mi jest umříti nežli živu býti.</p>
-  </div>
-</div>
-<div class="vb" id="v4-9">
-  <span class="vn">9</span>
-  <div class="vt">
-    <p class="lat">Et dixit Dominus ad Jonam : Putasne bene irasceris tu super hedera ? Et dixit : Bene irascor ego usque ad mortem.</p>
-    <p class="tra">I řekl Bůh Jonášovi: Jest-liž to dobře, že se tak hněváš pro ten břečtan? Kterýžto řekl: An dobře jest, že se hněvám až na smrt.</p>
-  </div>
-</div>
-<div class="vb" id="v4-10">
-  <span class="vn">10</span>
-  <div class="vt">
-    <p class="lat">Et dixit Dominus : Tu doles super hederam in qua non laborasti, neque fecisti ut cresceret ; quæ sub una nocte nata est, et sub una nocte periit :</p>
-    <p class="tra">Jemuž řekl Hospodin: Ty lituješ toho břečtanu, o němž jsi nepracoval, aniž jsi ho k zrostu přivedl, kterýž za jednu noc zrostl, a jedné noci zahynul,</p>
-  </div>
-</div>
-<div class="vb" id="v4-11">
-  <span class="vn">11</span>
-  <div class="vt">
-    <p class="lat">et ego non parcam Ninive, civitati magnæ, in qua sunt plus quam centum viginti millia hominum qui nesciunt quid sit inter dexteram et sinistram suam, et jumenta multa ?</p>
-    <p class="tra">A já abych nelitoval Ninive města tak velikého, v němž jest více nežli sto a dvadceti tisíc lidí, kteříž neznají rozdílu mezi pravicí svou a levicí svou, a dobytka mnoho?</p>
-  </div>
-</div>
-</section>
-</main>
+  <section class="chapter" id="ch1">
+    <div class="chapter-marker">
+      <span class="ch-roman">I</span>
+      <span class="ch-label">Caput 1</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v1-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et factum est verbum Domini ad Jonam, filium Amathi, dicens :</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">I stalo se slovo Hospodinovo k Jonášovi synu Amaty, řkoucí:</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Surge, et vade in Niniven, civitatem grandem, et prædica in ea, quia ascendit malitia ejus coram me.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Vstaň, jdi do Ninive města toho velikého, a volej proti němu; neboť jest vstoupila nešlechetnost jejich před oblíčej můj.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et surrexit Jonas, ut fugeret in Tharsis a facie Domini, et descendit in Joppen : et invenit navem euntem in Tharsis, et dedit naulum ejus, et descendit in eam ut iret cum eis in Tharsis a facie Domini.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Ale Jonáš vstal, aby utekl do Tarsu od tváři Hospodinovy. A přišed do Joppe, našel lodí, ana jde do Tarsu, a zaplativ od ní, vstoupil na ni, aby se plavil s nimi do Tarsu od tváři Hospodinovy.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Dominus autem misit ventum magnum in mare : et facta est tempestas magna in mari, et navis periclitabatur conteri.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Ale Hospodin vzbudil vítr veliký na moři. I stala se bouře veliká na moři, až se domnívali, že se lodí ztroskoce.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et timuerunt nautæ, et clamaverunt viri ad deum suum, et miserunt vasa quæ erant in navi, in mare, ut alleviaretur ab eis ; et Jonas descendit ad interiora navis, et dormiebat sopore gravi.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">A bojíce se plavci, volali jeden každý k bohu svému, a vyhazovali to, což měli na lodí, do moře, aby sobě tím polehčili. Jonáš pak byl sešel k bokům lodí, a položiv se, spal tvrdě.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et accessit ad eum gubernator, et dixit ei : Quid tu sopore deprimeris ? surge, invoca Deum tuum, si forte recogitet Deus de nobis, et non pereamus.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Tedy přišed k němu správce lodí, řekl jemu: Což ty děláš, ospalče? Vstaň, volej k Bohu svému. Snad ten Bůh rozpomene se na nás, abychom nezahynuli.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et dixit vir ad collegam suum : Venite et mittamus sortes, et sciamus quare hoc malum sit nobis. Et miserunt sortes, et cecidit sors super Jonam.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">I řekli jeden druhému: Poďte, vrzme losy, abychom zvěděli, pro koho to zlé přišlo na nás. Tedy metali losy, a padl los na Jonáše.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et dixerunt ad eum : Indica nobis cujus causa malum istud sit nobis : quod est opus tuum ? quæ terra tua, et quo vadis ? vel ex quo populo es tu ?</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">I řekli jemu: Pověz nám medle, pro koho toto zlé na nás? Jaký jest obchod tvůj, a odkud jdeš? Z které jsi země a z kterého národu?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et dixit ad eos : Hebræus ego sum, et Dominum Deum cæli ego timeo, qui fecit mare et aridam.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">I řekl jim: Hebrejský jsem, a Hospodina Boha nebes, kterýž učinil moře i zemi, já ctím.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et timuerunt viri timore magno, et dixerunt ad eum : Quid hoc fecisti ? cognoverunt enim viri quod a facie Domini fugeret, quia indicaverat eis.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Pročež báli se ti muži bázní velikou, a dověděvše se muži ti, že od tváři Hospodinovy utíká, (nebo jim byl oznámil,) řekli jemu: Což jsi to učinil?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et dixerunt ad eum : Quid faciemus tibi, et cessabit mare a nobis ? quia mare ibat, et intumescebat.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Řekli ještě k němu: Což máme učiniti s tebou, aby se moře spokojilo? (Nebo moře vždy více a více bouřilo se.)</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et dixit ad eos : Tollite me, et mittite in mare, et cessabit mare a vobis : scio enim ego quoniam propter me tempestas hæc grandis venit super vos.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Jimžto řekl: Vezměte mne, a uvrzte mne do moře, a utichne moře před vámi; nebo já vím, že příčinou mou bouře tato veliká jest proti vám.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et remigabant viri ut reverterentur ad aridam, et non valebant, quia mare ibat, et intumescebat super eos.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Ale muži ti statečně táhli, chtíce k břehu přistati, však nemohli; nebo moře vždy více a více se bouřilo proti nim.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et clamaverunt ad Dominum, et dixerunt : Quæsumus, Domine, ne pereamus in anima viri istius, et ne des super nos sanguinem innocentem : quia tu, Domine, sicut voluisti, fecisti.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">I zvolali k Hospodinu, řkouce: Prosímeť, ó Hospodine, abychom nezahynuli pro smrt člověka tohoto, aniž na nás vyhledávej krve nevinné; nebo ty, ó Hospodine, jakž chceš, tak činíš.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et tulerunt Jonam, et miserunt in mare : et stetit mare a fervore suo.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Tedy vzavše Jonáše, uvrhli ho do moře. I přestalo moře bouřiti se.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et timuerunt viri timore magno Dominum : et immolaverunt hostias Domino, et voverunt vota.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Pročež báli se muži ti bázní velikou Hospodina, a obětovali obět Hospodinu, a sliby činili.</div>
+      </div>
+    </div>
+  </section>
 
-<nav class="bnav">
-  <a href="031-oba.html">&#8592; Abdias</a>
-  <a href="../index.html" class="center">↑ &nbsp; Inhaltsverzeichnis</a>
-  <a href="033-mic.html">Micheas &#8594;</a>
-</nav>
+  <section class="chapter" id="ch2">
+    <div class="chapter-marker">
+      <span class="ch-roman">II</span>
+      <span class="ch-label">Caput 2</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v2-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et præparavit Dominus piscem grandem ut deglutiret Jonam : et erat Jonas in ventre piscis tribus diebus et tribus noctibus.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">I modlil se Jonáš Hospodinu Bohu svému v střevách té ryby,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et oravit Jonas ad Dominum Deum suum de ventre piscis,</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">A řekl: Z ssoužení svého volal jsem k Hospodinu, a ozval se mi; z břicha hrobu křičel jsem, a vyslyšel jsi hlas můj.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">et dixit :   Clamavi de tribulatione mea ad Dominum,  et exaudivit me ;  de ventre inferi clamavi,  et exaudisti vocem meam.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Nebo jsi mne uvrhl do hlubiny, do prostřed moře, a řeka obklíčila mne; všecka vlnobití tvá i rozvodnění tvá na mne se svalila.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et projecisti me in profundum in corde maris,  et flumen circumdedit me :  omnes gurgites tui, et fluctus tui super me transierunt.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Bylť jsem již řekl: Vyhnán jsem od očí tvých, ale ještěť pohledím na tvůj svatý chrám.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et ego dixi :  Abjectus sum a conspectu oculorum tuorum ;  verumtamen rursus videbo templum sanctum tuum.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Obklíčily mne vody až k duši, propast obklíčila mne, lekno otočilo se okolo hlavy mé.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Circumdederunt me aquæ usque ad animam :  abyssus vallavit me,  pelagus operuit caput meum.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Až k spodkům hor dostal jsem se, země závorami svými zalehla mi na věčnost, ty jsi však vysvobodil od porušení život můj, ó Hospodine Bože můj.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ad extrema montium descendi ;  terræ vectes concluserunt me in æternum :  et sublevabis de corruptione vitam meam, Domine Deus meus.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Když se svírala ve mně duše má, na Hospodina jsem se rozpomínal, i přišla k tobě modlitba má do chrámu svatého tvého.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Cum angustiaretur in me anima mea,  Domini recordatus sum :  ut veniat ad te oratio mea,  ad templum sanctum tuum.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Kteříž ostříhají marností pouhých, dobroty Boží se zbavují.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui custodiunt vanitates frustra,  misericordiam suam derelinquunt.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Já pak s hlasem díkčinění obětovati budu tobě; což jsem slíbil, splním. Hojné vysvobození jest u Hospodina.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ego autem in voce laudis immolabo tibi :  quæcumque vovi, reddam pro salute Domino.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Rozkázal pak byl Hospodin rybě té, i vyvrátila Jonáše na břeh.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et dixit Dominus pisci, et evomuit Jonam in aridam.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch3">
+    <div class="chapter-marker">
+      <span class="ch-roman">III</span>
+      <span class="ch-label">Caput 3</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v3-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et factum est verbum Domini ad Jonam secundo, dicens :</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">I stalo se slovo Hospodinovo k Jonášovi podruhé, řkoucí:</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Surge, et vade in Niniven, civitatem magnam, et prædica in ea prædicationem quam ego loquor ad te.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Vstaň, jdi do Ninive města toho velikého, a kaž proti němu to, což já poroučím tobě.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et surrexit Jonas, et abiit in Niniven juxta verbum Domini : et Ninive erat civitas magna, itinere trium dierum.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Tedy vstav Jonáš, šel do Ninive podlé slova Hospodinova. (Bylo pak Ninive město velmi veliké, cesty tří dnů.)</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et cœpit Jonas introire in civitatem itinere diei unius : et clamavit, et dixit : Adhuc quadraginta dies, et Ninive subvertetur.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">A jakž počal byl Jonáš jíti po městě cestou dne jednoho a volati, pravě: Po čtyřidcíti dnech Ninive vyvráceno bude,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et crediderunt viri Ninivitæ in Deum, et prædicaverunt jejunium, et vestiti sunt saccis, a majore usque ad minorem.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Tedy uvěřili Ninivitští Bohu, a vyhlásivše půst, oblékli se v žíně, od největšího z nich až do nejmenšího z nich.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et pervenit verbum ad regem Ninive : et surrexit de solio suo, et abjecit vestimentum suum a se, et indutus est sacco, et sedit in cinere.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Nebo jakž došla ta řeč krále Ninivitského, vstav s trůnu svého, složil s sebe oděv svůj, a přioděv se žíní, seděl v popele.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et clamavit, et dixit in Ninive ex ore regis et principum ejus, dicens : Homines, et jumenta, et boves, et pecora non gustent quidquam : nec pascantur, et aquam non bibant.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">A dal provolati a oznámiti v Ninive z usouzení královského i knížat svých, takto řka: Lidé i hovada, volové i ovce, neokoušejte ničeho, nepaste se, ani vody nepíte.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et operiantur saccis homines et jumenta, et clament ad Dominum in fortitudine : et convertatur vir a via sua mala, et ab iniquitate quæ est in manibus eorum.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Ale přiodějte se žíněmi lidé i hovada, a volejte k Bohu horlivě, a odvrať se jeden každý od cesty své zlé, i loupeže, kteráž jest v rukou jeho.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quis scit si convertatur et ignoscat Deus, et revertatur a furore iræ suæ, et non peribimus ?</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Kdo ví, neobrátí-li se a nebude-li želeti toho Bůh; neodvrátí-li se, pravím, od prchlivosti hněvu svého, abychom nezahynuli.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et vidit Deus opera eorum, quia conversi sunt de via sua mala : et misertus est Deus super malitiam quam locutus fuerat ut faceret eis, et non fecit.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">I viděl Bůh skutky jejich, že se odvrátili od cesty své zlé, a lítost měl Bůh nad tím zlým, kteréž řekl učiniti jim. A neučinil.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch4">
+    <div class="chapter-marker">
+      <span class="ch-roman">IV</span>
+      <span class="ch-label">Caput 4</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v4-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et afflictus est Jonas afflictione magna, et iratus est :</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">I mrzelo to Jonáše velmi, a rozpálen byl hněv jeho.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">et oravit ad Dominum, et dixit : Obsecro, Domine, numquid non hoc est verbum meum cum adhuc essem in terra mea ? propter hoc præoccupavi ut fugerem in Tharsis : scio enim quia tu Deus clemens et misericors es, patiens et multæ miserationis, et ignoscens super malitia.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Pročež modlil se Hospodinu a řekl: Prosím, Hospodine, zdaliž jsem toho neřekl, když jsem ještě byl v zemi své? Protož jsem pospíšil uteci do Tarsu; nebo jsem věděl, že jsi ty Bůh milostivý a lítostivý, dlouhočekající a hojný v milosrdenství, a kterýž lituješ zlého.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et nunc, Domine, tolle, quæso, animam meam a me, quia melior est mihi mors quam vita.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Nyní tedy, ó Hospodine, vezmi, prosím, duši mou ode mne; nebo lépe jest mi umříti nežli živu býti.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et dixit Dominus : Putasne bene irasceris tu ?</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">I řekl Hospodin: Jest-liž to dobře, že tak horlíš?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et egressus est Jonas de civitate, et sedit contra orientem civitatis : et fecit sibimet umbraculum ibi, et sedebat subter illud in umbra, donec videret quid accideret civitati.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Nebo vyšel byl Jonáš z města, a seděl na východ proti městu, a udělav sobě tu boudu, seděl pod ní v stínu, ažby viděl, co se bude díti s tím městem.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et præparavit Dominus Deus hederam, et ascendit super caput Jonæ, ut esset umbra super caput ejus, et protegeret eum (laboraverat enim) : et lætatus est Jonas super hedera lætitia magna.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Přistrojil pak byl Hospodin Bůh břečtan, kterýž vyrostl nad Jonáše, aby zastěňoval hlavu jeho, a chránil ho před horkem. I radoval se Jonáš z toho břečtanu radostí velikou.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et paravit Deus vermen ascensu diluculi in crastinum : et percussit hederam, et exaruit.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">V tom nazejtří v svitání nastrojil Bůh červa, kterýž ranil ten břečtan, tak že uschl.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et cum ortus fuisset sol, præcepit Dominus vento calido et urenti : et percussit sol super caput Jonæ, et æstuabat : et petivit animæ suæ ut moreretur, et dixit : Melius est mihi mori quam vivere.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">I stalo se, že když vzešlo slunce, nastrojil Bůh vítr východní žhoucí, a bilo slunce na hlavu Jonášovu, tak že umdléval, a žádal sobě, aby umřel, řka: Lépeť mi jest umříti nežli živu býti.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et dixit Dominus ad Jonam : Putasne bene irasceris tu super hedera ? Et dixit : Bene irascor ego usque ad mortem.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">I řekl Bůh Jonášovi: Jest-liž to dobře, že se tak hněváš pro ten břečtan? Kterýžto řekl: An dobře jest, že se hněvám až na smrt.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et dixit Dominus : Tu doles super hederam in qua non laborasti, neque fecisti ut cresceret ; quæ sub una nocte nata est, et sub una nocte periit :</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Jemuž řekl Hospodin: Ty lituješ toho břečtanu, o němž jsi nepracoval, aniž jsi ho k zrostu přivedl, kterýž za jednu noc zrostl, a jedné noci zahynul,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">et ego non parcam Ninive, civitati magnæ, in qua sunt plus quam centum viginti millia hominum qui nesciunt quid sit inter dexteram et sinistram suam, et jumenta multa ?</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">A já abych nelitoval Ninive města tak velikého, v němž jest více nežli sto a dvadceti tisíc lidí, kteříž neznají rozdílu mezi pravicí svou a levicí svou, a dobytka mnoho?</div>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <nav class="book-nav">
+    <a href="031-oba.html">← Abdias</a>
+    <span class="center">Ionas · Čeština</span>
+    <a href="033-mic.html">Micheas →</a>
+  </nav>
+
+  <footer class="page-footer">
+    BIBLIA CATHOLICA INTERLINEARIS &nbsp;·&nbsp; Vulgata Clementina &amp; Bible Kralická (1613)
+    &nbsp;·&nbsp; Gemeinfreie Texte / Public Domain
+  </footer>
 
 </body>
 </html>

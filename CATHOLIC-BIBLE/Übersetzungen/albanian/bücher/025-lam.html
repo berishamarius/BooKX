@@ -1,1219 +1,1503 @@
 <!DOCTYPE html>
 <html lang="sq">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Threni &middot; Shqip &middot; Biblia Catholica</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&display=swap" rel="stylesheet">
-<style>
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
-body{
-  background:#2C0810;
-  background-image:radial-gradient(ellipse at 50% 20%,#4A1020 0%,#1A0407 100%);
-  font-family:'EB Garamond',serif;
-  color:#1A0E06;
-  font-size:17px;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Threni · Shqip · Biblia Catholica</title>
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
+
+:root {
+  --gold:        #C8A96E;
+  --gold-light:  #EDD58A;
+  --gold-dark:   #8B6914;
+  --navy:        #1A1F3A;
+  --navy-mid:    #252B4A;
+  --navy-light:  #2E3560;
+  --parchment:   #F5E9CC;
+  --parchment-d: #EDD9A3;
+  --cream:       #FDF6E3;
+  --latin-color: #6B1E0E;
+  --trans-color: #0F1D2E;
+  --border:      rgba(200,169,110,.35);
+  --font-title:  'Cinzel Decorative', 'Cinzel', Georgia, serif;
+  --font-sub:    'Cinzel', Georgia, serif;
+  --font-body:   'EB Garamond', Georgia, serif;
 }
 
-/* ──────────────────────────────────────────
-   BUCHKOPF
-────────────────────────────────────────── */
-.bhead{
-  background:
-    repeating-linear-gradient( 45deg,transparent,transparent 36px,rgba(200,160,48,.028) 36px,rgba(200,160,48,.028) 37px),
-    repeating-linear-gradient(-45deg,transparent,transparent 36px,rgba(200,160,48,.028) 36px,rgba(200,160,48,.028) 37px),
-    linear-gradient(162deg,#2C0810 0%,#4A1020 45%,#5C1828 65%,#4A1020 85%,#2C0810 100%);
-  padding:36px 28px 28px;
-  text-align:center;
-  border-bottom:4px solid #B8962E;
-  position:relative;overflow:hidden;
-}
-/* Innerer Rahmen — äußerer Ring */
-.bhead::before{
-  content:'';position:absolute;inset:14px;
-  border:1px solid rgba(200,160,48,.22);
-  pointer-events:none;
-}
-/* Innerer Rahmen — innerer Ring */
-.bhead::after{
-  content:'';position:absolute;inset:22px;
-  border:1px solid rgba(200,160,48,.08);
-  pointer-events:none;
-}
-.btestament{
-  display:inline-block;
-  border:1px solid rgba(200,160,48,.32);
-  color:rgba(200,160,48,.52);
-  font-family:'Cinzel',serif;font-size:.55rem;
-  letter-spacing:.3em;padding:4px 18px;
-  border-radius:2px;margin-bottom:16px;
-  position:relative;
-}
-.blatin{
-  font-family:'Cinzel Decorative',serif;
-  font-size:clamp(1.9rem,7vw,3.4rem);
-  color:#EDD882;
-  text-shadow:0 3px 20px rgba(0,0,0,.55);
-  letter-spacing:.06em;position:relative;
-}
-.btrans{
-  font-family:'Cinzel',serif;
-  font-size:.88rem;
-  color:#C8A030;margin-top:10px;
-  letter-spacing:.16em;position:relative;
-}
-.bmeta{
-  font-family:'Cinzel',serif;font-size:.62rem;
-  color:rgba(200,160,48,.4);margin-top:6px;
-  letter-spacing:.08em;position:relative;
-}
+*,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+html { font-size:16px; scroll-behavior:smooth; }
+body { background:var(--cream); color:var(--trans-color); font-family:var(--font-body); }
 
-/* ──────────────────────────────────────────
-   KAPITELINHALT
-────────────────────────────────────────── */
-.content{
-  max-width:960px;
-  margin:36px auto 36px;
-  padding:48px 72px 100px;
-  background:#FAF5E8;
+/* ── NAV ─────────────────────────────────────────────── */
+.nav-bar {
+  background:var(--navy); padding:10px 28px;
+  display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  border-bottom:2px solid var(--gold);
+  position:sticky; top:0; z-index:100;
+  box-shadow:0 3px 12px rgba(0,0,0,.45);
+}
+.nav-bar a {
+  color:var(--gold); text-decoration:none;
+  font-family:var(--font-sub); font-size:.75rem; letter-spacing:.05em;
+  transition:color .15s;
+}
+.nav-bar a:hover { color:var(--gold-light); }
+.nav-bar .home { font-weight:700; font-size:.82rem; }
+.nav-bar .spacer { flex:1; }
+.nav-bar .pos { color:rgba(200,169,110,.45); font-size:.7rem; font-family:var(--font-sub); }
+
+/* ── BUCHKOPF ────────────────────────────────────────── */
+.book-header {
+  background:linear-gradient(160deg,var(--navy) 0%,var(--navy-mid) 55%,var(--navy-light) 100%);
+  padding:44px 36px 34px; text-align:center;
+  border-bottom:4px solid var(--gold);
+  position:relative; overflow:hidden;
+}
+.book-header::before {
+  content:'';
+  position:absolute; inset:0;
   background-image:
-    radial-gradient(ellipse at top left,rgba(184,150,46,.06) 0%,transparent 55%),
-    radial-gradient(ellipse at bottom right,rgba(184,150,46,.05) 0%,transparent 55%);
-  box-shadow:0 8px 80px rgba(0,0,0,.55),0 2px 12px rgba(0,0,0,.35),inset 0 0 0 1px rgba(184,150,46,.18);
-  border-left:4px solid #B8962E;
-  border-right:4px solid #B8962E;
-  border-top:2px solid rgba(184,150,46,.4);
-  border-bottom:2px solid rgba(184,150,46,.4);
-  position:relative;
-}
-.content::before{
-  content:'';
-  position:absolute;
-  inset:12px;
-  border:1px solid rgba(184,150,46,.08);
+    repeating-linear-gradient( 45deg,transparent,transparent 30px,rgba(200,169,110,.038) 30px,rgba(200,169,110,.038) 31px),
+    repeating-linear-gradient(-45deg,transparent,transparent 30px,rgba(200,169,110,.038) 30px,rgba(200,169,110,.038) 31px);
   pointer-events:none;
 }
-
-.chap{margin-top:0;}
-
-.chhead{
-  text-align:center;
-  padding:40px 0 20px;
-  margin-bottom:16px;
-  position:relative;
+.testament-badge {
+  display:inline-block;
+  border:1px solid rgba(200,169,110,.4); color:rgba(200,169,110,.65);
+  font-family:var(--font-sub); font-size:.62rem; letter-spacing:.25em;
+  padding:4px 14px; border-radius:2px; margin-bottom:14px; position:relative;
 }
-.chhead::before{
-  content:'——— ✦ ✦ ✦ ———';
-  display:block;
-  font-size:.7rem;
-  color:rgba(184,150,46,.45);
-  letter-spacing:.35em;
-  margin-bottom:16px;
+.book-name-latin {
+  font-family:var(--font-title); font-size:3rem; color:var(--gold-light);
+  text-shadow:0 3px 18px rgba(0,0,0,.55); letter-spacing:.08em; position:relative;
 }
-.chhead::after{
-  content:'';
-  display:block;
-  width:200px;
-  height:1px;
-  margin:14px auto 0;
-  background:linear-gradient(to right,transparent,#B8962E,transparent);
+.book-name-trans {
+  font-family:var(--font-sub); font-size:1.1rem; color:var(--gold);
+  margin-top:8px; letter-spacing:.12em; position:relative;
 }
-.chrom{
-  font-family:'Cinzel Decorative',serif;
-  font-size:4rem;color:#8B6914;
-  display:block;
-  text-shadow:0 2px 18px rgba(184,150,46,.2);
-  line-height:1;
-}
-.chlbl{
-  font-family:'Cinzel',serif;font-size:.58rem;
-  color:rgba(184,150,46,.42);letter-spacing:.32em;
-  display:block;margin-top:8px;
+.book-meta {
+  font-size:.74rem; color:rgba(200,169,110,.5); margin-top:7px;
+  font-family:var(--font-sub); letter-spacing:.07em; position:relative;
 }
 
-/* ──────────────────────────────────────────
-   VERSE
-────────────────────────────────────────── */
-.vb{
-  display:flex;
-  padding:20px 6px;
-  border-bottom:1px solid rgba(184,150,46,.12);
-  background:none;
-  border-radius:2px;
-  transition:background .15s;
-}
-.vb:hover{
-  background:rgba(184,150,46,.04);
+/* ── ORNAMENT-TRENNLINIE ─────────────────────────────── */
+.ornament-bar {
+  text-align:center; padding:16px 0 4px;
+  color:var(--gold); font-size:1.1rem; letter-spacing:.7em;
 }
 
-/* Versnummer */
-.vn{
-  flex-shrink:0;
-  width:38px;
-  padding-top:4px;
-  font-family:'Cinzel',serif;font-size:.56rem;
-  color:rgba(184,150,46,.52);text-align:right;
-  padding-right:12px;line-height:2.4;
+/* ── HAUPT-CONTAINER ─────────────────────────────────── */
+.content { max-width:960px; margin:0 auto; padding:0 24px 80px; }
+
+/* ── KAPITEL-MARKER ──────────────────────────────────── */
+.chapter-marker {
+  display:flex; align-items:center; gap:16px;
+  padding:28px 6px 12px; margin-bottom:4px;
+  border-bottom:2px solid var(--border);
+}
+.ch-roman {
+  font-family:var(--font-title); font-size:2.2rem; color:var(--gold);
+  min-width:56px; text-align:center; flex-shrink:0;
+  text-shadow:0 1px 8px rgba(200,169,110,.3);
+}
+.ch-label {
+  font-family:var(--font-sub); font-size:.72rem; color:rgba(200,169,110,.6);
+  letter-spacing:.22em; text-transform:uppercase;
 }
 
-.vt{
-  flex:1;
-  padding:0 20px 0 4px;
+/* ── VERS-BLOCK ──────────────────────────────────────── */
+.verse-block {
+  display:flex; gap:0; border-bottom:1px solid rgba(200,169,110,.15);
+}
+.verse-block:nth-child(odd)  { background:var(--cream); }
+.verse-block:nth-child(even) { background:var(--parchment); }
+
+.verse-num-col {
+  flex-shrink:0; width:42px; padding:16px 6px 16px 0; text-align:right;
+}
+.verse-num {
+  display:inline-block; width:28px; height:28px; border-radius:50%;
+  background:var(--gold-dark); color:var(--cream);
+  font-family:var(--font-sub); font-size:.64rem; font-weight:700;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 1px 5px rgba(0,0,0,.25);
 }
 
-/* LATEIN — PRIMÄR: groß, warm, maßgebend */
-.lat{
-  font-family:'EB Garamond',serif;
-  font-size:1.2rem;
-  font-weight:500;
-  line-height:2.1;
-  color:#3D1A08;
+.verse-texts { flex:1; padding:16px 16px 18px 8px; }
+
+/* ── LATEINISCHER TEXT (oben / primär) ───────────────── */
+.latin {
+  font-family:var(--font-body); font-size:1.12rem; line-height:1.9;
+  color:var(--latin-color); font-weight:500;
+  border-left:3px solid var(--gold); padding-left:12px;
+  margin-bottom:8px;
 }
 
-/* ÜBERSETZUNG — SEKUNDÄR: kleiner, kursiv, unter dem Latein */
-.tra{
-  font-family:'EB Garamond',serif;
-  font-size:.93rem;
-  font-style:italic;
-  line-height:1.95;
-  color:#1E2848;
-  margin-top:5px;
-  padding-left:14px;
-  border-left:2px solid rgba(90,110,170,.2);
+/* ── ÜBERSETZUNGS-TEXT (unten / sekundär) ────────────── */
+.trans-label {
+  font-family:var(--font-sub); font-size:.6rem; letter-spacing:.17em;
+  text-transform:uppercase; color:var(--gold-dark); margin-bottom:5px; opacity:.78;
+}
+.trans {
+  font-family:var(--font-body); font-size:1.04rem; line-height:1.85;
+  color:var(--trans-color); font-style:italic;
+  padding-left:15px;
 }
 
-/* Drop-Cap: erster Vers eines Kapitels — auf dem Latein */
-.vb.first .lat::first-letter{
-  font-family:'Cinzel Decorative',serif;
-  font-size:4em;
-  float:left;
-  line-height:.7;
-  padding-right:.08em;
-  margin-top:.07em;
-  color:#B8962E;
-  text-shadow:1px 2px 6px rgba(0,0,0,.12);
+/* Erste Vers jedes Kapitels: Drop-Cap */
+.verse-block:first-of-type .latin::first-letter {
+  font-size:4.2em; float:left; line-height:.72;
+  padding-right:.08em; margin-top:.06em;
+  font-family:var(--font-title); color:var(--gold);
 }
 
-/* ──────────────────────────────────────────
-   BUCH-NAVIGATION (unten)
-────────────────────────────────────────── */
-.bnav{
-  display:flex;justify-content:space-between;align-items:center;
-  background:#2C0810;border-top:3px solid #B8962E;
-  padding:12px 24px;gap:12px;
+/* ── NAVIGATION ZWISCHEN BÜCHERN ─────────────────────── */
+.book-nav {
+  display:flex; justify-content:space-between; align-items:center;
+  background:var(--navy); border-top:3px solid var(--gold);
+  padding:12px 26px; gap:12px;
 }
-.bnav a,.bnav .dim{
-  color:#C8A030;text-decoration:none;
-  font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:.07em;
-  padding:6px 16px;
-  border:1px solid rgba(200,160,48,.28);
-  border-radius:2px;transition:background .18s;
+.book-nav a {
+  color:var(--gold); text-decoration:none;
+  font-family:var(--font-sub); font-size:.78rem; letter-spacing:.07em;
+  padding:6px 14px; border:1px solid rgba(200,169,110,.3); border-radius:3px;
+  transition:background .18s;
 }
-.bnav a:hover{background:rgba(200,160,48,.12);}
-.bnav .dim{color:rgba(200,160,48,.2);border-color:rgba(200,160,48,.1);}
-.bnav .center{
-  font-family:'Cinzel',serif;font-size:.68rem;
-  color:rgba(200,160,48,.65);text-align:center;
-  letter-spacing:.06em;text-decoration:none;
-  border:1px solid rgba(200,160,48,.28);border-radius:2px;
-  padding:6px 20px;transition:background .18s;
-}
-.bnav .center:hover{background:rgba(200,160,48,.1);}
-
-/* DRUCK */
-@media print{
-  .bnav{display:none;}
-  .bhead{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-  .vb{break-inside:avoid;}
+.book-nav a:hover { background:rgba(200,169,110,.15); }
+.book-nav .center {
+  font-family:var(--font-sub); font-size:.7rem; color:rgba(200,169,110,.55);
+  letter-spacing:.1em; text-align:center;
 }
 
-/* MOBIL */
-@media(max-width:600px){
-  .blatin{font-size:1.8rem;}
-  .lat{font-size:1rem;}
-  .tra{font-size:.84rem;}
-  .content{padding:16px 18px 60px;margin:0;border-left:none;border-right:none;border-radius:0;}
-  .chrom{font-size:1.8rem;}
+/* ── FUßZEILE ────────────────────────────────────────── */
+.page-footer {
+  background:var(--navy); border-top:2px solid rgba(200,169,110,.3);
+  padding:18px 28px; text-align:center;
+  color:rgba(200,169,110,.45); font-family:var(--font-sub);
+  font-size:.68rem; letter-spacing:.1em;
+}
+
+/* ── DRUCK ───────────────────────────────────────────── */
+@media print {
+  .nav-bar, .book-nav { display:none; }
+  .verse-block { break-inside:avoid; }
+  .book-header { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+}
+
+/* ── MOBIL ───────────────────────────────────────────── */
+@media (max-width:640px) {
+  .book-name-latin { font-size:2.1rem; }
+  .ch-roman { font-size:1.6rem; }
+  .latin { font-size:.98rem; }
+  .trans { font-size:.93rem; }
+  .content { padding:0 12px 60px; }
 }
 </style>
 </head>
 <body>
 
-<header class="bhead">
-  <div class="btestament">VETUS TESTAMENTUM</div>
-  <div class="blatin">THRENI</div>
-  <div class="btrans">Vajtimet &nbsp;&middot;&nbsp; <em>Shqip</em></div>
-  <div class="bmeta">5 Capita &nbsp;&middot;&nbsp; 154 Versus</div>
-</header>
+  <nav class="nav-bar">
+    <a class="home" href="../../../index.html">✞ BIBLIA CATHOLICA</a>
+    <a href="../index.html">🇦🇱 Shqip</a>
+    <span class="spacer"></span>
+    <span class="pos">025 / 066</span>
+  </nav>
 
-<main class="content">
-<section class="chap" id="c1">
-  <div class="chhead">
-    <span class="chrom">I</span>
-    <span class="chlbl">Caput 1</span>
-  </div>
-<div class="vb first" id="v1-1">
-  <span class="vn">1</span>
-  <div class="vt">
-    <p class="lat">Quomodo sedet sola  civitas plena populo !  Facta est quasi vidua  domina gentium ;  princeps provinciarum  facta est sub tributo.</p>
-  </div>
-</div>
-<div class="vb" id="v1-2">
-  <span class="vn">2</span>
-  <div class="vt">
-    <p class="lat">Plorans ploravit in nocte,  et lacrimæ ejus in maxillis ejus :  non est qui consoletur eam  ex omnibus caris ejus ;  omnes amici ejus spreverunt eam,  et facti sunt ei inimici.</p>
-  </div>
-</div>
-<div class="vb" id="v1-3">
-  <span class="vn">3</span>
-  <div class="vt">
-    <p class="lat">Migravit Judas propter afflictionem,  et multitudinem servitutis ;  habitavit inter gentes,  nec invenit requiem :  omnes persecutores ejus apprehenderunt eam  inter angustias.</p>
-  </div>
-</div>
-<div class="vb" id="v1-4">
-  <span class="vn">4</span>
-  <div class="vt">
-    <p class="lat">Viæ Sion lugent, eo quod non sint  qui veniant ad solemnitatem :  omnes portæ ejus destructæ,  sacerdotes ejus gementes ;  virgines ejus squalidæ,  et ipsa oppressa amaritudine.</p>
-  </div>
-</div>
-<div class="vb" id="v1-5">
-  <span class="vn">5</span>
-  <div class="vt">
-    <p class="lat">Facti sunt hostes ejus in capite ;  inimici ejus locupletati sunt :  quia Dominus locutus est super eam  propter multitudinem iniquitatum ejus.  Parvuli ejus ducti sunt in captivitatem  ante faciem tribulantis.</p>
-  </div>
-</div>
-<div class="vb" id="v1-6">
-  <span class="vn">6</span>
-  <div class="vt">
-    <p class="lat">Et egressus est a filia Sion  omnis decor ejus ;  facti sunt principes ejus velut arietes  non invenientes pascua,  et abierunt absque fortitudine  ante faciem subsequentis.</p>
-  </div>
-</div>
-<div class="vb" id="v1-7">
-  <span class="vn">7</span>
-  <div class="vt">
-    <p class="lat">Recordata est Jerusalem dierum afflictionis suæ,  et prævaricationis,  omnium desiderabilium suorum,  quæ habuerat a diebus antiquis,  cum caderet populus ejus in manu hostili,  et non esset auxiliator :  viderunt eam hostes,  et deriserunt sabbata ejus.</p>
-  </div>
-</div>
-<div class="vb" id="v1-8">
-  <span class="vn">8</span>
-  <div class="vt">
-    <p class="lat">Peccatum peccavit Jerusalem,  propterea instabilis facta est ;  omnes qui glorificabant eam spreverunt illam,  quia viderunt ignominiam ejus :  ipsa autem gemens  conversa est retrorsum.</p>
-  </div>
-</div>
-<div class="vb" id="v1-9">
-  <span class="vn">9</span>
-  <div class="vt">
-    <p class="lat">Sordes ejus in pedibus ejus,  nec recordata est finis sui ;  deposita est vehementer,  non habens consolatorem.  Vide, Domine, afflictionem meam,  quoniam erectus est inimicus.</p>
-  </div>
-</div>
-<div class="vb" id="v1-10">
-  <span class="vn">10</span>
-  <div class="vt">
-    <p class="lat">Manum suam misit hostis  ad omnia desiderabilia ejus,  quia vidit gentes  ingressas sanctuarium suum,  de quibus præceperas  ne intrarent in ecclesiam tuam.</p>
-  </div>
-</div>
-<div class="vb" id="v1-11">
-  <span class="vn">11</span>
-  <div class="vt">
-    <p class="lat">Omnis populus ejus gemens,  et quærens panem ;  dederunt pretiosa quæque pro cibo  ad refocillandam animam.  Vide, Domine, et considera  quoniam facta sum vilis !</p>
-  </div>
-</div>
-<div class="vb" id="v1-12">
-  <span class="vn">12</span>
-  <div class="vt">
-    <p class="lat">O vos omnes qui transitis per viam,  attendite, et videte  si est dolor sicut dolor meus !  quoniam vindemiavit me,  ut locutus est Dominus,  in die iræ furoris sui.</p>
-  </div>
-</div>
-<div class="vb" id="v1-13">
-  <span class="vn">13</span>
-  <div class="vt">
-    <p class="lat">De excelso misit ignem in ossibus meis,  et erudivit me :  expandit rete pedibus meis,  convertit me retrorsum ;  posuit me desolatam,  tota die mœrore confectam.</p>
-  </div>
-</div>
-<div class="vb" id="v1-14">
-  <span class="vn">14</span>
-  <div class="vt">
-    <p class="lat">Vigilavit jugum iniquitatum mearum ;  in manu ejus convolutæ sunt,  et impositæ collo meo.  Infirmata est virtus mea :  dedit me Dominus in manu  de qua non potero surgere.</p>
-  </div>
-</div>
-<div class="vb" id="v1-15">
-  <span class="vn">15</span>
-  <div class="vt">
-    <p class="lat">Abstulit omnes magnificos meos Dominus  de medio mei ;  vocavit adversum me tempus  ut contereret electos meos.  Torcular calcavit Dominus  virgini filiæ Juda.</p>
-  </div>
-</div>
-<div class="vb" id="v1-16">
-  <span class="vn">16</span>
-  <div class="vt">
-    <p class="lat">Idcirco ego plorans,  et oculus meus deducens aquas,  quia longe factus est a me consolator,  convertens animam meam.  Facti sunt filii mei perditi,  quoniam invaluit inimicus.</p>
-  </div>
-</div>
-<div class="vb" id="v1-17">
-  <span class="vn">17</span>
-  <div class="vt">
-    <p class="lat">Expandit Sion manus suas ;  non est qui consoletur eam.  Mandavit Dominus adversum Jacob  in circuitu ejus hostes ejus ;  facta est Jerusalem  quasi polluta menstruis inter eos.</p>
-  </div>
-</div>
-<div class="vb" id="v1-18">
-  <span class="vn">18</span>
-  <div class="vt">
-    <p class="lat">Justus est Dominus,  quia os ejus ad iracundiam provocavi.  Audite, obsecro, universi populi,  et videte dolorem meum :  virgines meæ et juvenes mei abierunt  in captivitatem.</p>
-  </div>
-</div>
-<div class="vb" id="v1-19">
-  <span class="vn">19</span>
-  <div class="vt">
-    <p class="lat">Vocavi amicos meos,  et ipsi deceperunt me ;  sacerdotes mei et senes mei  in urbe consumpti sunt,  quia quæsierunt cibum sibi  ut refocillarent animam suam.</p>
-  </div>
-</div>
-<div class="vb" id="v1-20">
-  <span class="vn">20</span>
-  <div class="vt">
-    <p class="lat">Vide, Domine, quoniam tribulor :  conturbatus est venter meus,  subversum est cor meum in memetipsa,  quoniam amaritudine plena sum.  Foris interfecit gladius,  et domi mors similis est.</p>
-  </div>
-</div>
-<div class="vb" id="v1-21">
-  <span class="vn">21</span>
-  <div class="vt">
-    <p class="lat">Audierunt quia ingemisco ego,  et non est qui consoletur me ;  omnes inimici mei audierunt malum meum,  lætati sunt quoniam tu fecisti :  adduxisti diem consolationis,  et fient similes mei.</p>
-  </div>
-</div>
-<div class="vb" id="v1-22">
-  <span class="vn">22</span>
-  <div class="vt">
-    <p class="lat">Ingrediatur omne malum eorum coram te :  et vindemia eos, sicut vindemiasti me  propter omnes iniquitates meas :  multi enim gemitus mei,  et cor meum mœrens.</p>
-  </div>
-</div>
-</section>
+  <header class="book-header">
+    <div class="testament-badge">VETUS TESTAMENTUM</div>
+    <div class="book-name-latin">THRENI</div>
+    <div class="book-name-trans">Lamentations</div>
+    <div class="book-meta">Vulgata Clementina · Bibla e Shenjtë (PD) · 5 Capita · 154 Versus</div>
+  </header>
 
-<section class="chap" id="c2">
-  <div class="chhead">
-    <span class="chrom">II</span>
-    <span class="chlbl">Caput 2</span>
-  </div>
-<div class="vb first" id="v2-1">
-  <span class="vn">1</span>
-  <div class="vt">
-    <p class="lat">Quomodo obtexit caligine in furore suo  Dominus filiam Sion ;  projecit de cælo in terram  inclytam Israël,  et non est recordatus scabelli pedum suorum  in die furoris sui !</p>
-  </div>
-</div>
-<div class="vb" id="v2-2">
-  <span class="vn">2</span>
-  <div class="vt">
-    <p class="lat">Præcipitavit Dominus, nec pepercit  omnia speciosa Jacob :  destruxit in furore suo  munitiones virginis Juda,  et dejecit in terram ;  polluit regnum et principes ejus.</p>
-  </div>
-</div>
-<div class="vb" id="v2-3">
-  <span class="vn">3</span>
-  <div class="vt">
-    <p class="lat">Confregit in ira furoris sui  omne cornu Israël ;  avertit retrorsum dexteram suam  a facie inimici,  et succendit in Jacob quasi ignem  flammæ devorantis in gyro.</p>
-  </div>
-</div>
-<div class="vb" id="v2-4">
-  <span class="vn">4</span>
-  <div class="vt">
-    <p class="lat">Tetendit arcum suum quasi inimicus,  firmavit dexteram suam quasi hostis,  et occidit omne quod pulchrum erat visu  in tabernaculo filiæ Sion ;  effudit quasi ignem  indignationem suam.</p>
-  </div>
-</div>
-<div class="vb" id="v2-5">
-  <span class="vn">5</span>
-  <div class="vt">
-    <p class="lat">Factus est Dominus velut inimicus,  præcipitavit Israël :  præcipitavit omnia mœnia ejus,  dissipavit munitiones ejus,  et replevit in filia Juda  humiliatum et humiliatam.</p>
-  </div>
-</div>
-<div class="vb" id="v2-6">
-  <span class="vn">6</span>
-  <div class="vt">
-    <p class="lat">Et dissipavit quasi hortum tentorium suum ;  demolitus est tabernaculum suum.  Oblivioni tradidit Dominus in Sion  festivitatem et sabbatum ;  et in opprobrium, et in indignationem furoris sui,  regem et sacerdotem.</p>
-  </div>
-</div>
-<div class="vb" id="v2-7">
-  <span class="vn">7</span>
-  <div class="vt">
-    <p class="lat">Repulit Dominus altare suum ;  maledixit sanctificationi suæ :  tradidit in manu inimici  muros turrium ejus.  Vocem dederunt in domo Domini  sicut in die solemni.</p>
-  </div>
-</div>
-<div class="vb" id="v2-8">
-  <span class="vn">8</span>
-  <div class="vt">
-    <p class="lat">Cogitavit Dominus dissipare  murum filiæ Sion ;  tetendit funiculum suum,  et non avertit manum suam a perditione :  luxitque antemurale,  et murus pariter dissipatus est.</p>
-  </div>
-</div>
-<div class="vb" id="v2-9">
-  <span class="vn">9</span>
-  <div class="vt">
-    <p class="lat">Defixæ sunt in terra portæ ejus,  perdidit et contrivit vectes ejus ;  regem ejus et principes ejus in gentibus :  non est lex,  et prophetæ ejus non invenerunt  visionem a Domino.</p>
-  </div>
-</div>
-<div class="vb" id="v2-10">
-  <span class="vn">10</span>
-  <div class="vt">
-    <p class="lat">Sederunt in terra, conticuerunt  senes filiæ Sion ;  consperserunt cinere capita sua,  accincti sunt ciliciis :  abjecerunt in terram capita sua  virgines Jerusalem.</p>
-  </div>
-</div>
-<div class="vb" id="v2-11">
-  <span class="vn">11</span>
-  <div class="vt">
-    <p class="lat">Defecerunt præ lacrimis oculi mei,  conturbata sunt viscera mea ;  effusum est in terra jecur meum  super contritione filiæ populi mei,  cum deficeret parvulus et lactens  in plateis oppidi.</p>
-  </div>
-</div>
-<div class="vb" id="v2-12">
-  <span class="vn">12</span>
-  <div class="vt">
-    <p class="lat">Matribus suis dixerunt :  Ubi est triticum et vinum ?  cum deficerent quasi vulnerati  in plateis civitatis,  cum exhalarent animas suas  in sinu matrum suarum.</p>
-  </div>
-</div>
-<div class="vb" id="v2-13">
-  <span class="vn">13</span>
-  <div class="vt">
-    <p class="lat">Cui comparabo te, vel cui assimilabo te,  filia Jerusalem ?  cui exæquabo te, et consolabor te,  virgo, filia Sion ?  magna est enim velut mare contritio tua :  quis medebitur tui ?</p>
-  </div>
-</div>
-<div class="vb" id="v2-14">
-  <span class="vn">14</span>
-  <div class="vt">
-    <p class="lat">Prophetæ tui viderunt tibi  falsa et stulta ;  nec aperiebant iniquitatem tuam,  ut te ad pœnitentiam provocarent ;  viderunt autem tibi assumptiones falsas,  et ejectiones.</p>
-  </div>
-</div>
-<div class="vb" id="v2-15">
-  <span class="vn">15</span>
-  <div class="vt">
-    <p class="lat">Plauserunt super te manibus  omnes transeuntes per viam ;  sibilaverunt et moverunt caput suum  super filiam Jerusalem :  Hæccine est urbs, dicentes, perfecti decoris,  gaudium universæ terræ ?</p>
-  </div>
-</div>
-<div class="vb" id="v2-16">
-  <span class="vn">16</span>
-  <div class="vt">
-    <p class="lat">Aperuerunt super te os suum  omnes inimici tui :  sibilaverunt, et fremuerunt dentibus,  et dixerunt : Devorabimus :  en ista est dies quam exspectabamus ;  invenimus, vidimus.</p>
-  </div>
-</div>
-<div class="vb" id="v2-17">
-  <span class="vn">17</span>
-  <div class="vt">
-    <p class="lat">Fecit Dominus quæ cogitavit ;  complevit sermonem suum,  quem præceperat a diebus antiquis :  destruxit, et non pepercit,  et lætificavit super te inimicum,  et exaltavit cornu hostium tuorum.</p>
-  </div>
-</div>
-<div class="vb" id="v2-18">
-  <span class="vn">18</span>
-  <div class="vt">
-    <p class="lat">Clamavit cor eorum ad Dominum  super muros filiæ Sion :  Deduc quasi torrentem lacrimas  per diem et noctem ;  non des requiem tibi,  neque taceat pupilla oculi tui.</p>
-  </div>
-</div>
-<div class="vb" id="v2-19">
-  <span class="vn">19</span>
-  <div class="vt">
-    <p class="lat">Consurge, lauda in nocte,  in principio vigiliarum ;  effunde sicut aquam cor tuum  ante conspectum Domini :  leva ad eum manus tuas  pro anima parvulorum tuorum,  qui defecerunt in fame  in capite omnium compitorum.</p>
-  </div>
-</div>
-<div class="vb" id="v2-20">
-  <span class="vn">20</span>
-  <div class="vt">
-    <p class="lat">Vide, Domine, et considera  quem vindemiaveris ita.  Ergone comedent mulieres fructum suum,  parvulos ad mensuram palmæ ?  si occiditur in sanctuario Domini  sacerdos et propheta ?</p>
-  </div>
-</div>
-<div class="vb" id="v2-21">
-  <span class="vn">21</span>
-  <div class="vt">
-    <p class="lat">Jacuerunt in terra foris  puer et senex ;  virgines meæ et juvenes mei  ceciderunt in gladio :  interfecisti in die furoris tui,  percussisti, nec misertus es.</p>
-  </div>
-</div>
-<div class="vb" id="v2-22">
-  <span class="vn">22</span>
-  <div class="vt">
-    <p class="lat">Vocasti quasi ad diem solemnem,  qui terrerent me de circuitu ;  et non fuit in die furoris Domini qui effugeret,  et relinqueretur :  quos educavi et enutrivi,  inimicus meus consumpsit eos.</p>
-  </div>
-</div>
-</section>
+  <div class="ornament-bar">❧ ✦ ❧ ✦ ❧</div>
 
-<section class="chap" id="c3">
-  <div class="chhead">
-    <span class="chrom">III</span>
-    <span class="chlbl">Caput 3</span>
-  </div>
-<div class="vb first" id="v3-1">
-  <span class="vn">1</span>
-  <div class="vt">
-    <p class="lat">Ego vir videns paupertatem meam  in virga indignationis ejus.</p>
-  </div>
-</div>
-<div class="vb" id="v3-2">
-  <span class="vn">2</span>
-  <div class="vt">
-    <p class="lat">Me minavit, et adduxit in tenebras,  et non in lucem.</p>
-  </div>
-</div>
-<div class="vb" id="v3-3">
-  <span class="vn">3</span>
-  <div class="vt">
-    <p class="lat">Tantum in me vertit et convertit  manum suam tota die.</p>
-  </div>
-</div>
-<div class="vb" id="v3-4">
-  <span class="vn">4</span>
-  <div class="vt">
-    <p class="lat">Vetustam fecit pellem meam et carnem meam ;  contrivit ossa mea.</p>
-  </div>
-</div>
-<div class="vb" id="v3-5">
-  <span class="vn">5</span>
-  <div class="vt">
-    <p class="lat">Ædificavit in gyro meo, et circumdedit me  felle et labore.</p>
-  </div>
-</div>
-<div class="vb" id="v3-6">
-  <span class="vn">6</span>
-  <div class="vt">
-    <p class="lat">In tenebrosis collocavit me,  quasi mortuos sempiternos.</p>
-  </div>
-</div>
-<div class="vb" id="v3-7">
-  <span class="vn">7</span>
-  <div class="vt">
-    <p class="lat">Circumædificavit adversum me, ut non egrediar ;  aggravavit compedem meum.</p>
-  </div>
-</div>
-<div class="vb" id="v3-8">
-  <span class="vn">8</span>
-  <div class="vt">
-    <p class="lat">Sed et cum clamavero, et rogavero,  exclusit orationem meam.</p>
-  </div>
-</div>
-<div class="vb" id="v3-9">
-  <span class="vn">9</span>
-  <div class="vt">
-    <p class="lat">Conclusit vias meas lapidibus quadris ;  semitas meas subvertit.</p>
-  </div>
-</div>
-<div class="vb" id="v3-10">
-  <span class="vn">10</span>
-  <div class="vt">
-    <p class="lat">Ursus insidians factus est mihi,  leo in absconditis.</p>
-  </div>
-</div>
-<div class="vb" id="v3-11">
-  <span class="vn">11</span>
-  <div class="vt">
-    <p class="lat">Semitas meas subvertit, et confregit me ;  posuit me desolatam.</p>
-  </div>
-</div>
-<div class="vb" id="v3-12">
-  <span class="vn">12</span>
-  <div class="vt">
-    <p class="lat">Tetendit arcum suum, et posuit me  quasi signum ad sagittam.</p>
-  </div>
-</div>
-<div class="vb" id="v3-13">
-  <span class="vn">13</span>
-  <div class="vt">
-    <p class="lat">Misit in renibus meis  filias pharetræ suæ.</p>
-  </div>
-</div>
-<div class="vb" id="v3-14">
-  <span class="vn">14</span>
-  <div class="vt">
-    <p class="lat">Factus sum in derisum omni populo meo,  canticum eorum tota die.</p>
-  </div>
-</div>
-<div class="vb" id="v3-15">
-  <span class="vn">15</span>
-  <div class="vt">
-    <p class="lat">Replevit me amaritudinibus ;  inebriavit me absinthio.</p>
-  </div>
-</div>
-<div class="vb" id="v3-16">
-  <span class="vn">16</span>
-  <div class="vt">
-    <p class="lat">Et fregit ad numerum dentes meos ;  cibavit me cinere.</p>
-  </div>
-</div>
-<div class="vb" id="v3-17">
-  <span class="vn">17</span>
-  <div class="vt">
-    <p class="lat">Et repulsa est a pace anima mea ;  oblitus sum bonorum.</p>
-  </div>
-</div>
-<div class="vb" id="v3-18">
-  <span class="vn">18</span>
-  <div class="vt">
-    <p class="lat">Et dixi : Periit finis meus,  et spes mea a Domino.</p>
-  </div>
-</div>
-<div class="vb" id="v3-19">
-  <span class="vn">19</span>
-  <div class="vt">
-    <p class="lat">Recordare paupertatis, et transgressionis meæ,  absinthii et fellis.</p>
-  </div>
-</div>
-<div class="vb" id="v3-20">
-  <span class="vn">20</span>
-  <div class="vt">
-    <p class="lat">Memoria memor ero, et tabescet  in me anima mea.</p>
-  </div>
-</div>
-<div class="vb" id="v3-21">
-  <span class="vn">21</span>
-  <div class="vt">
-    <p class="lat">Hæc recolens in corde meo,  ideo sperabo.</p>
-  </div>
-</div>
-<div class="vb" id="v3-22">
-  <span class="vn">22</span>
-  <div class="vt">
-    <p class="lat">Misericordiæ Domini, quia non sumus consumpti ;  quia non defecerunt miserationes ejus.</p>
-  </div>
-</div>
-<div class="vb" id="v3-23">
-  <span class="vn">23</span>
-  <div class="vt">
-    <p class="lat">Novi diluculo,  multa est fides tua.</p>
-  </div>
-</div>
-<div class="vb" id="v3-24">
-  <span class="vn">24</span>
-  <div class="vt">
-    <p class="lat">Pars mea Dominus, dixit anima mea ;  propterea exspectabo eum.</p>
-  </div>
-</div>
-<div class="vb" id="v3-25">
-  <span class="vn">25</span>
-  <div class="vt">
-    <p class="lat">Bonus est Dominus sperantibus in eum,  animæ quærenti illum.</p>
-  </div>
-</div>
-<div class="vb" id="v3-26">
-  <span class="vn">26</span>
-  <div class="vt">
-    <p class="lat">Bonum est præstolari cum silentio  salutare Dei.</p>
-  </div>
-</div>
-<div class="vb" id="v3-27">
-  <span class="vn">27</span>
-  <div class="vt">
-    <p class="lat">Bonum est viro cum portaverit jugum  ab adolescentia sua.</p>
-  </div>
-</div>
-<div class="vb" id="v3-28">
-  <span class="vn">28</span>
-  <div class="vt">
-    <p class="lat">Sedebit solitarius, et tacebit,  quia levavit super se.</p>
-  </div>
-</div>
-<div class="vb" id="v3-29">
-  <span class="vn">29</span>
-  <div class="vt">
-    <p class="lat">Ponet in pulvere os suum,  si forte sit spes.</p>
-  </div>
-</div>
-<div class="vb" id="v3-30">
-  <span class="vn">30</span>
-  <div class="vt">
-    <p class="lat">Dabit percutienti se maxillam :  saturabitur opprobriis.</p>
-  </div>
-</div>
-<div class="vb" id="v3-31">
-  <span class="vn">31</span>
-  <div class="vt">
-    <p class="lat">Quia non repellet  in sempiternum Dominus.</p>
-  </div>
-</div>
-<div class="vb" id="v3-32">
-  <span class="vn">32</span>
-  <div class="vt">
-    <p class="lat">Quia si abjecit, et miserebitur,  secundum multitudinem misericordiarum suarum.</p>
-  </div>
-</div>
-<div class="vb" id="v3-33">
-  <span class="vn">33</span>
-  <div class="vt">
-    <p class="lat">Non enim humiliavit ex corde suo  et abjecit filios hominum.</p>
-  </div>
-</div>
-<div class="vb" id="v3-34">
-  <span class="vn">34</span>
-  <div class="vt">
-    <p class="lat">Ut conteret sub pedibus suis  omnes vinctos terræ.</p>
-  </div>
-</div>
-<div class="vb" id="v3-35">
-  <span class="vn">35</span>
-  <div class="vt">
-    <p class="lat">Ut declinaret judicium viri  in conspectu vultus Altissimi.</p>
-  </div>
-</div>
-<div class="vb" id="v3-36">
-  <span class="vn">36</span>
-  <div class="vt">
-    <p class="lat">Ut perverteret hominem in judicio suo ;  Dominus ignoravit.</p>
-  </div>
-</div>
-<div class="vb" id="v3-37">
-  <span class="vn">37</span>
-  <div class="vt">
-    <p class="lat">Quis est iste qui dixit ut fieret,  Domino non jubente ?</p>
-  </div>
-</div>
-<div class="vb" id="v3-38">
-  <span class="vn">38</span>
-  <div class="vt">
-    <p class="lat">Ex ore Altissimi non egredientur  nec mala nec bona ?</p>
-  </div>
-</div>
-<div class="vb" id="v3-39">
-  <span class="vn">39</span>
-  <div class="vt">
-    <p class="lat">Quid murmuravit homo vivens,  vir pro peccatis suis ?</p>
-  </div>
-</div>
-<div class="vb" id="v3-40">
-  <span class="vn">40</span>
-  <div class="vt">
-    <p class="lat">Scrutemur vias nostras, et quæramus,  et revertamur ad Dominum.</p>
-  </div>
-</div>
-<div class="vb" id="v3-41">
-  <span class="vn">41</span>
-  <div class="vt">
-    <p class="lat">Levemus corda nostra cum manibus  ad Dominum in cælos.</p>
-  </div>
-</div>
-<div class="vb" id="v3-42">
-  <span class="vn">42</span>
-  <div class="vt">
-    <p class="lat">Nos inique egimus, et ad iracundiam provocavimus ;  idcirco tu inexorabilis es.</p>
-  </div>
-</div>
-<div class="vb" id="v3-43">
-  <span class="vn">43</span>
-  <div class="vt">
-    <p class="lat">Operuisti in furore, et percussisti nos ;  occidisti, nec pepercisti.</p>
-  </div>
-</div>
-<div class="vb" id="v3-44">
-  <span class="vn">44</span>
-  <div class="vt">
-    <p class="lat">Opposuisti nubem tibi,  ne transeat oratio.</p>
-  </div>
-</div>
-<div class="vb" id="v3-45">
-  <span class="vn">45</span>
-  <div class="vt">
-    <p class="lat">Eradicationem et abjectionem posuisti me  in medio populorum.</p>
-  </div>
-</div>
-<div class="vb" id="v3-46">
-  <span class="vn">46</span>
-  <div class="vt">
-    <p class="lat">Aperuerunt super nos os suum  omnes inimici.</p>
-  </div>
-</div>
-<div class="vb" id="v3-47">
-  <span class="vn">47</span>
-  <div class="vt">
-    <p class="lat">Formido et laqueus facta est nobis  vaticinatio, et contritio.</p>
-  </div>
-</div>
-<div class="vb" id="v3-48">
-  <span class="vn">48</span>
-  <div class="vt">
-    <p class="lat">Divisiones aquarum deduxit oculus meus,  in contritione filiæ populi mei.</p>
-  </div>
-</div>
-<div class="vb" id="v3-49">
-  <span class="vn">49</span>
-  <div class="vt">
-    <p class="lat">Oculus meus afflictus est, nec tacuit,  eo quod non esset requies.</p>
-  </div>
-</div>
-<div class="vb" id="v3-50">
-  <span class="vn">50</span>
-  <div class="vt">
-    <p class="lat">Donec respiceret et videret  Dominus de cælis.</p>
-  </div>
-</div>
-<div class="vb" id="v3-51">
-  <span class="vn">51</span>
-  <div class="vt">
-    <p class="lat">Oculus meus deprædatus est animam meam  in cunctis filiabus urbis meæ.</p>
-  </div>
-</div>
-<div class="vb" id="v3-52">
-  <span class="vn">52</span>
-  <div class="vt">
-    <p class="lat">Venatione ceperunt me quasi avem  inimici mei gratis.</p>
-  </div>
-</div>
-<div class="vb" id="v3-53">
-  <span class="vn">53</span>
-  <div class="vt">
-    <p class="lat">Lapsa est in lacum vita mea,  et posuerunt lapidem super me.</p>
-  </div>
-</div>
-<div class="vb" id="v3-54">
-  <span class="vn">54</span>
-  <div class="vt">
-    <p class="lat">Inundaverunt aquæ super caput meum ;  dixi : Perii.</p>
-  </div>
-</div>
-<div class="vb" id="v3-55">
-  <span class="vn">55</span>
-  <div class="vt">
-    <p class="lat">Invocavi nomen tuum, Domine,  de lacu novissimo.</p>
-  </div>
-</div>
-<div class="vb" id="v3-56">
-  <span class="vn">56</span>
-  <div class="vt">
-    <p class="lat">Vocem meam audisti ; ne avertas aurem tuam  a singultu meo et clamoribus.</p>
-  </div>
-</div>
-<div class="vb" id="v3-57">
-  <span class="vn">57</span>
-  <div class="vt">
-    <p class="lat">Appropinquasti in die quando invocavi te ;  dixisti : Ne timeas.</p>
-  </div>
-</div>
-<div class="vb" id="v3-58">
-  <span class="vn">58</span>
-  <div class="vt">
-    <p class="lat">Judicasti, Domine, causam animæ meæ,  redemptor vitæ meæ.</p>
-  </div>
-</div>
-<div class="vb" id="v3-59">
-  <span class="vn">59</span>
-  <div class="vt">
-    <p class="lat">Vidisti, Domine, iniquitatem illorum adversum me :  judica judicium meum.</p>
-  </div>
-</div>
-<div class="vb" id="v3-60">
-  <span class="vn">60</span>
-  <div class="vt">
-    <p class="lat">Vidisti omnem furorem,  universas cogitationes eorum adversum me.</p>
-  </div>
-</div>
-<div class="vb" id="v3-61">
-  <span class="vn">61</span>
-  <div class="vt">
-    <p class="lat">Audisti opprobrium eorum, Domine,  omnes cogitationes eorum adversum me.</p>
-  </div>
-</div>
-<div class="vb" id="v3-62">
-  <span class="vn">62</span>
-  <div class="vt">
-    <p class="lat">Labia insurgentium mihi, et meditationes eorum  adversum me tota die.</p>
-  </div>
-</div>
-<div class="vb" id="v3-63">
-  <span class="vn">63</span>
-  <div class="vt">
-    <p class="lat">Sessionem eorum et resurrectionem eorum vide ;  ego sum psalmus eorum.</p>
-  </div>
-</div>
-<div class="vb" id="v3-64">
-  <span class="vn">64</span>
-  <div class="vt">
-    <p class="lat">Redes eis vicem, Domine,  juxta opera manuum suarum.</p>
-  </div>
-</div>
-<div class="vb" id="v3-65">
-  <span class="vn">65</span>
-  <div class="vt">
-    <p class="lat">Dabis eis scutum cordis,  laborem tuum.</p>
-  </div>
-</div>
-<div class="vb" id="v3-66">
-  <span class="vn">66</span>
-  <div class="vt">
-    <p class="lat">Persequeris in furore, et conteres eos  sub cælis, Domine.</p>
-  </div>
-</div>
-</section>
+  <main class="content">
 
-<section class="chap" id="c4">
-  <div class="chhead">
-    <span class="chrom">IV</span>
-    <span class="chlbl">Caput 4</span>
-  </div>
-<div class="vb first" id="v4-1">
-  <span class="vn">1</span>
-  <div class="vt">
-    <p class="lat">Quomodo obscuratum est aurum,  mutatus est color optimus !  dispersi sunt lapides sanctuarii  in capite omnium platearum !</p>
-  </div>
-</div>
-<div class="vb" id="v4-2">
-  <span class="vn">2</span>
-  <div class="vt">
-    <p class="lat">Filii Sion inclyti,  et amicti auro primo :  quomodo reputati sunt in vasa testea,  opus manuum figuli !</p>
-  </div>
-</div>
-<div class="vb" id="v4-3">
-  <span class="vn">3</span>
-  <div class="vt">
-    <p class="lat">Sed et lamiæ nudaverunt mammam,  lactaverunt catulos suos :  filia populi mei crudelis  quasi struthio in deserto.</p>
-  </div>
-</div>
-<div class="vb" id="v4-4">
-  <span class="vn">4</span>
-  <div class="vt">
-    <p class="lat">Adhæsit lingua lactentis  ad palatum ejus in siti ;  parvuli petierunt panem,  et non erat qui frangeret eis.</p>
-  </div>
-</div>
-<div class="vb" id="v4-5">
-  <span class="vn">5</span>
-  <div class="vt">
-    <p class="lat">Qui vescebantur voluptuose,  interierunt in viis ;  qui nutriebantur in croceis,  amplexati sunt stercora.</p>
-  </div>
-</div>
-<div class="vb" id="v4-6">
-  <span class="vn">6</span>
-  <div class="vt">
-    <p class="lat">Et major effecta est iniquitas filiæ populi mei  peccato Sodomorum,  quæ subversa est in momento,  et non ceperunt in ea manus.</p>
-  </div>
-</div>
-<div class="vb" id="v4-7">
-  <span class="vn">7</span>
-  <div class="vt">
-    <p class="lat">Candidiores Nazaræi ejus nive,  nitidiores lacte,  rubicundiores ebore antiquo,  sapphiro pulchriores.</p>
-  </div>
-</div>
-<div class="vb" id="v4-8">
-  <span class="vn">8</span>
-  <div class="vt">
-    <p class="lat">Denigrata est super carbones facies eorum  et non sunt cogniti in plateis ;  adhæsit cutis eorum ossibus :  aruit, et facta est quasi lignum.</p>
-  </div>
-</div>
-<div class="vb" id="v4-9">
-  <span class="vn">9</span>
-  <div class="vt">
-    <p class="lat">Melius fuit occisis gladio  quam interfectis fame,  quoniam isti extabuerunt consumpti  a sterilitate terræ.</p>
-  </div>
-</div>
-<div class="vb" id="v4-10">
-  <span class="vn">10</span>
-  <div class="vt">
-    <p class="lat">Manus mulierum misericordium  coxerunt filios suos ;  facti sunt cibus earum  in contritione filiæ populi mei.</p>
-  </div>
-</div>
-<div class="vb" id="v4-11">
-  <span class="vn">11</span>
-  <div class="vt">
-    <p class="lat">Complevit Dominus furorem suum,  effudit iram indignationis suæ :  et succendit ignem in Sion,  et devoravit fundamenta ejus.</p>
-  </div>
-</div>
-<div class="vb" id="v4-12">
-  <span class="vn">12</span>
-  <div class="vt">
-    <p class="lat">Non crediderunt reges terræ,  et universi habitatores orbis,  quoniam ingrederetur hostis et inimicus  per portas Jerusalem.</p>
-  </div>
-</div>
-<div class="vb" id="v4-13">
-  <span class="vn">13</span>
-  <div class="vt">
-    <p class="lat">Propter peccata prophetarum ejus,  et iniquitates sacerdotum ejus,  qui effuderunt in medio ejus  sanguinem justorum.</p>
-  </div>
-</div>
-<div class="vb" id="v4-14">
-  <span class="vn">14</span>
-  <div class="vt">
-    <p class="lat">Erraverunt cæci in plateis,  polluti sunt in sanguine ;  cumque non possent,  tenuerunt lacinias suas.</p>
-  </div>
-</div>
-<div class="vb" id="v4-15">
-  <span class="vn">15</span>
-  <div class="vt">
-    <p class="lat">Recedite polluti, clamaverunt eis ;  recedite, abite, nolite tangere :  jurgati quippe sunt, et commoti dixerunt inter gentes :  Non addet ultra ut habitet in eis.</p>
-  </div>
-</div>
-<div class="vb" id="v4-16">
-  <span class="vn">16</span>
-  <div class="vt">
-    <p class="lat">Facies Domini divisit eos,  non addet ut respiciat eos ;  facies sacerdotum non erubuerunt,  neque senum miserti sunt.</p>
-  </div>
-</div>
-<div class="vb" id="v4-17">
-  <span class="vn">17</span>
-  <div class="vt">
-    <p class="lat">Cum adhuc subsisteremus, defecerunt oculi nostri  ad auxilium nostrum vanum ;  cum respiceremus attenti ad gentem  quæ salvare non poterat.</p>
-  </div>
-</div>
-<div class="vb" id="v4-18">
-  <span class="vn">18</span>
-  <div class="vt">
-    <p class="lat">Lubricaverunt vestigia nostra  in itinere platearum nostrarum ;  appropinquavit finis noster, completi sunt dies nostri,  quia venit finis noster.</p>
-  </div>
-</div>
-<div class="vb" id="v4-19">
-  <span class="vn">19</span>
-  <div class="vt">
-    <p class="lat">Velociores fuerunt persecutores nostri  aquilis cæli ;  super montes persecuti sunt nos,  in deserto insidiati sunt nobis.</p>
-  </div>
-</div>
-<div class="vb" id="v4-20">
-  <span class="vn">20</span>
-  <div class="vt">
-    <p class="lat">Spiritus oris nostri, christus Dominus,  captus est in peccatis nostris,  cui diximus : In umbra tua  vivemus in gentibus.</p>
-  </div>
-</div>
-<div class="vb" id="v4-21">
-  <span class="vn">21</span>
-  <div class="vt">
-    <p class="lat">Gaude et lætare, filia Edom,  quæ habitas in terra Hus !  ad te quoque perveniet calix : inebriaberis,  atque nudaberis.</p>
-  </div>
-</div>
-<div class="vb" id="v4-22">
-  <span class="vn">22</span>
-  <div class="vt">
-    <p class="lat">Completa est iniquitas tua, filia Sion :  non addet ultra ut transmigret te.  Visitavit iniquitatem tuam, filia Edom ;  discooperuit peccata tua.</p>
-  </div>
-</div>
-</section>
+  <section class="chapter" id="ch1">
+    <div class="chapter-marker">
+      <span class="ch-roman">I</span>
+      <span class="ch-label">Caput 1</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v1-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quomodo sedet sola  civitas plena populo !  Facta est quasi vidua  domina gentium ;  princeps provinciarum  facta est sub tributo.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Si qëndron vallë i vetmuar qyteti që ishte plot e përplot me popull? E madhja midis kombeve është bërë si një e ve; princesha midis provincave i është nënshtruar haraçit.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Plorans ploravit in nocte,  et lacrimæ ejus in maxillis ejus :  non est qui consoletur eam  ex omnibus caris ejus ;  omnes amici ejus spreverunt eam,  et facti sunt ei inimici.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Ajo qan me hidhërim natën, lotët vijëzojnë faqet e saj; midis gjithë atyre që e donin nuk ka njeri që ta ngushëllojë; tërë miqtë e saj e kanë tradhëtuar, janë bërë armiq të saj.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Migravit Judas propter afflictionem,  et multitudinem servitutis ;  habitavit inter gentes,  nec invenit requiem :  omnes persecutores ejus apprehenderunt eam  inter angustias.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Juda ka shkuar në robëri, mbi të rëndojnë pikëllimi dhe një skllavëri e rëndë; ai banon midis kombeve, nuk gjen prehje; tërë përndjekësit e tij e kanë arritur midis fatkeqësive.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Viæ Sion lugent, eo quod non sint  qui veniant ad solemnitatem :  omnes portæ ejus destructæ,  sacerdotes ejus gementes ;  virgines ejus squalidæ,  et ipsa oppressa amaritudine.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Rrugët e Sionit mbajnë zi, sepse askush nuk vjen më në festat solemne; tërë portat e tij janë të shkreta, priftërinjtë e tij psherëtijnë, virgjëreshat e tij hidhërohen dhe ai është në trishtim.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Facti sunt hostes ejus in capite ;  inimici ejus locupletati sunt :  quia Dominus locutus est super eam  propter multitudinem iniquitatum ejus.  Parvuli ejus ducti sunt in captivitatem  ante faciem tribulantis.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Kundërshtarët e tij janë bërë sundimtarë, armiqtë e tij begatohen, sepse Zoti e ka mjeruar për shkak të morisë së shkeljeve të tij; fëmijët e tij kanë shkuar në robëri përpara armikut.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et egressus est a filia Sion  omnis decor ejus ;  facti sunt principes ejus velut arietes  non invenientes pascua,  et abierunt absque fortitudine  ante faciem subsequentis.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Vajza e Sionit ka humbur tërë madhështinë e saj; krerët e tij janë bërë si drerë që nuk gjejnë kullotë; ecin pa forca përpara atyre që i ndjekin.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Recordata est Jerusalem dierum afflictionis suæ,  et prævaricationis,  omnium desiderabilium suorum,  quæ habuerat a diebus antiquis,  cum caderet populus ejus in manu hostili,  et non esset auxiliator :  viderunt eam hostes,  et deriserunt sabbata ejus.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Në ditët e trishtimit të tij dhe të endjes Jeruzalemi kujton tërë të mirat e çmuara që zotëronte qysh nga ditët e lashta. Kur populli i tij binte në dorë të armikut dhe askush nuk i vinte në ndihmë, kundërshtarët e tij e shikonin dhe qeshnin me shkatërrimin e tij.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Peccatum peccavit Jerusalem,  propterea instabilis facta est ;  omnes qui glorificabant eam spreverunt illam,  quia viderunt ignominiam ejus :  ipsa autem gemens  conversa est retrorsum.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Jeruzalemi ka mëkatuar rëndë, prandaj është bërë një gjë e fëlliqur; tërë ata që e nderonin e përçmojnë, sepse e kanë parë lakuriq, po, ai psherëtin dhe kthehet prapa.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sordes ejus in pedibus ejus,  nec recordata est finis sui ;  deposita est vehementer,  non habens consolatorem.  Vide, Domine, afflictionem meam,  quoniam erectus est inimicus.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Fëlliqësia e tij ishte në cepat e rrobave të tij, nuk mendonte për fundin e tij; prandaj ra në mënyrë të habitshme, pa pasur njeri që ta ngushëllojë: &quot;Shiko, o Zot, dëshpërimin tim sepse armiku po ngrihet&quot;.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Manum suam misit hostis  ad omnia desiderabilia ejus,  quia vidit gentes  ingressas sanctuarium suum,  de quibus præceperas  ne intrarent in ecclesiam tuam.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Kundërshtari ka shtrirë dorën mbi të gjitha thesaret e tua, sepse pa kombet të hyjnë në shenjtëroren tënde; pikërisht ata që ti u kishe urdhëruar të mos hynin në kuvendin tënd.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Omnis populus ejus gemens,  et quærens panem ;  dederunt pretiosa quæque pro cibo  ad refocillandam animam.  Vide, Domine, et considera  quoniam facta sum vilis !</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Tërë populli i tij psherëtin duke kërkuar bukë; japin gjërat e tyre më të çmuara për ushqim me qëllim që të rifitojnë jetën. &quot;Shiko, o Zot, dhe kqyr sa jam bërë i neveritshëm!&quot;. pranimi i mëkateve të tij dhe pasojat e tyre</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">O vos omnes qui transitis per viam,  attendite, et videte  si est dolor sicut dolor meus !  quoniam vindemiavit me,  ut locutus est Dominus,  in die iræ furoris sui.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">&quot;Asgjë e tillë mos t'ju ndodhë, o ju që kaloni afër. Soditni dhe shikoni, në se ka një dhimbje të ngjashme me dhembjen time, ajo që më brengos dhe që Zoti më ka dhënë ditën e zemërimit të tij të zjarrtë.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">De excelso misit ignem in ossibus meis,  et erudivit me :  expandit rete pedibus meis,  convertit me retrorsum ;  posuit me desolatam,  tota die mœrore confectam.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Nga lart ka dërguar një zjarr në kockat e mia, i kaplon ato; ka shtrirë një rrjetë në këmbët e mia, më ka kthyer prapa, më ka shkretuar në kapitjen e ditëve të mia.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vigilavit jugum iniquitatum mearum ;  in manu ejus convolutæ sunt,  et impositæ collo meo.  Infirmata est virtus mea :  dedit me Dominus in manu  de qua non potero surgere.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Nga dora e tij është lidhur zgjedha e shkeljeve të mia, që lidhen bashkë dhe rëndojnë mbi qafën time; më ka pakësuar forcën time; Zoti më ka lënë në duart e atyre të cilëve nuk mund t'u bëj ballë.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Abstulit omnes magnificos meos Dominus  de medio mei ;  vocavit adversum me tempus  ut contereret electos meos.  Torcular calcavit Dominus  virgini filiæ Juda.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Zoti ka rrëzuar në mesin tim tërë trimat e mi; ka thirrur kundër meje një kuvend për të shtypur të rinjtë e mi; Zoti ka shtypur si në një butinë bijën e virgjër të Judës.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Idcirco ego plorans,  et oculus meus deducens aquas,  quia longe factus est a me consolator,  convertens animam meam.  Facti sunt filii mei perditi,  quoniam invaluit inimicus.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Prandaj unë qaj; sytë e mi, vetë sytë e mi shkrihen ndër lot, sepse ngushëlluesi që do të mund të më jepte përsëri jetën është larg meje. Bijtë e mi janë të dëshpëruar, sepse armiku doli fitimtar&quot;.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Expandit Sion manus suas ;  non est qui consoletur eam.  Mandavit Dominus adversum Jacob  in circuitu ejus hostes ejus ;  facta est Jerusalem  quasi polluta menstruis inter eos.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Sioni zgjat duart e tij, por nuk ka njeri që ta ngushëllojë. Përsa i përket Jakobit, Zoti ka urdhëruar që ata që janë rreth tij të bëhen armiq të tij. Jeruzalemi është bërë në mes tyre si një gjë e papastër.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Justus est Dominus,  quia os ejus ad iracundiam provocavi.  Audite, obsecro, universi populi,  et videte dolorem meum :  virgines meæ et juvenes mei abierunt  in captivitatem.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Zoti është i drejtë, sepse jam rebeluar kundër fjalës së tij. Dëgjoni, pra, o popuj mbarë, dhe shikoni dhimbjen time! Virgjëreshat e mia dhe të rinjtë e mi kanë shkuar në robëri.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vocavi amicos meos,  et ipsi deceperunt me ;  sacerdotes mei et senes mei  in urbe consumpti sunt,  quia quæsierunt cibum sibi  ut refocillarent animam suam.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Thirra dashnorët e mi, por ata më kanë mashtruar; priftërinjt e mi dhe pleqtë e mi nxorën frymën e fundit në qytet, ndërsa kërkonin ushqim për të shpëtuar jetën e tyre.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vide, Domine, quoniam tribulor :  conturbatus est venter meus,  subversum est cor meum in memetipsa,  quoniam amaritudine plena sum.  Foris interfecit gladius,  et domi mors similis est.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Shiko, o Zot, unë jam në ankth. Zorrët e mia dridhen, zemra ime është e tronditur brenda meje, sepse kam qënë rebele e madhe. Jashtë shpata më la pa bij, në shtëpi është si të jetë vdekje.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">Audierunt quia ingemisco ego,  et non est qui consoletur me ;  omnes inimici mei audierunt malum meum,  lætati sunt quoniam tu fecisti :  adduxisti diem consolationis,  et fient similes mei.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Më dëgjojnë që psherëtij, askush nuk më ngushëllon. Tërë armiqtë e mi e kanë mësuar fatkeqësinë time dhe janë të kënaqur që ti ke bërë këtë gjë. Ti do të sjellësh ditën që ke lajmëruar, dhe atëherë do të jenë si unë.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-22">
+      <div class="verse-num-col"><div class="verse-num">22</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ingrediatur omne malum eorum coram te :  et vindemia eos, sicut vindemiasti me  propter omnes iniquitates meas :  multi enim gemitus mei,  et cor meum mœrens.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Le të vijë para teje tërë ligësia e tyre, dhe trajtoi ashtu si më ke trajtuar mua për shkak të të gjitha shkeljeve të mia. Sepse të shumta janë psherëtimat e mia dhe zemra ime lëngon.</div>
+      </div>
+    </div>
+  </section>
 
-<section class="chap" id="c5">
-  <div class="chhead">
-    <span class="chrom">V</span>
-    <span class="chlbl">Caput 5</span>
-  </div>
-<div class="vb first" id="v5-1">
-  <span class="vn">1</span>
-  <div class="vt">
-    <p class="lat">Recordare, Domine, quid acciderit nobis ;  intuere et respice opprobrium nostrum.</p>
-  </div>
-</div>
-<div class="vb" id="v5-2">
-  <span class="vn">2</span>
-  <div class="vt">
-    <p class="lat">Hæreditas nostra versa est ad alienos,  domus nostræ ad extraneos.</p>
-  </div>
-</div>
-<div class="vb" id="v5-3">
-  <span class="vn">3</span>
-  <div class="vt">
-    <p class="lat">Pupilli facti sumus absque patre,  matres nostræ quasi viduæ.</p>
-  </div>
-</div>
-<div class="vb" id="v5-4">
-  <span class="vn">4</span>
-  <div class="vt">
-    <p class="lat">Aquam nostram pecunia bibimus ;  ligna nostra pretio comparavimus.</p>
-  </div>
-</div>
-<div class="vb" id="v5-5">
-  <span class="vn">5</span>
-  <div class="vt">
-    <p class="lat">Cervicibus nostris minabamur,  lassis non dabatur requies.</p>
-  </div>
-</div>
-<div class="vb" id="v5-6">
-  <span class="vn">6</span>
-  <div class="vt">
-    <p class="lat">Ægypto dedimus manum et Assyriis,  ut saturaremur pane.</p>
-  </div>
-</div>
-<div class="vb" id="v5-7">
-  <span class="vn">7</span>
-  <div class="vt">
-    <p class="lat">Patres nostri peccaverunt, et non sunt :  et nos iniquitates eorum portavimus.</p>
-  </div>
-</div>
-<div class="vb" id="v5-8">
-  <span class="vn">8</span>
-  <div class="vt">
-    <p class="lat">Servi dominati sunt nostri :  non fuit qui redimeret de manu eorum.</p>
-  </div>
-</div>
-<div class="vb" id="v5-9">
-  <span class="vn">9</span>
-  <div class="vt">
-    <p class="lat">In animabus nostris afferebamus panem nobis,  a facie gladii in deserto.</p>
-  </div>
-</div>
-<div class="vb" id="v5-10">
-  <span class="vn">10</span>
-  <div class="vt">
-    <p class="lat">Pellis nostra quasi clibanus exusta est,  a facie tempestatum famis.</p>
-  </div>
-</div>
-<div class="vb" id="v5-11">
-  <span class="vn">11</span>
-  <div class="vt">
-    <p class="lat">Mulieres in Sion humiliaverunt,  et virgines in civitatibus Juda.</p>
-  </div>
-</div>
-<div class="vb" id="v5-12">
-  <span class="vn">12</span>
-  <div class="vt">
-    <p class="lat">Principes manu suspensi sunt ;  facies senum non erubuerunt.</p>
-  </div>
-</div>
-<div class="vb" id="v5-13">
-  <span class="vn">13</span>
-  <div class="vt">
-    <p class="lat">Adolescentibus impudice abusi sunt,  et pueri in ligno corruerunt.</p>
-  </div>
-</div>
-<div class="vb" id="v5-14">
-  <span class="vn">14</span>
-  <div class="vt">
-    <p class="lat">Senes defecerunt de portis,  juvenes de choro psallentium.</p>
-  </div>
-</div>
-<div class="vb" id="v5-15">
-  <span class="vn">15</span>
-  <div class="vt">
-    <p class="lat">Defecit gaudium cordis nostri ;  versus est in luctum chorus noster.</p>
-  </div>
-</div>
-<div class="vb" id="v5-16">
-  <span class="vn">16</span>
-  <div class="vt">
-    <p class="lat">Cecidit corona capitis nostri :  væ nobis, quia peccavimus !</p>
-  </div>
-</div>
-<div class="vb" id="v5-17">
-  <span class="vn">17</span>
-  <div class="vt">
-    <p class="lat">Propterea mœstum factum est cor nostrum ;  ideo contenebrati sunt oculi nostri,</p>
-  </div>
-</div>
-<div class="vb" id="v5-18">
-  <span class="vn">18</span>
-  <div class="vt">
-    <p class="lat">propter montem Sion quia disperiit ;  vulpes ambulaverunt in eo.</p>
-  </div>
-</div>
-<div class="vb" id="v5-19">
-  <span class="vn">19</span>
-  <div class="vt">
-    <p class="lat">Tu autem, Domine, in æternum permanebis,  solium tuum in generationem et generationem.</p>
-  </div>
-</div>
-<div class="vb" id="v5-20">
-  <span class="vn">20</span>
-  <div class="vt">
-    <p class="lat">Quare in perpetuum oblivisceris nostri,  derelinques nos in longitudine dierum ?</p>
-  </div>
-</div>
-<div class="vb" id="v5-21">
-  <span class="vn">21</span>
-  <div class="vt">
-    <p class="lat">Converte nos, Domine, ad te, et convertemur ;  innova dies nostros, sicut a principio.</p>
-  </div>
-</div>
-<div class="vb" id="v5-22">
-  <span class="vn">22</span>
-  <div class="vt">
-    <p class="lat">Sed projiciens repulisti nos :  iratus es contra nos vehementer.</p>
-  </div>
-</div>
-</section>
-</main>
+  <section class="chapter" id="ch2">
+    <div class="chapter-marker">
+      <span class="ch-roman">II</span>
+      <span class="ch-label">Caput 2</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v2-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quomodo obtexit caligine in furore suo  Dominus filiam Sion ;  projecit de cælo in terram  inclytam Israël,  et non est recordatus scabelli pedum suorum  in die furoris sui !</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Si bëhet që në zemërimin e tij Zoti ka mbuluar me një re bijën e Sionit? Ai ka hedhur nga qielli në tokë lavdinë e Izraelit dhe nuk u kujtua për ndenjësen e këmbëve të tij ditën e zemërimit të tij.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Præcipitavit Dominus, nec pepercit  omnia speciosa Jacob :  destruxit in furore suo  munitiones virginis Juda,  et dejecit in terram ;  polluit regnum et principes ejus.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Zoti i ka shkatërruar pa mëshirë të gjitha banesat e Jakobit; në zemërimin e tij ka shembur fortesat e bijës së Judës, i ka hedhur për tokë duke përdhosur mbretërinë dhe krerët e saj.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Confregit in ira furoris sui  omne cornu Israël ;  avertit retrorsum dexteram suam  a facie inimici,  et succendit in Jacob quasi ignem  flammæ devorantis in gyro.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Me një zemërim të zjarrtë ka thyer tërë fuqinë e Izraelit, ka tërhequr të djathtën e tij përpara armikut, ka djegur në mes të Jakobit si një zjarr flakërues që gllabëron gjithçka rreth e qark.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Tetendit arcum suum quasi inimicus,  firmavit dexteram suam quasi hostis,  et occidit omne quod pulchrum erat visu  in tabernaculo filiæ Sion ;  effudit quasi ignem  indignationem suam.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Ka nderur harkun e tij si një armik, ka ngritur dorën e djathtë si një kundërshtar, ka shkatërruar të gjitha ato që ishin të këndshme për sytë në çadrën e bijës së Sionit, e ka derdhur zemërimin e tij si një zjarr.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Factus est Dominus velut inimicus,  præcipitavit Israël :  præcipitavit omnia mœnia ejus,  dissipavit munitiones ejus,  et replevit in filia Juda  humiliatum et humiliatam.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Zoti u bë si një armik; përpiu Izraelin, përpiu tërë pallatet e tij, shkatërroi fortesat e tij, shumëfishoi të qarat dhe vajtimet tek e bija e Judës.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et dissipavit quasi hortum tentorium suum ;  demolitus est tabernaculum suum.  Oblivioni tradidit Dominus in Sion  festivitatem et sabbatum ;  et in opprobrium, et in indignationem furoris sui,  regem et sacerdotem.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Shkatërroi tabernakullin e tij si një kopësht, prishi vendin ku mblidhet kuvendi; Zoti bëri të harrohen në Sion festat solemne dhe të shtunat dhe gjatë tërbimit e të zemërimit të tij hodhi poshtë mbretër dhe priftërinj.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Repulit Dominus altare suum ;  maledixit sanctificationi suæ :  tradidit in manu inimici  muros turrium ejus.  Vocem dederunt in domo Domini  sicut in die solemni.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Zoti braktisi altarin e tij, hodhi poshtë shenjtëroren e tij, dorëzoi në dorë të armikut muret e fortesave të tij; ata lartuan britma në shtëpinë e Zotit si në një ditë feste solemne.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Cogitavit Dominus dissipare  murum filiæ Sion ;  tetendit funiculum suum,  et non avertit manum suam a perditione :  luxitque antemurale,  et murus pariter dissipatus est.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Zoti vendosi të shkatërrojë muret e bijës së Sionit; vuri litarin, nuk ka hequr dorë nga shkatërrimi; ka bërë të vajtojnë fortesa dhe mure; që të dyja lëngojnë.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Defixæ sunt in terra portæ ejus,  perdidit et contrivit vectes ejus ;  regem ejus et principes ejus in gentibus :  non est lex,  et prophetæ ejus non invenerunt  visionem a Domino.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Portat e tij janë fundosur në dhe; ai ka prishur dhe ka copëtuar shufrat e tyre; mbreti i tij dhe krerët e tij ndodhen midis kombeve; nuk ka më ligj, dhe profetët e tij nuk marrin asnjë vegim nga Zoti.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sederunt in terra, conticuerunt  senes filiæ Sion ;  consperserunt cinere capita sua,  accincti sunt ciliciis :  abjecerunt in terram capita sua  virgines Jerusalem.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Pleqtë e bijës së Sionit ulen për tokë në heshtje; kanë hedhur pluhur mbi kokën e tyre, kanë ngjeshur trupin me thes; virgjëreshat e Jeruzalemit ulin deri në tokë kokën e tyre.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Defecerunt præ lacrimis oculi mei,  conturbata sunt viscera mea ;  effusum est in terra jecur meum  super contritione filiæ populi mei,  cum deficeret parvulus et lactens  in plateis oppidi.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Sytë e mi konsumohen nga të qarat, zorrët e mia drithërohen, mëlçia ime përhapet për tokë për shkak të shkatërrimit të bijës së popullit tim, për ligështimin e fëmijëve dhe të foshnjave në gji në sheshet e qytetit.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Matribus suis dixerunt :  Ubi est triticum et vinum ?  cum deficerent quasi vulnerati  in plateis civitatis,  cum exhalarent animas suas  in sinu matrum suarum.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Ata u kërkonin nënave të tyre: &quot;Ku është gruri dhe vera?&quot;, ndërsa po ligështoheshin si të plagosur për vdekje në sheshet e qytetit dhe jepnin shpirt në prehrin e nënave të tyre.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Cui comparabo te, vel cui assimilabo te,  filia Jerusalem ?  cui exæquabo te, et consolabor te,  virgo, filia Sion ?  magna est enim velut mare contritio tua :  quis medebitur tui ?</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Si mund të të jap zemër? Në çfarë do të të ngjas, o bijë e Jeruzalemit? Çfarë gjë do të krahasoj me ty që të të ngushëlloj, o bijë e virgjër e Jeruzalemit? Sepse shkatërrimi yt është i madh si deti; kush mund të të shërojë?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Prophetæ tui viderunt tibi  falsa et stulta ;  nec aperiebant iniquitatem tuam,  ut te ad pœnitentiam provocarent ;  viderunt autem tibi assumptiones falsas,  et ejectiones.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Profetët e tu kanë pasur për ty vegime të rreme dhe të paarsyeshme; nuk kanë zbuluar lakuriq paudhësinë tënde që të largojnë robërinë prej teje; ata kanë shqiptuar për ty profeci të rreme dhe mashtruese.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Plauserunt super te manibus  omnes transeuntes per viam ;  sibilaverunt et moverunt caput suum  super filiam Jerusalem :  Hæccine est urbs, dicentes, perfecti decoris,  gaudium universæ terræ ?</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Tërë kalimtarët i rrahin duart kundër teje; fërshëllejnë dhe tundin kokën kundër bijës së Jeruzalemit: &quot;Ky qënka qyteti që e quanin &quot;bukuri e përsosur&quot;, &quot;gëzimi i tërë tokës&quot;?&quot;.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Aperuerunt super te os suum  omnes inimici tui :  sibilaverunt, et fremuerunt dentibus,  et dixerunt : Devorabimus :  en ista est dies quam exspectabamus ;  invenimus, vidimus.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Tërë armiqtë e tu hapin gojën kundër teje; fërshëllejnë dhe kërcëllijnë dhëmbët, dhe thonë: &quot;E kemi gëlltitur! Po, kjo është dita që prisnim; arritëm ta shohim&quot;.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Fecit Dominus quæ cogitavit ;  complevit sermonem suum,  quem præceperat a diebus antiquis :  destruxit, et non pepercit,  et lætificavit super te inimicum,  et exaltavit cornu hostium tuorum.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Zoti ka realizuar atë që kishte menduar; ka mbajtur fjalën që kishte dekretuar në ditët e lashta. Ka shkatërruar pa asnjë mëshirë, ka vepruar në mënyrë që armiku të gëzohet me ty, ka lavdëruar fuqinë e kundërshtarëve të tu.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Clamavit cor eorum ad Dominum  super muros filiæ Sion :  Deduc quasi torrentem lacrimas  per diem et noctem ;  non des requiem tibi,  neque taceat pupilla oculi tui.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Zemra e tyre i bërtet Zotit: &quot;O mure të bijës së Sionit, bëni që të derdhen lotët si një përrua ditën e natën. Mos i jepni qetësi vetes, mos paçin çlodhje bebet e syve tuaj.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">Consurge, lauda in nocte,  in principio vigiliarum ;  effunde sicut aquam cor tuum  ante conspectum Domini :  leva ad eum manus tuas  pro anima parvulorum tuorum,  qui defecerunt in fame  in capite omnium compitorum.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Çohuni, bërtisni natën, në fillim të çdo vigjiljeje. Derdhni si ujë zemrën tuaj përpara fytyrës së Zotit. Ngrini duart në drejtim të tij për jetën e fëmijëve tuaj, që mpaken nga uria në hyrje të të gjitha rrugëve&quot;.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vide, Domine, et considera  quem vindemiaveris ita.  Ergone comedent mulieres fructum suum,  parvulos ad mensuram palmæ ?  si occiditur in sanctuario Domini  sacerdos et propheta ?</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">&quot;Shiko, o Zot, dhe shqyrto. Cilin ke trajtuar në këtë mënyrë? A duhet të hanin gratë frytin e barkut të tyre, fëmijët që përkëdhelnin? A duhet të vriteshin prifti dhe profeti në shenjtëroren e tij?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">Jacuerunt in terra foris  puer et senex ;  virgines meæ et juvenes mei  ceciderunt in gladio :  interfecisti in die furoris tui,  percussisti, nec misertus es.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Të vegjëlit dhe pleqtë dergjen për tokë nëpër rrugë; virgjëreshat e mia dhe të rinjtë e mi kanë rënë nga shpata; ti i ke vrarë ditën e zëmërimit tënd, i ke masakruar pa mëshirë.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-22">
+      <div class="verse-num-col"><div class="verse-num">22</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vocasti quasi ad diem solemnem,  qui terrerent me de circuitu ;  et non fuit in die furoris Domini qui effugeret,  et relinqueretur :  quos educavi et enutrivi,  inimicus meus consumpsit eos.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Ti ke mbledhur si për një ditë feste tmerret që më rrethojnë nga çdo anë. Në ditën e zemërimit të Zotit nuk pati as ikanak as të mbetur. Ata që kisha ushqyer me gji dhe që kisha rritur, i shfarosi armiku im&quot;.</div>
+      </div>
+    </div>
+  </section>
 
-<nav class="bnav">
-  <a href="024-jer.html">&#8592; Ieremias</a>
-  <a href="../index.html" class="center">↑ &nbsp; Inhaltsverzeichnis</a>
-  <a href="026-eze.html">Ezechiel &#8594;</a>
-</nav>
+  <section class="chapter" id="ch3">
+    <div class="chapter-marker">
+      <span class="ch-roman">III</span>
+      <span class="ch-label">Caput 3</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v3-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ego vir videns paupertatem meam  in virga indignationis ejus.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Unë jam njeriu që pa hidhërimin nën thuprën e tërbimit të tij.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Me minavit, et adduxit in tenebras,  et non in lucem.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Ai më ka udhëhequr dhe më ka bërë të eci nëpër terr dhe jo në dritë.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Tantum in me vertit et convertit  manum suam tota die.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Po, kundër meje ai ka kthyer disa herë dorën e tij tërë ditën.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vetustam fecit pellem meam et carnem meam ;  contrivit ossa mea.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Ai ka konsumuar mishin tim dhe lëkurën time, ka coptuar kockat e mia.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ædificavit in gyro meo, et circumdedit me  felle et labore.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Ka ndërtuar fortesa kundër meje, më ka rrethuar me hidhërim dhe me ankth.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">In tenebrosis collocavit me,  quasi mortuos sempiternos.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Ka bërë që unë të banoj në vende plot errësirë, ashtu si të vdekurit prej shumë kohe.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Circumædificavit adversum me, ut non egrediar ;  aggravavit compedem meum.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Më ka ndërtuar një mur rreth e qark, me qëllim që unë të mos dal; e ka bërë të rëndë zinxhirin tim.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sed et cum clamavero, et rogavero,  exclusit orationem meam.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Edhe kur bërtas dhe kërkoj ndihmë me zë të lartë, ai nuk pranon të dëgjojë lutjen time.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Conclusit vias meas lapidibus quadris ;  semitas meas subvertit.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Ai i ka mbyllur rrugët e mia me gurë të prerë, i ka bërë shtigjet e mia plot me prita.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ursus insidians factus est mihi,  leo in absconditis.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Ai ka qenë për mua si një ari në pritë, si një luan në vende të fshehta.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Semitas meas subvertit, et confregit me ;  posuit me desolatam.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Ka devijuar rrugët e mia, më ka coptuar dhe më ka dëshpëruar.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Tetendit arcum suum, et posuit me  quasi signum ad sagittam.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Ka nderur harkun e tij dhe më ka bërë objekt të shigjetave të tij.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Misit in renibus meis  filias pharetræ suæ.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Ka bërë të depërtojnë në zemrën time shigjetat e kukurës së tij.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Factus sum in derisum omni populo meo,  canticum eorum tota die.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Jam bërë tallja e tërë popullit tim, kënga e tij e tërë ditës.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Replevit me amaritudinibus ;  inebriavit me absinthio.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Më ka ngopur me hidhërim, më ka bërë të pij pelin.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et fregit ad numerum dentes meos ;  cibavit me cinere.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Më ka coptuar dhëmbët me zall, më ka mbuluar me hi.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et repulsa est a pace anima mea ;  oblitus sum bonorum.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Ke larguar shpirtin tim nga paqja, kam harruar mirëqënien.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et dixi : Periit finis meus,  et spes mea a Domino.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Kam thënë: &quot;Éshtë zhdukur besimi im dhe shpresa ime tek Zoti&quot;.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">Recordare paupertatis, et transgressionis meæ,  absinthii et fellis.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Kujtohu për pikëllimin dhe për endjen time, për pelinin dhe hidhërimin.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">Memoria memor ero, et tabescet  in me anima mea.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Shpirti im kujtohet gjithnjë për këtë dhe është i rrëzuar brenda meje.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hæc recolens in corde meo,  ideo sperabo.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Këtë dua ta sjell në mëndje dhe prandaj dua të shpresoj.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-22">
+      <div class="verse-num-col"><div class="verse-num">22</div></div>
+      <div class="verse-texts">
+        <div class="latin">Misericordiæ Domini, quia non sumus consumpti ;  quia non defecerunt miserationes ejus.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Éshtë një hir i Zotit që nuk jemi shkatërruar plotësisht, sepse mëshirat e tij nuk janë mbaruar plotësisht.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-23">
+      <div class="verse-num-col"><div class="verse-num">23</div></div>
+      <div class="verse-texts">
+        <div class="latin">Novi diluculo,  multa est fides tua.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Përtëriten çdo mëngjes; e madhe është besnikeria jote.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-24">
+      <div class="verse-num-col"><div class="verse-num">24</div></div>
+      <div class="verse-texts">
+        <div class="latin">Pars mea Dominus, dixit anima mea ;  propterea exspectabo eum.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">&quot;Zoti është pjesa ime&quot;, thotë shpirti im, &quot;prandaj do të kem shpresë tek ai.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-25">
+      <div class="verse-num-col"><div class="verse-num">25</div></div>
+      <div class="verse-texts">
+        <div class="latin">Bonus est Dominus sperantibus in eum,  animæ quærenti illum.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Zoti është i mirë me ata që kanë shpresë tek ai, me shpirtin që e kërkon.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-26">
+      <div class="verse-num-col"><div class="verse-num">26</div></div>
+      <div class="verse-texts">
+        <div class="latin">Bonum est præstolari cum silentio  salutare Dei.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Gjë e mirë është të presësh në heshtje shpëtimin e Zotit.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-27">
+      <div class="verse-num-col"><div class="verse-num">27</div></div>
+      <div class="verse-texts">
+        <div class="latin">Bonum est viro cum portaverit jugum  ab adolescentia sua.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Gjë e mirë është për njeriun të mbajë zgjedhën në rininë e tij.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-28">
+      <div class="verse-num-col"><div class="verse-num">28</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sedebit solitarius, et tacebit,  quia levavit super se.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Le të ulet i vetmuar dhe të qëndrojë në heshtje kur Perëndia ia imponon.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-29">
+      <div class="verse-num-col"><div class="verse-num">29</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ponet in pulvere os suum,  si forte sit spes.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Le ta vërë gojën e tij në pluhur, ndofta ka ende shpresë.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-30">
+      <div class="verse-num-col"><div class="verse-num">30</div></div>
+      <div class="verse-texts">
+        <div class="latin">Dabit percutienti se maxillam :  saturabitur opprobriis.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Le ti japë faqen atij që e godet, të ngopet me fyerje.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-31">
+      <div class="verse-num-col"><div class="verse-num">31</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quia non repellet  in sempiternum Dominus.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Sepse Zoti nuk hedh poshtë për gjithnjë;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-32">
+      <div class="verse-num-col"><div class="verse-num">32</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quia si abjecit, et miserebitur,  secundum multitudinem misericordiarum suarum.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">por, në rast se të hidhëron, do ti vijë keq sipas shumicës së zemërmirësive të tij,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-33">
+      <div class="verse-num-col"><div class="verse-num">33</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non enim humiliavit ex corde suo  et abjecit filios hominum.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">sepse nuk e bën me kënaqësi poshtërimin dhe hidhërimin e bijve të njerëzve.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-34">
+      <div class="verse-num-col"><div class="verse-num">34</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ut conteret sub pedibus suis  omnes vinctos terræ.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Kur dikush shtyp nën këmbët e tij tërë robërit e dheut,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-35">
+      <div class="verse-num-col"><div class="verse-num">35</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ut declinaret judicium viri  in conspectu vultus Altissimi.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">kur dikush shtrëmbëron të drejtën e një njeriu në prani të Më të Lartit,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-36">
+      <div class="verse-num-col"><div class="verse-num">36</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ut perverteret hominem in judicio suo ;  Dominus ignoravit.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">kur dikujt i bëhet një padrejtësi në çështjen e tij, a nuk e shikon Zoti?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-37">
+      <div class="verse-num-col"><div class="verse-num">37</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quis est iste qui dixit ut fieret,  Domino non jubente ?</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Vallë kush thotë diçka që më pas realizohet, në rast se Zoti nuk e ka urdhëruar?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-38">
+      <div class="verse-num-col"><div class="verse-num">38</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ex ore Altissimi non egredientur  nec mala nec bona ?</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">E keqja dhe e mira a nuk vijnë vallë nga goja e Më të Lartit?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-39">
+      <div class="verse-num-col"><div class="verse-num">39</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quid murmuravit homo vivens,  vir pro peccatis suis ?</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Pse vallë ankohet një njeri i gjallë, një njeri për ndëshkimin e mëkateve të tij?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-40">
+      <div class="verse-num-col"><div class="verse-num">40</div></div>
+      <div class="verse-texts">
+        <div class="latin">Scrutemur vias nostras, et quæramus,  et revertamur ad Dominum.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Le të shqyrtojmë rrugët tona, t'i hetojmë dhe të kthehemi tek Zoti.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-41">
+      <div class="verse-num-col"><div class="verse-num">41</div></div>
+      <div class="verse-texts">
+        <div class="latin">Levemus corda nostra cum manibus  ad Dominum in cælos.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Le të ngremë lart zemrat tona dhe duart tona në drejtim të Perëndisë të qiejve.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-42">
+      <div class="verse-num-col"><div class="verse-num">42</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nos inique egimus, et ad iracundiam provocavimus ;  idcirco tu inexorabilis es.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Ne kemi kryer mëkate, kemi qënë rebelë dhe ti nuk na ke falur.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-43">
+      <div class="verse-num-col"><div class="verse-num">43</div></div>
+      <div class="verse-texts">
+        <div class="latin">Operuisti in furore, et percussisti nos ;  occidisti, nec pepercisti.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Je mbështjellë në zëmërimin tënd dhe na ke ndjekur, na ke vrarë pa mëshirë.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-44">
+      <div class="verse-num-col"><div class="verse-num">44</div></div>
+      <div class="verse-texts">
+        <div class="latin">Opposuisti nubem tibi,  ne transeat oratio.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Ti je mbështjellë në një re, në mënyrë që asnjë lutje të mos kalonte dot.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-45">
+      <div class="verse-num-col"><div class="verse-num">45</div></div>
+      <div class="verse-texts">
+        <div class="latin">Eradicationem et abjectionem posuisti me  in medio populorum.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Na ke bërë plehra dhe mbeturina në mes të popujve.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-46">
+      <div class="verse-num-col"><div class="verse-num">46</div></div>
+      <div class="verse-texts">
+        <div class="latin">Aperuerunt super nos os suum  omnes inimici.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Tërë armiqtë tanë kanë hapur gojën kundër nesh.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-47">
+      <div class="verse-num-col"><div class="verse-num">47</div></div>
+      <div class="verse-texts">
+        <div class="latin">Formido et laqueus facta est nobis  vaticinatio, et contritio.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Na ka rënë mbi trup tmerri, laku, dëshpërimi i thellë dhe shkatërrimi.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-48">
+      <div class="verse-num-col"><div class="verse-num">48</div></div>
+      <div class="verse-texts">
+        <div class="latin">Divisiones aquarum deduxit oculus meus,  in contritione filiæ populi mei.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Rrëke uji rrjedhin nga sytë e mi për shkatërrimin e bijës së popullit tim.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-49">
+      <div class="verse-num-col"><div class="verse-num">49</div></div>
+      <div class="verse-texts">
+        <div class="latin">Oculus meus afflictus est, nec tacuit,  eo quod non esset requies.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Syri im derdh lot pa pushim, pa ndërprerje,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-50">
+      <div class="verse-num-col"><div class="verse-num">50</div></div>
+      <div class="verse-texts">
+        <div class="latin">Donec respiceret et videret  Dominus de cælis.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">deri sa Zoti të mos vështrojë nga qielli dhe të mos shikojë.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-51">
+      <div class="verse-num-col"><div class="verse-num">51</div></div>
+      <div class="verse-texts">
+        <div class="latin">Oculus meus deprædatus est animam meam  in cunctis filiabus urbis meæ.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Syri im i sjell dhembje shpirtit tim për të gjitha bijat e qytetit tim.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-52">
+      <div class="verse-num-col"><div class="verse-num">52</div></div>
+      <div class="verse-texts">
+        <div class="latin">Venatione ceperunt me quasi avem  inimici mei gratis.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Ata që më urrejnë pa shkak më kanë gjuajtur si të isha zog.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-53">
+      <div class="verse-num-col"><div class="verse-num">53</div></div>
+      <div class="verse-texts">
+        <div class="latin">Lapsa est in lacum vita mea,  et posuerunt lapidem super me.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Kanë shkatërruar jetën time në gropë, më kanë hedhur gurë.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-54">
+      <div class="verse-num-col"><div class="verse-num">54</div></div>
+      <div class="verse-texts">
+        <div class="latin">Inundaverunt aquæ super caput meum ;  dixi : Perii.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Ujrat rrjedhin mbi kokën time, unë thoja: &quot;Ka marrë fund për mua&quot;.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-55">
+      <div class="verse-num-col"><div class="verse-num">55</div></div>
+      <div class="verse-texts">
+        <div class="latin">Invocavi nomen tuum, Domine,  de lacu novissimo.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Përmenda emrin tënd, o Zot, nga thellësia e gropës.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-56">
+      <div class="verse-num-col"><div class="verse-num">56</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vocem meam audisti ; ne avertas aurem tuam  a singultu meo et clamoribus.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Ti e dëgjove zërin tim; mos ia fshih veshin tënd psherëtimës sime, thirrjes time për ndihmë.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-57">
+      <div class="verse-num-col"><div class="verse-num">57</div></div>
+      <div class="verse-texts">
+        <div class="latin">Appropinquasti in die quando invocavi te ;  dixisti : Ne timeas.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Kur të kam thirrur ti je afruar; ke thënë: &quot;Mos ki frikë!&quot;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-58">
+      <div class="verse-num-col"><div class="verse-num">58</div></div>
+      <div class="verse-texts">
+        <div class="latin">Judicasti, Domine, causam animæ meæ,  redemptor vitæ meæ.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">O Zot ti ke mbrojtur çështjen e shpirtit tim, ti ke çliruar jetën time.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-59">
+      <div class="verse-num-col"><div class="verse-num">59</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vidisti, Domine, iniquitatem illorum adversum me :  judica judicium meum.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">O Zot, ti ke parë dëmin që kam pësuar, prandaj mbro çështjen time!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-60">
+      <div class="verse-num-col"><div class="verse-num">60</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vidisti omnem furorem,  universas cogitationes eorum adversum me.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Ti ke parë tërë frymën e tyre të hakmarrjes, intrigat e tyre kundër meje.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-61">
+      <div class="verse-num-col"><div class="verse-num">61</div></div>
+      <div class="verse-texts">
+        <div class="latin">Audisti opprobrium eorum, Domine,  omnes cogitationes eorum adversum me.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Ti ke dëgjuar fyerjet e tyre, o Zot, tërë intrigat e tyre kundër meje,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-62">
+      <div class="verse-num-col"><div class="verse-num">62</div></div>
+      <div class="verse-texts">
+        <div class="latin">Labia insurgentium mihi, et meditationes eorum  adversum me tota die.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">fjalimet e tyre që ngrihen kundër meje, atë që mendojnë kundër meje tërë ditën.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-63">
+      <div class="verse-num-col"><div class="verse-num">63</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sessionem eorum et resurrectionem eorum vide ;  ego sum psalmus eorum.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Vër re kur ulen dhe kur ngrihen, unë jam kënga e tyre.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-64">
+      <div class="verse-num-col"><div class="verse-num">64</div></div>
+      <div class="verse-texts">
+        <div class="latin">Redes eis vicem, Domine,  juxta opera manuum suarum.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Shpërbleji, o Zot, sipas veprës së duarve të tyre.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-65">
+      <div class="verse-num-col"><div class="verse-num">65</div></div>
+      <div class="verse-texts">
+        <div class="latin">Dabis eis scutum cordis,  laborem tuum.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Bëji zemërgur, mallkimi yt qoftë mbi ta.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-66">
+      <div class="verse-num-col"><div class="verse-num">66</div></div>
+      <div class="verse-texts">
+        <div class="latin">Persequeris in furore, et conteres eos  sub cælis, Domine.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Ndiqi në zemërimin tënd dhe shkatërroi poshtë qiejve të Zotit.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch4">
+    <div class="chapter-marker">
+      <span class="ch-roman">IV</span>
+      <span class="ch-label">Caput 4</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v4-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quomodo obscuratum est aurum,  mutatus est color optimus !  dispersi sunt lapides sanctuarii  in capite omnium platearum !</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Si u nxi ari, si u prish ari më i mirë! Gurët e shenjtërores u shpërndanë në hyrje të të gjitha rrugëve.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Filii Sion inclyti,  et amicti auro primo :  quomodo reputati sunt in vasa testea,  opus manuum figuli !</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Bijtë e çmuar të Sionit që çmoheshin si ar i kulluar, vallë si u konsideruan si enë prej balte, si punë e kryer nga duart e poçarit?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sed et lamiæ nudaverunt mammam,  lactaverunt catulos suos :  filia populi mei crudelis  quasi struthio in deserto.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Edhe çakejtë japin gjirin për të ushqyer të vegjëlit e tyre, por bija e popullit tim është bërë mizore si strucët e shkretëtirës.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Adhæsit lingua lactentis  ad palatum ejus in siti ;  parvuli petierunt panem,  et non erat qui frangeret eis.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Gjuha e foshnjës në gji ngjitet, në qiellzën e tij nga etja; fëmijët kërkojnë bukë, por nuk ka njeri që t'ua japë atyre.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui vescebantur voluptuose,  interierunt in viis ;  qui nutriebantur in croceis,  amplexati sunt stercora.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Ata që hanin ushqime të shijshme lëngojnë nëpër rrugë; ata që ishin rritur në purpur përqafojnë plehërishten.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et major effecta est iniquitas filiæ populi mei  peccato Sodomorum,  quæ subversa est in momento,  et non ceperunt in ea manus.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Ndëshkimi i paudhësisë të vajzës së popullit tim është më i madh se ndëshkimi i mëkatit të Sodomës, që u shkatërrua në një çast, pa ndërhyrjen e dorës së njeriut kundër saj.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Candidiores Nazaræi ejus nive,  nitidiores lacte,  rubicundiores ebore antiquo,  sapphiro pulchriores.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Princat e saj ishin më të shkëlqyeshëm se bora, më të bardhë se qumështi; e kishin trupin më të kuq se koralet, fytyra e tyre ishte si një safir.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Denigrata est super carbones facies eorum  et non sunt cogniti in plateis ;  adhæsit cutis eorum ossibus :  aruit, et facta est quasi lignum.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Tani pamja e tyre është më e zezë se terri; nuk njihen dot më nëpër rrugë; lëkura e tyre bashkohet me kockat e tyre, është tharë, është bërë si dru.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Melius fuit occisis gladio  quam interfectis fame,  quoniam isti extabuerunt consumpti  a sterilitate terræ.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Të vrarët nga shpata janë më mirë se ata që vdesin nga uria, sepse këta të fundit mbarojnë të rraskapitur nga mungesa e prodhimeve të fushës.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Manus mulierum misericordium  coxerunt filios suos ;  facti sunt cibus earum  in contritione filiæ populi mei.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Duart e grave të mëshirëshme kanë pjekur vetë fëmijët e tyre, të cilët u kanë shërbyer si ushqim, në shkatërrimin e bijës së popullit tim.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Complevit Dominus furorem suum,  effudit iram indignationis suæ :  et succendit ignem in Sion,  et devoravit fundamenta ejus.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Zoti i dha fund tërbimit të tij, ka derdhur zemërimin e tij të zjarrtë, ka ndezur në Sion një zjarr, që ka gllabëruar themelet e tij.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non crediderunt reges terræ,  et universi habitatores orbis,  quoniam ingrederetur hostis et inimicus  per portas Jerusalem.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Mbretërit e dheut dhe tërë banorët e botës nuk do të kishin besuar kurrë që kundërshtari dhe armiku do të hynin në portat e Jeruzalemit.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Propter peccata prophetarum ejus,  et iniquitates sacerdotum ejus,  qui effuderunt in medio ejus  sanguinem justorum.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Por kjo ndodhi për shkak të mëkateve të profetëve të tij dhe për shkak të paudhësive të priftërinjve të tij, që kanë derdhur në mes të saj gjakun e njerëzve të drejtë.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Erraverunt cæci in plateis,  polluti sunt in sanguine ;  cumque non possent,  tenuerunt lacinias suas.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Ata endeshin si të verbër nëpër rrugë, të ndotur me gjak, në mënyrë që askush nuk mund të prekte veshjet e tyre.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Recedite polluti, clamaverunt eis ;  recedite, abite, nolite tangere :  jurgati quippe sunt, et commoti dixerunt inter gentes :  Non addet ultra ut habitet in eis.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Sapo dukeshin njerëzit bërtisnin: &quot;Largohuni, një i papastër! Largohuni, largohuni mos e prekni!&quot;. Kur iknin dhe shkonin duke u endur midis kombeve thonin: &quot;Nuk do të mund të rrijnë më këtu&quot;.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Facies Domini divisit eos,  non addet ut respiciat eos ;  facies sacerdotum non erubuerunt,  neque senum miserti sunt.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Fytyra e Zotit i ka shpërndarë, nuk do të kthejë mbi ta shikimin e tij; nuk kanë pasur respekt për priftërinjtë dhe as kanë treguar dhembshuri për pleqtë.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Cum adhuc subsisteremus, defecerunt oculi nostri  ad auxilium nostrum vanum ;  cum respiceremus attenti ad gentem  quæ salvare non poterat.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Përveç kësaj sytë tona konsumoheshin në pritjen e një ndihme të kotë. Nga vendi ynë i vëzhgimit prisnim më kot një komb që nuk mund të na shpëtonte.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Lubricaverunt vestigia nostra  in itinere platearum nostrarum ;  appropinquavit finis noster, completi sunt dies nostri,  quia venit finis noster.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Na gjuanin në çdo hap, duke na penguar të ecnim nëpër sheshet tona. Fundi ynë është i afërt, ditët tona janë plotësuar, fundi ynë ka mbërritur.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">Velociores fuerunt persecutores nostri  aquilis cæli ;  super montes persecuti sunt nos,  in deserto insidiati sunt nobis.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Përndjekësit tanë kanë qenë më të shpejtë se shqiponjat e qiellit, na kanë ndjekur në malet, na kanë ngritur prita në shkretëtirë.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">Spiritus oris nostri, christus Dominus,  captus est in peccatis nostris,  cui diximus : In umbra tua  vivemus in gentibus.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Fryma e flegrave tona, i vajosuri i Zotit është marrë në gropat e tyre, ai për të cilin thoshim: &quot;Në hijen e tij do të jemi midis kombeve&quot;.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">Gaude et lætare, filia Edom,  quæ habitas in terra Hus !  ad te quoque perveniet calix : inebriaberis,  atque nudaberis.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Gëzohu dhe kënaqu, o bijë e Edomit, që banon në vendin e Utsit. Edhe ty do të të vijë kupa; do të dehesh dhe do të zbulosh lakuriqësinë tënde.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-22">
+      <div class="verse-num-col"><div class="verse-num">22</div></div>
+      <div class="verse-texts">
+        <div class="latin">Completa est iniquitas tua, filia Sion :  non addet ultra ut transmigret te.  Visitavit iniquitatem tuam, filia Edom ;  discooperuit peccata tua.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Ndëshkimi i paudhësisë sate u krye, o bijë e Sionit. Ai nuk do të të çojë më në robëri; por do të ndëshkojë paudhësinë tënde, o bijë e Edomit, do të nxjerrë në shesh mëkatet e tua.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch5">
+    <div class="chapter-marker">
+      <span class="ch-roman">V</span>
+      <span class="ch-label">Caput 5</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v5-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Recordare, Domine, quid acciderit nobis ;  intuere et respice opprobrium nostrum.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Kujto, o Zot, atë që na ka ndodhur, shiko dhe vër re turpin tonë.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hæreditas nostra versa est ad alienos,  domus nostræ ad extraneos.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Trashëgimia jonë u ka kaluar të huajve, shtëpitë tona njerëzve që nuk janë tanët.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Pupilli facti sumus absque patre,  matres nostræ quasi viduæ.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Ne u bëmë jetimë, pa etër, nënat tona janë si të veja.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Aquam nostram pecunia bibimus ;  ligna nostra pretio comparavimus.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Duhet të paguajmë për ujët që pimë, drutë tona i kemi vetëm me pagesë.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Cervicibus nostris minabamur,  lassis non dabatur requies.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Na ndjekin me një zgjedhë mbi qafë, jemi të rraskapitur dhe nuk kemi fare pushim.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ægypto dedimus manum et Assyriis,  ut saturaremur pane.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">I kemi shtrirë dorën Egjiptit dhe Asirisë për t'u ngopur me bukë.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Patres nostri peccaverunt, et non sunt :  et nos iniquitates eorum portavimus.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Etërit tanë kanë mëkatuar dhe nuk janë më, dhe ne mbajmë ndëshkimin për paudhësitë e tyre.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Servi dominati sunt nostri :  non fuit qui redimeret de manu eorum.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Skllevërit sundojnë mbi ne, askush nuk mund të na çlirojë nga duart e tyre.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">In animabus nostris afferebamus panem nobis,  a facie gladii in deserto.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">E nxjerrim bukën duke rrezikuar jetën tonë, përpara shpatës së shkretëtirës.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Pellis nostra quasi clibanus exusta est,  a facie tempestatum famis.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Lëkura jonë është ngrohur si në një furrë për shkak të valës së urisë.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Mulieres in Sion humiliaverunt,  et virgines in civitatibus Juda.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Kanë dhunuar gratë në Sion, virgjëreshat në qytetet e Judës.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Principes manu suspensi sunt ;  facies senum non erubuerunt.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Krerët janë varur nga duart e tyre, personi i pleqëve nuk është respektuar.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Adolescentibus impudice abusi sunt,  et pueri in ligno corruerunt.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Të rinjtë i vunë të bluajnë, të vegjëlit u rrëzuan nën barrën e druve.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Senes defecerunt de portis,  juvenes de choro psallentium.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Pleqtë nuk mblidhen më te porta, të rinjtë nuk u bien më veglave të tyre.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Defecit gaudium cordis nostri ;  versus est in luctum chorus noster.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Gëzimi i zemrave tona është pakësuar, vallja jonë është shndërruar në zi.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Cecidit corona capitis nostri :  væ nobis, quia peccavimus !</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Kurora ka rënë nga koka jonë; mjerë ne, sepse kemi mëkatuar!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Propterea mœstum factum est cor nostrum ;  ideo contenebrati sunt oculi nostri,</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Prandaj u sëmur zemra jonë, për këto gjëra na janë errësuar sytë:</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">propter montem Sion quia disperiit ;  vulpes ambulaverunt in eo.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">për malin e Sionit që është i shkretuar dhe në të cilin sillen dhelprat.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">Tu autem, Domine, in æternum permanebis,  solium tuum in generationem et generationem.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Por ti, o Zot, mbetesh për jetë, dhe froni yt brez pas brezi.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quare in perpetuum oblivisceris nostri,  derelinques nos in longitudine dierum ?</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Pse do të na harroje për jetë dhe do të na braktisje për një kohë të gjatë?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">Converte nos, Domine, ad te, et convertemur ;  innova dies nostros, sicut a principio.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Na bëj që të rikthehemi te ti, o Zot, dhe ne do të kthehemi; rivendos ditët tona si në të kaluarën.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-22">
+      <div class="verse-num-col"><div class="verse-num">22</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sed projiciens repulisti nos :  iratus es contra nos vehementer.</div>
+        <div class="trans-label">✦ Shqip</div>
+        <div class="trans">Mos vallë na hodhe poshtë fare apo je zemëruar me të madhe kundër nesh?</div>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <nav class="book-nav">
+    <a href="024-jer.html">← Ieremias</a>
+    <span class="center">Threni · Shqip</span>
+    <a href="026-eze.html">Ezechiel →</a>
+  </nav>
+
+  <footer class="page-footer">
+    BIBLIA CATHOLICA INTERLINEARIS &nbsp;·&nbsp; Vulgata Clementina &amp; Bibla e Shenjtë (PD)
+    &nbsp;·&nbsp; Gemeinfreie Texte / Public Domain
+  </footer>
 
 </body>
 </html>

@@ -1,1373 +1,1503 @@
 <!DOCTYPE html>
 <html lang="hr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Threni &middot; Hrvatski &middot; Biblia Catholica</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&display=swap" rel="stylesheet">
-<style>
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
-body{
-  background:#2C0810;
-  background-image:radial-gradient(ellipse at 50% 20%,#4A1020 0%,#1A0407 100%);
-  font-family:'EB Garamond',serif;
-  color:#1A0E06;
-  font-size:17px;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Threni · Hrvatski · Biblia Catholica</title>
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
+
+:root {
+  --gold:        #C8A96E;
+  --gold-light:  #EDD58A;
+  --gold-dark:   #8B6914;
+  --navy:        #1A1F3A;
+  --navy-mid:    #252B4A;
+  --navy-light:  #2E3560;
+  --parchment:   #F5E9CC;
+  --parchment-d: #EDD9A3;
+  --cream:       #FDF6E3;
+  --latin-color: #6B1E0E;
+  --trans-color: #0F1D2E;
+  --border:      rgba(200,169,110,.35);
+  --font-title:  'Cinzel Decorative', 'Cinzel', Georgia, serif;
+  --font-sub:    'Cinzel', Georgia, serif;
+  --font-body:   'EB Garamond', Georgia, serif;
 }
 
-/* ──────────────────────────────────────────
-   BUCHKOPF
-────────────────────────────────────────── */
-.bhead{
-  background:
-    repeating-linear-gradient( 45deg,transparent,transparent 36px,rgba(200,160,48,.028) 36px,rgba(200,160,48,.028) 37px),
-    repeating-linear-gradient(-45deg,transparent,transparent 36px,rgba(200,160,48,.028) 36px,rgba(200,160,48,.028) 37px),
-    linear-gradient(162deg,#2C0810 0%,#4A1020 45%,#5C1828 65%,#4A1020 85%,#2C0810 100%);
-  padding:36px 28px 28px;
-  text-align:center;
-  border-bottom:4px solid #B8962E;
-  position:relative;overflow:hidden;
-}
-/* Innerer Rahmen — äußerer Ring */
-.bhead::before{
-  content:'';position:absolute;inset:14px;
-  border:1px solid rgba(200,160,48,.22);
-  pointer-events:none;
-}
-/* Innerer Rahmen — innerer Ring */
-.bhead::after{
-  content:'';position:absolute;inset:22px;
-  border:1px solid rgba(200,160,48,.08);
-  pointer-events:none;
-}
-.btestament{
-  display:inline-block;
-  border:1px solid rgba(200,160,48,.32);
-  color:rgba(200,160,48,.52);
-  font-family:'Cinzel',serif;font-size:.55rem;
-  letter-spacing:.3em;padding:4px 18px;
-  border-radius:2px;margin-bottom:16px;
-  position:relative;
-}
-.blatin{
-  font-family:'Cinzel Decorative',serif;
-  font-size:clamp(1.9rem,7vw,3.4rem);
-  color:#EDD882;
-  text-shadow:0 3px 20px rgba(0,0,0,.55);
-  letter-spacing:.06em;position:relative;
-}
-.btrans{
-  font-family:'Cinzel',serif;
-  font-size:.88rem;
-  color:#C8A030;margin-top:10px;
-  letter-spacing:.16em;position:relative;
-}
-.bmeta{
-  font-family:'Cinzel',serif;font-size:.62rem;
-  color:rgba(200,160,48,.4);margin-top:6px;
-  letter-spacing:.08em;position:relative;
-}
+*,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+html { font-size:16px; scroll-behavior:smooth; }
+body { background:var(--cream); color:var(--trans-color); font-family:var(--font-body); }
 
-/* ──────────────────────────────────────────
-   KAPITELINHALT
-────────────────────────────────────────── */
-.content{
-  max-width:960px;
-  margin:36px auto 36px;
-  padding:48px 72px 100px;
-  background:#FAF5E8;
+/* ── NAV ─────────────────────────────────────────────── */
+.nav-bar {
+  background:var(--navy); padding:10px 28px;
+  display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  border-bottom:2px solid var(--gold);
+  position:sticky; top:0; z-index:100;
+  box-shadow:0 3px 12px rgba(0,0,0,.45);
+}
+.nav-bar a {
+  color:var(--gold); text-decoration:none;
+  font-family:var(--font-sub); font-size:.75rem; letter-spacing:.05em;
+  transition:color .15s;
+}
+.nav-bar a:hover { color:var(--gold-light); }
+.nav-bar .home { font-weight:700; font-size:.82rem; }
+.nav-bar .spacer { flex:1; }
+.nav-bar .pos { color:rgba(200,169,110,.45); font-size:.7rem; font-family:var(--font-sub); }
+
+/* ── BUCHKOPF ────────────────────────────────────────── */
+.book-header {
+  background:linear-gradient(160deg,var(--navy) 0%,var(--navy-mid) 55%,var(--navy-light) 100%);
+  padding:44px 36px 34px; text-align:center;
+  border-bottom:4px solid var(--gold);
+  position:relative; overflow:hidden;
+}
+.book-header::before {
+  content:'';
+  position:absolute; inset:0;
   background-image:
-    radial-gradient(ellipse at top left,rgba(184,150,46,.06) 0%,transparent 55%),
-    radial-gradient(ellipse at bottom right,rgba(184,150,46,.05) 0%,transparent 55%);
-  box-shadow:0 8px 80px rgba(0,0,0,.55),0 2px 12px rgba(0,0,0,.35),inset 0 0 0 1px rgba(184,150,46,.18);
-  border-left:4px solid #B8962E;
-  border-right:4px solid #B8962E;
-  border-top:2px solid rgba(184,150,46,.4);
-  border-bottom:2px solid rgba(184,150,46,.4);
-  position:relative;
-}
-.content::before{
-  content:'';
-  position:absolute;
-  inset:12px;
-  border:1px solid rgba(184,150,46,.08);
+    repeating-linear-gradient( 45deg,transparent,transparent 30px,rgba(200,169,110,.038) 30px,rgba(200,169,110,.038) 31px),
+    repeating-linear-gradient(-45deg,transparent,transparent 30px,rgba(200,169,110,.038) 30px,rgba(200,169,110,.038) 31px);
   pointer-events:none;
 }
-
-.chap{margin-top:0;}
-
-.chhead{
-  text-align:center;
-  padding:40px 0 20px;
-  margin-bottom:16px;
-  position:relative;
+.testament-badge {
+  display:inline-block;
+  border:1px solid rgba(200,169,110,.4); color:rgba(200,169,110,.65);
+  font-family:var(--font-sub); font-size:.62rem; letter-spacing:.25em;
+  padding:4px 14px; border-radius:2px; margin-bottom:14px; position:relative;
 }
-.chhead::before{
-  content:'——— ✦ ✦ ✦ ———';
-  display:block;
-  font-size:.7rem;
-  color:rgba(184,150,46,.45);
-  letter-spacing:.35em;
-  margin-bottom:16px;
+.book-name-latin {
+  font-family:var(--font-title); font-size:3rem; color:var(--gold-light);
+  text-shadow:0 3px 18px rgba(0,0,0,.55); letter-spacing:.08em; position:relative;
 }
-.chhead::after{
-  content:'';
-  display:block;
-  width:200px;
-  height:1px;
-  margin:14px auto 0;
-  background:linear-gradient(to right,transparent,#B8962E,transparent);
+.book-name-trans {
+  font-family:var(--font-sub); font-size:1.1rem; color:var(--gold);
+  margin-top:8px; letter-spacing:.12em; position:relative;
 }
-.chrom{
-  font-family:'Cinzel Decorative',serif;
-  font-size:4rem;color:#8B6914;
-  display:block;
-  text-shadow:0 2px 18px rgba(184,150,46,.2);
-  line-height:1;
-}
-.chlbl{
-  font-family:'Cinzel',serif;font-size:.58rem;
-  color:rgba(184,150,46,.42);letter-spacing:.32em;
-  display:block;margin-top:8px;
+.book-meta {
+  font-size:.74rem; color:rgba(200,169,110,.5); margin-top:7px;
+  font-family:var(--font-sub); letter-spacing:.07em; position:relative;
 }
 
-/* ──────────────────────────────────────────
-   VERSE
-────────────────────────────────────────── */
-.vb{
-  display:flex;
-  padding:20px 6px;
-  border-bottom:1px solid rgba(184,150,46,.12);
-  background:none;
-  border-radius:2px;
-  transition:background .15s;
-}
-.vb:hover{
-  background:rgba(184,150,46,.04);
+/* ── ORNAMENT-TRENNLINIE ─────────────────────────────── */
+.ornament-bar {
+  text-align:center; padding:16px 0 4px;
+  color:var(--gold); font-size:1.1rem; letter-spacing:.7em;
 }
 
-/* Versnummer */
-.vn{
-  flex-shrink:0;
-  width:38px;
-  padding-top:4px;
-  font-family:'Cinzel',serif;font-size:.56rem;
-  color:rgba(184,150,46,.52);text-align:right;
-  padding-right:12px;line-height:2.4;
+/* ── HAUPT-CONTAINER ─────────────────────────────────── */
+.content { max-width:960px; margin:0 auto; padding:0 24px 80px; }
+
+/* ── KAPITEL-MARKER ──────────────────────────────────── */
+.chapter-marker {
+  display:flex; align-items:center; gap:16px;
+  padding:28px 6px 12px; margin-bottom:4px;
+  border-bottom:2px solid var(--border);
+}
+.ch-roman {
+  font-family:var(--font-title); font-size:2.2rem; color:var(--gold);
+  min-width:56px; text-align:center; flex-shrink:0;
+  text-shadow:0 1px 8px rgba(200,169,110,.3);
+}
+.ch-label {
+  font-family:var(--font-sub); font-size:.72rem; color:rgba(200,169,110,.6);
+  letter-spacing:.22em; text-transform:uppercase;
 }
 
-.vt{
-  flex:1;
-  padding:0 20px 0 4px;
+/* ── VERS-BLOCK ──────────────────────────────────────── */
+.verse-block {
+  display:flex; gap:0; border-bottom:1px solid rgba(200,169,110,.15);
+}
+.verse-block:nth-child(odd)  { background:var(--cream); }
+.verse-block:nth-child(even) { background:var(--parchment); }
+
+.verse-num-col {
+  flex-shrink:0; width:42px; padding:16px 6px 16px 0; text-align:right;
+}
+.verse-num {
+  display:inline-block; width:28px; height:28px; border-radius:50%;
+  background:var(--gold-dark); color:var(--cream);
+  font-family:var(--font-sub); font-size:.64rem; font-weight:700;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 1px 5px rgba(0,0,0,.25);
 }
 
-/* LATEIN — PRIMÄR: groß, warm, maßgebend */
-.lat{
-  font-family:'EB Garamond',serif;
-  font-size:1.2rem;
-  font-weight:500;
-  line-height:2.1;
-  color:#3D1A08;
+.verse-texts { flex:1; padding:16px 16px 18px 8px; }
+
+/* ── LATEINISCHER TEXT (oben / primär) ───────────────── */
+.latin {
+  font-family:var(--font-body); font-size:1.12rem; line-height:1.9;
+  color:var(--latin-color); font-weight:500;
+  border-left:3px solid var(--gold); padding-left:12px;
+  margin-bottom:8px;
 }
 
-/* ÜBERSETZUNG — SEKUNDÄR: kleiner, kursiv, unter dem Latein */
-.tra{
-  font-family:'EB Garamond',serif;
-  font-size:.93rem;
-  font-style:italic;
-  line-height:1.95;
-  color:#1E2848;
-  margin-top:5px;
-  padding-left:14px;
-  border-left:2px solid rgba(90,110,170,.2);
+/* ── ÜBERSETZUNGS-TEXT (unten / sekundär) ────────────── */
+.trans-label {
+  font-family:var(--font-sub); font-size:.6rem; letter-spacing:.17em;
+  text-transform:uppercase; color:var(--gold-dark); margin-bottom:5px; opacity:.78;
+}
+.trans {
+  font-family:var(--font-body); font-size:1.04rem; line-height:1.85;
+  color:var(--trans-color); font-style:italic;
+  padding-left:15px;
 }
 
-/* Drop-Cap: erster Vers eines Kapitels — auf dem Latein */
-.vb.first .lat::first-letter{
-  font-family:'Cinzel Decorative',serif;
-  font-size:4em;
-  float:left;
-  line-height:.7;
-  padding-right:.08em;
-  margin-top:.07em;
-  color:#B8962E;
-  text-shadow:1px 2px 6px rgba(0,0,0,.12);
+/* Erste Vers jedes Kapitels: Drop-Cap */
+.verse-block:first-of-type .latin::first-letter {
+  font-size:4.2em; float:left; line-height:.72;
+  padding-right:.08em; margin-top:.06em;
+  font-family:var(--font-title); color:var(--gold);
 }
 
-/* ──────────────────────────────────────────
-   BUCH-NAVIGATION (unten)
-────────────────────────────────────────── */
-.bnav{
-  display:flex;justify-content:space-between;align-items:center;
-  background:#2C0810;border-top:3px solid #B8962E;
-  padding:12px 24px;gap:12px;
+/* ── NAVIGATION ZWISCHEN BÜCHERN ─────────────────────── */
+.book-nav {
+  display:flex; justify-content:space-between; align-items:center;
+  background:var(--navy); border-top:3px solid var(--gold);
+  padding:12px 26px; gap:12px;
 }
-.bnav a,.bnav .dim{
-  color:#C8A030;text-decoration:none;
-  font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:.07em;
-  padding:6px 16px;
-  border:1px solid rgba(200,160,48,.28);
-  border-radius:2px;transition:background .18s;
+.book-nav a {
+  color:var(--gold); text-decoration:none;
+  font-family:var(--font-sub); font-size:.78rem; letter-spacing:.07em;
+  padding:6px 14px; border:1px solid rgba(200,169,110,.3); border-radius:3px;
+  transition:background .18s;
 }
-.bnav a:hover{background:rgba(200,160,48,.12);}
-.bnav .dim{color:rgba(200,160,48,.2);border-color:rgba(200,160,48,.1);}
-.bnav .center{
-  font-family:'Cinzel',serif;font-size:.68rem;
-  color:rgba(200,160,48,.65);text-align:center;
-  letter-spacing:.06em;text-decoration:none;
-  border:1px solid rgba(200,160,48,.28);border-radius:2px;
-  padding:6px 20px;transition:background .18s;
-}
-.bnav .center:hover{background:rgba(200,160,48,.1);}
-
-/* DRUCK */
-@media print{
-  .bnav{display:none;}
-  .bhead{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-  .vb{break-inside:avoid;}
+.book-nav a:hover { background:rgba(200,169,110,.15); }
+.book-nav .center {
+  font-family:var(--font-sub); font-size:.7rem; color:rgba(200,169,110,.55);
+  letter-spacing:.1em; text-align:center;
 }
 
-/* MOBIL */
-@media(max-width:600px){
-  .blatin{font-size:1.8rem;}
-  .lat{font-size:1rem;}
-  .tra{font-size:.84rem;}
-  .content{padding:16px 18px 60px;margin:0;border-left:none;border-right:none;border-radius:0;}
-  .chrom{font-size:1.8rem;}
+/* ── FUßZEILE ────────────────────────────────────────── */
+.page-footer {
+  background:var(--navy); border-top:2px solid rgba(200,169,110,.3);
+  padding:18px 28px; text-align:center;
+  color:rgba(200,169,110,.45); font-family:var(--font-sub);
+  font-size:.68rem; letter-spacing:.1em;
+}
+
+/* ── DRUCK ───────────────────────────────────────────── */
+@media print {
+  .nav-bar, .book-nav { display:none; }
+  .verse-block { break-inside:avoid; }
+  .book-header { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+}
+
+/* ── MOBIL ───────────────────────────────────────────── */
+@media (max-width:640px) {
+  .book-name-latin { font-size:2.1rem; }
+  .ch-roman { font-size:1.6rem; }
+  .latin { font-size:.98rem; }
+  .trans { font-size:.93rem; }
+  .content { padding:0 12px 60px; }
 }
 </style>
 </head>
 <body>
 
-<header class="bhead">
-  <div class="btestament">VETUS TESTAMENTUM</div>
-  <div class="blatin">THRENI</div>
-  <div class="btrans">Tužaljke &nbsp;&middot;&nbsp; <em>Hrvatski</em></div>
-  <div class="bmeta">5 Capita &nbsp;&middot;&nbsp; 154 Versus</div>
-</header>
+  <nav class="nav-bar">
+    <a class="home" href="../../../index.html">✞ BIBLIA CATHOLICA</a>
+    <a href="../index.html">🇭🇷 Hrvatski</a>
+    <span class="spacer"></span>
+    <span class="pos">025 / 073</span>
+  </nav>
 
-<main class="content">
-<section class="chap" id="c1">
-  <div class="chhead">
-    <span class="chrom">I</span>
-    <span class="chlbl">Caput 1</span>
-  </div>
-<div class="vb first" id="v1-1">
-  <span class="vn">1</span>
-  <div class="vt">
-    <p class="lat">Quomodo sedet sola  civitas plena populo !  Facta est quasi vidua  domina gentium ;  princeps provinciarum  facta est sub tributo.</p>
-    <p class="tra">Kako osamljena sjedi prijestolnica, nekoć naroda puna; postade kao udovica, nekoć velika među narodima. Vladarica nad pokrajinama, na tlaku sad ide.</p>
-  </div>
-</div>
-<div class="vb" id="v1-2">
-  <span class="vn">2</span>
-  <div class="vt">
-    <p class="lat">Plorans ploravit in nocte,  et lacrimæ ejus in maxillis ejus :  non est qui consoletur eam  ex omnibus caris ejus ;  omnes amici ejus spreverunt eam,  et facti sunt ei inimici.</p>
-    <p class="tra">Noći provodi gorko plačući, suzama pokriva obraze. Nikog nema da je utješi, od svih koji su je ljubili. Svi je prijatelji iznevjeriše i postaše joj neprijatelji.</p>
-  </div>
-</div>
-<div class="vb" id="v1-3">
-  <span class="vn">3</span>
-  <div class="vt">
-    <p class="lat">Migravit Judas propter afflictionem,  et multitudinem servitutis ;  habitavit inter gentes,  nec invenit requiem :  omnes persecutores ejus apprehenderunt eam  inter angustias.</p>
-    <p class="tra">Izagnan je Juda, u nevolji je i u progonstvu teškom. Sad živi među poganima, ne nalazi počinka. Svi ga gonitelji sustižu u tjesnacima.</p>
-  </div>
-</div>
-<div class="vb" id="v1-4">
-  <span class="vn">4</span>
-  <div class="vt">
-    <p class="lat">Viæ Sion lugent, eo quod non sint  qui veniant ad solemnitatem :  omnes portæ ejus destructæ,  sacerdotes ejus gementes ;  virgines ejus squalidæ,  et ipsa oppressa amaritudine.</p>
-    <p class="tra">Putovi sionski tuguju jer nitko ne dolazi na svetkovine. Sva su vrata razvaljena, svećenici uzdišu, ucviljene su djevice njegove, a on je pun gorčine.</p>
-  </div>
-</div>
-<div class="vb" id="v1-5">
-  <span class="vn">5</span>
-  <div class="vt">
-    <p class="lat">Facti sunt hostes ejus in capite ;  inimici ejus locupletati sunt :  quia Dominus locutus est super eam  propter multitudinem iniquitatum ejus.  Parvuli ejus ducti sunt in captivitatem  ante faciem tribulantis.</p>
-    <p class="tra">Tlačitelji njegovi sada gospodare, neprijatelji likuju: Jahve ga ucvili zbog grijeha njegovih premnogih. Djeca mu otišla u izgnanstvo pred tlačiteljem.</p>
-  </div>
-</div>
-<div class="vb" id="v1-6">
-  <span class="vn">6</span>
-  <div class="vt">
-    <p class="lat">Et egressus est a filia Sion  omnis decor ejus ;  facti sunt principes ejus velut arietes  non invenientes pascua,  et abierunt absque fortitudine  ante faciem subsequentis.</p>
-    <p class="tra">Povukla se od Kćeri sionske sva slava njezina. Knezovi joj postadoše k'o ovnovi koji paše ne nalaze; nemoćni vrludaju ispred goniča.</p>
-  </div>
-</div>
-<div class="vb" id="v1-7">
-  <span class="vn">7</span>
-  <div class="vt">
-    <p class="lat">Recordata est Jerusalem dierum afflictionis suæ,  et prævaricationis,  omnium desiderabilium suorum,  quæ habuerat a diebus antiquis,  cum caderet populus ejus in manu hostili,  et non esset auxiliator :  viderunt eam hostes,  et deriserunt sabbata ejus.</p>
-    <p class="tra">Jeruzalem se spominje danÄa bijede i lutanja, kad mu narod dušmanu u ruke pade a nitko mu pomoći ne pruži. Tlačitelji ga gledahu smijući se njegovoj propasti.</p>
-  </div>
-</div>
-<div class="vb" id="v1-8">
-  <span class="vn">8</span>
-  <div class="vt">
-    <p class="lat">Peccatum peccavit Jerusalem,  propterea instabilis facta est ;  omnes qui glorificabant eam spreverunt illam,  quia viderunt ignominiam ejus :  ipsa autem gemens  conversa est retrorsum.</p>
-    <p class="tra">Teško sagriješi Jeruzalem, postade kao nečistoća ženina. Svi što ga štovahu, sada ga preziru: jer vidješe golotinju njegovu. On samo plače i natrag se okreće.</p>
-  </div>
-</div>
-<div class="vb" id="v1-9">
-  <span class="vn">9</span>
-  <div class="vt">
-    <p class="lat">Sordes ejus in pedibus ejus,  nec recordata est finis sui ;  deposita est vehementer,  non habens consolatorem.  Vide, Domine, afflictionem meam,  quoniam erectus est inimicus.</p>
-    <p class="tra">Skuti su mu uprljani, nije ni sanjao što ga čeka. Duboko je pao, a nikog da ga tješi. &quot;Pogledaj, Jahve, moju nevolju: jer neprijatelj likuje.&quot;</p>
-  </div>
-</div>
-<div class="vb" id="v1-10">
-  <span class="vn">10</span>
-  <div class="vt">
-    <p class="lat">Manum suam misit hostis  ad omnia desiderabilia ejus,  quia vidit gentes  ingressas sanctuarium suum,  de quibus præceperas  ne intrarent in ecclesiam tuam.</p>
-    <p class="tra">Neprijatelj poseže rukom za svim dragocjenostima njegovim. Gledao je gdje pogani provaljuju u njegovo Svetište, oni kojima si zabranio i pristup u svoj zbor.</p>
-  </div>
-</div>
-<div class="vb" id="v1-11">
-  <span class="vn">11</span>
-  <div class="vt">
-    <p class="lat">Omnis populus ejus gemens,  et quærens panem ;  dederunt pretiosa quæque pro cibo  ad refocillandam animam.  Vide, Domine, et considera  quoniam facta sum vilis !</p>
-    <p class="tra">Sav narod njegov jeca, tražeći kruha; svi daju dragulje za hranu da bi ponovo živnuli. Evo, Jahve, pogledaj kako sam prezren.</p>
-  </div>
-</div>
-<div class="vb" id="v1-12">
-  <span class="vn">12</span>
-  <div class="vt">
-    <p class="lat">O vos omnes qui transitis per viam,  attendite, et videte  si est dolor sicut dolor meus !  quoniam vindemiavit me,  ut locutus est Dominus,  in die iræ furoris sui.</p>
-    <p class="tra">Svi vi što putem prolazite, pogledajte i vidite ima li boli kakva je bol kojom sam ja pogođen, kojom me Jahve udari u dan žestokog gnjeva svoga!</p>
-  </div>
-</div>
-<div class="vb" id="v1-13">
-  <span class="vn">13</span>
-  <div class="vt">
-    <p class="lat">De excelso misit ignem in ossibus meis,  et erudivit me :  expandit rete pedibus meis,  convertit me retrorsum ;  posuit me desolatam,  tota die mœrore confectam.</p>
-    <p class="tra">S visine pusti oganj, utjera ga u kosti moje. Pred noge mrežu mi razape i tako me nauznak obori; ucvili me, ožalosti za sva vremena.</p>
-  </div>
-</div>
-<div class="vb" id="v1-14">
-  <span class="vn">14</span>
-  <div class="vt">
-    <p class="lat">Vigilavit jugum iniquitatum mearum ;  in manu ejus convolutæ sunt,  et impositæ collo meo.  Infirmata est virtus mea :  dedit me Dominus in manu  de qua non potero surgere.</p>
-    <p class="tra">Natovario me mojim grijesima, rukom ih svojom pritegnuo; na vrat mi ih navalio, snagu mi oduzeo. Predao me Gospod u ruke njihove, ne mogu se uspraviti.</p>
-  </div>
-</div>
-<div class="vb" id="v1-15">
-  <span class="vn">15</span>
-  <div class="vt">
-    <p class="lat">Abstulit omnes magnificos meos Dominus  de medio mei ;  vocavit adversum me tempus  ut contereret electos meos.  Torcular calcavit Dominus  virgini filiæ Juda.</p>
-    <p class="tra">Sve junake iz moje sredine Gospod odbaci: digao je zbor protiv mene da uništi uzdanicu moju. U tijesku izgazi Gospod mene, djevicu, kćerku Judinu.</p>
-  </div>
-</div>
-<div class="vb" id="v1-16">
-  <span class="vn">16</span>
-  <div class="vt">
-    <p class="lat">Idcirco ego plorans,  et oculus meus deducens aquas,  quia longe factus est a me consolator,  convertens animam meam.  Facti sunt filii mei perditi,  quoniam invaluit inimicus.</p>
-    <p class="tra">Zato moram plakati, oči mi suze liju, jer daleko je od mene moj tješitelj da mi duh povrati. Sinovi su moji poraženi, odveć silan bijaše neprijatelj.</p>
-  </div>
-</div>
-<div class="vb" id="v1-17">
-  <span class="vn">17</span>
-  <div class="vt">
-    <p class="lat">Expandit Sion manus suas ;  non est qui consoletur eam.  Mandavit Dominus adversum Jacob  in circuitu ejus hostes ejus ;  facta est Jerusalem  quasi polluta menstruis inter eos.</p>
-    <p class="tra">Sion pruža ruke: nema mu tješitelja. Jahve je protiv Jakova sa svih strana pozvao tlačitelje; i tako Jeruzalem postade među njima strašilo.</p>
-  </div>
-</div>
-<div class="vb" id="v1-18">
-  <span class="vn">18</span>
-  <div class="vt">
-    <p class="lat">Justus est Dominus,  quia os ejus ad iracundiam provocavi.  Audite, obsecro, universi populi,  et videte dolorem meum :  virgines meæ et juvenes mei abierunt  in captivitatem.</p>
-    <p class="tra">Jahve, on je pravedan; jer riječi se njegovoj protivih. Oh, čujte, narodi svi, gledajte moju bol: djevice moje, moji mladići, svi odoše u izgnanstvo!</p>
-  </div>
-</div>
-<div class="vb" id="v1-19">
-  <span class="vn">19</span>
-  <div class="vt">
-    <p class="lat">Vocavi amicos meos,  et ipsi deceperunt me ;  sacerdotes mei et senes mei  in urbe consumpti sunt,  quia quæsierunt cibum sibi  ut refocillarent animam suam.</p>
-    <p class="tra">Pozvah sve ljubavnike svoje, ali me oni prevariše. Moji svećenici i starješine pogiboše u gradu tražeći hrane da bi ponovo živnuli.</p>
-  </div>
-</div>
-<div class="vb" id="v1-20">
-  <span class="vn">20</span>
-  <div class="vt">
-    <p class="lat">Vide, Domine, quoniam tribulor :  conturbatus est venter meus,  subversum est cor meum in memetipsa,  quoniam amaritudine plena sum.  Foris interfecit gladius,  et domi mors similis est.</p>
-    <p class="tra">Pogledaj, Jahve, u kakvoj sam tjeskobi, moja utroba strepi, srce mi se u grudima grči jer bijah opako prkosan! Vani mač pokosi moje sinove, a unutra - smrt.</p>
-  </div>
-</div>
-<div class="vb" id="v1-21">
-  <span class="vn">21</span>
-  <div class="vt">
-    <p class="lat">Audierunt quia ingemisco ego,  et non est qui consoletur me ;  omnes inimici mei audierunt malum meum,  lætati sunt quoniam tu fecisti :  adduxisti diem consolationis,  et fient similes mei.</p>
-    <p class="tra">Čuj kako stenjem: nema mi tješitelja! Svi neprijatelji čuju za moju nesreću i likuju što si to učinio! Daj da dođe dan što si ga objavio, da njima bude kao meni.</p>
-  </div>
-</div>
-<div class="vb" id="v1-22">
-  <span class="vn">22</span>
-  <div class="vt">
-    <p class="lat">Ingrediatur omne malum eorum coram te :  et vindemia eos, sicut vindemiasti me  propter omnes iniquitates meas :  multi enim gemitus mei,  et cor meum mœrens.</p>
-    <p class="tra">Neka se pokaže sva njina zloća pred licem tvojim, a onda postupaj s njima kao što si sa mnom postupio za sve grijehe moje! Jer samo uzdišem, a srce moje tuguje.</p>
-  </div>
-</div>
-</section>
+  <header class="book-header">
+    <div class="testament-badge">VETUS TESTAMENTUM</div>
+    <div class="book-name-latin">THRENI</div>
+    <div class="book-name-trans">Lamentations</div>
+    <div class="book-meta">Vulgata Clementina · Hrvatska Biblija (PD, 1895) · 5 Capita · 154 Versus</div>
+  </header>
 
-<section class="chap" id="c2">
-  <div class="chhead">
-    <span class="chrom">II</span>
-    <span class="chlbl">Caput 2</span>
-  </div>
-<div class="vb first" id="v2-1">
-  <span class="vn">1</span>
-  <div class="vt">
-    <p class="lat">Quomodo obtexit caligine in furore suo  Dominus filiam Sion ;  projecit de cælo in terram  inclytam Israël,  et non est recordatus scabelli pedum suorum  in die furoris sui !</p>
-    <p class="tra">Kako mrakom zastrije Gospod u svom gnjevu Kćer sionsku. S neba na zemlju baci slavu Izraelovu! I ne sjeti se podnožja svoga u dan gnjeva svojega!</p>
-  </div>
-</div>
-<div class="vb" id="v2-2">
-  <span class="vn">2</span>
-  <div class="vt">
-    <p class="lat">Præcipitavit Dominus, nec pepercit  omnia speciosa Jacob :  destruxit in furore suo  munitiones virginis Juda,  et dejecit in terram ;  polluit regnum et principes ejus.</p>
-    <p class="tra">Bez milosti Gospod satrije sve stanove Jakovljeve, u svom gnjevu razori tvrđave kćeri Judine; sa zemljom je sravnio i prokleo kraljevstvo i njegove knezove.</p>
-  </div>
-</div>
-<div class="vb" id="v2-3">
-  <span class="vn">3</span>
-  <div class="vt">
-    <p class="lat">Confregit in ira furoris sui  omne cornu Israël ;  avertit retrorsum dexteram suam  a facie inimici,  et succendit in Jacob quasi ignem  flammæ devorantis in gyro.</p>
-    <p class="tra">U rasplamtjelom gnjevu svojem razbi svu snagu Izraelovu, povuče svoju desnicu pred neprijateljem; u Jakovu raspiri plamen ognjeni koji sve uokolo proždire.</p>
-  </div>
-</div>
-<div class="vb" id="v2-4">
-  <span class="vn">4</span>
-  <div class="vt">
-    <p class="lat">Tetendit arcum suum quasi inimicus,  firmavit dexteram suam quasi hostis,  et occidit omne quod pulchrum erat visu  in tabernaculo filiæ Sion ;  effudit quasi ignem  indignationem suam.</p>
-    <p class="tra">Nategao je luk k'o neprijatelj, kao dušman ispružio desnicu, ubijajući sve što mu drago bijaše. Na šator Kćeri sionske sasu k'o oganj gnjev svoj jarosni.</p>
-  </div>
-</div>
-<div class="vb" id="v2-5">
-  <span class="vn">5</span>
-  <div class="vt">
-    <p class="lat">Factus est Dominus velut inimicus,  præcipitavit Israël :  præcipitavit omnia mœnia ejus,  dissipavit munitiones ejus,  et replevit in filia Juda  humiliatum et humiliatam.</p>
-    <p class="tra">K'o neprijatelj Gospod bijaše: razorio je Izraela, razorio sve dvore njegove, porušio njegove utvrde, umnožio kćeri Judinoj uzdisaje i jecaje.</p>
-  </div>
-</div>
-<div class="vb" id="v2-6">
-  <span class="vn">6</span>
-  <div class="vt">
-    <p class="lat">Et dissipavit quasi hortum tentorium suum ;  demolitus est tabernaculum suum.  Oblivioni tradidit Dominus in Sion  festivitatem et sabbatum ;  et in opprobrium, et in indignationem furoris sui,  regem et sacerdotem.</p>
-    <p class="tra">Kao vrtu razvali mu sjenicu, razori mjesto sastanka. Baci Jahve u zaborav svetkovine i subote na Sionu; u gnjevu svojem prezre kralja i svećenika.</p>
-  </div>
-</div>
-<div class="vb" id="v2-7">
-  <span class="vn">7</span>
-  <div class="vt">
-    <p class="lat">Repulit Dominus altare suum ;  maledixit sanctificationi suæ :  tradidit in manu inimici  muros turrium ejus.  Vocem dederunt in domo Domini  sicut in die solemni.</p>
-    <p class="tra">Svoj oltar je Gospod odbacio, zgadilo mu se Svetište njegovo. U ruke neprijatelja je predao bedeme svoje i dvorove. Bučili su u Domu Jahvinu, kao u dan blagdanji.</p>
-  </div>
-</div>
-<div class="vb" id="v2-8">
-  <span class="vn">8</span>
-  <div class="vt">
-    <p class="lat">Cogitavit Dominus dissipare  murum filiæ Sion ;  tetendit funiculum suum,  et non avertit manum suam a perditione :  luxitque antemurale,  et murus pariter dissipatus est.</p>
-    <p class="tra">Jahve naumi razvaliti zidove Kćeri sionske. Nape uže mjerničko, ne ustegnu ruku od rušenja. Predziđe, zidine zavi u tugu: oronuše zajedno.</p>
-  </div>
-</div>
-<div class="vb" id="v2-9">
-  <span class="vn">9</span>
-  <div class="vt">
-    <p class="lat">Defixæ sunt in terra portæ ejus,  perdidit et contrivit vectes ejus ;  regem ejus et principes ejus in gentibus :  non est lex,  et prophetæ ejus non invenerunt  visionem a Domino.</p>
-    <p class="tra">Vrata njina utonuše u zemlju, on im je razbio zasune; kralj i knezovi su među pucima, Zakona nema! Ni u prorokÄa više se ne nalaze viđenja Jahvina.</p>
-  </div>
-</div>
-<div class="vb" id="v2-10">
-  <span class="vn">10</span>
-  <div class="vt">
-    <p class="lat">Sederunt in terra, conticuerunt  senes filiæ Sion ;  consperserunt cinere capita sua,  accincti sunt ciliciis :  abjecerunt in terram capita sua  virgines Jerusalem.</p>
-    <p class="tra">Starješine Kćeri sionske na zemlji sjede i šute, posiplju glavu prašinom, kostrijet pripasuju. K zemlji glave obaraju djevice jeruzalemske.</p>
-  </div>
-</div>
-<div class="vb" id="v2-11">
-  <span class="vn">11</span>
-  <div class="vt">
-    <p class="lat">Defecerunt præ lacrimis oculi mei,  conturbata sunt viscera mea ;  effusum est in terra jecur meum  super contritione filiæ populi mei,  cum deficeret parvulus et lactens  in plateis oppidi.</p>
-    <p class="tra">Iščilješe mi oči od suza, utroba moja ustreptala, jetra mi se na zemlju prosula zbog sloma kćeri naroda mojega, jer djeca i dojenčad umiru po trgovima Grada.</p>
-  </div>
-</div>
-<div class="vb" id="v2-12">
-  <span class="vn">12</span>
-  <div class="vt">
-    <p class="lat">Matribus suis dixerunt :  Ubi est triticum et vinum ?  cum deficerent quasi vulnerati  in plateis civitatis,  cum exhalarent animas suas  in sinu matrum suarum.</p>
-    <p class="tra">Govore majkama svojim: &quot;Gdje je žito i vino?&quot; dok obamiru kao ranjeni po trgovima Grada, dok ispuštaju dušu svoju na grudima matera svojih.</p>
-  </div>
-</div>
-<div class="vb" id="v2-13">
-  <span class="vn">13</span>
-  <div class="vt">
-    <p class="lat">Cui comparabo te, vel cui assimilabo te,  filia Jerusalem ?  cui exæquabo te, et consolabor te,  virgo, filia Sion ?  magna est enim velut mare contritio tua :  quis medebitur tui ?</p>
-    <p class="tra">S čime da te prispodobim? Na koga si nalik, Kćeri jeruzalemska? S kime da te usporedim, kako utješim, djevice, Kćeri sionska? Jer kao more tvoja je nesreća neizmjerna. Tko će te iscijeliti?</p>
-  </div>
-</div>
-<div class="vb" id="v2-14">
-  <span class="vn">14</span>
-  <div class="vt">
-    <p class="lat">Prophetæ tui viderunt tibi  falsa et stulta ;  nec aperiebant iniquitatem tuam,  ut te ad pœnitentiam provocarent ;  viderunt autem tibi assumptiones falsas,  et ejectiones.</p>
-    <p class="tra">Viđenja tvojih proroka bijahu varka i laž, oni nisu objavili krivnju tvoju da te od izgnanstva odvrate. Varali su te utvarama lažnim i zamamnim.</p>
-  </div>
-</div>
-<div class="vb" id="v2-15">
-  <span class="vn">15</span>
-  <div class="vt">
-    <p class="lat">Plauserunt super te manibus  omnes transeuntes per viam ;  sibilaverunt et moverunt caput suum  super filiam Jerusalem :  Hæccine est urbs, dicentes, perfecti decoris,  gaudium universæ terræ ?</p>
-    <p class="tra">Nad tobom plješću rukama svi koji putem prolaze, zvižde i vrte glavom zbog Kćeri jeruzalemske: &quot;Je li to grad na glasu ljepotom, radost svemu svijetu?&quot;</p>
-  </div>
-</div>
-<div class="vb" id="v2-16">
-  <span class="vn">16</span>
-  <div class="vt">
-    <p class="lat">Aperuerunt super te os suum  omnes inimici tui :  sibilaverunt, et fremuerunt dentibus,  et dixerunt : Devorabimus :  en ista est dies quam exspectabamus ;  invenimus, vidimus.</p>
-    <p class="tra">Na tebe otvaraju usta svi neprijatelji tvoji, zvižde, škrguću zubima i govore: &quot;Proždrijesmo je! To je dan za kojim čeznusmo, doživjesmo, vidjesmo!&quot;</p>
-  </div>
-</div>
-<div class="vb" id="v2-17">
-  <span class="vn">17</span>
-  <div class="vt">
-    <p class="lat">Fecit Dominus quæ cogitavit ;  complevit sermonem suum,  quem præceperat a diebus antiquis :  destruxit, et non pepercit,  et lætificavit super te inimicum,  et exaltavit cornu hostium tuorum.</p>
-    <p class="tra">Jahve izvrši naum svoj, održa svoju riječ koju naredi u davnim danima: nemilice te razorio. Neprijatelj likuje zbog tebe, tvoj protivnik rog svoj podiže.</p>
-  </div>
-</div>
-<div class="vb" id="v2-18">
-  <span class="vn">18</span>
-  <div class="vt">
-    <p class="lat">Clamavit cor eorum ad Dominum  super muros filiæ Sion :  Deduc quasi torrentem lacrimas  per diem et noctem ;  non des requiem tibi,  neque taceat pupilla oculi tui.</p>
-    <p class="tra">U sav glas viči Gospodu, jecaj, Kćeri sionska! Neka k'o potok teku tvoje suze danju i noću. Ne daj počinka sebi, neka se zjenica oka tvoga ne odmori.</p>
-  </div>
-</div>
-<div class="vb" id="v2-19">
-  <span class="vn">19</span>
-  <div class="vt">
-    <p class="lat">Consurge, lauda in nocte,  in principio vigiliarum ;  effunde sicut aquam cor tuum  ante conspectum Domini :  leva ad eum manus tuas  pro anima parvulorum tuorum,  qui defecerunt in fame  in capite omnium compitorum.</p>
-    <p class="tra">Ustani, viči noću za svake promjene straže. K'o vodu izlij srce pred licem Gospodnjim, k njemu podiži ruke i traži milost za svoju nejačad koja od glada obamire po uglovima ulica.</p>
-  </div>
-</div>
-<div class="vb" id="v2-20">
-  <span class="vn">20</span>
-  <div class="vt">
-    <p class="lat">Vide, Domine, et considera  quem vindemiaveris ita.  Ergone comedent mulieres fructum suum,  parvulos ad mensuram palmæ ?  si occiditur in sanctuario Domini  sacerdos et propheta ?</p>
-    <p class="tra">Pogledaj, Jahve, i vidi kome si to učinio. Zar žene da jedu porod svoj, djecu što njišu u naručju? Zar moradoše biti poklani u Svetištu Gospodnjem svećenici i proroci?</p>
-  </div>
-</div>
-<div class="vb" id="v2-21">
-  <span class="vn">21</span>
-  <div class="vt">
-    <p class="lat">Jacuerunt in terra foris  puer et senex ;  virgines meæ et juvenes mei  ceciderunt in gladio :  interfecisti in die furoris tui,  percussisti, nec misertus es.</p>
-    <p class="tra">U uličnoj prašini leže djeca i starci; moje djevice i moji mladići od mača padoše. Ti ih pomori u dan gnjeva svojega, ti ih pokla nemilice.</p>
-  </div>
-</div>
-<div class="vb" id="v2-22">
-  <span class="vn">22</span>
-  <div class="vt">
-    <p class="lat">Vocasti quasi ad diem solemnem,  qui terrerent me de circuitu ;  et non fuit in die furoris Domini qui effugeret,  et relinqueretur :  quos educavi et enutrivi,  inimicus meus consumpsit eos.</p>
-    <p class="tra">Ti si, kao na dan svečani, sa svih strana sazvao užase moje. U dan gnjeva Jahvina nitko nije preživio, nitko se nije spasio. One koje sam odnjihala i odgojila neprijatelj moj sve je istrijebio.</p>
-  </div>
-</div>
-</section>
+  <div class="ornament-bar">❧ ✦ ❧ ✦ ❧</div>
 
-<section class="chap" id="c3">
-  <div class="chhead">
-    <span class="chrom">III</span>
-    <span class="chlbl">Caput 3</span>
-  </div>
-<div class="vb first" id="v3-1">
-  <span class="vn">1</span>
-  <div class="vt">
-    <p class="lat">Ego vir videns paupertatem meam  in virga indignationis ejus.</p>
-    <p class="tra">Ja sam čovjek što upozna bijedu pod šibom gnjeva njegova.</p>
-  </div>
-</div>
-<div class="vb" id="v3-2">
-  <span class="vn">2</span>
-  <div class="vt">
-    <p class="lat">Me minavit, et adduxit in tenebras,  et non in lucem.</p>
-    <p class="tra">Mene je odveo i natjerao da hodam u tmini i bez svjetlosti.</p>
-  </div>
-</div>
-<div class="vb" id="v3-3">
-  <span class="vn">3</span>
-  <div class="vt">
-    <p class="lat">Tantum in me vertit et convertit  manum suam tota die.</p>
-    <p class="tra">I upravo mene bije i udara bez prestanka njegova ruka.</p>
-  </div>
-</div>
-<div class="vb" id="v3-4">
-  <span class="vn">4</span>
-  <div class="vt">
-    <p class="lat">Vetustam fecit pellem meam et carnem meam ;  contrivit ossa mea.</p>
-    <p class="tra">Iscijedio je moje meso, kožu moju, polomio kosti moje.</p>
-  </div>
-</div>
-<div class="vb" id="v3-5">
-  <span class="vn">5</span>
-  <div class="vt">
-    <p class="lat">Ædificavit in gyro meo, et circumdedit me  felle et labore.</p>
-    <p class="tra">Načinio mi jaram, glavu obrubio tegobama.</p>
-  </div>
-</div>
-<div class="vb" id="v3-6">
-  <span class="vn">6</span>
-  <div class="vt">
-    <p class="lat">In tenebrosis collocavit me,  quasi mortuos sempiternos.</p>
-    <p class="tra">Pustio me da živim u tminama kao mrtvaci vječiti.</p>
-  </div>
-</div>
-<div class="vb" id="v3-7">
-  <span class="vn">7</span>
-  <div class="vt">
-    <p class="lat">Circumædificavit adversum me, ut non egrediar ;  aggravavit compedem meum.</p>
-    <p class="tra">Zazidao me, i ja ne mogu izaći, otežao je moje okove.</p>
-  </div>
-</div>
-<div class="vb" id="v3-8">
-  <span class="vn">8</span>
-  <div class="vt">
-    <p class="lat">Sed et cum clamavero, et rogavero,  exclusit orationem meam.</p>
-    <p class="tra">Kada sam vikao i zapomagao, molitvu je moju odbijao.</p>
-  </div>
-</div>
-<div class="vb" id="v3-9">
-  <span class="vn">9</span>
-  <div class="vt">
-    <p class="lat">Conclusit vias meas lapidibus quadris ;  semitas meas subvertit.</p>
-    <p class="tra">Zazidao mi ceste tesanim kamenom, zakrčio je putove moje.</p>
-  </div>
-</div>
-<div class="vb" id="v3-10">
-  <span class="vn">10</span>
-  <div class="vt">
-    <p class="lat">Ursus insidians factus est mihi,  leo in absconditis.</p>
-    <p class="tra">Meni on bijaše medvjed koji vreba, lav u zasjedi.</p>
-  </div>
-</div>
-<div class="vb" id="v3-11">
-  <span class="vn">11</span>
-  <div class="vt">
-    <p class="lat">Semitas meas subvertit, et confregit me ;  posuit me desolatam.</p>
-    <p class="tra">U bespuća me vodio, razdirao, ostavljao me da umirem.</p>
-  </div>
-</div>
-<div class="vb" id="v3-12">
-  <span class="vn">12</span>
-  <div class="vt">
-    <p class="lat">Tetendit arcum suum, et posuit me  quasi signum ad sagittam.</p>
-    <p class="tra">Napinjao je luk svoj i gađao me kao metu za svoje strelice.</p>
-  </div>
-</div>
-<div class="vb" id="v3-13">
-  <span class="vn">13</span>
-  <div class="vt">
-    <p class="lat">Misit in renibus meis  filias pharetræ suæ.</p>
-    <p class="tra">U slabine mi sasuo strelice, sinove svoga tobolca.</p>
-  </div>
-</div>
-<div class="vb" id="v3-14">
-  <span class="vn">14</span>
-  <div class="vt">
-    <p class="lat">Factus sum in derisum omni populo meo,  canticum eorum tota die.</p>
-    <p class="tra">Postao sam smiješan svome narodu, rugalica svakidašnja.</p>
-  </div>
-</div>
-<div class="vb" id="v3-15">
-  <span class="vn">15</span>
-  <div class="vt">
-    <p class="lat">Replevit me amaritudinibus ;  inebriavit me absinthio.</p>
-    <p class="tra">Gorčinom me hranio, pelinom me napajao.</p>
-  </div>
-</div>
-<div class="vb" id="v3-16">
-  <span class="vn">16</span>
-  <div class="vt">
-    <p class="lat">Et fregit ad numerum dentes meos ;  cibavit me cinere.</p>
-    <p class="tra">Puštao me da zube kršim kamen grizući, zakapao me u pepeo.</p>
-  </div>
-</div>
-<div class="vb" id="v3-17">
-  <span class="vn">17</span>
-  <div class="vt">
-    <p class="lat">Et repulsa est a pace anima mea ;  oblitus sum bonorum.</p>
-    <p class="tra">Duši je mojoj oduzet mir i više ne znam što je sreća!</p>
-  </div>
-</div>
-<div class="vb" id="v3-18">
-  <span class="vn">18</span>
-  <div class="vt">
-    <p class="lat">Et dixi : Periit finis meus,  et spes mea a Domino.</p>
-    <p class="tra">Rekoh: Dotrajao je život moj i nada koja mi od Jahve dolazi.</p>
-  </div>
-</div>
-<div class="vb" id="v3-19">
-  <span class="vn">19</span>
-  <div class="vt">
-    <p class="lat">Recordare paupertatis, et transgressionis meæ,  absinthii et fellis.</p>
-    <p class="tra">Spomeni se bijede moje i stradanja, pelina i otrova!</p>
-  </div>
-</div>
-<div class="vb" id="v3-20">
-  <span class="vn">20</span>
-  <div class="vt">
-    <p class="lat">Memoria memor ero, et tabescet  in me anima mea.</p>
-    <p class="tra">Bez prestanka na to misli i sahne duša u meni.</p>
-  </div>
-</div>
-<div class="vb" id="v3-21">
-  <span class="vn">21</span>
-  <div class="vt">
-    <p class="lat">Hæc recolens in corde meo,  ideo sperabo.</p>
-    <p class="tra">To nosim u srcu i gojim nadu u sebi.</p>
-  </div>
-</div>
-<div class="vb" id="v3-22">
-  <span class="vn">22</span>
-  <div class="vt">
-    <p class="lat">Misericordiæ Domini, quia non sumus consumpti ;  quia non defecerunt miserationes ejus.</p>
-    <p class="tra">Dobrota Jahvina nije nestala, milosrđe njegovo nije presušilo.</p>
-  </div>
-</div>
-<div class="vb" id="v3-23">
-  <span class="vn">23</span>
-  <div class="vt">
-    <p class="lat">Novi diluculo,  multa est fides tua.</p>
-    <p class="tra">Oni se obnavljaju svako jutro: tvoja je vjernost velika!</p>
-  </div>
-</div>
-<div class="vb" id="v3-24">
-  <span class="vn">24</span>
-  <div class="vt">
-    <p class="lat">Pars mea Dominus, dixit anima mea ;  propterea exspectabo eum.</p>
-    <p class="tra">&quot;Jahve je dio moj&quot;, veli mi duša, &quot;i zato se u nj pouzdajem.&quot;</p>
-  </div>
-</div>
-<div class="vb" id="v3-25">
-  <span class="vn">25</span>
-  <div class="vt">
-    <p class="lat">Bonus est Dominus sperantibus in eum,  animæ quærenti illum.</p>
-    <p class="tra">Dobar je Jahve onom koji se u nj pouzdaje, duši koja ga traži.</p>
-  </div>
-</div>
-<div class="vb" id="v3-26">
-  <span class="vn">26</span>
-  <div class="vt">
-    <p class="lat">Bonum est præstolari cum silentio  salutare Dei.</p>
-    <p class="tra">Dobro je u miru čekati spasenje Jahvino!</p>
-  </div>
-</div>
-<div class="vb" id="v3-27">
-  <span class="vn">27</span>
-  <div class="vt">
-    <p class="lat">Bonum est viro cum portaverit jugum  ab adolescentia sua.</p>
-    <p class="tra">Dobro je čovjeku da nosi jaram za svoje mladosti.</p>
-  </div>
-</div>
-<div class="vb" id="v3-28">
-  <span class="vn">28</span>
-  <div class="vt">
-    <p class="lat">Sedebit solitarius, et tacebit,  quia levavit super se.</p>
-    <p class="tra">Neka sjedi u samoći i šuti, jer mu On to nametnu;</p>
-  </div>
-</div>
-<div class="vb" id="v3-29">
-  <span class="vn">29</span>
-  <div class="vt">
-    <p class="lat">Ponet in pulvere os suum,  si forte sit spes.</p>
-    <p class="tra">neka usne priljubi uz prašinu, možda još ima nade!</p>
-  </div>
-</div>
-<div class="vb" id="v3-30">
-  <span class="vn">30</span>
-  <div class="vt">
-    <p class="lat">Dabit percutienti se maxillam :  saturabitur opprobriis.</p>
-    <p class="tra">Neka pruži obraz onome koji ga bije, neka se zasiti porugom.</p>
-  </div>
-</div>
-<div class="vb" id="v3-31">
-  <span class="vn">31</span>
-  <div class="vt">
-    <p class="lat">Quia non repellet  in sempiternum Dominus.</p>
-    <p class="tra">Jer Gospod ne odbacuje nikoga zauvijek:</p>
-  </div>
-</div>
-<div class="vb" id="v3-32">
-  <span class="vn">32</span>
-  <div class="vt">
-    <p class="lat">Quia si abjecit, et miserebitur,  secundum multitudinem misericordiarum suarum.</p>
-    <p class="tra">jer ako i rastuži, on se smiluje po svojoj velikoj ljubavi.</p>
-  </div>
-</div>
-<div class="vb" id="v3-33">
-  <span class="vn">33</span>
-  <div class="vt">
-    <p class="lat">Non enim humiliavit ex corde suo  et abjecit filios hominum.</p>
-    <p class="tra">Jer samo nerado on ponižava i rascvili sinove čovjeka.</p>
-  </div>
-</div>
-<div class="vb" id="v3-34">
-  <span class="vn">34</span>
-  <div class="vt">
-    <p class="lat">Ut conteret sub pedibus suis  omnes vinctos terræ.</p>
-    <p class="tra">Kad se gaze nogama svi zemaljski sužnjevi,</p>
-  </div>
-</div>
-<div class="vb" id="v3-35">
-  <span class="vn">35</span>
-  <div class="vt">
-    <p class="lat">Ut declinaret judicium viri  in conspectu vultus Altissimi.</p>
-    <p class="tra">kad se izvrće pravica čovjeku pred licem Svevišnjeg,</p>
-  </div>
-</div>
-<div class="vb" id="v3-36">
-  <span class="vn">36</span>
-  <div class="vt">
-    <p class="lat">Ut perverteret hominem in judicio suo ;  Dominus ignoravit.</p>
-    <p class="tra">kad se krivica nanosi čovjeku u parnici, zar Gospod ne vidi?</p>
-  </div>
-</div>
-<div class="vb" id="v3-37">
-  <span class="vn">37</span>
-  <div class="vt">
-    <p class="lat">Quis est iste qui dixit ut fieret,  Domino non jubente ?</p>
-    <p class="tra">Tko je rekao nešto i zbilo se? Nije li Gospod to zapovjedio?</p>
-  </div>
-</div>
-<div class="vb" id="v3-38">
-  <span class="vn">38</span>
-  <div class="vt">
-    <p class="lat">Ex ore Altissimi non egredientur  nec mala nec bona ?</p>
-    <p class="tra">Ne dolazi li iz usta Svevišnjega i dobro i zlo?</p>
-  </div>
-</div>
-<div class="vb" id="v3-39">
-  <span class="vn">39</span>
-  <div class="vt">
-    <p class="lat">Quid murmuravit homo vivens,  vir pro peccatis suis ?</p>
-    <p class="tra">Na što se tuže živi ljudi? Svatko na svoj grijeh.</p>
-  </div>
-</div>
-<div class="vb" id="v3-40">
-  <span class="vn">40</span>
-  <div class="vt">
-    <p class="lat">Scrutemur vias nostras, et quæramus,  et revertamur ad Dominum.</p>
-    <p class="tra">Ispitajmo, pretražimo pute svoje i vratimo se Jahvi.</p>
-  </div>
-</div>
-<div class="vb" id="v3-41">
-  <span class="vn">41</span>
-  <div class="vt">
-    <p class="lat">Levemus corda nostra cum manibus  ad Dominum in cælos.</p>
-    <p class="tra">Dignimo svoje srce i ruke svoje k Bogu koji je na nebesima.</p>
-  </div>
-</div>
-<div class="vb" id="v3-42">
-  <span class="vn">42</span>
-  <div class="vt">
-    <p class="lat">Nos inique egimus, et ad iracundiam provocavimus ;  idcirco tu inexorabilis es.</p>
-    <p class="tra">Da, mi smo se odmetali, bili nepokorni, a ti, ti nisi praštao!</p>
-  </div>
-</div>
-<div class="vb" id="v3-43">
-  <span class="vn">43</span>
-  <div class="vt">
-    <p class="lat">Operuisti in furore, et percussisti nos ;  occidisti, nec pepercisti.</p>
-    <p class="tra">Obastrt gnjevom svojim, gonio si nas, ubijao i nisi štedio.</p>
-  </div>
-</div>
-<div class="vb" id="v3-44">
-  <span class="vn">44</span>
-  <div class="vt">
-    <p class="lat">Opposuisti nubem tibi,  ne transeat oratio.</p>
-    <p class="tra">Oblakom si se obastro da molitva ne prodre do tebe.</p>
-  </div>
-</div>
-<div class="vb" id="v3-45">
-  <span class="vn">45</span>
-  <div class="vt">
-    <p class="lat">Eradicationem et abjectionem posuisti me  in medio populorum.</p>
-    <p class="tra">Načinio si od nas smeće i odmet među narodima.</p>
-  </div>
-</div>
-<div class="vb" id="v3-46">
-  <span class="vn">46</span>
-  <div class="vt">
-    <p class="lat">Aperuerunt super nos os suum  omnes inimici.</p>
-    <p class="tra">Razjapili usta na nas svi neprijatelji naši.</p>
-  </div>
-</div>
-<div class="vb" id="v3-47">
-  <span class="vn">47</span>
-  <div class="vt">
-    <p class="lat">Formido et laqueus facta est nobis  vaticinatio, et contritio.</p>
-    <p class="tra">Užas i jama bila nam sudbina, propast i zator!</p>
-  </div>
-</div>
-<div class="vb" id="v3-48">
-  <span class="vn">48</span>
-  <div class="vt">
-    <p class="lat">Divisiones aquarum deduxit oculus meus,  in contritione filiæ populi mei.</p>
-    <p class="tra">Potoci suza teku iz očiju mojih zbog propasti Kćeri naroda mojega.</p>
-  </div>
-</div>
-<div class="vb" id="v3-49">
-  <span class="vn">49</span>
-  <div class="vt">
-    <p class="lat">Oculus meus afflictus est, nec tacuit,  eo quod non esset requies.</p>
-    <p class="tra">Moje oči liju suze bez prestanka, jer prestanka nema</p>
-  </div>
-</div>
-<div class="vb" id="v3-50">
-  <span class="vn">50</span>
-  <div class="vt">
-    <p class="lat">Donec respiceret et videret  Dominus de cælis.</p>
-    <p class="tra">dok ne pogleda i ne vidi Jahve s nebesa.</p>
-  </div>
-</div>
-<div class="vb" id="v3-51">
-  <span class="vn">51</span>
-  <div class="vt">
-    <p class="lat">Oculus meus deprædatus est animam meam  in cunctis filiabus urbis meæ.</p>
-    <p class="tra">Moje mi oko bol zadaje zbog kćeri svih mojega grada.</p>
-  </div>
-</div>
-<div class="vb" id="v3-52">
-  <span class="vn">52</span>
-  <div class="vt">
-    <p class="lat">Venatione ceperunt me quasi avem  inimici mei gratis.</p>
-    <p class="tra">Uporno me k'o pticu progone svi što me mrze, a bez razloga.</p>
-  </div>
-</div>
-<div class="vb" id="v3-53">
-  <span class="vn">53</span>
-  <div class="vt">
-    <p class="lat">Lapsa est in lacum vita mea,  et posuerunt lapidem super me.</p>
-    <p class="tra">U jamu baciše moj život i zatrpaše je kamenjem.</p>
-  </div>
-</div>
-<div class="vb" id="v3-54">
-  <span class="vn">54</span>
-  <div class="vt">
-    <p class="lat">Inundaverunt aquæ super caput meum ;  dixi : Perii.</p>
-    <p class="tra">Voda mi dođe preko glave, rekoh sam sebi: &quot;Pogiboh!&quot;</p>
-  </div>
-</div>
-<div class="vb" id="v3-55">
-  <span class="vn">55</span>
-  <div class="vt">
-    <p class="lat">Invocavi nomen tuum, Domine,  de lacu novissimo.</p>
-    <p class="tra">I tada zazvah ime tvoje, Jahve, iz najdublje jame.</p>
-  </div>
-</div>
-<div class="vb" id="v3-56">
-  <span class="vn">56</span>
-  <div class="vt">
-    <p class="lat">Vocem meam audisti ; ne avertas aurem tuam  a singultu meo et clamoribus.</p>
-    <p class="tra">Ti oču moj glas: &quot;Ne začepljuj uši svoje na vapaje moje.&quot;</p>
-  </div>
-</div>
-<div class="vb" id="v3-57">
-  <span class="vn">57</span>
-  <div class="vt">
-    <p class="lat">Appropinquasti in die quando invocavi te ;  dixisti : Ne timeas.</p>
-    <p class="tra">Bliz meni bijaše u dan vapaja mog, govoraše: &quot;Ne boj se!&quot;</p>
-  </div>
-</div>
-<div class="vb" id="v3-58">
-  <span class="vn">58</span>
-  <div class="vt">
-    <p class="lat">Judicasti, Domine, causam animæ meæ,  redemptor vitæ meæ.</p>
-    <p class="tra">Ti si, Gospode, izborio pravdu za dušu moju, ti si život moj izbavio.</p>
-  </div>
-</div>
-<div class="vb" id="v3-59">
-  <span class="vn">59</span>
-  <div class="vt">
-    <p class="lat">Vidisti, Domine, iniquitatem illorum adversum me :  judica judicium meum.</p>
-    <p class="tra">Ti, Jahve, vidje kako me tlače, dosudi mi pravdu.</p>
-  </div>
-</div>
-<div class="vb" id="v3-60">
-  <span class="vn">60</span>
-  <div class="vt">
-    <p class="lat">Vidisti omnem furorem,  universas cogitationes eorum adversum me.</p>
-    <p class="tra">Ti vidje svu osvetu njinu, sve podvale protiv mene.</p>
-  </div>
-</div>
-<div class="vb" id="v3-61">
-  <span class="vn">61</span>
-  <div class="vt">
-    <p class="lat">Audisti opprobrium eorum, Domine,  omnes cogitationes eorum adversum me.</p>
-    <p class="tra">Čuo si, Jahve, podrugivanje njihovo, sve podvale protiv mene.</p>
-  </div>
-</div>
-<div class="vb" id="v3-62">
-  <span class="vn">62</span>
-  <div class="vt">
-    <p class="lat">Labia insurgentium mihi, et meditationes eorum  adversum me tota die.</p>
-    <p class="tra">Usne protivnika mojih i misli njine protiv mene su cio dan.</p>
-  </div>
-</div>
-<div class="vb" id="v3-63">
-  <span class="vn">63</span>
-  <div class="vt">
-    <p class="lat">Sessionem eorum et resurrectionem eorum vide ;  ego sum psalmus eorum.</p>
-    <p class="tra">Kad sjede, kad ustaju, pogledaj samo: ja sam im pjesma-rugalica.</p>
-  </div>
-</div>
-<div class="vb" id="v3-64">
-  <span class="vn">64</span>
-  <div class="vt">
-    <p class="lat">Redes eis vicem, Domine,  juxta opera manuum suarum.</p>
-    <p class="tra">Vrati im, Jahve, milo za drago, po djelu ruku njihovih.</p>
-  </div>
-</div>
-<div class="vb" id="v3-65">
-  <span class="vn">65</span>
-  <div class="vt">
-    <p class="lat">Dabis eis scutum cordis,  laborem tuum.</p>
-    <p class="tra">Učini da srca im otvrdnu, udari ih prokletstvom svojim.</p>
-  </div>
-</div>
-<div class="vb" id="v3-66">
-  <span class="vn">66</span>
-  <div class="vt">
-    <p class="lat">Persequeris in furore, et conteres eos  sub cælis, Domine.</p>
-    <p class="tra">Goni ih gnjevno i sve ih istrijebi pod nebesima svojim, Jahve!</p>
-  </div>
-</div>
-</section>
+  <main class="content">
 
-<section class="chap" id="c4">
-  <div class="chhead">
-    <span class="chrom">IV</span>
-    <span class="chlbl">Caput 4</span>
-  </div>
-<div class="vb first" id="v4-1">
-  <span class="vn">1</span>
-  <div class="vt">
-    <p class="lat">Quomodo obscuratum est aurum,  mutatus est color optimus !  dispersi sunt lapides sanctuarii  in capite omnium platearum !</p>
-    <p class="tra">Jao, potamnje zlato, to suho zlato! Sveto se kamenje prosu na uglovima svih ulica.</p>
-  </div>
-</div>
-<div class="vb" id="v4-2">
-  <span class="vn">2</span>
-  <div class="vt">
-    <p class="lat">Filii Sion inclyti,  et amicti auro primo :  quomodo reputati sunt in vasa testea,  opus manuum figuli !</p>
-    <p class="tra">Sinovi sionski, nekoć cijenjeni kao najčišće zlato, ah, sada ih cijene kao sudove glinske, kao djelo ruku lončarevih!</p>
-  </div>
-</div>
-<div class="vb" id="v4-3">
-  <span class="vn">3</span>
-  <div class="vt">
-    <p class="lat">Sed et lamiæ nudaverunt mammam,  lactaverunt catulos suos :  filia populi mei crudelis  quasi struthio in deserto.</p>
-    <p class="tra">Čak i šakali pružaju dojke i doje mladunčad, ali kćeri naroda moga postaše okrutne kao nojevi u pustinji.</p>
-  </div>
-</div>
-<div class="vb" id="v4-4">
-  <span class="vn">4</span>
-  <div class="vt">
-    <p class="lat">Adhæsit lingua lactentis  ad palatum ejus in siti ;  parvuli petierunt panem,  et non erat qui frangeret eis.</p>
-    <p class="tra">Jezik dojenčeta za nepce se lijepi od žeđi. Djeca vape za kruhom, a nikog da im ga pruži.</p>
-  </div>
-</div>
-<div class="vb" id="v4-5">
-  <span class="vn">5</span>
-  <div class="vt">
-    <p class="lat">Qui vescebantur voluptuose,  interierunt in viis ;  qui nutriebantur in croceis,  amplexati sunt stercora.</p>
-    <p class="tra">Oni što se nekoć sladiše biranim jelima ginu po ulicama; nekoć nošeni u grimizu, sada se valjaju po buništu.</p>
-  </div>
-</div>
-<div class="vb" id="v4-6">
-  <span class="vn">6</span>
-  <div class="vt">
-    <p class="lat">Et major effecta est iniquitas filiæ populi mei  peccato Sodomorum,  quæ subversa est in momento,  et non ceperunt in ea manus.</p>
-    <p class="tra">Veći bijaše zločin Kćeri naroda moga od grijeha Sodome, što u tren oka bi razorena, a ničija se ruka ne diže na nju.</p>
-  </div>
-</div>
-<div class="vb" id="v4-7">
-  <span class="vn">7</span>
-  <div class="vt">
-    <p class="lat">Candidiores Nazaræi ejus nive,  nitidiores lacte,  rubicundiores ebore antiquo,  sapphiro pulchriores.</p>
-    <p class="tra">Njeni mladići bijahu nekoć čišći od snijega, bjelji od mlijeka, od koralja rumenija bijahu im tijela, lice glatko k'o safir.</p>
-  </div>
-</div>
-<div class="vb" id="v4-8">
-  <span class="vn">8</span>
-  <div class="vt">
-    <p class="lat">Denigrata est super carbones facies eorum  et non sunt cogniti in plateis ;  adhæsit cutis eorum ossibus :  aruit, et facta est quasi lignum.</p>
-    <p class="tra">Sad im je obraz crnji od čađe, ne prepoznaju se više na ulici. Koža im se lijepi za kosti, suha kao drvo.</p>
-  </div>
-</div>
-<div class="vb" id="v4-9">
-  <span class="vn">9</span>
-  <div class="vt">
-    <p class="lat">Melius fuit occisis gladio  quam interfectis fame,  quoniam isti extabuerunt consumpti  a sterilitate terræ.</p>
-    <p class="tra">Kako su sretni oni što ih mač probode, sretniji od onih koje pomori glad; koji padaju, iscrpljeni, jer im nedostaju plodovi zemljini.</p>
-  </div>
-</div>
-<div class="vb" id="v4-10">
-  <span class="vn">10</span>
-  <div class="vt">
-    <p class="lat">Manus mulierum misericordium  coxerunt filios suos ;  facti sunt cibus earum  in contritione filiæ populi mei.</p>
-    <p class="tra">Žene, tako nježne, kuhaše djecu svoju, njima se hraniše za propasti Kćeri naroda moga.</p>
-  </div>
-</div>
-<div class="vb" id="v4-11">
-  <span class="vn">11</span>
-  <div class="vt">
-    <p class="lat">Complevit Dominus furorem suum,  effudit iram indignationis suæ :  et succendit ignem in Sion,  et devoravit fundamenta ejus.</p>
-    <p class="tra">Jahve je utolio svoj bijes, izlio jarosnu srdžbu svoju, na Sionu raspirio požar što sažiže i same temelje njegove.</p>
-  </div>
-</div>
-<div class="vb" id="v4-12">
-  <span class="vn">12</span>
-  <div class="vt">
-    <p class="lat">Non crediderunt reges terræ,  et universi habitatores orbis,  quoniam ingrederetur hostis et inimicus  per portas Jerusalem.</p>
-    <p class="tra">Nisu vjerovali kraljevi zemaljski ni svekoliko stanovništvo zemlje da će ugnjetač i neprijatelj ući na vrata jeruzalemska -</p>
-  </div>
-</div>
-<div class="vb" id="v4-13">
-  <span class="vn">13</span>
-  <div class="vt">
-    <p class="lat">Propter peccata prophetarum ejus,  et iniquitates sacerdotum ejus,  qui effuderunt in medio ejus  sanguinem justorum.</p>
-    <p class="tra">zbog grijeha svojih prorokÄa, zbog bezakonja svećenikÄa koji usred grada prolijevahu krv pravednikÄa!</p>
-  </div>
-</div>
-<div class="vb" id="v4-14">
-  <span class="vn">14</span>
-  <div class="vt">
-    <p class="lat">Erraverunt cæci in plateis,  polluti sunt in sanguine ;  cumque non possent,  tenuerunt lacinias suas.</p>
-    <p class="tra">K'o slijepi teturahu ulicama, omašteni krvlju, te nitko nije smio da se takne odjeće njihove.</p>
-  </div>
-</div>
-<div class="vb" id="v4-15">
-  <span class="vn">15</span>
-  <div class="vt">
-    <p class="lat">Recedite polluti, clamaverunt eis ;  recedite, abite, nolite tangere :  jurgati quippe sunt, et commoti dixerunt inter gentes :  Non addet ultra ut habitet in eis.</p>
-    <p class="tra">&quot;Natrag, nečisti!&quot; - viču im. &quot;Natrag! Ne dirajte!&quot; I tada pobjegoše poganima, al' ne smjedoše ondje ostati.</p>
-  </div>
-</div>
-<div class="vb" id="v4-16">
-  <span class="vn">16</span>
-  <div class="vt">
-    <p class="lat">Facies Domini divisit eos,  non addet ut respiciat eos ;  facies sacerdotum non erubuerunt,  neque senum miserti sunt.</p>
-    <p class="tra">Raspršilo ih lice Jahvino, on ih više nije gledao. Ne poštuju više svećenikÄa, ne sažaljuju staraca.</p>
-  </div>
-</div>
-<div class="vb" id="v4-17">
-  <span class="vn">17</span>
-  <div class="vt">
-    <p class="lat">Cum adhuc subsisteremus, defecerunt oculi nostri  ad auxilium nostrum vanum ;  cum respiceremus attenti ad gentem  quæ salvare non poterat.</p>
-    <p class="tra">Već nam oči iščilješe iščekujući pomoć, ali uzalud; s kula naših zureć' u daljinu očekivasmo narod koji nas ne može spasiti.</p>
-  </div>
-</div>
-<div class="vb" id="v4-18">
-  <span class="vn">18</span>
-  <div class="vt">
-    <p class="lat">Lubricaverunt vestigia nostra  in itinere platearum nostrarum ;  appropinquavit finis noster, completi sunt dies nostri,  quia venit finis noster.</p>
-    <p class="tra">Vrebaju nam na korake da ne hodamo po trgovima svojim. Bliži nam se kraj, navršili nam se dani, naš konac dolazi.</p>
-  </div>
-</div>
-<div class="vb" id="v4-19">
-  <span class="vn">19</span>
-  <div class="vt">
-    <p class="lat">Velociores fuerunt persecutores nostri  aquilis cæli ;  super montes persecuti sunt nos,  in deserto insidiati sunt nobis.</p>
-    <p class="tra">Naši gonitelji bijahu brži od orlova na nebu; u planini nas ganjahu, u pustinji dočekivahu u zasjedi.</p>
-  </div>
-</div>
-<div class="vb" id="v4-20">
-  <span class="vn">20</span>
-  <div class="vt">
-    <p class="lat">Spiritus oris nostri, christus Dominus,  captus est in peccatis nostris,  cui diximus : In umbra tua  vivemus in gentibus.</p>
-    <p class="tra">Naš životni dah, Jahvin pomazanik, pade u njihove jame - on za koga govorasmo: &quot;U sjeni njegovoj živjet ćemo među narodima.&quot;</p>
-  </div>
-</div>
-<div class="vb" id="v4-21">
-  <span class="vn">21</span>
-  <div class="vt">
-    <p class="lat">Gaude et lætare, filia Edom,  quæ habitas in terra Hus !  ad te quoque perveniet calix : inebriaberis,  atque nudaberis.</p>
-    <p class="tra">Raduj se i veseli se, Kćeri edomska, ti koja živiš u zemlji Usu: doći će i do tebe čaša, opit ćeš se i razgoliti.</p>
-  </div>
-</div>
-<div class="vb" id="v4-22">
-  <span class="vn">22</span>
-  <div class="vt">
-    <p class="lat">Completa est iniquitas tua, filia Sion :  non addet ultra ut transmigret te.  Visitavit iniquitatem tuam, filia Edom ;  discooperuit peccata tua.</p>
-    <p class="tra">Tvoj grijeh je iskupljen, Kćeri sionska, neće te više u izgnanstvo voditi. Kaznit će opačinu tvoju, Kćeri edomska, razotkriti grijehe tvoje.</p>
-  </div>
-</div>
-</section>
+  <section class="chapter" id="ch1">
+    <div class="chapter-marker">
+      <span class="ch-roman">I</span>
+      <span class="ch-label">Caput 1</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v1-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quomodo sedet sola  civitas plena populo !  Facta est quasi vidua  domina gentium ;  princeps provinciarum  facta est sub tributo.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Kako osamljena sjedi prijestolnica, nekoć naroda puna; postade kao udovica, nekoć velika među narodima. Vladarica nad pokrajinama, na tlaku sad ide.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Plorans ploravit in nocte,  et lacrimæ ejus in maxillis ejus :  non est qui consoletur eam  ex omnibus caris ejus ;  omnes amici ejus spreverunt eam,  et facti sunt ei inimici.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Noći provodi gorko plačući, suzama pokriva obraze. Nikog nema da je utješi, od svih koji su je ljubili. Svi je prijatelji iznevjeriše i postaše joj neprijatelji.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Migravit Judas propter afflictionem,  et multitudinem servitutis ;  habitavit inter gentes,  nec invenit requiem :  omnes persecutores ejus apprehenderunt eam  inter angustias.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Izagnan je Juda, u nevolji je i u progonstvu teškom. Sad živi među poganima, ne nalazi počinka. Svi ga gonitelji sustižu u tjesnacima.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Viæ Sion lugent, eo quod non sint  qui veniant ad solemnitatem :  omnes portæ ejus destructæ,  sacerdotes ejus gementes ;  virgines ejus squalidæ,  et ipsa oppressa amaritudine.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Putovi sionski tuguju jer nitko ne dolazi na svetkovine. Sva su vrata razvaljena, svećenici uzdišu, ucviljene su djevice njegove, a on je pun gorčine.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Facti sunt hostes ejus in capite ;  inimici ejus locupletati sunt :  quia Dominus locutus est super eam  propter multitudinem iniquitatum ejus.  Parvuli ejus ducti sunt in captivitatem  ante faciem tribulantis.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Tlačitelji njegovi sada gospodare, neprijatelji likuju: Jahve ga ucvili zbog grijeha njegovih premnogih. Djeca mu otišla u izgnanstvo pred tlačiteljem.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et egressus est a filia Sion  omnis decor ejus ;  facti sunt principes ejus velut arietes  non invenientes pascua,  et abierunt absque fortitudine  ante faciem subsequentis.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Povukla se od Kćeri sionske sva slava njezina. Knezovi joj postadoše k'o ovnovi koji paše ne nalaze; nemoćni vrludaju ispred goniča.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Recordata est Jerusalem dierum afflictionis suæ,  et prævaricationis,  omnium desiderabilium suorum,  quæ habuerat a diebus antiquis,  cum caderet populus ejus in manu hostili,  et non esset auxiliator :  viderunt eam hostes,  et deriserunt sabbata ejus.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Jeruzalem se spominje danÄa bijede i lutanja, kad mu narod dušmanu u ruke pade a nitko mu pomoći ne pruži. Tlačitelji ga gledahu smijući se njegovoj propasti.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Peccatum peccavit Jerusalem,  propterea instabilis facta est ;  omnes qui glorificabant eam spreverunt illam,  quia viderunt ignominiam ejus :  ipsa autem gemens  conversa est retrorsum.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Teško sagriješi Jeruzalem, postade kao nečistoća ženina. Svi što ga štovahu, sada ga preziru: jer vidješe golotinju njegovu. On samo plače i natrag se okreće.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sordes ejus in pedibus ejus,  nec recordata est finis sui ;  deposita est vehementer,  non habens consolatorem.  Vide, Domine, afflictionem meam,  quoniam erectus est inimicus.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Skuti su mu uprljani, nije ni sanjao što ga čeka. Duboko je pao, a nikog da ga tješi. &quot;Pogledaj, Jahve, moju nevolju: jer neprijatelj likuje.&quot;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Manum suam misit hostis  ad omnia desiderabilia ejus,  quia vidit gentes  ingressas sanctuarium suum,  de quibus præceperas  ne intrarent in ecclesiam tuam.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Neprijatelj poseže rukom za svim dragocjenostima njegovim. Gledao je gdje pogani provaljuju u njegovo Svetište, oni kojima si zabranio i pristup u svoj zbor.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Omnis populus ejus gemens,  et quærens panem ;  dederunt pretiosa quæque pro cibo  ad refocillandam animam.  Vide, Domine, et considera  quoniam facta sum vilis !</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Sav narod njegov jeca, tražeći kruha; svi daju dragulje za hranu da bi ponovo živnuli. Evo, Jahve, pogledaj kako sam prezren.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">O vos omnes qui transitis per viam,  attendite, et videte  si est dolor sicut dolor meus !  quoniam vindemiavit me,  ut locutus est Dominus,  in die iræ furoris sui.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Svi vi što putem prolazite, pogledajte i vidite ima li boli kakva je bol kojom sam ja pogođen, kojom me Jahve udari u dan žestokog gnjeva svoga!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">De excelso misit ignem in ossibus meis,  et erudivit me :  expandit rete pedibus meis,  convertit me retrorsum ;  posuit me desolatam,  tota die mœrore confectam.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">S visine pusti oganj, utjera ga u kosti moje. Pred noge mrežu mi razape i tako me nauznak obori; ucvili me, ožalosti za sva vremena.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vigilavit jugum iniquitatum mearum ;  in manu ejus convolutæ sunt,  et impositæ collo meo.  Infirmata est virtus mea :  dedit me Dominus in manu  de qua non potero surgere.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Natovario me mojim grijesima, rukom ih svojom pritegnuo; na vrat mi ih navalio, snagu mi oduzeo. Predao me Gospod u ruke njihove, ne mogu se uspraviti.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Abstulit omnes magnificos meos Dominus  de medio mei ;  vocavit adversum me tempus  ut contereret electos meos.  Torcular calcavit Dominus  virgini filiæ Juda.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Sve junake iz moje sredine Gospod odbaci: digao je zbor protiv mene da uništi uzdanicu moju. U tijesku izgazi Gospod mene, djevicu, kćerku Judinu.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Idcirco ego plorans,  et oculus meus deducens aquas,  quia longe factus est a me consolator,  convertens animam meam.  Facti sunt filii mei perditi,  quoniam invaluit inimicus.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Zato moram plakati, oči mi suze liju, jer daleko je od mene moj tješitelj da mi duh povrati. Sinovi su moji poraženi, odveć silan bijaše neprijatelj.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Expandit Sion manus suas ;  non est qui consoletur eam.  Mandavit Dominus adversum Jacob  in circuitu ejus hostes ejus ;  facta est Jerusalem  quasi polluta menstruis inter eos.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Sion pruža ruke: nema mu tješitelja. Jahve je protiv Jakova sa svih strana pozvao tlačitelje; i tako Jeruzalem postade među njima strašilo.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Justus est Dominus,  quia os ejus ad iracundiam provocavi.  Audite, obsecro, universi populi,  et videte dolorem meum :  virgines meæ et juvenes mei abierunt  in captivitatem.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Jahve, on je pravedan; jer riječi se njegovoj protivih. Oh, čujte, narodi svi, gledajte moju bol: djevice moje, moji mladići, svi odoše u izgnanstvo!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vocavi amicos meos,  et ipsi deceperunt me ;  sacerdotes mei et senes mei  in urbe consumpti sunt,  quia quæsierunt cibum sibi  ut refocillarent animam suam.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Pozvah sve ljubavnike svoje, ali me oni prevariše. Moji svećenici i starješine pogiboše u gradu tražeći hrane da bi ponovo živnuli.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vide, Domine, quoniam tribulor :  conturbatus est venter meus,  subversum est cor meum in memetipsa,  quoniam amaritudine plena sum.  Foris interfecit gladius,  et domi mors similis est.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Pogledaj, Jahve, u kakvoj sam tjeskobi, moja utroba strepi, srce mi se u grudima grči jer bijah opako prkosan! Vani mač pokosi moje sinove, a unutra - smrt.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">Audierunt quia ingemisco ego,  et non est qui consoletur me ;  omnes inimici mei audierunt malum meum,  lætati sunt quoniam tu fecisti :  adduxisti diem consolationis,  et fient similes mei.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Čuj kako stenjem: nema mi tješitelja! Svi neprijatelji čuju za moju nesreću i likuju što si to učinio! Daj da dođe dan što si ga objavio, da njima bude kao meni.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-22">
+      <div class="verse-num-col"><div class="verse-num">22</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ingrediatur omne malum eorum coram te :  et vindemia eos, sicut vindemiasti me  propter omnes iniquitates meas :  multi enim gemitus mei,  et cor meum mœrens.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Neka se pokaže sva njina zloća pred licem tvojim, a onda postupaj s njima kao što si sa mnom postupio za sve grijehe moje! Jer samo uzdišem, a srce moje tuguje.</div>
+      </div>
+    </div>
+  </section>
 
-<section class="chap" id="c5">
-  <div class="chhead">
-    <span class="chrom">V</span>
-    <span class="chlbl">Caput 5</span>
-  </div>
-<div class="vb first" id="v5-1">
-  <span class="vn">1</span>
-  <div class="vt">
-    <p class="lat">Recordare, Domine, quid acciderit nobis ;  intuere et respice opprobrium nostrum.</p>
-    <p class="tra">Spomeni se, Jahve, što nas je snašlo, pogledaj, vidi sramotu našu!</p>
-  </div>
-</div>
-<div class="vb" id="v5-2">
-  <span class="vn">2</span>
-  <div class="vt">
-    <p class="lat">Hæreditas nostra versa est ad alienos,  domus nostræ ad extraneos.</p>
-    <p class="tra">Baština naša pade u ruke strancima, domovi naši pripadoše tuđincima.</p>
-  </div>
-</div>
-<div class="vb" id="v5-3">
-  <span class="vn">3</span>
-  <div class="vt">
-    <p class="lat">Pupilli facti sumus absque patre,  matres nostræ quasi viduæ.</p>
-    <p class="tra">Siročad smo: oca nemamo, majke su nam kao udovice.</p>
-  </div>
-</div>
-<div class="vb" id="v5-4">
-  <span class="vn">4</span>
-  <div class="vt">
-    <p class="lat">Aquam nostram pecunia bibimus ;  ligna nostra pretio comparavimus.</p>
-    <p class="tra">Vodu što pijemo plaćamo novcem, i za drvo valja nam platiti.</p>
-  </div>
-</div>
-<div class="vb" id="v5-5">
-  <span class="vn">5</span>
-  <div class="vt">
-    <p class="lat">Cervicibus nostris minabamur,  lassis non dabatur requies.</p>
-    <p class="tra">Jaram nam je o vratu, gone nas, iscrpljeni smo, ne daju nam predahnuti.</p>
-  </div>
-</div>
-<div class="vb" id="v5-6">
-  <span class="vn">6</span>
-  <div class="vt">
-    <p class="lat">Ægypto dedimus manum et Assyriis,  ut saturaremur pane.</p>
-    <p class="tra">Pružamo ruke k Egiptu i Asiriji da se kruha nasitimo.</p>
-  </div>
-</div>
-<div class="vb" id="v5-7">
-  <span class="vn">7</span>
-  <div class="vt">
-    <p class="lat">Patres nostri peccaverunt, et non sunt :  et nos iniquitates eorum portavimus.</p>
-    <p class="tra">Oci naši zgriješiše i više ih nema, a mi nosimo krivice njihove.</p>
-  </div>
-</div>
-<div class="vb" id="v5-8">
-  <span class="vn">8</span>
-  <div class="vt">
-    <p class="lat">Servi dominati sunt nostri :  non fuit qui redimeret de manu eorum.</p>
-    <p class="tra">Robovi nama zapovijedaju, a nitko da nas izbavi iz ruku njihovih.</p>
-  </div>
-</div>
-<div class="vb" id="v5-9">
-  <span class="vn">9</span>
-  <div class="vt">
-    <p class="lat">In animabus nostris afferebamus panem nobis,  a facie gladii in deserto.</p>
-    <p class="tra">Kruh svoj donosimo izlažući život maču u pustinji.</p>
-  </div>
-</div>
-<div class="vb" id="v5-10">
-  <span class="vn">10</span>
-  <div class="vt">
-    <p class="lat">Pellis nostra quasi clibanus exusta est,  a facie tempestatum famis.</p>
-    <p class="tra">Koža nam gori kao peć užarena, ognjicom od plamena gladi.</p>
-  </div>
-</div>
-<div class="vb" id="v5-11">
-  <span class="vn">11</span>
-  <div class="vt">
-    <p class="lat">Mulieres in Sion humiliaverunt,  et virgines in civitatibus Juda.</p>
-    <p class="tra">Oskvrnuli su žene na Sionu i djevice u gradovima judejskim.</p>
-  </div>
-</div>
-<div class="vb" id="v5-12">
-  <span class="vn">12</span>
-  <div class="vt">
-    <p class="lat">Principes manu suspensi sunt ;  facies senum non erubuerunt.</p>
-    <p class="tra">Svojim su rukama vješali knezove, ni lica staračka nisu poštivali.</p>
-  </div>
-</div>
-<div class="vb" id="v5-13">
-  <span class="vn">13</span>
-  <div class="vt">
-    <p class="lat">Adolescentibus impudice abusi sunt,  et pueri in ligno corruerunt.</p>
-    <p class="tra">Mladići su nosili žrvnjeve, djeca padala pod bremenom drva.</p>
-  </div>
-</div>
-<div class="vb" id="v5-14">
-  <span class="vn">14</span>
-  <div class="vt">
-    <p class="lat">Senes defecerunt de portis,  juvenes de choro psallentium.</p>
-    <p class="tra">Starci su ostavili vrata, mladići više ne sviraju na lirama.</p>
-  </div>
-</div>
-<div class="vb" id="v5-15">
-  <span class="vn">15</span>
-  <div class="vt">
-    <p class="lat">Defecit gaudium cordis nostri ;  versus est in luctum chorus noster.</p>
-    <p class="tra">Radosti nesta iz naših srdaca, naš ples se pretvori u tugovanje.</p>
-  </div>
-</div>
-<div class="vb" id="v5-16">
-  <span class="vn">16</span>
-  <div class="vt">
-    <p class="lat">Cecidit corona capitis nostri :  væ nobis, quia peccavimus !</p>
-    <p class="tra">Pao je vijenac s naše glave, jao nama što zgriješismo!</p>
-  </div>
-</div>
-<div class="vb" id="v5-17">
-  <span class="vn">17</span>
-  <div class="vt">
-    <p class="lat">Propterea mœstum factum est cor nostrum ;  ideo contenebrati sunt oculi nostri,</p>
-    <p class="tra">Evo zašto nam srce boluje, evo zašto nam oči se zastiru:</p>
-  </div>
-</div>
-<div class="vb" id="v5-18">
-  <span class="vn">18</span>
-  <div class="vt">
-    <p class="lat">propter montem Sion quia disperiit ;  vulpes ambulaverunt in eo.</p>
-    <p class="tra">zato što Gora sionska opustje i po njoj se šuljaju šakali.</p>
-  </div>
-</div>
-<div class="vb" id="v5-19">
-  <span class="vn">19</span>
-  <div class="vt">
-    <p class="lat">Tu autem, Domine, in æternum permanebis,  solium tuum in generationem et generationem.</p>
-    <p class="tra">Ali ti, Jahve, ostaješ zauvijek, tvoj je prijesto od koljena do koljena.</p>
-  </div>
-</div>
-<div class="vb" id="v5-20">
-  <span class="vn">20</span>
-  <div class="vt">
-    <p class="lat">Quare in perpetuum oblivisceris nostri,  derelinques nos in longitudine dierum ?</p>
-    <p class="tra">Zašto da nas zaboraviš zauvijek, da nas ostaviš za mnoge dane?</p>
-  </div>
-</div>
-<div class="vb" id="v5-21">
-  <span class="vn">21</span>
-  <div class="vt">
-    <p class="lat">Converte nos, Domine, ad te, et convertemur ;  innova dies nostros, sicut a principio.</p>
-    <p class="tra">Vrati nas k sebi, Jahve, obratit ćemo se, obnovi dane naše kao što nekoć bijahu.</p>
-  </div>
-</div>
-<div class="vb" id="v5-22">
-  <span class="vn">22</span>
-  <div class="vt">
-    <p class="lat">Sed projiciens repulisti nos :  iratus es contra nos vehementer.</p>
-    <p class="tra">Il' nas hoćeš sasvim zabaciti i na nas se beskrajno srditi?</p>
-  </div>
-</div>
-</section>
-</main>
+  <section class="chapter" id="ch2">
+    <div class="chapter-marker">
+      <span class="ch-roman">II</span>
+      <span class="ch-label">Caput 2</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v2-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quomodo obtexit caligine in furore suo  Dominus filiam Sion ;  projecit de cælo in terram  inclytam Israël,  et non est recordatus scabelli pedum suorum  in die furoris sui !</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Kako mrakom zastrije Gospod u svom gnjevu Kćer sionsku. S neba na zemlju baci slavu Izraelovu! I ne sjeti se podnožja svoga u dan gnjeva svojega!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Præcipitavit Dominus, nec pepercit  omnia speciosa Jacob :  destruxit in furore suo  munitiones virginis Juda,  et dejecit in terram ;  polluit regnum et principes ejus.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Bez milosti Gospod satrije sve stanove Jakovljeve, u svom gnjevu razori tvrđave kćeri Judine; sa zemljom je sravnio i prokleo kraljevstvo i njegove knezove.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Confregit in ira furoris sui  omne cornu Israël ;  avertit retrorsum dexteram suam  a facie inimici,  et succendit in Jacob quasi ignem  flammæ devorantis in gyro.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">U rasplamtjelom gnjevu svojem razbi svu snagu Izraelovu, povuče svoju desnicu pred neprijateljem; u Jakovu raspiri plamen ognjeni koji sve uokolo proždire.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Tetendit arcum suum quasi inimicus,  firmavit dexteram suam quasi hostis,  et occidit omne quod pulchrum erat visu  in tabernaculo filiæ Sion ;  effudit quasi ignem  indignationem suam.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Nategao je luk k'o neprijatelj, kao dušman ispružio desnicu, ubijajući sve što mu drago bijaše. Na šator Kćeri sionske sasu k'o oganj gnjev svoj jarosni.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Factus est Dominus velut inimicus,  præcipitavit Israël :  præcipitavit omnia mœnia ejus,  dissipavit munitiones ejus,  et replevit in filia Juda  humiliatum et humiliatam.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">K'o neprijatelj Gospod bijaše: razorio je Izraela, razorio sve dvore njegove, porušio njegove utvrde, umnožio kćeri Judinoj uzdisaje i jecaje.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et dissipavit quasi hortum tentorium suum ;  demolitus est tabernaculum suum.  Oblivioni tradidit Dominus in Sion  festivitatem et sabbatum ;  et in opprobrium, et in indignationem furoris sui,  regem et sacerdotem.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Kao vrtu razvali mu sjenicu, razori mjesto sastanka. Baci Jahve u zaborav svetkovine i subote na Sionu; u gnjevu svojem prezre kralja i svećenika.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Repulit Dominus altare suum ;  maledixit sanctificationi suæ :  tradidit in manu inimici  muros turrium ejus.  Vocem dederunt in domo Domini  sicut in die solemni.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Svoj oltar je Gospod odbacio, zgadilo mu se Svetište njegovo. U ruke neprijatelja je predao bedeme svoje i dvorove. Bučili su u Domu Jahvinu, kao u dan blagdanji.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Cogitavit Dominus dissipare  murum filiæ Sion ;  tetendit funiculum suum,  et non avertit manum suam a perditione :  luxitque antemurale,  et murus pariter dissipatus est.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Jahve naumi razvaliti zidove Kćeri sionske. Nape uže mjerničko, ne ustegnu ruku od rušenja. Predziđe, zidine zavi u tugu: oronuše zajedno.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Defixæ sunt in terra portæ ejus,  perdidit et contrivit vectes ejus ;  regem ejus et principes ejus in gentibus :  non est lex,  et prophetæ ejus non invenerunt  visionem a Domino.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Vrata njina utonuše u zemlju, on im je razbio zasune; kralj i knezovi su među pucima, Zakona nema! Ni u prorokÄa više se ne nalaze viđenja Jahvina.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sederunt in terra, conticuerunt  senes filiæ Sion ;  consperserunt cinere capita sua,  accincti sunt ciliciis :  abjecerunt in terram capita sua  virgines Jerusalem.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Starješine Kćeri sionske na zemlji sjede i šute, posiplju glavu prašinom, kostrijet pripasuju. K zemlji glave obaraju djevice jeruzalemske.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Defecerunt præ lacrimis oculi mei,  conturbata sunt viscera mea ;  effusum est in terra jecur meum  super contritione filiæ populi mei,  cum deficeret parvulus et lactens  in plateis oppidi.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Iščilješe mi oči od suza, utroba moja ustreptala, jetra mi se na zemlju prosula zbog sloma kćeri naroda mojega, jer djeca i dojenčad umiru po trgovima Grada.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Matribus suis dixerunt :  Ubi est triticum et vinum ?  cum deficerent quasi vulnerati  in plateis civitatis,  cum exhalarent animas suas  in sinu matrum suarum.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Govore majkama svojim: &quot;Gdje je žito i vino?&quot; dok obamiru kao ranjeni po trgovima Grada, dok ispuštaju dušu svoju na grudima matera svojih.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Cui comparabo te, vel cui assimilabo te,  filia Jerusalem ?  cui exæquabo te, et consolabor te,  virgo, filia Sion ?  magna est enim velut mare contritio tua :  quis medebitur tui ?</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">S čime da te prispodobim? Na koga si nalik, Kćeri jeruzalemska? S kime da te usporedim, kako utješim, djevice, Kćeri sionska? Jer kao more tvoja je nesreća neizmjerna. Tko će te iscijeliti?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Prophetæ tui viderunt tibi  falsa et stulta ;  nec aperiebant iniquitatem tuam,  ut te ad pœnitentiam provocarent ;  viderunt autem tibi assumptiones falsas,  et ejectiones.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Viđenja tvojih proroka bijahu varka i laž, oni nisu objavili krivnju tvoju da te od izgnanstva odvrate. Varali su te utvarama lažnim i zamamnim.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Plauserunt super te manibus  omnes transeuntes per viam ;  sibilaverunt et moverunt caput suum  super filiam Jerusalem :  Hæccine est urbs, dicentes, perfecti decoris,  gaudium universæ terræ ?</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Nad tobom plješću rukama svi koji putem prolaze, zvižde i vrte glavom zbog Kćeri jeruzalemske: &quot;Je li to grad na glasu ljepotom, radost svemu svijetu?&quot;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Aperuerunt super te os suum  omnes inimici tui :  sibilaverunt, et fremuerunt dentibus,  et dixerunt : Devorabimus :  en ista est dies quam exspectabamus ;  invenimus, vidimus.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Na tebe otvaraju usta svi neprijatelji tvoji, zvižde, škrguću zubima i govore: &quot;Proždrijesmo je! To je dan za kojim čeznusmo, doživjesmo, vidjesmo!&quot;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Fecit Dominus quæ cogitavit ;  complevit sermonem suum,  quem præceperat a diebus antiquis :  destruxit, et non pepercit,  et lætificavit super te inimicum,  et exaltavit cornu hostium tuorum.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Jahve izvrši naum svoj, održa svoju riječ koju naredi u davnim danima: nemilice te razorio. Neprijatelj likuje zbog tebe, tvoj protivnik rog svoj podiže.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Clamavit cor eorum ad Dominum  super muros filiæ Sion :  Deduc quasi torrentem lacrimas  per diem et noctem ;  non des requiem tibi,  neque taceat pupilla oculi tui.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">U sav glas viči Gospodu, jecaj, Kćeri sionska! Neka k'o potok teku tvoje suze danju i noću. Ne daj počinka sebi, neka se zjenica oka tvoga ne odmori.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">Consurge, lauda in nocte,  in principio vigiliarum ;  effunde sicut aquam cor tuum  ante conspectum Domini :  leva ad eum manus tuas  pro anima parvulorum tuorum,  qui defecerunt in fame  in capite omnium compitorum.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Ustani, viči noću za svake promjene straže. K'o vodu izlij srce pred licem Gospodnjim, k njemu podiži ruke i traži milost za svoju nejačad koja od glada obamire po uglovima ulica.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vide, Domine, et considera  quem vindemiaveris ita.  Ergone comedent mulieres fructum suum,  parvulos ad mensuram palmæ ?  si occiditur in sanctuario Domini  sacerdos et propheta ?</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Pogledaj, Jahve, i vidi kome si to učinio. Zar žene da jedu porod svoj, djecu što njišu u naručju? Zar moradoše biti poklani u Svetištu Gospodnjem svećenici i proroci?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">Jacuerunt in terra foris  puer et senex ;  virgines meæ et juvenes mei  ceciderunt in gladio :  interfecisti in die furoris tui,  percussisti, nec misertus es.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">U uličnoj prašini leže djeca i starci; moje djevice i moji mladići od mača padoše. Ti ih pomori u dan gnjeva svojega, ti ih pokla nemilice.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-22">
+      <div class="verse-num-col"><div class="verse-num">22</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vocasti quasi ad diem solemnem,  qui terrerent me de circuitu ;  et non fuit in die furoris Domini qui effugeret,  et relinqueretur :  quos educavi et enutrivi,  inimicus meus consumpsit eos.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Ti si, kao na dan svečani, sa svih strana sazvao užase moje. U dan gnjeva Jahvina nitko nije preživio, nitko se nije spasio. One koje sam odnjihala i odgojila neprijatelj moj sve je istrijebio.</div>
+      </div>
+    </div>
+  </section>
 
-<nav class="bnav">
-  <a href="024-jer.html">&#8592; Ieremias</a>
-  <a href="../index.html" class="center">↑ &nbsp; Inhaltsverzeichnis</a>
-  <a href="026-eze.html">Ezechiel &#8594;</a>
-</nav>
+  <section class="chapter" id="ch3">
+    <div class="chapter-marker">
+      <span class="ch-roman">III</span>
+      <span class="ch-label">Caput 3</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v3-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ego vir videns paupertatem meam  in virga indignationis ejus.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Ja sam čovjek što upozna bijedu pod šibom gnjeva njegova.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Me minavit, et adduxit in tenebras,  et non in lucem.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Mene je odveo i natjerao da hodam u tmini i bez svjetlosti.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Tantum in me vertit et convertit  manum suam tota die.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">I upravo mene bije i udara bez prestanka njegova ruka.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vetustam fecit pellem meam et carnem meam ;  contrivit ossa mea.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Iscijedio je moje meso, kožu moju, polomio kosti moje.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ædificavit in gyro meo, et circumdedit me  felle et labore.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Načinio mi jaram, glavu obrubio tegobama.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">In tenebrosis collocavit me,  quasi mortuos sempiternos.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Pustio me da živim u tminama kao mrtvaci vječiti.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Circumædificavit adversum me, ut non egrediar ;  aggravavit compedem meum.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Zazidao me, i ja ne mogu izaći, otežao je moje okove.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sed et cum clamavero, et rogavero,  exclusit orationem meam.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Kada sam vikao i zapomagao, molitvu je moju odbijao.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Conclusit vias meas lapidibus quadris ;  semitas meas subvertit.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Zazidao mi ceste tesanim kamenom, zakrčio je putove moje.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ursus insidians factus est mihi,  leo in absconditis.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Meni on bijaše medvjed koji vreba, lav u zasjedi.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Semitas meas subvertit, et confregit me ;  posuit me desolatam.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">U bespuća me vodio, razdirao, ostavljao me da umirem.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Tetendit arcum suum, et posuit me  quasi signum ad sagittam.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Napinjao je luk svoj i gađao me kao metu za svoje strelice.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Misit in renibus meis  filias pharetræ suæ.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">U slabine mi sasuo strelice, sinove svoga tobolca.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Factus sum in derisum omni populo meo,  canticum eorum tota die.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Postao sam smiješan svome narodu, rugalica svakidašnja.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Replevit me amaritudinibus ;  inebriavit me absinthio.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Gorčinom me hranio, pelinom me napajao.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et fregit ad numerum dentes meos ;  cibavit me cinere.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Puštao me da zube kršim kamen grizući, zakapao me u pepeo.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et repulsa est a pace anima mea ;  oblitus sum bonorum.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Duši je mojoj oduzet mir i više ne znam što je sreća!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et dixi : Periit finis meus,  et spes mea a Domino.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Rekoh: Dotrajao je život moj i nada koja mi od Jahve dolazi.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">Recordare paupertatis, et transgressionis meæ,  absinthii et fellis.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Spomeni se bijede moje i stradanja, pelina i otrova!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">Memoria memor ero, et tabescet  in me anima mea.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Bez prestanka na to misli i sahne duša u meni.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hæc recolens in corde meo,  ideo sperabo.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">To nosim u srcu i gojim nadu u sebi.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-22">
+      <div class="verse-num-col"><div class="verse-num">22</div></div>
+      <div class="verse-texts">
+        <div class="latin">Misericordiæ Domini, quia non sumus consumpti ;  quia non defecerunt miserationes ejus.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Dobrota Jahvina nije nestala, milosrđe njegovo nije presušilo.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-23">
+      <div class="verse-num-col"><div class="verse-num">23</div></div>
+      <div class="verse-texts">
+        <div class="latin">Novi diluculo,  multa est fides tua.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Oni se obnavljaju svako jutro: tvoja je vjernost velika!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-24">
+      <div class="verse-num-col"><div class="verse-num">24</div></div>
+      <div class="verse-texts">
+        <div class="latin">Pars mea Dominus, dixit anima mea ;  propterea exspectabo eum.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">&quot;Jahve je dio moj&quot;, veli mi duša, &quot;i zato se u nj pouzdajem.&quot;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-25">
+      <div class="verse-num-col"><div class="verse-num">25</div></div>
+      <div class="verse-texts">
+        <div class="latin">Bonus est Dominus sperantibus in eum,  animæ quærenti illum.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Dobar je Jahve onom koji se u nj pouzdaje, duši koja ga traži.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-26">
+      <div class="verse-num-col"><div class="verse-num">26</div></div>
+      <div class="verse-texts">
+        <div class="latin">Bonum est præstolari cum silentio  salutare Dei.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Dobro je u miru čekati spasenje Jahvino!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-27">
+      <div class="verse-num-col"><div class="verse-num">27</div></div>
+      <div class="verse-texts">
+        <div class="latin">Bonum est viro cum portaverit jugum  ab adolescentia sua.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Dobro je čovjeku da nosi jaram za svoje mladosti.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-28">
+      <div class="verse-num-col"><div class="verse-num">28</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sedebit solitarius, et tacebit,  quia levavit super se.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Neka sjedi u samoći i šuti, jer mu On to nametnu;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-29">
+      <div class="verse-num-col"><div class="verse-num">29</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ponet in pulvere os suum,  si forte sit spes.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">neka usne priljubi uz prašinu, možda još ima nade!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-30">
+      <div class="verse-num-col"><div class="verse-num">30</div></div>
+      <div class="verse-texts">
+        <div class="latin">Dabit percutienti se maxillam :  saturabitur opprobriis.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Neka pruži obraz onome koji ga bije, neka se zasiti porugom.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-31">
+      <div class="verse-num-col"><div class="verse-num">31</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quia non repellet  in sempiternum Dominus.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Jer Gospod ne odbacuje nikoga zauvijek:</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-32">
+      <div class="verse-num-col"><div class="verse-num">32</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quia si abjecit, et miserebitur,  secundum multitudinem misericordiarum suarum.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">jer ako i rastuži, on se smiluje po svojoj velikoj ljubavi.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-33">
+      <div class="verse-num-col"><div class="verse-num">33</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non enim humiliavit ex corde suo  et abjecit filios hominum.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Jer samo nerado on ponižava i rascvili sinove čovjeka.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-34">
+      <div class="verse-num-col"><div class="verse-num">34</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ut conteret sub pedibus suis  omnes vinctos terræ.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Kad se gaze nogama svi zemaljski sužnjevi,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-35">
+      <div class="verse-num-col"><div class="verse-num">35</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ut declinaret judicium viri  in conspectu vultus Altissimi.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">kad se izvrće pravica čovjeku pred licem Svevišnjeg,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-36">
+      <div class="verse-num-col"><div class="verse-num">36</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ut perverteret hominem in judicio suo ;  Dominus ignoravit.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">kad se krivica nanosi čovjeku u parnici, zar Gospod ne vidi?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-37">
+      <div class="verse-num-col"><div class="verse-num">37</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quis est iste qui dixit ut fieret,  Domino non jubente ?</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Tko je rekao nešto i zbilo se? Nije li Gospod to zapovjedio?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-38">
+      <div class="verse-num-col"><div class="verse-num">38</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ex ore Altissimi non egredientur  nec mala nec bona ?</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Ne dolazi li iz usta Svevišnjega i dobro i zlo?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-39">
+      <div class="verse-num-col"><div class="verse-num">39</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quid murmuravit homo vivens,  vir pro peccatis suis ?</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Na što se tuže živi ljudi? Svatko na svoj grijeh.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-40">
+      <div class="verse-num-col"><div class="verse-num">40</div></div>
+      <div class="verse-texts">
+        <div class="latin">Scrutemur vias nostras, et quæramus,  et revertamur ad Dominum.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Ispitajmo, pretražimo pute svoje i vratimo se Jahvi.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-41">
+      <div class="verse-num-col"><div class="verse-num">41</div></div>
+      <div class="verse-texts">
+        <div class="latin">Levemus corda nostra cum manibus  ad Dominum in cælos.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Dignimo svoje srce i ruke svoje k Bogu koji je na nebesima.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-42">
+      <div class="verse-num-col"><div class="verse-num">42</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nos inique egimus, et ad iracundiam provocavimus ;  idcirco tu inexorabilis es.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Da, mi smo se odmetali, bili nepokorni, a ti, ti nisi praštao!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-43">
+      <div class="verse-num-col"><div class="verse-num">43</div></div>
+      <div class="verse-texts">
+        <div class="latin">Operuisti in furore, et percussisti nos ;  occidisti, nec pepercisti.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Obastrt gnjevom svojim, gonio si nas, ubijao i nisi štedio.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-44">
+      <div class="verse-num-col"><div class="verse-num">44</div></div>
+      <div class="verse-texts">
+        <div class="latin">Opposuisti nubem tibi,  ne transeat oratio.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Oblakom si se obastro da molitva ne prodre do tebe.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-45">
+      <div class="verse-num-col"><div class="verse-num">45</div></div>
+      <div class="verse-texts">
+        <div class="latin">Eradicationem et abjectionem posuisti me  in medio populorum.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Načinio si od nas smeće i odmet među narodima.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-46">
+      <div class="verse-num-col"><div class="verse-num">46</div></div>
+      <div class="verse-texts">
+        <div class="latin">Aperuerunt super nos os suum  omnes inimici.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Razjapili usta na nas svi neprijatelji naši.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-47">
+      <div class="verse-num-col"><div class="verse-num">47</div></div>
+      <div class="verse-texts">
+        <div class="latin">Formido et laqueus facta est nobis  vaticinatio, et contritio.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Užas i jama bila nam sudbina, propast i zator!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-48">
+      <div class="verse-num-col"><div class="verse-num">48</div></div>
+      <div class="verse-texts">
+        <div class="latin">Divisiones aquarum deduxit oculus meus,  in contritione filiæ populi mei.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Potoci suza teku iz očiju mojih zbog propasti Kćeri naroda mojega.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-49">
+      <div class="verse-num-col"><div class="verse-num">49</div></div>
+      <div class="verse-texts">
+        <div class="latin">Oculus meus afflictus est, nec tacuit,  eo quod non esset requies.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Moje oči liju suze bez prestanka, jer prestanka nema</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-50">
+      <div class="verse-num-col"><div class="verse-num">50</div></div>
+      <div class="verse-texts">
+        <div class="latin">Donec respiceret et videret  Dominus de cælis.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">dok ne pogleda i ne vidi Jahve s nebesa.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-51">
+      <div class="verse-num-col"><div class="verse-num">51</div></div>
+      <div class="verse-texts">
+        <div class="latin">Oculus meus deprædatus est animam meam  in cunctis filiabus urbis meæ.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Moje mi oko bol zadaje zbog kćeri svih mojega grada.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-52">
+      <div class="verse-num-col"><div class="verse-num">52</div></div>
+      <div class="verse-texts">
+        <div class="latin">Venatione ceperunt me quasi avem  inimici mei gratis.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Uporno me k'o pticu progone svi što me mrze, a bez razloga.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-53">
+      <div class="verse-num-col"><div class="verse-num">53</div></div>
+      <div class="verse-texts">
+        <div class="latin">Lapsa est in lacum vita mea,  et posuerunt lapidem super me.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">U jamu baciše moj život i zatrpaše je kamenjem.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-54">
+      <div class="verse-num-col"><div class="verse-num">54</div></div>
+      <div class="verse-texts">
+        <div class="latin">Inundaverunt aquæ super caput meum ;  dixi : Perii.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Voda mi dođe preko glave, rekoh sam sebi: &quot;Pogiboh!&quot;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-55">
+      <div class="verse-num-col"><div class="verse-num">55</div></div>
+      <div class="verse-texts">
+        <div class="latin">Invocavi nomen tuum, Domine,  de lacu novissimo.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">I tada zazvah ime tvoje, Jahve, iz najdublje jame.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-56">
+      <div class="verse-num-col"><div class="verse-num">56</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vocem meam audisti ; ne avertas aurem tuam  a singultu meo et clamoribus.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Ti oču moj glas: &quot;Ne začepljuj uši svoje na vapaje moje.&quot;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-57">
+      <div class="verse-num-col"><div class="verse-num">57</div></div>
+      <div class="verse-texts">
+        <div class="latin">Appropinquasti in die quando invocavi te ;  dixisti : Ne timeas.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Bliz meni bijaše u dan vapaja mog, govoraše: &quot;Ne boj se!&quot;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-58">
+      <div class="verse-num-col"><div class="verse-num">58</div></div>
+      <div class="verse-texts">
+        <div class="latin">Judicasti, Domine, causam animæ meæ,  redemptor vitæ meæ.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Ti si, Gospode, izborio pravdu za dušu moju, ti si život moj izbavio.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-59">
+      <div class="verse-num-col"><div class="verse-num">59</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vidisti, Domine, iniquitatem illorum adversum me :  judica judicium meum.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Ti, Jahve, vidje kako me tlače, dosudi mi pravdu.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-60">
+      <div class="verse-num-col"><div class="verse-num">60</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vidisti omnem furorem,  universas cogitationes eorum adversum me.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Ti vidje svu osvetu njinu, sve podvale protiv mene.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-61">
+      <div class="verse-num-col"><div class="verse-num">61</div></div>
+      <div class="verse-texts">
+        <div class="latin">Audisti opprobrium eorum, Domine,  omnes cogitationes eorum adversum me.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Čuo si, Jahve, podrugivanje njihovo, sve podvale protiv mene.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-62">
+      <div class="verse-num-col"><div class="verse-num">62</div></div>
+      <div class="verse-texts">
+        <div class="latin">Labia insurgentium mihi, et meditationes eorum  adversum me tota die.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Usne protivnika mojih i misli njine protiv mene su cio dan.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-63">
+      <div class="verse-num-col"><div class="verse-num">63</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sessionem eorum et resurrectionem eorum vide ;  ego sum psalmus eorum.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Kad sjede, kad ustaju, pogledaj samo: ja sam im pjesma-rugalica.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-64">
+      <div class="verse-num-col"><div class="verse-num">64</div></div>
+      <div class="verse-texts">
+        <div class="latin">Redes eis vicem, Domine,  juxta opera manuum suarum.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Vrati im, Jahve, milo za drago, po djelu ruku njihovih.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-65">
+      <div class="verse-num-col"><div class="verse-num">65</div></div>
+      <div class="verse-texts">
+        <div class="latin">Dabis eis scutum cordis,  laborem tuum.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Učini da srca im otvrdnu, udari ih prokletstvom svojim.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-66">
+      <div class="verse-num-col"><div class="verse-num">66</div></div>
+      <div class="verse-texts">
+        <div class="latin">Persequeris in furore, et conteres eos  sub cælis, Domine.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Goni ih gnjevno i sve ih istrijebi pod nebesima svojim, Jahve!</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch4">
+    <div class="chapter-marker">
+      <span class="ch-roman">IV</span>
+      <span class="ch-label">Caput 4</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v4-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quomodo obscuratum est aurum,  mutatus est color optimus !  dispersi sunt lapides sanctuarii  in capite omnium platearum !</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Jao, potamnje zlato, to suho zlato! Sveto se kamenje prosu na uglovima svih ulica.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Filii Sion inclyti,  et amicti auro primo :  quomodo reputati sunt in vasa testea,  opus manuum figuli !</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Sinovi sionski, nekoć cijenjeni kao najčišće zlato, ah, sada ih cijene kao sudove glinske, kao djelo ruku lončarevih!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sed et lamiæ nudaverunt mammam,  lactaverunt catulos suos :  filia populi mei crudelis  quasi struthio in deserto.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Čak i šakali pružaju dojke i doje mladunčad, ali kćeri naroda moga postaše okrutne kao nojevi u pustinji.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Adhæsit lingua lactentis  ad palatum ejus in siti ;  parvuli petierunt panem,  et non erat qui frangeret eis.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Jezik dojenčeta za nepce se lijepi od žeđi. Djeca vape za kruhom, a nikog da im ga pruži.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui vescebantur voluptuose,  interierunt in viis ;  qui nutriebantur in croceis,  amplexati sunt stercora.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Oni što se nekoć sladiše biranim jelima ginu po ulicama; nekoć nošeni u grimizu, sada se valjaju po buništu.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et major effecta est iniquitas filiæ populi mei  peccato Sodomorum,  quæ subversa est in momento,  et non ceperunt in ea manus.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Veći bijaše zločin Kćeri naroda moga od grijeha Sodome, što u tren oka bi razorena, a ničija se ruka ne diže na nju.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Candidiores Nazaræi ejus nive,  nitidiores lacte,  rubicundiores ebore antiquo,  sapphiro pulchriores.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Njeni mladići bijahu nekoć čišći od snijega, bjelji od mlijeka, od koralja rumenija bijahu im tijela, lice glatko k'o safir.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Denigrata est super carbones facies eorum  et non sunt cogniti in plateis ;  adhæsit cutis eorum ossibus :  aruit, et facta est quasi lignum.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Sad im je obraz crnji od čađe, ne prepoznaju se više na ulici. Koža im se lijepi za kosti, suha kao drvo.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Melius fuit occisis gladio  quam interfectis fame,  quoniam isti extabuerunt consumpti  a sterilitate terræ.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Kako su sretni oni što ih mač probode, sretniji od onih koje pomori glad; koji padaju, iscrpljeni, jer im nedostaju plodovi zemljini.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Manus mulierum misericordium  coxerunt filios suos ;  facti sunt cibus earum  in contritione filiæ populi mei.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Žene, tako nježne, kuhaše djecu svoju, njima se hraniše za propasti Kćeri naroda moga.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Complevit Dominus furorem suum,  effudit iram indignationis suæ :  et succendit ignem in Sion,  et devoravit fundamenta ejus.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Jahve je utolio svoj bijes, izlio jarosnu srdžbu svoju, na Sionu raspirio požar što sažiže i same temelje njegove.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non crediderunt reges terræ,  et universi habitatores orbis,  quoniam ingrederetur hostis et inimicus  per portas Jerusalem.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Nisu vjerovali kraljevi zemaljski ni svekoliko stanovništvo zemlje da će ugnjetač i neprijatelj ući na vrata jeruzalemska -</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Propter peccata prophetarum ejus,  et iniquitates sacerdotum ejus,  qui effuderunt in medio ejus  sanguinem justorum.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">zbog grijeha svojih prorokÄa, zbog bezakonja svećenikÄa koji usred grada prolijevahu krv pravednikÄa!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Erraverunt cæci in plateis,  polluti sunt in sanguine ;  cumque non possent,  tenuerunt lacinias suas.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">K'o slijepi teturahu ulicama, omašteni krvlju, te nitko nije smio da se takne odjeće njihove.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Recedite polluti, clamaverunt eis ;  recedite, abite, nolite tangere :  jurgati quippe sunt, et commoti dixerunt inter gentes :  Non addet ultra ut habitet in eis.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">&quot;Natrag, nečisti!&quot; - viču im. &quot;Natrag! Ne dirajte!&quot; I tada pobjegoše poganima, al' ne smjedoše ondje ostati.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Facies Domini divisit eos,  non addet ut respiciat eos ;  facies sacerdotum non erubuerunt,  neque senum miserti sunt.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Raspršilo ih lice Jahvino, on ih više nije gledao. Ne poštuju više svećenikÄa, ne sažaljuju staraca.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Cum adhuc subsisteremus, defecerunt oculi nostri  ad auxilium nostrum vanum ;  cum respiceremus attenti ad gentem  quæ salvare non poterat.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Već nam oči iščilješe iščekujući pomoć, ali uzalud; s kula naših zureć' u daljinu očekivasmo narod koji nas ne može spasiti.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Lubricaverunt vestigia nostra  in itinere platearum nostrarum ;  appropinquavit finis noster, completi sunt dies nostri,  quia venit finis noster.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Vrebaju nam na korake da ne hodamo po trgovima svojim. Bliži nam se kraj, navršili nam se dani, naš konac dolazi.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">Velociores fuerunt persecutores nostri  aquilis cæli ;  super montes persecuti sunt nos,  in deserto insidiati sunt nobis.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Naši gonitelji bijahu brži od orlova na nebu; u planini nas ganjahu, u pustinji dočekivahu u zasjedi.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">Spiritus oris nostri, christus Dominus,  captus est in peccatis nostris,  cui diximus : In umbra tua  vivemus in gentibus.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Naš životni dah, Jahvin pomazanik, pade u njihove jame - on za koga govorasmo: &quot;U sjeni njegovoj živjet ćemo među narodima.&quot;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">Gaude et lætare, filia Edom,  quæ habitas in terra Hus !  ad te quoque perveniet calix : inebriaberis,  atque nudaberis.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Raduj se i veseli se, Kćeri edomska, ti koja živiš u zemlji Usu: doći će i do tebe čaša, opit ćeš se i razgoliti.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-22">
+      <div class="verse-num-col"><div class="verse-num">22</div></div>
+      <div class="verse-texts">
+        <div class="latin">Completa est iniquitas tua, filia Sion :  non addet ultra ut transmigret te.  Visitavit iniquitatem tuam, filia Edom ;  discooperuit peccata tua.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Tvoj grijeh je iskupljen, Kćeri sionska, neće te više u izgnanstvo voditi. Kaznit će opačinu tvoju, Kćeri edomska, razotkriti grijehe tvoje.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch5">
+    <div class="chapter-marker">
+      <span class="ch-roman">V</span>
+      <span class="ch-label">Caput 5</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v5-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Recordare, Domine, quid acciderit nobis ;  intuere et respice opprobrium nostrum.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Spomeni se, Jahve, što nas je snašlo, pogledaj, vidi sramotu našu!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hæreditas nostra versa est ad alienos,  domus nostræ ad extraneos.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Baština naša pade u ruke strancima, domovi naši pripadoše tuđincima.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Pupilli facti sumus absque patre,  matres nostræ quasi viduæ.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Siročad smo: oca nemamo, majke su nam kao udovice.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Aquam nostram pecunia bibimus ;  ligna nostra pretio comparavimus.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Vodu što pijemo plaćamo novcem, i za drvo valja nam platiti.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Cervicibus nostris minabamur,  lassis non dabatur requies.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Jaram nam je o vratu, gone nas, iscrpljeni smo, ne daju nam predahnuti.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ægypto dedimus manum et Assyriis,  ut saturaremur pane.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Pružamo ruke k Egiptu i Asiriji da se kruha nasitimo.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Patres nostri peccaverunt, et non sunt :  et nos iniquitates eorum portavimus.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Oci naši zgriješiše i više ih nema, a mi nosimo krivice njihove.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Servi dominati sunt nostri :  non fuit qui redimeret de manu eorum.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Robovi nama zapovijedaju, a nitko da nas izbavi iz ruku njihovih.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">In animabus nostris afferebamus panem nobis,  a facie gladii in deserto.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Kruh svoj donosimo izlažući život maču u pustinji.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Pellis nostra quasi clibanus exusta est,  a facie tempestatum famis.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Koža nam gori kao peć užarena, ognjicom od plamena gladi.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Mulieres in Sion humiliaverunt,  et virgines in civitatibus Juda.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Oskvrnuli su žene na Sionu i djevice u gradovima judejskim.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Principes manu suspensi sunt ;  facies senum non erubuerunt.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Svojim su rukama vješali knezove, ni lica staračka nisu poštivali.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Adolescentibus impudice abusi sunt,  et pueri in ligno corruerunt.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Mladići su nosili žrvnjeve, djeca padala pod bremenom drva.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Senes defecerunt de portis,  juvenes de choro psallentium.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Starci su ostavili vrata, mladići više ne sviraju na lirama.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Defecit gaudium cordis nostri ;  versus est in luctum chorus noster.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Radosti nesta iz naših srdaca, naš ples se pretvori u tugovanje.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Cecidit corona capitis nostri :  væ nobis, quia peccavimus !</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Pao je vijenac s naše glave, jao nama što zgriješismo!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Propterea mœstum factum est cor nostrum ;  ideo contenebrati sunt oculi nostri,</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Evo zašto nam srce boluje, evo zašto nam oči se zastiru:</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">propter montem Sion quia disperiit ;  vulpes ambulaverunt in eo.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">zato što Gora sionska opustje i po njoj se šuljaju šakali.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">Tu autem, Domine, in æternum permanebis,  solium tuum in generationem et generationem.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Ali ti, Jahve, ostaješ zauvijek, tvoj je prijesto od koljena do koljena.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quare in perpetuum oblivisceris nostri,  derelinques nos in longitudine dierum ?</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Zašto da nas zaboraviš zauvijek, da nas ostaviš za mnoge dane?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">Converte nos, Domine, ad te, et convertemur ;  innova dies nostros, sicut a principio.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Vrati nas k sebi, Jahve, obratit ćemo se, obnovi dane naše kao što nekoć bijahu.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-22">
+      <div class="verse-num-col"><div class="verse-num">22</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sed projiciens repulisti nos :  iratus es contra nos vehementer.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Il' nas hoćeš sasvim zabaciti i na nas se beskrajno srditi?</div>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <nav class="book-nav">
+    <a href="024-jer.html">← Ieremias</a>
+    <span class="center">Threni · Hrvatski</span>
+    <a href="026-eze.html">Ezechiel →</a>
+  </nav>
+
+  <footer class="page-footer">
+    BIBLIA CATHOLICA INTERLINEARIS &nbsp;·&nbsp; Vulgata Clementina &amp; Hrvatska Biblija (PD, 1895)
+    &nbsp;·&nbsp; Gemeinfreie Texte / Public Domain
+  </footer>
 
 </body>
 </html>

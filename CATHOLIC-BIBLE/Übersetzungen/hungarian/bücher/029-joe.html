@@ -1,792 +1,839 @@
 <!DOCTYPE html>
 <html lang="hu">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Ioel &middot; Magyar &middot; Biblia Catholica</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&display=swap" rel="stylesheet">
-<style>
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
-body{
-  background:#2C0810;
-  background-image:radial-gradient(ellipse at 50% 20%,#4A1020 0%,#1A0407 100%);
-  font-family:'EB Garamond',serif;
-  color:#1A0E06;
-  font-size:17px;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Ioel · Magyar · Biblia Catholica</title>
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
+
+:root {
+  --gold:        #C8A96E;
+  --gold-light:  #EDD58A;
+  --gold-dark:   #8B6914;
+  --navy:        #1A1F3A;
+  --navy-mid:    #252B4A;
+  --navy-light:  #2E3560;
+  --parchment:   #F5E9CC;
+  --parchment-d: #EDD9A3;
+  --cream:       #FDF6E3;
+  --latin-color: #6B1E0E;
+  --trans-color: #0F1D2E;
+  --border:      rgba(200,169,110,.35);
+  --font-title:  'Cinzel Decorative', 'Cinzel', Georgia, serif;
+  --font-sub:    'Cinzel', Georgia, serif;
+  --font-body:   'EB Garamond', Georgia, serif;
 }
 
-/* ──────────────────────────────────────────
-   BUCHKOPF
-────────────────────────────────────────── */
-.bhead{
-  background:
-    repeating-linear-gradient( 45deg,transparent,transparent 36px,rgba(200,160,48,.028) 36px,rgba(200,160,48,.028) 37px),
-    repeating-linear-gradient(-45deg,transparent,transparent 36px,rgba(200,160,48,.028) 36px,rgba(200,160,48,.028) 37px),
-    linear-gradient(162deg,#2C0810 0%,#4A1020 45%,#5C1828 65%,#4A1020 85%,#2C0810 100%);
-  padding:36px 28px 28px;
-  text-align:center;
-  border-bottom:4px solid #B8962E;
-  position:relative;overflow:hidden;
-}
-/* Innerer Rahmen — äußerer Ring */
-.bhead::before{
-  content:'';position:absolute;inset:14px;
-  border:1px solid rgba(200,160,48,.22);
-  pointer-events:none;
-}
-/* Innerer Rahmen — innerer Ring */
-.bhead::after{
-  content:'';position:absolute;inset:22px;
-  border:1px solid rgba(200,160,48,.08);
-  pointer-events:none;
-}
-.btestament{
-  display:inline-block;
-  border:1px solid rgba(200,160,48,.32);
-  color:rgba(200,160,48,.52);
-  font-family:'Cinzel',serif;font-size:.55rem;
-  letter-spacing:.3em;padding:4px 18px;
-  border-radius:2px;margin-bottom:16px;
-  position:relative;
-}
-.blatin{
-  font-family:'Cinzel Decorative',serif;
-  font-size:clamp(1.9rem,7vw,3.4rem);
-  color:#EDD882;
-  text-shadow:0 3px 20px rgba(0,0,0,.55);
-  letter-spacing:.06em;position:relative;
-}
-.btrans{
-  font-family:'Cinzel',serif;
-  font-size:.88rem;
-  color:#C8A030;margin-top:10px;
-  letter-spacing:.16em;position:relative;
-}
-.bmeta{
-  font-family:'Cinzel',serif;font-size:.62rem;
-  color:rgba(200,160,48,.4);margin-top:6px;
-  letter-spacing:.08em;position:relative;
-}
+*,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+html { font-size:16px; scroll-behavior:smooth; }
+body { background:var(--cream); color:var(--trans-color); font-family:var(--font-body); }
 
-/* ──────────────────────────────────────────
-   KAPITELINHALT
-────────────────────────────────────────── */
-.content{
-  max-width:960px;
-  margin:36px auto 36px;
-  padding:48px 72px 100px;
-  background:#FAF5E8;
+/* ── NAV ─────────────────────────────────────────────── */
+.nav-bar {
+  background:var(--navy); padding:10px 28px;
+  display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  border-bottom:2px solid var(--gold);
+  position:sticky; top:0; z-index:100;
+  box-shadow:0 3px 12px rgba(0,0,0,.45);
+}
+.nav-bar a {
+  color:var(--gold); text-decoration:none;
+  font-family:var(--font-sub); font-size:.75rem; letter-spacing:.05em;
+  transition:color .15s;
+}
+.nav-bar a:hover { color:var(--gold-light); }
+.nav-bar .home { font-weight:700; font-size:.82rem; }
+.nav-bar .spacer { flex:1; }
+.nav-bar .pos { color:rgba(200,169,110,.45); font-size:.7rem; font-family:var(--font-sub); }
+
+/* ── BUCHKOPF ────────────────────────────────────────── */
+.book-header {
+  background:linear-gradient(160deg,var(--navy) 0%,var(--navy-mid) 55%,var(--navy-light) 100%);
+  padding:44px 36px 34px; text-align:center;
+  border-bottom:4px solid var(--gold);
+  position:relative; overflow:hidden;
+}
+.book-header::before {
+  content:'';
+  position:absolute; inset:0;
   background-image:
-    radial-gradient(ellipse at top left,rgba(184,150,46,.06) 0%,transparent 55%),
-    radial-gradient(ellipse at bottom right,rgba(184,150,46,.05) 0%,transparent 55%);
-  box-shadow:0 8px 80px rgba(0,0,0,.55),0 2px 12px rgba(0,0,0,.35),inset 0 0 0 1px rgba(184,150,46,.18);
-  border-left:4px solid #B8962E;
-  border-right:4px solid #B8962E;
-  border-top:2px solid rgba(184,150,46,.4);
-  border-bottom:2px solid rgba(184,150,46,.4);
-  position:relative;
-}
-.content::before{
-  content:'';
-  position:absolute;
-  inset:12px;
-  border:1px solid rgba(184,150,46,.08);
+    repeating-linear-gradient( 45deg,transparent,transparent 30px,rgba(200,169,110,.038) 30px,rgba(200,169,110,.038) 31px),
+    repeating-linear-gradient(-45deg,transparent,transparent 30px,rgba(200,169,110,.038) 30px,rgba(200,169,110,.038) 31px);
   pointer-events:none;
 }
-
-.chap{margin-top:0;}
-
-.chhead{
-  text-align:center;
-  padding:40px 0 20px;
-  margin-bottom:16px;
-  position:relative;
+.testament-badge {
+  display:inline-block;
+  border:1px solid rgba(200,169,110,.4); color:rgba(200,169,110,.65);
+  font-family:var(--font-sub); font-size:.62rem; letter-spacing:.25em;
+  padding:4px 14px; border-radius:2px; margin-bottom:14px; position:relative;
 }
-.chhead::before{
-  content:'——— ✦ ✦ ✦ ———';
-  display:block;
-  font-size:.7rem;
-  color:rgba(184,150,46,.45);
-  letter-spacing:.35em;
-  margin-bottom:16px;
+.book-name-latin {
+  font-family:var(--font-title); font-size:3rem; color:var(--gold-light);
+  text-shadow:0 3px 18px rgba(0,0,0,.55); letter-spacing:.08em; position:relative;
 }
-.chhead::after{
-  content:'';
-  display:block;
-  width:200px;
-  height:1px;
-  margin:14px auto 0;
-  background:linear-gradient(to right,transparent,#B8962E,transparent);
+.book-name-trans {
+  font-family:var(--font-sub); font-size:1.1rem; color:var(--gold);
+  margin-top:8px; letter-spacing:.12em; position:relative;
 }
-.chrom{
-  font-family:'Cinzel Decorative',serif;
-  font-size:4rem;color:#8B6914;
-  display:block;
-  text-shadow:0 2px 18px rgba(184,150,46,.2);
-  line-height:1;
-}
-.chlbl{
-  font-family:'Cinzel',serif;font-size:.58rem;
-  color:rgba(184,150,46,.42);letter-spacing:.32em;
-  display:block;margin-top:8px;
+.book-meta {
+  font-size:.74rem; color:rgba(200,169,110,.5); margin-top:7px;
+  font-family:var(--font-sub); letter-spacing:.07em; position:relative;
 }
 
-/* ──────────────────────────────────────────
-   VERSE
-────────────────────────────────────────── */
-.vb{
-  display:flex;
-  padding:20px 6px;
-  border-bottom:1px solid rgba(184,150,46,.12);
-  background:none;
-  border-radius:2px;
-  transition:background .15s;
-}
-.vb:hover{
-  background:rgba(184,150,46,.04);
+/* ── ORNAMENT-TRENNLINIE ─────────────────────────────── */
+.ornament-bar {
+  text-align:center; padding:16px 0 4px;
+  color:var(--gold); font-size:1.1rem; letter-spacing:.7em;
 }
 
-/* Versnummer */
-.vn{
-  flex-shrink:0;
-  width:38px;
-  padding-top:4px;
-  font-family:'Cinzel',serif;font-size:.56rem;
-  color:rgba(184,150,46,.52);text-align:right;
-  padding-right:12px;line-height:2.4;
+/* ── HAUPT-CONTAINER ─────────────────────────────────── */
+.content { max-width:960px; margin:0 auto; padding:0 24px 80px; }
+
+/* ── KAPITEL-MARKER ──────────────────────────────────── */
+.chapter-marker {
+  display:flex; align-items:center; gap:16px;
+  padding:28px 6px 12px; margin-bottom:4px;
+  border-bottom:2px solid var(--border);
+}
+.ch-roman {
+  font-family:var(--font-title); font-size:2.2rem; color:var(--gold);
+  min-width:56px; text-align:center; flex-shrink:0;
+  text-shadow:0 1px 8px rgba(200,169,110,.3);
+}
+.ch-label {
+  font-family:var(--font-sub); font-size:.72rem; color:rgba(200,169,110,.6);
+  letter-spacing:.22em; text-transform:uppercase;
 }
 
-.vt{
-  flex:1;
-  padding:0 20px 0 4px;
+/* ── VERS-BLOCK ──────────────────────────────────────── */
+.verse-block {
+  display:flex; gap:0; border-bottom:1px solid rgba(200,169,110,.15);
+}
+.verse-block:nth-child(odd)  { background:var(--cream); }
+.verse-block:nth-child(even) { background:var(--parchment); }
+
+.verse-num-col {
+  flex-shrink:0; width:42px; padding:16px 6px 16px 0; text-align:right;
+}
+.verse-num {
+  display:inline-block; width:28px; height:28px; border-radius:50%;
+  background:var(--gold-dark); color:var(--cream);
+  font-family:var(--font-sub); font-size:.64rem; font-weight:700;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 1px 5px rgba(0,0,0,.25);
 }
 
-/* LATEIN — PRIMÄR: groß, warm, maßgebend */
-.lat{
-  font-family:'EB Garamond',serif;
-  font-size:1.2rem;
-  font-weight:500;
-  line-height:2.1;
-  color:#3D1A08;
+.verse-texts { flex:1; padding:16px 16px 18px 8px; }
+
+/* ── LATEINISCHER TEXT (oben / primär) ───────────────── */
+.latin {
+  font-family:var(--font-body); font-size:1.12rem; line-height:1.9;
+  color:var(--latin-color); font-weight:500;
+  border-left:3px solid var(--gold); padding-left:12px;
+  margin-bottom:8px;
 }
 
-/* ÜBERSETZUNG — SEKUNDÄR: kleiner, kursiv, unter dem Latein */
-.tra{
-  font-family:'EB Garamond',serif;
-  font-size:.93rem;
-  font-style:italic;
-  line-height:1.95;
-  color:#1E2848;
-  margin-top:5px;
-  padding-left:14px;
-  border-left:2px solid rgba(90,110,170,.2);
+/* ── ÜBERSETZUNGS-TEXT (unten / sekundär) ────────────── */
+.trans-label {
+  font-family:var(--font-sub); font-size:.6rem; letter-spacing:.17em;
+  text-transform:uppercase; color:var(--gold-dark); margin-bottom:5px; opacity:.78;
+}
+.trans {
+  font-family:var(--font-body); font-size:1.04rem; line-height:1.85;
+  color:var(--trans-color); font-style:italic;
+  padding-left:15px;
 }
 
-/* Drop-Cap: erster Vers eines Kapitels — auf dem Latein */
-.vb.first .lat::first-letter{
-  font-family:'Cinzel Decorative',serif;
-  font-size:4em;
-  float:left;
-  line-height:.7;
-  padding-right:.08em;
-  margin-top:.07em;
-  color:#B8962E;
-  text-shadow:1px 2px 6px rgba(0,0,0,.12);
+/* Erste Vers jedes Kapitels: Drop-Cap */
+.verse-block:first-of-type .latin::first-letter {
+  font-size:4.2em; float:left; line-height:.72;
+  padding-right:.08em; margin-top:.06em;
+  font-family:var(--font-title); color:var(--gold);
 }
 
-/* ──────────────────────────────────────────
-   BUCH-NAVIGATION (unten)
-────────────────────────────────────────── */
-.bnav{
-  display:flex;justify-content:space-between;align-items:center;
-  background:#2C0810;border-top:3px solid #B8962E;
-  padding:12px 24px;gap:12px;
+/* ── NAVIGATION ZWISCHEN BÜCHERN ─────────────────────── */
+.book-nav {
+  display:flex; justify-content:space-between; align-items:center;
+  background:var(--navy); border-top:3px solid var(--gold);
+  padding:12px 26px; gap:12px;
 }
-.bnav a,.bnav .dim{
-  color:#C8A030;text-decoration:none;
-  font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:.07em;
-  padding:6px 16px;
-  border:1px solid rgba(200,160,48,.28);
-  border-radius:2px;transition:background .18s;
+.book-nav a {
+  color:var(--gold); text-decoration:none;
+  font-family:var(--font-sub); font-size:.78rem; letter-spacing:.07em;
+  padding:6px 14px; border:1px solid rgba(200,169,110,.3); border-radius:3px;
+  transition:background .18s;
 }
-.bnav a:hover{background:rgba(200,160,48,.12);}
-.bnav .dim{color:rgba(200,160,48,.2);border-color:rgba(200,160,48,.1);}
-.bnav .center{
-  font-family:'Cinzel',serif;font-size:.68rem;
-  color:rgba(200,160,48,.65);text-align:center;
-  letter-spacing:.06em;text-decoration:none;
-  border:1px solid rgba(200,160,48,.28);border-radius:2px;
-  padding:6px 20px;transition:background .18s;
-}
-.bnav .center:hover{background:rgba(200,160,48,.1);}
-
-/* DRUCK */
-@media print{
-  .bnav{display:none;}
-  .bhead{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-  .vb{break-inside:avoid;}
+.book-nav a:hover { background:rgba(200,169,110,.15); }
+.book-nav .center {
+  font-family:var(--font-sub); font-size:.7rem; color:rgba(200,169,110,.55);
+  letter-spacing:.1em; text-align:center;
 }
 
-/* MOBIL */
-@media(max-width:600px){
-  .blatin{font-size:1.8rem;}
-  .lat{font-size:1rem;}
-  .tra{font-size:.84rem;}
-  .content{padding:16px 18px 60px;margin:0;border-left:none;border-right:none;border-radius:0;}
-  .chrom{font-size:1.8rem;}
+/* ── FUßZEILE ────────────────────────────────────────── */
+.page-footer {
+  background:var(--navy); border-top:2px solid rgba(200,169,110,.3);
+  padding:18px 28px; text-align:center;
+  color:rgba(200,169,110,.45); font-family:var(--font-sub);
+  font-size:.68rem; letter-spacing:.1em;
+}
+
+/* ── DRUCK ───────────────────────────────────────────── */
+@media print {
+  .nav-bar, .book-nav { display:none; }
+  .verse-block { break-inside:avoid; }
+  .book-header { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+}
+
+/* ── MOBIL ───────────────────────────────────────────── */
+@media (max-width:640px) {
+  .book-name-latin { font-size:2.1rem; }
+  .ch-roman { font-size:1.6rem; }
+  .latin { font-size:.98rem; }
+  .trans { font-size:.93rem; }
+  .content { padding:0 12px 60px; }
 }
 </style>
 </head>
 <body>
 
-<header class="bhead">
-  <div class="btestament">VETUS TESTAMENTUM</div>
-  <div class="blatin">IOEL</div>
-  <div class="btrans">Joel &nbsp;&middot;&nbsp; <em>Magyar</em></div>
-  <div class="bmeta">3 Capita &nbsp;&middot;&nbsp; 73 Versus</div>
-</header>
+  <nav class="nav-bar">
+    <a class="home" href="../../../index.html">✞ BIBLIA CATHOLICA</a>
+    <a href="../index.html">🇭🇺 Magyar</a>
+    <span class="spacer"></span>
+    <span class="pos">029 / 066</span>
+  </nav>
 
-<main class="content">
-<section class="chap" id="c1">
-  <div class="chhead">
-    <span class="chrom">I</span>
-    <span class="chlbl">Caput 1</span>
-  </div>
-<div class="vb first" id="v1-1">
-  <span class="vn">1</span>
-  <div class="vt">
-    <p class="lat">Verbum Domini, quod factum est ad Joël, filium Phatuel.</p>
-    <p class="tra">Az Úrnak igéje, a mely lőn Jóelhez, a Petuel fiához.</p>
-  </div>
-</div>
-<div class="vb" id="v1-2">
-  <span class="vn">2</span>
-  <div class="vt">
-    <p class="lat">Audite hoc, senes,  et auribus percipite, omnes habitatores terræ :  si factum est istud in diebus vestris,  aut in diebus patrum vestrorum ?</p>
-    <p class="tra">Vének! halljátok meg ezt, és hallgassátok meg, e földnek minden lakói! Történt-é ilyen a ti időtökben, vagy a ti atyáitoknak idejében?</p>
-  </div>
-</div>
-<div class="vb" id="v1-3">
-  <span class="vn">3</span>
-  <div class="vt">
-    <p class="lat">Super hoc filiis vestris narrate,  et filii vestri filiis suis,  et filii eorum generationi alteræ.</p>
-    <p class="tra">Beszéljétek el azt a ti fiaitoknak, és a ti fiaitok az ő fiaiknak, és azoknak fiai a következő nemzetségnek.</p>
-  </div>
-</div>
-<div class="vb" id="v1-4">
-  <span class="vn">4</span>
-  <div class="vt">
-    <p class="lat">Residuum erucæ comedit locusta,  et residuum locustæ comedit bruchus,  et residuum bruchi comedit rubigo.</p>
-    <p class="tra">A mit a sáska meghagyott, megette a szöcskő; és a mit a szöcskő meghagyott, megette a cserebogár; és a mit a cserebogár meghagyott, megette a hernyó.</p>
-  </div>
-</div>
-<div class="vb" id="v1-5">
-  <span class="vn">5</span>
-  <div class="vt">
-    <p class="lat">Expergiscimini, ebrii,  et flete et ululate, omnes qui bibitis vinum in dulcedine,  quoniam periit ab ore vestro.</p>
-    <p class="tra">Serkenjetek fel részegek és sírjatok, és jajgassatok mind, ti borivók a mustért, mert elvétetett az a ti szátoktól!</p>
-  </div>
-</div>
-<div class="vb" id="v1-6">
-  <span class="vn">6</span>
-  <div class="vt">
-    <p class="lat">Gens enim ascendit super terram meam,  fortis et innumerabilis :  dentes ejus ut dentes leonis,  et molares ejus ut catuli leonis.</p>
-    <p class="tra">Mert egy nép jött fel az én földemre, erős és megszámlálhatatlan; fogai, mint az oroszlán fogai, és agyarai, mint a nőstény oroszláné.</p>
-  </div>
-</div>
-<div class="vb" id="v1-7">
-  <span class="vn">7</span>
-  <div class="vt">
-    <p class="lat">Posuit vineam meam in desertum,  et ficum meam decorticavit ;  nudans spoliavit eam, et projecit :  albi facti sunt rami ejus.</p>
-    <p class="tra">Pusztává tette szőlőmet; összetörte fügefáimat, mezítelenre hántotta és széjjelhányta; fehérlenek annak ágai.</p>
-  </div>
-</div>
-<div class="vb" id="v1-8">
-  <span class="vn">8</span>
-  <div class="vt">
-    <p class="lat">Plange quasi virgo accincta sacco super virum pubertatis suæ.</p>
-    <p class="tra">Keseregj, mint a szűz, a ki gyászba öltözik az ő ifjúsága férjéért.</p>
-  </div>
-</div>
-<div class="vb" id="v1-9">
-  <span class="vn">9</span>
-  <div class="vt">
-    <p class="lat">Periit sacrificium et libatio de domo Domini ;  luxerunt sacerdotes, ministri Domini.</p>
-    <p class="tra">Kifogyott az étel- és italáldozat az Úrnak házából; gyászolnak a papok, az Úrnak szolgái.</p>
-  </div>
-</div>
-<div class="vb" id="v1-10">
-  <span class="vn">10</span>
-  <div class="vt">
-    <p class="lat">Depopulata est regio,  luxit humus,  quoniam devastatum est triticum,  confusum est vinum,  elanguit oleum.</p>
-    <p class="tra">Elpusztíttatott a mező, gyászol a föld; mert elpusztíttatott a gabona; kiszáradt a must; kiapadt az olaj.</p>
-  </div>
-</div>
-<div class="vb" id="v1-11">
-  <span class="vn">11</span>
-  <div class="vt">
-    <p class="lat">Confusi sunt agricolæ,  ululaverunt vinitores  super frumento et hordeo,  quia periit messis agri.</p>
-    <p class="tra">Szégyenüljetek meg, ti szántóvetők; jajgassatok szőlőművesek: a búzáért és az árpáért; mert elveszett a mező aratása!</p>
-  </div>
-</div>
-<div class="vb" id="v1-12">
-  <span class="vn">12</span>
-  <div class="vt">
-    <p class="lat">Vinea confusa est,  et ficus elanguit ;  malogranatum, et palma, et malum,  et omnia ligna agri aruerunt,  quia confusum est gaudium a filiis hominum.</p>
-    <p class="tra">Elszáradt a szőlőtő; a fügefa elhervadt; a gránátfa, a datolyafa és az almafa, a mezőnek minden gyümölcsfája kiaszott. Bizony kiszáradott az öröm az emberek közül.</p>
-  </div>
-</div>
-<div class="vb" id="v1-13">
-  <span class="vn">13</span>
-  <div class="vt">
-    <p class="lat">Accingite vos, et plangite, sacerdotes :  ululate, ministri altaris ;  ingredimini, cubate in sacco, ministri Dei mei,  quoniam interiit de domo Dei vestri sacrificium et libatio.</p>
-    <p class="tra">Öltsetek gyászt és sírjatok, ti papok! Jajgassatok, ti oltár szolgái; jőjjetek és háljatok gyászruhákban, Istenem szolgái; mert megvonatott az étel- és italáldozat Isteneteknek házától.</p>
-  </div>
-</div>
-<div class="vb" id="v1-14">
-  <span class="vn">14</span>
-  <div class="vt">
-    <p class="lat">Sanctificate jejunium, vocate cœtum,  congregate senes, omnes habitatores terræ  in domum Dei vestri,  et clamate ad Dominum :</p>
-    <p class="tra">Szenteljetek bőjtöt, hirdessetek gyűlést; gyűjtsétek egybe a véneket, a földnek minden lakosát az Úrnak, a ti Isteneteknek házába, és kiáltsatok az Úrhoz.</p>
-  </div>
-</div>
-<div class="vb" id="v1-15">
-  <span class="vn">15</span>
-  <div class="vt">
-    <p class="lat">A, a, a, diei !  quia prope est dies Domini,  et quasi vastitas a potente veniet.</p>
-    <p class="tra">Jaj ez a nap! Bizony közel van az Úrnak napja, és mint a pusztítás, úgy jön el a Mindenhatótól.</p>
-  </div>
-</div>
-<div class="vb" id="v1-16">
-  <span class="vn">16</span>
-  <div class="vt">
-    <p class="lat">Numquid non coram oculis vestris alimenta perierunt  de domo Dei nostri, lætitia et exsultatio ?</p>
-    <p class="tra">Hát nem szemünk láttára irtatott-é ki az élelem, az öröm és vígasság Istenünk házából?!</p>
-  </div>
-</div>
-<div class="vb" id="v1-17">
-  <span class="vn">17</span>
-  <div class="vt">
-    <p class="lat">Computruerunt jumenta in stercore suo,  demolita sunt horrea,  dissipatæ sunt apothecæ,  quoniam confusum est triticum.</p>
-    <p class="tra">Elsenyvedtek a magvak barázdáik alatt, elpusztultak a gabonás házak, összedőltek a csűrök; mert kiaszott a gabona.</p>
-  </div>
-</div>
-<div class="vb" id="v1-18">
-  <span class="vn">18</span>
-  <div class="vt">
-    <p class="lat">Quid ingemuit animal,  mugierunt greges armenti ?  quia non est pascua eis ;  sed et greges pecorum disperierunt.</p>
-    <p class="tra">Mint nyög a barom! Megháborodtak a marha-csordák, mert nincs legelőjük; bűnhődnek még a juhnyájak is!</p>
-  </div>
-</div>
-<div class="vb" id="v1-19">
-  <span class="vn">19</span>
-  <div class="vt">
-    <p class="lat">Ad te, Domine, clamabo,  quia ignis comedit speciosa deserti,  et flamma succendit omnia ligna regionis.</p>
-    <p class="tra">Hozzád kiáltok Uram, mert tűz emésztette meg a puszta virányait, és láng perzselte le a mező minden fáját.</p>
-  </div>
-</div>
-<div class="vb" id="v1-20">
-  <span class="vn">20</span>
-  <div class="vt">
-    <p class="lat">Sed et bestiæ agri, quasi area sitiens imbrem, suspexerunt ad te,  quoniam exsiccati sunt fontes aquarum,  et ignis devoravit speciosa deserti.</p>
-    <p class="tra">A mező vadai is hozzád esengenek, mert kiszáradtak a vizeknek ágyai, és tűz emésztette meg a puszta virányait.</p>
-  </div>
-</div>
-</section>
+  <header class="book-header">
+    <div class="testament-badge">VETUS TESTAMENTUM</div>
+    <div class="book-name-latin">IOEL</div>
+    <div class="book-name-trans">Joel</div>
+    <div class="book-meta">Vulgata Clementina · Károli (1908) · 3 Capita · 73 Versus</div>
+  </header>
 
-<section class="chap" id="c2">
-  <div class="chhead">
-    <span class="chrom">II</span>
-    <span class="chlbl">Caput 2</span>
-  </div>
-<div class="vb first" id="v2-1">
-  <span class="vn">1</span>
-  <div class="vt">
-    <p class="lat">Canite tuba in Sion,  ululate in monte sancto meo,  conturbentur omnes habitatores terræ :  quia venit dies Domini, quia prope est.</p>
-    <p class="tra">Fújjátok a kürtöt a Sionon, és rivalgjatok az én szent hegyemen! Rémüljenek meg e föld minden lakói; mert eljő az Úrnak napja; mert közel van az.</p>
-  </div>
-</div>
-<div class="vb" id="v2-2">
-  <span class="vn">2</span>
-  <div class="vt">
-    <p class="lat">Dies tenebrarum et caliginis,  dies nubis et turbinis ;  quasi mane expansum super montes  populus multus et fortis :  similis ei non fuit a principio,  et post eum non erit  usque in annos generationis et generationis.</p>
-    <p class="tra">Sötétségnek és homálynak napja; felhőnek és borulatnak napja; mint a hegyekre ráterülő alkonyat! Nagy és hatalmas nép, a milyen nem volt öröktől fogva és nem is lesz utána többé, nemzetségről nemzetségre.</p>
-  </div>
-</div>
-<div class="vb" id="v2-3">
-  <span class="vn">3</span>
-  <div class="vt">
-    <p class="lat">Ante faciem ejus ignis vorans,  et post eum exurens flamma.  Quasi hortus voluptatis terra coram eo,  et post eum solitudo deserti,  neque est qui effugiat eum.</p>
-    <p class="tra">Előtte tűz emészt, utána láng lobog; előtte a föld olyan, mint az Éden kertje, utána pedig kietlen pusztaság; meg sem menekülhet tőle semmi.</p>
-  </div>
-</div>
-<div class="vb" id="v2-4">
-  <span class="vn">4</span>
-  <div class="vt">
-    <p class="lat">Quasi aspectus equorum, aspectus eorum ;  et quasi equites, sic current.</p>
-    <p class="tra">A milyen a lovak alakja, olyan annak alakja, és száguldoznak, mint a lovasok.</p>
-  </div>
-</div>
-<div class="vb" id="v2-5">
-  <span class="vn">5</span>
-  <div class="vt">
-    <p class="lat">Sicut sonitus quadrigarum super capita montium exilient,  sicut sonitus flammæ ignis devorantis stipulam,  velut populus fortis præparatus ad prælium.</p>
-    <p class="tra">Rohannak a hegyek tetején, mintha hadi szekerek robognának; mintha tarlót emésztő láng ropogna; a milyen az ütközetre kész hatalmas nép.</p>
-  </div>
-</div>
-<div class="vb" id="v2-6">
-  <span class="vn">6</span>
-  <div class="vt">
-    <p class="lat">A facie ejus cruciabuntur populi ;  omnes vultus redigentur in ollam.</p>
-    <p class="tra">Elrémülnek tőle a népek; minden arcz elsáppad.</p>
-  </div>
-</div>
-<div class="vb" id="v2-7">
-  <span class="vn">7</span>
-  <div class="vt">
-    <p class="lat">Sicut fortes current ;  quasi viri bellatores ascendent murum :  viri in viis suis gradientur,  et non declinabunt a semitis suis.</p>
-    <p class="tra">Száguldoznak, mint a hősök, felhágnak a kőfalakra, mint a bajnokok; mindenik a maga útján halad, nem bontják meg soraikat.</p>
-  </div>
-</div>
-<div class="vb" id="v2-8">
-  <span class="vn">8</span>
-  <div class="vt">
-    <p class="lat">Unusquisque fratrem suum non coarctabit,  singuli in calle suo ambulabunt ;  sed et per fenestras cadent, et non demolientur.</p>
-    <p class="tra">Egymást nem szorongatják; mindenik a maga útján halad; néki rohannak a fegyvernek, és nem esik seb rajtok.</p>
-  </div>
-</div>
-<div class="vb" id="v2-9">
-  <span class="vn">9</span>
-  <div class="vt">
-    <p class="lat">Urbem ingredientur, in muro current,  domos conscendent, per fenestras intrabunt quasi fur.</p>
-    <p class="tra">Betörnek a városba, futkároznak a kőfalon, felhágnak a házakra, betörnek az ablakokon, mint a tolvaj.</p>
-  </div>
-</div>
-<div class="vb" id="v2-10">
-  <span class="vn">10</span>
-  <div class="vt">
-    <p class="lat">A facie ejus contremuit terra,  moti sunt cæli,  sol et luna obtenebrati sunt,  et stellæ retraxerunt splendorem suum.</p>
-    <p class="tra">Reszket előttök a föld, és megrendülnek az egek; a nap és hold elsötétednek, a csillagok is bevonják fényöket.</p>
-  </div>
-</div>
-<div class="vb" id="v2-11">
-  <span class="vn">11</span>
-  <div class="vt">
-    <p class="lat">Et Dominus dedit vocem suam ante faciem exercitus sui,  quia multa sunt nimis castra ejus,  quia fortia et facientia verbum ejus :  magnus enim dies Domini, et terribilis valde,  et quis sustinebit eum ?</p>
-    <p class="tra">És megzendül az Úrnak szava az ő serege előtt, mert felette nagy az ő tábora; mert hatalmas az ő rendeletének végrehajtója. Bizony nagy az Úrnak napja és igen rettenetes! Ki állhatja ki azt?</p>
-  </div>
-</div>
-<div class="vb" id="v2-12">
-  <span class="vn">12</span>
-  <div class="vt">
-    <p class="lat">Nunc ergo, dicit Dominus,  convertimini ad me in toto corde vestro,  in jejunio, et in fletu, et in planctu.</p>
-    <p class="tra">De még most is így szól az Úr: Térjetek meg hozzám teljes szívetek szerint; bőjtöléssel is, sírással is, kesergéssel is.</p>
-  </div>
-</div>
-<div class="vb" id="v2-13">
-  <span class="vn">13</span>
-  <div class="vt">
-    <p class="lat">Et scindite corda vestra, et non vestimenta vestra ;  et convertimini ad Dominum Deum vestrum,  quia benignus et misericors est,  patiens et multæ misericordiæ,  et præstabilis super malitia.</p>
-    <p class="tra">És szíveteket szaggassátok meg, ne ruháitokat, úgy térjetek meg az Úrhoz, a ti Istenetekhez; mert könyörülő és irgalmas ő; késedelmes a haragra és nagy kegyelmű, és bánkódik a gonosz miatt.</p>
-  </div>
-</div>
-<div class="vb" id="v2-14">
-  <span class="vn">14</span>
-  <div class="vt">
-    <p class="lat">Quis scit si convertatur, et ignoscat,  et relinquat post se benedictionem, sacrificium et libamen Domino Deo vestro ?</p>
-    <p class="tra">Ki tudja, hátha visszatér és megbánja, és áldást hagy maga után; étel- és italáldozatot az Úrnak, a ti Isteneteknek?!</p>
-  </div>
-</div>
-<div class="vb" id="v2-15">
-  <span class="vn">15</span>
-  <div class="vt">
-    <p class="lat">Canite tuba in Sion,  sanctificate jejunium, vocate cœtum :</p>
-    <p class="tra">Fújjatok kürtöt a Sionon; szenteljetek bőjtöt, hirdessetek gyűlést!</p>
-  </div>
-</div>
-<div class="vb" id="v2-16">
-  <span class="vn">16</span>
-  <div class="vt">
-    <p class="lat">congregate populum, sanctificate ecclesiam,  coadunate senes, congregate parvulos, et sugentes ubera ;  egrediatur sponsus de cubili suo,  et sponsa de thalamo suo.</p>
-    <p class="tra">Gyűjtsétek össze a népet, szenteljétek meg a gyülekezetet; hívjátok egybe a véneket, gyűjtsétek össze a kisdedeket és a csecsszopókat; menjen ki a vőlegény az ő ágyasházából és a menyasszony is az ő szobájából.</p>
-  </div>
-</div>
-<div class="vb" id="v2-17">
-  <span class="vn">17</span>
-  <div class="vt">
-    <p class="lat">Inter vestibulum et altare plorabunt sacerdotes, ministri Domini,  et dicent : Parce, Domine, parce populo tuo ;  et ne des hæreditatem tuam in opprobrium,  ut dominentur eis nationes.  Quare dicunt in populis : Ubi est Deus eorum ?</p>
-    <p class="tra">A tornácz és az oltár között sírjanak a papok, az Úr szolgái, és mondják: Légy kegyelmes, oh Uram, a te népedhez, és ne bocsásd szidalomra a te örökségedet, hogy uralkodjanak rajtok a pogányok. Miért mondanák a népek között: Hol az ő Istenök?</p>
-  </div>
-</div>
-<div class="vb" id="v2-18">
-  <span class="vn">18</span>
-  <div class="vt">
-    <p class="lat">Zelatus est Dominus terram suam,  et pepercit populo suo.</p>
-    <p class="tra">Erre buzgó lőn az Úrnak szeretete az ő földe iránt, és kegyelmezett az ő népének.</p>
-  </div>
-</div>
-<div class="vb" id="v2-19">
-  <span class="vn">19</span>
-  <div class="vt">
-    <p class="lat">Et respondit Dominus, et dixit populo suo :  Ecce ego mittam vobis frumentum, et vinum, et oleum,  et replebimini eis ;  et non dabo vos ultra opprobrium in gentibus.</p>
-    <p class="tra">És választ tőn az Úr, és mondá az ő népének: Ímé, adok néktek gabonát, bort és olajat, hogy megelégedtek vele, és nem adlak többé titeket szidalomra a pogányok között.</p>
-  </div>
-</div>
-<div class="vb" id="v2-20">
-  <span class="vn">20</span>
-  <div class="vt">
-    <p class="lat">Et eum qui ab aquilone est procul faciam a vobis,  et expellam eum in terram inviam et desertam :  faciem ejus contra mare orientale,  et extremum ejus ad mare novissimum :  et ascendet fœtor ejus,  et ascendet putredo ejus,  quia superbe egit.</p>
-    <p class="tra">Az északi népet is elűzöm tőletek, és puszta és sivatag vidékre vetem azt; elejét a keleti tengerbe, hátulját a nyugoti tengerbe, és bűze magasra száll; felszáll büdössége, mert nagy dolgokat cselekedett.</p>
-  </div>
-</div>
-<div class="vb" id="v2-21">
-  <span class="vn">21</span>
-  <div class="vt">
-    <p class="lat">Noli timere, terra :  exsulta, et lætare,  quoniam magnificavit Dominus ut faceret.</p>
-    <p class="tra">Ne félj, te föld! Örülj és vígadozz, mert nagy dolgokat cselekeszik az Úr!</p>
-  </div>
-</div>
-<div class="vb" id="v2-22">
-  <span class="vn">22</span>
-  <div class="vt">
-    <p class="lat">Nolite timere, animalia regionis,  quia germinaverunt speciosa deserti ;  quia lignum attulit fructum suum,  ficus et vinea dederunt virtutem suam.</p>
-    <p class="tra">Ne féljetek, ti mezei vadak! mert zöldülnek a pusztának virányai; mert a fa megtermi gyümölcsét; a füge és szőlő is kitárják gazdagságukat.</p>
-  </div>
-</div>
-<div class="vb" id="v2-23">
-  <span class="vn">23</span>
-  <div class="vt">
-    <p class="lat">Et, filii Sion, exsultate,  et lætamini in Domino Deo vestro,  quia dedit vobis doctorem justitiæ,  et descendere faciet ad vos imbrem matutinum et serotinum,  sicut in principio.</p>
-    <p class="tra">Ti is, Sionnak fiai! örvendezzetek és vígadjatok az Úrban, a ti Istenetekben; mert megadja néktek az esőt igazság szerint, és korai és kései esőt hullat néktek az első hónapban.</p>
-  </div>
-</div>
-<div class="vb" id="v2-24">
-  <span class="vn">24</span>
-  <div class="vt">
-    <p class="lat">Et implebuntur areæ frumento,  et redundabunt torcularia vino et oleo.</p>
-    <p class="tra">És megtelnek a csűrök gabonával, és bőven öntik a sajtók a mustot és az olajat.</p>
-  </div>
-</div>
-<div class="vb" id="v2-25">
-  <span class="vn">25</span>
-  <div class="vt">
-    <p class="lat">Et reddam vobis annos, quos comedit locusta,  bruchus, et rubigo, et eruca :  fortitudo mea magna quam misi in vos.</p>
-    <p class="tra">És kipótolom néktek az esztendőket, a melyeket tönkre tett a szöcskő, a cserebogár és a hernyó és a sáska; az én nagy seregem, a melyet reátok küldöttem.</p>
-  </div>
-</div>
-<div class="vb" id="v2-26">
-  <span class="vn">26</span>
-  <div class="vt">
-    <p class="lat">Et comedetis vescentes, et saturabimini ;  et laudabitis nomen Domini Dei vestri,  qui fecit mirabilia vobiscum ;  et non confundetur populus meus in sempiternum.</p>
-    <p class="tra">És esztek bőven és megelégesztek, és magasztaljátok az Úrnak, a ti Isteneteknek nevét, a ki csodálatosan cselekedett veletek, és soha többé nem pironkodik az én népem.</p>
-  </div>
-</div>
-<div class="vb" id="v2-27">
-  <span class="vn">27</span>
-  <div class="vt">
-    <p class="lat">Et scietis quia in medio Israël ego sum,  et ego Dominus Deus vester, et non est amplius ;  et non confundetur populus meus in æternum.</p>
-    <p class="tra">És megtudjátok, hogy az Izráel között vagyok én, és hogy én vagyok az Úr, a ti Istenetek és nincs más! És soha többé nem pironkodik az én népem.</p>
-  </div>
-</div>
-<div class="vb" id="v2-28">
-  <span class="vn">28</span>
-  <div class="vt">
-    <p class="lat">Et erit post hæc :  effundam spiritum meum super omnem carnem,  et prophetabunt filii vestri et filiæ vestræ :  senes vestri somnia somniabunt,  et juvenes vestri visiones videbunt.</p>
-    <p class="tra">És lészen azután, hogy kiöntöm lelkemet minden testre, és prófétálnak a ti fiaitok és leányaitok; véneitek álmokat álmodnak; ifjaitok pedig látomásokat látnak.</p>
-  </div>
-</div>
-<div class="vb" id="v2-29">
-  <span class="vn">29</span>
-  <div class="vt">
-    <p class="lat">Sed et super servos meos et ancillas  in diebus illis effundam spiritum meum.</p>
-    <p class="tra">Sőt még a szolgákra és szolgálóleányokra is kiöntöm azokban a napokban az én lelkemet.</p>
-  </div>
-</div>
-<div class="vb" id="v2-30">
-  <span class="vn">30</span>
-  <div class="vt">
-    <p class="lat">Et dabo prodigia in cælo et in terra,  sanguinem, et ignem, et vaporem fumi.</p>
-    <p class="tra">És csodajeleket mutatok az égen és a földön; vért, tüzet és füstoszlopokat.</p>
-  </div>
-</div>
-<div class="vb" id="v2-31">
-  <span class="vn">31</span>
-  <div class="vt">
-    <p class="lat">Sol convertetur in tenebras,  et luna in sanguinem,  antequam veniat dies Domini magnus et horribilis.</p>
-    <p class="tra">A nap sötétséggé válik, a hold pedig vérré, minekelőtte eljő az Úrnak nagy és rettenetes napja.</p>
-  </div>
-</div>
-<div class="vb" id="v2-32">
-  <span class="vn">32</span>
-  <div class="vt">
-    <p class="lat">Et erit : omnis qui invocaverit nomen Domini, salvus erit :  quia in monte Sion et in Jerusalem  erit salvatio, sicut dixit Dominus,  et in residuis quos Dominus vocaverit.</p>
-    <p class="tra">De mindaz, a ki az Úrnak nevét hívja segítségül, megmenekül; mert a Sion hegyén és Jeruzsálemben lészen a szabadulás, a mint megigérte az Úr, és a megszabadultak közt lesznek azok, a kiket elhí az Úr!</p>
-  </div>
-</div>
-</section>
+  <div class="ornament-bar">❧ ✦ ❧ ✦ ❧</div>
 
-<section class="chap" id="c3">
-  <div class="chhead">
-    <span class="chrom">III</span>
-    <span class="chlbl">Caput 3</span>
-  </div>
-<div class="vb first" id="v3-1">
-  <span class="vn">1</span>
-  <div class="vt">
-    <p class="lat">Quia ecce in diebus illis, et in tempore illo,  cum convertero captivitatem Juda et Jerusalem,</p>
-    <p class="tra">Mert ímé, azokon a napokon és abban az időben, a mikor meghozom Júda és Jeruzsálem fogságát:</p>
-  </div>
-</div>
-<div class="vb" id="v3-2">
-  <span class="vn">2</span>
-  <div class="vt">
-    <p class="lat">congregabo omnes gentes,  et deducam eas in vallem Josaphat ;  et disceptabo cum eis ibi super populo meo,  et hæreditate mea Israël,  quos disperserunt in nationibus,  et terram meam diviserunt.</p>
-    <p class="tra">Egybegyűjtöm akkor mind a pogányokat, és levezetem őket a Josafát völgyébe, és perbe szállok ott velök, az én népemért és örökségemért, az Izráelért, a melyet szétszórtak a pogányok közé, és megosztoztak az én földemen;</p>
-  </div>
-</div>
-<div class="vb" id="v3-3">
-  <span class="vn">3</span>
-  <div class="vt">
-    <p class="lat">Et super populum meum miserunt sortem ;  et posuerunt puerum in prostibulo,  et puellam vendiderunt pro vino ut biberent.</p>
-    <p class="tra">Népemre pedig sorsot vetettek; a fiút szajháért adták oda, a leányt pedig borért cserélték el, hogy ihassanak.</p>
-  </div>
-</div>
-<div class="vb" id="v3-4">
-  <span class="vn">4</span>
-  <div class="vt">
-    <p class="lat">Verum quid mihi et vobis, Tyrus et Sidon,  et omnis terminus Palæstinorum ?  numquid ultionem vos reddetis mihi ?  et si ulciscimini vos contra me,  cito velociter reddam vicissitudinem vobis super caput vestrum.</p>
-    <p class="tra">Sőt néktek is mi közötök velem, Tírus, Sidon és Filiszteának egész környéke?! Vajjon bosszút állani jöttök-é reám? Ha bosszút akarnátok rajtam állani, nagy hirtelen fejetekre fordítom vissza bosszútokat!</p>
-  </div>
-</div>
-<div class="vb" id="v3-5">
-  <span class="vn">5</span>
-  <div class="vt">
-    <p class="lat">Argentum enim meum et aurum tulistis,  et desiderabilia mea et pulcherrima intulistis in delubra vestra.</p>
-    <p class="tra">Mivelhogy elraboltátok ezüstömet és aranyomat, és legszebb kincsemet templomaitokba vittétek;</p>
-  </div>
-</div>
-<div class="vb" id="v3-6">
-  <span class="vn">6</span>
-  <div class="vt">
-    <p class="lat">Et filios Juda et filios Jerusalem vendidistis filiis Græcorum,  ut longe faceretis eos de finibus suis.</p>
-    <p class="tra">És a Júda fiait és Jeruzsálem fiait eladtátok a Jávánok fiainak, hogy messze vessétek őket határaiktól:</p>
-  </div>
-</div>
-<div class="vb" id="v3-7">
-  <span class="vn">7</span>
-  <div class="vt">
-    <p class="lat">Ecce ego suscitabo eos de loco in quo vendidistis eos,  et convertam retributionem vestram in caput vestrum.</p>
-    <p class="tra">Ímé, kiindítom őket a helyből, a hova eladtátok őket, és fejetekre fordítom vissza bosszútokat.</p>
-  </div>
-</div>
-<div class="vb" id="v3-8">
-  <span class="vn">8</span>
-  <div class="vt">
-    <p class="lat">Et vendam filios vestros et filias vestras in manibus filiorum Juda,  et venundabunt eos Sabæis, genti longinquæ,  quia Dominus locutus est.</p>
-    <p class="tra">És adom a ti fiaitokat és leányaitokat a Júda fiainak kezébe; azok pedig eladják őket a Sabeusoknak, a messze lakó népnek; mert ezt végezte az Úr.</p>
-  </div>
-</div>
-<div class="vb" id="v3-9">
-  <span class="vn">9</span>
-  <div class="vt">
-    <p class="lat">Clamate hoc in gentibus,  sanctificate bellum,  suscitate robustos :  accedant, ascendant omnes viri bellatores.</p>
-    <p class="tra">Hirdessétek ezt a pogányok között; készüljetek harczra; indítsátok fel a hősöket. Járuljanak elé, jőjjenek fel mindnyájan a hadakozó férfiak!</p>
-  </div>
-</div>
-<div class="vb" id="v3-10">
-  <span class="vn">10</span>
-  <div class="vt">
-    <p class="lat">Concidite aratra vestra in gladios,  et ligones vestros in lanceas.  Infirmus dicat : Quia fortis ego sum.</p>
-    <p class="tra">Kovácsoljátok szántóvasaitokat kardokká, kaszáitokat dárdákká; mondja a beteg is: Hős vagyok!</p>
-  </div>
-</div>
-<div class="vb" id="v3-11">
-  <span class="vn">11</span>
-  <div class="vt">
-    <p class="lat">Erumpite, et venite, omnes gentes de circuitu,  et congregamini ;  ibi occumbere faciet Dominus robustos tuos.</p>
-    <p class="tra">Siessetek és jőjjetek el ti népek mindenfelől, és seregeljetek egybe! Ide vezesd Uram a te hőseidet!</p>
-  </div>
-</div>
-<div class="vb" id="v3-12">
-  <span class="vn">12</span>
-  <div class="vt">
-    <p class="lat">Consurgant, et ascendant gentes in vallem Josaphat,  quia ibi sedebo ut judicem omnes gentes in circuitu.</p>
-    <p class="tra">Serkenjenek fel és jőjjenek fel a népek a Josafát völgyébe; mert ott ülök törvényt, hogy megítéljek minden népeket.</p>
-  </div>
-</div>
-<div class="vb" id="v3-13">
-  <span class="vn">13</span>
-  <div class="vt">
-    <p class="lat">Mittite falces, quoniam maturavit messis ;  venite, et descendite,  quia plenum est torcular, exuberant torcularia :  quia multiplicata est malitia eorum.</p>
-    <p class="tra">Ereszszétek néki a sarlót, mert megérett az aratni való! Jertek el, tapossatok, mert tetézve a kád, ömlenek a sajtók! Mert megsokasult az ő gonoszságuk!</p>
-  </div>
-</div>
-<div class="vb" id="v3-14">
-  <span class="vn">14</span>
-  <div class="vt">
-    <p class="lat">Populi, populi, in valle concisionis,  quia juxta est dies Domini in valle concisionis.</p>
-    <p class="tra">Tömegek, tömegek! az ítélet völgyében! Mert közel van az Úrnak napja az ítélet völgyében!</p>
-  </div>
-</div>
-<div class="vb" id="v3-15">
-  <span class="vn">15</span>
-  <div class="vt">
-    <p class="lat">Sol et luna obtenebrati sunt,  et stellæ retraxerunt splendorem suum.</p>
-    <p class="tra">A nap és hold elsötétednek; a csillagok bevonják fényöket;</p>
-  </div>
-</div>
-<div class="vb" id="v3-16">
-  <span class="vn">16</span>
-  <div class="vt">
-    <p class="lat">Et Dominus de Sion rugiet,  et de Jerusalem dabit vocem suam,  et movebuntur cæli et terra ;  et Dominus spes populi sui,  et fortitudo filiorum Israël.</p>
-    <p class="tra">Az Úr pedig megharsan a Sionról és megzendül Jeruzsálemből, és megrendülnek az egek és a föld; de az Úr az ő népének oltalma és az Izráel fiainak erőssége!</p>
-  </div>
-</div>
-<div class="vb" id="v3-17">
-  <span class="vn">17</span>
-  <div class="vt">
-    <p class="lat">Et scietis quia ego Dominus Deus vester,  habitans in Sion monte sancto meo ;  et erit Jerusalem sancta,  et alieni non transibunt per eam amplius.</p>
-    <p class="tra">És megtudjátok, hogy én vagyok az Úr, a ti Istenetek, a ki a Sionon lakozom, az én szent hegyemen. És szentté lészen Jeruzsálem, és idegenek nem vonulnak át többé rajta.</p>
-  </div>
-</div>
-<div class="vb" id="v3-18">
-  <span class="vn">18</span>
-  <div class="vt">
-    <p class="lat">Et erit in die illa : stillabunt montes dulcedinem,  et colles fluent lacte,  et per omnes rivos Juda ibunt aquæ ;  et fons de domo Domini egredietur,  et irrigabit torrentem spinarum.</p>
-    <p class="tra">És majd azon a napon a hegyek musttal csepegnek és a halmok tejjel folynak, és a Júda minden medre bő vízzel ömledez, és forrás fakad az Úrnak házából, és megöntözi a Sittimnek völgyét.</p>
-  </div>
-</div>
-<div class="vb" id="v3-19">
-  <span class="vn">19</span>
-  <div class="vt">
-    <p class="lat">Ægyptus in desolationem erit,  et Idumæa in desertum perditionis,  pro eo quod inique egerint in filios Juda,  et effuderint sanguinem innocentem in terra sua.</p>
-    <p class="tra">Égyiptom pusztasággá lészen, Edom pedig kietlen sivataggá; a Júda fiain való erőszakosságért, mert ártatlan vért ontottak azoknak földén.</p>
-  </div>
-</div>
-<div class="vb" id="v3-20">
-  <span class="vn">20</span>
-  <div class="vt">
-    <p class="lat">Et Judæa in æternum habitabitur,  et Jerusalem in generationem et generationem.</p>
-    <p class="tra">De a Júda örökké megmarad; Jeruzsálem is nemzetségről nemzetségre.</p>
-  </div>
-</div>
-<div class="vb" id="v3-21">
-  <span class="vn">21</span>
-  <div class="vt">
-    <p class="lat">Et mundabo sanguinem eorum, quem non mundaveram ;  et Dominus commorabitur in Sion.</p>
-    <p class="tra">És kitisztítom vérökből, a melyből még ki nem tisztítottam, és a Sion lesz az Úr lakóhelye!</p>
-  </div>
-</div>
-</section>
-</main>
+  <main class="content">
 
-<nav class="bnav">
-  <a href="028-hos.html">&#8592; Osee</a>
-  <a href="../index.html" class="center">↑ &nbsp; Inhaltsverzeichnis</a>
-  <a href="030-amo.html">Amos &#8594;</a>
-</nav>
+  <section class="chapter" id="ch1">
+    <div class="chapter-marker">
+      <span class="ch-roman">I</span>
+      <span class="ch-label">Caput 1</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v1-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Verbum Domini, quod factum est ad Joël, filium Phatuel.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Az Úrnak igéje, a mely lőn Jóelhez, a Petuel fiához.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Audite hoc, senes,  et auribus percipite, omnes habitatores terræ :  si factum est istud in diebus vestris,  aut in diebus patrum vestrorum ?</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Vének! halljátok meg ezt, és hallgassátok meg, e földnek minden lakói! Történt-é ilyen a ti időtökben, vagy a ti atyáitoknak idejében?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Super hoc filiis vestris narrate,  et filii vestri filiis suis,  et filii eorum generationi alteræ.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Beszéljétek el azt a ti fiaitoknak, és a ti fiaitok az ő fiaiknak, és azoknak fiai a következő nemzetségnek.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Residuum erucæ comedit locusta,  et residuum locustæ comedit bruchus,  et residuum bruchi comedit rubigo.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">A mit a sáska meghagyott, megette a szöcskő; és a mit a szöcskő meghagyott, megette a cserebogár; és a mit a cserebogár meghagyott, megette a hernyó.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Expergiscimini, ebrii,  et flete et ululate, omnes qui bibitis vinum in dulcedine,  quoniam periit ab ore vestro.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Serkenjetek fel részegek és sírjatok, és jajgassatok mind, ti borivók a mustért, mert elvétetett az a ti szátoktól!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Gens enim ascendit super terram meam,  fortis et innumerabilis :  dentes ejus ut dentes leonis,  et molares ejus ut catuli leonis.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Mert egy nép jött fel az én földemre, erős és megszámlálhatatlan; fogai, mint az oroszlán fogai, és agyarai, mint a nőstény oroszláné.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Posuit vineam meam in desertum,  et ficum meam decorticavit ;  nudans spoliavit eam, et projecit :  albi facti sunt rami ejus.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Pusztává tette szőlőmet; összetörte fügefáimat, mezítelenre hántotta és széjjelhányta; fehérlenek annak ágai.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Plange quasi virgo accincta sacco super virum pubertatis suæ.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Keseregj, mint a szűz, a ki gyászba öltözik az ő ifjúsága férjéért.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Periit sacrificium et libatio de domo Domini ;  luxerunt sacerdotes, ministri Domini.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Kifogyott az étel- és italáldozat az Úrnak házából; gyászolnak a papok, az Úrnak szolgái.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Depopulata est regio,  luxit humus,  quoniam devastatum est triticum,  confusum est vinum,  elanguit oleum.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Elpusztíttatott a mező, gyászol a föld; mert elpusztíttatott a gabona; kiszáradt a must; kiapadt az olaj.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Confusi sunt agricolæ,  ululaverunt vinitores  super frumento et hordeo,  quia periit messis agri.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Szégyenüljetek meg, ti szántóvetők; jajgassatok szőlőművesek: a búzáért és az árpáért; mert elveszett a mező aratása!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vinea confusa est,  et ficus elanguit ;  malogranatum, et palma, et malum,  et omnia ligna agri aruerunt,  quia confusum est gaudium a filiis hominum.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Elszáradt a szőlőtő; a fügefa elhervadt; a gránátfa, a datolyafa és az almafa, a mezőnek minden gyümölcsfája kiaszott. Bizony kiszáradott az öröm az emberek közül.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Accingite vos, et plangite, sacerdotes :  ululate, ministri altaris ;  ingredimini, cubate in sacco, ministri Dei mei,  quoniam interiit de domo Dei vestri sacrificium et libatio.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Öltsetek gyászt és sírjatok, ti papok! Jajgassatok, ti oltár szolgái; jőjjetek és háljatok gyászruhákban, Istenem szolgái; mert megvonatott az étel- és italáldozat Isteneteknek házától.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sanctificate jejunium, vocate cœtum,  congregate senes, omnes habitatores terræ  in domum Dei vestri,  et clamate ad Dominum :</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Szenteljetek bőjtöt, hirdessetek gyűlést; gyűjtsétek egybe a véneket, a földnek minden lakosát az Úrnak, a ti Isteneteknek házába, és kiáltsatok az Úrhoz.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">A, a, a, diei !  quia prope est dies Domini,  et quasi vastitas a potente veniet.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Jaj ez a nap! Bizony közel van az Úrnak napja, és mint a pusztítás, úgy jön el a Mindenhatótól.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Numquid non coram oculis vestris alimenta perierunt  de domo Dei nostri, lætitia et exsultatio ?</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Hát nem szemünk láttára irtatott-é ki az élelem, az öröm és vígasság Istenünk házából?!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Computruerunt jumenta in stercore suo,  demolita sunt horrea,  dissipatæ sunt apothecæ,  quoniam confusum est triticum.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Elsenyvedtek a magvak barázdáik alatt, elpusztultak a gabonás házak, összedőltek a csűrök; mert kiaszott a gabona.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quid ingemuit animal,  mugierunt greges armenti ?  quia non est pascua eis ;  sed et greges pecorum disperierunt.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Mint nyög a barom! Megháborodtak a marha-csordák, mert nincs legelőjük; bűnhődnek még a juhnyájak is!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ad te, Domine, clamabo,  quia ignis comedit speciosa deserti,  et flamma succendit omnia ligna regionis.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Hozzád kiáltok Uram, mert tűz emésztette meg a puszta virányait, és láng perzselte le a mező minden fáját.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sed et bestiæ agri, quasi area sitiens imbrem, suspexerunt ad te,  quoniam exsiccati sunt fontes aquarum,  et ignis devoravit speciosa deserti.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">A mező vadai is hozzád esengenek, mert kiszáradtak a vizeknek ágyai, és tűz emésztette meg a puszta virányait.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch2">
+    <div class="chapter-marker">
+      <span class="ch-roman">II</span>
+      <span class="ch-label">Caput 2</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v2-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Canite tuba in Sion,  ululate in monte sancto meo,  conturbentur omnes habitatores terræ :  quia venit dies Domini, quia prope est.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Fújjátok a kürtöt a Sionon, és rivalgjatok az én szent hegyemen! Rémüljenek meg e föld minden lakói; mert eljő az Úrnak napja; mert közel van az.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Dies tenebrarum et caliginis,  dies nubis et turbinis ;  quasi mane expansum super montes  populus multus et fortis :  similis ei non fuit a principio,  et post eum non erit  usque in annos generationis et generationis.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Sötétségnek és homálynak napja; felhőnek és borulatnak napja; mint a hegyekre ráterülő alkonyat! Nagy és hatalmas nép, a milyen nem volt öröktől fogva és nem is lesz utána többé, nemzetségről nemzetségre.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ante faciem ejus ignis vorans,  et post eum exurens flamma.  Quasi hortus voluptatis terra coram eo,  et post eum solitudo deserti,  neque est qui effugiat eum.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Előtte tűz emészt, utána láng lobog; előtte a föld olyan, mint az Éden kertje, utána pedig kietlen pusztaság; meg sem menekülhet tőle semmi.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quasi aspectus equorum, aspectus eorum ;  et quasi equites, sic current.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">A milyen a lovak alakja, olyan annak alakja, és száguldoznak, mint a lovasok.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sicut sonitus quadrigarum super capita montium exilient,  sicut sonitus flammæ ignis devorantis stipulam,  velut populus fortis præparatus ad prælium.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Rohannak a hegyek tetején, mintha hadi szekerek robognának; mintha tarlót emésztő láng ropogna; a milyen az ütközetre kész hatalmas nép.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">A facie ejus cruciabuntur populi ;  omnes vultus redigentur in ollam.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Elrémülnek tőle a népek; minden arcz elsáppad.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sicut fortes current ;  quasi viri bellatores ascendent murum :  viri in viis suis gradientur,  et non declinabunt a semitis suis.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Száguldoznak, mint a hősök, felhágnak a kőfalakra, mint a bajnokok; mindenik a maga útján halad, nem bontják meg soraikat.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Unusquisque fratrem suum non coarctabit,  singuli in calle suo ambulabunt ;  sed et per fenestras cadent, et non demolientur.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Egymást nem szorongatják; mindenik a maga útján halad; néki rohannak a fegyvernek, és nem esik seb rajtok.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Urbem ingredientur, in muro current,  domos conscendent, per fenestras intrabunt quasi fur.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Betörnek a városba, futkároznak a kőfalon, felhágnak a házakra, betörnek az ablakokon, mint a tolvaj.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">A facie ejus contremuit terra,  moti sunt cæli,  sol et luna obtenebrati sunt,  et stellæ retraxerunt splendorem suum.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Reszket előttök a föld, és megrendülnek az egek; a nap és hold elsötétednek, a csillagok is bevonják fényöket.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et Dominus dedit vocem suam ante faciem exercitus sui,  quia multa sunt nimis castra ejus,  quia fortia et facientia verbum ejus :  magnus enim dies Domini, et terribilis valde,  et quis sustinebit eum ?</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">És megzendül az Úrnak szava az ő serege előtt, mert felette nagy az ő tábora; mert hatalmas az ő rendeletének végrehajtója. Bizony nagy az Úrnak napja és igen rettenetes! Ki állhatja ki azt?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nunc ergo, dicit Dominus,  convertimini ad me in toto corde vestro,  in jejunio, et in fletu, et in planctu.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">De még most is így szól az Úr: Térjetek meg hozzám teljes szívetek szerint; bőjtöléssel is, sírással is, kesergéssel is.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et scindite corda vestra, et non vestimenta vestra ;  et convertimini ad Dominum Deum vestrum,  quia benignus et misericors est,  patiens et multæ misericordiæ,  et præstabilis super malitia.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">És szíveteket szaggassátok meg, ne ruháitokat, úgy térjetek meg az Úrhoz, a ti Istenetekhez; mert könyörülő és irgalmas ő; késedelmes a haragra és nagy kegyelmű, és bánkódik a gonosz miatt.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quis scit si convertatur, et ignoscat,  et relinquat post se benedictionem, sacrificium et libamen Domino Deo vestro ?</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Ki tudja, hátha visszatér és megbánja, és áldást hagy maga után; étel- és italáldozatot az Úrnak, a ti Isteneteknek?!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Canite tuba in Sion,  sanctificate jejunium, vocate cœtum :</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Fújjatok kürtöt a Sionon; szenteljetek bőjtöt, hirdessetek gyűlést!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">congregate populum, sanctificate ecclesiam,  coadunate senes, congregate parvulos, et sugentes ubera ;  egrediatur sponsus de cubili suo,  et sponsa de thalamo suo.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Gyűjtsétek össze a népet, szenteljétek meg a gyülekezetet; hívjátok egybe a véneket, gyűjtsétek össze a kisdedeket és a csecsszopókat; menjen ki a vőlegény az ő ágyasházából és a menyasszony is az ő szobájából.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Inter vestibulum et altare plorabunt sacerdotes, ministri Domini,  et dicent : Parce, Domine, parce populo tuo ;  et ne des hæreditatem tuam in opprobrium,  ut dominentur eis nationes.  Quare dicunt in populis : Ubi est Deus eorum ?</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">A tornácz és az oltár között sírjanak a papok, az Úr szolgái, és mondják: Légy kegyelmes, oh Uram, a te népedhez, és ne bocsásd szidalomra a te örökségedet, hogy uralkodjanak rajtok a pogányok. Miért mondanák a népek között: Hol az ő Istenök?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Zelatus est Dominus terram suam,  et pepercit populo suo.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Erre buzgó lőn az Úrnak szeretete az ő földe iránt, és kegyelmezett az ő népének.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et respondit Dominus, et dixit populo suo :  Ecce ego mittam vobis frumentum, et vinum, et oleum,  et replebimini eis ;  et non dabo vos ultra opprobrium in gentibus.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">És választ tőn az Úr, és mondá az ő népének: Ímé, adok néktek gabonát, bort és olajat, hogy megelégedtek vele, és nem adlak többé titeket szidalomra a pogányok között.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et eum qui ab aquilone est procul faciam a vobis,  et expellam eum in terram inviam et desertam :  faciem ejus contra mare orientale,  et extremum ejus ad mare novissimum :  et ascendet fœtor ejus,  et ascendet putredo ejus,  quia superbe egit.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Az északi népet is elűzöm tőletek, és puszta és sivatag vidékre vetem azt; elejét a keleti tengerbe, hátulját a nyugoti tengerbe, és bűze magasra száll; felszáll büdössége, mert nagy dolgokat cselekedett.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">Noli timere, terra :  exsulta, et lætare,  quoniam magnificavit Dominus ut faceret.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Ne félj, te föld! Örülj és vígadozz, mert nagy dolgokat cselekeszik az Úr!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-22">
+      <div class="verse-num-col"><div class="verse-num">22</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nolite timere, animalia regionis,  quia germinaverunt speciosa deserti ;  quia lignum attulit fructum suum,  ficus et vinea dederunt virtutem suam.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Ne féljetek, ti mezei vadak! mert zöldülnek a pusztának virányai; mert a fa megtermi gyümölcsét; a füge és szőlő is kitárják gazdagságukat.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-23">
+      <div class="verse-num-col"><div class="verse-num">23</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et, filii Sion, exsultate,  et lætamini in Domino Deo vestro,  quia dedit vobis doctorem justitiæ,  et descendere faciet ad vos imbrem matutinum et serotinum,  sicut in principio.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Ti is, Sionnak fiai! örvendezzetek és vígadjatok az Úrban, a ti Istenetekben; mert megadja néktek az esőt igazság szerint, és korai és kései esőt hullat néktek az első hónapban.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-24">
+      <div class="verse-num-col"><div class="verse-num">24</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et implebuntur areæ frumento,  et redundabunt torcularia vino et oleo.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">És megtelnek a csűrök gabonával, és bőven öntik a sajtók a mustot és az olajat.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-25">
+      <div class="verse-num-col"><div class="verse-num">25</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et reddam vobis annos, quos comedit locusta,  bruchus, et rubigo, et eruca :  fortitudo mea magna quam misi in vos.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">És kipótolom néktek az esztendőket, a melyeket tönkre tett a szöcskő, a cserebogár és a hernyó és a sáska; az én nagy seregem, a melyet reátok küldöttem.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-26">
+      <div class="verse-num-col"><div class="verse-num">26</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et comedetis vescentes, et saturabimini ;  et laudabitis nomen Domini Dei vestri,  qui fecit mirabilia vobiscum ;  et non confundetur populus meus in sempiternum.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">És esztek bőven és megelégesztek, és magasztaljátok az Úrnak, a ti Isteneteknek nevét, a ki csodálatosan cselekedett veletek, és soha többé nem pironkodik az én népem.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-27">
+      <div class="verse-num-col"><div class="verse-num">27</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et scietis quia in medio Israël ego sum,  et ego Dominus Deus vester, et non est amplius ;  et non confundetur populus meus in æternum.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">És megtudjátok, hogy az Izráel között vagyok én, és hogy én vagyok az Úr, a ti Istenetek és nincs más! És soha többé nem pironkodik az én népem.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-28">
+      <div class="verse-num-col"><div class="verse-num">28</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et erit post hæc :  effundam spiritum meum super omnem carnem,  et prophetabunt filii vestri et filiæ vestræ :  senes vestri somnia somniabunt,  et juvenes vestri visiones videbunt.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">És lészen azután, hogy kiöntöm lelkemet minden testre, és prófétálnak a ti fiaitok és leányaitok; véneitek álmokat álmodnak; ifjaitok pedig látomásokat látnak.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-29">
+      <div class="verse-num-col"><div class="verse-num">29</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sed et super servos meos et ancillas  in diebus illis effundam spiritum meum.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Sőt még a szolgákra és szolgálóleányokra is kiöntöm azokban a napokban az én lelkemet.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-30">
+      <div class="verse-num-col"><div class="verse-num">30</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et dabo prodigia in cælo et in terra,  sanguinem, et ignem, et vaporem fumi.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">És csodajeleket mutatok az égen és a földön; vért, tüzet és füstoszlopokat.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-31">
+      <div class="verse-num-col"><div class="verse-num">31</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sol convertetur in tenebras,  et luna in sanguinem,  antequam veniat dies Domini magnus et horribilis.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">A nap sötétséggé válik, a hold pedig vérré, minekelőtte eljő az Úrnak nagy és rettenetes napja.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-32">
+      <div class="verse-num-col"><div class="verse-num">32</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et erit : omnis qui invocaverit nomen Domini, salvus erit :  quia in monte Sion et in Jerusalem  erit salvatio, sicut dixit Dominus,  et in residuis quos Dominus vocaverit.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">De mindaz, a ki az Úrnak nevét hívja segítségül, megmenekül; mert a Sion hegyén és Jeruzsálemben lészen a szabadulás, a mint megigérte az Úr, és a megszabadultak közt lesznek azok, a kiket elhí az Úr!</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch3">
+    <div class="chapter-marker">
+      <span class="ch-roman">III</span>
+      <span class="ch-label">Caput 3</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v3-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quia ecce in diebus illis, et in tempore illo,  cum convertero captivitatem Juda et Jerusalem,</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Mert ímé, azokon a napokon és abban az időben, a mikor meghozom Júda és Jeruzsálem fogságát:</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">congregabo omnes gentes,  et deducam eas in vallem Josaphat ;  et disceptabo cum eis ibi super populo meo,  et hæreditate mea Israël,  quos disperserunt in nationibus,  et terram meam diviserunt.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Egybegyűjtöm akkor mind a pogányokat, és levezetem őket a Josafát völgyébe, és perbe szállok ott velök, az én népemért és örökségemért, az Izráelért, a melyet szétszórtak a pogányok közé, és megosztoztak az én földemen;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et super populum meum miserunt sortem ;  et posuerunt puerum in prostibulo,  et puellam vendiderunt pro vino ut biberent.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Népemre pedig sorsot vetettek; a fiút szajháért adták oda, a leányt pedig borért cserélték el, hogy ihassanak.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Verum quid mihi et vobis, Tyrus et Sidon,  et omnis terminus Palæstinorum ?  numquid ultionem vos reddetis mihi ?  et si ulciscimini vos contra me,  cito velociter reddam vicissitudinem vobis super caput vestrum.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Sőt néktek is mi közötök velem, Tírus, Sidon és Filiszteának egész környéke?! Vajjon bosszút állani jöttök-é reám? Ha bosszút akarnátok rajtam állani, nagy hirtelen fejetekre fordítom vissza bosszútokat!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Argentum enim meum et aurum tulistis,  et desiderabilia mea et pulcherrima intulistis in delubra vestra.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Mivelhogy elraboltátok ezüstömet és aranyomat, és legszebb kincsemet templomaitokba vittétek;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et filios Juda et filios Jerusalem vendidistis filiis Græcorum,  ut longe faceretis eos de finibus suis.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">És a Júda fiait és Jeruzsálem fiait eladtátok a Jávánok fiainak, hogy messze vessétek őket határaiktól:</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ecce ego suscitabo eos de loco in quo vendidistis eos,  et convertam retributionem vestram in caput vestrum.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Ímé, kiindítom őket a helyből, a hova eladtátok őket, és fejetekre fordítom vissza bosszútokat.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et vendam filios vestros et filias vestras in manibus filiorum Juda,  et venundabunt eos Sabæis, genti longinquæ,  quia Dominus locutus est.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">És adom a ti fiaitokat és leányaitokat a Júda fiainak kezébe; azok pedig eladják őket a Sabeusoknak, a messze lakó népnek; mert ezt végezte az Úr.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Clamate hoc in gentibus,  sanctificate bellum,  suscitate robustos :  accedant, ascendant omnes viri bellatores.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Hirdessétek ezt a pogányok között; készüljetek harczra; indítsátok fel a hősöket. Járuljanak elé, jőjjenek fel mindnyájan a hadakozó férfiak!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Concidite aratra vestra in gladios,  et ligones vestros in lanceas.  Infirmus dicat : Quia fortis ego sum.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Kovácsoljátok szántóvasaitokat kardokká, kaszáitokat dárdákká; mondja a beteg is: Hős vagyok!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Erumpite, et venite, omnes gentes de circuitu,  et congregamini ;  ibi occumbere faciet Dominus robustos tuos.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Siessetek és jőjjetek el ti népek mindenfelől, és seregeljetek egybe! Ide vezesd Uram a te hőseidet!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Consurgant, et ascendant gentes in vallem Josaphat,  quia ibi sedebo ut judicem omnes gentes in circuitu.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Serkenjenek fel és jőjjenek fel a népek a Josafát völgyébe; mert ott ülök törvényt, hogy megítéljek minden népeket.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Mittite falces, quoniam maturavit messis ;  venite, et descendite,  quia plenum est torcular, exuberant torcularia :  quia multiplicata est malitia eorum.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Ereszszétek néki a sarlót, mert megérett az aratni való! Jertek el, tapossatok, mert tetézve a kád, ömlenek a sajtók! Mert megsokasult az ő gonoszságuk!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Populi, populi, in valle concisionis,  quia juxta est dies Domini in valle concisionis.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Tömegek, tömegek! az ítélet völgyében! Mert közel van az Úrnak napja az ítélet völgyében!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sol et luna obtenebrati sunt,  et stellæ retraxerunt splendorem suum.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">A nap és hold elsötétednek; a csillagok bevonják fényöket;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et Dominus de Sion rugiet,  et de Jerusalem dabit vocem suam,  et movebuntur cæli et terra ;  et Dominus spes populi sui,  et fortitudo filiorum Israël.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Az Úr pedig megharsan a Sionról és megzendül Jeruzsálemből, és megrendülnek az egek és a föld; de az Úr az ő népének oltalma és az Izráel fiainak erőssége!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et scietis quia ego Dominus Deus vester,  habitans in Sion monte sancto meo ;  et erit Jerusalem sancta,  et alieni non transibunt per eam amplius.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">És megtudjátok, hogy én vagyok az Úr, a ti Istenetek, a ki a Sionon lakozom, az én szent hegyemen. És szentté lészen Jeruzsálem, és idegenek nem vonulnak át többé rajta.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et erit in die illa : stillabunt montes dulcedinem,  et colles fluent lacte,  et per omnes rivos Juda ibunt aquæ ;  et fons de domo Domini egredietur,  et irrigabit torrentem spinarum.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">És majd azon a napon a hegyek musttal csepegnek és a halmok tejjel folynak, és a Júda minden medre bő vízzel ömledez, és forrás fakad az Úrnak házából, és megöntözi a Sittimnek völgyét.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ægyptus in desolationem erit,  et Idumæa in desertum perditionis,  pro eo quod inique egerint in filios Juda,  et effuderint sanguinem innocentem in terra sua.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Égyiptom pusztasággá lészen, Edom pedig kietlen sivataggá; a Júda fiain való erőszakosságért, mert ártatlan vért ontottak azoknak földén.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et Judæa in æternum habitabitur,  et Jerusalem in generationem et generationem.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">De a Júda örökké megmarad; Jeruzsálem is nemzetségről nemzetségre.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et mundabo sanguinem eorum, quem non mundaveram ;  et Dominus commorabitur in Sion.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">És kitisztítom vérökből, a melyből még ki nem tisztítottam, és a Sion lesz az Úr lakóhelye!</div>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <nav class="book-nav">
+    <a href="028-hos.html">← Osee</a>
+    <span class="center">Ioel · Magyar</span>
+    <a href="030-amo.html">Amos →</a>
+  </nav>
+
+  <footer class="page-footer">
+    BIBLIA CATHOLICA INTERLINEARIS &nbsp;·&nbsp; Vulgata Clementina &amp; Károli (1908)
+    &nbsp;·&nbsp; Gemeinfreie Texte / Public Domain
+  </footer>
 
 </body>
 </html>

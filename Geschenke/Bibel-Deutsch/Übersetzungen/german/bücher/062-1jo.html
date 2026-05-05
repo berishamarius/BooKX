@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>I Ioannis · Deutsch · Biblia Catholica</title>
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
+
+:root {
+  --gold:        #C8A96E;
+  --gold-light:  #EDD58A;
+  --gold-dark:   #8B6914;
+  --navy:        #3d2800;
+  --navy-mid:    #4d3500;
+  --navy-light:  #5c4010;
+  --parchment:   #F5E9CC;
+  --parchment-d: #EDD9A3;
+  --cream:       #FDF6E3;
+  --latin-color: #6B1E0E;
+  --trans-color: #0F1D2E;
+  --border:      rgba(200,169,110,.35);
+  --font-title:  'Cinzel Decorative', 'Cinzel', Georgia, serif;
+  --font-sub:    'Cinzel', Georgia, serif;
+  --font-body:   'EB Garamond', Georgia, serif;
+}
+
+*,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+html { font-size:16px; scroll-behavior:smooth; }
+body { background:var(--cream); color:var(--trans-color); font-family:var(--font-body); }
+
+/* ── NAV ─────────────────────────────────────────────── */
+.nav-bar {
+  background:var(--navy); padding:10px 28px;
+  display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  border-bottom:2px solid var(--gold);
+  position:sticky; top:0; z-index:100;
+  box-shadow:0 3px 12px rgba(0,0,0,.45);
+}
+.nav-bar a {
+  color:var(--gold); text-decoration:none;
+  font-family:var(--font-sub); font-size:.75rem; letter-spacing:.05em;
+  transition:color .15s;
+}
+.nav-bar a:hover { color:var(--gold-light); }
+.nav-bar .home { font-weight:700; font-size:.82rem; }
+.nav-bar .spacer { flex:1; }
+.nav-bar .pos { color:rgba(200,169,110,.45); font-size:.7rem; font-family:var(--font-sub); }
+
+/* ── BUCHKOPF ────────────────────────────────────────── */
+.book-header {
+  background:linear-gradient(160deg,var(--navy) 0%,var(--navy-mid) 55%,var(--navy-light) 100%);
+  padding:44px 36px 34px; text-align:center;
+  border-bottom:4px solid var(--gold);
+  position:relative; overflow:hidden;
+}
+.book-header::before {
+  content:'';
+  position:absolute; inset:0;
+  background-image:
+    repeating-linear-gradient( 45deg,transparent,transparent 30px,rgba(200,169,110,.038) 30px,rgba(200,169,110,.038) 31px),
+    repeating-linear-gradient(-45deg,transparent,transparent 30px,rgba(200,169,110,.038) 30px,rgba(200,169,110,.038) 31px);
+  pointer-events:none;
+}
+.testament-badge {
+  display:inline-block;
+  border:1px solid rgba(200,169,110,.4); color:rgba(200,169,110,.65);
+  font-family:var(--font-sub); font-size:.62rem; letter-spacing:.25em;
+  padding:4px 14px; border-radius:2px; margin-bottom:14px; position:relative;
+}
+.book-name-latin {
+  font-family:var(--font-title); font-size:3rem; color:var(--gold-light);
+  text-shadow:0 3px 18px rgba(0,0,0,.55); letter-spacing:.08em; position:relative;
+}
+.book-name-trans {
+  font-family:var(--font-sub); font-size:1.1rem; color:var(--gold);
+  margin-top:8px; letter-spacing:.12em; position:relative;
+}
+.book-meta {
+  font-size:.74rem; color:rgba(200,169,110,.5); margin-top:7px;
+  font-family:var(--font-sub); letter-spacing:.07em; position:relative;
+}
+
+/* ── ORNAMENT-TRENNLINIE ─────────────────────────────── */
+.ornament-bar {
+  text-align:center; padding:16px 0 4px;
+  color:var(--gold); font-size:1.1rem; letter-spacing:.7em;
+}
+
+/* ── HAUPT-CONTAINER ─────────────────────────────────── */
+.content { max-width:960px; margin:0 auto; padding:0 24px 80px; }
+
+/* ── KAPITEL-MARKER ──────────────────────────────────── */
+.chapter-marker {
+  display:flex; align-items:center; gap:16px;
+  padding:28px 6px 12px; margin-bottom:4px;
+  border-bottom:2px solid var(--border);
+}
+.ch-roman {
+  font-family:var(--font-title); font-size:2.2rem; color:var(--gold);
+  min-width:56px; text-align:center; flex-shrink:0;
+  text-shadow:0 1px 8px rgba(200,169,110,.3);
+}
+.ch-label {
+  font-family:var(--font-sub); font-size:.72rem; color:rgba(200,169,110,.6);
+  letter-spacing:.22em; text-transform:uppercase;
+}
+
+/* ── VERS-BLOCK ──────────────────────────────────────── */
+.verse-block {
+  display:flex; gap:0; border-bottom:1px solid rgba(200,169,110,.15);
+}
+.verse-block:nth-child(odd)  { background:var(--cream); }
+.verse-block:nth-child(even) { background:var(--parchment); }
+
+.verse-num-col {
+  flex-shrink:0; width:42px; padding:16px 6px 16px 0; text-align:right;
+}
+.verse-num {
+  display:inline-block; width:28px; height:28px; border-radius:50%;
+  background:var(--gold-dark); color:var(--cream);
+  font-family:var(--font-sub); font-size:.64rem; font-weight:700;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 1px 5px rgba(0,0,0,.25);
+}
+
+.verse-texts { flex:1; padding:16px 16px 18px 8px; }
+
+/* ── LATEINISCHER TEXT (oben / primär) ───────────────── */
+.latin {
+  font-family:var(--font-body); font-size:1.12rem; line-height:1.9;
+  color:var(--latin-color); font-weight:500;
+  border-left:3px solid var(--gold); padding-left:12px;
+  margin-bottom:8px;
+}
+
+/* ── ÜBERSETZUNGS-TEXT (unten / sekundär) ────────────── */
+.trans-label {
+  font-family:var(--font-sub); font-size:.6rem; letter-spacing:.17em;
+  text-transform:uppercase; color:var(--gold-dark); margin-bottom:5px; opacity:.78;
+}
+.trans {
+  font-family:var(--font-body); font-size:1.04rem; line-height:1.85;
+  color:var(--trans-color); font-style:italic;
+  padding-left:15px;
+}
+
+/* Erste Vers jedes Kapitels: Drop-Cap */
+.verse-block:first-of-type .latin::first-letter {
+  font-size:4.2em; float:left; line-height:.72;
+  padding-right:.08em; margin-top:.06em;
+  font-family:var(--font-title); color:var(--gold);
+}
+
+/* ── NAVIGATION ZWISCHEN BÜCHERN ─────────────────────── */
+.book-nav {
+  display:flex; justify-content:space-between; align-items:center;
+  background:var(--navy); border-top:3px solid var(--gold);
+  padding:12px 26px; gap:12px;
+}
+.book-nav a {
+  color:var(--gold); text-decoration:none;
+  font-family:var(--font-sub); font-size:.78rem; letter-spacing:.07em;
+  padding:6px 14px; border:1px solid rgba(200,169,110,.3); border-radius:3px;
+  transition:background .18s;
+}
+.book-nav a:hover { background:rgba(200,169,110,.15); }
+.book-nav .center {
+  font-family:var(--font-sub); font-size:.7rem; color:rgba(200,169,110,.55);
+  letter-spacing:.1em; text-align:center;
+}
+
+/* ── FUßZEILE ────────────────────────────────────────── */
+.page-footer {
+  background:var(--navy); border-top:2px solid rgba(200,169,110,.3);
+  padding:18px 28px; text-align:center;
+  color:rgba(200,169,110,.45); font-family:var(--font-sub);
+  font-size:.68rem; letter-spacing:.1em;
+}
+
+/* ── DRUCK ───────────────────────────────────────────── */
+@media print {
+  .nav-bar, .book-nav { display:none; }
+  .verse-block { break-inside:avoid; }
+  .book-header { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+}
+
+/* ── MOBIL ───────────────────────────────────────────── */
+@media (max-width:640px) {
+  .book-name-latin { font-size:2.1rem; }
+  .ch-roman { font-size:1.6rem; }
+  .latin { font-size:.98rem; }
+  .trans { font-size:.93rem; }
+  .content { padding:0 12px 60px; }
+}
+</style>
+</head>
+<body>
+
+  <nav class="nav-bar">
+    <a class="home" href="../../../index.html">✞ BIBLIA CATHOLICA</a>
+    <a href="../index.html">🇩🇪 Deutsch</a>
+    <span class="spacer"></span>
+    <span class="pos">062 / 066</span>
+  </nav>
+
+  <header class="book-header">
+    <div class="testament-badge">NOVUM TESTAMENTUM</div>
+    <div class="book-name-latin">I IOANNIS</div>
+    <div class="book-name-trans">1 John</div>
+    <div class="book-meta">Vulgata Clementina · Luther Bibel (1912) · 5 Capita · 105 Versus</div>
+  </header>
+
+  <div class="ornament-bar">❧ ✦ ❧ ✦ ❧</div>
+
+  <main class="content">
+
+  <section class="chapter" id="ch1">
+    <div class="chapter-marker">
+      <span class="ch-roman">I</span>
+      <span class="ch-label">Caput 1</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v1-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quod fuit ab initio, quod audivimus, quod vidimus oculis nostris, quod perspeximus, et manus nostræ contrectaverunt de verbo vitæ :</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Was von Anfang war, was wir gehört, was wir gesehen haben mit unseren Augen, was wir geschaut, und unsere Hände betastet haben, vom Wort des Lebens -</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">et vita manifestata est, et vidimus, et testamur, et annuntiamus vobis vitam æternam, quæ erat apud Patrem, et apparuit nobis :</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">ja das Leben ist offenbar geworden, und wir haben gesehen und bezeugen und verkündigen euch das ewige Leben, welches war bei dem Vater und ist uns offenbar geworden -</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">quod vidimus et audivimus, annuntiamus vobis, ut et vos societatem habeatis nobiscum, et societas nostra sit cum Patre, et cum Filio ejus Jesu Christo.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">was wir gesehen und gehört haben, verkünden wir auch euch, damit auch ihr Gemeinschaft habet mit uns. Und zwar ist unsere Gemeinschaft mit dem Vater und mit seinem Sohn Jesus Christus,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et hæc scribimus vobis ut gaudeatis, et gaudium vestrum sit plenum.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">und dieses schreiben wir euch, damit unsere Freude völlig sei.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et hæc est annuntiatio, quam audivimus ab eo, et annuntiamus vobis : quoniam Deus lux est, et tenebræ in eo non sunt ullæ.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Und dies ist die Kunde, die wir von ihm gehört haben und euch verkünden, daß Gott Licht ist und keine Finsternis in ihm ist.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si dixerimus quoniam societatem habemus cum eo, et in tenebris ambulamus, mentimur, et veritatem non facimus.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Wenn wir sagen, daß wir Gemeinschaft mit ihm haben und wir wandeln in der Finsternis, so lügen wir und thun nicht die Wahrheit.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si autem in luce ambulamus sicut et ipse est in luce, societatem habemus ad invicem, et sanguis Jesu Christi, Filii ejus, emundat nos ab omni peccato.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Wenn wir aber im Lichte wandeln, wie er im Lichte ist, so haben wir Gemeinschaft miteinander, und das Blut Jesus seines Sohnes reinigt uns von aller Sünde.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si dixerimus quoniam peccatum non habemus, ipsi nos seducimus, et veritas in nobis non est.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Wenn wir sagen, daß wir keine Sünde haben, so betrügen wir uns selbst, und die Wahrheit ist nicht in uns.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si confiteamur peccata nostra : fidelis est, et justus, ut remittat nobis peccata nostra, et emundet nos ab omni iniquitate.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Wenn wir unsere Sünden bekennen, so ist er treu und gerecht, daß er uns vergebe die Sünden und reinige uns von aller Ungerechtigkeit.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si dixerimus quoniam non peccavimus, mendacem facimus eum, et verbum ejus non est in nobis.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Wenn wir sagen, daß wir nicht gesündigt haben, so machen wir ihn zum Lügner, und sein Wort ist nicht in uns.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch2">
+    <div class="chapter-marker">
+      <span class="ch-roman">II</span>
+      <span class="ch-label">Caput 2</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v2-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Filioli mei, hæc scribo vobis, ut non peccetis. Sed et si quis peccaverit, advocatum habemus apud Patrem, Jesum Christum justum :</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Meine Kinder, ich schreibe euch dies, damit ihr nicht sündiget. Und wenn einer sündigt, so haben wir einen Fürsprecher beim Vater, Jesus Christus den Gerechten.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">et ipse est propitiatio pro peccatis nostris : non pro nostris autem tantum, sed etiam pro totius mundi.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Und er ist eine Sühne für unsere Sünden, nicht aber für die unseren allein, sondern auch für die ganze Welt.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et in hoc scimus quoniam cognovimus eum, si mandata ejus observemus.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Und daran erkennen wir, daß wir ihn erkannt haben, wenn wir seine Gebote halten.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui dicit se nosse eum, et mandata ejus non custodit, mendax est, et in hoc veritas non est.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Wer sagt: ich habe ihn erkannt, und hält seine Gebote nicht, ist ein Lügner und in ihm ist die Wahrheit nicht.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui autem servat verbum ejus, vere in hoc caritas Dei perfecta est : et in hoc scimus quoniam in ipso sumus.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Wer aber sein Wort hält, in dem ist wahrhaft die Liebe Gottes vollendet.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui dicit se in ipso manere, debet, sicut ille ambulavit, et ipse ambulare.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Daran erkennen wir, daß wir in ihm sind. Wer sagt, er bleibe in ihm, ist auch verpflichtet ebenso zu wandeln, wie jener wandelte.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Carissimi, non mandatum novum scribo vobis, sed mandatum vetus, quod habuistis ab initio. Mandatum vetus est verbum, quod audistis.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Geliebte, ich schreibe euch nicht ein neues Gebot, sondern ein altes Gebot, das ihr von Anfang hattet; das alte Gebot ist das Wort, welches ihr gehört habt.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Iterum mandatum novum scribo vobis, quod verum est et in ipso, et in vobis : quia tenebræ transierunt, et verum lumen jam lucet.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Wiederum schreibe ich euch ein neues Gebot, das wahr ist in ihm und in euch, weil die Finsternis vergeht und das wahrhaftige Licht bereits scheint.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui dicit se in luce esse, et fratrem suum odit, in tenebris est usque adhuc.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Wer sagt, er sei im Lichte, und haßt seinen Bruder, ist in der Finsternis bis jetzt.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui diligit fratrem suum, in lumine manet, et scandalum in eo non est.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Wer seinen Bruder liebt, bleibt im Licht, und in ihm ist kein Anstoß.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui autem odit fratrem suum, in tenebris est, et in tenebris ambulat, et nescit quo eat : quia tenebræ obcæcaverunt oculos ejus.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Wer aber seinen Bruder haßt, ist in der Finsternis, und wandelt in der Finsternis, und weiß nicht wo er hinkommt, weil die Finsternis seine Augen geblendet hat.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Scribo vobis, filioli, quoniam remittuntur vobis peccata propter nomen ejus.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Ich schreibe euch, Kinder, weil euch die Sünden vergeben sind um seines Namens willen. Ich schreibe euch, Väter, weil ihr erkannt habt den, der von Anfang ist.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Scribo vobis, patres, quoniam cognovistis eum, qui ab initio est. Scribo vobis, adolescentes, quoniam vicistis malignum.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Ich schreibe euch, Jünglinge, weil ihr den Bösen überwunden habt. Ich habe euch geschrieben, Kinder, weil ihr den Vater erkannt habt.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Scribo vobis, infantes, quoniam cognovistis patrem. Scribo vobis juvenes, quoniam fortes estis, et verbum Dei manet in vobis, et vicistis malignum.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Ich habe euch geschrieben, Väter, weil ihr erkannt habt den, der von Anfang ist. Ich habe euch geschrieben, Jünglinge, weil ihr stark seid, und das Wort Gottes in euch bleibt, und ihr den Bösen überwunden habt.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nolite diligere mundum, neque ea quæ in mundo sunt. Si quis diligit mundum, non est caritas Patris in eo :</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Habt nicht lieb die Welt, und nicht was in der Welt ist. Wenn einer die Welt lieb hat, so ist die Liebe des Vaters nicht in ihm;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">quoniam omne quod est in mundo, concupiscentia carnis est, et concupiscentia oculorum, et superbia vitæ : quæ non est ex Patre, sed ex mundo est.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">weil alles, was in der Welt ist, die Lust des Fleisches und die Lust der Augen, und das Großthun des Geldes, nicht von dem Vater ist, sondern von der Welt ist.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et mundus transit, et concupiscentia ejus : qui autem facit voluntatem Dei manet in æternum.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Und die Welt vergeht und ihre Lust; wer aber den Willen Gottes thut, bleibt in Ewigkeit.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Filioli, novissima hora est : et sicut audistis quia antichristus venit, et nunc antichristi multi facti sunt ; unde scimus, quia novissima hora est.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Kinder es ist die letzte Stunden, und wie ihr gehört habt, daß der Antichrist kommt, so sind nunmehr viele Antichriste erschienen, daran wir erkennen, daß es die letzte Stunde ist.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ex nobis prodierunt, sed non erant ex nobis, nam, si fuissent ex nobis, permansissent utique nobiscum : sed ut manifesti sint quoniam non sunt omnes ex nobis.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Von uns sind sie ausgegangen, aber sie waren nicht von uns; denn wenn sie von uns wären, so wären sie bei uns geblieben; aber es sollte an ihnen offenbar werden, daß nicht alle von uns sind.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sed vos unctionem habetis a Sancto, et nostis omnia.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Und ihr habt die Salbung von dem Heiligen und wisset es alle.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non scripsi vobis quasi ignorantibus veritatem, sed quasi scientibus eam : et quoniam omne mendacium ex veritate non est.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Ich habe euch nicht geschrieben, weil ihr die Wahrheit nicht wisset, sondern weil ihr sie wisset, und daß alle Lüge nicht aus der Wahrheit ist.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-22">
+      <div class="verse-num-col"><div class="verse-num">22</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quis est mendax, nisi is qui negat quoniam Jesus est Christus ? Hic est antichristus, qui negat Patrem, et Filium.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Wer ist der Lügner, wenn nicht der, der da leugnet, daß Jesus sei der Christus? Der ist der Antichrist, der den Vater verleugnet und den Sohn.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-23">
+      <div class="verse-num-col"><div class="verse-num">23</div></div>
+      <div class="verse-texts">
+        <div class="latin">Omnis qui negat Filium, nec Patrem habet : qui confitetur Filium, et Patrem habet.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Jeder, der den Sohn leugnet, hat auch den Vater nicht; wer den Sohn bekennt, hat auch den Vater. Was ihr gehört habt von Anfang, das bleibe in euch.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-24">
+      <div class="verse-num-col"><div class="verse-num">24</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vos quod audistis ab initio, in vobis permaneat : si in vobis permanserit quod audistis ab initio, et vos in Filio et Patre manebitis.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Wenn es in euch bleibt, was ihr von Anfang gehört habt, so werdet auch ihr im Sohne und im Vater bleiben.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-25">
+      <div class="verse-num-col"><div class="verse-num">25</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et hæc est repromissio, quam ipse pollicitus est nobis, vitam æternam.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Und dies ist die Verheißung, die er uns verheißen hat: das ewige Leben.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-26">
+      <div class="verse-num-col"><div class="verse-num">26</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hæc scripsi vobis de his, qui seducant vos.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Dieses habe ich euch geschrieben über die, die euch irreführen, und ihr - die Salbung, die ihr von ihm empfangen habt, bleibt in euch,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-27">
+      <div class="verse-num-col"><div class="verse-num">27</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et vos unctionem, quam accepistis ab eo, maneat in vobis. Et non necesse habetis ut aliquis doceat vos : sed sicut unctio ejus docet vos de omnibus, et verum est, et non est mendacium. Et sicut docuit vos : manete in eo.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">und ihr habt nicht nötig, daß euch jemand belehre, sondern wie seine Salbung euch belehrt über alles, und wahr ist, und ist keine Lüge, und wie sie euch gelehrt hat, so bleibet in ihm.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-28">
+      <div class="verse-num-col"><div class="verse-num">28</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et nunc, filioli, manete in eo : ut cum apparuerit, habeamus fiduciam, et non confundamur ab eo in adventu ejus.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Und nun Kinder, bleibet in ihm, damit wir, wenn er sich offenbart, Zuversicht haben, und nicht von seiner Seite beschämt werden bei seiner Ankunft.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-29">
+      <div class="verse-num-col"><div class="verse-num">29</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si scitis quoniam justus est, scitote quoniam et omnis, qui facit justitiam, ex ipso natus est.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">So ihr wisset, daß er gerecht ist, so erkennet, daß auch jeder, die die Gerechtigkeit übt, aus ihm gezeugt ist.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch3">
+    <div class="chapter-marker">
+      <span class="ch-roman">III</span>
+      <span class="ch-label">Caput 3</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v3-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Videte qualem caritatem dedit nobis Pater, ut filii Dei nominemur et simus. Propter hoc mundus non novit nos : quia non novit eum.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Sehet, welch große Liebe uns der Vater bewiesen hat, daß wir Kinder Gottes heißen sollen, und wir sind es. Darum erkennt uns die Welt nicht, weil sie ihn nicht erkannt hat.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Carissimi, nunc filii Dei sumus : et nondum apparuit quid erimus. Scimus quoniam cum apparuerit, similes ei erimus : quoniam videbimus eum sicuti est.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Geliebte, wir sind jetzt Kinder Gottes, und es ist noch nicht offenbar geworden, was wir sein werden. Wir wissen, daß wenn er sich offenbart, wir ihm ähnlich sein werden, weil wir ihn sehen werden, wie er ist.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et omnis qui habet hanc spem in eo, sanctificat se, sicut et ille sanctus est.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Und jeder, diese diese Hoffnung auf ihn hat, reinigt sich selbst, sowie jener rein ist.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Omnis qui facit peccatum, et iniquitatem facit : et peccatum est iniquitas.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Jeder der die Sünde thut, thut auch die Ungesetzlichkeit, und die Sünde ist die Ungesetzlichkeit.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et scitis quia ille apparuit ut peccata nostra tolleret : et peccatum in eo non est.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Und ihr wisset, daß jener sich offenbarte, um die Sünden wegzunehmen, und in ihm keine Sünde ist.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Omnis qui in eo manet, non peccat : et omnis qui peccat, non vidit eum, nec cognovit eum.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Jeder, der in ihm bleibt, sündigt nicht; jeder, der sündigt, hat ihn nicht gesehen, noch ihn erkannt.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Filioli, nemo vos seducat. Qui facit justitiam, justus est, sicut et ille justus est.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Kinder, niemand soll euch irreführen. Wer die Gerechtigkeit thut, ist gerecht, so wie jener gerecht ist.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui facit peccatum, ex diabolo est : quoniam ab initio diabolus peccat. In hoc apparuit Filius Dei, ut dissolvat opera diaboli.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Wer die Sünde thut, ist vom Teufel, weil der Teufel von Anfang an sündigt; dazu hat sich der Sohn Gottes geoffenbart, daß er die Werke des Teufels zerstöre.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Omnis qui natus est ex Deo, peccatum non facit : quoniam semen ipsius in eo manet, et non potest peccare, quoniam ex Deo natus est.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Jeder, der aus Gott gezeugt ist, thut nicht Sünde, weil sein Same in ihm bleibt, und er kann nicht sündigen, weil er aus Gott gezeugt ist.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">In hoc manifesti sunt filii Dei, et filii diaboli. Omnis qui non est justus, non est ex Deo, et qui non diligit fratrem suum :</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Daran sind offenbar die Kinder Gottes und die Kinder des Teufels. Jeder, der nicht Gerechtigkeit übt, ist nicht aus Gott, und so auch, wer seinen Bruder nicht liebt.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">quoniam hæc est annuntiatio, quam audistis ab initio, ut diligatis alterutrum.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Denn das ist die Verkündigung, die ihr von Anfang an gehört habt, daß wir einander lieben sollen.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non sicut Cain, qui ex maligno erat, et occidit fratrem suum. Et propter quid occidit eum ? Quoniam opera ejus maligna erant : fratris autem ejus, justa.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Nicht, wie Kain aus dem Bösen war, und erschlug seinen Bruder; und warum erschlug er ihn? weil seine Werke böse waren, die aber seines Bruders gerecht.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nolite mirari, fratres, si odit vos mundus.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Wundert euch nicht, Brüder, wenn euch die Welt haßt.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nos scimus quoniam translati sumus de morte ad vitam, quoniam diligimus fratres. Qui non diligit, manet in morte :</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Wir wissen, daß wir vom Tode zum Leben gelangt sind, weil wir die Brüder lieben; wer nicht liebt, bleibt im Tode.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">omnis qui odit fratrem suum, homicida est. Et scitis quoniam omnis homicida non habet vitam æternam in semetipso manentem.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Jeder der seinen Bruder haßt, ist ein Menschenmörder, und ihr wisset, daß kein Menschenmörder ewiges Leben bleibend in sich hat.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">In hoc cognovimus caritatem Dei, quoniam ille animam suam pro nobis posuit : et nos debemus pro fratribus animas ponere.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Daran haben wir die Liebe erkannt, daß jener sein Leben für uns eingesetzt hat; so sind auch wir schuldig, das Leben für die Brüder einzusetzen.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui habuerit substantiam hujus mundi, et viderit fratrem suum necessitatem habere, et clauserit viscera sua ab eo : quomodo caritas Dei manet in eo ?</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Wer das Gut der Welt hat und sieht seinen Bruder darben, und schließt sein Herz vor ihm zu, wie soll die Liebe Gottes in ihm bleiben?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Filioli mei, non diligamus verbo neque lingua, sed opere et veritate :</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Kinder, lasset uns nicht lieben mit Reden oder mit der Zunge, sondern mit That und Wahrheit.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">in hoc cognoscimus quoniam ex veritate sumus : et in conspectu ejus suadebimus corda nostra.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Daran werden wir erkennen, daß wir aus der Wahrheit sind, und werden unser Herz vor ihm überzeugen,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quoniam si reprehenderit nos cor nostrum : major est Deus corde nostro, et novit omnia.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">daß wenn uns unser Herz verklagt, Gott größer ist als unser Herz und alles weiß.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">Carissimi, si cor nostrum non reprehenderit nos, fiduciam habemus ad Deum :</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Geliebte, wenn unser Herz uns nicht verklagt, so haben wir Zuversicht zu Gott;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-22">
+      <div class="verse-num-col"><div class="verse-num">22</div></div>
+      <div class="verse-texts">
+        <div class="latin">et quidquid petierimus, accipiemus ab eo : quoniam mandata ejus custodimus, et ea, quæ sunt placita coram eo, facimus.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">und was wir irgend bitten erlangen wir von ihm, weil wir seine Gebote halten und thun was vor ihm wohlgefällig ist.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-23">
+      <div class="verse-num-col"><div class="verse-num">23</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et hoc est mandatum ejus : ut credamus in nomine Filii ejus Jesu Christi : et diligamus alterutrum, sicut dedit mandatum nobis.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Und dies ist sein Gebot, daß wir den Namens seines Sohnes Jesus Christus glauben und einander lieben, sowie er uns ein Gebot gegeben hat.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-24">
+      <div class="verse-num-col"><div class="verse-num">24</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et qui servat mandata ejus, in illo manet, et ipse in eo : et in hoc scimus quoniam manet in nobis, de Spiritu quem dedit nobis.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Und wer seine Gebote hält, bleibet in ihm und er in ihm; und daran erkennen wir, daß er in uns bleibt, an dem Geiste, den er uns gegeben hat.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch4">
+    <div class="chapter-marker">
+      <span class="ch-roman">IV</span>
+      <span class="ch-label">Caput 4</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v4-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Carissimi, nolite omni spiritui credere, sed probate spiritus si ex Deo sint : quoniam multi pseudoprophetæ exierunt in mundum.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Geliebte, glaubt nicht jedem Geist, sondern prüfet die Geister, ob sie aus Gott sind; denn es sind viele Lügenpropheten ausgegangen in die Welt.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">In hoc cognoscitur Spiritus Dei : omnis spiritus qui confitetur Jesum Christum in carne venisse, ex Deo est :</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Daran erkennet den Geist Gottes: jeder Geist, der bekennet Jesus Christus im Fleisch gekommen, ist aus Gott;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">et omnis spiritus qui solvit Jesum, ex Deo non est, et hic est antichristus, de quo audistis quoniam venit, et nunc jam in mundo est.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">und jeder Geist, der Jesus nicht bekennt, ist nicht aus Gott, und das ist das Wesen des Antichrist, wovon ihr gehört habt, daß er kommt, und jetzt ist er schon in der Welt.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vos ex Deo estis filioli, et vicistis eum, quoniam major est qui in vobis est, quam qui in mundo.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Ihr seid aus Gott, Kinder, und habt sie überwunden, weil der in euch größer ist, als der in der Welt.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ipsi de mundo sunt : ideo de mundo loquuntur, et mundus eos audit.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Sie sind aus der Welt, darum reden sie aus der Welt heraus, und die Welt hört auf sie.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nos ex Deo sumus. Qui novit Deum, audit nos ; qui non est ex Deo, non audit nos : in hoc cognoscimus Spiritum veritatis, et spiritum erroris.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Wir sind aus Gott; wer Gott erkennt, hört auf uns; wer nicht aus Gott ist, hört nicht auf uns. Daran erkennen wir den Geist der Wahrheit und den Geist des Truges.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Carissimi, diligamus nos invicem : quia caritas ex Deo est. Et omnis qui diligit, ex Deo natus est, et cognoscit Deum.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Geliebte, lasset uns einander lieben, weil die Liebe aus Gott ist, und jeder der liebt ist aus Gott gezeugt und erkennt Gott.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui non diligit, non novit Deum : quoniam Deus caritas est.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Wer nicht liebt, hat Gott nicht erkannt, weil Gott Liebe ist.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">In hoc apparuit caritas Dei in nobis, quoniam Filium suum unigenitum misit Deus in mundum, ut vivamus per eum.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Daran ward die Liebe Gottes an uns offenbar, daß Gott seinen einzigen Sohn in die Welt gesandt hat, damit wir durch ihn leben.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">In hoc est caritas : non quasi nos dilexerimus Deum, sed quoniam ipse prior dilexit nos, et misit Filium suum propitiationem pro peccatis nostris.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Darauf steht die Liebe, nicht daß wir Gott geliebt haben, sondern daß er uns geliebt hat und hat seinen Sohn gesandt als Sühne für unsere Sünden.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Carissimi, si sic Deus dilexit nos : et nos debemus alterutrum diligere.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Geliebte, wenn Gott so uns geliebt hat, so sind wir auch schuldig einander zu lieben.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Deum nemo vidit umquam. Si diligamus invicem, Deus in nobis manet, et caritas ejus in nobis perfecta est.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Gott geschaut hat niemand jemals: lieben wir einander, so ist er bleibend in uns, und seine Liebe ist vollendet in uns.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">In hoc cognoscimus quoniam in eo manemus, et ipse in nobis : quoniam de Spiritu suo dedit nobis.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Daran erkennen wir, daß wir in ihm bleiben und er in uns: weil er uns von seinem Geiste gegeben hat.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et nos vidimus, et testificamur quoniam Pater misit Filium suum Salvatorem mundi.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Und wir, wir haben es geschaut und bezeugen es, daß der Vater den Sohn abgesandt hat als Heiland der Welt.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quisquis confessus fuerit quoniam Jesus est Filius Dei, Deus in eo manet, et ipse in Deo.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Wer nun bekennt, daß Jesus der Sohn Gottes ist, in dem bleibt Gott, und er bleibt in Gott.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et nos cognovimus, et credidimus caritati, quam habet Deus in nobis. Deus caritas est : et qui manet in caritate, in Deo manet, et Deus in eo.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Und wir haben erkannt und geglaubt die Liebe, welche Gott zu uns hat. Gott ist Liebe, und wer in der Liebe bleibt, bleibt in Gott und Gott bleibt in ihm.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">In hoc perfecta est caritas Dei nobiscum, ut fiduciam habeamus in die judicii : quia sicut ille est, et nos sumus in hoc mundo.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Darin ist die Liebe an uns vollendet, daß wir Zuversicht haben am Tage des Gerichtes; weil wie er ist, so auch wir sind, in dieser Welt.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Timor non est in caritate : sed perfecta caritas foras mittit timorem, quoniam timor pœnam habet : qui autem timet, non est perfectus in caritate.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Furcht ist nicht in der Liebe, sondern die vollkommene Liebe treibt die Furcht aus, weil es die Furcht mit Strafe zu thun hat; wer sich fürchtet, ist nicht vollendet in der Liebe.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nos ergo diligamus Deum, quoniam Deus prior dilexit nos.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Wir lieben, weil er uns zuerst geliebt hat.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si quis dixerit : Quoniam diligo Deum, et fratrem suum oderit, mendax est. Qui enim non diligit fratrem suum quem vidit, Deum, quem non vidit, quomodo potest diligere ?</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Wenn einer sagt: ich liebe Gott, und haßt seinen Bruder, so ist er ein Lügner. Denn der seinen Bruder nicht liebt, den er gesehen, kann Gott nicht lieben, den er nicht gesehen.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et hoc mandatum habemus a Deo : ut qui diligit Deum, diligat et fratrem suum.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Und dies ist das Gebot das wir von ihm haben, daß wer Gott liebt, auch seinen Bruder liebt.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch5">
+    <div class="chapter-marker">
+      <span class="ch-roman">V</span>
+      <span class="ch-label">Caput 5</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v5-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Omnis qui credit quoniam Jesus est Christus, ex Deo natus est. Et omnis qui diligit eum qui genuit, diligit et eum qui natus est ex eo.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Jeder der glaubt, daß Jesus der Christus ist, ist aus Gott gezeugt. Und jeder, der seinen Erzeuger liebt, liebt auch den, der von ihm gezeugt ist;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">In hoc cognoscimus quoniam diligamus natos Dei, cum Deum diligamus, et mandata ejus faciamus.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">daran erkennen wir, daß wir die Kinder Gottes lieben, wofern wir Gott lieben und seine Gebote thun.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hæc est enim caritas Dei, ut mandata ejus custodiamus : et mandata ejus gravia non sunt.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Denn dies ist die Liebe Gottes, daß wir seine Gebote halten.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quoniam omne quod natum est ex Deo, vincit mundum : et hæc est victoria, quæ vincit mundum, fides nostra.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Und seine Gebote sind nicht drückend, weil alles, was aus Gott gezeugt ist, die Welt überwindet, und dies ist der Sieg, der die Welt überwunden hat: unser Glaube.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quis est, qui vincit mundum, nisi qui credit quoniam Jesus est Filius Dei ?</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Wer ist es, der die Welt überwindet, als der da glaubt, daß Jesus der Sohn Gottes ist?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hic est, qui venit per aquam et sanguinem, Jesus Christus : non in aqua solum, sed in aqua et sanguine. Et Spiritus est, qui testificatur quoniam Christus est veritas.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Dieser ist es, der gekommen ist durch Wasser und Blut: Jesus Christus; nicht mit dem Wasser allein, sondern mit dem Wasser und mit dem Blut; und der Geist ist es, der zeugt, weil der Geist die Wahrheit ist.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quoniam tres sunt, qui testimonium dant in cælo : Pater, Verbum, et Spiritus Sanctus : et hi tres unum sunt.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">So sind es drei die da zeugen:</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et tres sunt, qui testimonium dant in terra : spiritus, et aqua, et sanguis : et hi tres unum sunt.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">der Geist, das Wasser, und das Blut, und die drei sind einig.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si testimonium hominum accipimus, testimonium Dei majus est : quoniam hoc est testimonium Dei, quod majus est, quoniam testificatus est de Filio suo.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Wenn wir das Zeugnis der Menschen annehmen, nun das Zeugnis Gottes ist größer; denn dies ist Gottes Zeugnis, daß er gezeugt hat von seinem Sohn.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui credit in Filium Dei, habet testimonium Dei in se. Qui non credit Filio, mendacem facit eum : quia non credit in testimonium quod testificatus est Deus de Filio suo.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Wer an den Sohn Gottes glaubt, hat das Zeugnis durch ihn; wer Gott nicht glaubt, hat ihn zum Lügner gemacht, weil er nicht geglaubt hat an das Zeugnis, welches Gott gezeugt hat über seinen Sohn.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et hoc est testimonium, quoniam vitam æternam dedit nobis Deus : et hæc vita in Filio ejus est.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Und dies ist das Zeugnis: daß uns Gott ewiges Leben gegeben hat, und dieses Leben in seinem Sohne ist.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui habet Filium, habet vitam : qui non habet Filium, vitam non habet.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Wer den Sohn hat, hat das Leben; wer den Sohn Gottes nicht hat, hat das Leben nicht.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hæc scribo vobis ut sciatis quoniam vitam habetis æternam, qui creditis in nomine Filii Dei.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Dieses habe ich euch geschrieben, damit ihr wisset, daß ihr ewiges Leben habt, euch die ihr glaubt an den Namen des Sohnes Gottes.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et hæc est fiducia, quam habemus ad eum : quia quodcumque petierimus, secundum voluntatem ejus, audit nos.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Und dies ist die Zuversicht, die wir zu ihm haben, daß wenn wir etwas bitten nach seinem Willen, er uns erhört.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et scimus quia audit nos quidquid petierimus : scimus quoniam habemus petitiones quas postulamus ab eo.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Und wenn wir wissen, daß er uns auf unser Bitten erhört, so wissen wir, daß uns die Bitten sicher sind, die wir von ihm erbeten haben.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui scit fratrem suum peccare peccatum non ad mortem, petat, et dabitur ei vita peccanti non ad mortem. Est peccatum ad mortem : non pro illo dico ut roget quis.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Wenn einer seinen Bruder sündigen sieht, eine Sünde nicht zum Tode, so soll er bitten, und er wird ihm Leben geben, nämlich solchen, die nicht zum Tode sündigen. Es gibt eine Sünde zum Tode, davon rede ich nicht, daß man dafür bitten soll.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Omnis iniquitas, peccatum est : et est peccatum ad mortem.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Jede Ungerechtigkeit ist Sünde, so gibt es auch Sünde die nicht zum Tode ist.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Scimus quia omnis qui natus est ex Deo, non peccat : sed generatio Dei conservat eum, et malignus non tangit eum.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Wir wissen, daß jeder, der aus Gott gezeugt ist, nicht sündigt, sondern wer aus Gott gezeugt ward, hält fest an ihm, und der Böse rührt ihn nicht an.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">Scimus quoniam ex Deo sumus : et mundus totus in maligno positus est.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Wir wissen, daß wir aus Gott sind, und die ganze Welt im Bösen liegt.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et scimus quoniam Filius Dei venit, et dedit nobis sensum ut cognoscamus verum Deum, et simus in vero Filio ejus. Hic est verus Deus, et vita æterna.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Wir wissen aber, daß der Sohn Gottes gekommen ist, und er hat uns Einsicht verliehen, daß wir den Wahrhaftigen erkennen, und wir sind in dem Wahrhaftigen, in seinem Sohne Jesus Christus; das ist der wahrhaftige Gott und ewiges Leben.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">Filioli, custodite vos a simulacris. Amen.</div>
+        <div class="trans-label">✦ Deutsch</div>
+        <div class="trans">Kinder, hütet euch vor den Götzen.</div>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <nav class="book-nav">
+    <a href="061-2pe.html">← II Petri</a>
+    <span class="center">I Ioannis · Deutsch</span>
+    <a href="063-2jo.html">II Ioannis →</a>
+  </nav>
+
+  <footer class="page-footer">
+    BIBLIA CATHOLICA INTERLINEARIS &nbsp;·&nbsp; Vulgata Clementina &amp; Luther Bibel (1912)
+    &nbsp;·&nbsp; Gemeinfreie Texte / Public Domain
+  </footer>
+
+</body>
+</html>

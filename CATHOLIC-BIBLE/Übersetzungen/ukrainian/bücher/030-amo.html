@@ -1,1351 +1,1479 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Amos &middot; Українська &middot; Biblia Catholica</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&display=swap" rel="stylesheet">
-<style>
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
-body{
-  background:#2C0810;
-  background-image:radial-gradient(ellipse at 50% 20%,#4A1020 0%,#1A0407 100%);
-  font-family:'EB Garamond',serif;
-  color:#1A0E06;
-  font-size:17px;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Amos · Українська · Biblia Catholica</title>
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
+
+:root {
+  --gold:        #C8A96E;
+  --gold-light:  #EDD58A;
+  --gold-dark:   #8B6914;
+  --navy:        #1A1F3A;
+  --navy-mid:    #252B4A;
+  --navy-light:  #2E3560;
+  --parchment:   #F5E9CC;
+  --parchment-d: #EDD9A3;
+  --cream:       #FDF6E3;
+  --latin-color: #6B1E0E;
+  --trans-color: #0F1D2E;
+  --border:      rgba(200,169,110,.35);
+  --font-title:  'Cinzel Decorative', 'Cinzel', Georgia, serif;
+  --font-sub:    'Cinzel', Georgia, serif;
+  --font-body:   'EB Garamond', Georgia, serif;
 }
 
-/* ──────────────────────────────────────────
-   BUCHKOPF
-────────────────────────────────────────── */
-.bhead{
-  background:
-    repeating-linear-gradient( 45deg,transparent,transparent 36px,rgba(200,160,48,.028) 36px,rgba(200,160,48,.028) 37px),
-    repeating-linear-gradient(-45deg,transparent,transparent 36px,rgba(200,160,48,.028) 36px,rgba(200,160,48,.028) 37px),
-    linear-gradient(162deg,#2C0810 0%,#4A1020 45%,#5C1828 65%,#4A1020 85%,#2C0810 100%);
-  padding:36px 28px 28px;
-  text-align:center;
-  border-bottom:4px solid #B8962E;
-  position:relative;overflow:hidden;
-}
-/* Innerer Rahmen — äußerer Ring */
-.bhead::before{
-  content:'';position:absolute;inset:14px;
-  border:1px solid rgba(200,160,48,.22);
-  pointer-events:none;
-}
-/* Innerer Rahmen — innerer Ring */
-.bhead::after{
-  content:'';position:absolute;inset:22px;
-  border:1px solid rgba(200,160,48,.08);
-  pointer-events:none;
-}
-.btestament{
-  display:inline-block;
-  border:1px solid rgba(200,160,48,.32);
-  color:rgba(200,160,48,.52);
-  font-family:'Cinzel',serif;font-size:.55rem;
-  letter-spacing:.3em;padding:4px 18px;
-  border-radius:2px;margin-bottom:16px;
-  position:relative;
-}
-.blatin{
-  font-family:'Cinzel Decorative',serif;
-  font-size:clamp(1.9rem,7vw,3.4rem);
-  color:#EDD882;
-  text-shadow:0 3px 20px rgba(0,0,0,.55);
-  letter-spacing:.06em;position:relative;
-}
-.btrans{
-  font-family:'Cinzel',serif;
-  font-size:.88rem;
-  color:#C8A030;margin-top:10px;
-  letter-spacing:.16em;position:relative;
-}
-.bmeta{
-  font-family:'Cinzel',serif;font-size:.62rem;
-  color:rgba(200,160,48,.4);margin-top:6px;
-  letter-spacing:.08em;position:relative;
-}
+*,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+html { font-size:16px; scroll-behavior:smooth; }
+body { background:var(--cream); color:var(--trans-color); font-family:var(--font-body); }
 
-/* ──────────────────────────────────────────
-   KAPITELINHALT
-────────────────────────────────────────── */
-.content{
-  max-width:960px;
-  margin:36px auto 36px;
-  padding:48px 72px 100px;
-  background:#FAF5E8;
+/* ── NAV ─────────────────────────────────────────────── */
+.nav-bar {
+  background:var(--navy); padding:10px 28px;
+  display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  border-bottom:2px solid var(--gold);
+  position:sticky; top:0; z-index:100;
+  box-shadow:0 3px 12px rgba(0,0,0,.45);
+}
+.nav-bar a {
+  color:var(--gold); text-decoration:none;
+  font-family:var(--font-sub); font-size:.75rem; letter-spacing:.05em;
+  transition:color .15s;
+}
+.nav-bar a:hover { color:var(--gold-light); }
+.nav-bar .home { font-weight:700; font-size:.82rem; }
+.nav-bar .spacer { flex:1; }
+.nav-bar .pos { color:rgba(200,169,110,.45); font-size:.7rem; font-family:var(--font-sub); }
+
+/* ── BUCHKOPF ────────────────────────────────────────── */
+.book-header {
+  background:linear-gradient(160deg,var(--navy) 0%,var(--navy-mid) 55%,var(--navy-light) 100%);
+  padding:44px 36px 34px; text-align:center;
+  border-bottom:4px solid var(--gold);
+  position:relative; overflow:hidden;
+}
+.book-header::before {
+  content:'';
+  position:absolute; inset:0;
   background-image:
-    radial-gradient(ellipse at top left,rgba(184,150,46,.06) 0%,transparent 55%),
-    radial-gradient(ellipse at bottom right,rgba(184,150,46,.05) 0%,transparent 55%);
-  box-shadow:0 8px 80px rgba(0,0,0,.55),0 2px 12px rgba(0,0,0,.35),inset 0 0 0 1px rgba(184,150,46,.18);
-  border-left:4px solid #B8962E;
-  border-right:4px solid #B8962E;
-  border-top:2px solid rgba(184,150,46,.4);
-  border-bottom:2px solid rgba(184,150,46,.4);
-  position:relative;
-}
-.content::before{
-  content:'';
-  position:absolute;
-  inset:12px;
-  border:1px solid rgba(184,150,46,.08);
+    repeating-linear-gradient( 45deg,transparent,transparent 30px,rgba(200,169,110,.038) 30px,rgba(200,169,110,.038) 31px),
+    repeating-linear-gradient(-45deg,transparent,transparent 30px,rgba(200,169,110,.038) 30px,rgba(200,169,110,.038) 31px);
   pointer-events:none;
 }
-
-.chap{margin-top:0;}
-
-.chhead{
-  text-align:center;
-  padding:40px 0 20px;
-  margin-bottom:16px;
-  position:relative;
+.testament-badge {
+  display:inline-block;
+  border:1px solid rgba(200,169,110,.4); color:rgba(200,169,110,.65);
+  font-family:var(--font-sub); font-size:.62rem; letter-spacing:.25em;
+  padding:4px 14px; border-radius:2px; margin-bottom:14px; position:relative;
 }
-.chhead::before{
-  content:'——— ✦ ✦ ✦ ———';
-  display:block;
-  font-size:.7rem;
-  color:rgba(184,150,46,.45);
-  letter-spacing:.35em;
-  margin-bottom:16px;
+.book-name-latin {
+  font-family:var(--font-title); font-size:3rem; color:var(--gold-light);
+  text-shadow:0 3px 18px rgba(0,0,0,.55); letter-spacing:.08em; position:relative;
 }
-.chhead::after{
-  content:'';
-  display:block;
-  width:200px;
-  height:1px;
-  margin:14px auto 0;
-  background:linear-gradient(to right,transparent,#B8962E,transparent);
+.book-name-trans {
+  font-family:var(--font-sub); font-size:1.1rem; color:var(--gold);
+  margin-top:8px; letter-spacing:.12em; position:relative;
 }
-.chrom{
-  font-family:'Cinzel Decorative',serif;
-  font-size:4rem;color:#8B6914;
-  display:block;
-  text-shadow:0 2px 18px rgba(184,150,46,.2);
-  line-height:1;
-}
-.chlbl{
-  font-family:'Cinzel',serif;font-size:.58rem;
-  color:rgba(184,150,46,.42);letter-spacing:.32em;
-  display:block;margin-top:8px;
+.book-meta {
+  font-size:.74rem; color:rgba(200,169,110,.5); margin-top:7px;
+  font-family:var(--font-sub); letter-spacing:.07em; position:relative;
 }
 
-/* ──────────────────────────────────────────
-   VERSE
-────────────────────────────────────────── */
-.vb{
-  display:flex;
-  padding:20px 6px;
-  border-bottom:1px solid rgba(184,150,46,.12);
-  background:none;
-  border-radius:2px;
-  transition:background .15s;
-}
-.vb:hover{
-  background:rgba(184,150,46,.04);
+/* ── ORNAMENT-TRENNLINIE ─────────────────────────────── */
+.ornament-bar {
+  text-align:center; padding:16px 0 4px;
+  color:var(--gold); font-size:1.1rem; letter-spacing:.7em;
 }
 
-/* Versnummer */
-.vn{
-  flex-shrink:0;
-  width:38px;
-  padding-top:4px;
-  font-family:'Cinzel',serif;font-size:.56rem;
-  color:rgba(184,150,46,.52);text-align:right;
-  padding-right:12px;line-height:2.4;
+/* ── HAUPT-CONTAINER ─────────────────────────────────── */
+.content { max-width:960px; margin:0 auto; padding:0 24px 80px; }
+
+/* ── KAPITEL-MARKER ──────────────────────────────────── */
+.chapter-marker {
+  display:flex; align-items:center; gap:16px;
+  padding:28px 6px 12px; margin-bottom:4px;
+  border-bottom:2px solid var(--border);
+}
+.ch-roman {
+  font-family:var(--font-title); font-size:2.2rem; color:var(--gold);
+  min-width:56px; text-align:center; flex-shrink:0;
+  text-shadow:0 1px 8px rgba(200,169,110,.3);
+}
+.ch-label {
+  font-family:var(--font-sub); font-size:.72rem; color:rgba(200,169,110,.6);
+  letter-spacing:.22em; text-transform:uppercase;
 }
 
-.vt{
-  flex:1;
-  padding:0 20px 0 4px;
+/* ── VERS-BLOCK ──────────────────────────────────────── */
+.verse-block {
+  display:flex; gap:0; border-bottom:1px solid rgba(200,169,110,.15);
+}
+.verse-block:nth-child(odd)  { background:var(--cream); }
+.verse-block:nth-child(even) { background:var(--parchment); }
+
+.verse-num-col {
+  flex-shrink:0; width:42px; padding:16px 6px 16px 0; text-align:right;
+}
+.verse-num {
+  display:inline-block; width:28px; height:28px; border-radius:50%;
+  background:var(--gold-dark); color:var(--cream);
+  font-family:var(--font-sub); font-size:.64rem; font-weight:700;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 1px 5px rgba(0,0,0,.25);
 }
 
-/* LATEIN — PRIMÄR: groß, warm, maßgebend */
-.lat{
-  font-family:'EB Garamond',serif;
-  font-size:1.2rem;
-  font-weight:500;
-  line-height:2.1;
-  color:#3D1A08;
+.verse-texts { flex:1; padding:16px 16px 18px 8px; }
+
+/* ── LATEINISCHER TEXT (oben / primär) ───────────────── */
+.latin {
+  font-family:var(--font-body); font-size:1.12rem; line-height:1.9;
+  color:var(--latin-color); font-weight:500;
+  border-left:3px solid var(--gold); padding-left:12px;
+  margin-bottom:8px;
 }
 
-/* ÜBERSETZUNG — SEKUNDÄR: kleiner, kursiv, unter dem Latein */
-.tra{
-  font-family:'EB Garamond',serif;
-  font-size:.93rem;
-  font-style:italic;
-  line-height:1.95;
-  color:#1E2848;
-  margin-top:5px;
-  padding-left:14px;
-  border-left:2px solid rgba(90,110,170,.2);
+/* ── ÜBERSETZUNGS-TEXT (unten / sekundär) ────────────── */
+.trans-label {
+  font-family:var(--font-sub); font-size:.6rem; letter-spacing:.17em;
+  text-transform:uppercase; color:var(--gold-dark); margin-bottom:5px; opacity:.78;
+}
+.trans {
+  font-family:var(--font-body); font-size:1.04rem; line-height:1.85;
+  color:var(--trans-color); font-style:italic;
+  padding-left:15px;
 }
 
-/* Drop-Cap: erster Vers eines Kapitels — auf dem Latein */
-.vb.first .lat::first-letter{
-  font-family:'Cinzel Decorative',serif;
-  font-size:4em;
-  float:left;
-  line-height:.7;
-  padding-right:.08em;
-  margin-top:.07em;
-  color:#B8962E;
-  text-shadow:1px 2px 6px rgba(0,0,0,.12);
+/* Erste Vers jedes Kapitels: Drop-Cap */
+.verse-block:first-of-type .latin::first-letter {
+  font-size:4.2em; float:left; line-height:.72;
+  padding-right:.08em; margin-top:.06em;
+  font-family:var(--font-title); color:var(--gold);
 }
 
-/* ──────────────────────────────────────────
-   BUCH-NAVIGATION (unten)
-────────────────────────────────────────── */
-.bnav{
-  display:flex;justify-content:space-between;align-items:center;
-  background:#2C0810;border-top:3px solid #B8962E;
-  padding:12px 24px;gap:12px;
+/* ── NAVIGATION ZWISCHEN BÜCHERN ─────────────────────── */
+.book-nav {
+  display:flex; justify-content:space-between; align-items:center;
+  background:var(--navy); border-top:3px solid var(--gold);
+  padding:12px 26px; gap:12px;
 }
-.bnav a,.bnav .dim{
-  color:#C8A030;text-decoration:none;
-  font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:.07em;
-  padding:6px 16px;
-  border:1px solid rgba(200,160,48,.28);
-  border-radius:2px;transition:background .18s;
+.book-nav a {
+  color:var(--gold); text-decoration:none;
+  font-family:var(--font-sub); font-size:.78rem; letter-spacing:.07em;
+  padding:6px 14px; border:1px solid rgba(200,169,110,.3); border-radius:3px;
+  transition:background .18s;
 }
-.bnav a:hover{background:rgba(200,160,48,.12);}
-.bnav .dim{color:rgba(200,160,48,.2);border-color:rgba(200,160,48,.1);}
-.bnav .center{
-  font-family:'Cinzel',serif;font-size:.68rem;
-  color:rgba(200,160,48,.65);text-align:center;
-  letter-spacing:.06em;text-decoration:none;
-  border:1px solid rgba(200,160,48,.28);border-radius:2px;
-  padding:6px 20px;transition:background .18s;
-}
-.bnav .center:hover{background:rgba(200,160,48,.1);}
-
-/* DRUCK */
-@media print{
-  .bnav{display:none;}
-  .bhead{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-  .vb{break-inside:avoid;}
+.book-nav a:hover { background:rgba(200,169,110,.15); }
+.book-nav .center {
+  font-family:var(--font-sub); font-size:.7rem; color:rgba(200,169,110,.55);
+  letter-spacing:.1em; text-align:center;
 }
 
-/* MOBIL */
-@media(max-width:600px){
-  .blatin{font-size:1.8rem;}
-  .lat{font-size:1rem;}
-  .tra{font-size:.84rem;}
-  .content{padding:16px 18px 60px;margin:0;border-left:none;border-right:none;border-radius:0;}
-  .chrom{font-size:1.8rem;}
+/* ── FUßZEILE ────────────────────────────────────────── */
+.page-footer {
+  background:var(--navy); border-top:2px solid rgba(200,169,110,.3);
+  padding:18px 28px; text-align:center;
+  color:rgba(200,169,110,.45); font-family:var(--font-sub);
+  font-size:.68rem; letter-spacing:.1em;
+}
+
+/* ── DRUCK ───────────────────────────────────────────── */
+@media print {
+  .nav-bar, .book-nav { display:none; }
+  .verse-block { break-inside:avoid; }
+  .book-header { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+}
+
+/* ── MOBIL ───────────────────────────────────────────── */
+@media (max-width:640px) {
+  .book-name-latin { font-size:2.1rem; }
+  .ch-roman { font-size:1.6rem; }
+  .latin { font-size:.98rem; }
+  .trans { font-size:.93rem; }
+  .content { padding:0 12px 60px; }
 }
 </style>
 </head>
 <body>
 
-<header class="bhead">
-  <div class="btestament">VETUS TESTAMENTUM</div>
-  <div class="blatin">AMOS</div>
-  <div class="btrans">Амоса &nbsp;&middot;&nbsp; <em>Українська</em></div>
-  <div class="bmeta">9 Capita &nbsp;&middot;&nbsp; 147 Versus</div>
-</header>
+  <nav class="nav-bar">
+    <a class="home" href="../../../index.html">✞ BIBLIA CATHOLICA</a>
+    <a href="../index.html">🇺🇦 Українська</a>
+    <span class="spacer"></span>
+    <span class="pos">030 / 073</span>
+  </nav>
 
-<main class="content">
-<section class="chap" id="c1">
-  <div class="chhead">
-    <span class="chrom">I</span>
-    <span class="chlbl">Caput 1</span>
-  </div>
-<div class="vb first" id="v1-1">
-  <span class="vn">1</span>
-  <div class="vt">
-    <p class="lat">Verba Amos, qui fuit in pastoribus de Thecue, quæ vidit super Israël in diebus Oziæ, regis Juda, et in diebus Jeroboam, filii Joas, regis Israël, ante duos annos terræmotus.</p>
-    <p class="tra">Слова Амо́са, що був між вівчарями з Текої, які він бачив на Ізраїля за днів Уззійї, Юдиного царя, та за днів Єровоама, Йоашового сина, Ізраїлевого царя, за два роки перед землетрусом.</p>
-  </div>
-</div>
-<div class="vb" id="v1-2">
-  <span class="vn">2</span>
-  <div class="vt">
-    <p class="lat">Et dixit :   Dominus de Sion rugiet,  et de Jerusalem dabit vocem suam ;  et luxerunt speciosa pastorum,  et exsiccatus est vertex Carmeli.</p>
-    <p class="tra">І він проказав: „Загрими́ть із Сіо́ну Госпо́дь, і з Єрусали́му Свій голос подасть, і впадуть пасови́ща пастуші в жало́бу та всохне верши́на Карме́лу!</p>
-  </div>
-</div>
-<div class="vb" id="v1-3">
-  <span class="vn">3</span>
-  <div class="vt">
-    <p class="lat">Hæc dicit Dominus :  Super tribus sceleribus Damasci,  et super quatuor non convertam eum,  eo quod trituraverint in plaustris ferreis Galaad.</p>
-    <p class="tra">Так говорить Госпо́дь: За три пере́ступи Дама́ску й за чотири цього не прощу́: за те, що вони молотили Ґілеа́да ціпа́ми залізними.</p>
-  </div>
-</div>
-<div class="vb" id="v1-4">
-  <span class="vn">4</span>
-  <div class="vt">
-    <p class="lat">Et mittam ignem in domum Azaël,  et devorabit domos Benadad.</p>
-    <p class="tra">І пошлю Я огонь на дім Хазаїла, — і пожере́ він пала́ти Вен-Гадада.</p>
-  </div>
-</div>
-<div class="vb" id="v1-5">
-  <span class="vn">5</span>
-  <div class="vt">
-    <p class="lat">Et conteram vectem Damasci :  et disperdam habitatorem de campo idoli,  et tenentem sceptrum de domo voluptatis :  et transferetur populus Syriæ Cyrenen,  dicit Dominus.</p>
-    <p class="tra">І зламаю засу́ва Дамаску, і ме́шканця витну з долини Авен, і того, хто держа́тиме бе́рло з Бет-Едене, і ара́мський наро́д піде в Кір на вигна́ння, говорить Господь.</p>
-  </div>
-</div>
-<div class="vb" id="v1-6">
-  <span class="vn">6</span>
-  <div class="vt">
-    <p class="lat">Hæc dicit Dominus :  Super tribus sceleribus Gazæ,  et super quatuor non convertam eum,  eo quod transtulerint captivitatem perfectam,  ut concluderent eam in Idumæa.</p>
-    <p class="tra">Так говорить Господь: За три пере́ступи Аззи й за чотири цього не прощу́: що всіх гнали в поло́н, щоб віддати Едо́мові.</p>
-  </div>
-</div>
-<div class="vb" id="v1-7">
-  <span class="vn">7</span>
-  <div class="vt">
-    <p class="lat">Et mittam ignem in murum Gazæ,  et devorabit ædes ejus.</p>
-    <p class="tra">І пошлю́ Я огонь на мур Ґази, — і поїсть він пала́ти її.</p>
-  </div>
-</div>
-<div class="vb" id="v1-8">
-  <span class="vn">8</span>
-  <div class="vt">
-    <p class="lat">Et disperdam habitatorem de Azoto,  et tenentem sceptrum de Ascalone :  et convertam manum meam super Accaron,  et peribunt reliqui Philisthinorum,  dicit Dominus Deus.</p>
-    <p class="tra">І ме́шканця витну з Ашдо́ду, і берлоде́ржця з Ашкелону, і зверну́ Свою руку на Екрон, — і ви́гинуть рештки филисти́млян, говорить Госпо́дь.</p>
-  </div>
-</div>
-<div class="vb" id="v1-9">
-  <span class="vn">9</span>
-  <div class="vt">
-    <p class="lat">Hæc dicit Dominus :  Super tribus sceleribus Tyri,  et super quatuor non convertam eum,  eo quod concluserint captivitatem perfectam in Idumæa,  et non sint recordati fœderis fratrum.</p>
-    <p class="tra">Так говорить Господь: За три пере́ступи Тиру й за чотири цього не прощу́: за те, що він видав усіх на вигна́ння в Едо́м, і не пам'ятав заповіту братів.</p>
-  </div>
-</div>
-<div class="vb" id="v1-10">
-  <span class="vn">10</span>
-  <div class="vt">
-    <p class="lat">Et mittam ignem in murum Tyri,  et devorabit ædes ejus.</p>
-    <p class="tra">І пошлю́ Я огонь на мур Тиру, — і пожере́ він пала́ти його!</p>
-  </div>
-</div>
-<div class="vb" id="v1-11">
-  <span class="vn">11</span>
-  <div class="vt">
-    <p class="lat">Hæc dicit Dominus :  Super tribus sceleribus Edom,  et super quatuor non convertam eum,  eo quod persecutus sit in gladio fratrem suum,  et violaverit misericordiam ejus,  et tenuerit ultra furorem suum,  et indignationem suam servaverit usque in finem.</p>
-    <p class="tra">Так говорить Госпо́дь: За три пере́ступи Едому й за чотири цього не прощу́: за те, що мече́м він гнав брата свого, і знищив своє милосе́рдя, свій гнів за́вжди стеріг, а лютість свою пильнував повсякча́сно.</p>
-  </div>
-</div>
-<div class="vb" id="v1-12">
-  <span class="vn">12</span>
-  <div class="vt">
-    <p class="lat">Mittam ignem in Theman,  et devorabit ædes Bosræ.</p>
-    <p class="tra">І пошлю Я огонь до Тема́ну і пожере́ він пала́ти Боцри́!</p>
-  </div>
-</div>
-<div class="vb" id="v1-13">
-  <span class="vn">13</span>
-  <div class="vt">
-    <p class="lat">Hæc dicit Dominus :  Super tribus sceleribus filiorum Ammon,  et super quatuor non convertam eum,  eo quod dissecuerit prægnantes Galaad  ad dilatandum terminum suum.</p>
-    <p class="tra">Так говорить Госпо́дь: За три пере́ступи Аммо́нових синів й за чотири цього не прощу́: за те, що пороли ґілеа́дських вагі́тних, щоб поши́рити границі свої!</p>
-  </div>
-</div>
-<div class="vb" id="v1-14">
-  <span class="vn">14</span>
-  <div class="vt">
-    <p class="lat">Et succendam ignem in muro Rabba,  et devorabit ædes ejus in ululatu in die belli,  et in turbine in die commotionis.</p>
-    <p class="tra">І огонь запалю́ Я на мурі Рабби́, — і пожере́ він пала́ти її, із криком в день бо́ю, із ви́хром в день бурі.</p>
-  </div>
-</div>
-<div class="vb" id="v1-15">
-  <span class="vn">15</span>
-  <div class="vt">
-    <p class="lat">Et ibit Melchom in captivitatem,  ipse et principes ejus simul,  dicit Dominus.</p>
-    <p class="tra">І пі́де їхній цар на вигна́ння, він і князі́ його ра́зом, говорить Господь.</p>
-  </div>
-</div>
-</section>
+  <header class="book-header">
+    <div class="testament-badge">VETUS TESTAMENTUM</div>
+    <div class="book-name-latin">AMOS</div>
+    <div class="book-name-trans">Amos</div>
+    <div class="book-meta">Vulgata Clementina · Біблія Огієнка (1930) · 9 Capita · 147 Versus</div>
+  </header>
 
-<section class="chap" id="c2">
-  <div class="chhead">
-    <span class="chrom">II</span>
-    <span class="chlbl">Caput 2</span>
-  </div>
-<div class="vb first" id="v2-1">
-  <span class="vn">1</span>
-  <div class="vt">
-    <p class="lat">Hæc dicit Dominus :  Super tribus sceleribus Moab,  et super quatuor non convertam eum,  eo quod incenderit ossa regis Idumææ usque ad cinerem.</p>
-    <p class="tra">Так говорить Госпо́дь: За три пере́ступи Моа́ва й за чотири цього не прощу́: за те, що спалив на вапно́ кості едо́мського царя!</p>
-  </div>
-</div>
-<div class="vb" id="v2-2">
-  <span class="vn">2</span>
-  <div class="vt">
-    <p class="lat">Et mittam ignem in Moab,  et devorabit ædes Carioth :  et morietur in sonitu Moab, in clangore tubæ.</p>
-    <p class="tra">І пошлю́ Я огонь на Моава, і пожере́ він пала́ти Керіййоту, і загине Моав серед га́ласу, серед кри́ку, при голосі ро́га.</p>
-  </div>
-</div>
-<div class="vb" id="v2-3">
-  <span class="vn">3</span>
-  <div class="vt">
-    <p class="lat">Et disperdam judicem de medio ejus,  et omnes principes ejus interficiam cum eo,  dicit Dominus.</p>
-    <p class="tra">І витну суддю́ з-серед нього, а з ним позабиваю князі́в його всіх, говорить Госпо́дь.</p>
-  </div>
-</div>
-<div class="vb" id="v2-4">
-  <span class="vn">4</span>
-  <div class="vt">
-    <p class="lat">Hæc dicit Dominus :  Super tribus sceleribus Juda,  et super quatuor non convertam eum,  eo quod abjecerit legem Domini  et mandata ejus non custodierit :  deceperant enim eos idola sua,  post quæ abierant patres eorum.</p>
-    <p class="tra">Так говорить Госпо́дь: За три про́гріхи Юди й за чотири цього́ не прощу́: за те, що повідкида́ли Господній Зако́н, і постано́в Його не стерегли́, і що на манівці́ їх звели́ їхні лжебо́ги, за якими пішли їхні батьки́.</p>
-  </div>
-</div>
-<div class="vb" id="v2-5">
-  <span class="vn">5</span>
-  <div class="vt">
-    <p class="lat">Et mittam ignem in Juda,  et devorabit ædes Jerusalem.</p>
-    <p class="tra">І пошлю́ Я на Юду огонь, — і пожере́ він пала́ти Єрусалиму!</p>
-  </div>
-</div>
-<div class="vb" id="v2-6">
-  <span class="vn">6</span>
-  <div class="vt">
-    <p class="lat">Hæc dicit Dominus :  Super tribus sceleribus Israël,  et super quatuor non convertam eum,  pro eo quod vendiderit pro argento justum,  et pauperem pro calceamentis.</p>
-    <p class="tra">Так говорить Господь: За три пере́ступи Ізраїлеві й за чотири цього́ не прощу́: за те, що за срі́бло вони продають справедливого, а за чоботи — вбогого!</p>
-  </div>
-</div>
-<div class="vb" id="v2-7">
-  <span class="vn">7</span>
-  <div class="vt">
-    <p class="lat">Qui conterunt super pulverem terræ capita pauperum,  et viam humilium declinant :  et filius ac pater ejus ierunt ad puellam,  ut violarent nomen sanctum meum.</p>
-    <p class="tra">Вони то́пчуть у зе́мному по́росі го́лову бідних, а доро́гу суми́рних викри́влюють. А син й його батько вчащають до однієї блудниці, щоб святе Моє Йме́ння знева́жити.</p>
-  </div>
-</div>
-<div class="vb" id="v2-8">
-  <span class="vn">8</span>
-  <div class="vt">
-    <p class="lat">Et super vestimentis pignoratis accubuerunt juxta omne altare,  et vinum damnatorum bibebant in domo Dei sui.</p>
-    <p class="tra">І вони стелять одіж заста́влену, щоб півлежати при кожному же́ртівнику, і п'ють в домі Бога свого вино від пока́раних.</p>
-  </div>
-</div>
-<div class="vb" id="v2-9">
-  <span class="vn">9</span>
-  <div class="vt">
-    <p class="lat">Ego autem exterminavi Amorrhæum a facie eorum,  cujus altitudo, cedrorum altitudo ejus,  et fortis ipse quasi quercus ;  et contrivi fructum ejus desuper,  et radices ejus subter.</p>
-    <p class="tra">І Я вигубив був з-перед них Аморе́я, що його височі́нь, як високий той кедр, і він міцни́й, як дуб. Та Я плід його знищив згори́, а здо́лу — корі́ння його.</p>
-  </div>
-</div>
-<div class="vb" id="v2-10">
-  <span class="vn">10</span>
-  <div class="vt">
-    <p class="lat">Ego sum qui ascendere vos feci de terra Ægypti,  et duxi vos in deserto quadraginta annis,  ut possideretis terram Amorrhæi.</p>
-    <p class="tra">А вас Я був вивів із кра́ю єгипетського, і сорок років прова́див пустинею вас, щоб ви край аморе́йський успадкува́ли.</p>
-  </div>
-</div>
-<div class="vb" id="v2-11">
-  <span class="vn">11</span>
-  <div class="vt">
-    <p class="lat">Et suscitavi de filiis vestris in prophetas,  et de juvenibus vestris nazaræos.  Numquid non ita est, filii Israël ? dicit Dominus.</p>
-    <p class="tra">І пророків Я збу́джував з ваших синів, а з ваших юнці́в назоре́їв. Хіба ж то не так, сино́ве Ізраїлеві? говорить Госпо́дь.</p>
-  </div>
-</div>
-<div class="vb" id="v2-12">
-  <span class="vn">12</span>
-  <div class="vt">
-    <p class="lat">Et propinabitis nazaræis vinum,  et prophetis mandabitis, dicentes :  Ne prophetetis.</p>
-    <p class="tra">А ви назоре́їв пої́ли вином, а пророкам наказували й говорили: „Не пророку́йте!“</p>
-  </div>
-</div>
-<div class="vb" id="v2-13">
-  <span class="vn">13</span>
-  <div class="vt">
-    <p class="lat">Ecce ego stridebo subter vos,  sicut stridet plaustrum onustum fœno.</p>
-    <p class="tra">Отож Я поти́сну на вас, як тисне снопа́ми напо́внений віз, —</p>
-  </div>
-</div>
-<div class="vb" id="v2-14">
-  <span class="vn">14</span>
-  <div class="vt">
-    <p class="lat">Et peribit fuga a veloce,  et fortis non obtinebit virtutem suam,  et robustus non salvabit animam suam :</p>
-    <p class="tra">і згине й в мото́рного вте́ча, і поту́жний не втримає сили своєї, а ли́цар свого життя не врятує.</p>
-  </div>
-</div>
-<div class="vb" id="v2-15">
-  <span class="vn">15</span>
-  <div class="vt">
-    <p class="lat">et tenens arcum non stabit,  et velox pedibus suis non salvabitur,  et ascensor equi non salvabit animam suam :</p>
-    <p class="tra">І не всто́їть із лука стріле́ць, і своїми ногами прудки́й не втече́, і верхіве́ць не врятує свого життя.</p>
-  </div>
-</div>
-<div class="vb" id="v2-16">
-  <span class="vn">16</span>
-  <div class="vt">
-    <p class="lat">et robustus corde inter fortes nudus fugiet in illa die,  dicit Dominus.</p>
-    <p class="tra">І наймужні́ший з лица́рства наги́м утече того дня, говорить Госпо́дь.</p>
-  </div>
-</div>
-</section>
+  <div class="ornament-bar">❧ ✦ ❧ ✦ ❧</div>
 
-<section class="chap" id="c3">
-  <div class="chhead">
-    <span class="chrom">III</span>
-    <span class="chlbl">Caput 3</span>
-  </div>
-<div class="vb first" id="v3-1">
-  <span class="vn">1</span>
-  <div class="vt">
-    <p class="lat">Audite verbum quod locutus est Dominus super vos, filii Israël,  super omnem cognationem quam eduxi de terra Ægypti, dicens :</p>
-    <p class="tra">Послухайте сло́ва того́, що Господь говорив проти вас, сино́ве Ізраїлеві, на ввесь оцей рід, що його Я підніс був із кра́ю єгипетського, промовляючи:</p>
-  </div>
-</div>
-<div class="vb" id="v3-2">
-  <span class="vn">2</span>
-  <div class="vt">
-    <p class="lat">Tantummodo vos cognovi ex omnibus cognationibus terræ ;  idcirco visitabo super vos omnes iniquitates vestras.</p>
-    <p class="tra">Тільки вас Я пізнав зо всіх ро́дів землі, тому вас навіщу́ за всі ваші провини!</p>
-  </div>
-</div>
-<div class="vb" id="v3-3">
-  <span class="vn">3</span>
-  <div class="vt">
-    <p class="lat">Numquid ambulabunt duo pariter,  nisi convenerit eis ?</p>
-    <p class="tra">Чи йдуть двоє ра́зом, якщо не умо́вились?</p>
-  </div>
-</div>
-<div class="vb" id="v3-4">
-  <span class="vn">4</span>
-  <div class="vt">
-    <p class="lat">numquid rugiet leo in saltu,  nisi habuerit prædam ?  numquid dabit catulus leonis vocem de cubili suo,  nisi aliquid apprehenderit ?</p>
-    <p class="tra">Чи реве́ в лісі лев, як нема йому здо́бичі? Чи левчу́к видає голос свій із своєї нори́, якщо він не зловив?</p>
-  </div>
-</div>
-<div class="vb" id="v3-5">
-  <span class="vn">5</span>
-  <div class="vt">
-    <p class="lat">numquid cadet avis in laqueum terræ  absque aucupe ?  numquid auferetur laqueus de terra  antequam quid ceperit ?</p>
-    <p class="tra">Чи впаде́ на землі пташка в сітку, як немає сільця́? Чи піді́йметься сітка з землі, як нічого не зло́вить?</p>
-  </div>
-</div>
-<div class="vb" id="v3-6">
-  <span class="vn">6</span>
-  <div class="vt">
-    <p class="lat">si clanget tuba in civitate,  et populus non expavescet ?  si erit malum in civitate,  quod Dominus non fecerit ?</p>
-    <p class="tra">Чи в місті засурмля́ть у сурму́, а наро́д не тремті́тиме? Чи станеться в місті нещастя, що його́ не Госпо́дь допусти́в?</p>
-  </div>
-</div>
-<div class="vb" id="v3-7">
-  <span class="vn">7</span>
-  <div class="vt">
-    <p class="lat">Quia non facit Dominus Deus verbum,  nisi revelaverit secretum suum ad servos suos prophetas.</p>
-    <p class="tra">Бо не чинить нічо́го Господь Бог, не ви́явивши таємни́ці Своєї Своїм рабам пророкам.</p>
-  </div>
-</div>
-<div class="vb" id="v3-8">
-  <span class="vn">8</span>
-  <div class="vt">
-    <p class="lat">Leo rugiet, quis non timebit ?  Dominus Deus locutus est, quis non prophetabit ?</p>
-    <p class="tra">Лев зареве́, — хто того́ не злякається? Господь Бог заговорить, — хто пророкувати не бу́де?</p>
-  </div>
-</div>
-<div class="vb" id="v3-9">
-  <span class="vn">9</span>
-  <div class="vt">
-    <p class="lat">Auditum facite in ædibus Azoti,  et in ædibus terræ Ægypti,  et dicite : Congregamini super montes Samariæ,  et videte insanias multas in medio ejus,  et calumniam patientes in penetralibus ejus.</p>
-    <p class="tra">Розголосіть над пала́цами в Ашдоді, і над пала́тами в кра́ї єгипетському, та й скажіть: Позбирайтеся на гора́х Самарі́ї, і побачте велике збенте́ження в ній, та у́тиск у ній!</p>
-  </div>
-</div>
-<div class="vb" id="v3-10">
-  <span class="vn">10</span>
-  <div class="vt">
-    <p class="lat">Et nescierunt facere rectum, dicit Dominus,  thesaurizantes iniquitatem et rapinas in ædibus suis.</p>
-    <p class="tra">І правдиво не вміють робити вони, — говорить Господь, — наси́льство грома́дять та грабу́нок в пала́тах своїх.</p>
-  </div>
-</div>
-<div class="vb" id="v3-11">
-  <span class="vn">11</span>
-  <div class="vt">
-    <p class="lat">Propterea hæc dicit Dominus Deus :  Tribulabitur et circuietur terra :  et detrahetur ex te fortitudo tua,  et diripientur ædes tuæ.</p>
-    <p class="tra">Тому́ так Господь Бог промовляє: Ворог обля́же навколо цієї землі, і скине із тебе він силу твою́, і пограбо́вані бу́дуть пала́ти твої.</p>
-  </div>
-</div>
-<div class="vb" id="v3-12">
-  <span class="vn">12</span>
-  <div class="vt">
-    <p class="lat">Hæc dicit Dominus :  Quomodo si eruat pastor de ore leonis  duo crura, aut extremum auriculæ,  sic eruentur filii Israël, qui habitant in Samaria  in plaga lectuli, et in Damasci grabato.</p>
-    <p class="tra">Так говорить Господь: Як ча́сом рятує пастух з пащі ле́в'ячої дві колі́ні, або пи́пку вуха, так будуть врято́вані діти Ізраїлеві, що сидять в Самарі́ї в заку́точку ліжка, та на адама́шку постелі.</p>
-  </div>
-</div>
-<div class="vb" id="v3-13">
-  <span class="vn">13</span>
-  <div class="vt">
-    <p class="lat">Audite, et contestamini in domo Jacob,  dicit Dominus Deus exercituum ;</p>
-    <p class="tra">Послухайте ви та й засві́дчіть ув Якововім домі, говорить Господь Бог, Бог Савао́т.</p>
-  </div>
-</div>
-<div class="vb" id="v3-14">
-  <span class="vn">14</span>
-  <div class="vt">
-    <p class="lat">quia in die cum visitare cœpero prævaricationes Israël,  super eum visitabo, et super altaria Bethel ;  et amputabuntur cornua altaris, et cadent in terram.</p>
-    <p class="tra">Бо в той день, коли Я покараю Ізраїля за провини його, то Я покараю за же́ртівники Бет-Елу, — і будуть відру́бані роги же́ртівника, і на землю попа́дають.</p>
-  </div>
-</div>
-<div class="vb" id="v3-15">
-  <span class="vn">15</span>
-  <div class="vt">
-    <p class="lat">Et percutiam domum hiemalem cum domo æstiva,  et peribunt domus eburneæ,  et dissipabuntur ædes multæ,  dicit Dominus.</p>
-    <p class="tra">І Я розіб'ю́ дім зимо́вий разом з домом літнім, і заги́нуть доми́ із слоно́вої кости, і не стане багато домі́в, говорить Госпо́дь.</p>
-  </div>
-</div>
-</section>
+  <main class="content">
 
-<section class="chap" id="c4">
-  <div class="chhead">
-    <span class="chrom">IV</span>
-    <span class="chlbl">Caput 4</span>
-  </div>
-<div class="vb first" id="v4-1">
-  <span class="vn">1</span>
-  <div class="vt">
-    <p class="lat">Audite verbum hoc, vaccæ pingues,  quæ estis in monte Samariæ,  quæ calumniam facitis egenis  et confringitis pauperes ;  quæ dicitis dominis vestris : Afferte, et bibemus.</p>
-    <p class="tra">Послухайте сло́ва оцього, коро́ви баша́нські, які на горі самарі́йській, що тиснете бідних, торо́щите вбогих, що своїм хазяя́м ви говорите: „Принеси, і ми бу́демо пити!“</p>
-  </div>
-</div>
-<div class="vb" id="v4-2">
-  <span class="vn">2</span>
-  <div class="vt">
-    <p class="lat">Juravit Dominus Deus in sancto suo,  quia ecce dies venient super vos,  et levabunt vos in contis,  et reliquias vestras in ollis ferventibus.</p>
-    <p class="tra">Присягав Господь Бог Своєю святістю, що ось дні настаю́ть на вас, і будуть тягти вас гака́ми, а ваших наща́дків — гачка́ми для ло́влення риби!</p>
-  </div>
-</div>
-<div class="vb" id="v4-3">
-  <span class="vn">3</span>
-  <div class="vt">
-    <p class="lat">Et per aperturas exibitis altera contra alteram,  et projiciemini in Armon,  dicit Dominus.</p>
-    <p class="tra">І ви повихо́дите ви́ломами, кожна окремо собі, і ки́нетеся до Хермо́ну, говорить Госпо́дь.</p>
-  </div>
-</div>
-<div class="vb" id="v4-4">
-  <span class="vn">4</span>
-  <div class="vt">
-    <p class="lat">Venite ad Bethel, et impie agite ;  ad Galgalam, et multiplicate prævaricationem :  et afferte mane victimas vestras,  tribus diebus decimas vestras.</p>
-    <p class="tra">Прийдіть до Бет-Елу й грішіть, до Ґілґа́лу — примно́жте грішити. І свої жертви прино́сьте щора́нку, на три дні — ваші десятини.</p>
-  </div>
-</div>
-<div class="vb" id="v4-5">
-  <span class="vn">5</span>
-  <div class="vt">
-    <p class="lat">Et sacrificate de fermentato laudem,  et vocate voluntarias oblationes, et annuntiate ;  sic enim voluistis, filii Israël,  dicit Dominus Deus.</p>
-    <p class="tra">І з димом пустіть жертву вдячну квасну́, і сповістіть добровільні дару́нки, розголосі́ть, бо ви любите так, сино́ве Ізраїлеві, говорить Господь Бог.</p>
-  </div>
-</div>
-<div class="vb" id="v4-6">
-  <span class="vn">6</span>
-  <div class="vt">
-    <p class="lat">Unde et ego dedi vobis stuporem dentium in cunctis urbibus vestris,  et indigentiam panum in omnibus locis vestris ;  et non estis reversi ad me,  dicit Dominus.</p>
-    <p class="tra">І тому́ Я вам дав чистоту́ зубів по всіх ваших міста́х, і брак хліба по всіх ваших місця́х, та ви не верну́лись до Мене, говорить Госпо́дь.</p>
-  </div>
-</div>
-<div class="vb" id="v4-7">
-  <span class="vn">7</span>
-  <div class="vt">
-    <p class="lat">Ego quoque prohibui a vobis imbrem,  cum adhuc tres menses superessent usque ad messem :  et plui super unam civitatem,  et super alteram civitatem non plui ;  pars una compluta est,  et pars super quam non plui, aruit.</p>
-    <p class="tra">І Я стримав вам дощ за три місяці перед жнива́ми, і дощ посилав на одне місто, а на друге місто не посилав; одна діля́нка була побита дощем, а ділянка, на яку не пустив Я дощу, висиха́ла.</p>
-  </div>
-</div>
-<div class="vb" id="v4-8">
-  <span class="vn">8</span>
-  <div class="vt">
-    <p class="lat">Et venerunt duæ et tres civitates ad unam civitatem  ut biberent aquam, et non sunt satiatæ ;  et non redistis ad me,  dicit Dominus.</p>
-    <p class="tra">І два-три мі́ста рушали до міста одно́го напитись води, але́ не наси́чувались, — та ви не вернулись до Мене, говорить Госпо́дь.</p>
-  </div>
-</div>
-<div class="vb" id="v4-9">
-  <span class="vn">9</span>
-  <div class="vt">
-    <p class="lat">Percussi vos in vento urente, et in aurugine :  multitudinem hortorum vestrorum et vinearum vestrarum,  oliveta vestra et ficeta vestra comedit eruca :  et non redistis ad me,  dicit Dominus.</p>
-    <p class="tra">Я бив вас посу́хою та зеленя́чкою, сарана́ жерла бе́зліч ваших садків й виноградників ваших, і ваших фіґо́вниць та ваших олив, — та ви не верну́лись до Мене, говорить Госпо́дь.</p>
-  </div>
-</div>
-<div class="vb" id="v4-10">
-  <span class="vn">10</span>
-  <div class="vt">
-    <p class="lat">Misi in vos mortem in via Ægypti ;  percussi in gladio juvenes vestros,  usque ad captivitatem equorum vestrorum,  et ascendere feci putredinem castrorum vestrorum in nares vestras :  et non redistis ad me,  dicit Dominus.</p>
-    <p class="tra">Я на вас посилав морови́цю, немов на Єгипет, мечем побивав ваших хло́пців, поло́нячи ра́зом і ко́ней у вас, підіймав до нізде́р сморід ваших табо́рів, — та ви не вернулись до Мене, говорить Господь.</p>
-  </div>
-</div>
-<div class="vb" id="v4-11">
-  <span class="vn">11</span>
-  <div class="vt">
-    <p class="lat">Subverti vos sicut subvertit Deus Sodomam et Gomorrham,  et facti estis quasi torris raptus ab incendio :  et non redistis ad me,  dicit Dominus.</p>
-    <p class="tra">Я ви́нищив вас, як Содо́м та Гомо́рру Бог винищив, і ви стали, немов голове́шка, з пожа́ру врято́вана, — та ви не вернулись до Мене, говорить Господь.</p>
-  </div>
-</div>
-<div class="vb" id="v4-12">
-  <span class="vn">12</span>
-  <div class="vt">
-    <p class="lat">Quapropter hæc faciam tibi, Israël :  postquam autem hæc fecero tibi,  præparare in occursum Dei tui, Israël.</p>
-    <p class="tra">Тому́ то зроблю́ тобі так, о Ізраїлю, а що Я зроблю́ тобі це, приготуйся, Ізраїлю, до зу́стрічі Бога свого́!</p>
-  </div>
-</div>
-<div class="vb" id="v4-13">
-  <span class="vn">13</span>
-  <div class="vt">
-    <p class="lat">Quia ecce formans montes,  et creans ventum,  et annuntians homini eloquium suum,  faciens matutinam nebulam,  et gradiens super excelsa terræ :  Dominus Deus exercituum nomen ejus.</p>
-    <p class="tra">Бо це Той, що вформо́вує гори, і що ство́рює вітра, що люди́ні показує за́дум її, що робить зірни́цю темно́тою, і ступає по згі́р'ях землі, — Господь Бог Савао́т Йому Йме́ння!</p>
-  </div>
-</div>
-</section>
+  <section class="chapter" id="ch1">
+    <div class="chapter-marker">
+      <span class="ch-roman">I</span>
+      <span class="ch-label">Caput 1</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v1-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Verba Amos, qui fuit in pastoribus de Thecue, quæ vidit super Israël in diebus Oziæ, regis Juda, et in diebus Jeroboam, filii Joas, regis Israël, ante duos annos terræmotus.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Слова Амо́са, що був між вівчарями з Текої, які він бачив на Ізраїля за днів Уззійї, Юдиного царя, та за днів Єровоама, Йоашового сина, Ізраїлевого царя, за два роки перед землетрусом.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et dixit :   Dominus de Sion rugiet,  et de Jerusalem dabit vocem suam ;  et luxerunt speciosa pastorum,  et exsiccatus est vertex Carmeli.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">І він проказав: „Загрими́ть із Сіо́ну Госпо́дь, і з Єрусали́му Свій голос подасть, і впадуть пасови́ща пастуші в жало́бу та всохне верши́на Карме́лу!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hæc dicit Dominus :  Super tribus sceleribus Damasci,  et super quatuor non convertam eum,  eo quod trituraverint in plaustris ferreis Galaad.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Так говорить Госпо́дь: За три пере́ступи Дама́ску й за чотири цього не прощу́: за те, що вони молотили Ґілеа́да ціпа́ми залізними.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et mittam ignem in domum Azaël,  et devorabit domos Benadad.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">І пошлю Я огонь на дім Хазаїла, — і пожере́ він пала́ти Вен-Гадада.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et conteram vectem Damasci :  et disperdam habitatorem de campo idoli,  et tenentem sceptrum de domo voluptatis :  et transferetur populus Syriæ Cyrenen,  dicit Dominus.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">І зламаю засу́ва Дамаску, і ме́шканця витну з долини Авен, і того, хто держа́тиме бе́рло з Бет-Едене, і ара́мський наро́д піде в Кір на вигна́ння, говорить Господь.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hæc dicit Dominus :  Super tribus sceleribus Gazæ,  et super quatuor non convertam eum,  eo quod transtulerint captivitatem perfectam,  ut concluderent eam in Idumæa.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Так говорить Господь: За три пере́ступи Аззи й за чотири цього не прощу́: що всіх гнали в поло́н, щоб віддати Едо́мові.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et mittam ignem in murum Gazæ,  et devorabit ædes ejus.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">І пошлю́ Я огонь на мур Ґази, — і поїсть він пала́ти її.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et disperdam habitatorem de Azoto,  et tenentem sceptrum de Ascalone :  et convertam manum meam super Accaron,  et peribunt reliqui Philisthinorum,  dicit Dominus Deus.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">І ме́шканця витну з Ашдо́ду, і берлоде́ржця з Ашкелону, і зверну́ Свою руку на Екрон, — і ви́гинуть рештки филисти́млян, говорить Госпо́дь.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hæc dicit Dominus :  Super tribus sceleribus Tyri,  et super quatuor non convertam eum,  eo quod concluserint captivitatem perfectam in Idumæa,  et non sint recordati fœderis fratrum.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Так говорить Господь: За три пере́ступи Тиру й за чотири цього не прощу́: за те, що він видав усіх на вигна́ння в Едо́м, і не пам'ятав заповіту братів.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et mittam ignem in murum Tyri,  et devorabit ædes ejus.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">І пошлю́ Я огонь на мур Тиру, — і пожере́ він пала́ти його!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hæc dicit Dominus :  Super tribus sceleribus Edom,  et super quatuor non convertam eum,  eo quod persecutus sit in gladio fratrem suum,  et violaverit misericordiam ejus,  et tenuerit ultra furorem suum,  et indignationem suam servaverit usque in finem.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Так говорить Госпо́дь: За три пере́ступи Едому й за чотири цього не прощу́: за те, що мече́м він гнав брата свого, і знищив своє милосе́рдя, свій гнів за́вжди стеріг, а лютість свою пильнував повсякча́сно.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Mittam ignem in Theman,  et devorabit ædes Bosræ.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">І пошлю Я огонь до Тема́ну і пожере́ він пала́ти Боцри́!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hæc dicit Dominus :  Super tribus sceleribus filiorum Ammon,  et super quatuor non convertam eum,  eo quod dissecuerit prægnantes Galaad  ad dilatandum terminum suum.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Так говорить Госпо́дь: За три пере́ступи Аммо́нових синів й за чотири цього не прощу́: за те, що пороли ґілеа́дських вагі́тних, щоб поши́рити границі свої!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et succendam ignem in muro Rabba,  et devorabit ædes ejus in ululatu in die belli,  et in turbine in die commotionis.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">І огонь запалю́ Я на мурі Рабби́, — і пожере́ він пала́ти її, із криком в день бо́ю, із ви́хром в день бурі.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et ibit Melchom in captivitatem,  ipse et principes ejus simul,  dicit Dominus.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">І пі́де їхній цар на вигна́ння, він і князі́ його ра́зом, говорить Господь.</div>
+      </div>
+    </div>
+  </section>
 
-<section class="chap" id="c5">
-  <div class="chhead">
-    <span class="chrom">V</span>
-    <span class="chlbl">Caput 5</span>
-  </div>
-<div class="vb first" id="v5-1">
-  <span class="vn">1</span>
-  <div class="vt">
-    <p class="lat">Audite verbum istud,  quod ego levo super vos planctum :  domus Israël cecidit,  et non adjiciet ut resurgat.</p>
-    <p class="tra">Послухайте слова цього, що я ним голосі́ння підно́шу за вас, о доме Ізраїлів!</p>
-  </div>
-</div>
-<div class="vb" id="v5-2">
-  <span class="vn">2</span>
-  <div class="vt">
-    <p class="lat">Virgo Israël projecta est in terram suam,  non est qui suscitet eam.</p>
-    <p class="tra">Упала, і більше не встане та діва Ізра́їлева! Вона кинена на свою землю, — немає, хто звів би її!</p>
-  </div>
-</div>
-<div class="vb" id="v5-3">
-  <span class="vn">3</span>
-  <div class="vt">
-    <p class="lat">Quia hæc dicit Dominus Deus :  Urbs de qua egrediebantur mille,  relinquentur in ea centum ;  et de qua egrediebantur centum,  relinquentur in ea decem in domo Israël.</p>
-    <p class="tra">Бо так Господь Бог промовляє: Місто, що вихо́дило тисячею, позоста́вить лиш сотню, а те, що вихо́дило сотнею, позоста́вить десятку для дому Ізраїля.</p>
-  </div>
-</div>
-<div class="vb" id="v5-4">
-  <span class="vn">4</span>
-  <div class="vt">
-    <p class="lat">Quia hæc dicit Dominus domui Israël :  Quærite me, et vivetis.</p>
-    <p class="tra">Бо так промовляє Госпо́дь до дому Ізраїлевого: Наверні́ться до Мене її живіть!</p>
-  </div>
-</div>
-<div class="vb" id="v5-5">
-  <span class="vn">5</span>
-  <div class="vt">
-    <p class="lat">Et nolite quærere Bethel,  et in Galgalam nolite intrare,  et in Bersabee non transibitis,  quia Galgala captiva ducetur,  et Bethel erit inutilis.</p>
-    <p class="tra">І не зверта́йтеся до Бет-Елу, і до Ґілґалу не прихо́дьте, а через Беер-Шеву не перехо́дьте, бо на вигна́ння Ґілґа́л конче пі́де, і марно́тою стане Бет-Ел.</p>
-  </div>
-</div>
-<div class="vb" id="v5-6">
-  <span class="vn">6</span>
-  <div class="vt">
-    <p class="lat">Quærite Dominum, et vivite  (ne forte comburatur ut ignis domus Joseph, et devorabit,  et non erit qui extinguat Bethel :</p>
-    <p class="tra">Наверні́ться до Господа, і будете жити, щоб Вій не ввійшов, як огонь до Йо́сипового дому, — і буде він же́рти, та не бу́де кому погаси́ти в Бет-Елі, —</p>
-  </div>
-</div>
-<div class="vb" id="v5-7">
-  <span class="vn">7</span>
-  <div class="vt">
-    <p class="lat">qui convertitis in absinthium judicium,  et justitiam in terra relinquitis) :</p>
-    <p class="tra">вони змінюють суд на поли́н, і кидають правду на землю.</p>
-  </div>
-</div>
-<div class="vb" id="v5-8">
-  <span class="vn">8</span>
-  <div class="vt">
-    <p class="lat">facientem Arcturum et Orionem,  et convertentem in mane tenebras,  et diem in noctem mutantem ;  qui vocat aquas maris,  et effundit eas super faciem terræ ;  Dominus nomen est ejus :</p>
-    <p class="tra">Той, хто Волосожа́ра й Оріо́на створив, Хто сме́ртну темно́ту зміня́є на ра́нок, а день затемня́є на ніч, хто прикликує воду морську́ й виливає її на пове́рхню землі, — Господь Йме́ння Йому!</p>
-  </div>
-</div>
-<div class="vb" id="v5-9">
-  <span class="vn">9</span>
-  <div class="vt">
-    <p class="lat">qui subridet vastitatem super robustum,  et depopulationem super potentem affert.</p>
-    <p class="tra">Він наводить погибіль на сильного, — і при́йде погибіль тверди́ні!</p>
-  </div>
-</div>
-<div class="vb" id="v5-10">
-  <span class="vn">10</span>
-  <div class="vt">
-    <p class="lat">Odio habuerunt corripientem in porta,  et loquentem perfecte abominati sunt.</p>
-    <p class="tra">Вони ненави́дять того́, хто у брамі карта́є, і обри́джують тим, хто говорить правдиве.</p>
-  </div>
-</div>
-<div class="vb" id="v5-11">
-  <span class="vn">11</span>
-  <div class="vt">
-    <p class="lat">Idcirco, pro eo quod diripiebatis pauperem,  et prædam electam tollebatis ab eo,  domos quadro lapide ædificabitis,  et non habitabitis in eis ;  vineas plantabis amantissimas,  et non bibetis vinum earum.</p>
-    <p class="tra">Тому́, що нужде́нного то́пчете ви, і дару́нки збіже́ві берете від нього, що ви набудува́ли будинків із ка́меня те́саного, то сидіти не будете в них; понаса́джували винограду улю́бленого, та не будете пити із нього вина!</p>
-  </div>
-</div>
-<div class="vb" id="v5-12">
-  <span class="vn">12</span>
-  <div class="vt">
-    <p class="lat">Quia cognovi multa scelera vestra,  et fortia peccata vestra :  hostes justi, accipientes munus,  et pauperes deprimentes in porta.</p>
-    <p class="tra">Бо Я знаю про ваші числе́нні провини і про ваші великі гріхи́: ти́снете ви справедливого, берете ви пі́дкупа та викривля́єте право убогих у брамі.</p>
-  </div>
-</div>
-<div class="vb" id="v5-13">
-  <span class="vn">13</span>
-  <div class="vt">
-    <p class="lat">Ideo prudens in tempore illo tacebit,  quia tempus malum est.</p>
-    <p class="tra">Тому́ то розуміний мовчить цього ча́су, бо це час лихий.</p>
-  </div>
-</div>
-<div class="vb" id="v5-14">
-  <span class="vn">14</span>
-  <div class="vt">
-    <p class="lat">Quærite bonum, et non malum, ut vivatis ;  et erit Dominus Deus exercituum vobiscum, sicut dixistis.</p>
-    <p class="tra">Шукайте добра, а не зла, щоб вам жити, і буде із вами Госпо́дь, Бог Саваот, так, як кажете ви.</p>
-  </div>
-</div>
-<div class="vb" id="v5-15">
-  <span class="vn">15</span>
-  <div class="vt">
-    <p class="lat">Odite malum et diligite bonum,  et constituite in porta judicium :  si forte misereatur Dominus Deus exercituum reliquiis Joseph.</p>
-    <p class="tra">Нена́видьте зло й покохайте добро, і правосу́ддя поставте у брамі, — може змилується Господь, Бог Савао́т над ре́шткою Йо́сипа.</p>
-  </div>
-</div>
-<div class="vb" id="v5-16">
-  <span class="vn">16</span>
-  <div class="vt">
-    <p class="lat">Propterea hæc dicit Dominus Deus exercituum, dominator :  In omnibus plateis planctus ;  et in cunctis quæ foris sunt, dicetur : Væ, væ !  et vocabunt agricolam ad luctum,  et ad planctum eos qui sciunt plangere.</p>
-    <p class="tra">Тому так промовляє Госпо́дь, Бог Саваот, Вседержи́тель: На майда́нах усіх голосі́ння, на всіх вулицях крики: ой, ой! І покличуть хліборобів на жало́бу, і голосі́льніщь, що вміють плачли́ві пісні,</p>
-  </div>
-</div>
-<div class="vb" id="v5-17">
-  <span class="vn">17</span>
-  <div class="vt">
-    <p class="lat">Et in omnibus vineis erit planctus,  quia pertransibo in medio tui,  dicit Dominus.</p>
-    <p class="tra">і стане рида́ння по всіх виноградниках, бо Я перейду́ серед тебе, говорить Госпо́дь!</p>
-  </div>
-</div>
-<div class="vb" id="v5-18">
-  <span class="vn">18</span>
-  <div class="vt">
-    <p class="lat">Væ desiderantibus diem Domini !  ad quid eam vobis ?  Dies Domini ista, tenebræ, et non lux.</p>
-    <p class="tra">Горе тим, що жадають Госпо́днього дня, — на́що це вам день Госпо́дній? Він не світло, а те́мрява!</p>
-  </div>
-</div>
-<div class="vb" id="v5-19">
-  <span class="vn">19</span>
-  <div class="vt">
-    <p class="lat">Quomodo si fugiat vir a facie leonis,  et occurrat ei ursus ;  et ingrediatur domum, et innitatur manu sua super parietem,  et mordeat eum coluber.</p>
-    <p class="tra">Це так, коли хто утікає від ле́ва, — і ведмі́дь спотика́є його! І він убігає до дому, і опе́рся своєю рукою об сті́ну, — аж гадю́ка кусає його...</p>
-  </div>
-</div>
-<div class="vb" id="v5-20">
-  <span class="vn">20</span>
-  <div class="vt">
-    <p class="lat">Numquid non tenebræ dies Domini, et non lux ;  et caligo, et non splendor in ea ?</p>
-    <p class="tra">Чи ж не є день Госпо́дній темно́та, а не світло, і хіба він не темний, і ся́йва немає у ньому?</p>
-  </div>
-</div>
-<div class="vb" id="v5-21">
-  <span class="vn">21</span>
-  <div class="vt">
-    <p class="lat">Odi, et projeci festivitates vestras,  et non capiam odorem cœtuum vestrorum.</p>
-    <p class="tra">Знена́видів Я, обри́див Собі ваші свята, і не нюхаю же́ртов ваших зборів.</p>
-  </div>
-</div>
-<div class="vb" id="v5-22">
-  <span class="vn">22</span>
-  <div class="vt">
-    <p class="lat">Quod si obtuleritis mihi holocautomata, et munera vestra,  non suscipiam ;  et vota pinguium vestrorum non respiciam.</p>
-    <p class="tra">І коли принесе́те Мені цілопа́лення та хлібні же́ртви свої, Я Собі не вподо́баю їх, а на мирні жертви ваші із ситих барані́в — не погля́ну.</p>
-  </div>
-</div>
-<div class="vb" id="v5-23">
-  <span class="vn">23</span>
-  <div class="vt">
-    <p class="lat">Aufer a me tumultum carminum tuorum ;  et cantica lyræ tuæ non audiam.</p>
-    <p class="tra">Усунь же від Мене пісе́нь своїх гук, і не почую Я ро́коту гу́сел твоїх,</p>
-  </div>
-</div>
-<div class="vb" id="v5-24">
-  <span class="vn">24</span>
-  <div class="vt">
-    <p class="lat">Et revelabitur quasi aqua judicium,  et justitia quasi torrens fortis.</p>
-    <p class="tra">і хай тече́ правосу́ддя, немов та вода, а справедливість — як сильний поті́к!</p>
-  </div>
-</div>
-<div class="vb" id="v5-25">
-  <span class="vn">25</span>
-  <div class="vt">
-    <p class="lat">Numquid hostias et sacrificium obtulistis mihi  in deserto quadraginta annis, domus Israël ?</p>
-    <p class="tra">Чи ж жертви та хлібні прино́си за тих сорок літ на пустині Мені ви прино́сили, доме Ізраїлів?</p>
-  </div>
-</div>
-<div class="vb" id="v5-26">
-  <span class="vn">26</span>
-  <div class="vt">
-    <p class="lat">et portastis tabernaculum Moloch vestro,  et imaginem idolorum vestrorum, sidus dei vestri,  quæ fecistis vobis.</p>
-    <p class="tra">Ви ж носили Саккута, свойого царя, та Кевана, свої виобра́ження, зорю ваших богі́в, що собі пороби́ли.</p>
-  </div>
-</div>
-<div class="vb" id="v5-27">
-  <span class="vn">27</span>
-  <div class="vt">
-    <p class="lat">Et migrare vos faciam trans Damascum, dicit Dominus :  Deus exercituum nomen ejus.</p>
-    <p class="tra">Тому́ Я вас вижену геть за Дама́ск, говорить Господь, що Бог Саваот Йому Йме́ння!</p>
-  </div>
-</div>
-</section>
+  <section class="chapter" id="ch2">
+    <div class="chapter-marker">
+      <span class="ch-roman">II</span>
+      <span class="ch-label">Caput 2</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v2-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hæc dicit Dominus :  Super tribus sceleribus Moab,  et super quatuor non convertam eum,  eo quod incenderit ossa regis Idumææ usque ad cinerem.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Так говорить Госпо́дь: За три пере́ступи Моа́ва й за чотири цього не прощу́: за те, що спалив на вапно́ кості едо́мського царя!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et mittam ignem in Moab,  et devorabit ædes Carioth :  et morietur in sonitu Moab, in clangore tubæ.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">І пошлю́ Я огонь на Моава, і пожере́ він пала́ти Керіййоту, і загине Моав серед га́ласу, серед кри́ку, при голосі ро́га.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et disperdam judicem de medio ejus,  et omnes principes ejus interficiam cum eo,  dicit Dominus.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">І витну суддю́ з-серед нього, а з ним позабиваю князі́в його всіх, говорить Госпо́дь.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hæc dicit Dominus :  Super tribus sceleribus Juda,  et super quatuor non convertam eum,  eo quod abjecerit legem Domini  et mandata ejus non custodierit :  deceperant enim eos idola sua,  post quæ abierant patres eorum.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Так говорить Госпо́дь: За три про́гріхи Юди й за чотири цього́ не прощу́: за те, що повідкида́ли Господній Зако́н, і постано́в Його не стерегли́, і що на манівці́ їх звели́ їхні лжебо́ги, за якими пішли їхні батьки́.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et mittam ignem in Juda,  et devorabit ædes Jerusalem.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">І пошлю́ Я на Юду огонь, — і пожере́ він пала́ти Єрусалиму!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hæc dicit Dominus :  Super tribus sceleribus Israël,  et super quatuor non convertam eum,  pro eo quod vendiderit pro argento justum,  et pauperem pro calceamentis.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Так говорить Господь: За три пере́ступи Ізраїлеві й за чотири цього́ не прощу́: за те, що за срі́бло вони продають справедливого, а за чоботи — вбогого!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui conterunt super pulverem terræ capita pauperum,  et viam humilium declinant :  et filius ac pater ejus ierunt ad puellam,  ut violarent nomen sanctum meum.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Вони то́пчуть у зе́мному по́росі го́лову бідних, а доро́гу суми́рних викри́влюють. А син й його батько вчащають до однієї блудниці, щоб святе Моє Йме́ння знева́жити.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et super vestimentis pignoratis accubuerunt juxta omne altare,  et vinum damnatorum bibebant in domo Dei sui.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">І вони стелять одіж заста́влену, щоб півлежати при кожному же́ртівнику, і п'ють в домі Бога свого вино від пока́раних.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ego autem exterminavi Amorrhæum a facie eorum,  cujus altitudo, cedrorum altitudo ejus,  et fortis ipse quasi quercus ;  et contrivi fructum ejus desuper,  et radices ejus subter.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">І Я вигубив був з-перед них Аморе́я, що його височі́нь, як високий той кедр, і він міцни́й, як дуб. Та Я плід його знищив згори́, а здо́лу — корі́ння його.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ego sum qui ascendere vos feci de terra Ægypti,  et duxi vos in deserto quadraginta annis,  ut possideretis terram Amorrhæi.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">А вас Я був вивів із кра́ю єгипетського, і сорок років прова́див пустинею вас, щоб ви край аморе́йський успадкува́ли.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et suscitavi de filiis vestris in prophetas,  et de juvenibus vestris nazaræos.  Numquid non ita est, filii Israël ? dicit Dominus.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">І пророків Я збу́джував з ваших синів, а з ваших юнці́в назоре́їв. Хіба ж то не так, сино́ве Ізраїлеві? говорить Госпо́дь.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et propinabitis nazaræis vinum,  et prophetis mandabitis, dicentes :  Ne prophetetis.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">А ви назоре́їв пої́ли вином, а пророкам наказували й говорили: „Не пророку́йте!“</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ecce ego stridebo subter vos,  sicut stridet plaustrum onustum fœno.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Отож Я поти́сну на вас, як тисне снопа́ми напо́внений віз, —</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et peribit fuga a veloce,  et fortis non obtinebit virtutem suam,  et robustus non salvabit animam suam :</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">і згине й в мото́рного вте́ча, і поту́жний не втримає сили своєї, а ли́цар свого життя не врятує.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">et tenens arcum non stabit,  et velox pedibus suis non salvabitur,  et ascensor equi non salvabit animam suam :</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">І не всто́їть із лука стріле́ць, і своїми ногами прудки́й не втече́, і верхіве́ць не врятує свого життя.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">et robustus corde inter fortes nudus fugiet in illa die,  dicit Dominus.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">І наймужні́ший з лица́рства наги́м утече того дня, говорить Госпо́дь.</div>
+      </div>
+    </div>
+  </section>
 
-<section class="chap" id="c6">
-  <div class="chhead">
-    <span class="chrom">VI</span>
-    <span class="chlbl">Caput 6</span>
-  </div>
-<div class="vb first" id="v6-1">
-  <span class="vn">1</span>
-  <div class="vt">
-    <p class="lat">Væ qui opulenti estis in Sion,  et confiditis in monte Samariæ :  optimates capita populorum,  ingredientes pompatice domum Israël !</p>
-    <p class="tra">Горе безпе́чним на Сіоні, тим, хто наді́ється на самарійськую го́ру, тим шляхе́тним „першого з наро́дів“, до яких прибува́є Ізраїлів дім!</p>
-  </div>
-</div>
-<div class="vb" id="v6-2">
-  <span class="vn">2</span>
-  <div class="vt">
-    <p class="lat">Transite in Chalane, et videte,  et ite inde in Emath magnam,  et descendite in Geth Palæstinorum,  et ad optima quæque regna horum :  si latior terminus eorum termino vestro est.</p>
-    <p class="tra">Перейді́ть до Калне́ та й побачте, і звідти підіть до Гама́ту великого, і зійді́ть до Ґату филисти́млян! Чи ліпші вони від цих царств? Чи їхня границя більша за вашу границю?</p>
-  </div>
-</div>
-<div class="vb" id="v6-3">
-  <span class="vn">3</span>
-  <div class="vt">
-    <p class="lat">Qui separati estis in diem malum,  et appropinquatis solio iniquitatis ;</p>
-    <p class="tra">День нещастя вважаєте ви за далекий, а час насильства зближа́єте!</p>
-  </div>
-</div>
-<div class="vb" id="v6-4">
-  <span class="vn">4</span>
-  <div class="vt">
-    <p class="lat">qui dormitis in lectis eburneis,  et lascivitis in stratis vestris ;  qui comeditis agnum de grege,  et vitulos de medio armenti ;</p>
-    <p class="tra">Ви виле́жуєтеся на ло́жах з слоно́вої кости і вива́люєтесь на постелях своїх, і їсте барані́в із отари та ситих теля́т із обо́ри.</p>
-  </div>
-</div>
-<div class="vb" id="v6-5">
-  <span class="vn">5</span>
-  <div class="vt">
-    <p class="lat">qui canitis ad vocem psalterii,  sicut David putaverunt se habere vasa cantici,</p>
-    <p class="tra">Під гу́сла співаєте ви, мов Давид, ви музичні знаря́ддя собі видумля́єте.</p>
-  </div>
-</div>
-<div class="vb" id="v6-6">
-  <span class="vn">6</span>
-  <div class="vt">
-    <p class="lat">bibentes vinum in phialis,  et optimo unguento delibuti,  et nihil patiebantur super contritione Joseph.</p>
-    <p class="tra">Ви вино попива́єте ча́шами, і намащуєтесь добірною оливою, і над спусто́шенням Йо́сипа не вболіва́єте.</p>
-  </div>
-</div>
-<div class="vb" id="v6-7">
-  <span class="vn">7</span>
-  <div class="vt">
-    <p class="lat">Quapropter nunc migrabunt in capite transmigrantium,  et auferetur factio lascivientium.</p>
-    <p class="tra">Тому́ вони пі́дуть тепер на вигна́ння на чолі́ полоне́них, і перестане крик ви́пещених.</p>
-  </div>
-</div>
-<div class="vb" id="v6-8">
-  <span class="vn">8</span>
-  <div class="vt">
-    <p class="lat">Juravit Dominus Deus in anima sua,  dicit Dominus Deus exercituum :  Detestor ego superbiam Jacob,  et domos ejus odi,  et tradam civitatem cum habitatoribus suis.</p>
-    <p class="tra">Господь присягнув був Своєю душею, говорить Господь, Бог Савао́т: Пишно́тою Якова бриджу, і пала́ти його Я нена́виджу, і видам те місто та все, що є в ньо́му.</p>
-  </div>
-</div>
-<div class="vb" id="v6-9">
-  <span class="vn">9</span>
-  <div class="vt">
-    <p class="lat">Quod si reliqui fuerint decem viri in domo una,  et ipsi morientur.</p>
-    <p class="tra">І бу́де, якщо десять лю́да зоста́нуться в домі одно́му, то й вони повмирають.</p>
-  </div>
-</div>
-<div class="vb" id="v6-10">
-  <span class="vn">10</span>
-  <div class="vt">
-    <p class="lat">Et tollet eum propinquus suus, et comburet eum,  ut efferat ossa de domo ;  et dicet ei, qui in penetralibus domus est :  Numquid adhuc est penes te ?</p>
-    <p class="tra">І його візьме родич та й спалить його, щоб ви́нести кості із дому, і скаже до того, хто буде в сере́дині дому: „Чи ще є хто з тобою?“ А той відповість: „Вже немає ніко́го!“ і скаже той: „Тихше, бо не згадується Йме́ння Господа!“</p>
-  </div>
-</div>
-<div class="vb" id="v6-11">
-  <span class="vn">11</span>
-  <div class="vt">
-    <p class="lat">Et respondebit : Finis est.  Et dicet ei : Tace,  et non recorderis nominis Domini.</p>
-    <p class="tra">Бо Господь ось накаже, — і ворог розі́б'є великий той дім на відла́мки, а дім мали́й — на тріски́.</p>
-  </div>
-</div>
-<div class="vb" id="v6-12">
-  <span class="vn">12</span>
-  <div class="vt">
-    <p class="lat">Quia ecce Dominus mandabit,  et percutiet domum majorem ruinis,  et domum minorem scissionibus.</p>
-    <p class="tra">Чи бігають коні по ске́лі? Чи хто виоре море худобою? Таж ви суд обернули на гіркість, а плід справедливости — на поли́н!</p>
-  </div>
-</div>
-<div class="vb" id="v6-13">
-  <span class="vn">13</span>
-  <div class="vt">
-    <p class="lat">Numquid currere queunt in petris equi,  aut arari potest in bubalis ?  quoniam convertistis in amaritudinem judicium,  et fructum justitiæ in absinthium.</p>
-    <p class="tra">Ви марно́тою тішитеся та говорите: Хіба ж ми не власною силою набули́ собі роги ?</p>
-  </div>
-</div>
-<div class="vb" id="v6-14">
-  <span class="vn">14</span>
-  <div class="vt">
-    <p class="lat">Qui lætamini in nihilo ; qui dicitis :  Numquid non in fortitudine nostra assumpsimus nobis cornua ?</p>
-    <p class="tra">Бо ось Я поставлю наро́д проти вас, доме Ізраїлів, — каже Госпо́дь, Бог Савао́т, — і вони вас потиснуть ізвідти, де йдуть до Гама́ту, аж до степово́го пото́ку!</p>
-  </div>
-</div>
-<div class="vb" id="v6-15">
-  <span class="vn">15</span>
-  <div class="vt">
-    <p class="lat">Ecce enim suscitabo super vos, domus Israël,  dicit Dominus Deus exercituum, gentem,  et conteret vos ab introitu Emath usque ad torrentem deserti.</p>
-  </div>
-</div>
-</section>
+  <section class="chapter" id="ch3">
+    <div class="chapter-marker">
+      <span class="ch-roman">III</span>
+      <span class="ch-label">Caput 3</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v3-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Audite verbum quod locutus est Dominus super vos, filii Israël,  super omnem cognationem quam eduxi de terra Ægypti, dicens :</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Послухайте сло́ва того́, що Господь говорив проти вас, сино́ве Ізраїлеві, на ввесь оцей рід, що його Я підніс був із кра́ю єгипетського, промовляючи:</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Tantummodo vos cognovi ex omnibus cognationibus terræ ;  idcirco visitabo super vos omnes iniquitates vestras.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Тільки вас Я пізнав зо всіх ро́дів землі, тому вас навіщу́ за всі ваші провини!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Numquid ambulabunt duo pariter,  nisi convenerit eis ?</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Чи йдуть двоє ра́зом, якщо не умо́вились?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">numquid rugiet leo in saltu,  nisi habuerit prædam ?  numquid dabit catulus leonis vocem de cubili suo,  nisi aliquid apprehenderit ?</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Чи реве́ в лісі лев, як нема йому здо́бичі? Чи левчу́к видає голос свій із своєї нори́, якщо він не зловив?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">numquid cadet avis in laqueum terræ  absque aucupe ?  numquid auferetur laqueus de terra  antequam quid ceperit ?</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Чи впаде́ на землі пташка в сітку, як немає сільця́? Чи піді́йметься сітка з землі, як нічого не зло́вить?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">si clanget tuba in civitate,  et populus non expavescet ?  si erit malum in civitate,  quod Dominus non fecerit ?</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Чи в місті засурмля́ть у сурму́, а наро́д не тремті́тиме? Чи станеться в місті нещастя, що його́ не Госпо́дь допусти́в?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quia non facit Dominus Deus verbum,  nisi revelaverit secretum suum ad servos suos prophetas.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Бо не чинить нічо́го Господь Бог, не ви́явивши таємни́ці Своєї Своїм рабам пророкам.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Leo rugiet, quis non timebit ?  Dominus Deus locutus est, quis non prophetabit ?</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Лев зареве́, — хто того́ не злякається? Господь Бог заговорить, — хто пророкувати не бу́де?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Auditum facite in ædibus Azoti,  et in ædibus terræ Ægypti,  et dicite : Congregamini super montes Samariæ,  et videte insanias multas in medio ejus,  et calumniam patientes in penetralibus ejus.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Розголосіть над пала́цами в Ашдоді, і над пала́тами в кра́ї єгипетському, та й скажіть: Позбирайтеся на гора́х Самарі́ї, і побачте велике збенте́ження в ній, та у́тиск у ній!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et nescierunt facere rectum, dicit Dominus,  thesaurizantes iniquitatem et rapinas in ædibus suis.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">І правдиво не вміють робити вони, — говорить Господь, — наси́льство грома́дять та грабу́нок в пала́тах своїх.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Propterea hæc dicit Dominus Deus :  Tribulabitur et circuietur terra :  et detrahetur ex te fortitudo tua,  et diripientur ædes tuæ.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Тому́ так Господь Бог промовляє: Ворог обля́же навколо цієї землі, і скине із тебе він силу твою́, і пограбо́вані бу́дуть пала́ти твої.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hæc dicit Dominus :  Quomodo si eruat pastor de ore leonis  duo crura, aut extremum auriculæ,  sic eruentur filii Israël, qui habitant in Samaria  in plaga lectuli, et in Damasci grabato.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Так говорить Господь: Як ча́сом рятує пастух з пащі ле́в'ячої дві колі́ні, або пи́пку вуха, так будуть врято́вані діти Ізраїлеві, що сидять в Самарі́ї в заку́точку ліжка, та на адама́шку постелі.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Audite, et contestamini in domo Jacob,  dicit Dominus Deus exercituum ;</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Послухайте ви та й засві́дчіть ув Якововім домі, говорить Господь Бог, Бог Савао́т.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">quia in die cum visitare cœpero prævaricationes Israël,  super eum visitabo, et super altaria Bethel ;  et amputabuntur cornua altaris, et cadent in terram.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Бо в той день, коли Я покараю Ізраїля за провини його, то Я покараю за же́ртівники Бет-Елу, — і будуть відру́бані роги же́ртівника, і на землю попа́дають.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et percutiam domum hiemalem cum domo æstiva,  et peribunt domus eburneæ,  et dissipabuntur ædes multæ,  dicit Dominus.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">І Я розіб'ю́ дім зимо́вий разом з домом літнім, і заги́нуть доми́ із слоно́вої кости, і не стане багато домі́в, говорить Госпо́дь.</div>
+      </div>
+    </div>
+  </section>
 
-<section class="chap" id="c7">
-  <div class="chhead">
-    <span class="chrom">VII</span>
-    <span class="chlbl">Caput 7</span>
-  </div>
-<div class="vb first" id="v7-1">
-  <span class="vn">1</span>
-  <div class="vt">
-    <p class="lat">Hæc ostendit mihi Dominus Deus : et ecce fictor locustæ in principio germinantium serotini imbris, et ecce serotinus post tonsionem regis.</p>
-    <p class="tra">Господь Бог учинив, що я бачив таке: Ось Він утворив сарану́, коли почала вироста́ти ота́ва, — і ось ота́ва як по сіноко́сі царсько́му!</p>
-  </div>
-</div>
-<div class="vb" id="v7-2">
-  <span class="vn">2</span>
-  <div class="vt">
-    <p class="lat">Et factum est, cum consummasset comedere herbam terræ, dixi : Domine Deus, propitius esto, obsecro ; quis suscitabit Jacob, quia parvulus est ?</p>
-    <p class="tra">І сталось, як вона вже поже́рла траву на землі, я сказав: Господи, Боже, прости́! Як же Яків устояти може, бо такий він мали́й?</p>
-  </div>
-</div>
-<div class="vb" id="v7-3">
-  <span class="vn">3</span>
-  <div class="vt">
-    <p class="lat">Misertus est Dominus super hoc : Non erit, dixit Dominus.</p>
-    <p class="tra">І Господь пожалів був про те. „Не станеться це“, промовив Госпо́дь.</p>
-  </div>
-</div>
-<div class="vb" id="v7-4">
-  <span class="vn">4</span>
-  <div class="vt">
-    <p class="lat">Hæc ostendit mihi Dominus Deus : et ecce vocabat judicium ad ignem Dominus Deus ; et devoravit abyssum multam, et comedit simul partem.</p>
-    <p class="tra">Господь Бог учинив, що я бачив таке: Ось Господь Бог покликав судитись огнем, і поже́р той велику безо́дню, і ча́стку пожер.</p>
-  </div>
-</div>
-<div class="vb" id="v7-5">
-  <span class="vn">5</span>
-  <div class="vt">
-    <p class="lat">Et dixi : Domine Deus, quiesce, obsecro ; quis suscitabit Jacob, quia parvulus est ?</p>
-    <p class="tra">І сказав я: О, Господи, Боже, спини́! Як же Яків усто́яти може, бо такий він мали́й?</p>
-  </div>
-</div>
-<div class="vb" id="v7-6">
-  <span class="vn">6</span>
-  <div class="vt">
-    <p class="lat">Misertus est Dominus super hoc : Sed et istud non erit, dixit Dominus Deus.</p>
-    <p class="tra">І Господь пожалів був про те. „Не ста́неться й це!“ сказав Господь Бог!</p>
-  </div>
-</div>
-<div class="vb" id="v7-7">
-  <span class="vn">7</span>
-  <div class="vt">
-    <p class="lat">Hæc ostendit mihi Dominus : et ecce Dominus stans super murum litum, et in manu ejus trulla cæmentarii.</p>
-    <p class="tra">І Він знов учинив, що я бачив таке: Ось на мурі стрімко́му стоїть Господь Бог, а в руці Його висо́к.</p>
-  </div>
-</div>
-<div class="vb" id="v7-8">
-  <span class="vn">8</span>
-  <div class="vt">
-    <p class="lat">Et dixit Dominus ad me : Quid tu vides, Amos ? Et dixi : Trullam cæmentarii. Et dixit Dominus :   Ecce ego ponam trullam in medio populi mei Israël ;  non adjiciam ultra superinducere eum.</p>
-    <p class="tra">І про́мовив до мене Господь: „Що ти бачиш, Амо́се?“ А я відказав: „Виска́“. І промовив Господь: „Ось Я цього виска́ покладу посеред народу Мого, Ізраїля, — уже більше йому не прощу́!</p>
-  </div>
-</div>
-<div class="vb" id="v7-9">
-  <span class="vn">9</span>
-  <div class="vt">
-    <p class="lat">Et demolientur excelsa idoli,  et sanctificationes Israël desolabuntur,  et consurgam super domum Jeroboam in gladio.</p>
-    <p class="tra">І спустоші́ють жерто́вні підгі́рки Ісакові, і поруйно́вані будуть святині Ізраїлеві, і Я ста́ну з мечем на дім Єровоамів“.</p>
-  </div>
-</div>
-<div class="vb" id="v7-10">
-  <span class="vn">10</span>
-  <div class="vt">
-    <p class="lat">Et misit Amasias, sacerdos Bethel, ad Jeroboam, regem Israël, dicens : Rebellavit contra te Amos in medio domus Israël ; non poterit terra sustinere universos sermones ejus.</p>
-    <p class="tra">І послав Амація, священик Бет-Елу, до Єровоама, царя Ізраїлевого, кажучи: „Амо́с змо́влюється на тебе серед Ізраїлевого дому, — не може земля змістити всіх його слів!</p>
-  </div>
-</div>
-<div class="vb" id="v7-11">
-  <span class="vn">11</span>
-  <div class="vt">
-    <p class="lat">Hæc enim dicit Amos : In gladio morietur Jeroboam, et Israël captivus migrabit de terra sua.</p>
-    <p class="tra">Бо так говорить Амос: Євровоам помре від меча, а Ізраїль конче пі́де на вигна́ння з своєї землі!“</p>
-  </div>
-</div>
-<div class="vb" id="v7-12">
-  <span class="vn">12</span>
-  <div class="vt">
-    <p class="lat">Et dixit Amasias ad Amos : Qui vides, gradere : fuge in terram Juda, et comede ibi panem, et prophetabis ibi.</p>
-    <p class="tra">І сказав Амація до Амоса: „Яснови́дче, іди, утікай собі до Юдиного кра́ю, і їж там хліб, і там пророкуй.</p>
-  </div>
-</div>
-<div class="vb" id="v7-13">
-  <span class="vn">13</span>
-  <div class="vt">
-    <p class="lat">Et in Bethel non adjicies ultra ut prophetes, quia sanctificatio regis est, et domus regni est.</p>
-    <p class="tra">А в Бет-Елі вже більше не будеш пророкува́ти, бо він святиня царя та дім царства“.</p>
-  </div>
-</div>
-<div class="vb" id="v7-14">
-  <span class="vn">14</span>
-  <div class="vt">
-    <p class="lat">Responditque Amos, et dixit ad Amasiam : Non sum propheta, et non sum filius prophetæ : sed armentarius ego sum vellicans sycomoros.</p>
-    <p class="tra">І відповів Амос і сказав до Амації: „Я не пророк, і не син я пророків, — я пастух та обро́блювач диких фіґо́вниць.</p>
-  </div>
-</div>
-<div class="vb" id="v7-15">
-  <span class="vn">15</span>
-  <div class="vt">
-    <p class="lat">Et tulit me Dominus cum sequerer gregem, et dixit Dominus ad me : Vade, propheta ad populum meum Israël.</p>
-    <p class="tra">І взяв мене Госпо́дь від отари, і промовив до мене Госпо́дь: Іди, пророкуй Моєму наро́дові Ізраїлеві!</p>
-  </div>
-</div>
-<div class="vb" id="v7-16">
-  <span class="vn">16</span>
-  <div class="vt">
-    <p class="lat">Et nunc audi verbum Domini :  Tu dicis : Non prophetabis super Israël,  et non stillabis super domum idoli.</p>
-    <p class="tra">А тепер послухай Господнього слова: Ти кажеш: Не будеш пророкува́ти на Ізраїля, і не будеш пропові́дувати на Ісаків дім.</p>
-  </div>
-</div>
-<div class="vb" id="v7-17">
-  <span class="vn">17</span>
-  <div class="vt">
-    <p class="lat">Propter hoc hæc dicit Dominus :  Uxor tua in civitate fornicabitur,  et filii tui et filiæ tuæ in gladio cadent,  et humus tua funiculo metietur :  et tu in terra polluta morieris,  et Israël captivus migrabit de terra sua.</p>
-    <p class="tra">Тому так промовляє Господь: Твоя жінка в місті буде блудли́ва, і сини твої та до́чки твої попа́дають від меча, а земля твоя буде поді́лена шнуром, і ти помреш на нечистій землі, а Ізраїль конче пі́де на вигна́ння з своєї землі!“</p>
-  </div>
-</div>
-</section>
+  <section class="chapter" id="ch4">
+    <div class="chapter-marker">
+      <span class="ch-roman">IV</span>
+      <span class="ch-label">Caput 4</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v4-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Audite verbum hoc, vaccæ pingues,  quæ estis in monte Samariæ,  quæ calumniam facitis egenis  et confringitis pauperes ;  quæ dicitis dominis vestris : Afferte, et bibemus.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Послухайте сло́ва оцього, коро́ви баша́нські, які на горі самарі́йській, що тиснете бідних, торо́щите вбогих, що своїм хазяя́м ви говорите: „Принеси, і ми бу́демо пити!“</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Juravit Dominus Deus in sancto suo,  quia ecce dies venient super vos,  et levabunt vos in contis,  et reliquias vestras in ollis ferventibus.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Присягав Господь Бог Своєю святістю, що ось дні настаю́ть на вас, і будуть тягти вас гака́ми, а ваших наща́дків — гачка́ми для ло́влення риби!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et per aperturas exibitis altera contra alteram,  et projiciemini in Armon,  dicit Dominus.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">І ви повихо́дите ви́ломами, кожна окремо собі, і ки́нетеся до Хермо́ну, говорить Госпо́дь.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Venite ad Bethel, et impie agite ;  ad Galgalam, et multiplicate prævaricationem :  et afferte mane victimas vestras,  tribus diebus decimas vestras.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Прийдіть до Бет-Елу й грішіть, до Ґілґа́лу — примно́жте грішити. І свої жертви прино́сьте щора́нку, на три дні — ваші десятини.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et sacrificate de fermentato laudem,  et vocate voluntarias oblationes, et annuntiate ;  sic enim voluistis, filii Israël,  dicit Dominus Deus.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">І з димом пустіть жертву вдячну квасну́, і сповістіть добровільні дару́нки, розголосі́ть, бо ви любите так, сино́ве Ізраїлеві, говорить Господь Бог.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Unde et ego dedi vobis stuporem dentium in cunctis urbibus vestris,  et indigentiam panum in omnibus locis vestris ;  et non estis reversi ad me,  dicit Dominus.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">І тому́ Я вам дав чистоту́ зубів по всіх ваших міста́х, і брак хліба по всіх ваших місця́х, та ви не верну́лись до Мене, говорить Госпо́дь.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ego quoque prohibui a vobis imbrem,  cum adhuc tres menses superessent usque ad messem :  et plui super unam civitatem,  et super alteram civitatem non plui ;  pars una compluta est,  et pars super quam non plui, aruit.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">І Я стримав вам дощ за три місяці перед жнива́ми, і дощ посилав на одне місто, а на друге місто не посилав; одна діля́нка була побита дощем, а ділянка, на яку не пустив Я дощу, висиха́ла.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et venerunt duæ et tres civitates ad unam civitatem  ut biberent aquam, et non sunt satiatæ ;  et non redistis ad me,  dicit Dominus.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">І два-три мі́ста рушали до міста одно́го напитись води, але́ не наси́чувались, — та ви не вернулись до Мене, говорить Госпо́дь.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Percussi vos in vento urente, et in aurugine :  multitudinem hortorum vestrorum et vinearum vestrarum,  oliveta vestra et ficeta vestra comedit eruca :  et non redistis ad me,  dicit Dominus.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Я бив вас посу́хою та зеленя́чкою, сарана́ жерла бе́зліч ваших садків й виноградників ваших, і ваших фіґо́вниць та ваших олив, — та ви не верну́лись до Мене, говорить Госпо́дь.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Misi in vos mortem in via Ægypti ;  percussi in gladio juvenes vestros,  usque ad captivitatem equorum vestrorum,  et ascendere feci putredinem castrorum vestrorum in nares vestras :  et non redistis ad me,  dicit Dominus.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Я на вас посилав морови́цю, немов на Єгипет, мечем побивав ваших хло́пців, поло́нячи ра́зом і ко́ней у вас, підіймав до нізде́р сморід ваших табо́рів, — та ви не вернулись до Мене, говорить Господь.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Subverti vos sicut subvertit Deus Sodomam et Gomorrham,  et facti estis quasi torris raptus ab incendio :  et non redistis ad me,  dicit Dominus.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Я ви́нищив вас, як Содо́м та Гомо́рру Бог винищив, і ви стали, немов голове́шка, з пожа́ру врято́вана, — та ви не вернулись до Мене, говорить Господь.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quapropter hæc faciam tibi, Israël :  postquam autem hæc fecero tibi,  præparare in occursum Dei tui, Israël.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Тому́ то зроблю́ тобі так, о Ізраїлю, а що Я зроблю́ тобі це, приготуйся, Ізраїлю, до зу́стрічі Бога свого́!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quia ecce formans montes,  et creans ventum,  et annuntians homini eloquium suum,  faciens matutinam nebulam,  et gradiens super excelsa terræ :  Dominus Deus exercituum nomen ejus.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Бо це Той, що вформо́вує гори, і що ство́рює вітра, що люди́ні показує за́дум її, що робить зірни́цю темно́тою, і ступає по згі́р'ях землі, — Господь Бог Савао́т Йому Йме́ння!</div>
+      </div>
+    </div>
+  </section>
 
-<section class="chap" id="c8">
-  <div class="chhead">
-    <span class="chrom">VIII</span>
-    <span class="chlbl">Caput 8</span>
-  </div>
-<div class="vb first" id="v8-1">
-  <span class="vn">1</span>
-  <div class="vt">
-    <p class="lat">Hæc ostendit mihi Dominus Deus : et ecce uncinus pomorum.</p>
-    <p class="tra">Господь Бог учинив, що я бачив таке: Ось кіш доспі́лих плоді́в.</p>
-  </div>
-</div>
-<div class="vb" id="v8-2">
-  <span class="vn">2</span>
-  <div class="vt">
-    <p class="lat">Et dixit : Quid tu vides, Amos ? Et dixi : Uncinum pomorum. Et dixit Dominus ad me :   Venit finis super populum meum Israël ;  non adjiciam ultra ut pertranseam eum.</p>
-    <p class="tra">І сказав Він: „Що́ бачиш, Амо́се?“ А я відказав: „Кіш доспілих плоді́в“. І промовив до мене Господь: „Доспі́в кінець Моє́му наро́дові Ізраїлеві, — уже більше йому не прощу́!</p>
-  </div>
-</div>
-<div class="vb" id="v8-3">
-  <span class="vn">3</span>
-  <div class="vt">
-    <p class="lat">Et stridebunt cardines templi in die illa,  dicit Dominus Deus :  multi morientur ;  in omni loco projicietur silentium.</p>
-    <p class="tra">І обе́рнуться пісні в пала́тах на зойк того дня, — говорить Господь Бог: буде тру́пів багато, — бо во́рог на кожному місці наки́дає їх!</p>
-  </div>
-</div>
-<div class="vb" id="v8-4">
-  <span class="vn">4</span>
-  <div class="vt">
-    <p class="lat">Audite hoc, qui conteritis pauperem,  et deficere facitis egenos terræ,</p>
-    <p class="tra">Послухайте це, ви, що то́пчете бідного, і що пра́гнете ви́нищити всіх убогих з землі,</p>
-  </div>
-</div>
-<div class="vb" id="v8-5">
-  <span class="vn">5</span>
-  <div class="vt">
-    <p class="lat">dicentes : Quando transibit mensis,  et venundabimus merces ?  et sabbatum, et aperiemus frumentum,  ut imminuamus mensuram, et augeamus siclum,  et supponamus stateras dolosas,</p>
-    <p class="tra">кажучи: Коли то мине новомі́сяччя, — щоб нам збіжжя прода́ти? і субота, — щоб нам відчини́ти збіже́ві комо́ри! Щоб зменши́ти ефу́, і щоб ше́кля побі́льшити, і щоб викривля́ти обманну вагу́,</p>
-  </div>
-</div>
-<div class="vb" id="v8-6">
-  <span class="vn">6</span>
-  <div class="vt">
-    <p class="lat">ut possideamus in argento egenos et pauperes pro calceamentis,  et quisquilias frumenti vendamus ?</p>
-    <p class="tra">щоб купува́ти за срі́бло нужде́нних, а вбогого за взуття́, і попро́дати по́слід збіже́вий?</p>
-  </div>
-</div>
-<div class="vb" id="v8-7">
-  <span class="vn">7</span>
-  <div class="vt">
-    <p class="lat">Juravit Dominus in superbiam Jacob :  Si oblitus fuero usque ad finem omnia opera eorum.</p>
-    <p class="tra">Госпо́дь присягнув славою Якова: Не забуду ніко́ли усіх їхніх вчинків!</p>
-  </div>
-</div>
-<div class="vb" id="v8-8">
-  <span class="vn">8</span>
-  <div class="vt">
-    <p class="lat">Numquid super isto non commovebitur terra,  et lugebit omnis habitator ejus,  et ascendet quasi fluvius universus,  et ejicicetur, et defluet, quasi rivus Ægypti ?</p>
-    <p class="tra">Чи не затрясе́ться від цього земля, і всі мешка́нці її не впадуть у жало́бу? Вся вона захвилю́ється, мов та Ріка́, і бурхливо попли́не й обни́зиться знов, немов рі́чка Єгипту.</p>
-  </div>
-</div>
-<div class="vb" id="v8-9">
-  <span class="vn">9</span>
-  <div class="vt">
-    <p class="lat">Et erit in die illa, dicit Dominus Deus :  occidet sol in meridie,  et tenebrescere faciam terram in die luminis :</p>
-    <p class="tra">І станеться в день той, — говорить Господь Бог, — і вчиню́ захід сонця опі́вдні, і для землі серед світлого дня воно сте́мніє.</p>
-  </div>
-</div>
-<div class="vb" id="v8-10">
-  <span class="vn">10</span>
-  <div class="vt">
-    <p class="lat">et convertam festivitates vestras in luctum,  et omnia cantica vestra in planctum,  et inducam super omne dorsum vestrum saccum,  et super omne caput calvitium :  et ponam eam quasi luctum unigeniti,  et novissima ejus quasi diem amarum.</p>
-    <p class="tra">І оберну́ ваші свята в жало́бу, а всі ваші пісні́ — в голосі́ння, і на всі сте́гна спрова́джу вере́ту, а на всякую го́лову ли́сину, і вчиню́ це, немов та жало́ба по одинако́ві, кінець же отого, — немов гірки́й день!</p>
-  </div>
-</div>
-<div class="vb" id="v8-11">
-  <span class="vn">11</span>
-  <div class="vt">
-    <p class="lat">Ecce dies veniunt, dicet Dominus,  et mittam famem in terram :  non famem panis, neque sitim aquæ,  sed audiendi verbum Domini.</p>
-    <p class="tra">Ось дні настаю́ть, — говорить Господь Бог, — і голод пошлю Я на землю, — не голод на хліб, і не спра́гу на во́ду, але спрагу почути Господні слова́!</p>
-  </div>
-</div>
-<div class="vb" id="v8-12">
-  <span class="vn">12</span>
-  <div class="vt">
-    <p class="lat">Et commovebuntur a mari usque ad mare,  et ab aquilone usque ad orientem :  circuibunt quærentes verbum Domini,  et non invenient.</p>
-    <p class="tra">І бу́дуть ходити від моря до моря, і з пі́вночі до сходу блука́тимуть, щоб знайти слово Господа, — та не зна́йдуть його́!</p>
-  </div>
-</div>
-<div class="vb" id="v8-13">
-  <span class="vn">13</span>
-  <div class="vt">
-    <p class="lat">In die illa deficient virgines pulchræ et adolescentes in siti,</p>
-    <p class="tra">Того дня будуть мліти від спра́ги вродли́ві дівчата та хлопці,</p>
-  </div>
-</div>
-<div class="vb" id="v8-14">
-  <span class="vn">14</span>
-  <div class="vt">
-    <p class="lat">qui jurant in delicto Samariæ,  et dicunt : Vivit Deus tuus, Dan,  et vivit via Bersabee ;  et cadent, et non resurgent ultra.</p>
-    <p class="tra">що кляну́ться гріхом самарі́йським та кажуть: Як живий твій Бог, Дане, і як жива дорога до Беер-Шеви! Та вони всі попа́дають, і більше не встануть</p>
-  </div>
-</div>
-</section>
+  <section class="chapter" id="ch5">
+    <div class="chapter-marker">
+      <span class="ch-roman">V</span>
+      <span class="ch-label">Caput 5</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v5-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Audite verbum istud,  quod ego levo super vos planctum :  domus Israël cecidit,  et non adjiciet ut resurgat.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Послухайте слова цього, що я ним голосі́ння підно́шу за вас, о доме Ізраїлів!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Virgo Israël projecta est in terram suam,  non est qui suscitet eam.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Упала, і більше не встане та діва Ізра́їлева! Вона кинена на свою землю, — немає, хто звів би її!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quia hæc dicit Dominus Deus :  Urbs de qua egrediebantur mille,  relinquentur in ea centum ;  et de qua egrediebantur centum,  relinquentur in ea decem in domo Israël.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Бо так Господь Бог промовляє: Місто, що вихо́дило тисячею, позоста́вить лиш сотню, а те, що вихо́дило сотнею, позоста́вить десятку для дому Ізраїля.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quia hæc dicit Dominus domui Israël :  Quærite me, et vivetis.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Бо так промовляє Госпо́дь до дому Ізраїлевого: Наверні́ться до Мене її живіть!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et nolite quærere Bethel,  et in Galgalam nolite intrare,  et in Bersabee non transibitis,  quia Galgala captiva ducetur,  et Bethel erit inutilis.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">І не зверта́йтеся до Бет-Елу, і до Ґілґалу не прихо́дьте, а через Беер-Шеву не перехо́дьте, бо на вигна́ння Ґілґа́л конче пі́де, і марно́тою стане Бет-Ел.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quærite Dominum, et vivite  (ne forte comburatur ut ignis domus Joseph, et devorabit,  et non erit qui extinguat Bethel :</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Наверні́ться до Господа, і будете жити, щоб Вій не ввійшов, як огонь до Йо́сипового дому, — і буде він же́рти, та не бу́де кому погаси́ти в Бет-Елі, —</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui convertitis in absinthium judicium,  et justitiam in terra relinquitis) :</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">вони змінюють суд на поли́н, і кидають правду на землю.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">facientem Arcturum et Orionem,  et convertentem in mane tenebras,  et diem in noctem mutantem ;  qui vocat aquas maris,  et effundit eas super faciem terræ ;  Dominus nomen est ejus :</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Той, хто Волосожа́ра й Оріо́на створив, Хто сме́ртну темно́ту зміня́є на ра́нок, а день затемня́є на ніч, хто прикликує воду морську́ й виливає її на пове́рхню землі, — Господь Йме́ння Йому!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui subridet vastitatem super robustum,  et depopulationem super potentem affert.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Він наводить погибіль на сильного, — і при́йде погибіль тверди́ні!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Odio habuerunt corripientem in porta,  et loquentem perfecte abominati sunt.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Вони ненави́дять того́, хто у брамі карта́є, і обри́джують тим, хто говорить правдиве.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Idcirco, pro eo quod diripiebatis pauperem,  et prædam electam tollebatis ab eo,  domos quadro lapide ædificabitis,  et non habitabitis in eis ;  vineas plantabis amantissimas,  et non bibetis vinum earum.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Тому́, що нужде́нного то́пчете ви, і дару́нки збіже́ві берете від нього, що ви набудува́ли будинків із ка́меня те́саного, то сидіти не будете в них; понаса́джували винограду улю́бленого, та не будете пити із нього вина!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quia cognovi multa scelera vestra,  et fortia peccata vestra :  hostes justi, accipientes munus,  et pauperes deprimentes in porta.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Бо Я знаю про ваші числе́нні провини і про ваші великі гріхи́: ти́снете ви справедливого, берете ви пі́дкупа та викривля́єте право убогих у брамі.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ideo prudens in tempore illo tacebit,  quia tempus malum est.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Тому́ то розуміний мовчить цього ча́су, бо це час лихий.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quærite bonum, et non malum, ut vivatis ;  et erit Dominus Deus exercituum vobiscum, sicut dixistis.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Шукайте добра, а не зла, щоб вам жити, і буде із вами Госпо́дь, Бог Саваот, так, як кажете ви.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Odite malum et diligite bonum,  et constituite in porta judicium :  si forte misereatur Dominus Deus exercituum reliquiis Joseph.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Нена́видьте зло й покохайте добро, і правосу́ддя поставте у брамі, — може змилується Господь, Бог Савао́т над ре́шткою Йо́сипа.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Propterea hæc dicit Dominus Deus exercituum, dominator :  In omnibus plateis planctus ;  et in cunctis quæ foris sunt, dicetur : Væ, væ !  et vocabunt agricolam ad luctum,  et ad planctum eos qui sciunt plangere.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Тому так промовляє Госпо́дь, Бог Саваот, Вседержи́тель: На майда́нах усіх голосі́ння, на всіх вулицях крики: ой, ой! І покличуть хліборобів на жало́бу, і голосі́льніщь, що вміють плачли́ві пісні,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et in omnibus vineis erit planctus,  quia pertransibo in medio tui,  dicit Dominus.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">і стане рида́ння по всіх виноградниках, бо Я перейду́ серед тебе, говорить Госпо́дь!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Væ desiderantibus diem Domini !  ad quid eam vobis ?  Dies Domini ista, tenebræ, et non lux.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Горе тим, що жадають Госпо́днього дня, — на́що це вам день Госпо́дній? Він не світло, а те́мрява!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quomodo si fugiat vir a facie leonis,  et occurrat ei ursus ;  et ingrediatur domum, et innitatur manu sua super parietem,  et mordeat eum coluber.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Це так, коли хто утікає від ле́ва, — і ведмі́дь спотика́є його! І він убігає до дому, і опе́рся своєю рукою об сті́ну, — аж гадю́ка кусає його...</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">Numquid non tenebræ dies Domini, et non lux ;  et caligo, et non splendor in ea ?</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Чи ж не є день Госпо́дній темно́та, а не світло, і хіба він не темний, і ся́йва немає у ньому?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">Odi, et projeci festivitates vestras,  et non capiam odorem cœtuum vestrorum.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Знена́видів Я, обри́див Собі ваші свята, і не нюхаю же́ртов ваших зборів.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-22">
+      <div class="verse-num-col"><div class="verse-num">22</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quod si obtuleritis mihi holocautomata, et munera vestra,  non suscipiam ;  et vota pinguium vestrorum non respiciam.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">І коли принесе́те Мені цілопа́лення та хлібні же́ртви свої, Я Собі не вподо́баю їх, а на мирні жертви ваші із ситих барані́в — не погля́ну.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-23">
+      <div class="verse-num-col"><div class="verse-num">23</div></div>
+      <div class="verse-texts">
+        <div class="latin">Aufer a me tumultum carminum tuorum ;  et cantica lyræ tuæ non audiam.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Усунь же від Мене пісе́нь своїх гук, і не почую Я ро́коту гу́сел твоїх,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-24">
+      <div class="verse-num-col"><div class="verse-num">24</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et revelabitur quasi aqua judicium,  et justitia quasi torrens fortis.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">і хай тече́ правосу́ддя, немов та вода, а справедливість — як сильний поті́к!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-25">
+      <div class="verse-num-col"><div class="verse-num">25</div></div>
+      <div class="verse-texts">
+        <div class="latin">Numquid hostias et sacrificium obtulistis mihi  in deserto quadraginta annis, domus Israël ?</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Чи ж жертви та хлібні прино́си за тих сорок літ на пустині Мені ви прино́сили, доме Ізраїлів?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-26">
+      <div class="verse-num-col"><div class="verse-num">26</div></div>
+      <div class="verse-texts">
+        <div class="latin">et portastis tabernaculum Moloch vestro,  et imaginem idolorum vestrorum, sidus dei vestri,  quæ fecistis vobis.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Ви ж носили Саккута, свойого царя, та Кевана, свої виобра́ження, зорю ваших богі́в, що собі пороби́ли.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-27">
+      <div class="verse-num-col"><div class="verse-num">27</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et migrare vos faciam trans Damascum, dicit Dominus :  Deus exercituum nomen ejus.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Тому́ Я вас вижену геть за Дама́ск, говорить Господь, що Бог Саваот Йому Йме́ння!</div>
+      </div>
+    </div>
+  </section>
 
-<section class="chap" id="c9">
-  <div class="chhead">
-    <span class="chrom">IX</span>
-    <span class="chlbl">Caput 9</span>
-  </div>
-<div class="vb first" id="v9-1">
-  <span class="vn">1</span>
-  <div class="vt">
-    <p class="lat">Vidi Dominum stantem super altare, et dixit :   Percute cardinem,  et commoveantur superliminaria :  avaritia enim in capite omnium,  et novissimum eorum in gladio interficiam ;  non erit fuga eis.  Fugient, et non salvabitur ex eis qui fugerit.</p>
-    <p class="tra">Я бачив Господа, що стояв над же́ртівником, і Він сказав: Удар но по ма́ковиці цих воріт, щоб затрясли́ся поро́ги, і порозбивай їх на всіх їхніх го́ловах, а їхній останок заб'ю́ Я мечем. Не втече їм втіка́ч, і гоне́ць не врятується в них!</p>
-  </div>
-</div>
-<div class="vb" id="v9-2">
-  <span class="vn">2</span>
-  <div class="vt">
-    <p class="lat">Si descenderint usque ad infernum,  inde manus mea educet eos ;  et si ascenderint usque in cælum,  inde detraham eos.</p>
-    <p class="tra">Якщо б закопа́лись вони до шео́лу, то й звідти рука Моя їх забере́, і якщо б підняли́ся на небо, то й звідти їх ски́ну!</p>
-  </div>
-</div>
-<div class="vb" id="v9-3">
-  <span class="vn">3</span>
-  <div class="vt">
-    <p class="lat">Et si absconditi fuerint in vertice Carmeli,  inde scrutans auferam eos ;  et si celaverint se ab oculis meis in profundo maris,  ibi mandabo serpenti, et mordebit eos.</p>
-    <p class="tra">А якщо б похова́лись вони на верхови́ні Карме́лу, — звідти ви́шукаю й заберу́ їх, а якщо на дні моря вони похова́ються з-перед очей Моїх, то й там Я гадюці звелю́, — і вона їх покуса́є!</p>
-  </div>
-</div>
-<div class="vb" id="v9-4">
-  <span class="vn">4</span>
-  <div class="vt">
-    <p class="lat">Et si abierint in captivitatem coram inimicis suis,  ibi mandabo gladio, et occidet eos :  et ponam oculos meos super eos in malum,  et non in bonum.</p>
-    <p class="tra">А якщо вони пі́дуть в поло́н перед своїми ворогами, то й там накажу́ Я мече́ві — і він їх повбиває, і на них Я зверну́ Своє око на зле, а не на добре.</p>
-  </div>
-</div>
-<div class="vb" id="v9-5">
-  <span class="vn">5</span>
-  <div class="vt">
-    <p class="lat">Et Dominus Deus exercituum, qui tangit terram, et tabescet,  et lugebunt omnes habitantes in ea :  et ascendet sicut rivus omnis,  et defluet sicut fluvius Ægypti.</p>
-    <p class="tra">Бо коли Господь Бог Савао́т доторкне́ться землі, то розта́не вона, і в жало́бу впаду́ть всі мешка́нці її. І вся вона вийде, немов та Ріка́, і мов рі́чка Єгипту обни́зиться.</p>
-  </div>
-</div>
-<div class="vb" id="v9-6">
-  <span class="vn">6</span>
-  <div class="vt">
-    <p class="lat">Qui ædificat in cælo ascensionem suam,  et fasciculum suum super terram fundavit ;  qui vocat aquas maris,  et effundit eas super faciem terræ :  Dominus nomen ejus.</p>
-    <p class="tra">Він будує на небі черто́ги Свої, а Свій небозвід закла́в над землею, воду мо́рську Він кличе, і виливає її на пове́рхню землі, — Госпо́дь Йому Йме́ння!</p>
-  </div>
-</div>
-<div class="vb" id="v9-7">
-  <span class="vn">7</span>
-  <div class="vt">
-    <p class="lat">Numquid non ut filii Æthiopum  vos estis mihi, filii Israël ? ait Dominus.  Numquid non Israël ascendere feci de terra Ægypti,  et Palæstinos de Cappadocia,  et Syros de Cyrene ?</p>
-    <p class="tra">Хіба ж ви, Ізраїлеві сини, Мені не такі, як сини етіо́плян? говорить Господь. Хіба ж не Ізраїля вивів Я з кра́ю єгипетського, а филисти́млян з Кафто́ру, а Ара́ма із Кі́ру?</p>
-  </div>
-</div>
-<div class="vb" id="v9-8">
-  <span class="vn">8</span>
-  <div class="vt">
-    <p class="lat">Ecce oculi Domini Dei super regnum peccans :  et conteram illud a facie terræ ;  verumtamen conterens non conteram domum Jacob,  dicit Dominus.</p>
-    <p class="tra">Ось очі Господа Бога на грішне це царство, — і з пове́рхні землі його вигублю, та вигу́блюючи, не погублю́ дому Якового, говорить Господь.</p>
-  </div>
-</div>
-<div class="vb" id="v9-9">
-  <span class="vn">9</span>
-  <div class="vt">
-    <p class="lat">Ecce enim mandabo ego,  et concutiam in omnibus gentibus domum Israël,  sicut concutitur triticum in cribro,  et non cadet lapillus super terram.</p>
-    <p class="tra">Бо ось Я звелів, і серед наро́дів усіх пересі́ю Ізраїлів дім, як пересіва́ється ре́шетом, — і жодне зере́нце на землю не ви́паде!</p>
-  </div>
-</div>
-<div class="vb" id="v9-10">
-  <span class="vn">10</span>
-  <div class="vt">
-    <p class="lat">In gladio morientur omnes peccatores populi mei,  qui dicunt : Non appropinquabit,  et non veniet super nos malum.</p>
-    <p class="tra">Упаду́ть усі грішні наро́ду Мого від меча, що говорять: Не дося́гне до нас і не стріне оце́ нас нещастя!</p>
-  </div>
-</div>
-<div class="vb" id="v9-11">
-  <span class="vn">11</span>
-  <div class="vt">
-    <p class="lat">In die illa suscitabo tabernaculum David, quod cecidit :  et reædificabo aperturas murorum ejus,  et ea quæ corruerant instaurabo :  et reædificabo illud sicut in diebus antiquis,</p>
-    <p class="tra">Того дня Я поставлю упа́лу Давидову ски́нію і проло́ми в ній загороджу́, і поставлю руїни його́, і відбудую його́, як за днів старода́вніх,</p>
-  </div>
-</div>
-<div class="vb" id="v9-12">
-  <span class="vn">12</span>
-  <div class="vt">
-    <p class="lat">ut possideant reliquias Idumææ, et omnes nationes :  eo quod invocatum sit nomen meum super eos,  dicit Dominus faciens hæc.</p>
-    <p class="tra">щоб решту Едо́му посіли вони, і всі ті наро́ди, що в них кли́калося Моє Йме́ння, говорить Господь, Який чинить оце.</p>
-  </div>
-</div>
-<div class="vb" id="v9-13">
-  <span class="vn">13</span>
-  <div class="vt">
-    <p class="lat">Ecce dies veniunt, dicit Dominus,  et comprehendet arator messorem,  et calcator uvæ mittentem semen :  et stillabunt montes dulcedinem,  et omnes colli culti erunt.</p>
-    <p class="tra">Ось дні настають, говорить Господь, і ора́ч із женце́м зустрі́неться, а топта́ч винограду — із сіяче́м, і го́ри закра́пають виногра́довим соком, а всі взгі́р'я добром потечу́ть.</p>
-  </div>
-</div>
-<div class="vb" id="v9-14">
-  <span class="vn">14</span>
-  <div class="vt">
-    <p class="lat">Et convertam captivitatem populi mei Israël ;  et ædificabunt civitates desertas, et inhabitabunt ;  et plantabunt vineas, et bibent vinum earum,  et facient hortos, et comedent fructus eorum.</p>
-    <p class="tra">І долю наро́ду Свого, Ізра́їля, Я поверну́, і побудую міста́ попусто́шені, і ося́дуть вони, і заса́дять вони виноградники, й питимуть їхнє вино, і порозво́дять садки́, і будуть їсти їхній о́воч.</p>
-  </div>
-</div>
-<div class="vb" id="v9-15">
-  <span class="vn">15</span>
-  <div class="vt">
-    <p class="lat">Et plantabo eos super humum suam,  et non evellam eos ultra de terra sua, quam dedi eis,  dicit Dominus Deus tuus.</p>
-    <p class="tra">І Я посаджу́ їх на їхній землі, і не бу́дуть їх більш виривати з своєї землі, яку Я їм дав, говорить Госпо́дь, Бог твій!“</p>
-  </div>
-</div>
-</section>
-</main>
+  <section class="chapter" id="ch6">
+    <div class="chapter-marker">
+      <span class="ch-roman">VI</span>
+      <span class="ch-label">Caput 6</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v6-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Væ qui opulenti estis in Sion,  et confiditis in monte Samariæ :  optimates capita populorum,  ingredientes pompatice domum Israël !</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Горе безпе́чним на Сіоні, тим, хто наді́ється на самарійськую го́ру, тим шляхе́тним „першого з наро́дів“, до яких прибува́є Ізраїлів дім!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Transite in Chalane, et videte,  et ite inde in Emath magnam,  et descendite in Geth Palæstinorum,  et ad optima quæque regna horum :  si latior terminus eorum termino vestro est.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Перейді́ть до Калне́ та й побачте, і звідти підіть до Гама́ту великого, і зійді́ть до Ґату филисти́млян! Чи ліпші вони від цих царств? Чи їхня границя більша за вашу границю?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui separati estis in diem malum,  et appropinquatis solio iniquitatis ;</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">День нещастя вважаєте ви за далекий, а час насильства зближа́єте!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui dormitis in lectis eburneis,  et lascivitis in stratis vestris ;  qui comeditis agnum de grege,  et vitulos de medio armenti ;</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Ви виле́жуєтеся на ло́жах з слоно́вої кости і вива́люєтесь на постелях своїх, і їсте барані́в із отари та ситих теля́т із обо́ри.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui canitis ad vocem psalterii,  sicut David putaverunt se habere vasa cantici,</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Під гу́сла співаєте ви, мов Давид, ви музичні знаря́ддя собі видумля́єте.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">bibentes vinum in phialis,  et optimo unguento delibuti,  et nihil patiebantur super contritione Joseph.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Ви вино попива́єте ча́шами, і намащуєтесь добірною оливою, і над спусто́шенням Йо́сипа не вболіва́єте.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quapropter nunc migrabunt in capite transmigrantium,  et auferetur factio lascivientium.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Тому́ вони пі́дуть тепер на вигна́ння на чолі́ полоне́них, і перестане крик ви́пещених.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Juravit Dominus Deus in anima sua,  dicit Dominus Deus exercituum :  Detestor ego superbiam Jacob,  et domos ejus odi,  et tradam civitatem cum habitatoribus suis.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Господь присягнув був Своєю душею, говорить Господь, Бог Савао́т: Пишно́тою Якова бриджу, і пала́ти його Я нена́виджу, і видам те місто та все, що є в ньо́му.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quod si reliqui fuerint decem viri in domo una,  et ipsi morientur.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">І бу́де, якщо десять лю́да зоста́нуться в домі одно́му, то й вони повмирають.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et tollet eum propinquus suus, et comburet eum,  ut efferat ossa de domo ;  et dicet ei, qui in penetralibus domus est :  Numquid adhuc est penes te ?</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">І його візьме родич та й спалить його, щоб ви́нести кості із дому, і скаже до того, хто буде в сере́дині дому: „Чи ще є хто з тобою?“ А той відповість: „Вже немає ніко́го!“ і скаже той: „Тихше, бо не згадується Йме́ння Господа!“</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et respondebit : Finis est.  Et dicet ei : Tace,  et non recorderis nominis Domini.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Бо Господь ось накаже, — і ворог розі́б'є великий той дім на відла́мки, а дім мали́й — на тріски́.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quia ecce Dominus mandabit,  et percutiet domum majorem ruinis,  et domum minorem scissionibus.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Чи бігають коні по ске́лі? Чи хто виоре море худобою? Таж ви суд обернули на гіркість, а плід справедливости — на поли́н!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Numquid currere queunt in petris equi,  aut arari potest in bubalis ?  quoniam convertistis in amaritudinem judicium,  et fructum justitiæ in absinthium.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Ви марно́тою тішитеся та говорите: Хіба ж ми не власною силою набули́ собі роги ?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui lætamini in nihilo ; qui dicitis :  Numquid non in fortitudine nostra assumpsimus nobis cornua ?</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Бо ось Я поставлю наро́д проти вас, доме Ізраїлів, — каже Госпо́дь, Бог Савао́т, — і вони вас потиснуть ізвідти, де йдуть до Гама́ту, аж до степово́го пото́ку!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ecce enim suscitabo super vos, domus Israël,  dicit Dominus Deus exercituum, gentem,  et conteret vos ab introitu Emath usque ad torrentem deserti.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+  </section>
 
-<nav class="bnav">
-  <a href="029-joe.html">&#8592; Ioel</a>
-  <a href="../index.html" class="center">↑ &nbsp; Inhaltsverzeichnis</a>
-  <a href="031-oba.html">Abdias &#8594;</a>
-</nav>
+  <section class="chapter" id="ch7">
+    <div class="chapter-marker">
+      <span class="ch-roman">VII</span>
+      <span class="ch-label">Caput 7</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v7-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hæc ostendit mihi Dominus Deus : et ecce fictor locustæ in principio germinantium serotini imbris, et ecce serotinus post tonsionem regis.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Господь Бог учинив, що я бачив таке: Ось Він утворив сарану́, коли почала вироста́ти ота́ва, — і ось ота́ва як по сіноко́сі царсько́му!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et factum est, cum consummasset comedere herbam terræ, dixi : Domine Deus, propitius esto, obsecro ; quis suscitabit Jacob, quia parvulus est ?</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">І сталось, як вона вже поже́рла траву на землі, я сказав: Господи, Боже, прости́! Як же Яків устояти може, бо такий він мали́й?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Misertus est Dominus super hoc : Non erit, dixit Dominus.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">І Господь пожалів був про те. „Не станеться це“, промовив Госпо́дь.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hæc ostendit mihi Dominus Deus : et ecce vocabat judicium ad ignem Dominus Deus ; et devoravit abyssum multam, et comedit simul partem.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Господь Бог учинив, що я бачив таке: Ось Господь Бог покликав судитись огнем, і поже́р той велику безо́дню, і ча́стку пожер.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et dixi : Domine Deus, quiesce, obsecro ; quis suscitabit Jacob, quia parvulus est ?</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">І сказав я: О, Господи, Боже, спини́! Як же Яків усто́яти може, бо такий він мали́й?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Misertus est Dominus super hoc : Sed et istud non erit, dixit Dominus Deus.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">І Господь пожалів був про те. „Не ста́неться й це!“ сказав Господь Бог!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hæc ostendit mihi Dominus : et ecce Dominus stans super murum litum, et in manu ejus trulla cæmentarii.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">І Він знов учинив, що я бачив таке: Ось на мурі стрімко́му стоїть Господь Бог, а в руці Його висо́к.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et dixit Dominus ad me : Quid tu vides, Amos ? Et dixi : Trullam cæmentarii. Et dixit Dominus :   Ecce ego ponam trullam in medio populi mei Israël ;  non adjiciam ultra superinducere eum.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">І про́мовив до мене Господь: „Що ти бачиш, Амо́се?“ А я відказав: „Виска́“. І промовив Господь: „Ось Я цього виска́ покладу посеред народу Мого, Ізраїля, — уже більше йому не прощу́!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et demolientur excelsa idoli,  et sanctificationes Israël desolabuntur,  et consurgam super domum Jeroboam in gladio.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">І спустоші́ють жерто́вні підгі́рки Ісакові, і поруйно́вані будуть святині Ізраїлеві, і Я ста́ну з мечем на дім Єровоамів“.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et misit Amasias, sacerdos Bethel, ad Jeroboam, regem Israël, dicens : Rebellavit contra te Amos in medio domus Israël ; non poterit terra sustinere universos sermones ejus.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">І послав Амація, священик Бет-Елу, до Єровоама, царя Ізраїлевого, кажучи: „Амо́с змо́влюється на тебе серед Ізраїлевого дому, — не може земля змістити всіх його слів!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hæc enim dicit Amos : In gladio morietur Jeroboam, et Israël captivus migrabit de terra sua.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Бо так говорить Амос: Євровоам помре від меча, а Ізраїль конче пі́де на вигна́ння з своєї землі!“</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et dixit Amasias ad Amos : Qui vides, gradere : fuge in terram Juda, et comede ibi panem, et prophetabis ibi.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">І сказав Амація до Амоса: „Яснови́дче, іди, утікай собі до Юдиного кра́ю, і їж там хліб, і там пророкуй.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et in Bethel non adjicies ultra ut prophetes, quia sanctificatio regis est, et domus regni est.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">А в Бет-Елі вже більше не будеш пророкува́ти, бо він святиня царя та дім царства“.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Responditque Amos, et dixit ad Amasiam : Non sum propheta, et non sum filius prophetæ : sed armentarius ego sum vellicans sycomoros.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">І відповів Амос і сказав до Амації: „Я не пророк, і не син я пророків, — я пастух та обро́блювач диких фіґо́вниць.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et tulit me Dominus cum sequerer gregem, et dixit Dominus ad me : Vade, propheta ad populum meum Israël.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">І взяв мене Госпо́дь від отари, і промовив до мене Госпо́дь: Іди, пророкуй Моєму наро́дові Ізраїлеві!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et nunc audi verbum Domini :  Tu dicis : Non prophetabis super Israël,  et non stillabis super domum idoli.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">А тепер послухай Господнього слова: Ти кажеш: Не будеш пророкува́ти на Ізраїля, і не будеш пропові́дувати на Ісаків дім.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Propter hoc hæc dicit Dominus :  Uxor tua in civitate fornicabitur,  et filii tui et filiæ tuæ in gladio cadent,  et humus tua funiculo metietur :  et tu in terra polluta morieris,  et Israël captivus migrabit de terra sua.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Тому так промовляє Господь: Твоя жінка в місті буде блудли́ва, і сини твої та до́чки твої попа́дають від меча, а земля твоя буде поді́лена шнуром, і ти помреш на нечистій землі, а Ізраїль конче пі́де на вигна́ння з своєї землі!“</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch8">
+    <div class="chapter-marker">
+      <span class="ch-roman">VIII</span>
+      <span class="ch-label">Caput 8</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v8-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hæc ostendit mihi Dominus Deus : et ecce uncinus pomorum.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Господь Бог учинив, що я бачив таке: Ось кіш доспі́лих плоді́в.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et dixit : Quid tu vides, Amos ? Et dixi : Uncinum pomorum. Et dixit Dominus ad me :   Venit finis super populum meum Israël ;  non adjiciam ultra ut pertranseam eum.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">І сказав Він: „Що́ бачиш, Амо́се?“ А я відказав: „Кіш доспілих плоді́в“. І промовив до мене Господь: „Доспі́в кінець Моє́му наро́дові Ізраїлеві, — уже більше йому не прощу́!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et stridebunt cardines templi in die illa,  dicit Dominus Deus :  multi morientur ;  in omni loco projicietur silentium.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">І обе́рнуться пісні в пала́тах на зойк того дня, — говорить Господь Бог: буде тру́пів багато, — бо во́рог на кожному місці наки́дає їх!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Audite hoc, qui conteritis pauperem,  et deficere facitis egenos terræ,</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Послухайте це, ви, що то́пчете бідного, і що пра́гнете ви́нищити всіх убогих з землі,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">dicentes : Quando transibit mensis,  et venundabimus merces ?  et sabbatum, et aperiemus frumentum,  ut imminuamus mensuram, et augeamus siclum,  et supponamus stateras dolosas,</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">кажучи: Коли то мине новомі́сяччя, — щоб нам збіжжя прода́ти? і субота, — щоб нам відчини́ти збіже́ві комо́ри! Щоб зменши́ти ефу́, і щоб ше́кля побі́льшити, і щоб викривля́ти обманну вагу́,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">ut possideamus in argento egenos et pauperes pro calceamentis,  et quisquilias frumenti vendamus ?</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">щоб купува́ти за срі́бло нужде́нних, а вбогого за взуття́, і попро́дати по́слід збіже́вий?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Juravit Dominus in superbiam Jacob :  Si oblitus fuero usque ad finem omnia opera eorum.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Госпо́дь присягнув славою Якова: Не забуду ніко́ли усіх їхніх вчинків!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Numquid super isto non commovebitur terra,  et lugebit omnis habitator ejus,  et ascendet quasi fluvius universus,  et ejicicetur, et defluet, quasi rivus Ægypti ?</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Чи не затрясе́ться від цього земля, і всі мешка́нці її не впадуть у жало́бу? Вся вона захвилю́ється, мов та Ріка́, і бурхливо попли́не й обни́зиться знов, немов рі́чка Єгипту.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et erit in die illa, dicit Dominus Deus :  occidet sol in meridie,  et tenebrescere faciam terram in die luminis :</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">І станеться в день той, — говорить Господь Бог, — і вчиню́ захід сонця опі́вдні, і для землі серед світлого дня воно сте́мніє.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">et convertam festivitates vestras in luctum,  et omnia cantica vestra in planctum,  et inducam super omne dorsum vestrum saccum,  et super omne caput calvitium :  et ponam eam quasi luctum unigeniti,  et novissima ejus quasi diem amarum.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">І оберну́ ваші свята в жало́бу, а всі ваші пісні́ — в голосі́ння, і на всі сте́гна спрова́джу вере́ту, а на всякую го́лову ли́сину, і вчиню́ це, немов та жало́ба по одинако́ві, кінець же отого, — немов гірки́й день!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ecce dies veniunt, dicet Dominus,  et mittam famem in terram :  non famem panis, neque sitim aquæ,  sed audiendi verbum Domini.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Ось дні настаю́ть, — говорить Господь Бог, — і голод пошлю Я на землю, — не голод на хліб, і не спра́гу на во́ду, але спрагу почути Господні слова́!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et commovebuntur a mari usque ad mare,  et ab aquilone usque ad orientem :  circuibunt quærentes verbum Domini,  et non invenient.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">І бу́дуть ходити від моря до моря, і з пі́вночі до сходу блука́тимуть, щоб знайти слово Господа, — та не зна́йдуть його́!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">In die illa deficient virgines pulchræ et adolescentes in siti,</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Того дня будуть мліти від спра́ги вродли́ві дівчата та хлопці,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui jurant in delicto Samariæ,  et dicunt : Vivit Deus tuus, Dan,  et vivit via Bersabee ;  et cadent, et non resurgent ultra.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">що кляну́ться гріхом самарі́йським та кажуть: Як живий твій Бог, Дане, і як жива дорога до Беер-Шеви! Та вони всі попа́дають, і більше не встануть</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch9">
+    <div class="chapter-marker">
+      <span class="ch-roman">IX</span>
+      <span class="ch-label">Caput 9</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v9-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vidi Dominum stantem super altare, et dixit :   Percute cardinem,  et commoveantur superliminaria :  avaritia enim in capite omnium,  et novissimum eorum in gladio interficiam ;  non erit fuga eis.  Fugient, et non salvabitur ex eis qui fugerit.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Я бачив Господа, що стояв над же́ртівником, і Він сказав: Удар но по ма́ковиці цих воріт, щоб затрясли́ся поро́ги, і порозбивай їх на всіх їхніх го́ловах, а їхній останок заб'ю́ Я мечем. Не втече їм втіка́ч, і гоне́ць не врятується в них!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si descenderint usque ad infernum,  inde manus mea educet eos ;  et si ascenderint usque in cælum,  inde detraham eos.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Якщо б закопа́лись вони до шео́лу, то й звідти рука Моя їх забере́, і якщо б підняли́ся на небо, то й звідти їх ски́ну!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et si absconditi fuerint in vertice Carmeli,  inde scrutans auferam eos ;  et si celaverint se ab oculis meis in profundo maris,  ibi mandabo serpenti, et mordebit eos.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">А якщо б похова́лись вони на верхови́ні Карме́лу, — звідти ви́шукаю й заберу́ їх, а якщо на дні моря вони похова́ються з-перед очей Моїх, то й там Я гадюці звелю́, — і вона їх покуса́є!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et si abierint in captivitatem coram inimicis suis,  ibi mandabo gladio, et occidet eos :  et ponam oculos meos super eos in malum,  et non in bonum.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">А якщо вони пі́дуть в поло́н перед своїми ворогами, то й там накажу́ Я мече́ві — і він їх повбиває, і на них Я зверну́ Своє око на зле, а не на добре.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et Dominus Deus exercituum, qui tangit terram, et tabescet,  et lugebunt omnes habitantes in ea :  et ascendet sicut rivus omnis,  et defluet sicut fluvius Ægypti.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Бо коли Господь Бог Савао́т доторкне́ться землі, то розта́не вона, і в жало́бу впаду́ть всі мешка́нці її. І вся вона вийде, немов та Ріка́, і мов рі́чка Єгипту обни́зиться.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui ædificat in cælo ascensionem suam,  et fasciculum suum super terram fundavit ;  qui vocat aquas maris,  et effundit eas super faciem terræ :  Dominus nomen ejus.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Він будує на небі черто́ги Свої, а Свій небозвід закла́в над землею, воду мо́рську Він кличе, і виливає її на пове́рхню землі, — Госпо́дь Йому Йме́ння!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Numquid non ut filii Æthiopum  vos estis mihi, filii Israël ? ait Dominus.  Numquid non Israël ascendere feci de terra Ægypti,  et Palæstinos de Cappadocia,  et Syros de Cyrene ?</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Хіба ж ви, Ізраїлеві сини, Мені не такі, як сини етіо́плян? говорить Господь. Хіба ж не Ізраїля вивів Я з кра́ю єгипетського, а филисти́млян з Кафто́ру, а Ара́ма із Кі́ру?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ecce oculi Domini Dei super regnum peccans :  et conteram illud a facie terræ ;  verumtamen conterens non conteram domum Jacob,  dicit Dominus.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Ось очі Господа Бога на грішне це царство, — і з пове́рхні землі його вигублю, та вигу́блюючи, не погублю́ дому Якового, говорить Господь.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ecce enim mandabo ego,  et concutiam in omnibus gentibus domum Israël,  sicut concutitur triticum in cribro,  et non cadet lapillus super terram.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Бо ось Я звелів, і серед наро́дів усіх пересі́ю Ізраїлів дім, як пересіва́ється ре́шетом, — і жодне зере́нце на землю не ви́паде!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">In gladio morientur omnes peccatores populi mei,  qui dicunt : Non appropinquabit,  et non veniet super nos malum.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Упаду́ть усі грішні наро́ду Мого від меча, що говорять: Не дося́гне до нас і не стріне оце́ нас нещастя!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">In die illa suscitabo tabernaculum David, quod cecidit :  et reædificabo aperturas murorum ejus,  et ea quæ corruerant instaurabo :  et reædificabo illud sicut in diebus antiquis,</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Того дня Я поставлю упа́лу Давидову ски́нію і проло́ми в ній загороджу́, і поставлю руїни його́, і відбудую його́, як за днів старода́вніх,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">ut possideant reliquias Idumææ, et omnes nationes :  eo quod invocatum sit nomen meum super eos,  dicit Dominus faciens hæc.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">щоб решту Едо́му посіли вони, і всі ті наро́ди, що в них кли́калося Моє Йме́ння, говорить Господь, Який чинить оце.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ecce dies veniunt, dicit Dominus,  et comprehendet arator messorem,  et calcator uvæ mittentem semen :  et stillabunt montes dulcedinem,  et omnes colli culti erunt.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Ось дні настають, говорить Господь, і ора́ч із женце́м зустрі́неться, а топта́ч винограду — із сіяче́м, і го́ри закра́пають виногра́довим соком, а всі взгі́р'я добром потечу́ть.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et convertam captivitatem populi mei Israël ;  et ædificabunt civitates desertas, et inhabitabunt ;  et plantabunt vineas, et bibent vinum earum,  et facient hortos, et comedent fructus eorum.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">І долю наро́ду Свого, Ізра́їля, Я поверну́, і побудую міста́ попусто́шені, і ося́дуть вони, і заса́дять вони виноградники, й питимуть їхнє вино, і порозво́дять садки́, і будуть їсти їхній о́воч.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et plantabo eos super humum suam,  et non evellam eos ultra de terra sua, quam dedi eis,  dicit Dominus Deus tuus.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">І Я посаджу́ їх на їхній землі, і не бу́дуть їх більш виривати з своєї землі, яку Я їм дав, говорить Госпо́дь, Бог твій!“</div>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <nav class="book-nav">
+    <a href="029-joe.html">← Ioel</a>
+    <span class="center">Amos · Українська</span>
+    <a href="031-oba.html">Abdias →</a>
+  </nav>
+
+  <footer class="page-footer">
+    BIBLIA CATHOLICA INTERLINEARIS &nbsp;·&nbsp; Vulgata Clementina &amp; Біблія Огієнка (1930)
+    &nbsp;·&nbsp; Gemeinfreie Texte / Public Domain
+  </footer>
 
 </body>
 </html>

@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>I Ioannis · Hrvatski · Biblia Catholica</title>
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
+
+:root {
+  --gold:        #C8A96E;
+  --gold-light:  #EDD58A;
+  --gold-dark:   #8B6914;
+  --navy:        #1A1F3A;
+  --navy-mid:    #252B4A;
+  --navy-light:  #2E3560;
+  --parchment:   #F5E9CC;
+  --parchment-d: #EDD9A3;
+  --cream:       #FDF6E3;
+  --latin-color: #6B1E0E;
+  --trans-color: #0F1D2E;
+  --border:      rgba(200,169,110,.35);
+  --font-title:  'Cinzel Decorative', 'Cinzel', Georgia, serif;
+  --font-sub:    'Cinzel', Georgia, serif;
+  --font-body:   'EB Garamond', Georgia, serif;
+}
+
+*,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+html { font-size:16px; scroll-behavior:smooth; }
+body { background:var(--cream); color:var(--trans-color); font-family:var(--font-body); }
+
+/* ── NAV ─────────────────────────────────────────────── */
+.nav-bar {
+  background:var(--navy); padding:10px 28px;
+  display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  border-bottom:2px solid var(--gold);
+  position:sticky; top:0; z-index:100;
+  box-shadow:0 3px 12px rgba(0,0,0,.45);
+}
+.nav-bar a {
+  color:var(--gold); text-decoration:none;
+  font-family:var(--font-sub); font-size:.75rem; letter-spacing:.05em;
+  transition:color .15s;
+}
+.nav-bar a:hover { color:var(--gold-light); }
+.nav-bar .home { font-weight:700; font-size:.82rem; }
+.nav-bar .spacer { flex:1; }
+.nav-bar .pos { color:rgba(200,169,110,.45); font-size:.7rem; font-family:var(--font-sub); }
+
+/* ── BUCHKOPF ────────────────────────────────────────── */
+.book-header {
+  background:linear-gradient(160deg,var(--navy) 0%,var(--navy-mid) 55%,var(--navy-light) 100%);
+  padding:44px 36px 34px; text-align:center;
+  border-bottom:4px solid var(--gold);
+  position:relative; overflow:hidden;
+}
+.book-header::before {
+  content:'';
+  position:absolute; inset:0;
+  background-image:
+    repeating-linear-gradient( 45deg,transparent,transparent 30px,rgba(200,169,110,.038) 30px,rgba(200,169,110,.038) 31px),
+    repeating-linear-gradient(-45deg,transparent,transparent 30px,rgba(200,169,110,.038) 30px,rgba(200,169,110,.038) 31px);
+  pointer-events:none;
+}
+.testament-badge {
+  display:inline-block;
+  border:1px solid rgba(200,169,110,.4); color:rgba(200,169,110,.65);
+  font-family:var(--font-sub); font-size:.62rem; letter-spacing:.25em;
+  padding:4px 14px; border-radius:2px; margin-bottom:14px; position:relative;
+}
+.book-name-latin {
+  font-family:var(--font-title); font-size:3rem; color:var(--gold-light);
+  text-shadow:0 3px 18px rgba(0,0,0,.55); letter-spacing:.08em; position:relative;
+}
+.book-name-trans {
+  font-family:var(--font-sub); font-size:1.1rem; color:var(--gold);
+  margin-top:8px; letter-spacing:.12em; position:relative;
+}
+.book-meta {
+  font-size:.74rem; color:rgba(200,169,110,.5); margin-top:7px;
+  font-family:var(--font-sub); letter-spacing:.07em; position:relative;
+}
+
+/* ── ORNAMENT-TRENNLINIE ─────────────────────────────── */
+.ornament-bar {
+  text-align:center; padding:16px 0 4px;
+  color:var(--gold); font-size:1.1rem; letter-spacing:.7em;
+}
+
+/* ── HAUPT-CONTAINER ─────────────────────────────────── */
+.content { max-width:960px; margin:0 auto; padding:0 24px 80px; }
+
+/* ── KAPITEL-MARKER ──────────────────────────────────── */
+.chapter-marker {
+  display:flex; align-items:center; gap:16px;
+  padding:28px 6px 12px; margin-bottom:4px;
+  border-bottom:2px solid var(--border);
+}
+.ch-roman {
+  font-family:var(--font-title); font-size:2.2rem; color:var(--gold);
+  min-width:56px; text-align:center; flex-shrink:0;
+  text-shadow:0 1px 8px rgba(200,169,110,.3);
+}
+.ch-label {
+  font-family:var(--font-sub); font-size:.72rem; color:rgba(200,169,110,.6);
+  letter-spacing:.22em; text-transform:uppercase;
+}
+
+/* ── VERS-BLOCK ──────────────────────────────────────── */
+.verse-block {
+  display:flex; gap:0; border-bottom:1px solid rgba(200,169,110,.15);
+}
+.verse-block:nth-child(odd)  { background:var(--cream); }
+.verse-block:nth-child(even) { background:var(--parchment); }
+
+.verse-num-col {
+  flex-shrink:0; width:42px; padding:16px 6px 16px 0; text-align:right;
+}
+.verse-num {
+  display:inline-block; width:28px; height:28px; border-radius:50%;
+  background:var(--gold-dark); color:var(--cream);
+  font-family:var(--font-sub); font-size:.64rem; font-weight:700;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 1px 5px rgba(0,0,0,.25);
+}
+
+.verse-texts { flex:1; padding:16px 16px 18px 8px; }
+
+/* ── LATEINISCHER TEXT (oben / primär) ───────────────── */
+.latin {
+  font-family:var(--font-body); font-size:1.12rem; line-height:1.9;
+  color:var(--latin-color); font-weight:500;
+  border-left:3px solid var(--gold); padding-left:12px;
+  margin-bottom:8px;
+}
+
+/* ── ÜBERSETZUNGS-TEXT (unten / sekundär) ────────────── */
+.trans-label {
+  font-family:var(--font-sub); font-size:.6rem; letter-spacing:.17em;
+  text-transform:uppercase; color:var(--gold-dark); margin-bottom:5px; opacity:.78;
+}
+.trans {
+  font-family:var(--font-body); font-size:1.04rem; line-height:1.85;
+  color:var(--trans-color); font-style:italic;
+  padding-left:15px;
+}
+
+/* Erste Vers jedes Kapitels: Drop-Cap */
+.verse-block:first-of-type .latin::first-letter {
+  font-size:4.2em; float:left; line-height:.72;
+  padding-right:.08em; margin-top:.06em;
+  font-family:var(--font-title); color:var(--gold);
+}
+
+/* ── NAVIGATION ZWISCHEN BÜCHERN ─────────────────────── */
+.book-nav {
+  display:flex; justify-content:space-between; align-items:center;
+  background:var(--navy); border-top:3px solid var(--gold);
+  padding:12px 26px; gap:12px;
+}
+.book-nav a {
+  color:var(--gold); text-decoration:none;
+  font-family:var(--font-sub); font-size:.78rem; letter-spacing:.07em;
+  padding:6px 14px; border:1px solid rgba(200,169,110,.3); border-radius:3px;
+  transition:background .18s;
+}
+.book-nav a:hover { background:rgba(200,169,110,.15); }
+.book-nav .center {
+  font-family:var(--font-sub); font-size:.7rem; color:rgba(200,169,110,.55);
+  letter-spacing:.1em; text-align:center;
+}
+
+/* ── FUßZEILE ────────────────────────────────────────── */
+.page-footer {
+  background:var(--navy); border-top:2px solid rgba(200,169,110,.3);
+  padding:18px 28px; text-align:center;
+  color:rgba(200,169,110,.45); font-family:var(--font-sub);
+  font-size:.68rem; letter-spacing:.1em;
+}
+
+/* ── DRUCK ───────────────────────────────────────────── */
+@media print {
+  .nav-bar, .book-nav { display:none; }
+  .verse-block { break-inside:avoid; }
+  .book-header { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+}
+
+/* ── MOBIL ───────────────────────────────────────────── */
+@media (max-width:640px) {
+  .book-name-latin { font-size:2.1rem; }
+  .ch-roman { font-size:1.6rem; }
+  .latin { font-size:.98rem; }
+  .trans { font-size:.93rem; }
+  .content { padding:0 12px 60px; }
+}
+</style>
+</head>
+<body>
+
+  <nav class="nav-bar">
+    <a class="home" href="../../../index.html">✞ BIBLIA CATHOLICA</a>
+    <a href="../index.html">🇭🇷 Hrvatski</a>
+    <span class="spacer"></span>
+    <span class="pos">062 / 073</span>
+  </nav>
+
+  <header class="book-header">
+    <div class="testament-badge">NOVUM TESTAMENTUM</div>
+    <div class="book-name-latin">I IOANNIS</div>
+    <div class="book-name-trans">1 John</div>
+    <div class="book-meta">Vulgata Clementina · Hrvatska Biblija (PD, 1895) · 5 Capita · 105 Versus</div>
+  </header>
+
+  <div class="ornament-bar">❧ ✦ ❧ ✦ ❧</div>
+
+  <main class="content">
+
+  <section class="chapter" id="ch1">
+    <div class="chapter-marker">
+      <span class="ch-roman">I</span>
+      <span class="ch-label">Caput 1</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v1-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quod fuit ab initio, quod audivimus, quod vidimus oculis nostris, quod perspeximus, et manus nostræ contrectaverunt de verbo vitæ :</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Što bijaše od početka, što smo čuli, što smo vidjeli očima svojim, što razmotrismo i ruke naše opipaše o Riječi, Životu -</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">et vita manifestata est, et vidimus, et testamur, et annuntiamus vobis vitam æternam, quæ erat apud Patrem, et apparuit nobis :</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">da, Život se očitova, i vidjeli smo i svjedočimo, i navješćujemo vam Život vječni, koji bijaše kod Oca i očitova se nama -</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">quod vidimus et audivimus, annuntiamus vobis, ut et vos societatem habeatis nobiscum, et societas nostra sit cum Patre, et cum Filio ejus Jesu Christo.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">što smo vidjeli i čuli, navješćujemo i vama da i vi imate zajedništvo s nama. A naše je zajedništvo s Ocem i sa Sinom njegovim Isusom Kristom.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et hæc scribimus vobis ut gaudeatis, et gaudium vestrum sit plenum.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">I to vam pišemo da radost naša bude potpuna.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et hæc est annuntiatio, quam audivimus ab eo, et annuntiamus vobis : quoniam Deus lux est, et tenebræ in eo non sunt ullæ.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">A ovo je navještaj koji smo čuli od njega i navješćujemo vama: Bog je svjetlost i tame u njemu nema nikakve!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si dixerimus quoniam societatem habemus cum eo, et in tenebris ambulamus, mentimur, et veritatem non facimus.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Reknemo li da imamo zajedništvo s njim, a u tami hodimo, lažemo i ne činimo istine.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si autem in luce ambulamus sicut et ipse est in luce, societatem habemus ad invicem, et sanguis Jesu Christi, Filii ejus, emundat nos ab omni peccato.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Ako u svjetlosti hodimo, kao što je on u svjetlosti, imamo zajedništvo jedni s drugima i krv Isusa, Sina njegova, čisti nas od svakoga grijeha.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si dixerimus quoniam peccatum non habemus, ipsi nos seducimus, et veritas in nobis non est.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Reknemo li da grijeha nemamo, sami sebe varamo i istine nema u nama.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si confiteamur peccata nostra : fidelis est, et justus, ut remittat nobis peccata nostra, et emundet nos ab omni iniquitate.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Ako priznamo grijehe svoje, vjeran je on i pravedan: otpustit će nam grijehe i očistiti nas od svake nepravde.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si dixerimus quoniam non peccavimus, mendacem facimus eum, et verbum ejus non est in nobis.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Reknemo li da nismo zgriješili, pravimo ga lašcem i riječi njegove nema u nama.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch2">
+    <div class="chapter-marker">
+      <span class="ch-roman">II</span>
+      <span class="ch-label">Caput 2</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v2-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Filioli mei, hæc scribo vobis, ut non peccetis. Sed et si quis peccaverit, advocatum habemus apud Patrem, Jesum Christum justum :</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Dječice moja, ovo vam pišem da ne griješite. Ako tko i sagriješi, zagovornika imamo kod Oca - Isusa Krista, Pravednika.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">et ipse est propitiatio pro peccatis nostris : non pro nostris autem tantum, sed etiam pro totius mundi.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">On je pomirnica za grijeha naše, i ne samo naše, nego i svega svijeta.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et in hoc scimus quoniam cognovimus eum, si mandata ejus observemus.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">I po ovom znamo da ga poznajemo: ako zapovijedi njegove čuvamo.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui dicit se nosse eum, et mandata ejus non custodit, mendax est, et in hoc veritas non est.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Tko veli: &quot;Poznajem ga&quot;, a zapovijedi njegovih ne čuva, lažac je, u njemu nema istine.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui autem servat verbum ejus, vere in hoc caritas Dei perfecta est : et in hoc scimus quoniam in ipso sumus.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">A tko čuva riječ njegovu, u njemu je zaista savršena ljubav Božja. Po tom znamo da smo u njemu.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui dicit se in ipso manere, debet, sicut ille ambulavit, et ipse ambulare.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Tko veli da u njemu ostaje, valja mu ići putom kojim je on hodio.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Carissimi, non mandatum novum scribo vobis, sed mandatum vetus, quod habuistis ab initio. Mandatum vetus est verbum, quod audistis.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Ljubljeni, pišem vam ne novu zapovijed, nego staru zapovijed, koju ste imali od početka. Ta stara zapovijed jest riječ koju ste čuli.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Iterum mandatum novum scribo vobis, quod verum est et in ipso, et in vobis : quia tenebræ transierunt, et verum lumen jam lucet.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">A opet, novu vam zapovijed pišem - obistinjuje se u njemu i vama - jer tama prolazi, svjetlost istinita već svijetli.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui dicit se in luce esse, et fratrem suum odit, in tenebris est usque adhuc.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Tko veli da je u svjetlosti, a mrzi brata svojega, u tami je sve do sada.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui diligit fratrem suum, in lumine manet, et scandalum in eo non est.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Tko ljubi brata svojega, u svjetlosti ostaje i sablazni u njemu nema.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui autem odit fratrem suum, in tenebris est, et in tenebris ambulat, et nescit quo eat : quia tenebræ obcæcaverunt oculos ejus.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">A tko mrzi brata svojega, u tami je, u tami hodi i ne zna kamo ide jer mu tama zaslijepi oči.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Scribo vobis, filioli, quoniam remittuntur vobis peccata propter nomen ejus.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Pišem vama, dječice, jer su vam grijesi oprošteni po njegovu imenu.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Scribo vobis, patres, quoniam cognovistis eum, qui ab initio est. Scribo vobis, adolescentes, quoniam vicistis malignum.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Pišem vama, oci, jer upoznaste onoga koji je od početka. Pišem vama, mladići, jer ste pobijedili Zloga.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Scribo vobis, infantes, quoniam cognovistis patrem. Scribo vobis juvenes, quoniam fortes estis, et verbum Dei manet in vobis, et vicistis malignum.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Napisah vama, djeco, jer upoznaste Oca. Napisah vama, oci, jer upoznaste onoga koji je od početka. Napisah vama, mladići, jer ste jaki i riječ Božja u vama ostaje i pobijedili ste Zloga.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nolite diligere mundum, neque ea quæ in mundo sunt. Si quis diligit mundum, non est caritas Patris in eo :</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Ne ljubite svijeta ni što je u svijetu. Ako tko ljubi svijet, nema u njemu ljubavi Očeve.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">quoniam omne quod est in mundo, concupiscentia carnis est, et concupiscentia oculorum, et superbia vitæ : quæ non est ex Patre, sed ex mundo est.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Jer što je god svjetovno - požuda tijela, i požuda očiju, i oholost života - nije od Oca, nego od svijeta.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et mundus transit, et concupiscentia ejus : qui autem facit voluntatem Dei manet in æternum.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Svijet prolazi i požuda njegova, a tko čini volju Božju, ostaje dovijeka.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Filioli, novissima hora est : et sicut audistis quia antichristus venit, et nunc antichristi multi facti sunt ; unde scimus, quia novissima hora est.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Djeco, posljednji je čas! I, kako ste čuli, dolazi Antikrist. I sad su se već mnogi antikristi pojavili. Odatle znamo da je posljednji čas.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ex nobis prodierunt, sed non erant ex nobis, nam, si fuissent ex nobis, permansissent utique nobiscum : sed ut manifesti sint quoniam non sunt omnes ex nobis.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Od nas iziđoše, ali ne bijahu od nas. Jer kad bi bili od nas, ostali bi s nama; ali neka se očituje da nisu od nas.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sed vos unctionem habetis a Sancto, et nostis omnia.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">A vi imate Pomazanje od Svetoga, i znanje svi imate.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non scripsi vobis quasi ignorantibus veritatem, sed quasi scientibus eam : et quoniam omne mendacium ex veritate non est.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Ne pisah vam zato što ne biste znali istine, nego jer je znate i jer znate da nikakva laž nije od istine.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-22">
+      <div class="verse-num-col"><div class="verse-num">22</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quis est mendax, nisi is qui negat quoniam Jesus est Christus ? Hic est antichristus, qui negat Patrem, et Filium.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Tko je lažac, ako ne onaj koji tvrdi da Isus nije Krist? Antikrist je onaj</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-23">
+      <div class="verse-num-col"><div class="verse-num">23</div></div>
+      <div class="verse-texts">
+        <div class="latin">Omnis qui negat Filium, nec Patrem habet : qui confitetur Filium, et Patrem habet.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">tko niječe Oca i Sina. Svaki koji niječe Sina, nema ni Oca, a tko priznaje Sina, ima i Oca.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-24">
+      <div class="verse-num-col"><div class="verse-num">24</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vos quod audistis ab initio, in vobis permaneat : si in vobis permanserit quod audistis ab initio, et vos in Filio et Patre manebitis.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">A vi - što čuste od početka, u vama nek ostane. Ako u vama ostane što čuste od početka, i vi ćete ostati u Sinu i Ocu.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-25">
+      <div class="verse-num-col"><div class="verse-num">25</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et hæc est repromissio, quam ipse pollicitus est nobis, vitam æternam.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">A ovo je obećanje koje nam on obeća: život vječni.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-26">
+      <div class="verse-num-col"><div class="verse-num">26</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hæc scripsi vobis de his, qui seducant vos.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Ovo vam napisah o onima koji vas zavode.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-27">
+      <div class="verse-num-col"><div class="verse-num">27</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et vos unctionem, quam accepistis ab eo, maneat in vobis. Et non necesse habetis ut aliquis doceat vos : sed sicut unctio ejus docet vos de omnibus, et verum est, et non est mendacium. Et sicut docuit vos : manete in eo.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">A vi - Pomazanje koje primiste od njega u vama ostaje i ne treba da vas itko poučava. Nego njegovo vas Pomazanje uči o svemu, a istinito je i nije laž, pa kao što vas je ono naučilo, ostanite u Njemu.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-28">
+      <div class="verse-num-col"><div class="verse-num">28</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et nunc, filioli, manete in eo : ut cum apparuerit, habeamus fiduciam, et non confundamur ab eo in adventu ejus.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">I sada, dječice, ostanite u njemu da budemo puni pouzdanja kad se pojavi te se ne postidimo pred njim o njegovu dolasku.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-29">
+      <div class="verse-num-col"><div class="verse-num">29</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si scitis quoniam justus est, scitote quoniam et omnis, qui facit justitiam, ex ipso natus est.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Ako znate da je on Pravednik, znate i da je svaki koji čini pravdu od njega rođen.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch3">
+    <div class="chapter-marker">
+      <span class="ch-roman">III</span>
+      <span class="ch-label">Caput 3</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v3-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Videte qualem caritatem dedit nobis Pater, ut filii Dei nominemur et simus. Propter hoc mundus non novit nos : quia non novit eum.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Gledajte koliku nam je ljubav darovao Otac: djeca se Božja zovemo, i jesmo. A svijet nas ne poznaje zato što ne poznaje njega.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Carissimi, nunc filii Dei sumus : et nondum apparuit quid erimus. Scimus quoniam cum apparuerit, similes ei erimus : quoniam videbimus eum sicuti est.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Ljubljeni, sad smo djeca Božja i još se ne očitova što ćemo biti. Znamo: kad se očituje, bit ćemo njemu slični, jer vidjet ćemo ga kao što jest.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et omnis qui habet hanc spem in eo, sanctificat se, sicut et ille sanctus est.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">I tko god ima tu nadu u njemu, čisti se kao što je on čist.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Omnis qui facit peccatum, et iniquitatem facit : et peccatum est iniquitas.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Tko god čini grijeh, čini i bezakonje; ta grijeh je bezakonje.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et scitis quia ille apparuit ut peccata nostra tolleret : et peccatum in eo non est.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">I znate: on se pojavi da odnese grijehe i grijeha nema u njemu.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Omnis qui in eo manet, non peccat : et omnis qui peccat, non vidit eum, nec cognovit eum.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Tko god u njemu ostaje, ne griješi. Tko god griješi, nije ga vidio nit upoznao.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Filioli, nemo vos seducat. Qui facit justitiam, justus est, sicut et ille justus est.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Dječice, nitko neka vas ne zavede! Tko čini pravdu, pravedan je kao što je On pravedan.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui facit peccatum, ex diabolo est : quoniam ab initio diabolus peccat. In hoc apparuit Filius Dei, ut dissolvat opera diaboli.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Tko čini grijeh, od đavla je jer đavao griješi od početka. Zato se pojavi Sin Božji: da razori djela đavolska.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Omnis qui natus est ex Deo, peccatum non facit : quoniam semen ipsius in eo manet, et non potest peccare, quoniam ex Deo natus est.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Tko god je rođen od Boga, ne čini grijeha jer njegovo sjeme ostaje u njemu; ne može griješiti jer je rođen od Boga.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">In hoc manifesti sunt filii Dei, et filii diaboli. Omnis qui non est justus, non est ex Deo, et qui non diligit fratrem suum :</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Po ovom se raspoznaju djeca Božja i djeca đavolska: tko god ne čini pravde i tko ne ljubi brata, nije od Boga.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">quoniam hæc est annuntiatio, quam audistis ab initio, ut diligatis alterutrum.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Jer ovo je navještaj koji čuste od početka: da ljubimo jedni druge.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non sicut Cain, qui ex maligno erat, et occidit fratrem suum. Et propter quid occidit eum ? Quoniam opera ejus maligna erant : fratris autem ejus, justa.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Ne kao Kajin, koji bijaše od Zloga i ubi brata svog. A zašto ga ubi? Jer mu djela bijahu zla, a bratova pravedna.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nolite mirari, fratres, si odit vos mundus.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Ne čudite se, braćo ako vas svijet mrzi.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nos scimus quoniam translati sumus de morte ad vitam, quoniam diligimus fratres. Qui non diligit, manet in morte :</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Mi znamo da smo iz smrti prešli u život jer ljubimo braću; tko ne ljubi, ostaje u smrti.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">omnis qui odit fratrem suum, homicida est. Et scitis quoniam omnis homicida non habet vitam æternam in semetipso manentem.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Tko god mrzi brata svoga, ubojica je. A znate da nijedan ubojica nema u sebi trajnoga, vječnoga života.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">In hoc cognovimus caritatem Dei, quoniam ille animam suam pro nobis posuit : et nos debemus pro fratribus animas ponere.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Po ovom smo upoznali Ljubav: on je za nas položio život svoj. I mi smo dužni živote položiti za braću.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui habuerit substantiam hujus mundi, et viderit fratrem suum necessitatem habere, et clauserit viscera sua ab eo : quomodo caritas Dei manet in eo ?</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Tko ima dobra ovoga svijeta i vidi brata svoga u potrebi pa zatvori pred njim srce - kako ljubav Božja ostaje u njemu?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Filioli mei, non diligamus verbo neque lingua, sed opere et veritate :</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Dječice, ne ljubimo riječju i jezikom, već djelom i istinom.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">in hoc cognoscimus quoniam ex veritate sumus : et in conspectu ejus suadebimus corda nostra.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Po tom ćemo znati da smo od istine. I umirit ćemo pred njim srce svoje</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quoniam si reprehenderit nos cor nostrum : major est Deus corde nostro, et novit omnia.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">ako nas ono bilo u čem osuđuje. Jer Bog je veći od našega srca i znade sve.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">Carissimi, si cor nostrum non reprehenderit nos, fiduciam habemus ad Deum :</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Ljubljeni, ako nas srce ne osuđuje, možemo zaufano k Bogu.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-22">
+      <div class="verse-num-col"><div class="verse-num">22</div></div>
+      <div class="verse-texts">
+        <div class="latin">et quidquid petierimus, accipiemus ab eo : quoniam mandata ejus custodimus, et ea, quæ sunt placita coram eo, facimus.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">I što god ištemo, primamo od njega jer zapovijedi njegove čuvamo i činimo što je njemu drago.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-23">
+      <div class="verse-num-col"><div class="verse-num">23</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et hoc est mandatum ejus : ut credamus in nomine Filii ejus Jesu Christi : et diligamus alterutrum, sicut dedit mandatum nobis.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">I ovo je zapovijed njegova: da vjerujemo u ime Sina njegova Isusa Krista i da ljubimo jedni druge kao što nam je dao zapovijed.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-24">
+      <div class="verse-num-col"><div class="verse-num">24</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et qui servat mandata ejus, in illo manet, et ipse in eo : et in hoc scimus quoniam manet in nobis, de Spiritu quem dedit nobis.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">I tko čuva zapovijedi njegove, u njemu ostaje, i On u njemu. I po ovom znamo da on ostaje u nama: po Duhu kojeg nam je dao.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch4">
+    <div class="chapter-marker">
+      <span class="ch-roman">IV</span>
+      <span class="ch-label">Caput 4</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v4-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Carissimi, nolite omni spiritui credere, sed probate spiritus si ex Deo sint : quoniam multi pseudoprophetæ exierunt in mundum.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Ljubljeni, ne vjerujte svakom duhu, nego provjeravajte duhove jesu li od Boga, jer su mnogi lažni proroci izišli u svijet.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">In hoc cognoscitur Spiritus Dei : omnis spiritus qui confitetur Jesum Christum in carne venisse, ex Deo est :</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Po ovom prepoznajete Duha Božjega: svaki duh koji ispovijeda da je Isus Krist došao u tijelu, od Boga je.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">et omnis spiritus qui solvit Jesum, ex Deo non est, et hic est antichristus, de quo audistis quoniam venit, et nunc jam in mundo est.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">A nijedan duh koji ne ispovijeda takva Isusa, nije od Boga: on je Antikristov, a za nj ste čuli da dolazi i sad je već na svijetu.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vos ex Deo estis filioli, et vicistis eum, quoniam major est qui in vobis est, quam qui in mundo.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Vi ste, dječice, od Boga i pobijedili ste ih jer je moćniji Onaj koji je u vama nego onaj koji je u svijetu.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ipsi de mundo sunt : ideo de mundo loquuntur, et mundus eos audit.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Oni su od svijeta, zato iz svijeta govore i svijet ih sluša.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nos ex Deo sumus. Qui novit Deum, audit nos ; qui non est ex Deo, non audit nos : in hoc cognoscimus Spiritum veritatis, et spiritum erroris.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Mi smo od Boga. Tko poznaje Boga, nas sluša, a tko nije od Boga, ne sluša nas. Po tom prepoznajemo Duha istine i duha zablude.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Carissimi, diligamus nos invicem : quia caritas ex Deo est. Et omnis qui diligit, ex Deo natus est, et cognoscit Deum.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Ljubljeni, ljubimo jedni druge jer ljubav je od Boga; i svaki koji ljubi, od Boga je rođen i poznaje Boga.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui non diligit, non novit Deum : quoniam Deus caritas est.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Tko ne ljubi, ne upozna Boga jer Bog je ljubav.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">In hoc apparuit caritas Dei in nobis, quoniam Filium suum unigenitum misit Deus in mundum, ut vivamus per eum.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">U ovom se očitova ljubav Božja u nama: Bog Sina svoga jedinorođenoga posla u svijet da živimo po njemu.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">In hoc est caritas : non quasi nos dilexerimus Deum, sed quoniam ipse prior dilexit nos, et misit Filium suum propitiationem pro peccatis nostris.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">U ovom je ljubav: ne da smo mi ljubili Boga, nego - on je ljubio nas i poslao Sina svoga kao pomirnicu za grijehe naše.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Carissimi, si sic Deus dilexit nos : et nos debemus alterutrum diligere.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Ljubljeni, ako je Bog tako ljubio nas, i mi smo dužni ljubiti jedni druge.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Deum nemo vidit umquam. Si diligamus invicem, Deus in nobis manet, et caritas ejus in nobis perfecta est.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Boga nitko nikada ne vidje. Ako ljubimo jedni druge, Bog ostaje u nama, i ljubav je njegova u nama savršena.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">In hoc cognoscimus quoniam in eo manemus, et ipse in nobis : quoniam de Spiritu suo dedit nobis.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Po ovom znamo da ostajemo u njemu i on u nama: od Duha nam je svoga dao.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et nos vidimus, et testificamur quoniam Pater misit Filium suum Salvatorem mundi.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">I mi smo vidjeli i svjedočimo da je Otac poslao Sina kao Spasitelja svijeta.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quisquis confessus fuerit quoniam Jesus est Filius Dei, Deus in eo manet, et ipse in Deo.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Tko ispovijeda da je Isus Sin Božji, Bog ostaje u njemu, i on u Bogu.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et nos cognovimus, et credidimus caritati, quam habet Deus in nobis. Deus caritas est : et qui manet in caritate, in Deo manet, et Deus in eo.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">I mi smo upoznali ljubav koju Bog ima prema nama i povjerovali joj. Bog je ljubav i tko ostaje u ljubavi, u Bogu ostaje, i Bog u njemu.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">In hoc perfecta est caritas Dei nobiscum, ut fiduciam habeamus in die judicii : quia sicut ille est, et nos sumus in hoc mundo.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">U ovom je savršenstvo naše uzajamne ljubavi: imamo pouzdanje na Sudnji dan jer kakav je on, takvi smo i mi u ovom svijetu.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Timor non est in caritate : sed perfecta caritas foras mittit timorem, quoniam timor pœnam habet : qui autem timet, non est perfectus in caritate.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Straha u ljubavi nema, nego savršena ljubav izgoni strah; jer strah je muka i tko se boji, nije savršen u ljubavi.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nos ergo diligamus Deum, quoniam Deus prior dilexit nos.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Mi ljubimo jer on nas prije uzljubi.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si quis dixerit : Quoniam diligo Deum, et fratrem suum oderit, mendax est. Qui enim non diligit fratrem suum quem vidit, Deum, quem non vidit, quomodo potest diligere ?</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Rekne li tko: &quot;Ljubim Boga&quot;, a mrzi brata svog, lažac je. Jer tko ne ljubi svoga brata kojega vidi, Boga kojega ne vidi ne može ljubiti.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et hoc mandatum habemus a Deo : ut qui diligit Deum, diligat et fratrem suum.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">I ovu zapovijed imamo od njega: Tko ljubi Boga, da ljubi i brata svoga.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch5">
+    <div class="chapter-marker">
+      <span class="ch-roman">V</span>
+      <span class="ch-label">Caput 5</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v5-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Omnis qui credit quoniam Jesus est Christus, ex Deo natus est. Et omnis qui diligit eum qui genuit, diligit et eum qui natus est ex eo.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Tko god vjeruje: &quot;Isus je Krist&quot;, od Boga je rođen. I tko god ljubi roditelja, ljubi i rođenoga.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">In hoc cognoscimus quoniam diligamus natos Dei, cum Deum diligamus, et mandata ejus faciamus.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Po ovom znamo da ljubimo djecu Božju: kad Boga ljubimo i zapovijedi njegove vršimo.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hæc est enim caritas Dei, ut mandata ejus custodiamus : et mandata ejus gravia non sunt.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Jer ljubav je Božja ovo: zapovijedi njegove čuvati. A zapovijedi njegove nisu teške.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quoniam omne quod natum est ex Deo, vincit mundum : et hæc est victoria, quæ vincit mundum, fides nostra.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Jer sve što je od Boga rođeno, pobjeđuje svijet. I ovo je pobjeda što pobijedi svijet: vjera naša.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quis est, qui vincit mundum, nisi qui credit quoniam Jesus est Filius Dei ?</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Ta tko to pobjeđuje svijet ako ne onaj tko vjeruje da je Isus Sin Božji?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hic est, qui venit per aquam et sanguinem, Jesus Christus : non in aqua solum, sed in aqua et sanguine. Et Spiritus est, qui testificatur quoniam Christus est veritas.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">On, Isus Krist, dođe kroz vodu i krv. Ne samo u vodi nego - u vodi i krvi. I Duh je koji svjedoči jer Duh je istina.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quoniam tres sunt, qui testimonium dant in cælo : Pater, Verbum, et Spiritus Sanctus : et hi tres unum sunt.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Jer troje je što svjedoči:</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et tres sunt, qui testimonium dant in terra : spiritus, et aqua, et sanguis : et hi tres unum sunt.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Duh, voda i krv; i to je troje jedno.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si testimonium hominum accipimus, testimonium Dei majus est : quoniam hoc est testimonium Dei, quod majus est, quoniam testificatus est de Filio suo.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Ako primamo svjedočanstvo ljudi, svjedočanstvo je Božje veće. Jer ovo je svjedočanstvo Božje, kojim je svjedočio za Sina svoga:</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui credit in Filium Dei, habet testimonium Dei in se. Qui non credit Filio, mendacem facit eum : quia non credit in testimonium quod testificatus est Deus de Filio suo.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Tko vjeruje u Sina Božjega, ima to svjedočanstvo Božje u sebi. Tko ne vjeruje Bogu, učinio ga je lašcem jer nije vjerovao u svjedočanstvo kojim je svjedočio Bog za Sina svoga.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et hoc est testimonium, quoniam vitam æternam dedit nobis Deus : et hæc vita in Filio ejus est.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">I ovo je svjedočanstvo: Bog nam je dao život vječni; i taj je život u Sinu njegovu.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui habet Filium, habet vitam : qui non habet Filium, vitam non habet.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Tko ima Sina, ima život; tko nema Sina Božjega, nema života.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hæc scribo vobis ut sciatis quoniam vitam habetis æternam, qui creditis in nomine Filii Dei.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">To napisah vama koji vjerujete u ime Sina Božjega da znate da imate život vječni.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et hæc est fiducia, quam habemus ad eum : quia quodcumque petierimus, secundum voluntatem ejus, audit nos.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">I ovo je pouzdanje koje imamo u njega: ako što ištemo po volji njegovoj, uslišava nas.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et scimus quia audit nos quidquid petierimus : scimus quoniam habemus petitiones quas postulamus ab eo.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">I znamo li da nas uslišava u svemu što ištemo, znamo da već imamo što smo od njega iskali.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui scit fratrem suum peccare peccatum non ad mortem, petat, et dabitur ei vita peccanti non ad mortem. Est peccatum ad mortem : non pro illo dico ut roget quis.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Vidi li tko brata svojega gdje čini grijeh koji nije na smrt, neka ište i dat će mu život - onima koji čine grijeh što nije na smrt. Ima grijeh što je na smrt; za nj ne velim da moli.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Omnis iniquitas, peccatum est : et est peccatum ad mortem.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Svaka je nepravda grijeh. A postoji grijeh koji nije na smrt.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Scimus quia omnis qui natus est ex Deo, non peccat : sed generatio Dei conservat eum, et malignus non tangit eum.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Znamo: tko god je rođen od Boga, ne griješi; nego Rođeni od Boga čuva ga i Zli ga se ne dotiče.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">Scimus quoniam ex Deo sumus : et mundus totus in maligno positus est.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Znamo: od Boga smo, a sav je svijet pod Zlim.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et scimus quoniam Filius Dei venit, et dedit nobis sensum ut cognoscamus verum Deum, et simus in vero Filio ejus. Hic est verus Deus, et vita æterna.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Znamo: Sin je Božji došao i dao nam razum da poznamo Istinitoga. I mi smo u Istinitom, u Sinu njegovu, Isusu Kristu. On je Bog istiniti i Život vječni.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">Filioli, custodite vos a simulacris. Amen.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Dječice, klonite se idola!</div>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <nav class="book-nav">
+    <a href="061-2pe.html">← II Petri</a>
+    <span class="center">I Ioannis · Hrvatski</span>
+    <a href="063-2jo.html">II Ioannis →</a>
+  </nav>
+
+  <footer class="page-footer">
+    BIBLIA CATHOLICA INTERLINEARIS &nbsp;·&nbsp; Vulgata Clementina &amp; Hrvatska Biblija (PD, 1895)
+    &nbsp;·&nbsp; Gemeinfreie Texte / Public Domain
+  </footer>
+
+</body>
+</html>

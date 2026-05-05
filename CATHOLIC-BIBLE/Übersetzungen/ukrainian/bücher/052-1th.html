@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>I Ad Thessalonicenses · Українська · Biblia Catholica</title>
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
+
+:root {
+  --gold:        #C8A96E;
+  --gold-light:  #EDD58A;
+  --gold-dark:   #8B6914;
+  --navy:        #1A1F3A;
+  --navy-mid:    #252B4A;
+  --navy-light:  #2E3560;
+  --parchment:   #F5E9CC;
+  --parchment-d: #EDD9A3;
+  --cream:       #FDF6E3;
+  --latin-color: #6B1E0E;
+  --trans-color: #0F1D2E;
+  --border:      rgba(200,169,110,.35);
+  --font-title:  'Cinzel Decorative', 'Cinzel', Georgia, serif;
+  --font-sub:    'Cinzel', Georgia, serif;
+  --font-body:   'EB Garamond', Georgia, serif;
+}
+
+*,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+html { font-size:16px; scroll-behavior:smooth; }
+body { background:var(--cream); color:var(--trans-color); font-family:var(--font-body); }
+
+/* ── NAV ─────────────────────────────────────────────── */
+.nav-bar {
+  background:var(--navy); padding:10px 28px;
+  display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  border-bottom:2px solid var(--gold);
+  position:sticky; top:0; z-index:100;
+  box-shadow:0 3px 12px rgba(0,0,0,.45);
+}
+.nav-bar a {
+  color:var(--gold); text-decoration:none;
+  font-family:var(--font-sub); font-size:.75rem; letter-spacing:.05em;
+  transition:color .15s;
+}
+.nav-bar a:hover { color:var(--gold-light); }
+.nav-bar .home { font-weight:700; font-size:.82rem; }
+.nav-bar .spacer { flex:1; }
+.nav-bar .pos { color:rgba(200,169,110,.45); font-size:.7rem; font-family:var(--font-sub); }
+
+/* ── BUCHKOPF ────────────────────────────────────────── */
+.book-header {
+  background:linear-gradient(160deg,var(--navy) 0%,var(--navy-mid) 55%,var(--navy-light) 100%);
+  padding:44px 36px 34px; text-align:center;
+  border-bottom:4px solid var(--gold);
+  position:relative; overflow:hidden;
+}
+.book-header::before {
+  content:'';
+  position:absolute; inset:0;
+  background-image:
+    repeating-linear-gradient( 45deg,transparent,transparent 30px,rgba(200,169,110,.038) 30px,rgba(200,169,110,.038) 31px),
+    repeating-linear-gradient(-45deg,transparent,transparent 30px,rgba(200,169,110,.038) 30px,rgba(200,169,110,.038) 31px);
+  pointer-events:none;
+}
+.testament-badge {
+  display:inline-block;
+  border:1px solid rgba(200,169,110,.4); color:rgba(200,169,110,.65);
+  font-family:var(--font-sub); font-size:.62rem; letter-spacing:.25em;
+  padding:4px 14px; border-radius:2px; margin-bottom:14px; position:relative;
+}
+.book-name-latin {
+  font-family:var(--font-title); font-size:3rem; color:var(--gold-light);
+  text-shadow:0 3px 18px rgba(0,0,0,.55); letter-spacing:.08em; position:relative;
+}
+.book-name-trans {
+  font-family:var(--font-sub); font-size:1.1rem; color:var(--gold);
+  margin-top:8px; letter-spacing:.12em; position:relative;
+}
+.book-meta {
+  font-size:.74rem; color:rgba(200,169,110,.5); margin-top:7px;
+  font-family:var(--font-sub); letter-spacing:.07em; position:relative;
+}
+
+/* ── ORNAMENT-TRENNLINIE ─────────────────────────────── */
+.ornament-bar {
+  text-align:center; padding:16px 0 4px;
+  color:var(--gold); font-size:1.1rem; letter-spacing:.7em;
+}
+
+/* ── HAUPT-CONTAINER ─────────────────────────────────── */
+.content { max-width:960px; margin:0 auto; padding:0 24px 80px; }
+
+/* ── KAPITEL-MARKER ──────────────────────────────────── */
+.chapter-marker {
+  display:flex; align-items:center; gap:16px;
+  padding:28px 6px 12px; margin-bottom:4px;
+  border-bottom:2px solid var(--border);
+}
+.ch-roman {
+  font-family:var(--font-title); font-size:2.2rem; color:var(--gold);
+  min-width:56px; text-align:center; flex-shrink:0;
+  text-shadow:0 1px 8px rgba(200,169,110,.3);
+}
+.ch-label {
+  font-family:var(--font-sub); font-size:.72rem; color:rgba(200,169,110,.6);
+  letter-spacing:.22em; text-transform:uppercase;
+}
+
+/* ── VERS-BLOCK ──────────────────────────────────────── */
+.verse-block {
+  display:flex; gap:0; border-bottom:1px solid rgba(200,169,110,.15);
+}
+.verse-block:nth-child(odd)  { background:var(--cream); }
+.verse-block:nth-child(even) { background:var(--parchment); }
+
+.verse-num-col {
+  flex-shrink:0; width:42px; padding:16px 6px 16px 0; text-align:right;
+}
+.verse-num {
+  display:inline-block; width:28px; height:28px; border-radius:50%;
+  background:var(--gold-dark); color:var(--cream);
+  font-family:var(--font-sub); font-size:.64rem; font-weight:700;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 1px 5px rgba(0,0,0,.25);
+}
+
+.verse-texts { flex:1; padding:16px 16px 18px 8px; }
+
+/* ── LATEINISCHER TEXT (oben / primär) ───────────────── */
+.latin {
+  font-family:var(--font-body); font-size:1.12rem; line-height:1.9;
+  color:var(--latin-color); font-weight:500;
+  border-left:3px solid var(--gold); padding-left:12px;
+  margin-bottom:8px;
+}
+
+/* ── ÜBERSETZUNGS-TEXT (unten / sekundär) ────────────── */
+.trans-label {
+  font-family:var(--font-sub); font-size:.6rem; letter-spacing:.17em;
+  text-transform:uppercase; color:var(--gold-dark); margin-bottom:5px; opacity:.78;
+}
+.trans {
+  font-family:var(--font-body); font-size:1.04rem; line-height:1.85;
+  color:var(--trans-color); font-style:italic;
+  padding-left:15px;
+}
+
+/* Erste Vers jedes Kapitels: Drop-Cap */
+.verse-block:first-of-type .latin::first-letter {
+  font-size:4.2em; float:left; line-height:.72;
+  padding-right:.08em; margin-top:.06em;
+  font-family:var(--font-title); color:var(--gold);
+}
+
+/* ── NAVIGATION ZWISCHEN BÜCHERN ─────────────────────── */
+.book-nav {
+  display:flex; justify-content:space-between; align-items:center;
+  background:var(--navy); border-top:3px solid var(--gold);
+  padding:12px 26px; gap:12px;
+}
+.book-nav a {
+  color:var(--gold); text-decoration:none;
+  font-family:var(--font-sub); font-size:.78rem; letter-spacing:.07em;
+  padding:6px 14px; border:1px solid rgba(200,169,110,.3); border-radius:3px;
+  transition:background .18s;
+}
+.book-nav a:hover { background:rgba(200,169,110,.15); }
+.book-nav .center {
+  font-family:var(--font-sub); font-size:.7rem; color:rgba(200,169,110,.55);
+  letter-spacing:.1em; text-align:center;
+}
+
+/* ── FUßZEILE ────────────────────────────────────────── */
+.page-footer {
+  background:var(--navy); border-top:2px solid rgba(200,169,110,.3);
+  padding:18px 28px; text-align:center;
+  color:rgba(200,169,110,.45); font-family:var(--font-sub);
+  font-size:.68rem; letter-spacing:.1em;
+}
+
+/* ── DRUCK ───────────────────────────────────────────── */
+@media print {
+  .nav-bar, .book-nav { display:none; }
+  .verse-block { break-inside:avoid; }
+  .book-header { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+}
+
+/* ── MOBIL ───────────────────────────────────────────── */
+@media (max-width:640px) {
+  .book-name-latin { font-size:2.1rem; }
+  .ch-roman { font-size:1.6rem; }
+  .latin { font-size:.98rem; }
+  .trans { font-size:.93rem; }
+  .content { padding:0 12px 60px; }
+}
+</style>
+</head>
+<body>
+
+  <nav class="nav-bar">
+    <a class="home" href="../../../index.html">✞ BIBLIA CATHOLICA</a>
+    <a href="../index.html">🇺🇦 Українська</a>
+    <span class="spacer"></span>
+    <span class="pos">052 / 073</span>
+  </nav>
+
+  <header class="book-header">
+    <div class="testament-badge">NOVUM TESTAMENTUM</div>
+    <div class="book-name-latin">I AD THESSALONICENSES</div>
+    <div class="book-name-trans">1 Thessalonians</div>
+    <div class="book-meta">Vulgata Clementina · Біблія Огієнка (1930) · 5 Capita · 89 Versus</div>
+  </header>
+
+  <div class="ornament-bar">❧ ✦ ❧ ✦ ❧</div>
+
+  <main class="content">
+
+  <section class="chapter" id="ch1">
+    <div class="chapter-marker">
+      <span class="ch-roman">I</span>
+      <span class="ch-label">Caput 1</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v1-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Paulus, et Silvanus, et Timotheus ecclesiæ Thessalonicensium in Deo Patre, et Domino Jesu Christo.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Павло й Силуа́н та Тимофій до Церкви Солу́нської в Бозі Отці й Господі Ісусі Христі: благода́ть вам і мир!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Gratia vobis, et pax.   Gratias agimus Deo semper pro omnibus vobis, memoriam vestri facientes in orationibus nostris sine intermissione,</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Ми дякуємо Богові за́вжди за всіх вас, згадуючи вас у наших моли́твах.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">memores operis fidei vestræ, et laboris, et caritatis, et sustinentiæ spei Domini nostri Jesu Christi, ante Deum et Patrem nostrum :</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Ми згадуємо безпереста́нку про ваше ді́ло віри, і про працю любови, і про терпіння надії на Господа нашого Ісуса Христа, перед Богом і Отцем нашим,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">scientes, fratres dilecti a Deo, electionem vestram :</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">зна́ючи, Богом улю́блені браття, про ваше обра́ння.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">quia Evangelium nostrum non fuit ad vos in sermone tantum, sed et in virtute, et in Spiritu Sancto, et in plenitudine multa, sicut scitis quales fuerimus in vobis propter vos.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Бо наша Єва́нгелія не була́ для вас тільки у слові, а й у силі, і в Дусі Святім, і з великим упе́вненням, як знаєте ви, які ми були́ поміж вами для вас.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et vos imitatores nostri facti estis, et Domini, excipientes verbum in tribulatione multa, cum gaudio Spiritus Sancti :</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">І ви стали наслідувачі нам і Господе́ві, слово прийнявши в великому утискові з радістю Духа Святого,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">ita ut facti sitis forma omnibus credentibus in Macedonia, et in Achaia.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">так що ви стали взірце́м для всіх віруючих у Македонії та в Ахаї.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">A vobis enim diffamatus est sermo Domini, non solum in Macedonia, et in Achaia, sed et in omni loco fides vestra, quæ est ad Deum, profecta est ita ut non sit nobis necesse quidquam loqui.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Бо проне́слося Слово Господнє від вас не тільки в Македонії та в Ахаї, а й до кожного міста прийшла ваша віра в Бога, так що вам непотрібно казати чого́сь.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ipsi enim de nobis annuntiant qualem introitum habuerimus ad vos : et quomodo conversi estis ad Deum a simulacris, servire Deo vivo, et vero,</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Вони бо звіщають про нас, який був при́хід наш до вас, і як ви наверну́лись до Бога від і́долів, щоб служити живому й правдивому Богові,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">et exspectare Filium ejus de cælis (quem suscitavit a mortuis) Jesum, qui eripuit nos ab ira ventura.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">і з неба очікувати Сина Його, що Його воскресив Він із мертвих, Ісуса, що визволює нас від майбу́тнього гніву.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch2">
+    <div class="chapter-marker">
+      <span class="ch-roman">II</span>
+      <span class="ch-label">Caput 2</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v2-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nam ipsi scitis, fratres, introitum nostrum ad vos, quia non inanis fuit :</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Самі бо ви знаєте, браття, прихід наш до вас, що не марни́й він був.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">sed ante passi, et contumeliis affecti (sicut scitis) in Philippis, fiduciam habuimus in Deo nostro, loqui ad vos Evangelium Dei in multa sollicitudine.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Та хоч ми нате́рпілися перед тим, і дізнали зневаги в Фили́пах, як знаєте, проте ми відва́жилися в нашім Бозі звіщати вам Божу Єва́нгелію з великою боротьбою.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Exhortatio enim nostra non de errore, neque de immunditia, neque in dolo,</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Бо покли́кання наше було не з обмани, ані з нечи́стости, ані від лука́вства,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">sed sicut probati sumus a Deo ut crederetur nobis Evangelium : ita loquimur non quasi hominibus placentes, sed Deo, qui probat corda nostra.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">але, як Бог визнав нас гідними, щоб нам доручити Єва́нгелію, ми говоримо так, не лю́дям дого́джуючи, але Богові, що випробо́вує наші серця.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Neque enim aliquando fuimus in sermone adulationis, sicut scitis : neque in occasione avaritiæ : Deus testis est :</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Ми сло́ва підле́сливого не вживали ніко́ли, як знаєте, і не винні в заже́рливості. Бог свідок тому́!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">nec quærentes ab hominibus gloriam, neque a vobis, neque ab aliis.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Не шукаємо ми слави в людей, ані в вас, ані в інших.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Cum possemus vobis oneri esse ut Christi apostoli : sed facti sumus parvuli in medio vestrum, tamquam si nutrix foveat filios suos.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Хоч могли ми поту́жними бути, як Христові апо́столи, але ми серед вас були тихі, немов годува́льниця та, яка доглядає дітей своїх.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ita desiderantes vos, cupide volebamus tradere vobis non solum Evangelium Dei, sed etiam animas nostras : quoniam carissimi nobis facti estis.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Так бувши ласка́ві до вас, хотіли ми вам передати не тільки Божу Єва́нгелію, але й ду́ші свої, бо були́ ви улю́блені нам.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Memores enim estis, fratres, laboris nostri, et fatigationis : nocte ac die operantes, ne quem vestrum gravaremus, prædicavimus in vobis Evangelium Dei.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Бо ви пам'ятаєте, браття, наше стру́днення й уто́му: день і ніч ми робили, щоб жодного з вас не обтя́жити, і проповідували вам Божу Єва́нгелію.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vos testes estis, et Deus, quam sancte, et juste, et sine querela, vobis, qui credidistis, fuimus :</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Ви свідки та Бог, як свято, і праведно, і бездога́нно пово́дилися ми між вами, віруючими!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">sicut scitis, qualiter unumquemque vestrum (sicut pater filios suos)</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Бож знаєте ви, як кожного з вас, немов ба́тько дітей своїх власних,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">deprecantes vos, et consolantes, testificati sumus, ut ambularetis digne Deo, qui vocavit vos in suum regnum et gloriam.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">просили ми вас, і намо́влювали та показували, щоб ви гідно пово́дилися перед Богом, що покликав вас у Своє Царство та в славу.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ideo et nos gratias agimus Deo sine intermissione : quoniam cum accepissetis a nobis verbum auditus Dei, accepistis illud, non ut verbum hominum, sed (sicut est vere) verbum Dei, qui operatur in vobis, qui credidistis :</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Тому́ то й ми дякуємо Богові безпереста́нку, що, прийнявши почуте від нас Сло́во Боже, прийняли́ ви не як слово лю́дське, але — як правдиво то є — Слово Боже, що й діє в вас, віруючих.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">vos enim imitatores facti estis, fratres, ecclesiarum Dei, quæ sunt in Judæa in Christo Jesu : quia eadem passi estis et vos a contribulibus vestris, sicut et ipsi a Judæis :</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Бо стали ви, бра́ття, наслідувачами Церквам Божим, що в Юдеї в Христі Ісусі, бо те саме і ви були ви́терпіли від своїх землякі́в, як і ті від юдеїв,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui et Dominum occiderunt Jesum, et prophetas, et nos persecuti sunt, et Deo non placent, et omnibus hominibus adversantur,</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">що вбили вони й Господа Ісуса, і пророків Його, і вигнали нас, і Богові не догоджа́ють, і супротивні всім лю́дям.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">prohibentes nos gentibus loqui ut salvæ fiant, ut impleant peccata sua semper : pervenit enim ira Dei super illos usque in finem.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Вони забороняють нам говорити поганам, щоб спаслися, щоб тим доповня́ти їм за́вжди провини свої. Але Божий гнів їх спіткає вкінці!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nos autem fratres desolati a vobis ad tempus horæ, aspectu, non corde, abundantius festinavimus faciem vestram videre cum multo desiderio :</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">А ми, браття, на короткий часо́к розлучившися з вами лицем, а не серцем, тим із більшим бажа́нням силкува́лись побачити ваше лице.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">quoniam voluimus venire ad vos, ego quidem Paulus, et semel, et iterum : sed impedivit nos Satanas.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Тим то до вас ми хотіли прийти, я, Павло, раз і двічі, але сатана́ перешкодив був нам.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quæ est enim nostra spes aut gaudium, aut corona gloriæ ? nonne vos ante Dominum nostrum Jesum Christum estis in adventu ejus ?</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Бо хто нам надія, чи радість, чи вінок похвали́? Хіба ж то й не ви перед Господом нашим Ісусом в Його прихо́ді?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">vos enim estis gloria nostra et gaudium.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Бо ви наша слава та радість!</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch3">
+    <div class="chapter-marker">
+      <span class="ch-roman">III</span>
+      <span class="ch-label">Caput 3</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v3-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Propter quod non sustinentes amplius, placuit nobis remanere Athenis, solis :</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Тому́ то, не сте́рпівши більше, ми схотіли зостатися в Ате́нах самі,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">et misimus Timotheum fratrem nostrum, et ministrum Dei in Evangelio Christi, ad confirmandos vos, et exhortandos pro fide vestra :</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">і послали Тимофі́я, нашого брата й служи́теля Божого в Христовій Єва́нгелії, щоб упе́внити вас та потішити в вашій вірі,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">ut nemo moveatur in tribulationibus istis : ipsi enim scitis quod in hoc positi sumus.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">щоб ані один не хитався в цім горі. Самі бо ви знаєте, що на те нас призначено.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nam et cum apud vos essemus, prædicebamus vobis passuros nos tribulationes, sicut et factum est, et scitis.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Бо коли ми були́ в вас, то казали вам напере́д, що маємо страждати, як і сталось, і знаєте ви.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Propterea et ego amplius non sustinens, misi ad cognoscendam fidem vestram : ne forte tentaverit vos is qui tentat, et inanis fiat labor noster.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Тому́ й я, не сте́рпівши більше, послав довідатись про вашу віру, щоб ча́сом споку́сник вас не спокусив, і труд наш не стався б даре́мний.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nunc autem veniente Timotheo ad nos a vobis, et annuntiante nobis fidem et caritatem vestram, et quia memoriam nostri habetis bonam semper, desiderantes nos videre, sicut et nos quoque vos :</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">А тепер, як вернувся від вас Тимофій і приніс нам радісну звістку про віру та вашу любов, і що за́вжди ви маєте добру пам'ять про нас, і бажаєте бачити нас, як і ми вас,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">ideo consolati sumus, fratres, in vobis in omni necessitate et tribulatione nostra, per fidem vestram,</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">через те ми потішились, бра́ття, за вас, у всякому горі та в нашій ну́жді, ради вашої віри.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">quoniam nunc vivimus, si vos statis in Domino.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Бо тепер ми живемо́, якщо в Господі ви стоїте́!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quam enim gratiarum actionem possumus Deo retribuere pro vobis in omni gaudio, quo gaudemus propter vos ante Deum nostrum,</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Яку бо подяку ми мо́жемо Богові дати за вас, за всю радість, що нею ми ті́шимося ради вас перед нашим Богом?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">nocte ac die abundantius orantes, ut videamus faciem vestram, et compleamus ea quæ desunt fidei vestræ ?</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Ми вдень та вночі ревно мо́лимося, щоб побачити ваше лице та допо́внити те, чого не вистача́є вашій вірі.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ipse autem Deus, et Pater noster, et Dominus noster Jesus Christus, dirigat viam nostram ad vos.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Сам же Бог і Отець наш, і Господь наш Ісус нехай ви́рівняє нашу дорогу до вас!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vos autem Dominus multiplicet, et abundare faciat caritatem vestram in invicem, et in omnes, quemadmodum et nos in vobis :</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">А в вас хай примно́жить Госпо́дь, і нехай збагати́ть вашу любов один до о́дного, і до всіх, як і наша є до вас!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">ad confirmanda corda vestra sine querela in sanctitate, ante Deum et Patrem nostrum, in adventu Domini nostri Jesu Christi cum omnibus sanctis ejus. Amen.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Нехай Він зміцни́ть серця́ ваші невинними в святості перед Богом і нашим Отцем, при прихо́ді Господа нашого Ісуса з усіма́ святими Його́!</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch4">
+    <div class="chapter-marker">
+      <span class="ch-roman">IV</span>
+      <span class="ch-label">Caput 4</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v4-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">De cetero ergo, fratres, rogamus vos et obsecramus in Domino Jesu, ut quemadmodum accepistis a nobis quomodo oporteat vos ambulare, et placere Deo, sic et ambuletis ut abundetis magis.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">А далі, бра́ття, просимо вас та благаємо в Господі Ісусі, щоб, як прийняли́ ви від нас, як належить поводитись вам та дого́джувати Богові, — як ви й поводитеся, — щоб у тому ще більше зроста́ли!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Scitis enim quæ præcepta dederim vobis per Dominum Jesum.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Бо ви знаєте, які вам нака́зи дали ми Господом Ісусом.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hæc est enim voluntas Dei, sanctificatio vestra : ut abstineatis vos a fornicatione,</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Бо це воля Божа, — освя́чення ваше: щоб ви береглись від розпусти,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">ut sciat unusquisque vestrum vas suum possidere in sanctificatione, et honore :</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">щоб кожен із вас умів тримати начи́ння своє в святості й честі,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">non in passione desiderii, sicut et gentes, quæ ignorant Deum :</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">а не в при́страсній по́хоті, як і „погани, що Бога не знають“.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">et ne quis supergrediatur, neque circumveniat in negotio fratrem suum : quoniam vindex est Dominus de his omnibus, sicut prædiximus vobis, et testificati sumus.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Щоб ніхто не кривдив і не визи́скував брата свого в якійбудь справі, бо ме́сник Госпо́дь за все це, як і перше казали ми вам та засві́дчили.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non enim vocavit nos Deus in immunditiam, sed in sanctificationem.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Бо покликав нас Бог не на нечи́стість, але на освя́чення.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Itaque qui hæc spernit, non hominem spernit, sed Deum : qui etiam dedit Spiritum suum Sanctum in nobis.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Отож, хто оце відкида́є, зневажає не люди́ну, а Бога, що нам також дав Свого Духа Святого.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">De caritate autem fraternitatis non necesse habemus scribere vobis : ipsi enim vos a Deo didicistis ut diligatis invicem.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">А про братолюбство немає потреби писати до вас, бо самі ви від Бога на́вчені люби́ти один о́дного,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Etenim illud facitis in omnes fratres in universa Macedonia. Rogamus autem vos, fratres, ut abundetis magis,</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">бо чините те всім брата́м у всій Македонії. Благаємо ж, браття, ми вас, щоб у цьому ще більш ви зростали,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">et operam detis ut quieti sitis, et ut vestrum negotium agatis, et operemini manibus vestris, sicut præcepimus vobis :</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">і пильно дбали жити спокійно, займатися своїми справами та заробляти своїми руками, як ми вам наказували,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">et ut honeste ambuletis ad eos qui foris sunt : et nullius aliquid desideretis.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">щоб ви перед чужими пристойно пово́дилися, і щоб ні від ко́го не залежали!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nolumus autem vos ignorare fratres de dormientibus, ut non contristemini sicut et ceteri, qui spem non habent.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Не хо́чу ж я, браття, щоб не відали ви про покі́йних, щоб ви не сумували, як і інші, що надії не мають.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si enim credimus quod Jesus mortuus est, et resurrexit : ita et Deus eos qui dormierunt per Jesum, adducet cum eo.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Коли бо ми віруємо, що Ісус був умер і воскрес, так і покі́йних через Ісуса приведе́ Бог із Ним.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hoc enim vobis dicimus in verbo Domini, quia nos, qui vivimus, qui residui sumus in adventum Domini, non præveniemus eos qui dormierunt.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Бо це ми вам кажемо словом Господнім, що ми, хто живе, хто полишений до прихо́ду Господнього, — ми не попередимо покі́йних.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quoniam ipse Dominus in jussu, et in voce archangeli, et in tuba Dei descendet de cælo : et mortui, qui in Christo sunt, resurgent primi.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Сам бо Господь із нака́зом, при голосі арха́нгола та при Божій сурмі́ зійде з неба, і перше воскре́снуть умерлі в Христі,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Deinde nos, qui vivimus, qui relinquimur, simul rapiemur cum illis in nubibus obviam Christo in aëra, et sic semper cum Domino erimus.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">потім ми, що живемо́ й зоста́лись, бу́демо схо́плені ра́зом із ними на хмарах на зу́стріч Господню на повітрі, і так за́всіди бу́демо з Господом.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Itaque consolamini invicem in verbis istis.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Отож, потішайте один о́дного цими словами!</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch5">
+    <div class="chapter-marker">
+      <span class="ch-roman">V</span>
+      <span class="ch-label">Caput 5</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v5-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">De temporibus autem, et momentis, fratres, non indigetis ut scribamus vobis.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">А про часи́ та про по́ри, брати, не потрібно писати до вас,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ipsi enim diligenter scitis quia dies Domini, sicut fur in nocte, ita veniet :</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">бо самі ви докладно те знаєте, що при́йде день Господній так, як злодій вночі.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">cum enim dixerint : Pax et securitas : tunc repentinus eis superveniet interitus, sicut dolor in utero habenti, et non effugient.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Бо коли говоритимуть: „Мир і безпечність“, тоді несподівано при́йде заги́біль на них, як му́ка тієї, що носить в утро́бі, — і вони не втечуть!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vos autem, fratres, non estis in tenebris, ut vos dies illa tamquam fur comprehendat :</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">А ви, браття, не в те́мряві, щоб той день захопи́в вас, як злодій.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">omnes enim vos filii lucis estis, et filii diei : non sumus noctis, neque tenebrarum.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Бо ви всі сини світла й сини дня. Не належимо ми ночі, ні те́мряві.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Igitur non dormiamus sicut et ceteri, sed vigilemus, et sobrii simus.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Тож не бу́демо спати, як інші, а пильнуймо та будьмо твере́зі!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui enim dormiunt, nocte dormiunt : et qui ebrii sunt, nocte ebrii sunt.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Ті бо, що сплять — сплять уночі, а ті, що напиваються — вночі напиваються.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nos autem, qui diei sumus, sobrii simus, induti loricam fidei et caritatis, et galeam spem salutis :</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">А ми, що належимо дневі, будьмо тверезі, зодягнувшися в броню́ віри й любови, та в шоло́м надії спасі́ння,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">quoniam non posuit nos Deus in iram, sed in acquisitionem salutis per Dominum nostrum Jesum Christum,</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">бо Бог нас не призна́чив на гнів, але щоб спасі́ння оде́ржали Господом нашим Ісусом Христом,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui mortuus est pro nobis : ut sive vigilemus, sive dormiamus, simul cum illo vivamus.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">що помер був за нас, щоб, чи пильнуємо ми чи спимо́, укупі з Ним ми жили́.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Propter quod consolamini invicem, et ædificate alterutrum, sicut et facitis.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Утішайте тому́ один о́дного, і збудо́вуйте один о́дного, — як і чините ви!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Rogamus autem vos, fratres, ut noveritis eos qui laborant inter vos, et præsunt vobis in Domino, et monent vos,</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Благаємо ж, бра́ття, ми вас, — шануйте тих, що працюють між вами, і в вас старшину́ють у Господі, і навчають вас вони,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">ut habeatis illos abundantius in caritate propter opus illorum : pacem habete cum eis.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">і в великій любові їх майте за їхню працю. Між собою заховуйте мир!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Rogamus autem vos, fratres, corripite inquietos, consolamini pusillanimes, suscipite infirmos, patientes estote ad omnes.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Благаємо ж, бра́ття, ми вас: напоумля́йте непорядних, потішайте малодушних, підтримуйте слаби́х, усім довготерпіть!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Videte ne quis malum pro malo alicui reddat : sed semper quod bonum est sectamini in invicem, et in omnes.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Глядіть, щоб ніхто ніко́му не віддавав злом за зло, але за́вжди дбайте про добро один для о́дного й для всіх!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Semper gaudete.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">За́вжди радійте!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sine intermissione orate.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Безперестанку моліться!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">In omnibus gratias agite : hæc est enim voluntas Dei in Christo Jesu in omnibus vobis.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Подяку складайте за все, бо така Божа воля про вас у Христі Ісусі.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">Spiritum nolite extinguere.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Духа не вгаша́йте!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">Prophetias nolite spernere.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Не горду́йте пророцтвами!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">Omnia autem probate : quod bonum est tenete.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Усе досліджуючи, тримайтеся доброго!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-22">
+      <div class="verse-num-col"><div class="verse-num">22</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ab omni specie mala abstinete vos.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Стережіться лихого в усякому ви́гляді!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-23">
+      <div class="verse-num-col"><div class="verse-num">23</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ipse autem Deus pacis sanctificet vos per omnia : ut integer spiritus vester, et anima, et corpus sine querela in adventu Domini nostri Jesu Christi servetur.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">А Сам Бог миру нехай освя́тить вас цілко́м доскона́ло, а непору́шений дух ваш, і душа, і тіло нехай непорочно збере́жені бу́дуть на при́хід Господа нашого Ісуса Христа!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-24">
+      <div class="verse-num-col"><div class="verse-num">24</div></div>
+      <div class="verse-texts">
+        <div class="latin">Fidelis est, qui vocavit vos : qui etiam faciet.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Вірний Той, Хто вас кличе, — Він і вчинить оте!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-25">
+      <div class="verse-num-col"><div class="verse-num">25</div></div>
+      <div class="verse-texts">
+        <div class="latin">Fratres, orate pro nobis.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Бра́ття, моліться за нас!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-26">
+      <div class="verse-num-col"><div class="verse-num">26</div></div>
+      <div class="verse-texts">
+        <div class="latin">Salutate fratres omnes in osculo sancto.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Привітайте всю бра́ттю святим поцілунком!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-27">
+      <div class="verse-num-col"><div class="verse-num">27</div></div>
+      <div class="verse-texts">
+        <div class="latin">Adjuro vos per Dominum ut legatur epistola hæc omnibus sanctis fratribus.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Заклинаю вас Господом, — цього листа прочитати перед усіма́ братами!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-28">
+      <div class="verse-num-col"><div class="verse-num">28</div></div>
+      <div class="verse-texts">
+        <div class="latin">Gratia Domini nostri Jesu Christi vobiscum. Amen.</div>
+        <div class="trans-label">✦ Українська</div>
+        <div class="trans">Благода́ть Господа нашого Ісуса Христа нехай буде з вами. Амі́нь!</div>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <nav class="book-nav">
+    <a href="051-col.html">← Ad Colossenses</a>
+    <span class="center">I Ad Thessalonicenses · Українська</span>
+    <a href="053-2th.html">II Ad Thessalonicenses →</a>
+  </nav>
+
+  <footer class="page-footer">
+    BIBLIA CATHOLICA INTERLINEARIS &nbsp;·&nbsp; Vulgata Clementina &amp; Біблія Огієнка (1930)
+    &nbsp;·&nbsp; Gemeinfreie Texte / Public Domain
+  </footer>
+
+</body>
+</html>

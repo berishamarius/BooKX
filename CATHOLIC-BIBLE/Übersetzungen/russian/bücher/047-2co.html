@@ -1,0 +1,2383 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>II Ad Corinthios · Русский · Biblia Catholica</title>
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
+
+:root {
+  --gold:        #C8A96E;
+  --gold-light:  #EDD58A;
+  --gold-dark:   #8B6914;
+  --navy:        #1A1F3A;
+  --navy-mid:    #252B4A;
+  --navy-light:  #2E3560;
+  --parchment:   #F5E9CC;
+  --parchment-d: #EDD9A3;
+  --cream:       #FDF6E3;
+  --latin-color: #6B1E0E;
+  --trans-color: #0F1D2E;
+  --border:      rgba(200,169,110,.35);
+  --font-title:  'Cinzel Decorative', 'Cinzel', Georgia, serif;
+  --font-sub:    'Cinzel', Georgia, serif;
+  --font-body:   'EB Garamond', Georgia, serif;
+}
+
+*,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+html { font-size:16px; scroll-behavior:smooth; }
+body { background:var(--cream); color:var(--trans-color); font-family:var(--font-body); }
+
+/* ── NAV ─────────────────────────────────────────────── */
+.nav-bar {
+  background:var(--navy); padding:10px 28px;
+  display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  border-bottom:2px solid var(--gold);
+  position:sticky; top:0; z-index:100;
+  box-shadow:0 3px 12px rgba(0,0,0,.45);
+}
+.nav-bar a {
+  color:var(--gold); text-decoration:none;
+  font-family:var(--font-sub); font-size:.75rem; letter-spacing:.05em;
+  transition:color .15s;
+}
+.nav-bar a:hover { color:var(--gold-light); }
+.nav-bar .home { font-weight:700; font-size:.82rem; }
+.nav-bar .spacer { flex:1; }
+.nav-bar .pos { color:rgba(200,169,110,.45); font-size:.7rem; font-family:var(--font-sub); }
+
+/* ── BUCHKOPF ────────────────────────────────────────── */
+.book-header {
+  background:linear-gradient(160deg,var(--navy) 0%,var(--navy-mid) 55%,var(--navy-light) 100%);
+  padding:44px 36px 34px; text-align:center;
+  border-bottom:4px solid var(--gold);
+  position:relative; overflow:hidden;
+}
+.book-header::before {
+  content:'';
+  position:absolute; inset:0;
+  background-image:
+    repeating-linear-gradient( 45deg,transparent,transparent 30px,rgba(200,169,110,.038) 30px,rgba(200,169,110,.038) 31px),
+    repeating-linear-gradient(-45deg,transparent,transparent 30px,rgba(200,169,110,.038) 30px,rgba(200,169,110,.038) 31px);
+  pointer-events:none;
+}
+.testament-badge {
+  display:inline-block;
+  border:1px solid rgba(200,169,110,.4); color:rgba(200,169,110,.65);
+  font-family:var(--font-sub); font-size:.62rem; letter-spacing:.25em;
+  padding:4px 14px; border-radius:2px; margin-bottom:14px; position:relative;
+}
+.book-name-latin {
+  font-family:var(--font-title); font-size:3rem; color:var(--gold-light);
+  text-shadow:0 3px 18px rgba(0,0,0,.55); letter-spacing:.08em; position:relative;
+}
+.book-name-trans {
+  font-family:var(--font-sub); font-size:1.1rem; color:var(--gold);
+  margin-top:8px; letter-spacing:.12em; position:relative;
+}
+.book-meta {
+  font-size:.74rem; color:rgba(200,169,110,.5); margin-top:7px;
+  font-family:var(--font-sub); letter-spacing:.07em; position:relative;
+}
+
+/* ── ORNAMENT-TRENNLINIE ─────────────────────────────── */
+.ornament-bar {
+  text-align:center; padding:16px 0 4px;
+  color:var(--gold); font-size:1.1rem; letter-spacing:.7em;
+}
+
+/* ── HAUPT-CONTAINER ─────────────────────────────────── */
+.content { max-width:960px; margin:0 auto; padding:0 24px 80px; }
+
+/* ── KAPITEL-MARKER ──────────────────────────────────── */
+.chapter-marker {
+  display:flex; align-items:center; gap:16px;
+  padding:28px 6px 12px; margin-bottom:4px;
+  border-bottom:2px solid var(--border);
+}
+.ch-roman {
+  font-family:var(--font-title); font-size:2.2rem; color:var(--gold);
+  min-width:56px; text-align:center; flex-shrink:0;
+  text-shadow:0 1px 8px rgba(200,169,110,.3);
+}
+.ch-label {
+  font-family:var(--font-sub); font-size:.72rem; color:rgba(200,169,110,.6);
+  letter-spacing:.22em; text-transform:uppercase;
+}
+
+/* ── VERS-BLOCK ──────────────────────────────────────── */
+.verse-block {
+  display:flex; gap:0; border-bottom:1px solid rgba(200,169,110,.15);
+}
+.verse-block:nth-child(odd)  { background:var(--cream); }
+.verse-block:nth-child(even) { background:var(--parchment); }
+
+.verse-num-col {
+  flex-shrink:0; width:42px; padding:16px 6px 16px 0; text-align:right;
+}
+.verse-num {
+  display:inline-block; width:28px; height:28px; border-radius:50%;
+  background:var(--gold-dark); color:var(--cream);
+  font-family:var(--font-sub); font-size:.64rem; font-weight:700;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 1px 5px rgba(0,0,0,.25);
+}
+
+.verse-texts { flex:1; padding:16px 16px 18px 8px; }
+
+/* ── LATEINISCHER TEXT (oben / primär) ───────────────── */
+.latin {
+  font-family:var(--font-body); font-size:1.12rem; line-height:1.9;
+  color:var(--latin-color); font-weight:500;
+  border-left:3px solid var(--gold); padding-left:12px;
+  margin-bottom:8px;
+}
+
+/* ── ÜBERSETZUNGS-TEXT (unten / sekundär) ────────────── */
+.trans-label {
+  font-family:var(--font-sub); font-size:.6rem; letter-spacing:.17em;
+  text-transform:uppercase; color:var(--gold-dark); margin-bottom:5px; opacity:.78;
+}
+.trans {
+  font-family:var(--font-body); font-size:1.04rem; line-height:1.85;
+  color:var(--trans-color); font-style:italic;
+  padding-left:15px;
+}
+
+/* Erste Vers jedes Kapitels: Drop-Cap */
+.verse-block:first-of-type .latin::first-letter {
+  font-size:4.2em; float:left; line-height:.72;
+  padding-right:.08em; margin-top:.06em;
+  font-family:var(--font-title); color:var(--gold);
+}
+
+/* ── NAVIGATION ZWISCHEN BÜCHERN ─────────────────────── */
+.book-nav {
+  display:flex; justify-content:space-between; align-items:center;
+  background:var(--navy); border-top:3px solid var(--gold);
+  padding:12px 26px; gap:12px;
+}
+.book-nav a {
+  color:var(--gold); text-decoration:none;
+  font-family:var(--font-sub); font-size:.78rem; letter-spacing:.07em;
+  padding:6px 14px; border:1px solid rgba(200,169,110,.3); border-radius:3px;
+  transition:background .18s;
+}
+.book-nav a:hover { background:rgba(200,169,110,.15); }
+.book-nav .center {
+  font-family:var(--font-sub); font-size:.7rem; color:rgba(200,169,110,.55);
+  letter-spacing:.1em; text-align:center;
+}
+
+/* ── FUßZEILE ────────────────────────────────────────── */
+.page-footer {
+  background:var(--navy); border-top:2px solid rgba(200,169,110,.3);
+  padding:18px 28px; text-align:center;
+  color:rgba(200,169,110,.45); font-family:var(--font-sub);
+  font-size:.68rem; letter-spacing:.1em;
+}
+
+/* ── DRUCK ───────────────────────────────────────────── */
+@media print {
+  .nav-bar, .book-nav { display:none; }
+  .verse-block { break-inside:avoid; }
+  .book-header { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+}
+
+/* ── MOBIL ───────────────────────────────────────────── */
+@media (max-width:640px) {
+  .book-name-latin { font-size:2.1rem; }
+  .ch-roman { font-size:1.6rem; }
+  .latin { font-size:.98rem; }
+  .trans { font-size:.93rem; }
+  .content { padding:0 12px 60px; }
+}
+</style>
+</head>
+<body>
+
+  <nav class="nav-bar">
+    <a class="home" href="../../../index.html">✞ BIBLIA CATHOLICA</a>
+    <a href="../index.html">🇷🇺 Русский</a>
+    <span class="spacer"></span>
+    <span class="pos">047 / 073</span>
+  </nav>
+
+  <header class="book-header">
+    <div class="testament-badge">NOVUM TESTAMENTUM</div>
+    <div class="book-name-latin">II AD CORINTHIOS</div>
+    <div class="book-name-trans">2 Corinthians</div>
+    <div class="book-meta">Vulgata Clementina · Синодальный перевод (1876) · 13 Capita · 256 Versus</div>
+  </header>
+
+  <div class="ornament-bar">❧ ✦ ❧ ✦ ❧</div>
+
+  <main class="content">
+
+  <section class="chapter" id="ch1">
+    <div class="chapter-marker">
+      <span class="ch-roman">I</span>
+      <span class="ch-label">Caput 1</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v1-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Paulus, Apostolus Jesu Christi per voluntatem Dei, et Timotheus frater, ecclesiæ Dei, quæ est Corinthi cum omnibus sanctis, qui sunt in universa Achaia.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Павел, волею Божиею Апостол Иисуса Христа, и Тимофей брат, церкви Божией, находящейся в Коринфе, со всеми святыми по всей Ахаии:</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Gratia vobis, et pax a Deo Patre nostro, et Domino Jesu Christo.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">благодать вам и мир от Бога Отца нашего и Господа Иисуса Христа.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Benedictus Deus et Pater Domini nostri Jesu Christi, Pater misericordiarum, et Deus totius consolationis,</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Благословен Бог и Отец Господа нашего Иисуса Христа, Отец милосердия и Бог всякого утешения,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui consolatur nos in omni tribulatione nostra : ut possimus et ipsi consolari eos qui in omni pressura sunt, per exhortationem, qua exhortamur et ipsi a Deo.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">утешающий нас во всякой скорби нашей, чтобы и мы могли утешать находящихся во всякой скорби тем утешением, которым Бог утешает нас самих!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quoniam sicut abundant passiones Christi in nobis : ita et per Christum abundat consolatio nostra.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Ибо по мере, как умножаются в нас страдания Христовы, умножается Христом и утешение наше.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sive autem tribulamur pro vestra exhortatione et salute, sive consolamur pro vestra consolatione, sive exhortamur pro vestra exhortatione et salute, quæ operatur tolerantiam earumdem passionum, quas et nos patimur :</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Скорбим ли мы, скорбим для вашего утешения и спасения, которое совершается перенесением тех же страданий, какие и мы терпим.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">ut spes nostra firma sit pro vobis : scientes quod sicut socii passionum estis, sic eritis et consolationis.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">И надежда наша о вас тверда. Утешаемся ли, утешаемся для вашего утешения и спасения, зная, что вы участвуете как в страданиях наших, так и в утешении.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non enim volumus ignorare vos, fratres, de tribulatione nostra, quæ facta est in Asia, quoniam supra modum gravati sumus supra virtutem, ita ut tæderet nos etiam vivere.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Ибо мы не хотим оставить вас, братия, в неведении о скорби нашей, бывшей с нами в Асии, потому что мы отягчены были чрезмерно и сверх силы, так что не надеялись остаться в живых.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sed ipsi in nobismetipsis responsum mortis habuimus, ut non simus fidentes in nobis, sed in Deo, qui suscitat mortuos :</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Но сами в себе имели приговор к смерти, для того, чтобы надеяться не на самих себя, но на Бога, воскрешающего мертвых,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui de tantis periculis nos eripuit, et eruit : in quem speramus quoniam et adhuc eripiet,</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Который и избавил нас от столь близкой смерти, и избавляет, и на Которого надеемся, что и еще избавит,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">adjuvantibus et vobis in oratione pro nobis : ut ex multorum personis, ejus quæ in nobis est donationis, per multos gratiæ agantur pro nobis.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">при содействии и вашей молитвы за нас, дабы за дарованное нам, по ходатайству многих, многие возблагодарили за нас.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nam gloria nostra hæc est : testimonium conscientiæ nostræ, quod in simplicitate cordis et sinceritate Dei, et non in sapientia carnali, sed in gratia Dei, conversati sumus in hoc mundo : abundantius autem ad vos.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Ибо похвала наша сия есть свидетельство совести нашей, что мы в простоте и богоугодной искренности, не по плотской мудрости, но по благодати Божией, жили в мире, особенно же у вас.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non enim alia scribimus vobis, quam quæ legistis, et cognovistis. Spero autem quod usque in finem cognoscetis,</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">И мы пишем вам не иное, как то, что вы читаете или разумеете, и что, как надеюсь, до конца уразумеете,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">sicut et cognovistis nos ex parte, quod gloria vestra sumus, sicut et vos nostra, in die Domini nostri Jesu Christi.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">так как вы отчасти и уразумели уже, что мы будем вашею похвалою, равно и вы нашею, в день Господа нашего Иисуса Христа.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et hac confidentia volui prius venire ad vos, ut secundam gratiam haberetis :</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">И в этой уверенности я намеревался придти к вам ранее, чтобы вы вторично получили благодать,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">et per vos transire in Macedoniam, et iterum a Macedonia venire ad vos, et a vobis deduci in Judæam.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">и через вас пройти в Македонию, из Македонии же опять придти к вам; а вы проводили бы меня в Иудею.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Cum ergo hoc voluissem, numquid levitate usus sum ? aut quæ cogito, secundum carnem cogito, ut sit apud me Est et Non ?</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Имея такое намерение, легкомысленно ли я поступил? Или, что я предпринимаю, по плоти предпринимаю, так что у меня то &quot;да, да&quot;, то &quot;нет, нет&quot;?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Fidelis autem Deus, quia sermo noster, qui fuit apud vos, non est in illo Est et Non.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Верен Бог, что слово наше к вам не было то &quot;да&quot;, то &quot;нет&quot;.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">Dei enim Filius Jesus Christus, qui in vobis per nos prædicatus est, per me, et Silvanum, et Timotheum, non fuit Est et Non, sed Est in illo fuit.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Ибо Сын Божий, Иисус Христос, проповеданный у вас нами, мною и Силуаном и Тимофеем, не был &quot;да&quot; и &quot;нет&quot;; но в Нем было &quot;да&quot;, —</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quotquot enim promissiones Dei sunt, in illo Est : ideo et per ipsum Amen Deo ad gloriam nostram.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">ибо все обетования Божии в Нем &quot;да&quot; и в Нем &quot;аминь&quot;, — в славу Божию, через нас.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui autem confirmat nos vobiscum in Christo, et qui unxit nos Deus :</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Утверждающий же нас с вами во Христе и помазавший нас есть Бог,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-22">
+      <div class="verse-num-col"><div class="verse-num">22</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui et signavit nos, et dedit pignus Spiritus in cordibus nostris.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Который и запечатлел нас и дал залог Духа в сердца наши.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-23">
+      <div class="verse-num-col"><div class="verse-num">23</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ego autem testem Deum invoco in animam meam, quod parcens vobis, non veni ultra Corinthum : non quia dominamur fidei vestæ, sed adjutores sumus gaudii vestri : nam fide statis.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Бога призываю во свидетели на душу мою, что, щадя вас, я доселе не приходил в Коринф,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-24">
+      <div class="verse-num-col"><div class="verse-num">24</div></div>
+      <div class="verse-texts">
+        <div class="latin"></div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">не потому, будто мы берем власть над верою вашею; но мы споспешествуем радости вашей: ибо верою вы тверды.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch2">
+    <div class="chapter-marker">
+      <span class="ch-roman">II</span>
+      <span class="ch-label">Caput 2</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v2-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Statui autem hoc ipsum apud me, ne iterum in tristitia venirem ad vos.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Итак я рассудил сам в себе не приходить к вам опять с огорчением.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si enim ego contristo vos : et quis est, qui me lætificet, nisi qui contristatur ex me ?</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Ибо если я огорчаю вас, то кто обрадует меня, как не тот, кто огорчен мною?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et hoc ipsum scripsi vobis, ut non cum venero, tristitiam super tristitiam habeam, de quibus oportuerat me gaudere : confidens in omnibus vobis, quia meum gaudium, omnium vestrum est.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Это самое и писал я вам, дабы, придя, не иметь огорчения от тех, о которых мне надлежало радоваться: ибо я во всех вас уверен, что моя радость есть радость и для всех вас.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nam ex multa tribulatione et angustia cordis scripsi vobis per multas lacrimas : non ut contristemini, sed ut sciatis, quam caritatem habeam abundantius in vobis.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">От великой скорби и стесненного сердца я писал вам со многими слезами, не для того, чтобы огорчить вас, но чтобы вы познали любовь, какую я в избытке имею к вам.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si quis autem contristavit, non me contristavit : sed ex parte, ut non onerem omnes vos.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Если же кто огорчил, то не меня огорчил, но частью, — чтобы не сказать много, — и всех вас.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sufficit illi, qui ejusmodi est, objurgatio hæc, quæ fit a pluribus :</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Для такого довольно сего наказания от многих,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">ita ut e contrario magis donetis, et consolemini, ne forte abundantiori tristitia absorbeatur qui ejusmodi est.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">так что вам лучше уже простить его и утешить, дабы он не был поглощен чрезмерною печалью.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Propter quod obsecro vos, ut confirmetis in illum caritatem.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">И потому прошу вас оказать ему любовь.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ideo enim et scripsi, ut cognoscam experimentum vestrum, an in omnibus obedientes sitis.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Ибо я для того и писал, чтобы узнать на опыте, во всем ли вы послушны.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Cui autem aliquid donastis, et ego : nam et ego quod donavi, si quid donavi, propter vos in persona Christi,</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">А кого вы в чем прощаете, того и я; ибо и я, если в чем простил кого, простил для вас от лица Христова,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">ut non circumveniamur a Satana : non enim ignoramus cogitationes ejus.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">чтобы не сделал нам ущерба сатана, ибо нам не безызвестны его умыслы.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Cum venissem autem Troadem propter Evangelium Christi, et ostium mihi apertum esset in Domino,</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Придя в Троаду для благовествования о Христе, хотя мне и отверста была дверь Господом,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">non habui requiem spiritui meo, eo quod non invenerim Titum fratrem meum, sed valefaciens eis, profectus sum in Macedoniam.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">я не имел покоя духу моему, потому что не нашел там брата моего Тита; но, простившись с ними, я пошел в Македонию.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Deo autem gratias, qui semper triumphat nos in Christo Jesu, et odorem notitiæ suæ manifestat per nos in omni loco :</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Но благодарение Богу, Который всегда дает нам торжествовать во Христе и благоухание познания о Себе распространяет нами во всяком месте.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">quia Christi bonus odor sumus Deo in iis qui salvi fiunt, et in iis qui pereunt :</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Ибо мы Христово благоухание Богу в спасаемых и в погибающих:</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">aliis quidem odor mortis in mortem : aliis autem odor vitæ in vitam. Et ad hæc quis tam idoneus ?</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">для одних запах смертоносный на смерть, а для других запах живительный на жизнь. И кто способен к сему?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">non enim sumus sicut plurimi, adulterantes verbum Dei, sed ex sinceritate, sed sicut ex Deo, coram Deo, in Christo loquimur.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Ибо мы не повреждаем слова Божия, как многие, но проповедуем искренно, как от Бога, пред Богом, во Христе.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch3">
+    <div class="chapter-marker">
+      <span class="ch-roman">III</span>
+      <span class="ch-label">Caput 3</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v3-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Incipimus iterum nosmetipsos commendare ? aut numquid egemus (sicut quidam) commendatitiis epistolis ad vos, aut ex vobis ?</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Неужели нам снова знакомиться с вами? Неужели нужны для нас, как для некоторых, одобрительные письма к вам или от вас?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Epistola nostra vos estis, scripta in cordibus nostris, quæ scitur, et legitur ab omnibus hominibus :</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Вы — наше письмо, написанное в сердцах наших, узнаваемое и читаемое всеми человеками;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">manifestati quod epistola estis Christi, ministrata a nobis, et scripta non atramento, sed Spiritu Dei vivi : non in tabulis lapideis, sed in tabulis cordis carnalibus.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">вы показываете собою, что вы — письмо Христово, через служение наше написанное не чернилами, но Духом Бога живаго, не на скрижалях каменных, но на плотяных скрижалях сердца.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Fiduciam autem talem habemus per Christum ad Deum :</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Такую уверенность мы имеем в Боге через Христа,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">non quod sufficientes simus cogitare aliquid a nobis, quasi ex nobis : sed sufficientia nostra ex Deo est :</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">не потому, чтобы мы сами способны были помыслить что от себя, как бы от себя, но способность наша от Бога.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui et idoneos nos fecit ministros novi testamenti : non littera, sed Spiritu : littera enim occidit, Spiritus autem vivificat.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Он дал нам способность быть служителями Нового Завета, не буквы, но духа, потому что буква убивает, а дух животворит.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quod si ministratio mortis litteris deformata in lapidibus fuit in gloria, ita ut non possent intendere filii Israël in faciem Moysi propter gloriam vultus ejus, quæ evacuatur :</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Если же служение смертоносным буквам, начертанное на камнях, было так славно, что сыны Израилевы не могли смотреть на лице Моисеево по причине славы лица его преходящей, —</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">quomodo non magis ministratio Spiritus erit in gloria ?</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">то не гораздо ли более должно быть славно служение духа?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nam si ministratio damnationis gloria est : multo magis abundat ministerium justitiæ in gloria.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Ибо если служение осуждения славно, то тем паче изобилует славою служение оправдания.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nam nec glorificatum est, quod claruit in hac parte, propter excellentem gloriam.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">То прославленное даже не оказывается славным с сей стороны, по причине преимущественной славы последующего.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si enim quod evacuatur, per gloriam est : multo magis quod manet, in gloria est.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Ибо, если преходящее славно, тем более славно пребывающее.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Habentes igitur talem spem, multa fiducia utimur :</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Имея такую надежду, мы действуем с великим дерзновением,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">et non sicut Moyses ponebat velamen super faciem suam, ut non intenderent filii Israël in faciem ejus, quod evacuatur,</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">а не так, как Моисей, который полагал покрывало на лице свое, чтобы сыны Израилевы не взирали на конец преходящего.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">sed obtusi sunt sensus eorum. Usque in hodiernum enim diem, idipsum velamen in lectione veteris testamenti manet non revelatum (quoniam in Christo evacuatur),</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Но умы их ослеплены: ибо то же самое покрывало доныне остается неснятым при чтении Ветхого Завета, потому что оно снимается Христом.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">sed usque in hodiernum diem, cum legitur Moyses, velamen positum est super cor eorum.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Доныне, когда они читают Моисея, покрывало лежит на сердце их;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Cum autem conversus fuerit ad Dominum, auferetur velamen.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">но когда обращаются к Господу, тогда это покрывало снимается.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Dominus autem Spiritus est : ubi autem Spiritus Domini, ibi libertas.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Господь есть Дух; а где Дух Господень, там свобода.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nos vero omnes, revelata facie gloriam Domini speculantes, in eamdem imaginem transformamur a claritate in claritatem, tamquam a Domini Spiritu.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Мы же все открытым лицем, как в зеркале, взирая на славу Господню, преображаемся в тот же образ от славы в славу, как от Господня Духа.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch4">
+    <div class="chapter-marker">
+      <span class="ch-roman">IV</span>
+      <span class="ch-label">Caput 4</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v4-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ideo habentes administrationem, juxta quod misericordiam consecuti sumus, non deficimus,</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Посему, имея по милости Божией такое служение, мы не унываем;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">sed abdicamus occulta dedecoris, non ambulantes in astutia, neque adulterantes verbum Dei, sed in manifestatione veritatis commendantes nosmetipsos ad omnem conscientiam hominum coram Deo.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">но, отвергнув скрытные постыдные дела, не прибегая к хитрости и не искажая слова Божия, а открывая истину, представляем себя совести всякого человека пред Богом.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quod si etiam opertum est Evangelium nostrum, in iis, qui pereunt, est opertum :</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Если же и закрыто благовествование наше, то закрыто для погибающих,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">in quibus Deus hujus sæculi excæcavit mentes infidelium, ut non fulgeat illis illuminatio Evangelii gloriæ Christi, qui est imago Dei.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">для неверующих, у которых бог века сего ослепил умы, чтобы для них не воссиял свет благовествования о славе Христа, Который есть образ Бога невидимого.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non enim nosmetipsos prædicamus, sed Jesum Christum Dominum nostrum : nos autem servos vestros per Jesum :</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Ибо мы не себя проповедуем, но Христа Иисуса, Господа; а мы — рабы ваши для Иисуса,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">quoniam Deus, qui dixit de tenebris lucem splendescere, ipse illuxit in cordibus nostris ad illuminationem scientiæ claritatis Dei, in facie Christi Jesu.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">потому что Бог, повелевший из тьмы воссиять свету, озарил наши сердца, дабы просветить нас познанием славы Божией в лице Иисуса Христа.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Habemus autem thesaurum istum in vasis fictilibus : ut sublimitas sit virtutis Dei, et non ex nobis.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Но сокровище сие мы носим в глиняных сосудах, чтобы преизбыточная сила была приписываема Богу, а не нам.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">In omnibus tribulationem patimur, sed non angustiamur : aporiamur, sed non destituimur :</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Мы отовсюду притесняемы, но не стеснены; мы в отчаянных обстоятельствах, но не отчаиваемся;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">persecutionem patimur, sed non derelinquimur : dejicimur, sed non perimus :</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">мы гонимы, но не оставлены; низлагаемы, но не погибаем.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">semper mortificationem Jesu in corpore nostro circumferentes, ut et vita Jesu manifestetur in corporibus nostris.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Всегда носим в теле мертвость Господа Иисуса, чтобы и жизнь Иисусова открылась в теле нашем.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Semper enim nos, qui vivimus, in mortem tradimur propter Jesum : ut et vita Jesu manifestetur in carne nostra mortali.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Ибо мы живые непрестанно предаемся на смерть ради Иисуса, чтобы и жизнь Иисусова открылась в смертной плоти нашей,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ergo mors in nobis operatur, vita autem in vobis.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">так что смерть действует в нас, а жизнь в вас.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Habentes autem eumdem spiritum fidei, sicut scriptum est : Credidi, propter quod locutus sum : et nos credimus, propter quod et loquimur :</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Но, имея тот же дух веры, как написано: я веровал и потому говорил, и мы веруем, потому и говорим,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">scientes quoniam qui suscitavit Jesum, et nos cum Jesu suscitabit, et constituet vobiscum.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">зная, что Воскресивший Господа Иисуса воскресит через Иисуса и нас и поставит перед Собою с вами.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Omnia enim propter vos : ut gratia abundans, per multos in gratiarum actione, abundet in gloriam Dei.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Ибо всё для вас, дабы обилие благодати тем большую во многих произвело благодарность во славу Божию.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Propter quod non deficimus : sed licet is, qui foris est, noster homo corrumpatur, tamen is, qui intus est, renovatur de die in diem.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Посему мы не унываем; но если внешний наш человек и тлеет, то внутренний со дня на день обновляется.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Id enim, quod in præsenti est momentaneum et leve tribulationis nostræ, supra modum in sublimitate æternum gloriæ pondus operatur in nobis,</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Ибо кратковременное легкое страдание наше производит в безмерном преизбытке вечную славу,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">non contemplantibus nobis quæ videntur, sed quæ non videntur. Quæ enim videntur, temporalia sunt : quæ autem non videntur, æterna sunt.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">когда мы смотрим не на видимое, но на невидимое: ибо видимое временно, а невидимое вечно.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch5">
+    <div class="chapter-marker">
+      <span class="ch-roman">V</span>
+      <span class="ch-label">Caput 5</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v5-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Scimus enim quoniam si terrestris domus nostra hujus habitationis dissolvatur, quod ædificationem ex Deo habemus, domum non manufactam, æternam in cælis.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Ибо знаем, что, когда земной наш дом, эта хижина, разрушится, мы имеем от Бога жилище на небесах, дом нерукотворенный, вечный.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nam et in hoc ingemiscimus, habitationem nostram, quæ de cælo est, superindui cupientes :</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Оттого мы и воздыхаем, желая облечься в небесное наше жилище;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">si tamen vestiti, non nudi inveniamur.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">только бы нам и одетым не оказаться нагими.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nam et qui sumus in hoc tabernaculo, ingemiscimus gravati : eo quod nolumus expoliari, sed supervestiri, ut absorbeatur quod mortale est, a vita.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Ибо мы, находясь в этой хижине, воздыхаем под бременем, потому что не хотим совлечься, но облечься, чтобы смертное поглощено было жизнью.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui autem efficit nos in hoc ipsum, Deus, qui dedit nobis pignus Spiritus.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">На сие самое и создал нас Бог и дал нам залог Духа.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Audentes igitur semper, scientes quoniam dum sumus in corpore, peregrinamur a Domino</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Итак мы всегда благодушествуем; и как знаем, что, водворяясь в теле, мы устранены от Господа, —</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">(per fidem enim ambulamus, et non per speciem) :</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">ибо мы ходим верою, а не видением, —</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">audemus autem, et bonam voluntatem habemus magis peregrinari a corpore, et præsentes esse ad Dominum.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">то мы благодушествуем и желаем лучше выйти из тела и водвориться у Господа.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et ideo contendimus, sive absentes, sive præsentes, placere illi.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">И потому ревностно стараемся, водворяясь ли, выходя ли, быть Ему угодными;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Omnes enim nos manifestari oportet ante tribunal Christi, ut referat unusquisque propria corporis, prout gessit, sive bonum, sive malum.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">ибо всем нам должно явиться пред судилище Христово, чтобы каждому получить соответственно тому, что он делал, живя в теле, доброе или худое.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Scientes ergo timorem Domini, hominibus suademus, Deo autem manifesti sumus. Spero autem et in conscientiis vestris manifestos nos esse.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Итак, зная страх Господень, мы вразумляем людей, Богу же мы открыты; надеюсь, что открыты и вашим совестям.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non iterum commendamus nos vobis, sed occasionem damus vobis gloriandi pro nobis : ut habeatis ad eos qui in facie gloriantur, et non in corde.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Не снова представляем себя вам, но даем вам повод хвалиться нами, дабы имели вы что сказать тем, которые хвалятся лицем, а не сердцем.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sive enim mente excedimus Deo : sive sobrii sumus, vobis.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Если мы выходим из себя, то для Бога; если же скромны, то для вас.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Caritas enim Christi urget nos : æstimantes hoc, quoniam si unus pro omnibus mortuus est, ergo omnes mortui sunt :</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Ибо любовь Христова объемлет нас, рассуждающих так: если один умер за всех, то все умерли.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">et pro omnibus mortuus est Christus : ut, et qui vivunt, jam non sibi vivant, sed ei qui pro ipsis mortuus est et resurrexit.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">А Христос за всех умер, чтобы живущие уже не для себя жили, но для умершего за них и воскресшего.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Itaque nos ex hoc neminem novimus secundum carnem. Et si cognovimus secundum carnem Christum, sed nunc jam non novimus.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Потому отныне мы никого не знаем по плоти; если же и знали Христа по плоти, то ныне уже не знаем.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si qua ergo in Christo nova creatura, vetera transierunt : ecce facta sunt omnia nova.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Итак, кто во Христе, тот новая тварь; древнее прошло, теперь все новое.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Omnia autem ex Deo, qui nos reconciliavit sibi per Christum : et dedit nobis ministerium reconciliationis,</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Все же от Бога, Иисусом Христом примирившего нас с Собою и давшего нам служение примирения,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">quoniam quidem Deus erat in Christo mundum reconcilians sibi, non reputans illis delicta ipsorum, et posuit in nobis verbum reconciliationis.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">потому что Бог во Христе примирил с Собою мир, не вменяя людям преступлений их, и дал нам слово примирения.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">Pro Christo ergo legatione fungimur, tamquam Deo exhortante per nos. Obsecramus pro Christo, reconciliamini Deo.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Итак мы — посланники от имени Христова, и как бы Сам Бог увещевает через нас; от имени Христова просим: примиритесь с Богом.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">Eum, qui non noverat peccatum, pro nobis peccatum fecit, ut nos efficeremur justitia Dei in ipso.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Ибо не знавшего греха Он сделал для нас жертвою за грех, чтобы мы в Нем сделались праведными пред Богом.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch6">
+    <div class="chapter-marker">
+      <span class="ch-roman">VI</span>
+      <span class="ch-label">Caput 6</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v6-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Adjuvantes autem exhortamur ne in vacuum gratiam Dei recipiatis.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Мы же, как споспешники, умоляем вас, чтобы благодать Божия не тщетно была принята вами.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ait enim : Tempore accepto exaudivi te, et in die salutis adjuvi te. Ecce nunc tempus acceptabile, ecce nunc dies salutis.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Ибо сказано: во время благоприятное Я услышал тебя и в день спасения помог тебе. Вот, теперь время благоприятное, вот, теперь день спасения.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nemini dantes ullam offensionem, ut non vituperetur ministerium nostrum :</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Мы никому ни в чем не полагаем претыкания, чтобы не было порицаемо служение,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">sed in omnibus exhibeamus nosmetipsos sicut Dei ministros in multa patientia, in tribulationibus, in necessitatibus, in angustiis,</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">но во всем являем себя, как служители Божии, в великом терпении, в бедствиях, в нуждах, в тесных обстоятельствах,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">in plagis, in carceribus, in seditionibus, in laboribus, in vigiliis, in jejuniis,</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">под ударами, в темницах, в изгнаниях, в трудах, в бдениях, в постах,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">in castitate, in scientia, in longanimitate, in suavitate, in Spiritu Sancto, in caritate non ficta,</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">в чистоте, в благоразумии, в великодушии, в благости, в Духе Святом, в нелицемерной любви,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">in verbo veritatis, in virtute Dei, per arma justitiæ a dextris et a sinistris,</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">в слове истины, в силе Божией, с оружием правды в правой и левой руке,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">per gloriam, et ignobilitatem, per infamiam, et bonam famam : ut seductores, et veraces, sicut qui ignoti, et cogniti :</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">в чести и бесчестии, при порицаниях и похвалах: нас почитают обманщиками, но мы верны;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">quasi morientes, et ecce vivimus : ut castigati, et non mortificati :</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">мы неизвестны, но нас узнают; нас почитают умершими, но вот, мы живы; нас наказывают, но мы не умираем;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">quasi tristes, semper autem gaudentes : sicut egentes, multos autem locupletantes : tamquam nihil habentes, et omnia possidentes.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">нас огорчают, а мы всегда радуемся; мы нищи, но многих обогащаем; мы ничего не имеем, но всем обладаем.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Os nostrum patet ad vos, o Corinthii ; cor nostrum dilatatum est.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Уста наши отверсты к вам, Коринфяне, сердце наше расширено.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non angustiamini in nobis : angustiamini autem in visceribus vestris :</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Вам не тесно в нас; но в сердцах ваших тесно.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">eamdem autem habentes remunerationem, tamquam filiis dico, dilatamini et vos.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">В равное возмездие, — говорю, как детям, — распространитесь и вы.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nolite jugum ducere cum infidelibus. Quæ enim participatio justitiæ cum iniquitate ? aut quæ societas luci ad tenebras ?</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Не преклоняйтесь под чужое ярмо с неверными, ибо какое общение праведности с беззаконием? Что общего у света с тьмою?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">quæ autem conventio Christi ad Belial ? aut quæ pars fideli cum infideli ?</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Какое согласие между Христом и Велиаром? Или какое соучастие верного с неверным?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui autem consensus templo Dei cum idolis ? vos enim estis templum Dei vivi, sicut dicit Deus :   Quoniam inhabitabo in illis, et inambulabo inter eos,  et ero illorum Deus, et ipsi erunt mihi populus.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Какая совместность храма Божия с идолами? Ибо вы храм Бога живаго, как сказал Бог: вселюсь в них и буду ходить в них; и буду их Богом, и они будут Моим народом.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Propter quod exite de medio eorum,  et separamini, dicit Dominus,  et immundum ne tetigeritis :</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">И потому выйдите из среды их и отделитесь, говорит Господь, и не прикасайтесь к нечистому; и Я прииму вас.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">et ego recipiam vos :  et ero vobis in patrem,  et vos eritis mihi in filios et filias,  dicit Dominus omnipotens.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">И буду вам Отцем, и вы будете Моими сынами и дщерями, говорит Господь Вседержитель.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch7">
+    <div class="chapter-marker">
+      <span class="ch-roman">VII</span>
+      <span class="ch-label">Caput 7</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v7-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Has ergo habentes promissiones, carissimi, mundemus nos ab omni inquinamento carnis et spiritus, perficientes sanctificationem in timore Dei.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Итак, возлюбленные, имея такие обетования, очистим себя от всякой скверны плоти и духа, совершая святыню в страхе Божием.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Capite nos. Neminem læsimus, neminem corrupimus, neminem circumvenimus.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Вместите нас. Мы никого не обидели, никому не повредили, ни от кого не искали корысти.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non ad condemnationem vestram dico : prædiximus enim quod in cordibus nostris estis ad commoriendum et ad convivendum.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Не в осуждение говорю; ибо я прежде сказал, что вы в сердцах наших, так чтобы вместе и умереть и жить.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Multa mihi fiducia est apud vos, multa mihi gloriatio pro vobis : repletus sum consolatione ; superabundo gaudio in omni tribulatione nostra.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Я много надеюсь на вас, много хвалюсь вами; я исполнен утешением, преизобилую радостью, при всей скорби нашей.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nam et cum venissemus in Macedoniam, nullam requiem habuit caro nostra, sed omnem tribulationem passi sumus : foris pugnæ, intus timores.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Ибо, когда пришли мы в Македонию, плоть наша не имела никакого покоя, но мы были стеснены отовсюду: отвне — нападения, внутри — страхи.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sed qui consolatur humiles, consolatus est nos Deus in adventu Titi.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Но Бог, утешающий смиренных, утешил нас прибытием Тита,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non solum autem in adventu ejus, sed etiam in consolatione, qua consolatus est in vobis, referens nobis vestrum desiderium, vestrum fletum, vestram æmulationem pro me, ita ut magis gauderem.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">и не только прибытием его, но и утешением, которым он утешался о вас, пересказывая нам о вашем усердии, о вашем плаче, о вашей ревности по мне, так что я еще более обрадовался.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quoniam etsi contristavi vos in epistola, non me pœnitet : etsi pœniteret, videns quod epistola illa (etsi ad horam) vos contristavit,</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Посему, если я опечалил вас посланием, не жалею, хотя и пожалел было; ибо вижу, что послание то опечалило вас, впрочем на время.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">nunc gaudeo : non quia contristati estis, sed quia contristati estis ad pœnitentiam. Contristati enim estis ad Deum, ut in nullo detrimentum patiamini ex nobis.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Теперь я радуюсь не потому, что вы опечалились, но что вы опечалились к покаянию; ибо опечалились ради Бога, так что нисколько не понесли от нас вреда.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quæ enim secundum Deum tristitia est, pœnitentiam in salutem stabilem operatur : sæculi autem tristitia mortem operatur.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Ибо печаль ради Бога производит неизменное покаяние ко спасению, а печаль мирская производит смерть.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ecce enim hoc ipsum, secundum Deum contristari vos, quantam in vobis operatur sollicitudinem : sed defensionem, sed indignationem, sed timorem, sed desiderium, sed æmulationem, sed vindictam : in omnibus exhibuistis vos incontaminatos esse negotio.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Ибо то самое, что вы опечалились ради Бога, смотрите, какое произвело в вас усердие, какие извинения, какое негодование на виновного, какой страх, какое желание, какую ревность, какое взыскание! По всему вы показали себя чистыми в этом деле.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Igitur, etsi scripsi vobis, non propter eum qui fecit injuriam, nec propter eum qui passus est : sed ad manifestandam sollicitudinem nostram, quam habemus pro vobis</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Итак, если я писал к вам, то не ради оскорбителя и не ради оскорбленного, но чтобы вам открылось попечение наше о вас пред Богом.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">coram Deo : ideo consolati sumus. In consolatione autem nostra, abundantius magis gavisi sumus super gaudio Titi, quia refectus est spiritus ejus ab omnibus vobis :</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Посему мы утешились утешением вашим; а еще более обрадованы мы радостью Тита, что вы все успокоили дух его.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">et si quid apud illum de vobis gloriatus sum, non sum confusus : sed sicut omnia vobis in veritate locuti sumus, ita et gloriatio nostra, quæ fuit ad Titum, veritas facta est,</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Итак я не остался в стыде, если чем—либо о вас похвалился перед ним, но как вам мы говорили все истину, так и перед Титом похвала наша оказалась истинною;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">et viscera ejus abundantius in vobis sunt, reminiscentis omnium vestrum obedientiam : quomodo cum timore et tremore excepistis illum.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">и сердце его весьма расположено к вам, при воспоминании о послушании всех вас, как вы приняли его со страхом и трепетом.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Gaudeo quod in omnibus confido in vobis.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Итак радуюсь, что во всем могу положиться на вас.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch8">
+    <div class="chapter-marker">
+      <span class="ch-roman">VIII</span>
+      <span class="ch-label">Caput 8</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v8-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Notam autem facimus vobis, fratres, gratiam Dei, quæ data est in ecclesiis Macedoniæ :</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Уведомляем вас, братия, о благодати Божией, данной церквам Македонским,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">quod in multo experimento tribulationis abundantia gaudii ipsorum fuit, et altissima paupertas eorum, abundavit in divitias simplicitatis eorum :</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">ибо они среди великого испытания скорбями преизобилуют радостью; и глубокая нищета их преизбыточествует в богатстве их радушия.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">quia secundum virtutem testimonium illis reddo, et supra virtutem voluntarii fuerunt,</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Ибо они доброхотны по силам и сверх сил — я свидетель:</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">cum multa exhortatione obsecrantes nos gratiam, et communicationem ministerii, quod fit in sanctos.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">они весьма убедительно просили нас принять дар и участие их в служении святым;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et non sicut speravimus, sed semetipsos dederunt primum Domino, deinde nobis per voluntatem Dei,</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">и не только то, чего мы надеялись, но они отдали самих себя, во—первых, Господу, потом и нам по воле Божией;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">ita ut rogaremus Titum, ut quemadmodum cœpit, ita et perficiat in vobis etiam gratiam istam.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">поэтому мы просили Тита, чтобы он, как начал, так и окончил у вас и это доброе дело.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sed sicut in omnibus abundatis fide, et sermone, et scientia, et omni sollicitudine, insuper et caritate vestra in nos, ut et in hac gratia abundetis.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">А как вы изобилуете всем: верою и словом, и познанием, и всяким усердием, и любовью вашею к нам, — так изобилуйте и сею добродетелью.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non quasi imperans dico : sed per aliorum sollicitudinem, etiam vestræ caritatis ingenium bonum comprobans.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Говорю это не в виде повеления, но усердием других испытываю искренность и вашей любви.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Scitis enim gratiam Domini nostri Jesu Christi, quoniam propter vos egenus factus est, cum esset dives, ut illius inopia vos divites essetis.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Ибо вы знаете благодать Господа нашего Иисуса Христа, что Он, будучи богат, обнищал ради вас, дабы вы обогатились Его нищетою.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et consilium in hoc do : hoc enim vobis utile est, qui non solum facere, sed et velle cœpistis ab anno priore :</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Я даю на это совет: ибо это полезно вам, которые не только начали делать сие, но и желали того еще с прошедшего года.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">nunc vero et facto perficite : ut quemadmodum promptus est animus voluntatis, ita sit et perficiendi ex eo quod habetis.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Совершите же теперь самое дело, дабы, чего усердно желали, то и исполнено было по достатку.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si enim voluntas prompta est, secundum id quod habet, accepta est, non secundum id quod non habet.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Ибо если есть усердие, то оно принимается смотря по тому, кто что имеет, а не по тому, чего не имеет.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non enim ut aliis sit remissio, vobis autem tribulatio, sed ex æqualitate.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Не требуется, чтобы другим было облегчение, а вам тяжесть, но чтобы была равномерность.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">In præsenti tempore vestra abundantia illorum inopiam suppleat : ut et illorum abundantia vestræ inopiæ sit supplementum, ut fiat æqualitas, sicut scriptum est :</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Ныне ваш избыток в восполнение их недостатка; а после их избыток в восполнение вашего недостатка, чтобы была равномерность,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui multum, non abundavit : et qui modicum, non minoravit.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">как написано: кто собрал много, не имел лишнего; и кто мало, не имел недостатка.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Gratias autem Deo, qui dedit eamdem sollicitudinem pro vobis in corde Titi,</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Благодарение Богу, вложившему в сердце Титово такое усердие к вам.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">quoniam exhortationem quidem suscepit : sed cum sollicitior esset, sua voluntate profectus est ad vos.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Ибо, хотя и я просил его, впрочем он, будучи очень усерден, пошел к вам добровольно.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Misimus etiam cum illo fratrem, cujus laus est in Evangelio per omnes ecclesias :</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">С ним послали мы также брата, во всех церквах похваляемого за благовествование,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">non solum autem, sed et ordinatus est ab ecclesiis comes peregrinationis nostræ in hanc gratiam, quæ ministratur a nobis ad Domini gloriam, et destinatam voluntatem nostram :</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">и притом избранного от церквей сопутствовать нам для сего благотворения, которому мы служим во славу Самого Господа и в соответствие вашему усердию,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">devitantes hoc, ne quis nos vituperet in hac plenitudine, quæ ministratur a nobis.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">остерегаясь, чтобы нам не подвергнуться от кого нареканию при таком обилии приношений, вверяемых нашему служению;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">Providemus enim bona non solum coram Deo, sed etiam coram hominibus.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">ибо мы стараемся о добром не только пред Господом, но и пред людьми.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-22">
+      <div class="verse-num-col"><div class="verse-num">22</div></div>
+      <div class="verse-texts">
+        <div class="latin">Misimus autem cum illis et fratrem nostrum, quem probavimus in multis sæpe sollicitum esse : nunc autem multo sollicitiorem, confidentia multa in vos,</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Мы послали с ними и брата нашего, которого усердие много раз испытали во многом и который ныне еще усерднее по великой уверенности в вас.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-23">
+      <div class="verse-num-col"><div class="verse-num">23</div></div>
+      <div class="verse-texts">
+        <div class="latin">sive pro Tito, qui est socius meus, et in vos adjutor, sive fratres nostri, Apostoli ecclesiarum, gloria Christi.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Что касается до Тита, это — мой товарищ и сотрудник у вас; а что до братьев наших, это — посланники церквей, слава Христова.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-24">
+      <div class="verse-num-col"><div class="verse-num">24</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ostensionem ergo, quæ est caritatis vestræ, et nostræ gloriæ pro vobis, in illos ostendite in faciem ecclesiarum.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Итак перед лицем церквей дайте им доказательство любви вашей и того, что мы справедливо хвалимся вами.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch9">
+    <div class="chapter-marker">
+      <span class="ch-roman">IX</span>
+      <span class="ch-label">Caput 9</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v9-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nam de ministerio, quod fit in sanctos ex abundanti est mihi scribere vobis.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Для меня впрочем излишне писать вам о вспоможении святым,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Scio enim promptum animum vestrum : pro quo de vobis glorior apud Macedones. Quoniam et Achaia parata est ab anno præterito, et vestra æmulatio provocavit plurimos.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">ибо я знаю усердие ваше и хвалюсь вами перед Македонянами, что Ахаия приготовлена еще с прошедшего года; и ревность ваша поощрила многих.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Misi autem fratres : ut ne quod gloriamur de vobis, evacuetur in hac parte, ut (quemadmodum dixi) parati sitis :</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Братьев же послал я для того, чтобы похвала моя о вас не оказалась тщетною в сем случае, но чтобы вы, как я говорил, были приготовлены,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">ne cum venerint Macedones mecum, et invenerint vos imparatos, erubescamus nos (ut non dicamus vos) in hac substantia.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">и чтобы, когда придут со мною Македоняне и найдут вас неготовыми, не остались в стыде мы, — не говорю &quot;вы&quot;, — похвалившись с такою уверенностью.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Necessarium ergo existimavi rogare fratres, ut præveniant ad vos, et præparent repromissam benedictionem hanc paratam esse sic, quasi benedictionem, non tamquam avaritiam.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Посему я почел за нужное упросить братьев, чтобы они наперед пошли к вам и предварительно озаботились, дабы возвещенное уже благословение ваше было готово, как благословение, а не как побор.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hoc autem dico : qui parce seminat, parce et metet : et qui seminat in benedictionibus, de benedictionibus et metet.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">При сем скажу: кто сеет скупо, тот скупо и пожнет; а кто сеет щедро, тот щедро и пожнет.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Unusquisque, prout destinavit in corde suo, non ex tristitia, aut ex necessitate : hilarem enim datorem diligit Deus.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Каждый уделяй по расположению сердца, не с огорчением и не с принуждением; ибо доброхотно дающего любит Бог.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Potens est autem Deus omnem gratiam abundare facere in vobis : ut in omnibus semper omnem sufficientiam habentes, abundetis in omne opus bonum,</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Бог же силен обогатить вас всякою благодатью, чтобы вы, всегда и во всем имея всякое довольство, были богаты на всякое доброе дело,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">sicut scriptum est : Dispersit, dedit pauperibus : justitia ejus manet in sæculum sæculi.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">как написано: расточил, раздал нищим; правда его пребывает в век.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui autem administrat semen seminanti : et panem ad manducandum præstabit, et multiplicabit semen vestrum, et augebit incrementa frugum justitiæ vestræ :</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Дающий же семя сеющему и хлеб в пищу подаст обилие посеянному вами и умножит плоды правды вашей,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">ut in omnibus locupletati abundetis in omnem simplicitatem, quæ operatur per nos gratiarum actionem Deo.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">так чтобы вы всем богаты были на всякую щедрость, которая через нас производит благодарение Богу.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quoniam ministerium hujus officii non solum supplet ea quæ desunt sanctis, sed etiam abundat per multas gratiarum actiones in Domino,</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Ибо дело служения сего не только восполняет скудость святых, но и производит во многих обильные благодарения Богу;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">per probationem ministerii hujus, glorificantes Deum in obedientia confessionis vestræ, in Evangelium Christi, et simplicitate communicationis in illos, et in omnes,</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">ибо, видя опыт сего служения, они прославляют Бога за покорность исповедуемому вами Евангелию Христову и за искреннее общение с ними и со всеми,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">et in ipsorum obsecratione pro vobis, desiderantium vos propter eminentem gratiam Dei in vobis.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">молясь за вас, по расположению к вам, за преизбыточествующую в вас благодать Божию.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Gratias Deo super inenarrabili dono ejus.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Благодарение Богу за неизреченный дар Его!</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch10">
+    <div class="chapter-marker">
+      <span class="ch-roman">X</span>
+      <span class="ch-label">Caput 10</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v10-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ipse autem ego Paulus obsecro vos per mansuetudinem et modestiam Christi, qui in facie quidem humilis sum inter vos, absens autem confido in vos.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Я же, Павел, который лично между вами скромен, а заочно против вас отважен, убеждаю вас кротостью и снисхождением Христовым.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Rogo autem vos ne præsens audeam per eam confidentiam, qua existimor audere in quosdam, qui arbitrantur nos tamquam secundum carnem ambulemus.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Прошу, чтобы мне по пришествии моем не прибегать к той твердой смелости, которую думаю употребить против некоторых, помышляющих о нас, что мы поступаем по плоти.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">In carne enim ambulantes, non secundum carnem militamus.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Ибо мы, ходя во плоти, не по плоти воинствуем.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nam arma militiæ nostræ non carnalia sunt, sed potentia Deo ad destructionem munitionum, consilia destruentes,</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Оружия воинствования нашего не плотские, но сильные Богом на разрушение твердынь: ими ниспровергаем замыслы</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">et omnem altitudinem extollentem se adversus scientiam Dei, et in captivitatem redigentes omnem intellectum in obsequium Christi,</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">и всякое превозношение, восстающее против познания Божия, и пленяем всякое помышление в послушание Христу,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">et in promptu habentes ulcisci omnem inobedientiam, cum impleta fuerit vestra obedientia.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">и готовы наказать всякое непослушание, когда ваше послушание исполнится.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quæ secundum faciem sunt, videte. Si quis confidit sibi Christi se esse, hoc cogitet iterum apud se : quia sicut ipse Christi est, ita et nos.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">На личность ли смотрите? Кто уверен в себе, что он Христов, тот сам по себе суди, что, как он Христов, так и мы Христовы.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nam etsi amplius aliquid gloriatus fuero de potestate nostra, quam dedit nobis Dominus in ædificationem, et non in destructionem vestram, non erubescam.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Ибо если бы я и более стал хвалиться нашею властью, которую Господь дал нам к созиданию, а не к расстройству вашему, то не остался бы в стыде.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ut autem non existimer tamquam terrere vos per epistolas :</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Впрочем, да не покажется, что я устрашаю вас только посланиями.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">quoniam quidem epistolæ, inquiunt, graves sunt et fortes : præsentia autem corporis infirma, et sermo contemptibilis :</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Так как некто говорит: в посланиях он строг и силен, а в личном присутствии слаб, и речь его незначительна, —</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">hoc cogitet qui ejusmodi est, quia quales sumus verbo per epistolas absentes, tales et præsentes in facto.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">такой пусть знает, что, каковы мы на словах в посланиях заочно, таковы и на деле лично.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non enim audemus inserere, aut comparare nos quibusdam, qui seipsos commendant : sed ipsi in nobis nosmetipsos metientes, et comparantes nosmetipsos nobis.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Ибо мы не смеем сопоставлять или сравнивать себя с теми, которые сами себя выставляют: они измеряют себя самими собою и сравнивают себя с собою неразумно.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nos autem non in immensum gloriabimur, sed secundum mensuram regulæ, qua mensus est nobis Deus, mensuram pertingendi usque ad vos.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">А мы не без меры хвалиться будем, но по мере удела, какой назначил нам Бог в такую меру, чтобы достигнуть и до вас.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non enim quasi non pertingentes ad vos, superextendimus nos : usque ad vos enim pervenimus in Evangelio Christi.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Ибо мы не напрягаем себя, как не достигшие до вас, потому что достигли и до вас благовествованием Христовым.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non in immensum gloriantes in alienis laboribus : spem autem habentes crescentis fidei vestræ, in vobis magnificari secundum regulam nostram in abundantiam,</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Мы не без меры хвалимся, не чужими трудами, но надеемся, с возрастанием веры вашей, с избытком увеличить в вас удел наш,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">etiam in illa, quæ ultra vos sunt, evangelizare, non in aliena regula in iis quæ præparata sunt gloriari.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">так чтобы и далее вас проповедывать Евангелие, а не хвалиться готовым в чужом уделе.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui autem gloriatur, in Domino glorietur.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Хвалящийся хвались о Господе.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non enim qui seipsum commendat, ille probatus est : sed quem Deus commendat.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Ибо не тот достоин, кто сам себя хвалит, но кого хвалит Господь.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch11">
+    <div class="chapter-marker">
+      <span class="ch-roman">XI</span>
+      <span class="ch-label">Caput 11</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v11-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Utinam sustineretis modicum quid insipientiæ meæ, sed et supportare me :</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">О, если бы вы несколько были снисходительны к моему неразумию! Но вы и снисходите ко мне.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">æmulor enim vos Dei æmulatione. Despondi enim vos uni viro, virginem castam exhibere Christo.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Ибо я ревную о вас ревностью Божиею; потому что я обручил вас единому мужу, чтобы представить Христу чистою девою.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Timeo autem ne sicut serpens Hevam seduxit astutia sua, ita corrumpantur sensus vestri, et excidant a simplicitate, quæ est in Christo.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Но боюсь, чтобы, как змий хитростью своею прельстил Еву, так и ваши умы не повредились, уклонившись от простоты во Христе.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nam si is qui venit, alium Christum prædicat, quem non prædicavimus, aut alium spiritum accipitis, quem non accepistis : aut aliud Evangelium, quod non recepistis : recte pateremini.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Ибо если бы кто, придя, начал проповедывать другого Иисуса, которого мы не проповедывали, или если бы вы получили иного Духа, которого не получили, или иное благовестие, которого не принимали, — то вы были бы очень снисходительны к тому.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Existimo enim nihil me minus fecisse a magnis Apostolis.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Но я думаю, что у меня ни в чем нет недостатка против высших Апостолов:</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nam etsi imperitus sermone, sed non scientia, in omnibus autem manifestati sumus vobis.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">хотя я и невежда в слове, но не в познании. Впрочем мы во всем совершенно известны вам.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Aut numquid peccatum feci, meipsum humilians, ut vos exaltemini ? quoniam gratis Evangelium Dei evangelizavi vobis ?</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Согрешил ли я тем, что унижал себя, чтобы возвысить вас, потому что безмездно проповедывал вам Евангелие Божие?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Alias ecclesias expoliavi, accipiens stipendium ad ministerium vestrum.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Другим церквам я причинял издержки, получая от них содержание для служения вам; и, будучи у вас, хотя терпел недостаток, никому не докучал,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et cum essem apud vos, et egerem, nulli onerosus fui : nam quod mihi deerat, suppleverunt fratres, qui venerunt a Macedonia : et in omnibus sine onere me vobis servavi, et servabo.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">ибо недостаток мой восполнили братия, пришедшие из Македонии; да и во всем я старался и постараюсь не быть вам в тягость.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Est veritas Christi in me, quoniam hæc gloriatio non infringetur in me in regionibus Achaiæ.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">По истине Христовой во мне скажу, что похвала сия не отнимется у меня в странах Ахаии.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quare ? quia non diligo vos ? Deus scit.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Почему же так поступаю? Потому ли, что не люблю вас? Богу известно! Но как поступаю, так и буду поступать,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quod autem facio, et faciam : ut amputem occasionem eorum qui volunt occasionem, ut in quo gloriantur, inveniantur sicut et nos.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">чтобы не дать повода ищущим повода, дабы они, чем хвалятся, в том оказались такими же, как и мы.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nam ejusmodi pseudoapostoli sunt operarii subdoli, transfigurantes se in apostolos Christi.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Ибо таковые лжеапостолы, лукавые делатели, принимают вид Апостолов Христовых.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et non mirum : ipse enim Satanas transfigurat se in angelum lucis.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">И неудивительно: потому что сам сатана принимает вид Ангела света,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non est ergo magnum, si ministri ejus transfigurentur velut ministri justitiæ : quorum finis erit secundum opera ipsorum.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">а потому не великое дело, если и служители его принимают вид служителей правды; но конец их будет по делам их.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Iterum dico (ne quis me putet insipientem esse, alioquin velut insipientem accipite me, ut et ego modicum quid glorier),</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Еще скажу: не почти кто—нибудь меня неразумным; а если не так, то примите меня, хотя как неразумного, чтобы и мне сколько— нибудь похвалиться.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">quod loquor, non loquor secundum Deum, sed quasi in insipientia, in hac substantia gloriæ.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Что скажу, то скажу не в Господе, но как бы в неразумии при такой отважности на похвалу.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quoniam multi gloriantur secundum carnem : et ego gloriabor.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Как многие хвалятся по плоти, то и я буду хвалиться.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">Libenter enim suffertis insipientes, cum sitis ipsi sapientes.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Ибо вы, люди разумные, охотно терпите неразумных:</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sustinetis enim si quis vos in servitutem redigit, si quis devorat, si quis accipit, si quis extollitur, si quis in faciem vos cædit.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">вы терпите, когда кто вас порабощает, когда кто объедает, когда кто обирает, когда кто превозносится, когда кто бьет вас в лицо.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">Secundum ignobilitatem dico, quasi nos infirmi fuerimus in hac parte. In quo quis audet (in insipientia dico) audeo et ego :</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">К стыду говорю, что на это у нас недоставало сил. А если кто смеет хвалиться чем—либо, то (скажу по неразумию) смею и я.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-22">
+      <div class="verse-num-col"><div class="verse-num">22</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hebræi sunt, et ego : Israëlitæ sunt, et ego : semen Abrahæ sunt, et ego.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Они Евреи? и я. Израильтяне? и я. Семя Авраамово? и я.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-23">
+      <div class="verse-num-col"><div class="verse-num">23</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ministri Christi sunt (ut minus sapiens dico), plus ego : in laboribus plurimis, in carceribus abundantius, in plagis supra modum, in mortibus frequenter.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Христовы служители? (в безумии говорю:) я больше. Я гораздо более был в трудах, безмерно в ранах, более в темницах и многократно при смерти.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-24">
+      <div class="verse-num-col"><div class="verse-num">24</div></div>
+      <div class="verse-texts">
+        <div class="latin">A Judæis quinquies, quadragenas, una minus, accepi.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">От Иудеев пять раз дано мне было по сорока ударов без одного;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-25">
+      <div class="verse-num-col"><div class="verse-num">25</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ter virgis cæsus sum, semel lapidatus sum : ter naufragium feci, nocte et die in profundo maris fui,</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">три раза меня били палками, однажды камнями побивали, три раза я терпел кораблекрушение, ночь и день пробыл во глубине морской;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-26">
+      <div class="verse-num-col"><div class="verse-num">26</div></div>
+      <div class="verse-texts">
+        <div class="latin">in itineribus sæpe, periculis fluminum, periculis latronum, periculis ex genere, periculis ex gentibus, periculis in civitate, periculis in solitudine, periculis in mari, periculis in falsis fratribus :</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">много раз был в путешествиях, в опасностях на реках, в опасностях от разбойников, в опасностях от единоплеменников, в опасностях от язычников, в опасностях в городе, в опасностях в пустыне, в опасностях на море, в опасностях между лжебратиями,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-27">
+      <div class="verse-num-col"><div class="verse-num">27</div></div>
+      <div class="verse-texts">
+        <div class="latin">in labore et ærumna, in vigiliis multis, in fame et siti, in jejuniis multis, in frigore et nuditate,</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">в труде и в изнурении, часто в бдении, в голоде и жажде, часто в посте, на стуже и в наготе.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-28">
+      <div class="verse-num-col"><div class="verse-num">28</div></div>
+      <div class="verse-texts">
+        <div class="latin">præter illa quæ extrinsecus sunt, instantia mea quotidiana, sollicitudo omnium ecclesiarum.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Кроме посторонних приключений, у меня ежедневно стечение людей, забота о всех церквах.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-29">
+      <div class="verse-num-col"><div class="verse-num">29</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quis infirmatur, et ego non infirmor ? quis scandalizatur, et ego non uror ?</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Кто изнемогает, с кем бы и я не изнемогал? Кто соблазняется, за кого бы я не воспламенялся?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-30">
+      <div class="verse-num-col"><div class="verse-num">30</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si gloriari oportet, quæ infirmitatis meæ sunt, gloriabor.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Если должно мне хвалиться, то буду хвалиться немощью моею.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-31">
+      <div class="verse-num-col"><div class="verse-num">31</div></div>
+      <div class="verse-texts">
+        <div class="latin">Deus et Pater Domini nostri Jesu Christi, qui est benedictus in sæcula, scit quod non mentior.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Бог и Отец Господа нашего Иисуса Христа, благословенный во веки, знает, что я не лгу.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-32">
+      <div class="verse-num-col"><div class="verse-num">32</div></div>
+      <div class="verse-texts">
+        <div class="latin">Damasci præpositus gentis Aretæ regis custodiebat civitatem Damascenorum ut me comprehenderet :</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">В Дамаске областной правитель царя Ареты стерег город Дамаск, чтобы схватить меня; и я в корзине был спущен из окна по стене и избежал его рук.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-33">
+      <div class="verse-num-col"><div class="verse-num">33</div></div>
+      <div class="verse-texts">
+        <div class="latin">et per fenestram in sporta dimissus sum per murum, et sic effugi manus ejus.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch12">
+    <div class="chapter-marker">
+      <span class="ch-roman">XII</span>
+      <span class="ch-label">Caput 12</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v12-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si gloriari oportet (non expedit quidem), veniam autem ad visiones et revelationes Domini.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Не полезно хвалиться мне, ибо я приду к видениям и откровениям Господним.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Scio hominem in Christo ante annos quatuordecim, sive in corpore nescio, sive extra corpus nescio, Deus scit, raptum hujusmodi usque ad tertium cælum.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Знаю человека во Христе, который назад тому четырнадцать лет (в теле ли — не знаю, вне ли тела — не знаю: Бог знает) восхищен был до третьего неба.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et scio hujusmodi hominem sive in corpore, sive extra corpus nescio, Deus scit :</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">И знаю о таком человеке (только не знаю — в теле, или вне тела: Бог знает),</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">quoniam raptus est in paradisum : et audivit arcana verba, quæ non licet homini loqui.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">что он был восхищен в рай и слышал неизреченные слова, которых человеку нельзя пересказать.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Pro hujusmodi gloriabor : pro me autem nihil gloriabor nisi in infirmitatibus meis.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Таким человеком могу хвалиться; собою же не похвалюсь, разве только немощами моими.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nam etsi voluero gloriari, non ero insipiens : veritatem enim dicam : parco autem, ne quis me existimet supra id quod videt in me, aut aliquid audit ex me.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Впрочем, если захочу хвалиться, не буду неразумен, потому что скажу истину; но я удерживаюсь, чтобы кто не подумал о мне более, нежели сколько во мне видит или слышит от меня.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et ne magnitudo revelationum extollat me, datus est mihi stimulus carnis meæ angelus Satanæ, qui me colaphizet.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">И чтобы я не превозносился чрезвычайностью откровений, дано мне жало в плоть, ангел сатаны, удручать меня, чтобы я не превозносился.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Propter quod ter Dominum rogavi ut discederet a me :</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Трижды молил я Господа о том, чтобы удалил его от меня.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">et dixit mihi : Sufficit tibi gratia mea : nam virtus in infirmitate perficitur. Libenter igitur gloriabor in infirmitatibus meis, ut inhabitet in me virtus Christi.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Но Господь сказал мне: &quot;довольно для тебя благодати Моей, ибо сила Моя совершается в немощи&quot;. И потому я гораздо охотнее буду хвалиться своими немощами, чтобы обитала во мне сила Христова.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Propter quod placeo mihi in infirmitatibus meis, in contumeliis, in necessitatibus, in persecutionibus, in angustiis pro Christo : cum enim infirmor, tunc potens sum.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Посему я благодушествую в немощах, в обидах, в нуждах, в гонениях, в притеснениях за Христа, ибо, когда я немощен, тогда силен.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Factus sum insipiens, vos me coëgistis. Ego enim a vobis debui commendari : nihil enim minus fui ab iis, qui sunt supra modum Apostoli : tametsi nihil sum :</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Я дошел до неразумия, хвалясь; вы меня к сему принудили. Вам бы надлежало хвалить меня, ибо у меня ни в чем нет недостатка против высших Апостолов, хотя я и ничто.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">signa tamen apostolatus mei facta sunt super vos in omni patientia, in signis, et prodigiis, et virtutibus.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Признаки Апостола оказались перед вами всяким терпением, знамениями, чудесами и силами.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quid est enim, quod minus habuistis præ ceteris ecclesiis, nisi quod ego ipse non gravavi vos ? donate mihi hanc injuriam.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Ибо чего у вас недостает перед прочими церквами, разве только того, что сам я не был вам в тягость? Простите мне такую вину.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ecce tertio hoc paratus sum venire ad vos : et non ero gravis vobis. Non enim quæro quæ vestra sunt, sed vos. Nec enim debent filii parentibus thesaurizare, sed parentes filiis.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Вот, в третий раз я готов идти к вам, и не буду отягощать вас, ибо я ищу не вашего, а вас. Не дети должны собирать имение для родителей, но родители для детей.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ego autem libentissime impendam, et super impendar ipse pro animabus vestris : licet plus vos diligens, minus diligar.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Я охотно буду издерживать свое и истощать себя за души ваши, несмотря на то, что, чрезвычайно любя вас, я менее любим вами.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sed esto : ego vos non gravavi : sed cum essem astutus, dolo vos cepi.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Положим, что сам я не обременял вас, но, будучи хитр, лукавством брал с вас.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Numquid per aliquem eorum, quod misi ad vos, circumveni vos ?</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Но пользовался ли я чем от вас через кого—нибудь из тех, кого посылал к вам?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Rogavi Titum, et misi cum illo fratrem. Numquid Titus vos circumvenit ? nonne eodem spiritu ambulavimus ? nonne iisdem vestigiis ?</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Я упросил Тита и послал с ним одного из братьев: Тит воспользовался ли чем от вас? Не в одном ли духе мы действовали? Не одним ли путем ходили?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">Olim putatis quod excusemus nos apud vos ? coram Deo in Christo loquimur : omnia autem, carissimi, propter ædificationem vestram.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Не думаете ли еще, что мы только оправдываемся перед вами? Мы говорим пред Богом, во Христе, и все это, возлюбленные, к вашему назиданию.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">Timeo enim ne forte cum venero, non quales volo, inveniam vos : et ego inveniar a vobis, qualem non vultis : ne forte contentiones, æmulationes, animositates, dissensiones, detractiones, susurrationes, inflationes, seditiones sint inter vos :</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Ибо я опасаюсь, чтобы мне, по пришествии моем, не найти вас такими, какими не желаю, также чтобы и вам не найти меня таким, каким не желаете: чтобы не найти у вас раздоров, зависти, гнева, ссор, клевет, ябед, гордости, беспорядков,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">ne iterum cum venero, humiliet me Deus apud vos, et lugeam multos ex iis qui ante peccaverunt, et non egerunt pœnitentiam super immunditia, et fornicatione, et impudicitia, quam gesserunt.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">чтобы опять, когда приду, не уничижил меня у вас Бог мой и чтобы не оплакивать мне многих, которые согрешили прежде и не покаялись в нечистоте, блудодеянии и непотребстве, какое делали.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch13">
+    <div class="chapter-marker">
+      <span class="ch-roman">XIII</span>
+      <span class="ch-label">Caput 13</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v13-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ecce tertio hoc venio ad vos : in ore duorum vel trium testium stabit omne verbum.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">В третий уже раз иду к вам. При устах двух или трех свидетелей будет твердо всякое слово.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Prædixi, et prædico, ut præsens, et nunc absens iis qui ante peccaverunt, et ceteris omnibus, quoniam si venero iterum, non parcam.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Я предварял и предваряю, как бы находясь у вас во второй раз, и теперь, отсутствуя, пишу прежде согрешившим и всем прочим, что, когда опять приду, не пощажу.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">An experimentum quæritis ejus, qui in me loquitur Christus, qui in vobis non infirmatur, sed potens est in vobis ?</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Вы ищете доказательства на то, Христос ли говорит во мне: Он не бессилен для вас, но силен в вас.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nam etsi crucifixus est ex infirmitate : sed vivit ex virtute Dei. Nam et nos infirmi sumus in illo : sed vivemus cum eo ex virtute Dei in vobis.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Ибо, хотя Он и распят в немощи, но жив силою Божиею; и мы также, хотя немощны в Нем, но будем живы с Ним силою Божиею в вас.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vosmetipsos tentate si estis in fide : ipsi vos probate. An non cognoscitis vosmetipsos quia Christus Jesus in vobis est ? nisi forte reprobi estis.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Испытывайте самих себя, в вере ли вы; самих себя исследывайте. Или вы не знаете самих себя, что Иисус Христос в вас? Разве только вы не то, чем должны быть.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Spero autem quod cognoscetis, quia nos non sumus reprobi.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">О нас же, надеюсь, узнаете, что мы то, чем быть должны.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Oramus autem Deum ut nihil mali faciatis, non ut nos probati appareamus, sed ut vos quod bonum est faciatis : nos autem ut reprobi simus.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Молим Бога, чтобы вы не делали никакого зла, не для того, чтобы нам показаться, чем должны быть; но чтобы вы делали добро, хотя бы мы казались и не тем, чем должны быть.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non enim possumus aliquid adversus veritatem, sed pro veritate.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Ибо мы не сильны против истины, но сильны за истину.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Gaudemus enim, quoniam nos infirmi sumus, vos autem potentes estis. Hoc et oramus, vestram consummationem.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Мы радуемся, когда мы немощны, а вы сильны; о сем—то и молимся, о вашем совершенстве.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ideo hæc absens scribo, ut non præsens durius agam secundum potestatem, quam Dominus dedit mihi in ædificationem, et non in destructionem.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Для того я и пишу сие в отсутствии, чтобы в присутствии не употребить строгости по власти, данной мне Господом к созиданию, а не к разорению.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">De cetero, fratres, gaudete, perfecti estote, exhortamini, idem sapite, pacem habete, et Deus pacis et dilectionis erit vobiscum.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Впрочем, братия, радуйтесь, усовершайтесь, утешайтесь, будьте единомысленны, мирны, — и Бог любви и мира будет с вами.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Salutate invicem in osculo sancto. Salutant vos omnes sancti.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Приветствуйте друг друга лобзанием святым. Приветствуют вас все святые.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Gratia Domini nostri Jesu Christi, et caritas Dei, et communicatio Sancti Spiritus sit cum omnibus vobis. Amen.</div>
+        <div class="trans-label">✦ Русский</div>
+        <div class="trans">Благодать Господа нашего Иисуса Христа, и любовь Бога Отца, и общение Святаго Духа со всеми вами. Аминь.</div>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <nav class="book-nav">
+    <a href="046-1co.html">← I Ad Corinthios</a>
+    <span class="center">II Ad Corinthios · Русский</span>
+    <a href="048-gal.html">Ad Galatas →</a>
+  </nav>
+
+  <footer class="page-footer">
+    BIBLIA CATHOLICA INTERLINEARIS &nbsp;·&nbsp; Vulgata Clementina &amp; Синодальный перевод (1876)
+    &nbsp;·&nbsp; Gemeinfreie Texte / Public Domain
+  </footer>
+
+</body>
+</html>

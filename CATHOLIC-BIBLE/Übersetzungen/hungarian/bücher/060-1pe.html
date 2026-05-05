@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>I Petri · Magyar · Biblia Catholica</title>
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
+
+:root {
+  --gold:        #C8A96E;
+  --gold-light:  #EDD58A;
+  --gold-dark:   #8B6914;
+  --navy:        #1A1F3A;
+  --navy-mid:    #252B4A;
+  --navy-light:  #2E3560;
+  --parchment:   #F5E9CC;
+  --parchment-d: #EDD9A3;
+  --cream:       #FDF6E3;
+  --latin-color: #6B1E0E;
+  --trans-color: #0F1D2E;
+  --border:      rgba(200,169,110,.35);
+  --font-title:  'Cinzel Decorative', 'Cinzel', Georgia, serif;
+  --font-sub:    'Cinzel', Georgia, serif;
+  --font-body:   'EB Garamond', Georgia, serif;
+}
+
+*,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+html { font-size:16px; scroll-behavior:smooth; }
+body { background:var(--cream); color:var(--trans-color); font-family:var(--font-body); }
+
+/* ── NAV ─────────────────────────────────────────────── */
+.nav-bar {
+  background:var(--navy); padding:10px 28px;
+  display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  border-bottom:2px solid var(--gold);
+  position:sticky; top:0; z-index:100;
+  box-shadow:0 3px 12px rgba(0,0,0,.45);
+}
+.nav-bar a {
+  color:var(--gold); text-decoration:none;
+  font-family:var(--font-sub); font-size:.75rem; letter-spacing:.05em;
+  transition:color .15s;
+}
+.nav-bar a:hover { color:var(--gold-light); }
+.nav-bar .home { font-weight:700; font-size:.82rem; }
+.nav-bar .spacer { flex:1; }
+.nav-bar .pos { color:rgba(200,169,110,.45); font-size:.7rem; font-family:var(--font-sub); }
+
+/* ── BUCHKOPF ────────────────────────────────────────── */
+.book-header {
+  background:linear-gradient(160deg,var(--navy) 0%,var(--navy-mid) 55%,var(--navy-light) 100%);
+  padding:44px 36px 34px; text-align:center;
+  border-bottom:4px solid var(--gold);
+  position:relative; overflow:hidden;
+}
+.book-header::before {
+  content:'';
+  position:absolute; inset:0;
+  background-image:
+    repeating-linear-gradient( 45deg,transparent,transparent 30px,rgba(200,169,110,.038) 30px,rgba(200,169,110,.038) 31px),
+    repeating-linear-gradient(-45deg,transparent,transparent 30px,rgba(200,169,110,.038) 30px,rgba(200,169,110,.038) 31px);
+  pointer-events:none;
+}
+.testament-badge {
+  display:inline-block;
+  border:1px solid rgba(200,169,110,.4); color:rgba(200,169,110,.65);
+  font-family:var(--font-sub); font-size:.62rem; letter-spacing:.25em;
+  padding:4px 14px; border-radius:2px; margin-bottom:14px; position:relative;
+}
+.book-name-latin {
+  font-family:var(--font-title); font-size:3rem; color:var(--gold-light);
+  text-shadow:0 3px 18px rgba(0,0,0,.55); letter-spacing:.08em; position:relative;
+}
+.book-name-trans {
+  font-family:var(--font-sub); font-size:1.1rem; color:var(--gold);
+  margin-top:8px; letter-spacing:.12em; position:relative;
+}
+.book-meta {
+  font-size:.74rem; color:rgba(200,169,110,.5); margin-top:7px;
+  font-family:var(--font-sub); letter-spacing:.07em; position:relative;
+}
+
+/* ── ORNAMENT-TRENNLINIE ─────────────────────────────── */
+.ornament-bar {
+  text-align:center; padding:16px 0 4px;
+  color:var(--gold); font-size:1.1rem; letter-spacing:.7em;
+}
+
+/* ── HAUPT-CONTAINER ─────────────────────────────────── */
+.content { max-width:960px; margin:0 auto; padding:0 24px 80px; }
+
+/* ── KAPITEL-MARKER ──────────────────────────────────── */
+.chapter-marker {
+  display:flex; align-items:center; gap:16px;
+  padding:28px 6px 12px; margin-bottom:4px;
+  border-bottom:2px solid var(--border);
+}
+.ch-roman {
+  font-family:var(--font-title); font-size:2.2rem; color:var(--gold);
+  min-width:56px; text-align:center; flex-shrink:0;
+  text-shadow:0 1px 8px rgba(200,169,110,.3);
+}
+.ch-label {
+  font-family:var(--font-sub); font-size:.72rem; color:rgba(200,169,110,.6);
+  letter-spacing:.22em; text-transform:uppercase;
+}
+
+/* ── VERS-BLOCK ──────────────────────────────────────── */
+.verse-block {
+  display:flex; gap:0; border-bottom:1px solid rgba(200,169,110,.15);
+}
+.verse-block:nth-child(odd)  { background:var(--cream); }
+.verse-block:nth-child(even) { background:var(--parchment); }
+
+.verse-num-col {
+  flex-shrink:0; width:42px; padding:16px 6px 16px 0; text-align:right;
+}
+.verse-num {
+  display:inline-block; width:28px; height:28px; border-radius:50%;
+  background:var(--gold-dark); color:var(--cream);
+  font-family:var(--font-sub); font-size:.64rem; font-weight:700;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 1px 5px rgba(0,0,0,.25);
+}
+
+.verse-texts { flex:1; padding:16px 16px 18px 8px; }
+
+/* ── LATEINISCHER TEXT (oben / primär) ───────────────── */
+.latin {
+  font-family:var(--font-body); font-size:1.12rem; line-height:1.9;
+  color:var(--latin-color); font-weight:500;
+  border-left:3px solid var(--gold); padding-left:12px;
+  margin-bottom:8px;
+}
+
+/* ── ÜBERSETZUNGS-TEXT (unten / sekundär) ────────────── */
+.trans-label {
+  font-family:var(--font-sub); font-size:.6rem; letter-spacing:.17em;
+  text-transform:uppercase; color:var(--gold-dark); margin-bottom:5px; opacity:.78;
+}
+.trans {
+  font-family:var(--font-body); font-size:1.04rem; line-height:1.85;
+  color:var(--trans-color); font-style:italic;
+  padding-left:15px;
+}
+
+/* Erste Vers jedes Kapitels: Drop-Cap */
+.verse-block:first-of-type .latin::first-letter {
+  font-size:4.2em; float:left; line-height:.72;
+  padding-right:.08em; margin-top:.06em;
+  font-family:var(--font-title); color:var(--gold);
+}
+
+/* ── NAVIGATION ZWISCHEN BÜCHERN ─────────────────────── */
+.book-nav {
+  display:flex; justify-content:space-between; align-items:center;
+  background:var(--navy); border-top:3px solid var(--gold);
+  padding:12px 26px; gap:12px;
+}
+.book-nav a {
+  color:var(--gold); text-decoration:none;
+  font-family:var(--font-sub); font-size:.78rem; letter-spacing:.07em;
+  padding:6px 14px; border:1px solid rgba(200,169,110,.3); border-radius:3px;
+  transition:background .18s;
+}
+.book-nav a:hover { background:rgba(200,169,110,.15); }
+.book-nav .center {
+  font-family:var(--font-sub); font-size:.7rem; color:rgba(200,169,110,.55);
+  letter-spacing:.1em; text-align:center;
+}
+
+/* ── FUßZEILE ────────────────────────────────────────── */
+.page-footer {
+  background:var(--navy); border-top:2px solid rgba(200,169,110,.3);
+  padding:18px 28px; text-align:center;
+  color:rgba(200,169,110,.45); font-family:var(--font-sub);
+  font-size:.68rem; letter-spacing:.1em;
+}
+
+/* ── DRUCK ───────────────────────────────────────────── */
+@media print {
+  .nav-bar, .book-nav { display:none; }
+  .verse-block { break-inside:avoid; }
+  .book-header { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+}
+
+/* ── MOBIL ───────────────────────────────────────────── */
+@media (max-width:640px) {
+  .book-name-latin { font-size:2.1rem; }
+  .ch-roman { font-size:1.6rem; }
+  .latin { font-size:.98rem; }
+  .trans { font-size:.93rem; }
+  .content { padding:0 12px 60px; }
+}
+</style>
+</head>
+<body>
+
+  <nav class="nav-bar">
+    <a class="home" href="../../../index.html">✞ BIBLIA CATHOLICA</a>
+    <a href="../index.html">🇭🇺 Magyar</a>
+    <span class="spacer"></span>
+    <span class="pos">060 / 066</span>
+  </nav>
+
+  <header class="book-header">
+    <div class="testament-badge">NOVUM TESTAMENTUM</div>
+    <div class="book-name-latin">I PETRI</div>
+    <div class="book-name-trans">1 Peter</div>
+    <div class="book-meta">Vulgata Clementina · Károli (1908) · 5 Capita · 105 Versus</div>
+  </header>
+
+  <div class="ornament-bar">❧ ✦ ❧ ✦ ❧</div>
+
+  <main class="content">
+
+  <section class="chapter" id="ch1">
+    <div class="chapter-marker">
+      <span class="ch-roman">I</span>
+      <span class="ch-label">Caput 1</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v1-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Petrus Apostolus Jesu Christi, electis advenis dispersionis Ponti, Galatiæ, Cappadociæ, Asiæ, et Bithyniæ,</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Péter, Jézus Krisztusnak apostola, a Pontusban, Galátziában, Kappadóciában, Ázsiában és Bithiniában elszéledt jövevényeknek,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">secundum præscientiam Dei Patris, in sanctificationem Spiritus, in obedientiam, et aspersionem sanguinis Jesu Christi. Gratia vobis, et pax multiplicetur.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">A kik ki vannak választva az Atya Isten eleve rendelése szerint, a Lélek megszentelésében, engedelmességre és Jézus Krisztus vérével való meghintésre: kegyelem és békesség adassék néktek bőségesen.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Benedictus Deus et Pater Domini nostri Jesu Christi, qui secundum misericordiam suam magnam regeneravit nos in spem vivam, per resurrectionem Jesu Christi ex mortuis,</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Áldott az Isten és a mi Urunk Jézus Krisztusnak Atyja, a ki az ő nagy irgalmassága szerint újonnan szűlt minket élő reménységre Jézus Krisztusnak a halálból való feltámadása által,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">in hæreditatem incorruptibilem, et incontaminatam, et immarcescibilem, conservatam in cælis in vobis,</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Romolhatatlan, szeplőtelen és hervadhatatlan örökségre, a mely a mennyekben van fenntartva számunkra,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui in virtute Dei custodimini per fidem in salutem, paratam revelari in tempore novissimo.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">A kiket Isten hatalma őriz hit által az idvességre, a mely készen van, hogy az utolsó időben nyilvánvalóvá legyen.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">In quo exsultabis, modicum nunc si oportet contristari in variis tentationibus :</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">A melyben örvendeztek, noha most kissé, ha meg kell lenni, szomorkodtok különféle kísértések között,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">ut probatio vestræ fidei multo pretiosior auro (quod per ignem probatur) inveniatur in laudem, et gloriam, et honorem in revelatione Jesu Christi :</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Hogy a ti kipróbált hitetek, a mi sokkal becsesebb a veszendő, de tűz által kipróbált aranynál, dícséretre, tisztességre és dicsőségre méltónak találtassék a Jézus Krisztus megjelenésekor;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">quem cum non videritis, diligitis : in quem nunc quoque non videntes creditis : credentes autem exsultabitis lætitia inenarrabili, et glorificata :</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">A kit, noha nem láttatok, szerettek; a kiben, noha most nem látjátok, de hisztek benne, kibeszélhetetlen és dicsőült örömmel örvendeztek:</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">reportantes finem fidei vestræ, salutem animarum.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Elérvén hitetek czélját, a lélek idvességét.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">De qua salute exquisierunt, atque scrutati sunt prophetæ, qui de futura in vobis gratia prophetaverunt :</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">A mely idvesség felől tudakozódtak és nyomozódtak a próféták, a kik az irántatok való kegyelem felől jövendöltek:</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">scrutantes in quod vel quale tempus significaret in eis Spiritus Christi : prænuntians eas quæ in Christo sunt passiones, et posteriores glorias :</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Nyomozódván, hogy mely vagy milyen időre jelenté azt ki a Krisztusnak ő bennök levő Lelke, a ki eleve bizonyságot tett a Krisztus szenvedéseiről és az azok után való dicsőségről.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">quibus revelatum est quia non sibimetipsis, vobis autem ministrabant ea quæ nunc nuntiata sunt vobis per eos qui evangelizaverunt vobis, Spiritu Sancto misso de cælo, in quem desiderant angeli prospicere.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">A kiknek megjelentetett, hogy nem magoknak, hanem nékünk szolgáltak azokkal, a melyeket most hirdetnek néktek azok, a kik prédikálták néktek az evangyéliomot az egekből küldött Szent Lélek által; a mikbe angyalok vágyakoznak betekinteni.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Propter quod succincti lumbos mentis vestræ, sobrii, perfecte sperate in eam, quæ offertur vobis, gratiam, in revelationem Jesu Christi :</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Annakokáért felövezvén elmétek derekait, mint józanok, tökéletesen reménykedjetek abban a kegyelemben, a melyet a Jézus Krisztus hoz néktek, mikor megjelen.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">quasi filii obedientiæ, non configurati prioribus ignorantiæ vestræ desideriis :</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Mint engedelmes gyermekek ne szabjátok magatokat a ti előbbi kívánságaitokhoz, a melyek tudatlanságotok alatt voltak bennetek;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">sed secundum eum qui vocavit vos, Sanctum : et ipsi in omni conversatione sancti sitis :</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Hanem a miképen szent az, a ki elhívott titeket, ti is szentek legyetek teljes életetekben;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">quoniam scriptum est : Sancti eritis, quoniam ego sanctus sum.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Mert meg van írva: Szentek legyetek, mert én szent vagyok.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et si patrem invocatis eum, qui sine acceptione personarum judicat secundum uniuscujusque opus, in timore incolatus vestri tempore conversamini.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">És ha Atyának hívjátok őt, a ki személyválogatás nélkül ítél, kinek-kinek cselekedete szerint, félelemmel töltsétek a ti jövevénységtek idejét:</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Scientes quod non corruptibilibus, auro vel argento, redempti estis de vana vestra conversatione paternæ traditionis :</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Tudván, hogy nem veszendő holmin, ezüstön vagy aranyon váltattatok meg a ti atyáitoktól örökölt hiábavaló életetekből;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">sed pretioso sanguine quasi agni immaculati Christi, et incontaminati :</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Hanem drága véren, mint hibátlan és szeplőtlen bárányén, a Krisztusén:</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">præcogniti quidem ante mundi constitutionem, manifestati autem novissimis temporibus propter vos,</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">A ki eleve el volt ugyan rendelve, a világ megalapítása előtt, megjelent pedig az idők végén ti érettetek,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui per ipsum fideles estis in Deo, qui suscitavit eum a mortuis, et dedit ei gloriam, ut fides vestra et spes esset in Deo :</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">A kik ő általa hisztek Istenben, a ki feltámasztotta őt a halálból és dicsőséget adott néki; hogy a ti hitetek reménység is legyen Istenben.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-22">
+      <div class="verse-num-col"><div class="verse-num">22</div></div>
+      <div class="verse-texts">
+        <div class="latin">animas vestras castificantes in obedientia caritatis, in fraternitatis amore, simplici ex corde invicem diligite attentius :</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Lelketeket az igazság iránt való engedelmességben képmutatás nélkül való atyafiúi szeretetre tisztítván meg a Lélek által, egymást tiszta szívből buzgón szeressétek;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-23">
+      <div class="verse-num-col"><div class="verse-num">23</div></div>
+      <div class="verse-texts">
+        <div class="latin">renati non ex semine corruptibili, sed incorruptibili per verbum Dei vivi, et permanentis in æternum :</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Mint a kik újonnan születtetek nem romlandó magból, de romolhatatlanból, Istennek ígéje által, a mely él és megmarad örökké.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-24">
+      <div class="verse-num-col"><div class="verse-num">24</div></div>
+      <div class="verse-texts">
+        <div class="latin">quia omnis caro ut fœnum : et omnis gloria ejus tamquam flos fœni : exaruit fœnum, et flos ejus decidit.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Mert minden test olyan, mint a fű, és az embernek minden dicsősége olyan, mint a fű virága. Megszárad a fű, és virága elhull:</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-25">
+      <div class="verse-num-col"><div class="verse-num">25</div></div>
+      <div class="verse-texts">
+        <div class="latin">Verbum autem Domini manet in æternum : hoc est autem verbum, quod evangelizatum est in vos.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">De az Úr beszéde megmarad örökké. Ez pedig az a beszéd, a mely néktek hirdettetett.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch2">
+    <div class="chapter-marker">
+      <span class="ch-roman">II</span>
+      <span class="ch-label">Caput 2</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v2-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Deponentes igitur omnem malitiam, et omnem dolum, et simulationes, et invidias, et omnes detractiones,</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Levetvén azért minden gonoszságot, minden álnokságot, képmutatást, irígykedést, és minden rágalmazást.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">sicut modo geniti infantes, rationabile, sine dolo lac concupiscite : ut in eo crescatis in salutem :</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Mint most született csecsemők, a tiszta, hamisítatlan tej után vágyakozzatok, hogy azon növekedjetek;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">si tamen gustastis quoniam dulcis est Dominus.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Mivelhogy ízleltétek, hogy jóságos az Úr.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ad quem accedentes lapidem vivum, ab hominibus quidem reprobatum, a Deo autem electum, et honorificatum :</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">A kihez járulván, mint élő, az emberektől ugyan megvetett, de Istennél választott, becses kőhöz,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">et ipsi tamquam lapides vivi superædificamini, domus spiritualis, sacerdotium sanctum, offerre spirituales hostias, acceptabiles Deo per Jesum Christum.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Ti magatok is mint élő kövek épüljetek fel lelki házzá, szent papsággá, hogy lelki áldozatokkal áldozzatok, a melyek kedvesek Istennek a Jézus Krisztus által.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Propter quod continet Scriptura : Ecce pono in Sion lapidem summum angularem, electum, pretiosum : et qui crediderit in eum, non confundetur.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Azért van meg az Írásban: Ímé szegeletkövet teszek Sionban, a mely kiválasztott, becses; és a ki hisz abban, meg nem szégyenül.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vobis igitur honor credentibus : non credentibus autem lapis, quem reprobaverunt ædificantes : hic factus est in caput anguli,</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Tisztesség azért néktek, a kik hisztek; az engedetleneknek pedig: A kő, a melyet az építők megvetettek, az lett a szegeletnek fejévé és megütközésnek kövévé s botránkozásnak sziklájává;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">et lapis offensionis, et petra scandali, his qui offendunt verbo, nec credunt in quo et positi sunt.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">A kik engedetlenek lévén, megütköznek az ígében, a mire rendeltettek is.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vos autem genus electum, regale sacerdotium, gens sancta, populus acquisitionis : ut virtutes annuntietis ejus qui de tenebris vos vocavit in admirabile lumen suum.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Ti pedig választott nemzetség, királyi papság, szent nemzet, megtartásra való nép vagytok, hogy hirdessétek Annak hatalmas dolgait, a ki a sötétségből az ő csodálatos világosságára hívott el titeket;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui aliquando non populus, nunc autem populus Dei : qui non consecuti misericordiam, nunc autem misericordiam consecuti.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">A kik hajdan nem nép voltatok, most pedig Isten népe vagytok; a kik nem kegyelmezettek voltatok, most pedig kegyelmezettek vagytok.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Carissimi, obsecro vos tamquam advenas et peregrinos abstinere vos a carnalibus desideriis, quæ militant adversus animam,</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Szeretteim, kérlek titeket, mint jövevényeket és idegeneket, tartóztassátok meg magatokat a testi kívánságoktól, a melyek a lélek ellen vitézkednek;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">conversationem vestram inter gentes habentes bonam : ut in eo quod detrectant de vobis tamquam de malefactoribus, ex bonis operibus vos considerantes, glorificent Deum in die visitationis.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Magatokat a pogányok közt jól viselvén, hogy a miben rágalmaznak titeket mint gonosztévőket, a jó cselekedetekből, ha látják azokat, dicsőítsék Istent a meglátogatás napján.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Subjecti igitur estote omni humanæ creaturæ propter Deum : sive regi quasi præcellenti :</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Engedelmeskedjetek azért minden emberi rendelésnek az Úrért: akár királynak, mint felebbvalónak;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">sive ducibus tamquam ab eo missis ad vindictam malefactorum, laudem vero bonorum :</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Akár helytartóknak, mint a kiket ő küld a gonosztévők megbüntetésére, a jól cselekvőknek pedig dícsérésére.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">quia sic est voluntas Dei, ut benefacientes obmutescere faciatis imprudentium hominum ignorantiam :</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Mert úgy van az Isten akaratja, hogy jót cselekedvén, elnémítsátok a balgatag emberek tudatlanságát;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">quasi liberi, et non quasi velamen habentes malitiæ libertatem, sed sicut servi Dei.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Mint szabadok, és nem mint a kiknél a szabadság a gonoszság palástja, hanem mint Istennek szolgái.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Omnes honorate : fraternitatem diligite : Deum timete : regem honorificate.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Mindenkit tiszteljetek, az atyafiúságot szeressétek; az Istent féljétek; a királyt tiszteljétek.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Servi, subditi estote in omni timore dominis, non tantum bonis et modestis, sed etiam dyscolis.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">A cselédek teljes félelemmel engedelmeskedjenek az uraknak; nem csak a jóknak és kíméleteseknek, de a szívteleneknek is.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hæc est enim gratia, si propter Dei conscientiam sustinet quis tristitias, patiens injuste.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Mert az kedves dolog, ha valaki Istenről való meggyőződéséért tűr keserűségeket, méltatlanul szenvedvén.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quæ enim est gloria, si peccantes, et colaphizati suffertis ? sed si bene facientes patienter sustinetis, hæc est gratia apud Deum.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Mert micsoda dicsőség az, ha vétkezve és arczul veretve tűrtök? de ha jót cselekedve és mégis szenvedve tűrtök, ez kedves dolog Istennél.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">In hoc enim vocati estis : quia et Christus passus est pro nobis, vobis relinquens exemplum ut sequamini vestigia ejus :</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Mert arra hívattatok el; hiszen Krisztus is szenvedett érettetek, néktek példát hagyván, hogy az ő nyomdokait kövessétek:</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-22">
+      <div class="verse-num-col"><div class="verse-num">22</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui peccatum non fecit, nec inventus est dolus in ore ejus :</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">A ki bűnt nem cselekedett, sem a szájában álnokság nem találtatott:</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-23">
+      <div class="verse-num-col"><div class="verse-num">23</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui cum malediceretur, non maledicebat : cum pateretur, non comminabatur : tradebat autem judicanti se injuste :</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">A ki szidalmaztatván, viszont nem szidalmazott, szenvedvén nem fenyegetőzött; hanem hagyta az igazságosan ítélőre:</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-24">
+      <div class="verse-num-col"><div class="verse-num">24</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui peccata nostra ipse pertulit in corpore suo super lignum ; ut peccatis mortui, justitiæ vivamus : cujus livore sanati estis.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">A ki a mi bűneinket maga vitte fel testében a fára, hogy a bűnöknek meghalván, az igazságnak éljünk: a kinek sebeivel szógyultatok meg.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-25">
+      <div class="verse-num-col"><div class="verse-num">25</div></div>
+      <div class="verse-texts">
+        <div class="latin">Eratis enim sicut oves errantes, sed conversi estis nunc ad pastorem, et episcopum animarum vestrarum.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Mert olyanok valátok, mint tévelygő juhok; de most megtértetek lelketek pásztorához és felvigyázójához.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch3">
+    <div class="chapter-marker">
+      <span class="ch-roman">III</span>
+      <span class="ch-label">Caput 3</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v3-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Similiter et mulieres subditæ sint viris suis : ut etsi qui non credunt verbo, per mulierem conversationem sine verbo lucrifiant :</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Hasonlóképen az asszonyok engedelmeskedjenek az ő férjöknek, hogy ha némelyek nem engedelmeskednének is az ígének, feleségük magaviselete által íge nélkül is megnyeressenek;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">considerantes in timore castam conversationem vestram.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Szemlélvén a ti félelemben való feddhetetlen életeteket.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quarum non sit extrinsecus capillatura, aut circumdatio auri, aut indumenti vestimentorum cultus :</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">A kiknek ékessége ne legyen külső, hajuknak fonogatásából és aranynak felrakásából vagy öltözékek felvevéséből való;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">sed qui absconditus est cordis homo, in incorruptibilitate quieti, et modesti spiritus, qui est in conspectu Dei locuples.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Hanem a szívnek elrejtett embere, a szelíd és csendes lélek romolhatatlanságával, a mi igen becses az Isten előtt.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sic enim aliquando et sanctæ mulieres, sperantes in Deo, ornabant se, subjectæ propriis viris.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Mert így ékesítették magokat hajdan ama szent asszonyok is, a kik Istenben reménykedtek, engedelmeskedvén az ő férjöknek.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sicut Sara obediebat Abrahæ, dominum eum vocans : cujus estis filiæ benefacientes, et non pertimentes ullam perturbationem.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Miként Sára engedelmeskedett Ábrahámnak, urának nevezvén őt, a kinek gyermekei lettetek, ha jót cselekesztek, és semmi félelemtől nem rettegtek.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Viri similiter cohabitantes secundum scientiam, quasi infirmiori vasculo muliebri impartientes honorem, tamquam et cohæredibus gratiæ vitæ : ut non impediantur orationes vestræ.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">A férfiak hasonlóképen, együtt lakjanak értelmes módon feleségükkel, az asszonyi nemnek, mint gyöngébb edénynek, tisztességet tévén, mint a kik örökös társaik az élet kegyelmében; hogy a ti imádságaitok meg ne hiúsuljanak.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">In fine autem omnes unanimes, compatientes fraternitatis amatores, misericordes, modesti, humiles :</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Végezetre mindnyájan legyetek egyértelműek, rokonérzelműek, atyafiszeretők, irgalmasak, kegyesek:</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">non reddentes malum pro malo, nec maledictum pro maledicto, sed e contrario benedicentes : quia in hoc vocati estis, ut benedictionem hæreditate possideatis.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Nem fizetvén gonoszszal a gonoszért, avagy szidalommal a szidalomért; sőt ellenkezőleg áldást mondván, tudva, hogy arra hivattatok el, hogy áldást örököljetek,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui enim vult vitam diligere, et dies videre bonos, coërceat linguam suam a malo, et labia ejus ne loquantur dolum.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Mert a ki akarja az életet szeretni, jó napokat látni, tiltsa meg nyelvét a gonosztól, és ajkait, hogy ne szóljanak álnokságot:</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Declinet a malo, et faciat bonum : inquirat pacem, et sequatur eam :</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Forduljon el a gonosztól, és cselekedjék jót; keresse a békességet, és kövesse azt.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">quia oculi Domini super justos, et aures ejus in preces eorum : vultus autem Domini super facientes mala.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Mert az Úr szemei az igazakon vannak, és az ő fülei azoknak könyörgésein; az Úr orczája pedig a gonoszt cselekvőkön.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et quis est qui vobis noceat, si boni æmulatores fueritis ?</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">És kicsoda az, a ki bántalmaz titeket, ha a jónak követői lesztek?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sed et si quid patimini propter justitiam, beati. Timorem autem eorum ne timueritis, et non conturbemini.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">De ha szenvedtek is az igazságért, boldogok vagytok, azoktól való félelemből pedig ne féljetek, se zavarba ne essetek;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Dominum autem Christum sanctificate in cordibus vestris, parati semper ad satisfactionem omni poscenti vos rationem de ea, quæ in vobis est, spe.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Az Úr Istent pedig szenteljétek meg a ti szívetekben. Mindig készek legyetek megfelelni mindenkinek, a ki számot kér tőletek a bennetek levő reménységről, szelídséggel és félelemmel:</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sed cum modestia, et timore, conscientiam habentes bonam : ut in eo, quod detrahunt vobis, confundantur, qui calumniantur vestram bonam in Christo conversationem.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Jó lelkiismeretetek lévén; hogy a miben rágalmaznak titeket, mint gonosztevőket, megszégyenüljenek a kik gyalázzák a ti Krisztusban való jó élteteket.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Melius est enim benefacientes (si voluntas Dei velit) pati, quam malefacientes.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Mert jobb ha jót cselekedve szenvedtek, ha így akarja az Isten akarata, hogynem gonoszt cselekedve.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quia et Christus semel pro peccatis nostris mortuus est, justus pro injustis, ut nos offerret Deo, mortificatus quidem carne, vivificatus autem spiritu.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Mert Krisztus is szenvedett egyszer a bűnökért, mint igaz a nem igazakért, hogy minket Istenhez vezéreljen; megölettetvén ugyan test szerint, de megeleveníttetvén lélek szerint;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">In quo et his, qui in carcere erant, spiritibus veniens prædicavit :</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">A melyben elmenvén, a tömlöczben lévő lelkeknek is prédikált,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui increduli fuerant aliquando, quando exspectabant Dei patientiam in diebus Noë, cum fabricaretur arca : in qua pauci, id est octo animæ, salvæ factæ sunt per aquam.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">A melyek engedetlenek voltak egykor, mikor egyszer várt az Isten béketűrése a Noé napjaiban, a bárka készítésekor, a melyben kevés, azaz nyolcz lélek tartatott meg víz által;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quod et vos nunc similis formæ salvos fecit baptisma : non carnis depositio sordium, sed conscientiæ bonæ interrogatio in Deum per resurrectionem Jesu Christi.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">A mi minket is megtart most képmás gyanánt, mint keresztség, a mi nem a test szenyjének lemosása, hanem jó lelkiismeret keresése Isten iránt, a Jézus Krisztus feltámadása által;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-22">
+      <div class="verse-num-col"><div class="verse-num">22</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui est in dextera Dei, deglutiens mortem ut vitæ æternæ hæredes efficeremur : profectus in cælum subjectis sibi angelis, et potestatibus, et virtutibus.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">A ki Istennek jobbján van, felmenvén a mennybe; a kinek alávettettek az angyalok, hatalmasságok és erők.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch4">
+    <div class="chapter-marker">
+      <span class="ch-roman">IV</span>
+      <span class="ch-label">Caput 4</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v4-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Christo igitur passo in carne, et vos eadem cogitatione armamini : quia qui passus est in carne, desiit a peccatis :</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Minthogy azért Krisztus testileg szenvedett, fegyverkezzetek fel ti is azzal a gondolattal, hogy a ki testileg szenved, megszűnik a bűntől,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">ut jam non desideriis hominum, sed voluntati Dei, quod reliquum est in carne vivat temporis.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Hogy többé ne embereknek kívánságai, hanem Isten akarata szerint éljétek a testben hátralevő időt.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sufficit enim præteritum tempus ad voluntatem gentium consummandam his qui ambulaverunt in luxuriis, desideriis, vinolentiis, comessationibus, potationibus, et illicitis idolorum cultibus.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Mert elég nékünk, hogy életünk elfolyt idejében a pogányok akaratát cselekedtük, járván feslettségekben, kívánságokban, részegségekben, dobzódásokban, ivásokban és undok bálványimádásokban.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">In quo admirantur non concurrentibus vobis in eamdem luxuriæ confusionem, blasphemantes.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">A mi miatt csudálkoznak, hogy nem futtok velök együtt a kicsapongásnak ugyanabba az áradatába, szitkozódván.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui reddent rationem ei qui paratus est judicare vivos et mortuos.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">A kik számot adnak majd annak, a ki készen van megítélni élőket és holtakat.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Propter hoc enim et mortuis evangelizatum est : ut judicentur quidem secundum homines in carne, vivant autem secundum Deum in spiritu.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Mert azért hirdettetett az evangyéliom a holtaknak is, hogy megítéltessenek emberek szerint testben, de éljenek Isten szerint lélekben.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Omnium autem finis appropinquavit. Estote itaque prudentes, et vigilate in orationibus.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">A vége pedig mindennek közel van. Annakokáért legyetek mértékletesek és józanok, hogy imádkozhassatok.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ante omnia autem, mutuam in vobismetipsis caritatem continuam habentes : quia caritas operit multitudinem peccatorum.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Mindenek előtt pedig legyetek hajlandók az egymás iránti szeretetre; mert a szeretet sok vétket elfedez.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hospitales invicem sine murmuratione.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Legyetek egymáshoz vendégszeretők, zúgolódás nélkül.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Unusquisque, sicut accepit gratiam, in alterutrum illam administrantes, sicut boni dispensatores multiformis gratiæ Dei.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Kiki amint kegyelmi ajándékot kapott, úgy sáfárkodjatok azzal egymásnak, mint Isten sokféle kegyelmének jó sáfárai;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si quis loquitur, quasi sermones Dei : si quis ministrat, tamquam ex virtute, quam administrat Deus : ut in omnibus honorificetur Deus per Jesum Christum : cui est gloria et imperium in sæcula sæculorum. Amen.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Ha valaki szól, mintegy Isten ígéit szólja: ha valaki szolgál, mintegy azzal az erővel szolgáljon, a melyet Isten ád: hogy mindenben dícsőíttessék a Jézus Krisztus által, a kinek dicsőség és hatalom örökkön-örökké. Ámen.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Carissimi, nolite peregrinari in fervore, qui ad tentationem vobis fit, quasi novi aliquid vobis contingat :</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Szeretteim, ne rémüljetek meg attól a tűztől, a mely próbáltatás végett támadt köztetek, mintha valami rémületes dolog történnék veletek;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">sed communicantes Christi passionibus gaudete, ut et in revelatione gloriæ ejus gaudeatis exsultantes.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Sőt, a mennyiben részetek van a Krisztus szenvedéseiben, örüljetek, hogy az ő dicsőségének megjelenésekor is vígadozva örvendezhessetek.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si exprobramini in nomine Christi, beati eritis : quoniam quod est honoris, gloriæ, et virtutis Dei, et qui est ejus Spiritus, super vos requiescit.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Boldogok vagytok, ha Krisztus nevéért gyaláznak titeket; mert megnyugszik rajtatok a dicsőségnek és az Istennek Lelke, a mit amazok káromolnak ugyan, de ti dicsőítitek azt.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nemo autem vestrum patiatur ut homicida, aut fur, aut maledicus, aut alienorum appetitor.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Mert senki se szenvedjen közületek mint gyilkos, vagy tolvaj, vagy gonosztévő, vagy mint más dolgába avatkozó:</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si autem ut christianus, non erubescat : glorificet autem Deum in isto nomine :</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Ha pedig mint keresztyén szenved, ne szégyelje, sőt dicsőítse azért az Istent.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">quoniam tempus est ut incipiat judicium a domo Dei. Si autem primum a nobis, quis finis eorum, qui non credunt Dei Evangelio ?</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Mert itt az ideje, hogy elkezdődjék az ítélet az Istennek házán: ha pedig először mi rajtunk kezdődik, mi lesz azoknak a végök, a kik nem engedelmeskednek az Isten evangyéliomának?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">et si justus vix salvabitur, impius et peccator ubi parebunt ?</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">És ha az igaz is alig tartatik meg, hová lesz az istentelen és bűnös?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">Itaque et hi, qui patiuntur secundum voluntatem Dei, fideli Creatori commendent animas suas in benefactis.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Annakokáért a kik az Isten akaratából szenvednek is, ajánlják néki lelköket mint hű teremtőnek, jót cselekedvén.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch5">
+    <div class="chapter-marker">
+      <span class="ch-roman">V</span>
+      <span class="ch-label">Caput 5</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v5-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Seniores ergo, qui in vobis sunt, obsecro, consenior et testis Christi passionum : qui et ejus, quæ in futuro revelanda est, gloriæ communicator :</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">A köztetek lévő presbitereket kérem én, a presbitertárs, és a Krisztus szenvedésének tanuja, és a megjelenendő dicsőségnek részese;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">pascite qui in vobis est gregem Dei, providentes non coacte, sed spontanee secundum Deum : neque turpis lucri gratia, sed voluntarie :</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Legeltessétek az Istennek köztetek lévő nyáját, gondot viselvén arra nem kényszerítésből, hanem örömest; sem nem rút nyerészkedésből, hanem jóindulattal;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">neque ut dominantes in cleris, sed forma facti gregis ex animo.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Sem nem úgy, hogy uralkodjatok a gyülekezeteken, hanem mint példányképei a nyájnak.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et cum apparuerit princeps pastorum, percipietis immarcescibilem gloriæ coronam.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">És mikor megjelenik a főpásztor, elnyeritek a dicsőségnek hervadatlan koronáját.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Similiter adolescentes subditi estote senioribus.   Omnes autem invicem humilitatem insinuate, quia Deus superbis resistit, humilibus autem dat gratiam.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Hasonlatosképen ti ifjabbak engedelmeskedjetek a véneknek: mindnyájan pedig, egymásnak engedelmeskedvén, az alázatosságot öltsétek fel, mert az Isten a kevélyeknek ellene áll, az alázatosaknak pedig kegyelmet ád.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Humiliamini igitur sub potenti manu Dei, ut vos exaltet in tempore visitationis :</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Alázzátok meg tehát magatokat Istennek hatalmas keze alatt, hogy felmagasztaljon titeket annak idején.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">omnem sollicitudinem vestram projicientes in eum, quoniam ipsi cura est de vobis.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Minden gondotokat ő reá vessétek, mert néki gondja van reátok.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sobrii estote, et vigilate : quia adversarius vester diabolus tamquam leo rugiens circuit, quærens quem devoret :</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Józanok legyetek, vigyázzatok; mert a ti ellenségetek, az ördög, mint ordító oroszlán szerte jár, keresvén, kit elnyeljen:</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">cui resistite fortes in fide : scientes eamdem passionem ei quæ in mundo est vestræ fraternitati fieri.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">A kinek álljatok ellen, erősek lévén a hitben, tudva, hogy a világban lévő atyafiságotokon ugyanazok a szenvedések telnek be.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Deus autem omnis gratiæ, qui vocavit nos in æternam suam gloriam in Christo Jesu, modicum passos ipse perficiet, confirmabit, solidabitque.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">A minden kegyelemnek Istene pedig, a ki az ő örök dicsőségére hívott el minket a Krisztus Jézusban, titeket, a kik rövid ideig szenvedtetek, ő maga tegyen tökéletesekké, erősekké, szilárdakká és állhatatosokká,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ipsi gloria, et imperium in sæcula sæculorum. Amen.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Övé a dicsőség és a hatalom örökkön-örökké. Ámen.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Per Silvanum fidelem fratrem vobis, ut arbitror, breviter scripsi : obsecrans et contestans, hanc esse veram gratiam Dei, in qua statis.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Silvánus által, a ki, a mint gondolom, hű atyátokfia, röviden írtam, intve és bizonyságot téve, hogy az az Istennek igaz kegyelme, a melyben állotok.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Salutat vos ecclesia quæ est in Babylone coëlecta, et Marcus filius meus.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Köszönt titeket a veletek együtt választott babiloni gyülekezet és Márk, az én fiam.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Salutate invicem in osculo sancto. Gratia vobis omnibus qui estis in Christo Jesu. Amen.</div>
+        <div class="trans-label">✦ Magyar</div>
+        <div class="trans">Köszöntsétek egymást szeretet csókjával. Békesség mindnyájatoknak, a kik Krisztusban vagytok.</div>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <nav class="book-nav">
+    <a href="059-jam.html">← Iacobi</a>
+    <span class="center">I Petri · Magyar</span>
+    <a href="061-2pe.html">II Petri →</a>
+  </nav>
+
+  <footer class="page-footer">
+    BIBLIA CATHOLICA INTERLINEARIS &nbsp;·&nbsp; Vulgata Clementina &amp; Károli (1908)
+    &nbsp;·&nbsp; Gemeinfreie Texte / Public Domain
+  </footer>
+
+</body>
+</html>

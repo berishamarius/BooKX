@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>II Ad Timotheum · Čeština · Biblia Catholica</title>
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
+
+:root {
+  --gold:        #C8A96E;
+  --gold-light:  #EDD58A;
+  --gold-dark:   #8B6914;
+  --navy:        #1A1F3A;
+  --navy-mid:    #252B4A;
+  --navy-light:  #2E3560;
+  --parchment:   #F5E9CC;
+  --parchment-d: #EDD9A3;
+  --cream:       #FDF6E3;
+  --latin-color: #6B1E0E;
+  --trans-color: #0F1D2E;
+  --border:      rgba(200,169,110,.35);
+  --font-title:  'Cinzel Decorative', 'Cinzel', Georgia, serif;
+  --font-sub:    'Cinzel', Georgia, serif;
+  --font-body:   'EB Garamond', Georgia, serif;
+}
+
+*,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+html { font-size:16px; scroll-behavior:smooth; }
+body { background:var(--cream); color:var(--trans-color); font-family:var(--font-body); }
+
+/* ── NAV ─────────────────────────────────────────────── */
+.nav-bar {
+  background:var(--navy); padding:10px 28px;
+  display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  border-bottom:2px solid var(--gold);
+  position:sticky; top:0; z-index:100;
+  box-shadow:0 3px 12px rgba(0,0,0,.45);
+}
+.nav-bar a {
+  color:var(--gold); text-decoration:none;
+  font-family:var(--font-sub); font-size:.75rem; letter-spacing:.05em;
+  transition:color .15s;
+}
+.nav-bar a:hover { color:var(--gold-light); }
+.nav-bar .home { font-weight:700; font-size:.82rem; }
+.nav-bar .spacer { flex:1; }
+.nav-bar .pos { color:rgba(200,169,110,.45); font-size:.7rem; font-family:var(--font-sub); }
+
+/* ── BUCHKOPF ────────────────────────────────────────── */
+.book-header {
+  background:linear-gradient(160deg,var(--navy) 0%,var(--navy-mid) 55%,var(--navy-light) 100%);
+  padding:44px 36px 34px; text-align:center;
+  border-bottom:4px solid var(--gold);
+  position:relative; overflow:hidden;
+}
+.book-header::before {
+  content:'';
+  position:absolute; inset:0;
+  background-image:
+    repeating-linear-gradient( 45deg,transparent,transparent 30px,rgba(200,169,110,.038) 30px,rgba(200,169,110,.038) 31px),
+    repeating-linear-gradient(-45deg,transparent,transparent 30px,rgba(200,169,110,.038) 30px,rgba(200,169,110,.038) 31px);
+  pointer-events:none;
+}
+.testament-badge {
+  display:inline-block;
+  border:1px solid rgba(200,169,110,.4); color:rgba(200,169,110,.65);
+  font-family:var(--font-sub); font-size:.62rem; letter-spacing:.25em;
+  padding:4px 14px; border-radius:2px; margin-bottom:14px; position:relative;
+}
+.book-name-latin {
+  font-family:var(--font-title); font-size:3rem; color:var(--gold-light);
+  text-shadow:0 3px 18px rgba(0,0,0,.55); letter-spacing:.08em; position:relative;
+}
+.book-name-trans {
+  font-family:var(--font-sub); font-size:1.1rem; color:var(--gold);
+  margin-top:8px; letter-spacing:.12em; position:relative;
+}
+.book-meta {
+  font-size:.74rem; color:rgba(200,169,110,.5); margin-top:7px;
+  font-family:var(--font-sub); letter-spacing:.07em; position:relative;
+}
+
+/* ── ORNAMENT-TRENNLINIE ─────────────────────────────── */
+.ornament-bar {
+  text-align:center; padding:16px 0 4px;
+  color:var(--gold); font-size:1.1rem; letter-spacing:.7em;
+}
+
+/* ── HAUPT-CONTAINER ─────────────────────────────────── */
+.content { max-width:960px; margin:0 auto; padding:0 24px 80px; }
+
+/* ── KAPITEL-MARKER ──────────────────────────────────── */
+.chapter-marker {
+  display:flex; align-items:center; gap:16px;
+  padding:28px 6px 12px; margin-bottom:4px;
+  border-bottom:2px solid var(--border);
+}
+.ch-roman {
+  font-family:var(--font-title); font-size:2.2rem; color:var(--gold);
+  min-width:56px; text-align:center; flex-shrink:0;
+  text-shadow:0 1px 8px rgba(200,169,110,.3);
+}
+.ch-label {
+  font-family:var(--font-sub); font-size:.72rem; color:rgba(200,169,110,.6);
+  letter-spacing:.22em; text-transform:uppercase;
+}
+
+/* ── VERS-BLOCK ──────────────────────────────────────── */
+.verse-block {
+  display:flex; gap:0; border-bottom:1px solid rgba(200,169,110,.15);
+}
+.verse-block:nth-child(odd)  { background:var(--cream); }
+.verse-block:nth-child(even) { background:var(--parchment); }
+
+.verse-num-col {
+  flex-shrink:0; width:42px; padding:16px 6px 16px 0; text-align:right;
+}
+.verse-num {
+  display:inline-block; width:28px; height:28px; border-radius:50%;
+  background:var(--gold-dark); color:var(--cream);
+  font-family:var(--font-sub); font-size:.64rem; font-weight:700;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 1px 5px rgba(0,0,0,.25);
+}
+
+.verse-texts { flex:1; padding:16px 16px 18px 8px; }
+
+/* ── LATEINISCHER TEXT (oben / primär) ───────────────── */
+.latin {
+  font-family:var(--font-body); font-size:1.12rem; line-height:1.9;
+  color:var(--latin-color); font-weight:500;
+  border-left:3px solid var(--gold); padding-left:12px;
+  margin-bottom:8px;
+}
+
+/* ── ÜBERSETZUNGS-TEXT (unten / sekundär) ────────────── */
+.trans-label {
+  font-family:var(--font-sub); font-size:.6rem; letter-spacing:.17em;
+  text-transform:uppercase; color:var(--gold-dark); margin-bottom:5px; opacity:.78;
+}
+.trans {
+  font-family:var(--font-body); font-size:1.04rem; line-height:1.85;
+  color:var(--trans-color); font-style:italic;
+  padding-left:15px;
+}
+
+/* Erste Vers jedes Kapitels: Drop-Cap */
+.verse-block:first-of-type .latin::first-letter {
+  font-size:4.2em; float:left; line-height:.72;
+  padding-right:.08em; margin-top:.06em;
+  font-family:var(--font-title); color:var(--gold);
+}
+
+/* ── NAVIGATION ZWISCHEN BÜCHERN ─────────────────────── */
+.book-nav {
+  display:flex; justify-content:space-between; align-items:center;
+  background:var(--navy); border-top:3px solid var(--gold);
+  padding:12px 26px; gap:12px;
+}
+.book-nav a {
+  color:var(--gold); text-decoration:none;
+  font-family:var(--font-sub); font-size:.78rem; letter-spacing:.07em;
+  padding:6px 14px; border:1px solid rgba(200,169,110,.3); border-radius:3px;
+  transition:background .18s;
+}
+.book-nav a:hover { background:rgba(200,169,110,.15); }
+.book-nav .center {
+  font-family:var(--font-sub); font-size:.7rem; color:rgba(200,169,110,.55);
+  letter-spacing:.1em; text-align:center;
+}
+
+/* ── FUßZEILE ────────────────────────────────────────── */
+.page-footer {
+  background:var(--navy); border-top:2px solid rgba(200,169,110,.3);
+  padding:18px 28px; text-align:center;
+  color:rgba(200,169,110,.45); font-family:var(--font-sub);
+  font-size:.68rem; letter-spacing:.1em;
+}
+
+/* ── DRUCK ───────────────────────────────────────────── */
+@media print {
+  .nav-bar, .book-nav { display:none; }
+  .verse-block { break-inside:avoid; }
+  .book-header { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+}
+
+/* ── MOBIL ───────────────────────────────────────────── */
+@media (max-width:640px) {
+  .book-name-latin { font-size:2.1rem; }
+  .ch-roman { font-size:1.6rem; }
+  .latin { font-size:.98rem; }
+  .trans { font-size:.93rem; }
+  .content { padding:0 12px 60px; }
+}
+</style>
+</head>
+<body>
+
+  <nav class="nav-bar">
+    <a class="home" href="../../../index.html">✞ BIBLIA CATHOLICA</a>
+    <a href="../index.html">🇨🇿 Čeština</a>
+    <span class="spacer"></span>
+    <span class="pos">055 / 066</span>
+  </nav>
+
+  <header class="book-header">
+    <div class="testament-badge">NOVUM TESTAMENTUM</div>
+    <div class="book-name-latin">II AD TIMOTHEUM</div>
+    <div class="book-name-trans">2 Timothy</div>
+    <div class="book-meta">Vulgata Clementina · Bible Kralická (1613) · 4 Capita · 83 Versus</div>
+  </header>
+
+  <div class="ornament-bar">❧ ✦ ❧ ✦ ❧</div>
+
+  <main class="content">
+
+  <section class="chapter" id="ch1">
+    <div class="chapter-marker">
+      <span class="ch-roman">I</span>
+      <span class="ch-label">Caput 1</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v1-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Paulus Apostolus Jesu Christi per voluntatem Dei, secundum promissionem vitæ, quæ est in Christo Jesu,</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Pavel, apoštol Ježíše Krista, skrze vůli Boží, podlé zaslíbení života, kterýž jest v Kristu Ježíši,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Timotheo carissimo filio : gratia, misericordia, pax a Deo Patre, et Christo Jesu Domino nostro.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Timoteovi milému synu: Milost, milosrdenství, pokoj od Boha Otce a Krista Ježíše Pána našeho.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Gratias ago Deo, cui servio a progenitoribus in conscientia pura, quod sine intermissione habeam tui memoriam in orationibus meis, nocte ac die</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Díky činím Bohu, jemuž sloužím, jako i předkové, v svědomí čistém, že mám na tě ustavičnou pamět na svých modlitbách ve dne i v noci,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">desiderans te videre, memor lacrimarum tuarum, ut gaudio implear,</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Žádaje viděti tebe, zpomínaje na tvé slzy, abych radostí naplněn byl,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">recordationem accipiens ejus fidei, quæ est in te non ficta, quæ et habitavit primum in avia tua Loide, et matre tua Eunice, certus sum autem quod et in te.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Rozpomínaje se na tu víru, kteráž v tobě jest bez pokrytství, kteráž byla nejprv v bábě tvé Loidě, a v matce tvé Eunice, a tak smyslím, že i v tobě.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Propter quam causam admoneo te ut resuscites gratiam Dei, quæ est in te per impositionem manuum mearum.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Pro kterouž příčinu napomínám tebe, abys rozněcoval v sobě dar Boží, kterýž jest dán skrze vzkládání rukou mých.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non enim dedit nobis Deus spiritum timoris : sed virtutis, et dilectionis, et sobrietatis.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Nebo nedal nám Bůh ducha bázně, ale moci, a milování, a mysli způsobné.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Noli itaque erubescere testimonium Domini nostri, neque me vinctum ejus : sed collabora Evangelio secundum virtutem Dei :</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Protož nestyď se za svědectví Pána našeho, ani za mne, vězně jeho, ale čitedlen buď úzkostí pro evangelium podlé moci Boží,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui nos liberavit, et vocavit vocatione sua sancta, non secundum opera nostra, sed secundum propositum suum, et gratiam, quæ data est nobis in Christo Jesu ante tempora sæcularia.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Kterýž spasil nás, a povolal povoláním svatým, ne podlé skutků našich, ale podlé uložení svého a milosti nám dané v Kristu Ježíši před časy věků,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Manifestata est autem nunc per illuminationem Salvatoris nostri Jesu Christi, qui destruxit quidem mortem, illuminavit autem vitam, et incorruptionem per Evangelium :</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Nyní pak zjevené skrze příští patrné spasitele našeho Jezukrista, kterýž zahladil smrt, život pak na světlo vyvedl, i nesmrtelnost skrze evangelium,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">in quo positus sum ego prædicator, et Apostolus, et magister gentium.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Jehož já ustanoven jsem kazatelem, a apoštolem, i učitelem pohanů.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ob quam causam etiam hæc patior, sed non confundor. Scio enim cui credidi, et certus sum quia potens est depositum meum servare in illum diem.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">A pro tu příčinu toto trpím, ale nestydímť se za to; nebo vím, komu jsem uvěřil, a jist jsem tím, že mocen jest toho, což jsem u něho složil, ostříhati až do onoho dne.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Formam habe sanorum verborum, quæ a me audisti in fide, et in dilectione in Christo Jesu.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Mějž jistý příklad zdravých řečí, kteréž jsi slýchal ode mne, u víře a v lásce, kteráž jest v Kristu Ježíši.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Bonum depositum custodi per Spiritum Sanctum, qui habitat in nobis.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Výborného toho pokladu ostříhej, skrze Ducha svatého přebývajícího v nás.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Scis hoc, quod aversi sunt a me omnes, qui in Asia sunt, ex quibus est Phigellus, et Hermogenes.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Víš snad o tom, že se odvrátili ode mne všickni, kteříž jsou v Azii, z nichž jest Fygellus a Hermogenes.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Det misericordiam Dominus Onesiphori domui : quia sæpe me refrigeravit, et catenam meam non erubuit :</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Dejž milosrdenství Pán domu Oneziforovu; nebo často mi činil pohodlí, aniž se styděl za řetězy mé.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">sed cum Romam venisset, sollicite me quæsivit, et invenit.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Nýbrž přišed do Říma, pilně mne hledal, i nalezl.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Det illi Dominus invenire misericordiam a Domino in illa die. Et quanta Ephesi ministravit mihi, tu melius nosti.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Dejž jemu Pán nalezti milosrdenství u Pána v onen den. A jak mi mnoho posluhoval v Efezu, ty výborně víš.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch2">
+    <div class="chapter-marker">
+      <span class="ch-roman">II</span>
+      <span class="ch-label">Caput 2</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v2-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Tu ergo fili mi, confortare in gratia, quæ est in Christo Jesu :</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Protož ty, synu můj, zmocniž se v milosti, kteráž jest v Kristu Ježíši.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">et quæ audisti a me per multos testes, hæc commenda fidelibus hominibus, qui idonei erant et alios docere.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">A což jsi slyšel ode mne před mnohými svědky, svěřujž to lidem věrným, kteříž by způsobní byli i jiné učiti.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Labora sicut bonus miles Christi Jesu.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">A tak ty snášej protivenství, jako ctný rytíř Ježíše Krista.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nemo militans Deo implicat se negotiis sæcularibus : ut ei placeat, cui se probavit.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Žádný, kdož rytěřuje, neplete se v obecné živnosti, aby se svému hejtmanu líbil.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nam et qui certat in agone, non coronatur nisi legitime certaverit.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">A jestliže by kdo i bojoval, nebudeť korunován, leč by řádně bojoval.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Laborantem agricolam oportet primum de fructibus percipere.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Pracovati musí i oráč, prvé nežli užitku okusí.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Intellige quæ dico : dabit enim tibi Dominus in omnibus intellectum.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Rozuměj, což pravím, a dejž tobě Pán ve všem rozum.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Memor esto Dominum Jesum Christum resurrexisse a mortuis ex semine David, secundum Evangelium meum,</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Pamatuj, že Ježíš Kristus vstal z mrtvých, z semene Davidova, podlé evangelium mého.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">in quo laboro usque ad vincula, quasi male operans : sed verbum Dei non est alligatum.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">V kterémžto protivenství trpím, až i vězení, jako bych zločinec byl, ale slovo Boží není u vězení.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ideo omnia sustineo propter electos, ut et ipsi salutem consequantur, quæ est in Christo Jesu, cum gloria cælesti.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Protož všecko snáším pro vyvolené, aby i oni spasení došli, kteréž jest v Kristu Ježíši, s slávou věčnou.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Fidelis sermo : nam si commortui sumus, et convivemus :</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Věrná jest tato řeč. Nebo jestližeť jsme s ním zemřeli, tedy také spolu s ním živi budeme.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">si sustinebimus, et conregnabimus : si negaverimus, et ille negabit nos :</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">A trpíme-liť, budeme také spolu s ním kralovati; pakli ho zapíráme, i onť nás zapře.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">si non credimus, ille fidelis permanet, negare seipsum non potest.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Pakliť jsme nevěrní, onť zůstává věrný; zapříti sám sebe nemůže.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hæc commone, testificans coram Domino. Noli contendere verbis : ad nihil enim utile est, nisi ad subversionem audientium.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Tyto věci připomínej, s osvědčováním před oblíčejem Páně, ať se o slova nevadí, což k ničemu není užitečné, ale ku podvrácení posluchačů.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sollicite cura teipsum probabilem exhibere Deo, operarium inconfusibilem, recte tractantem verbum veritatis.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Pilně se snažuj vydati sebe Bohu milého dělníka, za nějž by se nebylo proč styděti, kterýž by právě slovo pravdy rozděloval.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Profana autem et vaniloquia devita : multum enim proficiunt ad impietatem :</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Nepobožné pak ty křiky daremní zastavuj, neboť velmi rozmnožují bezbožnost,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">et sermo eorum ut cancer serpit : ex quibus est Hymenæus et Philetus,</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">A řeč jejich jako rak rozjídá se. Z nichž jest Hymeneus a Filétus,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui a veritate exciderunt, dicentes resurrectionem esse jam factam, et subverterunt quorumdam fidem.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Kteříž při pravdě pobloudili od cíle, pravíce, že by se již stalo vzkříšení, a převracejí víru některých.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sed firmum fundamentum Dei stat, habens signaculum hoc : cognovit Dominus qui sunt ejus, et discedat ab iniquitate omnis qui nominat nomen Domini.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Ale však pevný základ Boží stojí, maje znamení toto: Znáť Pán ty, kteříž jsou jeho, a: Odstup od nepravosti každý, kdož vzývá jméno Kristovo.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">In magna autem domo non solum sunt vasa aurea, et argentea, sed et lignea, et fictilia : et quædam quidem in honorem, quædam autem in contumeliam.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">V domě pak velikém netoliko jsou nádoby zlaté a stříbrné, ale také dřevěné i hliněné, a některé zajisté ke cti, některé pak ku potupě.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si quis ergo emundaverit se ab istis, erit vas in honorem sanctificatum, et utile Domino ad omne opus bonum paratum.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Protož jestliže by se kdo očistil od těch věcí, bude nádobou ke cti, posvěcenou, a užitečnou Pánu, ke všelikému skutku dobrému hotovou.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-22">
+      <div class="verse-num-col"><div class="verse-num">22</div></div>
+      <div class="verse-texts">
+        <div class="latin">Juvenilia autem desideria fuge, sectare vero justitiam, fidem, spem, caritatem, et pacem cum iis qui invocant Dominum de corde puro.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Mládenčích pak žádostí utíkej, ale následuj spravedlnosti, víry, lásky, pokoje, s těmi, kteříž vzývají Pána z srdce čistého.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-23">
+      <div class="verse-num-col"><div class="verse-num">23</div></div>
+      <div class="verse-texts">
+        <div class="latin">Stultas autem et sine disciplina quæstiones devita : sciens quia generant lites.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Bláznivých pak a nevzdělavatelných otázek varuj se, věda, že plodí sváry.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-24">
+      <div class="verse-num-col"><div class="verse-num">24</div></div>
+      <div class="verse-texts">
+        <div class="latin">Servum autem Domini non oportet litigare : sed mansuetum esse ad omnes, docibilem, patientem,</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Neslušíť pak na služebníka Páně vaditi se, ale aby byl přívětivý ke všechněm, způsobný k učení, trpělivý,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-25">
+      <div class="verse-num-col"><div class="verse-num">25</div></div>
+      <div class="verse-texts">
+        <div class="latin">cum modestia corripientem eos qui resistunt veritati, nequando Deus det illis pœnitentiam ad cognoscendam veritatem,</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Kterýž by v tichosti vyučoval ty, kteříž se protiví, zda by někdy dal jim Bůh pokání ku poznání pravdy.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-26">
+      <div class="verse-num-col"><div class="verse-num">26</div></div>
+      <div class="verse-texts">
+        <div class="latin">et resipiscant a diaboli laqueis, a quo captivi tenentur ad ipsius voluntatem.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Aby sami k sobě přijdouce, dobyli se z osídla ďáblova, od něhož jsou zjímáni k činění jeho vůle.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch3">
+    <div class="chapter-marker">
+      <span class="ch-roman">III</span>
+      <span class="ch-label">Caput 3</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v3-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hoc autem scito, quod in novissimis diebus instabunt tempora periculosa :</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Toto pak věz, že v posledních dnech nastanou časové nebezpeční.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">erunt homines seipsos amantes, cupidi, elati, superbi, blasphemi, parentibus non obedientes, ingrati, scelesti,</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Nebo nastanou lidé sami sebe milující, peníze milující, chlubní, pyšní, zlolejcí, rodičů neposlušní, nevděční, bezbožní,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">sine affectione, sine pace, criminatores, incontinentes, immites, sine benignitate,</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Nelítostiví, smluv nezdrželiví, utrhači, nestředmí, plaší, kterýmž nic dobrého milo není.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">proditores, protervi, tumidi, et voluptatum amatores magis quam Dei :</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Zrádci, přívažčiví, nadutí, rozkoší milovníci více nežli milovníci Boha,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">habentes speciem quidem pietatis, virtutem autem ejus abnegantes. Et hos devita :</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Majíce způsob pobožnosti, ale moci její zapírajíce. A od takových se odvracuj.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">ex his enim sunt qui penetrant domos, et captivas ducunt mulierculas oneratas peccatis, quæ ducuntur variis desideriis :</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Nebo z těch jsou i ti, kteříž nacházejí do domů, a jímajíce, vodí ženky obtížené hříchy, kteréž vedeny bývají rozličnými žádostmi,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">semper discentes, et numquam ad scientiam veritatis pervenientes.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Kteréž vždycky se učí, ale nikdy ku poznání pravdy přijíti nemohou.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quemadmodum autem Jannes et Mambres restiterunt Moysi : ita et hi resistunt veritati, homines corrupti mente, reprobi circa fidem ;</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Jakož zajisté Jannes a Jambres zprotivili se Mojžíšovi, tak i tito protiví se pravdě, lidé na mysli porušení, a při víře zpletení.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">sed ultra non proficient : insipientia enim eorum manifesta erit omnibus, sicut et illorum fuit.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Ale nebudouť více průchodu míti. Nebo nemoudrost jejich zjevná bude všechněm, jako i oněch byla.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Tu autem assecutus es meam doctrinam, institutionem, propositum, fidem, longanimitatem, dilectionem, patientiam,</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Ale ty jsi došel mého učení, způsobu života mého, úmyslu, víry, snášelivosti, lásky, trpělivosti,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">persecutiones, passiones : qualia mihi facta sunt Antiochiæ, Iconii, et Lystris : quales persecutiones sustinui, et ex omnibus eripuit me Dominus.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Protivenství, utrpení, kteráž na mne přišla v Antiochii, v Ikonii, a v Lystře. Kterážto protivenství snášel jsem, ale ze všech vysvobodil mne Pán.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et omnes, qui pie volunt vivere in Christo Jesu, persecutionem patientur.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">A takž i všickni, kteříž chtějí pobožně živi býti v Kristu Ježíši, protivenství míti budou.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Mali autem homines et seductores proficient in pejus, errantes, et in errorem mittentes.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Zlí pak lidé a svůdcové půjdou v horší, i ti, kteříž v blud uvodí, i ti, kteříž jsou bludem pojati.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Tu vero permane in iis quæ didicisti, et credita sunt tibi : sciens a quo didiceris :</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Ale ty zůstávej v tom, čemužs se naučil, a cožť jest svěřeno, věda, od kohos se naučil,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">et quia ab infantia sacras litteras nosti, quæ te possunt instruere ad salutem, per fidem quæ est in Christo Jesu.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">A že od dětinství svatá písma znáš, kteráž tě mohou moudrého učiniti k spasení skrze víru, kteráž jest v Kristu Ježíši.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Omnis Scriptura divinitus inspirata utilis est ad docendum, ad arguendum, ad corripiendum, et erudiendum in justitia :</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Všelikéť písmo od Boha jest vdechnuté, a užitečné k učení, k trestání, k napravování, k správě, kteráž náleží k spravedlnosti,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">ut perfectus sit homo Dei, ad omne opus bonum instructus.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Aby byl dokonalý člověk Boží, ke všelikému skutku dobrému hotový.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch4">
+    <div class="chapter-marker">
+      <span class="ch-roman">IV</span>
+      <span class="ch-label">Caput 4</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v4-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Testificor coram Deo, et Jesu Christo, qui judicaturus est vivos et mortuos, per adventum ipsius, et regnum ejus :</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Protož já osvědčuji před oblíčejem Božím a Pána Jezukrista, kterýž má souditi živé i mrtvé v příchodu svém slavném a království svém,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">prædica verbum, insta opportune, importune : argue, obsecra, increpa in omni patientia, et doctrina.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Kaž slovo Boží, ponoukej v čas neb ne v čas, tresci, žehři, napomínej, ve vší tichosti a učení.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Erit enim tempus, cum sanam doctrinam non sustinebunt, sed ad sua desideria coacervabunt sibi magistros, prurientes auribus,</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Nebo přijde čas, že zdravého učení nebudou trpěti, ale majíce svrablavé uši, podlé svých vlastních žádostí shromažďovati sami sobě budou učitele.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">et a veritate quidem auditum avertent, ad fabulas autem convertentur.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">A odvrátíť uši od pravdy, a k básněm obrátí.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Tu vero vigila, in omnibus labora, opus fac evangelistæ, ministerium tuum imple. Sobrius esto.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Ale ty ve všem buď bedliv, protivenství snášej, dílo kazatele konej, dokazuj toho dostatečně, že jsi věrný služebník.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ego enim jam delibor, et tempus resolutionis meæ instat.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Nebo já se již k tomu blížím, abych obětován byl, a čas rozdělení mého nastává.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Bonum certamen certavi, cursum consummavi, fidem servavi.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Boj výborný bojoval jsem, běh jsem dokonal, víru jsem zachoval.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">In reliquo reposita est mihi corona justitiæ, quam reddet mihi Dominus in illa die, justus judex : non solum autem mihi, sed et iis, qui diligunt adventum ejus.   Festina ad me venire cito.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Již za tím odložena jest mi koruna spravedlnosti, kterouž dá mi v onen den Pán, ten spravedlivý soudce, a netoliko mně, ale i všechněm těm, kteříž milují to slavné příští jeho.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Demas enim me reliquit, diligens hoc sæculum, et abiit Thessalonicam :</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Přičiň se k tomu, abys ke mně brzo přišel.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Crescens in Galatiam, Titus in Dalmatiam.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Nebo Démas mne opustil, zamilovav tento svět, a šel do Tessaloniky, Krescens do Galacie, Titus do Dalmacie.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Lucas est mecum solus. Marcum assume, et adduc tecum : est enim mihi utilis in ministerium.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Sám toliko Lukáš se mnou jest. Marka vezmi s sebou; nebo jest mi velmi potřebný k službě.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Tychicum autem misi Ephesum.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Tychikať jsem poslal do Efezu.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Penulam, quam reliqui Troade apud Carpum, veniens affer tecum, et libros, maxime autem membranas.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Truhličku, kteréž jsem nechal v Troadě u Karpa, když půjdeš, přines, i knihy, zvláště pargamén.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Alexander ærarius multa mala mihi ostendit : reddet illi Dominus secundum opera ejus :</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Alexander kotlář mnoho mi zlého způsobil; odplatiž jemu Pán podlé skutků jeho.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">quem et tu devita : valde enim restitit verbis nostris.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Kteréhož i ty se vystříhej; nebo velmi se protivil řečem našim.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">In prima mea defensione nemo mihi affuit, sed omnes me dereliquerunt : non illis imputetur.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Při prvním mém odpovídání žádný se mnou nebyl, ale všickni mne opustili. Nebudiž jim to počítáno.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Dominus autem mihi astitit, et confortavit me, ut per me prædicatio impleatur, et audiant omnes gentes : et liberatus sum de ore leonis.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Pán pak byl se mnou, a posilnil mne, aby skrze mne utvrzeno bylo kázaní, a slyšeli je všickni národové. I vytržen jsem byl z úst lva.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Liberavit me Dominus ab omni opere malo : et salvum faciet in regnum suum cæleste, cui gloria in sæcula sæculorum. Amen.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">A vysvobodíť mne Pán od každého skutku zlého, a zachovává k království svému nebeskému, jemuž sláva na věky věků. Amen.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">Saluta Priscam, et Aquilam, et Onesiphori domum.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Pozdrav Prišky a Akvile, i Oneziforova domu.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">Erastus remansit Corinthi. Trophimum autem reliqui infirmum Mileti.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Erastus zůstal v Korintu, Trofima pak nechal jsem v Milétu nemocného.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">Festina ante hiemem venire. Salutant te Eubulus, et Pudens, et Linus, et Claudia, et fratres omnes.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Pospěš před zimou přijíti. Pozdravuje tebe Eubulus a Pudens a Línus a Klaudia, i všickni bratří.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-22">
+      <div class="verse-num-col"><div class="verse-num">22</div></div>
+      <div class="verse-texts">
+        <div class="latin">Dominus Jesus Christus cum spiritu tuo. Gratia vobiscum. Amen.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Pán Ježíš Kristus s duchem tvým. Milost Boží s vámi. Amen.</div>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <nav class="book-nav">
+    <a href="054-1ti.html">← I Ad Timotheum</a>
+    <span class="center">II Ad Timotheum · Čeština</span>
+    <a href="056-tit.html">Ad Titum →</a>
+  </nav>
+
+  <footer class="page-footer">
+    BIBLIA CATHOLICA INTERLINEARIS &nbsp;·&nbsp; Vulgata Clementina &amp; Bible Kralická (1613)
+    &nbsp;·&nbsp; Gemeinfreie Texte / Public Domain
+  </footer>
+
+</body>
+</html>

@@ -32,18 +32,18 @@ const TRANSLATIONS = [
   { code: 'german',     lang: 'de', name: 'Deutsch',     native: 'Deutsch',     display: 'Luther Bibel (1912)',                flag: '🇩🇪', country: 'Deutschland · Österreich · Schweiz'                    },
   { code: 'french',     lang: 'fr', name: 'Français',    native: 'Français',    display: 'Louis Segond (1910)',                flag: '🇫🇷', country: 'Frankreich · Belgien · Kanada'                        },
   { code: 'spanish',    lang: 'es', name: 'Español',     native: 'Español',     display: 'Reina-Valera (1909)',                flag: '🇪🇸', country: 'Spanien · Mexiko · Lateinamerika'                     },
-  { code: 'italian',    lang: 'it', name: 'Italiano',    native: 'Italiano',    display: 'Giovanni Diodati',                   flag: '🇮🇹', country: 'Italien · Vatikanstadt'                               },
+  { code: 'italian',    lang: 'it', name: 'Italiano',    native: 'Italiano',    display: 'Giovanni Diodati (1649)',             flag: '🇮🇹', country: 'Italien · Vatikanstadt'                               },
   { code: 'portuguese', lang: 'pt', name: 'Português',   native: 'Português',   display: 'Almeida Revista e Corrigida',        flag: '🇧🇷', country: 'Brasilien · Portugal'                                 },
   { code: 'polish',     lang: 'pl', name: 'Polski',      native: 'Polski',      display: 'Biblia Gdańska',                    flag: '🇵🇱', country: 'Polen'                                                },
-  { code: 'romanian',   lang: 'ro', name: 'Română',      native: 'Română',      display: 'Cornilescu (1921)',                  flag: '🇷🇴', country: 'Rumänien'                                             },
   { code: 'russian',    lang: 'ru', name: 'Russisch',    native: 'Русский',     display: 'Синодальный перевод (1876)',         flag: '🇷🇺', country: 'Russland · Belarus'                                   },
-  { code: 'croatian',   lang: 'hr', name: 'Hrvatski',    native: 'Hrvatski',    display: 'Hrvatska Biblija',                   flag: '🇭🇷', country: 'Kroatien · Bosnien'                                  },
+  { code: 'croatian',   lang: 'hr', name: 'Hrvatski',    native: 'Hrvatski',    display: 'Hrvatska Biblija (PD, 1895)',         flag: '🇭🇷', country: 'Kroatien · Bosnien'                                  },
   { code: 'dutch',      lang: 'nl', name: 'Nederlands',  native: 'Nederlands',  display: 'Statenvertaling (1637)',             flag: '🇳🇱', country: 'Niederlande · Belgien'                                },
   { code: 'hungarian',  lang: 'hu', name: 'Magyar',      native: 'Magyar',      display: 'Károli (1908)',                      flag: '🇭🇺', country: 'Ungarn'                                               },
   { code: 'czech',      lang: 'cs', name: 'Čeština',     native: 'Čeština',     display: 'Bible Kralická (1613)',              flag: '🇨🇿', country: 'Tschechien · Slowakei'                               },
   { code: 'swedish',    lang: 'sv', name: 'Svenska',     native: 'Svenska',     display: 'Svenska Bibeln',                    flag: '🇸🇪', country: 'Schweden · Norwegen · Dänemark'                       },
   { code: 'tagalog',    lang: 'tl', name: 'Filipino',    native: 'Filipino',    display: 'Ang Biblia (1905)',                  flag: '🇵🇭', country: 'Philippinen'                                         },
-  { code: 'ukrainian',  lang: 'uk', name: 'Українська',  native: 'Українська',  display: 'Біблія Огієнка (1962)',             flag: '🇺🇦', country: 'Ukraine'                                             },
+  { code: 'ukrainian',  lang: 'uk', name: 'Ukraïnisch',  native: 'Українська',  display: 'Біблія Огієнка (1930)',         flag: '🇺🇦', country: 'Ukraine'                                             },
+  { code: 'albanian',   lang: 'sq', name: 'Shqip',       native: 'Shqip',       display: 'Bibla e Shenjtë (PD)',               flag: '🇦🇱', country: 'Albanien · Kosovo'                                    },
 ];
 
 const BOOKS = [
@@ -372,7 +372,7 @@ body { background:var(--cream); color:var(--trans-color); font-family:var(--font
 //  SEITEN-GENERATOR: INTERLINEAR-BUCHSEITE
 // ═══════════════════════════════════════════════════════
 
-function buildBookPage(book, trans, vulgChapters, transChapters) {
+function buildBookPage(book, trans, vulgChapters, transChapters, prevBook, nextBook, totalBooks) {
   const transNativeName = trans.native || trans.name;
 
   // Vers-Map für Translation (chapter -> verse -> text)
@@ -411,10 +411,7 @@ function buildBookPage(book, trans, vulgChapters, transChapters) {
   </section>`;
   }).join('\n');
 
-  // Prev/Next navigation
-  const bookIdx  = BOOKS.findIndex(b => b.nr === book.nr);
-  const prevBook = BOOKS[bookIdx - 1];
-  const nextBook = BOOKS[bookIdx + 1];
+  // Prev/Next navigation (passed from caller based on available books)
   const prevLink = prevBook
     ? `<a href="${bookFileName(prevBook)}">← ${prevBook.latin}</a>`
     : `<span style="opacity:.3">◀</span>`;
@@ -445,7 +442,7 @@ function buildBookPage(book, trans, vulgChapters, transChapters) {
     <a class="home" href="../../../index.html">✞ BIBLIA CATHOLICA</a>
     <a href="../index.html">${trans.flag} ${transNativeName}</a>
     <span class="spacer"></span>
-    <span class="pos">${pad3(book.nr)} / 066</span>
+    <span class="pos">${pad3(book.nr)} / ${pad3(totalBooks)}</span>
   </nav>
 
   <header class="book-header">
@@ -917,19 +914,26 @@ async function main() {
     const booksDir  = path.join(transDir, 'bücher');
     mkDir(booksDir);
 
+    // Erst ermitteln welche Bücher verfügbar sind (DK nur wenn Daten existieren)
     const available = [];
-
     for (const book of BOOKS) {
       if (!vulgataData[book.nr]) continue;
+      const transRaw = loadBook(trans.code, book.nr);
+      if (!transRaw && book.testament === 'DK') continue; // DK nur mit echter Übersetzung
+      available.push(book);
+    }
 
+    // Seiten generieren mit korrekter prev/next-Navigation
+    for (let i = 0; i < available.length; i++) {
+      const book      = available[i];
+      const prevBook  = available[i - 1] || null;
+      const nextBook  = available[i + 1] || null;
       const transRaw  = loadBook(trans.code, book.nr);
       const transChap = transRaw ? parseBook(transRaw) : null;
       const vulgChap  = vulgataData[book.nr];
 
-      const html = buildBookPage(book, trans, vulgChap, transChap);
+      const html = buildBookPage(book, trans, vulgChap, transChap, prevBook, nextBook, available.length);
       fs.writeFileSync(path.join(booksDir, bookFileName(book)), html);
-      available.push(book);
-
       process.stdout.write('.');
     }
     process.stdout.write('\n');

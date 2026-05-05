@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>I Petri · Hrvatski · Biblia Catholica</title>
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
+
+:root {
+  --gold:        #C8A96E;
+  --gold-light:  #EDD58A;
+  --gold-dark:   #8B6914;
+  --navy:        #1A1F3A;
+  --navy-mid:    #252B4A;
+  --navy-light:  #2E3560;
+  --parchment:   #F5E9CC;
+  --parchment-d: #EDD9A3;
+  --cream:       #FDF6E3;
+  --latin-color: #6B1E0E;
+  --trans-color: #0F1D2E;
+  --border:      rgba(200,169,110,.35);
+  --font-title:  'Cinzel Decorative', 'Cinzel', Georgia, serif;
+  --font-sub:    'Cinzel', Georgia, serif;
+  --font-body:   'EB Garamond', Georgia, serif;
+}
+
+*,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+html { font-size:16px; scroll-behavior:smooth; }
+body { background:var(--cream); color:var(--trans-color); font-family:var(--font-body); }
+
+/* ── NAV ─────────────────────────────────────────────── */
+.nav-bar {
+  background:var(--navy); padding:10px 28px;
+  display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  border-bottom:2px solid var(--gold);
+  position:sticky; top:0; z-index:100;
+  box-shadow:0 3px 12px rgba(0,0,0,.45);
+}
+.nav-bar a {
+  color:var(--gold); text-decoration:none;
+  font-family:var(--font-sub); font-size:.75rem; letter-spacing:.05em;
+  transition:color .15s;
+}
+.nav-bar a:hover { color:var(--gold-light); }
+.nav-bar .home { font-weight:700; font-size:.82rem; }
+.nav-bar .spacer { flex:1; }
+.nav-bar .pos { color:rgba(200,169,110,.45); font-size:.7rem; font-family:var(--font-sub); }
+
+/* ── BUCHKOPF ────────────────────────────────────────── */
+.book-header {
+  background:linear-gradient(160deg,var(--navy) 0%,var(--navy-mid) 55%,var(--navy-light) 100%);
+  padding:44px 36px 34px; text-align:center;
+  border-bottom:4px solid var(--gold);
+  position:relative; overflow:hidden;
+}
+.book-header::before {
+  content:'';
+  position:absolute; inset:0;
+  background-image:
+    repeating-linear-gradient( 45deg,transparent,transparent 30px,rgba(200,169,110,.038) 30px,rgba(200,169,110,.038) 31px),
+    repeating-linear-gradient(-45deg,transparent,transparent 30px,rgba(200,169,110,.038) 30px,rgba(200,169,110,.038) 31px);
+  pointer-events:none;
+}
+.testament-badge {
+  display:inline-block;
+  border:1px solid rgba(200,169,110,.4); color:rgba(200,169,110,.65);
+  font-family:var(--font-sub); font-size:.62rem; letter-spacing:.25em;
+  padding:4px 14px; border-radius:2px; margin-bottom:14px; position:relative;
+}
+.book-name-latin {
+  font-family:var(--font-title); font-size:3rem; color:var(--gold-light);
+  text-shadow:0 3px 18px rgba(0,0,0,.55); letter-spacing:.08em; position:relative;
+}
+.book-name-trans {
+  font-family:var(--font-sub); font-size:1.1rem; color:var(--gold);
+  margin-top:8px; letter-spacing:.12em; position:relative;
+}
+.book-meta {
+  font-size:.74rem; color:rgba(200,169,110,.5); margin-top:7px;
+  font-family:var(--font-sub); letter-spacing:.07em; position:relative;
+}
+
+/* ── ORNAMENT-TRENNLINIE ─────────────────────────────── */
+.ornament-bar {
+  text-align:center; padding:16px 0 4px;
+  color:var(--gold); font-size:1.1rem; letter-spacing:.7em;
+}
+
+/* ── HAUPT-CONTAINER ─────────────────────────────────── */
+.content { max-width:960px; margin:0 auto; padding:0 24px 80px; }
+
+/* ── KAPITEL-MARKER ──────────────────────────────────── */
+.chapter-marker {
+  display:flex; align-items:center; gap:16px;
+  padding:28px 6px 12px; margin-bottom:4px;
+  border-bottom:2px solid var(--border);
+}
+.ch-roman {
+  font-family:var(--font-title); font-size:2.2rem; color:var(--gold);
+  min-width:56px; text-align:center; flex-shrink:0;
+  text-shadow:0 1px 8px rgba(200,169,110,.3);
+}
+.ch-label {
+  font-family:var(--font-sub); font-size:.72rem; color:rgba(200,169,110,.6);
+  letter-spacing:.22em; text-transform:uppercase;
+}
+
+/* ── VERS-BLOCK ──────────────────────────────────────── */
+.verse-block {
+  display:flex; gap:0; border-bottom:1px solid rgba(200,169,110,.15);
+}
+.verse-block:nth-child(odd)  { background:var(--cream); }
+.verse-block:nth-child(even) { background:var(--parchment); }
+
+.verse-num-col {
+  flex-shrink:0; width:42px; padding:16px 6px 16px 0; text-align:right;
+}
+.verse-num {
+  display:inline-block; width:28px; height:28px; border-radius:50%;
+  background:var(--gold-dark); color:var(--cream);
+  font-family:var(--font-sub); font-size:.64rem; font-weight:700;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 1px 5px rgba(0,0,0,.25);
+}
+
+.verse-texts { flex:1; padding:16px 16px 18px 8px; }
+
+/* ── LATEINISCHER TEXT (oben / primär) ───────────────── */
+.latin {
+  font-family:var(--font-body); font-size:1.12rem; line-height:1.9;
+  color:var(--latin-color); font-weight:500;
+  border-left:3px solid var(--gold); padding-left:12px;
+  margin-bottom:8px;
+}
+
+/* ── ÜBERSETZUNGS-TEXT (unten / sekundär) ────────────── */
+.trans-label {
+  font-family:var(--font-sub); font-size:.6rem; letter-spacing:.17em;
+  text-transform:uppercase; color:var(--gold-dark); margin-bottom:5px; opacity:.78;
+}
+.trans {
+  font-family:var(--font-body); font-size:1.04rem; line-height:1.85;
+  color:var(--trans-color); font-style:italic;
+  padding-left:15px;
+}
+
+/* Erste Vers jedes Kapitels: Drop-Cap */
+.verse-block:first-of-type .latin::first-letter {
+  font-size:4.2em; float:left; line-height:.72;
+  padding-right:.08em; margin-top:.06em;
+  font-family:var(--font-title); color:var(--gold);
+}
+
+/* ── NAVIGATION ZWISCHEN BÜCHERN ─────────────────────── */
+.book-nav {
+  display:flex; justify-content:space-between; align-items:center;
+  background:var(--navy); border-top:3px solid var(--gold);
+  padding:12px 26px; gap:12px;
+}
+.book-nav a {
+  color:var(--gold); text-decoration:none;
+  font-family:var(--font-sub); font-size:.78rem; letter-spacing:.07em;
+  padding:6px 14px; border:1px solid rgba(200,169,110,.3); border-radius:3px;
+  transition:background .18s;
+}
+.book-nav a:hover { background:rgba(200,169,110,.15); }
+.book-nav .center {
+  font-family:var(--font-sub); font-size:.7rem; color:rgba(200,169,110,.55);
+  letter-spacing:.1em; text-align:center;
+}
+
+/* ── FUßZEILE ────────────────────────────────────────── */
+.page-footer {
+  background:var(--navy); border-top:2px solid rgba(200,169,110,.3);
+  padding:18px 28px; text-align:center;
+  color:rgba(200,169,110,.45); font-family:var(--font-sub);
+  font-size:.68rem; letter-spacing:.1em;
+}
+
+/* ── DRUCK ───────────────────────────────────────────── */
+@media print {
+  .nav-bar, .book-nav { display:none; }
+  .verse-block { break-inside:avoid; }
+  .book-header { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+}
+
+/* ── MOBIL ───────────────────────────────────────────── */
+@media (max-width:640px) {
+  .book-name-latin { font-size:2.1rem; }
+  .ch-roman { font-size:1.6rem; }
+  .latin { font-size:.98rem; }
+  .trans { font-size:.93rem; }
+  .content { padding:0 12px 60px; }
+}
+</style>
+</head>
+<body>
+
+  <nav class="nav-bar">
+    <a class="home" href="../../../index.html">✞ BIBLIA CATHOLICA</a>
+    <a href="../index.html">🇭🇷 Hrvatski</a>
+    <span class="spacer"></span>
+    <span class="pos">060 / 073</span>
+  </nav>
+
+  <header class="book-header">
+    <div class="testament-badge">NOVUM TESTAMENTUM</div>
+    <div class="book-name-latin">I PETRI</div>
+    <div class="book-name-trans">1 Peter</div>
+    <div class="book-meta">Vulgata Clementina · Hrvatska Biblija (PD, 1895) · 5 Capita · 105 Versus</div>
+  </header>
+
+  <div class="ornament-bar">❧ ✦ ❧ ✦ ❧</div>
+
+  <main class="content">
+
+  <section class="chapter" id="ch1">
+    <div class="chapter-marker">
+      <span class="ch-roman">I</span>
+      <span class="ch-label">Caput 1</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v1-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Petrus Apostolus Jesu Christi, electis advenis dispersionis Ponti, Galatiæ, Cappadociæ, Asiæ, et Bithyniæ,</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Petar, apostol Isusa Krista: putnicima Raseljeništva u Pontu, Galaciji, Kapadociji, Aziji i Bitiniji,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">secundum præscientiam Dei Patris, in sanctificationem Spiritus, in obedientiam, et aspersionem sanguinis Jesu Christi. Gratia vobis, et pax multiplicetur.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">po predznanju Boga Oca, posvećenjem Duha izabranima da budu poslušni te poškropljeni krvlju Isusa Krista. Punina vam milosti i mira!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Benedictus Deus et Pater Domini nostri Jesu Christi, qui secundum misericordiam suam magnam regeneravit nos in spem vivam, per resurrectionem Jesu Christi ex mortuis,</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Blagoslovljen Bog i Otac Gospodina našega Isusa Krista koji nas po velikom milosrđu svojemu uskrsnućem Isusa Krista od mrtvih nanovo rodi za životnu nadu,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">in hæreditatem incorruptibilem, et incontaminatam, et immarcescibilem, conservatam in cælis in vobis,</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">za baštinu neraspadljivu, neokaljanu i neuvelu, pohranjenu na nebesima za vas,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui in virtute Dei custodimini per fidem in salutem, paratam revelari in tempore novissimo.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">vas koje snaga Božja po vjeri čuva za spasenje, spremno da se objavi u posljednje vrijeme.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">In quo exsultabis, modicum nunc si oportet contristari in variis tentationibus :</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Zbog toga se radujte, makar se sada možda trebalo malo i žalostiti zbog različitih kušnja:</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">ut probatio vestræ fidei multo pretiosior auro (quod per ignem probatur) inveniatur in laudem, et gloriam, et honorem in revelatione Jesu Christi :</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">da prokušanost vaše vjere - dragocjenija od propadljivog zlata, koje se ipak u vatri kuša - stekne hvalu, slavu i čast o Objavljenju Isusa Krista.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">quem cum non videritis, diligitis : in quem nunc quoque non videntes creditis : credentes autem exsultabitis lætitia inenarrabili, et glorificata :</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Njega vi ljubite iako ga ne vidjeste; u njega, iako ga još ne gledate, vjerujete te klikćete od radosti neizrecive i proslavljene</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">reportantes finem fidei vestræ, salutem animarum.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">što postigoste svrhu svoje vjere: spasenje duša.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">De qua salute exquisierunt, atque scrutati sunt prophetæ, qui de futura in vobis gratia prophetaverunt :</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">To su spasenje istraživali i pronicali proroci koji prorokovahu o milosti vama namijenjenoj.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">scrutantes in quod vel quale tempus significaret in eis Spiritus Christi : prænuntians eas quæ in Christo sunt passiones, et posteriores glorias :</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Pronicali su na koje ili kakvo je vrijeme smjerao Duh Kristov u njima koji je unaprijed svjedočio o Kristovim patnjama te slavama što su nakon njih imale doći:</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">quibus revelatum est quia non sibimetipsis, vobis autem ministrabant ea quæ nunc nuntiata sunt vobis per eos qui evangelizaverunt vobis, Spiritu Sancto misso de cælo, in quem desiderant angeli prospicere.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">bi im objavljeno da ne sebi nego vama poslužuju ono što vam sada u Duhu Svetom s neba poslanom navijestiše vaši blagovjesnici, a nada što se i anđeli žude nadviti.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Propter quod succincti lumbos mentis vestræ, sobrii, perfecte sperate in eam, quæ offertur vobis, gratiam, in revelationem Jesu Christi :</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Zato opašite bokove pameti svoje, trijezni budite i savršeno se pouzdajte u milost koju vam donosi Objavljenje Isusa Krista.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">quasi filii obedientiæ, non configurati prioribus ignorantiæ vestræ desideriis :</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Kao poslušna djeca ne supriličujte se prijašnjim požudama iz doba neznanja.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">sed secundum eum qui vocavit vos, Sanctum : et ipsi in omni conversatione sancti sitis :</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Naprotiv, kao što je svet Onaj koji vas pozva, i vi budite sveti u svemu življenju.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">quoniam scriptum est : Sancti eritis, quoniam ego sanctus sum.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Ta pisano je: Budite sveti jer sam ja svet.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et si patrem invocatis eum, qui sine acceptione personarum judicat secundum uniuscujusque opus, in timore incolatus vestri tempore conversamini.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Ako dakle Ocem nazivate njega koji nepristrano svakoga po djelu sudi, vrijeme svoga proputovanja proživite u bogobojaznosti.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Scientes quod non corruptibilibus, auro vel argento, redempti estis de vana vestra conversatione paternæ traditionis :</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Ta znate da od svog ispraznog načina života, što vam ga oci namriješe, niste otkupljeni nečim raspadljivim, srebrom ili zlatom,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">sed pretioso sanguine quasi agni immaculati Christi, et incontaminati :</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">nego dragocjenom krvlju Krista, Jaganjca nevina i bez mane.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">præcogniti quidem ante mundi constitutionem, manifestati autem novissimis temporibus propter vos,</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">On bijaše doduše predviđen prije postanka svijeta, ali se očitova na kraju vremena radi vas</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui per ipsum fideles estis in Deo, qui suscitavit eum a mortuis, et dedit ei gloriam, ut fides vestra et spes esset in Deo :</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">koji po njemu vjerujete u Boga koji ga uskrisi od mrtvih te mu dade slavu da vjera vaša i nada bude u Bogu.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-22">
+      <div class="verse-num-col"><div class="verse-num">22</div></div>
+      <div class="verse-texts">
+        <div class="latin">animas vestras castificantes in obedientia caritatis, in fraternitatis amore, simplici ex corde invicem diligite attentius :</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Pošto ste posluhom istini očistili duše svoje za nehinjeno bratoljublje, od srca žarko ljubite jedni druge.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-23">
+      <div class="verse-num-col"><div class="verse-num">23</div></div>
+      <div class="verse-texts">
+        <div class="latin">renati non ex semine corruptibili, sed incorruptibili per verbum Dei vivi, et permanentis in æternum :</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Ta nanovo ste rođeni, ne iz sjemena raspadljiva nego neraspadljiva: riječju Boga koji živi i ostaje.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-24">
+      <div class="verse-num-col"><div class="verse-num">24</div></div>
+      <div class="verse-texts">
+        <div class="latin">quia omnis caro ut fœnum : et omnis gloria ejus tamquam flos fœni : exaruit fœnum, et flos ejus decidit.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Doista, svako je tijelo kao trava, sva mu slava ko cvijet poljski: sahne trava, vene cvijet,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-25">
+      <div class="verse-num-col"><div class="verse-num">25</div></div>
+      <div class="verse-texts">
+        <div class="latin">Verbum autem Domini manet in æternum : hoc est autem verbum, quod evangelizatum est in vos.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">ali Riječ Gospodnja ostaje dovijeka. Ta pak riječ jest evanđelje koje vam je naviješteno.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch2">
+    <div class="chapter-marker">
+      <span class="ch-roman">II</span>
+      <span class="ch-label">Caput 2</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v2-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Deponentes igitur omnem malitiam, et omnem dolum, et simulationes, et invidias, et omnes detractiones,</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Odložite dakle svaku zloću i svaku prijevaru, himbe i zavisti i sva klevetanja.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">sicut modo geniti infantes, rationabile, sine dolo lac concupiscite : ut in eo crescatis in salutem :</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Kao novorođenčad žudite za duhovnim, nepatvorenim mlijekom da po njemu uzrastete za spasenje,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">si tamen gustastis quoniam dulcis est Dominus.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">ako ste doista okusili kako je dobar Gospodin.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ad quem accedentes lapidem vivum, ab hominibus quidem reprobatum, a Deo autem electum, et honorificatum :</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Pristupite k njemu, Kamenu živomu što ga, istina, ljudi odbaciše, ali je u očima Božjim izabran, dragocjen,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">et ipsi tamquam lapides vivi superædificamini, domus spiritualis, sacerdotium sanctum, offerre spirituales hostias, acceptabiles Deo per Jesum Christum.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">pa se kao živo kamenje ugrađujte u duhovni Dom za sveto svećenstvo da prinosite žrtve duhovne, ugodne Bogu po Isusu Kristu.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Propter quod continet Scriptura : Ecce pono in Sion lapidem summum angularem, electum, pretiosum : et qui crediderit in eum, non confundetur.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Stoga stoji u Pismu: Evo postavljam na Sionu kamen odabrani, dragocjeni kamen ugaoni: Tko u nj vjeruje, ne, neće se postidjeti.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vobis igitur honor credentibus : non credentibus autem lapis, quem reprobaverunt ædificantes : hic factus est in caput anguli,</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Vama dakle koji vjerujete - čast! A onima koji ne vjeruju - kamen koji odbaciše graditelji postade kamen zaglavni</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">et lapis offensionis, et petra scandali, his qui offendunt verbo, nec credunt in quo et positi sunt.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">i kamen spoticanja, stijena posrtanja; oni se o nj spotiču, neposlušni Riječi, za što su i određeni.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vos autem genus electum, regale sacerdotium, gens sancta, populus acquisitionis : ut virtutes annuntietis ejus qui de tenebris vos vocavit in admirabile lumen suum.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">A vi ste rod izabrani, kraljevsko svećenstvo, sveti puk, narod stečeni da naviještate silna djela Onoga koji vas iz tame pozva k divnom svjetlu svojemu;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui aliquando non populus, nunc autem populus Dei : qui non consecuti misericordiam, nunc autem misericordiam consecuti.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">vi, nekoć Ne-narod, a sada Narod Božji; vi Ne-mili, a sada Mili.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Carissimi, obsecro vos tamquam advenas et peregrinos abstinere vos a carnalibus desideriis, quæ militant adversus animam,</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Ljubljeni! Zaklinjem vas da se kao pridošlice i putnici klonite putenih požuda koje vojuju protiv duše;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">conversationem vestram inter gentes habentes bonam : ut in eo quod detrectant de vobis tamquam de malefactoribus, ex bonis operibus vos considerantes, glorificent Deum in die visitationis.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">življenje vaše među poganima neka bude uzorno da upravo onim za što vas sada potvaraju kao zločince, pošto promotre vaša dobra djela, proslave Boga u dan pohoda.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Subjecti igitur estote omni humanæ creaturæ propter Deum : sive regi quasi præcellenti :</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Pokoravajte se svakoj ljudskoj ustanovi radi Gospodina: bilo kralju kao vrhovniku,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">sive ducibus tamquam ab eo missis ad vindictam malefactorum, laudem vero bonorum :</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">bilo upraviteljima jer ih on šalje da kazne zločince, a pohvale one koji dobro čine.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">quia sic est voluntas Dei, ut benefacientes obmutescere faciatis imprudentium hominum ignorantiam :</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Doista, ovo je Božja volja: da čineći dobro ušutkate neznanje bezumnika.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">quasi liberi, et non quasi velamen habentes malitiæ libertatem, sed sicut servi Dei.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Kao slobodni ljudi - ali ne kao oni kojima je sloboda tek pokrivalom zloće, već kao Božje sluge -</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Omnes honorate : fraternitatem diligite : Deum timete : regem honorificate.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">sve poštujte, bratstvo ljubite, Boga se bojte, kralja častite!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Servi, subditi estote in omni timore dominis, non tantum bonis et modestis, sed etiam dyscolis.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Sluge, budite sa svim poštovanjem pokorni gospodarima, ne samo dobrima i blagima nego i naopakima.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hæc est enim gratia, si propter Dei conscientiam sustinet quis tristitias, patiens injuste.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">To je uistinu milost ako tko radi savjesti, radi Boga podnosi nevolje trpeći nepravedno.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quæ enim est gloria, si peccantes, et colaphizati suffertis ? sed si bene facientes patienter sustinetis, hæc est gratia apud Deum.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Kakve li slave doista ako za grijehe udarani strpljivo podnosite? No ako dobro čineći trpite pa strpljivo podnosite, to je Bogu milo.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">In hoc enim vocati estis : quia et Christus passus est pro nobis, vobis relinquens exemplum ut sequamini vestigia ejus :</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Ta na to ste pozvani jer i Krist je trpio za vas i ostavio vam primjer da idete stopama njegovim.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-22">
+      <div class="verse-num-col"><div class="verse-num">22</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui peccatum non fecit, nec inventus est dolus in ore ejus :</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">On koji grijeha ne učini nit mu usta prijevaru izustiše;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-23">
+      <div class="verse-num-col"><div class="verse-num">23</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui cum malediceretur, non maledicebat : cum pateretur, non comminabatur : tradebat autem judicanti se injuste :</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">on koji na uvredu nije uvredom uzvraćao i mučen nije prijetio, prepuštajući to Sucu pravednom;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-24">
+      <div class="verse-num-col"><div class="verse-num">24</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui peccata nostra ipse pertulit in corpore suo super lignum ; ut peccatis mortui, justitiæ vivamus : cujus livore sanati estis.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">on koji u tijelu svom grijehe naše ponese na drvo da umrijevši grijesima pravednosti živimo; on čijom se modricom izliječiste.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-25">
+      <div class="verse-num-col"><div class="verse-num">25</div></div>
+      <div class="verse-texts">
+        <div class="latin">Eratis enim sicut oves errantes, sed conversi estis nunc ad pastorem, et episcopum animarum vestrarum.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Doista, poput ovaca lutaste, ali se sada obratiste k pastiru i čuvaru duša svojih.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch3">
+    <div class="chapter-marker">
+      <span class="ch-roman">III</span>
+      <span class="ch-label">Caput 3</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v3-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Similiter et mulieres subditæ sint viris suis : ut etsi qui non credunt verbo, per mulierem conversationem sine verbo lucrifiant :</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Tako i vi, žene, pokoravajte se svojim muževima: ako su neki od njih možda neposlušni Riječi, da i bez riječi budu pridobiveni življenjem vas žena,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">considerantes in timore castam conversationem vestram.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">pošto promotre vaše bogoljubno i čisto življenje.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quarum non sit extrinsecus capillatura, aut circumdatio auri, aut indumenti vestimentorum cultus :</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Vaš nakit neka ne bude izvanjski - pletenje kose, kićenje zlatom ili oblačenje haljina.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">sed qui absconditus est cordis homo, in incorruptibilitate quieti, et modesti spiritus, qui est in conspectu Dei locuples.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Nego: čovjek skrovita srca, neprolazne ljepote, blaga i smirena duha. To je pred Bogom dragocjeno.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sic enim aliquando et sanctæ mulieres, sperantes in Deo, ornabant se, subjectæ propriis viris.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Tako su se doista i nekoć svete žene, zaufane u Boga, resile: pokoravale su se muževima.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sicut Sara obediebat Abrahæ, dominum eum vocans : cujus estis filiæ benefacientes, et non pertimentes ullam perturbationem.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Sara se tako pokori Abrahamu te ga nazva gospodarom. Njezina ste djeca ako činite dobro ne bojeći se nikakva zastrašivanja.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Viri similiter cohabitantes secundum scientiam, quasi infirmiori vasculo muliebri impartientes honorem, tamquam et cohæredibus gratiæ vitæ : ut non impediantur orationes vestræ.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Tako i vi, muževi, obazrivo živite sa svojim ženama, kao sa slabijim spolom, te im iskazujte čast kao subaštinicima milosti Života da ne spriječite svojih molitava.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">In fine autem omnes unanimes, compatientes fraternitatis amatores, misericordes, modesti, humiles :</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Napokon, budite svi jednodušni, puni suosjećanja i bratske ljubavi, milosrdni, ponizni!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">non reddentes malum pro malo, nec maledictum pro maledicto, sed e contrario benedicentes : quia in hoc vocati estis, ut benedictionem hæreditate possideatis.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Ne vraćajte zlo za zlo ni uvredu za uvredu! Naprotiv, blagoslivljajte jer ste na to i pozvani da baštinite blagoslov!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui enim vult vitam diligere, et dies videre bonos, coërceat linguam suam a malo, et labia ejus ne loquantur dolum.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Doista, tko želi ljubiti život i naužit se dana sretnih, nek suspregne jezik oda zla i usne od riječi prijevarnih;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Declinet a malo, et faciat bonum : inquirat pacem, et sequatur eam :</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">zla nek se kloni, a čini dobro, mir neka traži i za njim ide:</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">quia oculi Domini super justos, et aures ejus in preces eorum : vultus autem Domini super facientes mala.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">jer oči Gospodnje gledaju pravedne, uši mu slušaju vapaje njihove, a lice se Gospodnje okreće protiv zločinaca.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et quis est qui vobis noceat, si boni æmulatores fueritis ?</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Pa tko da vam naudi ako revnujete za dobro?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sed et si quid patimini propter justitiam, beati. Timorem autem eorum ne timueritis, et non conturbemini.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Nego, morali i trpjeti zbog svoje pravednosti, blago vama! No ne bojte se njihova zastrašivanja i ne plašite se!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Dominum autem Christum sanctificate in cordibus vestris, parati semper ad satisfactionem omni poscenti vos rationem de ea, quæ in vobis est, spe.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Naprotiv, Gospodin - Krist neka vam bude svet, u srcima vašim, te budite uvijek spremni na odgovor svakomu koji od vas zatraži obrazloženje nade koja je u vama,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sed cum modestia, et timore, conscientiam habentes bonam : ut in eo, quod detrahunt vobis, confundantur, qui calumniantur vestram bonam in Christo conversationem.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">ali blago i s poštovanjem, dobre savjesti da oni koji ozloglašuju vaš dobar život u Kristu, upravo onim budu postiđeni za što vas potvaraju.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Melius est enim benefacientes (si voluntas Dei velit) pati, quam malefacientes.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Ta uspješnije je trpjeti, ako je to Božja volja, čineći dobro, nego čineći zlo.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quia et Christus semel pro peccatis nostris mortuus est, justus pro injustis, ut nos offerret Deo, mortificatus quidem carne, vivificatus autem spiritu.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Doista, i Krist jednom za grijehe umrije, pravedan za nepravedne, da vas privede k Bogu - ubijen doduše u tijelu, ali oživljen u duhu.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">In quo et his, qui in carcere erant, spiritibus veniens prædicavit :</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">U njemu otiđe i propovijedati duhovima u tamnici</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui increduli fuerant aliquando, quando exspectabant Dei patientiam in diebus Noë, cum fabricaretur arca : in qua pauci, id est octo animæ, salvæ factæ sunt per aquam.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">koji bijahu nekoć nepokorni, kad ih ono Božja strpljivost iščekivaše, u vrijeme Noino, dok se gradila korablja u kojoj nekolicina, to jest osam duša, bi spašena vodom.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quod et vos nunc similis formæ salvos fecit baptisma : non carnis depositio sordium, sed conscientiæ bonæ interrogatio in Deum per resurrectionem Jesu Christi.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Njezin protulik, krštenje - ne odlaganje tjelesne nečistoće, nego molitva za dobru savjest upravljena Bogu - i vas sada spasava po uskrsnuću Isusa Krista</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-22">
+      <div class="verse-num-col"><div class="verse-num">22</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui est in dextera Dei, deglutiens mortem ut vitæ æternæ hæredes efficeremur : profectus in cælum subjectis sibi angelis, et potestatibus, et virtutibus.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">koji, uzašavši na nebo, jest zdesna Bogu, pošto mu bijahu pokoreni anđeli, vlasti i sile.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch4">
+    <div class="chapter-marker">
+      <span class="ch-roman">IV</span>
+      <span class="ch-label">Caput 4</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v4-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Christo igitur passo in carne, et vos eadem cogitatione armamini : quia qui passus est in carne, desiit a peccatis :</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Dakle, budući da je Krist trpio u tijelu, i vi se oboružajte istim mišljenjem - jer tko trpi u tijelu okanio se grijeha -</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">ut jam non desideriis hominum, sed voluntati Dei, quod reliquum est in carne vivat temporis.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">da vrijeme što vam u tijelu još preostaje proživite ne više po ljudskim požudama nego po Božjoj volji.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sufficit enim præteritum tempus ad voluntatem gentium consummandam his qui ambulaverunt in luxuriis, desideriis, vinolentiis, comessationibus, potationibus, et illicitis idolorum cultibus.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Dosta je uistinu što ste u prošlom vremenu vršili volju pogana, hodeći u razvratnostima, požudama, pijančevanjima, pijankama, opijanjima i bezakoničkim idolopoklonstvima.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">In quo admirantur non concurrentibus vobis in eamdem luxuriæ confusionem, blasphemantes.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Stoga se čude što se ne slijevate u tu istu rijeku raskalašenosti te proklinju.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui reddent rationem ei qui paratus est judicare vivos et mortuos.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Polagat će oni račun Onomu tko je već spreman suditi žive i mrtve.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Propter hoc enim et mortuis evangelizatum est : ut judicentur quidem secundum homines in carne, vivant autem secundum Deum in spiritu.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Zato je i mrtvima naviješteno evanđelje da osuđeni doduše po ljudsku, u tijelu, žive po Božju - u duhu.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Omnium autem finis appropinquavit. Estote itaque prudentes, et vigilate in orationibus.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Približio se svršetak svega! Osvijestite se i otrijeznite za molitvu!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ante omnia autem, mutuam in vobismetipsis caritatem continuam habentes : quia caritas operit multitudinem peccatorum.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Prije svega imajte žarku ljubav jedni prema drugima jer ljubav pokriva mnoštvo grijeha!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hospitales invicem sine murmuratione.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Gostoljubivo primajte jedni druge bez mrmljanja!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Unusquisque, sicut accepit gratiam, in alterutrum illam administrantes, sicut boni dispensatores multiformis gratiæ Dei.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Jedni druge poslužujte - svatko po primljenom daru - kao dobri upravitelji različitih Božjih milosti!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si quis loquitur, quasi sermones Dei : si quis ministrat, tamquam ex virtute, quam administrat Deus : ut in omnibus honorificetur Deus per Jesum Christum : cui est gloria et imperium in sæcula sæculorum. Amen.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Govori li tko? Neka govori kao riječi Božje! Poslužuje li tko? Neka poslužuje kao snagom koju daje Bog da se u svemu slavi Bog po Isusu Kristu, komu slava i vlast u vijeke vijekova! Amen.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Carissimi, nolite peregrinari in fervore, qui ad tentationem vobis fit, quasi novi aliquid vobis contingat :</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Ljubljeni! Ne čudite se požaru što bukti među vama da vas iskuša, kao da vam se događa štogod neobično!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">sed communicantes Christi passionibus gaudete, ut et in revelatione gloriæ ejus gaudeatis exsultantes.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Naprotiv, radujte se kao zajedničari Kristovih patnja da i o Objavljenju njegove slave mognete radosno klicati.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si exprobramini in nomine Christi, beati eritis : quoniam quod est honoris, gloriæ, et virtutis Dei, et qui est ejus Spiritus, super vos requiescit.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Pogrđuju li vas zbog imena Kristova, blago vama, jer Duh Slave, Duh Božji u vama počiva.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nemo autem vestrum patiatur ut homicida, aut fur, aut maledicus, aut alienorum appetitor.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Tek neka nitko od vas ne trpi kao ubojica, ili kradljivac, ili zločinac, ili makar i kao nametljivac;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si autem ut christianus, non erubescat : glorificet autem Deum in isto nomine :</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">ako li kao kršćanin, neka se ne stidi, nego slavi Boga zbog tog imena.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">quoniam tempus est ut incipiat judicium a domo Dei. Si autem primum a nobis, quis finis eorum, qui non credunt Dei Evangelio ?</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Ta vrijeme je da započne Sud - od doma Božjega. No ako već od vas započinje, kakav je onda svršetak onih što nisu poslušni Božjem evanđelju?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">et si justus vix salvabitur, impius et peccator ubi parebunt ?</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">I ako se pravednik jedva spasava, opak i grešnik gdje da se pojavi?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">Itaque et hi, qui patiuntur secundum voluntatem Dei, fideli Creatori commendent animas suas in benefactis.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Stoga oni koji po volji Božjoj trpe, neka dobrim djelima povjere duše svoje vjernom Stvoritelju.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch5">
+    <div class="chapter-marker">
+      <span class="ch-roman">V</span>
+      <span class="ch-label">Caput 5</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v5-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Seniores ergo, qui in vobis sunt, obsecro, consenior et testis Christi passionum : qui et ejus, quæ in futuro revelanda est, gloriæ communicator :</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Starješine dakle među vama opominjem, ja sustarješina i svjedok Kristovih patnja, a zato i zajedničar slave koja se ima očitovati:</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">pascite qui in vobis est gregem Dei, providentes non coacte, sed spontanee secundum Deum : neque turpis lucri gratia, sed voluntarie :</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">pasite povjereno vam stado Božje, nadgledajte ga - ne prisilno, nego dragovoljno, po Božju; ne radi prljava dobitka, nego oduševljeno;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">neque ut dominantes in cleris, sed forma facti gregis ex animo.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">i ne kao gospodari Baštine nego kao uzori stada.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et cum apparuerit princeps pastorum, percipietis immarcescibilem gloriæ coronam.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Pa kad se pojavi Natpastir, primit ćete neuveli vijenac slave.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Similiter adolescentes subditi estote senioribus.   Omnes autem invicem humilitatem insinuate, quia Deus superbis resistit, humilibus autem dat gratiam.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Tako i vi, mladići, podložite se starješinama; svi se jedni prema drugima pripašite poniznošću jer Bog se oholima protivi, a poniznima daruje milost.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Humiliamini igitur sub potenti manu Dei, ut vos exaltet in tempore visitationis :</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Ponizite se dakle pod snažnom rukom Božjom da vas uzvisi u pravo vrijeme.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">omnem sollicitudinem vestram projicientes in eum, quoniam ipsi cura est de vobis.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Svu svoju brigu povjerite njemu jer on se brine za vas.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sobrii estote, et vigilate : quia adversarius vester diabolus tamquam leo rugiens circuit, quærens quem devoret :</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Otrijeznite se! Bdijte! Protivnik vaš, đavao, kao ričući lav obilazi tražeći koga da proždre.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">cui resistite fortes in fide : scientes eamdem passionem ei quæ in mundo est vestræ fraternitati fieri.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Oprite mu se stameni u vjeri znajući da takve iste patnje podnose vaša braća po svijetu.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Deus autem omnis gratiæ, qui vocavit nos in æternam suam gloriam in Christo Jesu, modicum passos ipse perficiet, confirmabit, solidabitque.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">A Bog svake milosti, koji vas pozva na vječnu slavu u Kristu, on će vas, pošto malo potrpite, usavršiti, učvrstiti, ojačati, utvrditi.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ipsi gloria, et imperium in sæcula sæculorum. Amen.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Njemu vlast u vijeke vjekova! Amen.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Per Silvanum fidelem fratrem vobis, ut arbitror, breviter scripsi : obsecrans et contestans, hanc esse veram gratiam Dei, in qua statis.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Pišem vam ukratko, po Silvanu, koga smatram bratom vjernim, da vas ohrabrim i posvjedočim kako je ovo istinska milost Božja. Nje se držite!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Salutat vos ecclesia quæ est in Babylone coëlecta, et Marcus filius meus.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Pozdravlja vas suizabranica u Babilonu i Marko, sin moj.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Salutate invicem in osculo sancto. Gratia vobis omnibus qui estis in Christo Jesu. Amen.</div>
+        <div class="trans-label">✦ Hrvatski</div>
+        <div class="trans">Pozdravite jedni druge cjelovom ljubavi! Mir svima vama koji ste u Kristu!</div>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <nav class="book-nav">
+    <a href="059-jam.html">← Iacobi</a>
+    <span class="center">I Petri · Hrvatski</span>
+    <a href="061-2pe.html">II Petri →</a>
+  </nav>
+
+  <footer class="page-footer">
+    BIBLIA CATHOLICA INTERLINEARIS &nbsp;·&nbsp; Vulgata Clementina &amp; Hrvatska Biblija (PD, 1895)
+    &nbsp;·&nbsp; Gemeinfreie Texte / Public Domain
+  </footer>
+
+</body>
+</html>

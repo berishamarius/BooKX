@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>I Petri · Nederlands · Biblia Catholica</title>
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
+
+:root {
+  --gold:        #C8A96E;
+  --gold-light:  #EDD58A;
+  --gold-dark:   #8B6914;
+  --navy:        #1A1F3A;
+  --navy-mid:    #252B4A;
+  --navy-light:  #2E3560;
+  --parchment:   #F5E9CC;
+  --parchment-d: #EDD9A3;
+  --cream:       #FDF6E3;
+  --latin-color: #6B1E0E;
+  --trans-color: #0F1D2E;
+  --border:      rgba(200,169,110,.35);
+  --font-title:  'Cinzel Decorative', 'Cinzel', Georgia, serif;
+  --font-sub:    'Cinzel', Georgia, serif;
+  --font-body:   'EB Garamond', Georgia, serif;
+}
+
+*,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+html { font-size:16px; scroll-behavior:smooth; }
+body { background:var(--cream); color:var(--trans-color); font-family:var(--font-body); }
+
+/* ── NAV ─────────────────────────────────────────────── */
+.nav-bar {
+  background:var(--navy); padding:10px 28px;
+  display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  border-bottom:2px solid var(--gold);
+  position:sticky; top:0; z-index:100;
+  box-shadow:0 3px 12px rgba(0,0,0,.45);
+}
+.nav-bar a {
+  color:var(--gold); text-decoration:none;
+  font-family:var(--font-sub); font-size:.75rem; letter-spacing:.05em;
+  transition:color .15s;
+}
+.nav-bar a:hover { color:var(--gold-light); }
+.nav-bar .home { font-weight:700; font-size:.82rem; }
+.nav-bar .spacer { flex:1; }
+.nav-bar .pos { color:rgba(200,169,110,.45); font-size:.7rem; font-family:var(--font-sub); }
+
+/* ── BUCHKOPF ────────────────────────────────────────── */
+.book-header {
+  background:linear-gradient(160deg,var(--navy) 0%,var(--navy-mid) 55%,var(--navy-light) 100%);
+  padding:44px 36px 34px; text-align:center;
+  border-bottom:4px solid var(--gold);
+  position:relative; overflow:hidden;
+}
+.book-header::before {
+  content:'';
+  position:absolute; inset:0;
+  background-image:
+    repeating-linear-gradient( 45deg,transparent,transparent 30px,rgba(200,169,110,.038) 30px,rgba(200,169,110,.038) 31px),
+    repeating-linear-gradient(-45deg,transparent,transparent 30px,rgba(200,169,110,.038) 30px,rgba(200,169,110,.038) 31px);
+  pointer-events:none;
+}
+.testament-badge {
+  display:inline-block;
+  border:1px solid rgba(200,169,110,.4); color:rgba(200,169,110,.65);
+  font-family:var(--font-sub); font-size:.62rem; letter-spacing:.25em;
+  padding:4px 14px; border-radius:2px; margin-bottom:14px; position:relative;
+}
+.book-name-latin {
+  font-family:var(--font-title); font-size:3rem; color:var(--gold-light);
+  text-shadow:0 3px 18px rgba(0,0,0,.55); letter-spacing:.08em; position:relative;
+}
+.book-name-trans {
+  font-family:var(--font-sub); font-size:1.1rem; color:var(--gold);
+  margin-top:8px; letter-spacing:.12em; position:relative;
+}
+.book-meta {
+  font-size:.74rem; color:rgba(200,169,110,.5); margin-top:7px;
+  font-family:var(--font-sub); letter-spacing:.07em; position:relative;
+}
+
+/* ── ORNAMENT-TRENNLINIE ─────────────────────────────── */
+.ornament-bar {
+  text-align:center; padding:16px 0 4px;
+  color:var(--gold); font-size:1.1rem; letter-spacing:.7em;
+}
+
+/* ── HAUPT-CONTAINER ─────────────────────────────────── */
+.content { max-width:960px; margin:0 auto; padding:0 24px 80px; }
+
+/* ── KAPITEL-MARKER ──────────────────────────────────── */
+.chapter-marker {
+  display:flex; align-items:center; gap:16px;
+  padding:28px 6px 12px; margin-bottom:4px;
+  border-bottom:2px solid var(--border);
+}
+.ch-roman {
+  font-family:var(--font-title); font-size:2.2rem; color:var(--gold);
+  min-width:56px; text-align:center; flex-shrink:0;
+  text-shadow:0 1px 8px rgba(200,169,110,.3);
+}
+.ch-label {
+  font-family:var(--font-sub); font-size:.72rem; color:rgba(200,169,110,.6);
+  letter-spacing:.22em; text-transform:uppercase;
+}
+
+/* ── VERS-BLOCK ──────────────────────────────────────── */
+.verse-block {
+  display:flex; gap:0; border-bottom:1px solid rgba(200,169,110,.15);
+}
+.verse-block:nth-child(odd)  { background:var(--cream); }
+.verse-block:nth-child(even) { background:var(--parchment); }
+
+.verse-num-col {
+  flex-shrink:0; width:42px; padding:16px 6px 16px 0; text-align:right;
+}
+.verse-num {
+  display:inline-block; width:28px; height:28px; border-radius:50%;
+  background:var(--gold-dark); color:var(--cream);
+  font-family:var(--font-sub); font-size:.64rem; font-weight:700;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 1px 5px rgba(0,0,0,.25);
+}
+
+.verse-texts { flex:1; padding:16px 16px 18px 8px; }
+
+/* ── LATEINISCHER TEXT (oben / primär) ───────────────── */
+.latin {
+  font-family:var(--font-body); font-size:1.12rem; line-height:1.9;
+  color:var(--latin-color); font-weight:500;
+  border-left:3px solid var(--gold); padding-left:12px;
+  margin-bottom:8px;
+}
+
+/* ── ÜBERSETZUNGS-TEXT (unten / sekundär) ────────────── */
+.trans-label {
+  font-family:var(--font-sub); font-size:.6rem; letter-spacing:.17em;
+  text-transform:uppercase; color:var(--gold-dark); margin-bottom:5px; opacity:.78;
+}
+.trans {
+  font-family:var(--font-body); font-size:1.04rem; line-height:1.85;
+  color:var(--trans-color); font-style:italic;
+  padding-left:15px;
+}
+
+/* Erste Vers jedes Kapitels: Drop-Cap */
+.verse-block:first-of-type .latin::first-letter {
+  font-size:4.2em; float:left; line-height:.72;
+  padding-right:.08em; margin-top:.06em;
+  font-family:var(--font-title); color:var(--gold);
+}
+
+/* ── NAVIGATION ZWISCHEN BÜCHERN ─────────────────────── */
+.book-nav {
+  display:flex; justify-content:space-between; align-items:center;
+  background:var(--navy); border-top:3px solid var(--gold);
+  padding:12px 26px; gap:12px;
+}
+.book-nav a {
+  color:var(--gold); text-decoration:none;
+  font-family:var(--font-sub); font-size:.78rem; letter-spacing:.07em;
+  padding:6px 14px; border:1px solid rgba(200,169,110,.3); border-radius:3px;
+  transition:background .18s;
+}
+.book-nav a:hover { background:rgba(200,169,110,.15); }
+.book-nav .center {
+  font-family:var(--font-sub); font-size:.7rem; color:rgba(200,169,110,.55);
+  letter-spacing:.1em; text-align:center;
+}
+
+/* ── FUßZEILE ────────────────────────────────────────── */
+.page-footer {
+  background:var(--navy); border-top:2px solid rgba(200,169,110,.3);
+  padding:18px 28px; text-align:center;
+  color:rgba(200,169,110,.45); font-family:var(--font-sub);
+  font-size:.68rem; letter-spacing:.1em;
+}
+
+/* ── DRUCK ───────────────────────────────────────────── */
+@media print {
+  .nav-bar, .book-nav { display:none; }
+  .verse-block { break-inside:avoid; }
+  .book-header { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+}
+
+/* ── MOBIL ───────────────────────────────────────────── */
+@media (max-width:640px) {
+  .book-name-latin { font-size:2.1rem; }
+  .ch-roman { font-size:1.6rem; }
+  .latin { font-size:.98rem; }
+  .trans { font-size:.93rem; }
+  .content { padding:0 12px 60px; }
+}
+</style>
+</head>
+<body>
+
+  <nav class="nav-bar">
+    <a class="home" href="../../../index.html">✞ BIBLIA CATHOLICA</a>
+    <a href="../index.html">🇳🇱 Nederlands</a>
+    <span class="spacer"></span>
+    <span class="pos">060 / 073</span>
+  </nav>
+
+  <header class="book-header">
+    <div class="testament-badge">NOVUM TESTAMENTUM</div>
+    <div class="book-name-latin">I PETRI</div>
+    <div class="book-name-trans">1 Peter</div>
+    <div class="book-meta">Vulgata Clementina · Statenvertaling (1637) · 5 Capita · 105 Versus</div>
+  </header>
+
+  <div class="ornament-bar">❧ ✦ ❧ ✦ ❧</div>
+
+  <main class="content">
+
+  <section class="chapter" id="ch1">
+    <div class="chapter-marker">
+      <span class="ch-roman">I</span>
+      <span class="ch-label">Caput 1</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v1-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Petrus Apostolus Jesu Christi, electis advenis dispersionis Ponti, Galatiæ, Cappadociæ, Asiæ, et Bithyniæ,</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Petrus, een apostel van Jezus Christus, aan de vreemdelingen, verstrooid in Pontus, Galatie, Kappadocie, Azie en Bithynie,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">secundum præscientiam Dei Patris, in sanctificationem Spiritus, in obedientiam, et aspersionem sanguinis Jesu Christi. Gratia vobis, et pax multiplicetur.</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Den uitverkorenen naar de voorkennis van God den Vader, in de heiligmaking des Geestes, tot gehoorzaamheid en besprenging des bloeds van Jezus Christus; genade en vrede zij u vermenigvuldigd.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Benedictus Deus et Pater Domini nostri Jesu Christi, qui secundum misericordiam suam magnam regeneravit nos in spem vivam, per resurrectionem Jesu Christi ex mortuis,</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Geloofd zij de God en Vader van onzen Heere Jezus Christus, Die naar Zijn grote barmhartigheid ons heeft wedergeboren, tot een levende hoop, door de opstanding van Jezus Christus uit de doden.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">in hæreditatem incorruptibilem, et incontaminatam, et immarcescibilem, conservatam in cælis in vobis,</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Tot een onverderfelijke, en onbevlekkelijke, en onverwelkelijke erfenis, die in de hemelen bewaard is voor u,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui in virtute Dei custodimini per fidem in salutem, paratam revelari in tempore novissimo.</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Die in de kracht Gods bewaard wordt door het geloof tot de zaligheid, die bereid is, om geopenbaard te worden in den laatsten tijd.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">In quo exsultabis, modicum nunc si oportet contristari in variis tentationibus :</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">In welke gij u verheugt, nu een weinig tijds (zo het nodig is) bedroefd zijnde door menigerlei verzoekingen;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">ut probatio vestræ fidei multo pretiosior auro (quod per ignem probatur) inveniatur in laudem, et gloriam, et honorem in revelatione Jesu Christi :</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Opdat de beproeving uws geloofs, die veel kostelijker is dan van het goud, hetwelk vergaat en door het vuur beproefd wordt, bevonden worde te zijn tot lof, en eer, en heerlijkheid, in de openbaring van Jezus Christus;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">quem cum non videritis, diligitis : in quem nunc quoque non videntes creditis : credentes autem exsultabitis lætitia inenarrabili, et glorificata :</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Denwelken gij niet gezien hebt, en nochtans liefhebt, in Denwelken gij nu, hoewel Hem niet ziende, maar gelovende, u verheugt met een onuitsprekelijke en heerlijke vreugde;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">reportantes finem fidei vestræ, salutem animarum.</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Verkrijgende het einde uws geloofs, namelijk de zaligheid der zielen.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">De qua salute exquisierunt, atque scrutati sunt prophetæ, qui de futura in vobis gratia prophetaverunt :</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Van welke zaligheid ondervraagd en onderzocht hebben de profeten, die geprofeteerd hebben van de genade, aan u geschied;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">scrutantes in quod vel quale tempus significaret in eis Spiritus Christi : prænuntians eas quæ in Christo sunt passiones, et posteriores glorias :</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Onderzoekende, op welke of hoedanigen tijd de Geest van Christus, Die in hen was, beduidde en te voren getuigde, het lijden, dat op Christus komen zou, en de heerlijkheid daarna volgende.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">quibus revelatum est quia non sibimetipsis, vobis autem ministrabant ea quæ nunc nuntiata sunt vobis per eos qui evangelizaverunt vobis, Spiritu Sancto misso de cælo, in quem desiderant angeli prospicere.</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Denwelken geopenbaard is, dat zij niet zichzelven, maar ons bedienden deze dingen, die u nu aangediend zijn bij degenen, die u het Evangelie verkondigd hebben door den Heilige Geest, Die van den hemel gezonden is; in welke dingen de engelen begerig zijn in te zien.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Propter quod succincti lumbos mentis vestræ, sobrii, perfecte sperate in eam, quæ offertur vobis, gratiam, in revelationem Jesu Christi :</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Daarom opschortende de lenden uws verstands, en nuchteren zijnde, hoopt volkomenlijk op de genade, die u toegebracht wordt in de openbaring van Jezus Christus.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">quasi filii obedientiæ, non configurati prioribus ignorantiæ vestræ desideriis :</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Als gehoorzame kinderen, wordt niet gelijkvormig aan de begeerlijkheden, die te voren in uw onwetendheid waren;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">sed secundum eum qui vocavit vos, Sanctum : et ipsi in omni conversatione sancti sitis :</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Maar gelijk Hij, Die u geroepen heeft, heilig is, zo wordt ook gijzelven heilig in al uw wandel;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">quoniam scriptum est : Sancti eritis, quoniam ego sanctus sum.</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Daarom dat er geschreven is: Zijt heilig, want Ik ben heilig.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et si patrem invocatis eum, qui sine acceptione personarum judicat secundum uniuscujusque opus, in timore incolatus vestri tempore conversamini.</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">En indien gij tot een Vader aanroept Dengene, Die zonder aanneming des persoons oordeelt naar eens iegelijks werk, zo wandelt in vreze den tijd uwer inwoning;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Scientes quod non corruptibilibus, auro vel argento, redempti estis de vana vestra conversatione paternæ traditionis :</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Wetende dat gij niet door vergankelijke dingen, zilver of goud, verlost zijt uit uw ijdele wandeling, die u van de vaderen overgeleverd is;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">sed pretioso sanguine quasi agni immaculati Christi, et incontaminati :</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Maar door het dierbaar bloed van Christus, als van een onbestraffelijk en onbevlekt Lam;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">præcogniti quidem ante mundi constitutionem, manifestati autem novissimis temporibus propter vos,</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Dewelke wel voorgekend is geweest voor de grondlegging der wereld, maar geopenbaard is in deze laatste tijden om uwentwil,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui per ipsum fideles estis in Deo, qui suscitavit eum a mortuis, et dedit ei gloriam, ut fides vestra et spes esset in Deo :</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Die door Hem gelooft in God, Welke Hem opgewekt heeft uit de doden, en Hem heerlijkheid gegeven heeft, opdat uw geloof en hoop op God zijn zou.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-22">
+      <div class="verse-num-col"><div class="verse-num">22</div></div>
+      <div class="verse-texts">
+        <div class="latin">animas vestras castificantes in obedientia caritatis, in fraternitatis amore, simplici ex corde invicem diligite attentius :</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Hebbende dan uw zielen gereinigd in de gehoorzaamheid der waarheid, door den Geest, tot ongeveinsde broederlijke liefde, zo hebt elkander vuriglijk lief uit een rein hart;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-23">
+      <div class="verse-num-col"><div class="verse-num">23</div></div>
+      <div class="verse-texts">
+        <div class="latin">renati non ex semine corruptibili, sed incorruptibili per verbum Dei vivi, et permanentis in æternum :</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Gij, die wedergeboren zijt, niet uit vergankelijk, maar uit onvergankelijk zaad, door het levende en eeuwig blijvende Woord van God.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-24">
+      <div class="verse-num-col"><div class="verse-num">24</div></div>
+      <div class="verse-texts">
+        <div class="latin">quia omnis caro ut fœnum : et omnis gloria ejus tamquam flos fœni : exaruit fœnum, et flos ejus decidit.</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Want alle vlees is als gras, en alle heerlijkheid des mensen is als een bloem van het gras. Het gras is verdord, en zijn bloem is afgevallen;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-25">
+      <div class="verse-num-col"><div class="verse-num">25</div></div>
+      <div class="verse-texts">
+        <div class="latin">Verbum autem Domini manet in æternum : hoc est autem verbum, quod evangelizatum est in vos.</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Maar het Woord des Heeren blijft in der eeuwigheid; en dit is het Woord, dat onder u verkondigd is.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch2">
+    <div class="chapter-marker">
+      <span class="ch-roman">II</span>
+      <span class="ch-label">Caput 2</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v2-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Deponentes igitur omnem malitiam, et omnem dolum, et simulationes, et invidias, et omnes detractiones,</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Zo legt dan af alle kwaadheid, en alle bedrog, en geveinsdheid, en nijdigheid, en alle achterklappingen;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">sicut modo geniti infantes, rationabile, sine dolo lac concupiscite : ut in eo crescatis in salutem :</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">En, als nieuwgeborene kinderkens, zijt zeer begerig naar de redelijke onvervalste melk, opdat gij door dezelve moogt opwassen;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">si tamen gustastis quoniam dulcis est Dominus.</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Indien gij anders gesmaakt hebt, dat de Heere goedertieren is.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ad quem accedentes lapidem vivum, ab hominibus quidem reprobatum, a Deo autem electum, et honorificatum :</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Tot Welken komende, als tot een levenden Steen, van de mensen wel verworpen, maar bij God uitverkoren en dierbaar;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">et ipsi tamquam lapides vivi superædificamini, domus spiritualis, sacerdotium sanctum, offerre spirituales hostias, acceptabiles Deo per Jesum Christum.</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Zo wordt gij ook zelven, als levende stenen, gebouwd tot een geestelijk huis, tot een heilig priesterdom, om geestelijke offeranden op te offeren, die Gode aangenaam zijn door Jezus Christus.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Propter quod continet Scriptura : Ecce pono in Sion lapidem summum angularem, electum, pretiosum : et qui crediderit in eum, non confundetur.</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Daarom is ook vervat in de Schrift: Ziet, Ik leg in Sion een uitersten Hoeksteen, Die uitverkoren en dierbaar is; en: Die in Hem gelooft, zal niet beschaamd worden.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vobis igitur honor credentibus : non credentibus autem lapis, quem reprobaverunt ædificantes : hic factus est in caput anguli,</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">U dan, die gelooft, is Hij dierbaar; maar den ongehoorzamen wordt gezegd: De Steen, Dien de bouwlieden verworpen hebben, Deze is geworden tot een hoofd des hoeks, en een steen des aanstoots, en een rots der ergernis;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">et lapis offensionis, et petra scandali, his qui offendunt verbo, nec credunt in quo et positi sunt.</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Dengenen namelijk, die zich aan het Woord stoten, ongehoorzaam zijnde, waartoe zij ook gezet zijn.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vos autem genus electum, regale sacerdotium, gens sancta, populus acquisitionis : ut virtutes annuntietis ejus qui de tenebris vos vocavit in admirabile lumen suum.</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Maar gij zijt een uitverkoren geslacht, een koninklijk priesterdom, een heilig volk, een verkregen volk; opdat gij zoudt verkondigen de deugden Desgenen, Die u uit de duisternis geroepen heeft tot Zijn wonderbaar licht;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui aliquando non populus, nunc autem populus Dei : qui non consecuti misericordiam, nunc autem misericordiam consecuti.</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Gij, die eertijds geen volk waart, maar nu Gods volk zijt; die eertijds niet ontfermd waart, maar nu ontfermd zijt geworden.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Carissimi, obsecro vos tamquam advenas et peregrinos abstinere vos a carnalibus desideriis, quæ militant adversus animam,</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Geliefden, ik vermaan u als inwoners en vreemdelingen, dat gij u onthoudt van de vleselijke begeerlijkheden, welke krijg voeren tegen de ziel;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">conversationem vestram inter gentes habentes bonam : ut in eo quod detrectant de vobis tamquam de malefactoribus, ex bonis operibus vos considerantes, glorificent Deum in die visitationis.</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">En houdt uw wandel eerlijk onder de heidenen; opdat in hetgeen zij kwalijk van u spreken, als van kwaaddoeners, zij uit de goede werken, die zij in u zien, God verheerlijken mogen in den dag der bezoeking.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Subjecti igitur estote omni humanæ creaturæ propter Deum : sive regi quasi præcellenti :</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Zijt dan alle menselijke ordening onderdanig, om des Heeren wil; hetzij den koning, als de opperste macht hebbende;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">sive ducibus tamquam ab eo missis ad vindictam malefactorum, laudem vero bonorum :</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Hetzij den stadhouderen, als die van hem gezonden worden, tot straf wel der kwaaddoeners, maar tot prijs dergenen, die goed doen.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">quia sic est voluntas Dei, ut benefacientes obmutescere faciatis imprudentium hominum ignorantiam :</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Want alzo is het de wil van God, dat gij, weldoende, den mond stopt aan de onwetendheid der dwaze mensen;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">quasi liberi, et non quasi velamen habentes malitiæ libertatem, sed sicut servi Dei.</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Als vrijen, en niet de vrijheid hebbende als een deksel der boosheid, maar als dienstknechten van God.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Omnes honorate : fraternitatem diligite : Deum timete : regem honorificate.</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Eert een iegelijk; hebt de broederschap lief; vreest God; eert den koning.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Servi, subditi estote in omni timore dominis, non tantum bonis et modestis, sed etiam dyscolis.</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Gij huisknechten, zijt met alle vreze onderdanig den heren, niet alleen den goeden en bescheidenen, maar ook den harden.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hæc est enim gratia, si propter Dei conscientiam sustinet quis tristitias, patiens injuste.</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Want dat is genade, indien iemand om het geweten voor God zwarigheid verdraagt, lijdende ten onrechte.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quæ enim est gloria, si peccantes, et colaphizati suffertis ? sed si bene facientes patienter sustinetis, hæc est gratia apud Deum.</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Want wat lof is het, indien gij verdraagt, als gij zondigt, en daarover geslagen wordt? Maar indien gij verdraagt, als gij weldoet, en daarover lijdt, dat is genade bij God.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">In hoc enim vocati estis : quia et Christus passus est pro nobis, vobis relinquens exemplum ut sequamini vestigia ejus :</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Want hiertoe zijt gij geroepen, dewijl ook Christus voor ons geleden heeft, ons een voorbeeld nalatende, opdat gij Zijn voetstappen zoudt navolgen;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-22">
+      <div class="verse-num-col"><div class="verse-num">22</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui peccatum non fecit, nec inventus est dolus in ore ejus :</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Die geen zonde gedaan heeft, en er is geen bedrog in Zijn mond gevonden;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-23">
+      <div class="verse-num-col"><div class="verse-num">23</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui cum malediceretur, non maledicebat : cum pateretur, non comminabatur : tradebat autem judicanti se injuste :</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Die, als Hij gescholden werd, niet wederschold, en als Hij leed, niet dreigde; maar gaf het over aan Dien, Die rechtvaardiglijk oordeelt;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-24">
+      <div class="verse-num-col"><div class="verse-num">24</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui peccata nostra ipse pertulit in corpore suo super lignum ; ut peccatis mortui, justitiæ vivamus : cujus livore sanati estis.</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Die Zelf onze zonden in Zijn lichaam gedragen heeft op het hout; opdat wij, der zonden afgestorven zijnde, der gerechtigheid leven zouden; door Wiens striemen gij genezen zijt.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-25">
+      <div class="verse-num-col"><div class="verse-num">25</div></div>
+      <div class="verse-texts">
+        <div class="latin">Eratis enim sicut oves errantes, sed conversi estis nunc ad pastorem, et episcopum animarum vestrarum.</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Want gij waart als dwalende schapen; maar gij zijt nu bekeerd tot den Herder en Opziener uwer zielen.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch3">
+    <div class="chapter-marker">
+      <span class="ch-roman">III</span>
+      <span class="ch-label">Caput 3</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v3-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Similiter et mulieres subditæ sint viris suis : ut etsi qui non credunt verbo, per mulierem conversationem sine verbo lucrifiant :</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Desgelijks gij vrouwen, zijt uw eigenen mannen onderdanig; opdat ook, zo enigen den Woorde ongehoorzaam zijn, zij door den wandel der vrouwen zonder Woord mogen gewonnen worden;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">considerantes in timore castam conversationem vestram.</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Als zij zullen ingezien hebben uw kuisen wandel in vreze.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quarum non sit extrinsecus capillatura, aut circumdatio auri, aut indumenti vestimentorum cultus :</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Welker versiersel zij, niet hetgeen uiterlijk is, bestaande in het vlechten des haars, en omhangen van goud, of van klederen aan te trekken;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">sed qui absconditus est cordis homo, in incorruptibilitate quieti, et modesti spiritus, qui est in conspectu Dei locuples.</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Maar de verborgen mens des harten, in het onverderfelijk versiersel van een zachtmoedigen en stillen geest, die kostelijk is voor God.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sic enim aliquando et sanctæ mulieres, sperantes in Deo, ornabant se, subjectæ propriis viris.</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Want alzo versierden zichzelven eertijds ook de heilige vrouwen, die op God hoopten, en waren haar eigen mannen onderdanig;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sicut Sara obediebat Abrahæ, dominum eum vocans : cujus estis filiæ benefacientes, et non pertimentes ullam perturbationem.</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Gelijk Sara aan Abraham gehoorzaam is geweest, hem noemende heer, welker dochters gij geworden zijt, als gij weldoet, en niet vreest voor enige verschrikking.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Viri similiter cohabitantes secundum scientiam, quasi infirmiori vasculo muliebri impartientes honorem, tamquam et cohæredibus gratiæ vitæ : ut non impediantur orationes vestræ.</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Gij mannen, insgelijks, woont bij haar met verstand, aan het vrouwelijke vat, als het zwakste, eer gevende, als die ook medeerfgenamen der genade des levens met haar zijt; opdat uw gebeden niet verhinderd worden.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">In fine autem omnes unanimes, compatientes fraternitatis amatores, misericordes, modesti, humiles :</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">En eindelijk, zijt allen eensgezind, medelijdend, de broeders liefhebbende, met innerlijke barmhartigheid bewogen, vriendelijk;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">non reddentes malum pro malo, nec maledictum pro maledicto, sed e contrario benedicentes : quia in hoc vocati estis, ut benedictionem hæreditate possideatis.</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Vergeldt niet kwaad voor kwaad, of schelden voor schelden, maar zegent daarentegen; wetende, dat gij daartoe geroepen zijt, opdat gij zegening zoudt beerven.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui enim vult vitam diligere, et dies videre bonos, coërceat linguam suam a malo, et labia ejus ne loquantur dolum.</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Want wie het leven wil liefhebben, en goede dagen zien, die stille zijn tong van het kwaad, en zijn lippen, dat zij geen bedrog spreken;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Declinet a malo, et faciat bonum : inquirat pacem, et sequatur eam :</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Die wijke af van het kwade, en doe het goede; die zoeke vrede en jage denzelven na.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">quia oculi Domini super justos, et aures ejus in preces eorum : vultus autem Domini super facientes mala.</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Want de ogen des Heeren zijn over de rechtvaardigen, en Zijn oren tot hun gebed; maar het aangezicht des Heeren is tegen degenen, die kwaad doen.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et quis est qui vobis noceat, si boni æmulatores fueritis ?</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">En wie is het, die u kwaad doen zal, indien gij navolgers zijt van het goede?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sed et si quid patimini propter justitiam, beati. Timorem autem eorum ne timueritis, et non conturbemini.</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Maar indien gij ook lijdt om der gerechtigheid wil, zo zijt gij zalig; en vreest niet uit vreze van hen, en wordt niet ontroerd;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Dominum autem Christum sanctificate in cordibus vestris, parati semper ad satisfactionem omni poscenti vos rationem de ea, quæ in vobis est, spe.</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Maar heiligt God, den Heere, in uw harten; en zijt altijd bereid tot verantwoording aan een iegelijk, die u rekenschap afeist van de hoop, die in u is, met zachtmoedigheid en vreze.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sed cum modestia, et timore, conscientiam habentes bonam : ut in eo, quod detrahunt vobis, confundantur, qui calumniantur vestram bonam in Christo conversationem.</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">En hebt een goed geweten, opdat in hetgeen zij kwalijk van u spreken, als van kwaaddoeners, zij beschaamd mogen worden, die uw goeden wandel in Christus lasteren.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Melius est enim benefacientes (si voluntas Dei velit) pati, quam malefacientes.</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Want het is beter, dat gij, weldoende, (indien het de wil van God wil) lijdt, dan kwaad doende.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quia et Christus semel pro peccatis nostris mortuus est, justus pro injustis, ut nos offerret Deo, mortificatus quidem carne, vivificatus autem spiritu.</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Want Christus heeft ook eens voor de zonden geleden, Hij rechtvaardig voor de onrechtvaardigen, opdat Hij ons tot God zou brengen; Die wel is gedood in het vlees, maar levend gemaakt door den Geest;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">In quo et his, qui in carcere erant, spiritibus veniens prædicavit :</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">In Denwelken Hij ook, henengegaan zijnde, den geesten, die in de gevangenis zijn, gepredikt heeft,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui increduli fuerant aliquando, quando exspectabant Dei patientiam in diebus Noë, cum fabricaretur arca : in qua pauci, id est octo animæ, salvæ factæ sunt per aquam.</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Die eertijds ongehoorzaam waren, wanneer de lankmoedigheid Gods eenmaal verwachtte, in de dagen van Noach, als de ark toebereid werd; waarin weinige (dat is acht) zielen behouden werden door het water.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quod et vos nunc similis formæ salvos fecit baptisma : non carnis depositio sordium, sed conscientiæ bonæ interrogatio in Deum per resurrectionem Jesu Christi.</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Waarvan het tegenbeeld, de doop, ons nu ook behoudt, niet die een aflegging is der vuiligheid des lichaams, maar die een vraag is van een goed geweten tot God, door de opstanding van Jezus Christus;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-22">
+      <div class="verse-num-col"><div class="verse-num">22</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui est in dextera Dei, deglutiens mortem ut vitæ æternæ hæredes efficeremur : profectus in cælum subjectis sibi angelis, et potestatibus, et virtutibus.</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Welke is aan de rechter hand Gods, opgevaren ten hemel, de engelen, en machten, en krachten Hem onderdanig gemaakt zijnde.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch4">
+    <div class="chapter-marker">
+      <span class="ch-roman">IV</span>
+      <span class="ch-label">Caput 4</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v4-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Christo igitur passo in carne, et vos eadem cogitatione armamini : quia qui passus est in carne, desiit a peccatis :</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Dewijl dan Christus voor ons in het vlees geleden heeft, zo wapent gij u ook met dezelfde gedachte, namelijk dat wie in het vlees geleden heeft, die heeft opgehouden van de zonde;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">ut jam non desideriis hominum, sed voluntati Dei, quod reliquum est in carne vivat temporis.</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Om nu niet meer naar de begeerlijkheden der mensen, maar naar den wil van God, den tijd, die overig is in het vlees, te leven.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sufficit enim præteritum tempus ad voluntatem gentium consummandam his qui ambulaverunt in luxuriis, desideriis, vinolentiis, comessationibus, potationibus, et illicitis idolorum cultibus.</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Want het is ons genoeg, dat wij den voorgaande tijd des levens der heidenen wil volbracht hebben, en gewandeld hebben in ontuchtigheden, begeerlijkheden, wijnzuiperijen, brasserijen, drinkerijen en gruwelijke afgoderijen;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">In quo admirantur non concurrentibus vobis in eamdem luxuriæ confusionem, blasphemantes.</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Waarin zij zich vreemd houden, als gij niet medeloopt tot dezelfde uitgieting der overdadigheid, en u lasteren;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui reddent rationem ei qui paratus est judicare vivos et mortuos.</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Dewelke zullen rekenschap geven Dengene, Die bereid staat om te oordelen de levenden en de doden.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Propter hoc enim et mortuis evangelizatum est : ut judicentur quidem secundum homines in carne, vivant autem secundum Deum in spiritu.</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Want daartoe is ook den doden het Evangelie verkondigd geworden, opdat zij wel zouden geoordeeld worden naar den mens in het vlees, maar leven zouden naar God in den geest.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Omnium autem finis appropinquavit. Estote itaque prudentes, et vigilate in orationibus.</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">En het einde aller dingen is nabij; zijt dan nuchteren, en waakt in de gebeden.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ante omnia autem, mutuam in vobismetipsis caritatem continuam habentes : quia caritas operit multitudinem peccatorum.</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Maar vooral hebt vurige liefde tot elkander; want de liefde zal menigte van zonden bedekken.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hospitales invicem sine murmuratione.</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Zijt herbergzaam jegens elkander, zonder murmureren.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Unusquisque, sicut accepit gratiam, in alterutrum illam administrantes, sicut boni dispensatores multiformis gratiæ Dei.</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Een iegelijk, gelijk hij gave ontvangen heeft, alzo bediene hij dezelve aan de anderen, als goede uitdelers der menigerlei genade Gods.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si quis loquitur, quasi sermones Dei : si quis ministrat, tamquam ex virtute, quam administrat Deus : ut in omnibus honorificetur Deus per Jesum Christum : cui est gloria et imperium in sæcula sæculorum. Amen.</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Indien iemand spreekt, die spreke als de woorden Gods; indien iemand dient, die diene als uit kracht, die God verleent; opdat God in allen geprezen worde door Jezus Christus, Welken toekomt de heerlijkheid en de kracht, in alle eeuwigheid. Amen.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Carissimi, nolite peregrinari in fervore, qui ad tentationem vobis fit, quasi novi aliquid vobis contingat :</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Geliefden, houdt u niet vreemd over de hitte der verdrukking onder u, die u geschiedt tot verzoeking, alsof u iets vreemds overkwame;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">sed communicantes Christi passionibus gaudete, ut et in revelatione gloriæ ejus gaudeatis exsultantes.</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Maar gelijk gij gemeenschap hebt aan het lijden van Christus, alzo verblijdt u; opdat gij ook in de openbaring Zijner heerlijkheid u moogt verblijden en verheugen.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si exprobramini in nomine Christi, beati eritis : quoniam quod est honoris, gloriæ, et virtutis Dei, et qui est ejus Spiritus, super vos requiescit.</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Indien gij gesmaad wordt om den Naam van Christus, zo zijt gij zalig; want de Geest der heerlijkheid, en de Geest van God rust op u. Wat hen aangaat, Hij wordt wel gelasterd, maar wat u aangaat, Hij wordt verheerlijkt.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nemo autem vestrum patiatur ut homicida, aut fur, aut maledicus, aut alienorum appetitor.</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Doch dat niemand van u lijde als een doodslager, of dief, of kwaaddoener, of als een, die zich met eens anders doen bemoeit;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si autem ut christianus, non erubescat : glorificet autem Deum in isto nomine :</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Maar indien iemand lijdt als een Christen, die schame zich niet, maar verheerlijke God in dezen dele.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">quoniam tempus est ut incipiat judicium a domo Dei. Si autem primum a nobis, quis finis eorum, qui non credunt Dei Evangelio ?</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Want het is de tijd, dat het oordeel beginne van het huis Gods; en indien het eerst van ons begint, welk zal het einde zijn dergenen, die het Evangelie van God ongehoorzaam zijn?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">et si justus vix salvabitur, impius et peccator ubi parebunt ?</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">En indien de rechtvaardige nauwelijks zalig wordt, waar zal de goddeloze en zondaar verschijnen?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">Itaque et hi, qui patiuntur secundum voluntatem Dei, fideli Creatori commendent animas suas in benefactis.</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Zo dan ook die lijden naar den wil van God, dat zij hun zielen Hem, als den getrouwen Schepper, bevelen met weldoen.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch5">
+    <div class="chapter-marker">
+      <span class="ch-roman">V</span>
+      <span class="ch-label">Caput 5</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v5-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Seniores ergo, qui in vobis sunt, obsecro, consenior et testis Christi passionum : qui et ejus, quæ in futuro revelanda est, gloriæ communicator :</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">De ouderlingen, die onder u zijn, vermaan ik, die een medeouderling, en getuige des lijdens van Christus ben, en deelachtig der heerlijkheid, die geopenbaard zal worden:</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">pascite qui in vobis est gregem Dei, providentes non coacte, sed spontanee secundum Deum : neque turpis lucri gratia, sed voluntarie :</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Weidt de kudde Gods, die onder u is, hebbende opzicht daarover, niet uit bedwang, maar gewilliglijk; noch om vuil gewin, maar met een volvaardig gemoed;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">neque ut dominantes in cleris, sed forma facti gregis ex animo.</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Noch als heerschappij voerende over het erfdeel des Heeren maar als voorbeelden der kudde geworden zijnde.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et cum apparuerit princeps pastorum, percipietis immarcescibilem gloriæ coronam.</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">En als de overste Herder verschenen zal zijn, zo zult gij de onverwelkelijke kroon der heerlijkheid behalen.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Similiter adolescentes subditi estote senioribus.   Omnes autem invicem humilitatem insinuate, quia Deus superbis resistit, humilibus autem dat gratiam.</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Desgelijks gij jongen, zijt den ouden onderdanig; en zijt allen elkander onderdanig; zijt met de ootmoedigheid bekleed; want God wederstaat de hovaardigen, maar de nederigen geeft Hij genade.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Humiliamini igitur sub potenti manu Dei, ut vos exaltet in tempore visitationis :</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Vernedert u dan onder de krachtige hand Gods, opdat Hij u verhoge te Zijner tijd.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">omnem sollicitudinem vestram projicientes in eum, quoniam ipsi cura est de vobis.</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Werpt al uw bekommernis op Hem, want Hij zorgt voor u.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sobrii estote, et vigilate : quia adversarius vester diabolus tamquam leo rugiens circuit, quærens quem devoret :</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Zijt nuchteren, en waakt; want uw tegenpartij, de duivel, gaat om als een briesende leeuw, zoekende, wien hij zou mogen verslinden;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">cui resistite fortes in fide : scientes eamdem passionem ei quæ in mundo est vestræ fraternitati fieri.</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Denwelken wederstaat, vast zijnde in het geloof, wetende, dat hetzelfde lijden aan uw broederschap, die in de wereld is, volbracht wordt.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Deus autem omnis gratiæ, qui vocavit nos in æternam suam gloriam in Christo Jesu, modicum passos ipse perficiet, confirmabit, solidabitque.</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">De God nu aller genade, Die ons geroepen heeft tot Zijn eeuwige heerlijkheid in Christus Jezus, nadat wij een weinig tijds zullen geleden hebben, Dezelve volmake, bevestige, versterke, en fondere ulieden.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ipsi gloria, et imperium in sæcula sæculorum. Amen.</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Hem zij de heerlijkheid en de kracht in alle eeuwigheid. Amen.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Per Silvanum fidelem fratrem vobis, ut arbitror, breviter scripsi : obsecrans et contestans, hanc esse veram gratiam Dei, in qua statis.</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Door Silvanus, die u een getrouw broeder is, zo ik acht, heb ik met weinige woorden geschreven, vermanende en betuigende, dat deze is de waarachtige genade Gods, in welke gij staat.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Salutat vos ecclesia quæ est in Babylone coëlecta, et Marcus filius meus.</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">U groet de medeuitverkorene Gemeente, die in Babylon is, en Markus, mijn zoon.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Salutate invicem in osculo sancto. Gratia vobis omnibus qui estis in Christo Jesu. Amen.</div>
+        <div class="trans-label">✦ Nederlands</div>
+        <div class="trans">Groet elkander met een kus der liefde. Vrede zij u allen, die in Christus Jezus zijt. Amen.</div>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <nav class="book-nav">
+    <a href="059-jam.html">← Iacobi</a>
+    <span class="center">I Petri · Nederlands</span>
+    <a href="061-2pe.html">II Petri →</a>
+  </nav>
+
+  <footer class="page-footer">
+    BIBLIA CATHOLICA INTERLINEARIS &nbsp;·&nbsp; Vulgata Clementina &amp; Statenvertaling (1637)
+    &nbsp;·&nbsp; Gemeinfreie Texte / Public Domain
+  </footer>
+
+</body>
+</html>

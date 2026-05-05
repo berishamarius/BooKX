@@ -1,0 +1,2383 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>II Ad Corinthios · Svenska · Biblia Catholica</title>
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
+
+:root {
+  --gold:        #C8A96E;
+  --gold-light:  #EDD58A;
+  --gold-dark:   #8B6914;
+  --navy:        #1A1F3A;
+  --navy-mid:    #252B4A;
+  --navy-light:  #2E3560;
+  --parchment:   #F5E9CC;
+  --parchment-d: #EDD9A3;
+  --cream:       #FDF6E3;
+  --latin-color: #6B1E0E;
+  --trans-color: #0F1D2E;
+  --border:      rgba(200,169,110,.35);
+  --font-title:  'Cinzel Decorative', 'Cinzel', Georgia, serif;
+  --font-sub:    'Cinzel', Georgia, serif;
+  --font-body:   'EB Garamond', Georgia, serif;
+}
+
+*,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+html { font-size:16px; scroll-behavior:smooth; }
+body { background:var(--cream); color:var(--trans-color); font-family:var(--font-body); }
+
+/* ── NAV ─────────────────────────────────────────────── */
+.nav-bar {
+  background:var(--navy); padding:10px 28px;
+  display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  border-bottom:2px solid var(--gold);
+  position:sticky; top:0; z-index:100;
+  box-shadow:0 3px 12px rgba(0,0,0,.45);
+}
+.nav-bar a {
+  color:var(--gold); text-decoration:none;
+  font-family:var(--font-sub); font-size:.75rem; letter-spacing:.05em;
+  transition:color .15s;
+}
+.nav-bar a:hover { color:var(--gold-light); }
+.nav-bar .home { font-weight:700; font-size:.82rem; }
+.nav-bar .spacer { flex:1; }
+.nav-bar .pos { color:rgba(200,169,110,.45); font-size:.7rem; font-family:var(--font-sub); }
+
+/* ── BUCHKOPF ────────────────────────────────────────── */
+.book-header {
+  background:linear-gradient(160deg,var(--navy) 0%,var(--navy-mid) 55%,var(--navy-light) 100%);
+  padding:44px 36px 34px; text-align:center;
+  border-bottom:4px solid var(--gold);
+  position:relative; overflow:hidden;
+}
+.book-header::before {
+  content:'';
+  position:absolute; inset:0;
+  background-image:
+    repeating-linear-gradient( 45deg,transparent,transparent 30px,rgba(200,169,110,.038) 30px,rgba(200,169,110,.038) 31px),
+    repeating-linear-gradient(-45deg,transparent,transparent 30px,rgba(200,169,110,.038) 30px,rgba(200,169,110,.038) 31px);
+  pointer-events:none;
+}
+.testament-badge {
+  display:inline-block;
+  border:1px solid rgba(200,169,110,.4); color:rgba(200,169,110,.65);
+  font-family:var(--font-sub); font-size:.62rem; letter-spacing:.25em;
+  padding:4px 14px; border-radius:2px; margin-bottom:14px; position:relative;
+}
+.book-name-latin {
+  font-family:var(--font-title); font-size:3rem; color:var(--gold-light);
+  text-shadow:0 3px 18px rgba(0,0,0,.55); letter-spacing:.08em; position:relative;
+}
+.book-name-trans {
+  font-family:var(--font-sub); font-size:1.1rem; color:var(--gold);
+  margin-top:8px; letter-spacing:.12em; position:relative;
+}
+.book-meta {
+  font-size:.74rem; color:rgba(200,169,110,.5); margin-top:7px;
+  font-family:var(--font-sub); letter-spacing:.07em; position:relative;
+}
+
+/* ── ORNAMENT-TRENNLINIE ─────────────────────────────── */
+.ornament-bar {
+  text-align:center; padding:16px 0 4px;
+  color:var(--gold); font-size:1.1rem; letter-spacing:.7em;
+}
+
+/* ── HAUPT-CONTAINER ─────────────────────────────────── */
+.content { max-width:960px; margin:0 auto; padding:0 24px 80px; }
+
+/* ── KAPITEL-MARKER ──────────────────────────────────── */
+.chapter-marker {
+  display:flex; align-items:center; gap:16px;
+  padding:28px 6px 12px; margin-bottom:4px;
+  border-bottom:2px solid var(--border);
+}
+.ch-roman {
+  font-family:var(--font-title); font-size:2.2rem; color:var(--gold);
+  min-width:56px; text-align:center; flex-shrink:0;
+  text-shadow:0 1px 8px rgba(200,169,110,.3);
+}
+.ch-label {
+  font-family:var(--font-sub); font-size:.72rem; color:rgba(200,169,110,.6);
+  letter-spacing:.22em; text-transform:uppercase;
+}
+
+/* ── VERS-BLOCK ──────────────────────────────────────── */
+.verse-block {
+  display:flex; gap:0; border-bottom:1px solid rgba(200,169,110,.15);
+}
+.verse-block:nth-child(odd)  { background:var(--cream); }
+.verse-block:nth-child(even) { background:var(--parchment); }
+
+.verse-num-col {
+  flex-shrink:0; width:42px; padding:16px 6px 16px 0; text-align:right;
+}
+.verse-num {
+  display:inline-block; width:28px; height:28px; border-radius:50%;
+  background:var(--gold-dark); color:var(--cream);
+  font-family:var(--font-sub); font-size:.64rem; font-weight:700;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 1px 5px rgba(0,0,0,.25);
+}
+
+.verse-texts { flex:1; padding:16px 16px 18px 8px; }
+
+/* ── LATEINISCHER TEXT (oben / primär) ───────────────── */
+.latin {
+  font-family:var(--font-body); font-size:1.12rem; line-height:1.9;
+  color:var(--latin-color); font-weight:500;
+  border-left:3px solid var(--gold); padding-left:12px;
+  margin-bottom:8px;
+}
+
+/* ── ÜBERSETZUNGS-TEXT (unten / sekundär) ────────────── */
+.trans-label {
+  font-family:var(--font-sub); font-size:.6rem; letter-spacing:.17em;
+  text-transform:uppercase; color:var(--gold-dark); margin-bottom:5px; opacity:.78;
+}
+.trans {
+  font-family:var(--font-body); font-size:1.04rem; line-height:1.85;
+  color:var(--trans-color); font-style:italic;
+  padding-left:15px;
+}
+
+/* Erste Vers jedes Kapitels: Drop-Cap */
+.verse-block:first-of-type .latin::first-letter {
+  font-size:4.2em; float:left; line-height:.72;
+  padding-right:.08em; margin-top:.06em;
+  font-family:var(--font-title); color:var(--gold);
+}
+
+/* ── NAVIGATION ZWISCHEN BÜCHERN ─────────────────────── */
+.book-nav {
+  display:flex; justify-content:space-between; align-items:center;
+  background:var(--navy); border-top:3px solid var(--gold);
+  padding:12px 26px; gap:12px;
+}
+.book-nav a {
+  color:var(--gold); text-decoration:none;
+  font-family:var(--font-sub); font-size:.78rem; letter-spacing:.07em;
+  padding:6px 14px; border:1px solid rgba(200,169,110,.3); border-radius:3px;
+  transition:background .18s;
+}
+.book-nav a:hover { background:rgba(200,169,110,.15); }
+.book-nav .center {
+  font-family:var(--font-sub); font-size:.7rem; color:rgba(200,169,110,.55);
+  letter-spacing:.1em; text-align:center;
+}
+
+/* ── FUßZEILE ────────────────────────────────────────── */
+.page-footer {
+  background:var(--navy); border-top:2px solid rgba(200,169,110,.3);
+  padding:18px 28px; text-align:center;
+  color:rgba(200,169,110,.45); font-family:var(--font-sub);
+  font-size:.68rem; letter-spacing:.1em;
+}
+
+/* ── DRUCK ───────────────────────────────────────────── */
+@media print {
+  .nav-bar, .book-nav { display:none; }
+  .verse-block { break-inside:avoid; }
+  .book-header { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+}
+
+/* ── MOBIL ───────────────────────────────────────────── */
+@media (max-width:640px) {
+  .book-name-latin { font-size:2.1rem; }
+  .ch-roman { font-size:1.6rem; }
+  .latin { font-size:.98rem; }
+  .trans { font-size:.93rem; }
+  .content { padding:0 12px 60px; }
+}
+</style>
+</head>
+<body>
+
+  <nav class="nav-bar">
+    <a class="home" href="../../../index.html">✞ BIBLIA CATHOLICA</a>
+    <a href="../index.html">🇸🇪 Svenska</a>
+    <span class="spacer"></span>
+    <span class="pos">047 / 073</span>
+  </nav>
+
+  <header class="book-header">
+    <div class="testament-badge">NOVUM TESTAMENTUM</div>
+    <div class="book-name-latin">II AD CORINTHIOS</div>
+    <div class="book-name-trans">2 Corinthians</div>
+    <div class="book-meta">Vulgata Clementina · Svenska Bibeln · 13 Capita · 256 Versus</div>
+  </header>
+
+  <div class="ornament-bar">❧ ✦ ❧ ✦ ❧</div>
+
+  <main class="content">
+
+  <section class="chapter" id="ch1">
+    <div class="chapter-marker">
+      <span class="ch-roman">I</span>
+      <span class="ch-label">Caput 1</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v1-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Paulus, Apostolus Jesu Christi per voluntatem Dei, et Timotheus frater, ecclesiæ Dei, quæ est Corinthi cum omnibus sanctis, qui sunt in universa Achaia.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Paulus, genom Guds vilja Kristi Jesu apostel, så ock brodern Timoteus, hälsar den Guds församling som finnes i Korint, och tillika alla de heliga som finnas i hela Akaja.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Gratia vobis, et pax a Deo Patre nostro, et Domino Jesu Christo.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Nåd vare med eder och frid ifrån Gud, vår Fader, och Herren Jesus Kristus.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Benedictus Deus et Pater Domini nostri Jesu Christi, Pater misericordiarum, et Deus totius consolationis,</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Lovad vare vår Herres, Jesu Kristi, Gud och Fader, barmhärtighetens Fader och all trösts Gud,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui consolatur nos in omni tribulatione nostra : ut possimus et ipsi consolari eos qui in omni pressura sunt, per exhortationem, qua exhortamur et ipsi a Deo.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">han som tröstar oss i all vår nöd, så att vi genom den tröst vi själva undfå av Gud kunna trösta dem som äro stadda i allahanda nöd.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quoniam sicut abundant passiones Christi in nobis : ita et per Christum abundat consolatio nostra.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Ty såsom Kristuslidanden till överflöd komma över oss, så kommer ock genom Kristus tröst till oss i överflödande mått.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sive autem tribulamur pro vestra exhortatione et salute, sive consolamur pro vestra consolatione, sive exhortamur pro vestra exhortatione et salute, quæ operatur tolerantiam earumdem passionum, quas et nos patimur :</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Men drabbas vi av nöd, så sker detta till tröst och frälsning för eder. Undfå vi däremot tröst, så sker ock detta till tröst för eder, en tröst som skall visa sin kraft däri, att I ståndaktigt uthärden samma lidanden som vi utstå. Och det hopp vi hysa i fråga om eder är fast,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">ut spes nostra firma sit pro vobis : scientes quod sicut socii passionum estis, sic eritis et consolationis.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">ty vi veta att såsom I delen våra lidanden, så delen I ock den tröst vi undfå.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non enim volumus ignorare vos, fratres, de tribulatione nostra, quæ facta est in Asia, quoniam supra modum gravati sumus supra virtutem, ita ut tæderet nos etiam vivere.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Vi vilja nämligen icke lämna eder, käre bröder, i okunnighet om vilken nöd vi fingo utstå i provinsen Asien, och huru övermåttan svårt det blev oss, utöver vår förmåga, så att vi till och med misströstade om livet.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sed ipsi in nobismetipsis responsum mortis habuimus, ut non simus fidentes in nobis, sed in Deo, qui suscitat mortuos :</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Ja, vi hade redan i vårt inre likasom fått vår dödsdom, för att vi icke skulle förtrösta på oss själva, utan på Gud, som uppväcker de döda.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui de tantis periculis nos eripuit, et eruit : in quem speramus quoniam et adhuc eripiet,</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Och ur en sådan dödsnöd frälste han oss, och han skall än vidare frälsa oss; ja, till honom hava vi satt vårt hopp att han allt framgent skall frälsa oss.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">adjuvantibus et vobis in oratione pro nobis : ut ex multorum personis, ejus quæ in nobis est donationis, per multos gratiæ agantur pro nobis.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Också I stån oss ju bi med eder förbön. Och så skola många hembära tacksägelse för oss, för den nåd som genom mångas böner har kommit oss till del.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nam gloria nostra hæc est : testimonium conscientiæ nostræ, quod in simplicitate cordis et sinceritate Dei, et non in sapientia carnali, sed in gratia Dei, conversati sumus in hoc mundo : abundantius autem ad vos.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Ty vad vi kunna berömma oss av, och vad vårt samvete bär oss vittnesbörd om, det är att vi i denna världen hava vandrat i Guds helighet och renhet, icke ledda av köttslig vishet, utan av Guds nåd; så framför allt i vårt förhållande till eder.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non enim alia scribimus vobis, quam quæ legistis, et cognovistis. Spero autem quod usque in finem cognoscetis,</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Ty i vad vi skriva till eder ligger icke något annat än just vad I läsen och väl kunnen förstå. Och jag hoppas att I skolen komma att till fullo förstå</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">sicut et cognovistis nos ex parte, quod gloria vestra sumus, sicut et vos nostra, in die Domini nostri Jesu Christi.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">vad I redan nu delvis förstån om oss: att vi äro eder berömmelse, likasom I ären vår berömmelse, på vår Herre Jesu dag.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et hac confidentia volui prius venire ad vos, ut secundam gratiam haberetis :</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Och i denna tillförsikt tänkte jag komma först till eder, för att I skullen få ännu ett kärleksbevis.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">et per vos transire in Macedoniam, et iterum a Macedonia venire ad vos, et a vobis deduci in Judæam.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Genom eder stad ville jag alltså taga vägen till Macedonien, och jag skulle sedan från Macedonien återigen komma till eder, för att då av eder utrustas för resan till Judeen.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Cum ergo hoc voluissem, numquid levitate usus sum ? aut quæ cogito, secundum carnem cogito, ut sit apud me Est et Non ?</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Så tänkte jag; och icke har jag väl därför nu handlat i vankelmod? Eller plägar jag kanhända fatta mina beslut efter köttet, så att vad jag säger är på samma gång »ja, ja» och »nej, nej»?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Fidelis autem Deus, quia sermo noster, qui fuit apud vos, non est in illo Est et Non.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Ingalunda; så sant Gud är trofast, vad vi tala till eder är icke »ja och nej».</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">Dei enim Filius Jesus Christus, qui in vobis per nos prædicatus est, per me, et Silvanum, et Timotheum, non fuit Est et Non, sed Est in illo fuit.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Guds Son, Jesus Kristus, han som bland eder har blivit predikad genom oss -- genom mig och Silvanus och Timoteus -- han kom ju icke såsom »ja och nej», utan »ja» har kommit i och genom honom.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quotquot enim promissiones Dei sunt, in illo Est : ideo et per ipsum Amen Deo ad gloriam nostram.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Ty Guds löften, så många de äro, hava i honom fått sitt »ja»; därför få de ock genom honom sitt »amen», på det att Gud må bliva ärad genom oss.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui autem confirmat nos vobiscum in Christo, et qui unxit nos Deus :</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Men den som befäster oss såväl som eder i Kristus, och den som har smort oss, det är Gud,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-22">
+      <div class="verse-num-col"><div class="verse-num">22</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui et signavit nos, et dedit pignus Spiritus in cordibus nostris.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">han som har låtit oss undfå sitt insegel och givit oss Anden till en underpant i våra hjärtan.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-23">
+      <div class="verse-num-col"><div class="verse-num">23</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ego autem testem Deum invoco in animam meam, quod parcens vobis, non veni ultra Corinthum : non quia dominamur fidei vestæ, sed adjutores sumus gaudii vestri : nam fide statis.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Jag kallar Gud till vittne över min själ, att det är av skonsamhet mot eder som jag ännu icke har kommit till Korint.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-24">
+      <div class="verse-num-col"><div class="verse-num">24</div></div>
+      <div class="verse-texts">
+        <div class="latin"></div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">(Detta säger jag icke, som om vi vore herrar över eder tro; fastmer äro vi edra medarbetare till att bereda eder glädje, ty i tron stån I fasta.)</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch2">
+    <div class="chapter-marker">
+      <span class="ch-roman">II</span>
+      <span class="ch-label">Caput 2</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v2-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Statui autem hoc ipsum apud me, ne iterum in tristitia venirem ad vos.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Jag satte mig nämligen i sinnet att jag icke åter skulle komma till eder med bedrövelse.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si enim ego contristo vos : et quis est, qui me lætificet, nisi qui contristatur ex me ?</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Ty om jag bedrövade eder, vem skulle då bereda mig glädje? Månne någon annan än den som genom mig hade blivit bedrövad?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et hoc ipsum scripsi vobis, ut non cum venero, tristitiam super tristitiam habeam, de quibus oportuerat me gaudere : confidens in omnibus vobis, quia meum gaudium, omnium vestrum est.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Och vad jag skrev, det skrev jag, för att jag icke vid min ankomst skulle få bedrövelse från dem som jag borde få glädje av. Ty jag har den tillförsikten till eder alla, att min glädje är allas eder glädje.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nam ex multa tribulatione et angustia cordis scripsi vobis per multas lacrimas : non ut contristemini, sed ut sciatis, quam caritatem habeam abundantius in vobis.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Och det var i stor nöd och hjärteångest, under många tårar, som jag skrev till eder, icke för att I skullen bliva bedrövade, utan för att I skullen förstå den synnerliga kärlek som jag har till eder.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si quis autem contristavit, non me contristavit : sed ex parte, ut non onerem omnes vos.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Men om en viss man har vållat bedrövelse, så är det icke särskilt mig han har bedrövat, utan eder alla, i någon mån -- för att jag nu icke skall tala för strängt.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sufficit illi, qui ejusmodi est, objurgatio hæc, quæ fit a pluribus :</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Nu är det likväl nog med den näpst som han har fått mottaga från de flesta bland eder.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">ita ut e contrario magis donetis, et consolemini, ne forte abundantiori tristitia absorbeatur qui ejusmodi est.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">I mån alltså nu tvärtom snarare förlåta och trösta honom, så att han icke till äventyrs går under genom sin alltför stora bedrövelse.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Propter quod obsecro vos, ut confirmetis in illum caritatem.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Därför uppmanar jag eder att fatta gemensamt beslut om att bemöta honom med kärlek.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ideo enim et scripsi, ut cognoscam experimentum vestrum, an in omnibus obedientes sitis.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Ty när jag skrev, var det just för att få veta huru I skullen hålla provet, huruvida I voren lydiga i allting.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Cui autem aliquid donastis, et ego : nam et ego quod donavi, si quid donavi, propter vos in persona Christi,</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Den som I förlåten något, honom förlåter ock jag, likasom jag också förut, om jag har haft något att förlåta, har inför Kristi ansikte förlåtit det för eder skull.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">ut non circumveniamur a Satana : non enim ignoramus cogitationes ejus.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Jag vill nämligen icke att vi skola lida förfång av Satan; ty vad han har i sinnet, därom äro vi icke i okunnighet.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Cum venissem autem Troadem propter Evangelium Christi, et ostium mihi apertum esset in Domino,</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Jag kom till Troas för att förkunna evangelium om Kristus, och en dörr till verksamhet i Herren öppnades för mig;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">non habui requiem spiritui meo, eo quod non invenerim Titum fratrem meum, sed valefaciens eis, profectus sum in Macedoniam.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">men jag fick ingen ro i min ande, ty jag fann icke där min broder Titus. Jag tog då avsked av dem som voro där och begav mig till Macedonien.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Deo autem gratias, qui semper triumphat nos in Christo Jesu, et odorem notitiæ suæ manifestat per nos in omni loco :</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Men Gud vare tack, som i Kristus alltid för oss fram i segertåg och genom oss allestädes utbreder hans kunskaps vällukt!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">quia Christi bonus odor sumus Deo in iis qui salvi fiunt, et in iis qui pereunt :</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Ty vi äro en Kristi välluktande rökelse inför Gud, både ibland dem som bliva frälsta och ibland dem som gå förlorade.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">aliis quidem odor mortis in mortem : aliis autem odor vitæ in vitam. Et ad hæc quis tam idoneus ?</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">För dessa senare äro vi en lukt från död till död; för de förra äro vi en lukt från liv till liv.  Vem är nu skicklig härtill?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">non enim sumus sicut plurimi, adulterantes verbum Dei, sed ex sinceritate, sed sicut ex Deo, coram Deo, in Christo loquimur.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Jo, vi förfalska ju icke av vinningslystnad Guds ord, såsom så många andra göra; utan av rent sinne, drivna av Gud, förkunna vi ordet i Kristus, inför Gud.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch3">
+    <div class="chapter-marker">
+      <span class="ch-roman">III</span>
+      <span class="ch-label">Caput 3</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v3-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Incipimus iterum nosmetipsos commendare ? aut numquid egemus (sicut quidam) commendatitiis epistolis ad vos, aut ex vobis ?</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Begynna vi nu åter att anbefalla oss själva? Eller behöva vi kanhända, såsom somliga, ett anbefallningsbrev till eder? Eller kanhända ifrån eder?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Epistola nostra vos estis, scripta in cordibus nostris, quæ scitur, et legitur ab omnibus hominibus :</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Nej, I ären själva vårt brev, ett brev som är inskrivet i våra hjärtan, känt och läst av alla människor.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">manifestati quod epistola estis Christi, ministrata a nobis, et scripta non atramento, sed Spiritu Dei vivi : non in tabulis lapideis, sed in tabulis cordis carnalibus.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Ty det är uppenbart att I ären ett Kristus-brev, avfattat genom oss, skrivet icke med bläck, utan med den levande Gudens Ande, icke på tavlor av sten, utan på tavlor av kött, på människohjärtan.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Fiduciam autem talem habemus per Christum ad Deum :</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">En sådan tillförsikt hava vi genom Kristus till Gud.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">non quod sufficientes simus cogitare aliquid a nobis, quasi ex nobis : sed sufficientia nostra ex Deo est :</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Icke som om vi av oss själva vore skickliga att tänka ut något, såsom komme det från oss själva, utan den skicklighet vi hava kommer från Gud,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui et idoneos nos fecit ministros novi testamenti : non littera, sed Spiritu : littera enim occidit, Spiritus autem vivificat.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">som också har gjort oss skickliga till att vara tjänare åt ett nytt förbund, ett som icke är bokstav, utan är ande; ty bokstaven dödar, men Anden gör levande.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quod si ministratio mortis litteris deformata in lapidibus fuit in gloria, ita ut non possent intendere filii Israël in faciem Moysi propter gloriam vultus ejus, quæ evacuatur :</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Om nu redan dödens ämbete, som var med bokstäver inristat på stenar, framträdde i härlighet, så att Israels barn icke kunde se på Moses' ansikte för hans ansiktes härlighets skull, vilken dock var försvinnande,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">quomodo non magis ministratio Spiritus erit in gloria ?</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">huru mycket större härlighet skall då icke Andens ämbete hava!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nam si ministratio damnationis gloria est : multo magis abundat ministerium justitiæ in gloria.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Ty om redan fördömelsens ämbete var härligt, så måste rättfärdighetens ämbete ännu mycket mer överflöda av härlighet.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nam nec glorificatum est, quod claruit in hac parte, propter excellentem gloriam.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Ja, en så översvinnlig härlighet har detta ämbete, att vad som förr hade härlighet här visar sig vara utan all härlighet.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si enim quod evacuatur, per gloriam est : multo magis quod manet, in gloria est.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Ty om redan det som var försvinnande framträdde i härlighet, så måste det som bliver beståndande hava en ännu mycket större härlighet.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Habentes igitur talem spem, multa fiducia utimur :</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Då vi nu hava ett sådant hopp, gå vi helt öppet till väga</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">et non sicut Moyses ponebat velamen super faciem suam, ut non intenderent filii Israël in faciem ejus, quod evacuatur,</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">och göra icke såsom Moses, vilken hängde ett täckelse för sitt ansikte, så att Israels barn icke kunde se huru det som var försvinnande tog en ände.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">sed obtusi sunt sensus eorum. Usque in hodiernum enim diem, idipsum velamen in lectione veteris testamenti manet non revelatum (quoniam in Christo evacuatur),</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Men deras sinnen blevo förstockade. När det gamla förbundets skrifter föreläsas, hänger ju ännu i denna dag samma täckelse oborttaget kvar; ty först i Kristus försvinner det.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">sed usque in hodiernum diem, cum legitur Moyses, velamen positum est super cor eorum.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Ja, ännu i dag hänger ett täckelse över deras hjärtan, då Moses föreläses.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Cum autem conversus fuerit ad Dominum, auferetur velamen.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Men när de en gång omvända sig till Herren, tages täckelset bort.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Dominus autem Spiritus est : ubi autem Spiritus Domini, ibi libertas.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Och Herren är Anden, och där Herrens Ande är, där är frihet.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nos vero omnes, revelata facie gloriam Domini speculantes, in eamdem imaginem transformamur a claritate in claritatem, tamquam a Domini Spiritu.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Men vi alla som med avhöljt ansikte återspegla Herrens härlighet, vi förvandlas till hans avbilder, i det vi stiga från den ena härligheten till den andra, såsom när den Herre verkar, som själv är ande.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch4">
+    <div class="chapter-marker">
+      <span class="ch-roman">IV</span>
+      <span class="ch-label">Caput 4</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v4-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ideo habentes administrationem, juxta quod misericordiam consecuti sumus, non deficimus,</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Därför, då vi nu, genom den barmhärtighet som har vederfarits oss, hava detta ämbete, så fälla vi icke modet.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">sed abdicamus occulta dedecoris, non ambulantes in astutia, neque adulterantes verbum Dei, sed in manifestatione veritatis commendantes nosmetipsos ad omnem conscientiam hominum coram Deo.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Nej, vi hava frånsagt oss allt skamligt hemlighetsväsen och gå icke illfundigt till väga, ej heller förfalska vi Guds ord, utan framlägga öppet sanningen och anbefalla oss så, inför Gud, hos var människas samvete.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quod si etiam opertum est Evangelium nostrum, in iis, qui pereunt, est opertum :</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Och om vårt evangelium nu verkligen är bortskymt av ett täckelse, så finnes det täckelset hos dem som gå förlorade.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">in quibus Deus hujus sæculi excæcavit mentes infidelium, ut non fulgeat illis illuminatio Evangelii gloriæ Christi, qui est imago Dei.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Ty de otrognas sinnen har denna tidsålders gud så förblindat, att de icke se det sken som utgår från evangelium om Kristi, Guds egen avbilds, härlighet.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non enim nosmetipsos prædicamus, sed Jesum Christum Dominum nostrum : nos autem servos vestros per Jesum :</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Vi predika ju icke oss själva, utan Kristus Jesus såsom Herre, och oss såsom tjänare åt eder, för Jesu skull.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">quoniam Deus, qui dixit de tenebris lucem splendescere, ipse illuxit in cordibus nostris ad illuminationem scientiæ claritatis Dei, in facie Christi Jesu.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Ty den Gud som sade: »Ljus skall lysa fram ur mörkret», han är den som har låtit ljus gå upp i våra hjärtan, för att kunskapen om Guds härlighet, som strålar fram i Kristi ansikte, skall kunna sprida sitt sken.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Habemus autem thesaurum istum in vasis fictilibus : ut sublimitas sit virtutis Dei, et non ex nobis.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Men denna skatt hava vi i lerkärl, för att den översvinnliga kraften skall befinnas vara Guds och icke något som kommer från oss.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">In omnibus tribulationem patimur, sed non angustiamur : aporiamur, sed non destituimur :</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Vi äro på allt sätt i trångmål, dock icke utan utväg; vi äro rådvilla, dock icke rådlösa;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">persecutionem patimur, sed non derelinquimur : dejicimur, sed non perimus :</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">vi äro förföljda, dock icke givna till spillo; vi äro slagna till marken, dock icke förlorade.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">semper mortificationem Jesu in corpore nostro circumferentes, ut et vita Jesu manifestetur in corporibus nostris.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Alltid bära vi Jesu dödsmärken på vår kropp, för att också Jesu liv skall bliva uppenbarat i vår kropp.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Semper enim nos, qui vivimus, in mortem tradimur propter Jesum : ut et vita Jesu manifestetur in carne nostra mortali.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Ja, ännu medan vi leva, överlämnas vi för Jesu skull beständigt åt döden, på det att ock Jesu liv må bliva uppenbarat i vårt dödliga kött.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ergo mors in nobis operatur, vita autem in vobis.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Så utför nu döden sitt verk i oss, men i eder verkar livet.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Habentes autem eumdem spiritum fidei, sicut scriptum est : Credidi, propter quod locutus sum : et nos credimus, propter quod et loquimur :</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Men såsom det är skrivet: »Jag tror, därför talar jag ock», så tro också vi, eftersom vi hava samma trons Ande; därför tala vi ock,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">scientes quoniam qui suscitavit Jesum, et nos cum Jesu suscitabit, et constituet vobiscum.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">ty vi veta att han som uppväckte Herren Jesus, han skall ock uppväcka oss med Jesus och ställa oss inför sig tillsammans med eder.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Omnia enim propter vos : ut gratia abundans, per multos in gratiarum actione, abundet in gloriam Dei.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Allt sker nämligen för eder skull, på det att nåden, genom att komma allt flera till del, må bliva så mycket större och verka en allt mer överflödande tacksägelse, Gud till ära.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Propter quod non deficimus : sed licet is, qui foris est, noster homo corrumpatur, tamen is, qui intus est, renovatur de die in diem.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Därför fälla vi icke modet; om ock vår utvärtes människa förgås, så förnyas likväl vår invärtes människa dag efter dag.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Id enim, quod in præsenti est momentaneum et leve tribulationis nostræ, supra modum in sublimitate æternum gloriæ pondus operatur in nobis,</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Ty vår bedrövelse, som varar ett ögonblick och väger föga, bereder åt oss, i översvinnligen rikt mått, en härlighet som väger översvinnligen tungt och varar i evighet --</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">non contemplantibus nobis quæ videntur, sed quæ non videntur. Quæ enim videntur, temporalia sunt : quæ autem non videntur, æterna sunt.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">åt oss som icke hava till ögonmärke de ting som synas, utan dem som icke synas; ty de ting som synas, de vara allenast en tid, med de som icke synas, de vara i evighet.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch5">
+    <div class="chapter-marker">
+      <span class="ch-roman">V</span>
+      <span class="ch-label">Caput 5</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v5-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Scimus enim quoniam si terrestris domus nostra hujus habitationis dissolvatur, quod ædificationem ex Deo habemus, domum non manufactam, æternam in cælis.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Ty vi veta, att om vår kroppshydda, vår jordiska boning, nedbrytes, så hava vi en byggnad som kommer från Gud, en boning som icke är gjord med händer, en evig boning i himmelen.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nam et in hoc ingemiscimus, habitationem nostram, quæ de cælo est, superindui cupientes :</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Därför sucka vi ju ock av längtan att få överkläda oss med vår himmelska hydda;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">si tamen vestiti, non nudi inveniamur.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">ty hava vi en gång iklätt oss denna, skola vi sedan icke komma att befinnas nakna.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nam et qui sumus in hoc tabernaculo, ingemiscimus gravati : eo quod nolumus expoliari, sed supervestiri, ut absorbeatur quod mortale est, a vita.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Ja, vi som ännu leva här i kroppshyddan, vi sucka och äro betungade, eftersom vi skulle vilja undgå att avkläda oss och i stället få överkläda oss, så att det som är dödligt bleve uppslukat av livet.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui autem efficit nos in hoc ipsum, Deus, qui dedit nobis pignus Spiritus.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Och den som har berett oss till just detta, det är Gud, som till en underpant har givit oss Anden.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Audentes igitur semper, scientes quoniam dum sumus in corpore, peregrinamur a Domino</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Så äro vi då alltid vid gott mod. Vi veta väl att vi äro borta ifrån Herren, så länge vi äro hemma i kroppen;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">(per fidem enim ambulamus, et non per speciem) :</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">ty vi vandra här i tro och icke i åskådning.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">audemus autem, et bonam voluntatem habemus magis peregrinari a corpore, et præsentes esse ad Dominum.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Men vi äro vid gott mod och skulle helst vilja flytta bort ifrån kroppen och komma hem till Herren.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et ideo contendimus, sive absentes, sive præsentes, placere illi.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Därför söka vi ock vår ära i att vara honom till behag, vare sig vi äro hemma eller borta.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Omnes enim nos manifestari oportet ante tribunal Christi, ut referat unusquisque propria corporis, prout gessit, sive bonum, sive malum.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Ty vi måste alla, sådana vi äro, träda fram inför Kristi domstol, för att var och en skall få igen sitt jordelivs gärningar, alltefter som han har handlat, vare sig han har gjort gott eller ont.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Scientes ergo timorem Domini, hominibus suademus, Deo autem manifesti sumus. Spero autem et in conscientiis vestris manifestos nos esse.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Då vi alltså veta vad det är att frukta Herren, söka vi att »vinna människor», men för Gud är det uppenbart hurudana vi äro; och jag hoppas att det också är uppenbart för edra samveten.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non iterum commendamus nos vobis, sed occasionem damus vobis gloriandi pro nobis : ut habeatis ad eos qui in facie gloriantur, et non in corde.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Vi vilja nu ingalunda åter anbefalla oss själva hos eder, men vi vilja giva eder en anledning att berömma eder i fråga om oss, så att I haven något att svara dem som berömma sig av utvärtes ting och icke av vad som är i hjärtat.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sive enim mente excedimus Deo : sive sobrii sumus, vobis.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Ty om vi hava varit »från våra sinnen», så har det varit i Guds tjänst; om vi åter äro vid lugn besinning, så är det eder till godo.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Caritas enim Christi urget nos : æstimantes hoc, quoniam si unus pro omnibus mortuus est, ergo omnes mortui sunt :</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Ty Kristi kärlek tvingar oss, eftersom vi tänka så: en har dött för alla, alltså hava de alla dött.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">et pro omnibus mortuus est Christus : ut, et qui vivunt, jam non sibi vivant, sed ei qui pro ipsis mortuus est et resurrexit.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Och han har dött för alla, på det att de som leva icke mer må leva för sig själva, utan leva för honom som har dött och uppstått för dem.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Itaque nos ex hoc neminem novimus secundum carnem. Et si cognovimus secundum carnem Christum, sed nunc jam non novimus.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Allt ifrån denna tid veta vi därför för vår del icke av någon efter köttet. Och om vi än efter köttet hade lärt känna Kristus, så känna vi honom nu icke mer på det sättet.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si qua ergo in Christo nova creatura, vetera transierunt : ecce facta sunt omnia nova.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Alltså, om någon är i Kristus, så är han en ny skapelse. Det gamla är förgånget; se, något nytt har kommit!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Omnia autem ex Deo, qui nos reconciliavit sibi per Christum : et dedit nobis ministerium reconciliationis,</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Men alltsammans kommer från Gud, som har försonat oss med sig själv genom Kristus och givit åt oss försoningens ämbete.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">quoniam quidem Deus erat in Christo mundum reconcilians sibi, non reputans illis delicta ipsorum, et posuit in nobis verbum reconciliationis.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Ty det var Gud som i Kristus försonade världen med sig själv; han tillräknar icke människorna deras synder, och han har betrott oss med försoningens ord.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">Pro Christo ergo legatione fungimur, tamquam Deo exhortante per nos. Obsecramus pro Christo, reconciliamini Deo.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Å Kristi vägnar äro vi alltså sändebud; det är Gud som förmanar genom oss. Vi bedja å Kristi vägnar: Låten försona eder med Gud.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">Eum, qui non noverat peccatum, pro nobis peccatum fecit, ut nos efficeremur justitia Dei in ipso.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Den som icke visste av någon synd, honom har han för oss gjort till synd, på det att vi i honom må bliva rättfärdighet från Gud.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch6">
+    <div class="chapter-marker">
+      <span class="ch-roman">VI</span>
+      <span class="ch-label">Caput 6</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v6-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Adjuvantes autem exhortamur ne in vacuum gratiam Dei recipiatis.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Men såsom medarbetare förmana vi eder ock att icke så mottaga Guds nåd, att det bliver utan frukt.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ait enim : Tempore accepto exaudivi te, et in die salutis adjuvi te. Ecce nunc tempus acceptabile, ecce nunc dies salutis.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Han säger ju: »Jag bönhör dig i behaglig tid, och jag hjälper dig på frälsningens dag.» Se, nu är den välbehagliga tiden; se, nu är frälsningens dag.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nemini dantes ullam offensionem, ut non vituperetur ministerium nostrum :</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Härvid vilja vi icke i något stycke vara till någon anstöt, på det att vårt ämbete icke må bliva smädat.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">sed in omnibus exhibeamus nosmetipsos sicut Dei ministros in multa patientia, in tribulationibus, in necessitatibus, in angustiis,</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Fastmer vilja vi i allting bevisa oss såsom Guds tjänare, i mycken ståndaktighet, under bedrövelse och nöd och ångest,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">in plagis, in carceribus, in seditionibus, in laboribus, in vigiliis, in jejuniis,</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">under hugg och slag, under fångenskap och upprorslarm, under mödor, vakor och svält,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">in castitate, in scientia, in longanimitate, in suavitate, in Spiritu Sancto, in caritate non ficta,</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">i renhet, i kunskap, i tålamod och godhet, i helig ande, i oskrymtad kärlek,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">in verbo veritatis, in virtute Dei, per arma justitiæ a dextris et a sinistris,</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">med sanning i vårt tal, med kraft från Gud, med rättfärdighetens vapen både i högra handen och i vänstra,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">per gloriam, et ignobilitatem, per infamiam, et bonam famam : ut seductores, et veraces, sicut qui ignoti, et cogniti :</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">under ära och smälek, under ont rykte och gott rykte, såsom villolärare, då vi dock äro sannfärdiga,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">quasi morientes, et ecce vivimus : ut castigati, et non mortificati :</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">såsom okända, fastän vi äro väl kända, såsom döende, men se, vi leva, såsom tuktade, men likväl icke till döds,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">quasi tristes, semper autem gaudentes : sicut egentes, multos autem locupletantes : tamquam nihil habentes, et omnia possidentes.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">såsom bedrövade, men dock alltid glada, såsom fattiga, medan vi dock göra många rika, såsom utblottade på allt, men likväl ägande allt.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Os nostrum patet ad vos, o Corinthii ; cor nostrum dilatatum est.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Vi hava nu upplåtit vår mun och talat öppet till eder, I korintier. Vårt hjärta har vidgat sig för eder.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non angustiamini in nobis : angustiamini autem in visceribus vestris :</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Ja, det rum I haven i vårt inre är icke litet, men i edra hjärtan är allenast litet rum.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">eamdem autem habentes remunerationem, tamquam filiis dico, dilatamini et vos.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Given oss då lika för lika -- om jag nu får tala såsom till barn -- ja, vidgen också I edra hjärtan.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nolite jugum ducere cum infidelibus. Quæ enim participatio justitiæ cum iniquitate ? aut quæ societas luci ad tenebras ?</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Gån icke i ok tillsammans med dem som icke tro; det bleve omaka par. Vad har väl rättfärdighet att skaffa med orättfärdighet, eller vilken gemenskap har ljus med mörker?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">quæ autem conventio Christi ad Belial ? aut quæ pars fideli cum infideli ?</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Huru förlika sig Kristus och Beliar, eller vad delaktighet har den som tror med den som icke tror?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui autem consensus templo Dei cum idolis ? vos enim estis templum Dei vivi, sicut dicit Deus :   Quoniam inhabitabo in illis, et inambulabo inter eos,  et ero illorum Deus, et ipsi erunt mihi populus.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Eller huru låter ett Guds tempel förena sig med avgudar? Vi äro ju ett den levande Gudens tempel, ty Gud har sagt: »Jag skall bo i dem och vandra ibland dem; jag skall vara deras Gud, och de skola vara mitt folk.»</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Propter quod exite de medio eorum,  et separamini, dicit Dominus,  et immundum ne tetigeritis :</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Alltså: »Gån ut ifrån dem och skiljen eder ifrån dem, säger Herren; kommen icke vid det orent är. Då skall jag taga emot eder</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">et ego recipiam vos :  et ero vobis in patrem,  et vos eritis mihi in filios et filias,  dicit Dominus omnipotens.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">och vara en Fader för eder; och I skolen vara mina söner och döttrar, säger Herren, den Allsmäktige.»</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch7">
+    <div class="chapter-marker">
+      <span class="ch-roman">VII</span>
+      <span class="ch-label">Caput 7</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v7-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Has ergo habentes promissiones, carissimi, mundemus nos ab omni inquinamento carnis et spiritus, perficientes sanctificationem in timore Dei.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Då vi nu hava dessa löften, mina älskade, så låtom oss rena oss från allt som befläckar vare sig kött eller ande, i det vi fullborda vår helgelse i Guds fruktan.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Capite nos. Neminem læsimus, neminem corrupimus, neminem circumvenimus.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Bereden oss ett rum i edra hjärtan; vi hava icke handlat orätt mot någon, icke varit någon till skada, icke gjort någon något förfång. --</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non ad condemnationem vestram dico : prædiximus enim quod in cordibus nostris estis ad commoriendum et ad convivendum.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Jag säger icke detta för att döma eder; jag har ju redan sagt att I haven ett rum i vårt hjärta, så att vi skola både dö och leva med varandra.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Multa mihi fiducia est apud vos, multa mihi gloriatio pro vobis : repletus sum consolatione ; superabundo gaudio in omni tribulatione nostra.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Stor är den tillit som jag har till eder, mycket berömmer jag mig av eder; jag har fått hugnad i fullt mått och glädje i rikt överflöd, mitt i allt vårt betryck.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nam et cum venissemus in Macedoniam, nullam requiem habuit caro nostra, sed omnem tribulationem passi sumus : foris pugnæ, intus timores.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Ty väl fingo vi till köttet ingen ro, icke ens sedan vi hade kommit till Macedonien, utan vi voro på allt sätt i trångmål, utifrån genom strider, inom oss genom farhågor;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sed qui consolatur humiles, consolatus est nos Deus in adventu Titi.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">men Gud, som tröstar dem som äro betryckta, han tröstade oss genom Titus' ankomst,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non solum autem in adventu ejus, sed etiam in consolatione, qua consolatus est in vobis, referens nobis vestrum desiderium, vestrum fletum, vestram æmulationem pro me, ita ut magis gauderem.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">och icke allenast genom hans ankomst, utan ock därigenom att han hade fått så mycken hugnad av eder. Han omtalade nämligen för oss eder längtan, eder klagan, eder iver i fråga om mig; och så gladde jag mig ännu mer.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quoniam etsi contristavi vos in epistola, non me pœnitet : etsi pœniteret, videns quod epistola illa (etsi ad horam) vos contristavit,</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Ty om jag ock bedrövade eder genom mitt brev, så ångrar jag nu icke detta. Nej, om jag förut ångrade det -- eftersom jag ser att det brevet har bedrövat eder, låt vara allenast för en liten tid --</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">nunc gaudeo : non quia contristati estis, sed quia contristati estis ad pœnitentiam. Contristati enim estis ad Deum, ut in nullo detrimentum patiamini ex nobis.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">så gläder jag mig nu i stället, icke därför att I bleven bedrövade, utan därför att eder bedrövelse lände eder till bättring. Det var ju efter Guds sinne som I bleven bedrövade, och I haven alltså icke genom oss lidit någon skada.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quæ enim secundum Deum tristitia est, pœnitentiam in salutem stabilem operatur : sæculi autem tristitia mortem operatur.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Ty den bedrövelse som är efter Guds sinne kommer åstad en bättring som leder till frälsning, och som man icke ångrar; men världens bedrövelse kommer åstad död.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ecce enim hoc ipsum, secundum Deum contristari vos, quantam in vobis operatur sollicitudinem : sed defensionem, sed indignationem, sed timorem, sed desiderium, sed æmulationem, sed vindictam : in omnibus exhibuistis vos incontaminatos esse negotio.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Se, just detta, att I bleven bedrövade efter Guds sinne, huru mycket nit har det icke framkallat hos eder, ja, huru många ursäkter, huru stor förtrytelse, huru mycken fruktan, huru mycken längtan, huru mycken iver, huru många bestraffningar! På allt sätt haven I bevisat att I viljen vara rena i den sak det här gäller. --</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Igitur, etsi scripsi vobis, non propter eum qui fecit injuriam, nec propter eum qui passus est : sed ad manifestandam sollicitudinem nostram, quam habemus pro vobis</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Om jag skrev till eder, så skedde detta alltså icke för den mans skull, som hade gjort orätt, ej heller för den mans skull, som hade lidit orätt, utan på det att edert nit för oss skulle bliva uppenbart bland eder själva inför Gud.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">coram Deo : ideo consolati sumus. In consolatione autem nostra, abundantius magis gavisi sumus super gaudio Titi, quia refectus est spiritus ejus ab omnibus vobis :</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Så hava vi nu fått hugnad. Och till den hugnad, som vi redan för egen del fingo, kom den ännu mer överflödande glädje som bereddes oss av den glädje Titus hade fått. Ty hans ande har fått vederkvickelse genom eder alla.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">et si quid apud illum de vobis gloriatus sum, non sum confusus : sed sicut omnia vobis in veritate locuti sumus, ita et gloriatio nostra, quæ fuit ad Titum, veritas facta est,</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Och om jag inför honom har berömt mig något i fråga om eder, så har jag icke kommit på skam därmed; utan likasom vi eljest i allting hava talat sanning inför eder, så har också det som vi inför Titus hava sagt till eder berömmelse visat sig vara sanning.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">et viscera ejus abundantius in vobis sunt, reminiscentis omnium vestrum obedientiam : quomodo cum timore et tremore excepistis illum.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Och hans hjärta överflödar ännu mer av kärlek till eder, då han nu påminner sig allas eder lydnad, huru I villigt togen emot honom, med fruktan och bävan.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Gaudeo quod in omnibus confido in vobis.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Jag gläder mig över att jag, i allt vad eder angår, kan vara vid gott mod.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch8">
+    <div class="chapter-marker">
+      <span class="ch-roman">VIII</span>
+      <span class="ch-label">Caput 8</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v8-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Notam autem facimus vobis, fratres, gratiam Dei, quæ data est in ecclesiis Macedoniæ :</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Vi vilja meddela eder, käre bröder, huru Guds nåd har verkat i Macedoniens församlingar.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">quod in multo experimento tribulationis abundantia gaudii ipsorum fuit, et altissima paupertas eorum, abundavit in divitias simplicitatis eorum :</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Fastän de hava varit prövade av svår nöd, har deras överflödande glädje, mitt under deras djupa fattigdom, så flödat över, att de av gott hjärta hava givit rikliga gåvor.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">quia secundum virtutem testimonium illis reddo, et supra virtutem voluntarii fuerunt,</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Ty de hava givit efter sin förmåga, ja, över sin förmåga, och det självmant; därom kan jag vittna.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">cum multa exhortatione obsecrantes nos gratiam, et communicationem ministerii, quod fit in sanctos.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Mycket enträget bådo de oss om den ynnesten att få vara med om understödet åt de heliga.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et non sicut speravimus, sed semetipsos dederunt primum Domino, deinde nobis per voluntatem Dei,</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Och de gåvo icke allenast vad vi hade hoppats, utan sig själva gåvo de, först och främst åt Herren, och så åt oss, genom Guds vilja.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">ita ut rogaremus Titum, ut quemadmodum cœpit, ita et perficiat in vobis etiam gratiam istam.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Så kunde vi uppmana Titus att han skulle fortsätta såsom han hade begynt och föra jämväl detta kärleksverk bland eder till fullbordan.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sed sicut in omnibus abundatis fide, et sermone, et scientia, et omni sollicitudine, insuper et caritate vestra in nos, ut et in hac gratia abundetis.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Ja, då I nu utmärken eder i alla stycken: i tro, i tal, i kunskap, i allsköns nit, i kärlek, den kärlek som av eder har blivit oss bevisad, så mån I se till, att I också utmärken eder i detta kärleksverk.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non quasi imperans dico : sed per aliorum sollicitudinem, etiam vestræ caritatis ingenium bonum comprobans.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Detta säger jag dock icke såsom en befallning, utan därför att jag, genom att framhålla andras nit, vill pröva om också eder kärlek är äkta.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Scitis enim gratiam Domini nostri Jesu Christi, quoniam propter vos egenus factus est, cum esset dives, ut illius inopia vos divites essetis.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">I kännen ju vår Herres, Jesu Kristi, nåd, huru han, som var rik, likväl blev fattig för eder skull, på det att I genom hans fattigdom skullen bliva rika.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et consilium in hoc do : hoc enim vobis utile est, qui non solum facere, sed et velle cœpistis ab anno priore :</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Det är allenast ett råd som jag härmed giver. Ty detta kan vara nyttigt för eder. I voren ju före de andra -- redan under förra året -- icke allenast när det gällde att sätta saken i verket, utan till och med när det gällde att besluta sig för den.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">nunc vero et facto perficite : ut quemadmodum promptus est animus voluntatis, ita sit et perficiendi ex eo quod habetis.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Fullborden nu ock edert verk, så att I, som voren så villiga att besluta det, jämväl, i mån av edra tillgångar, fören det till fullbordan.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si enim voluntas prompta est, secundum id quod habet, accepta est, non secundum id quod non habet.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Ty om den goda viljan är för handen, så bliver den välbehaglig med de tillgångar den har och bedömes ej efter vad den icke har.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non enim ut aliis sit remissio, vobis autem tribulatio, sed ex æqualitate.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Ty meningen är icke att andra skola hava lättnad och I själva lida nöd. Nej, en utjämning skall ske,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">In præsenti tempore vestra abundantia illorum inopiam suppleat : ut et illorum abundantia vestræ inopiæ sit supplementum, ut fiat æqualitas, sicut scriptum est :</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">så att edert överflöd denna gång kommer deras brist till hjälp, för att en annan gång deras överflöd skall komma eder brist till hjälp. Så skall en utjämning ske,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui multum, non abundavit : et qui modicum, non minoravit.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">efter skriftens ord: »Den som hade samlat mycket hade intet till överlopps, och den som hade samlat litet, honom fattades intet.»</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Gratias autem Deo, qui dedit eamdem sollicitudinem pro vobis in corde Titi,</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Gud vare tack, som också i Titus' hjärta ingiver samma nit för eder.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">quoniam exhortationem quidem suscepit : sed cum sollicitior esset, sua voluntate profectus est ad vos.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Ty han mottog villigt vår uppmaning; ja, han var så nitisk, att han nu självmant far åstad till eder.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Misimus etiam cum illo fratrem, cujus laus est in Evangelio per omnes ecclesias :</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Med honom sända vi ock här en broder som i alla våra församlingar prisas för sitt nit om evangelium;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">non solum autem, sed et ordinatus est ab ecclesiis comes peregrinationis nostræ in hanc gratiam, quæ ministratur a nobis ad Domini gloriam, et destinatam voluntatem nostram :</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">dessutom har han ock av församlingarna blivit utvald att vara vår följeslagare, när vi skola begiva oss åstad med den kärleksgåva som nu genom vår försorg kommer till stånd, Herren till ära och såsom ett vittnesbörd om vår goda vilja.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">devitantes hoc, ne quis nos vituperet in hac plenitudine, quæ ministratur a nobis.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Därmed vilja vi förebygga att man talar illa om oss, i vad som rör det rikliga sammanskott som nu genom vår försorg kommer till stånd.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">Providemus enim bona non solum coram Deo, sed etiam coram hominibus.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Ty vi vinnlägga oss om vad som är gott icke allenast inför Herren, utan ock inför människor.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-22">
+      <div class="verse-num-col"><div class="verse-num">22</div></div>
+      <div class="verse-texts">
+        <div class="latin">Misimus autem cum illis et fratrem nostrum, quem probavimus in multis sæpe sollicitum esse : nunc autem multo sollicitiorem, confidentia multa in vos,</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Jämte dessa sända vi en annan av våra bröder, vilkens nit vi ofta och i många stycken hava funnit hålla provet, och som nu på grund av sin stora tillit till eder är ännu mycket mer nitisk.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-23">
+      <div class="verse-num-col"><div class="verse-num">23</div></div>
+      <div class="verse-texts">
+        <div class="latin">sive pro Tito, qui est socius meus, et in vos adjutor, sive fratres nostri, Apostoli ecclesiarum, gloria Christi.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Om jag nu har anbefallt Titus, så mån I besinna att han är min medbroder och min medarbetare till edert bästa; och om jag har skrivit om andra våra bröder, så mån I besinna att de äro församlingssändebud och Kristi ära.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-24">
+      <div class="verse-num-col"><div class="verse-num">24</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ostensionem ergo, quæ est caritatis vestræ, et nostræ gloriæ pro vobis, in illos ostendite in faciem ecclesiarum.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Given alltså inför församlingarna bevis på eder kärlek, och därmed också på sanningen av det som vi inför dem hava sagt till eder berömmelse.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch9">
+    <div class="chapter-marker">
+      <span class="ch-roman">IX</span>
+      <span class="ch-label">Caput 9</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v9-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nam de ministerio, quod fit in sanctos ex abundanti est mihi scribere vobis.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Om understödet till de heliga är det nu visserligen överflödigt att jag här skriver till eder;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Scio enim promptum animum vestrum : pro quo de vobis glorior apud Macedones. Quoniam et Achaia parata est ab anno præterito, et vestra æmulatio provocavit plurimos.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">jag känner ju eder goda vilja, och av den plägar jag, i fråga om eder, berömma mig inför macedonierna, i det jag omtalar att Akaja ända sedan förra året har varit redo, och att det är just edert nit som har eggat så många andra.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Misi autem fratres : ut ne quod gloriamur de vobis, evacuetur in hac parte, ut (quemadmodum dixi) parati sitis :</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Likväl sänder jag nu åstad dessa bröder, för att det som jag har sagt till eder berömmelse icke skall i denna del befinnas hava varit tomt tal. Ty, såsom jag förut har sagt, jag vill att I skolen vara redo.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">ne cum venerint Macedones mecum, et invenerint vos imparatos, erubescamus nos (ut non dicamus vos) in hac substantia.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Eljest, om några macedonier komma med mig och finna eder oberedda, kunna vi -- för att icke säga I -- till äventyrs komma på skam med vår tillförsikt i denna sak.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Necessarium ergo existimavi rogare fratres, ut præveniant ad vos, et præparent repromissam benedictionem hanc paratam esse sic, quasi benedictionem, non tamquam avaritiam.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Jag har därför funnit det vara nödvändigt att uppmana bröderna att i förväg begiva sig till eder och förbereda den rikliga »välsignelsegåva» som I redan haven utlovat. De skola laga att denna är tillreds såsom en riklig gåva, och icke såsom en gåva i njugghet.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hoc autem dico : qui parce seminat, parce et metet : et qui seminat in benedictionibus, de benedictionibus et metet.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Besinnen detta: den som sår sparsamt, han skall ock skörda sparsamt; men den som sår rikligt, han skall ock skörda riklig välsignelse.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Unusquisque, prout destinavit in corde suo, non ex tristitia, aut ex necessitate : hilarem enim datorem diligit Deus.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Var och en give efter som han har känt sig manad i sitt hjärta, icke med olust eller av tvång, ty »Gud älskar en glad givare».</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Potens est autem Deus omnem gratiam abundare facere in vobis : ut in omnibus semper omnem sufficientiam habentes, abundetis in omne opus bonum,</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Men Gud är mäktig att i överflödande mått låta all nåd komma eder till del, så att I alltid i allo haven allt till fyllest och i överflöd kunnen giva till allt gott verk,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">sicut scriptum est : Dispersit, dedit pauperibus : justitia ejus manet in sæculum sæculi.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">efter skriftens ord: »Han utströr, han giver åt de fattiga, hans rättfärdighet förbliver evinnerligen.»</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui autem administrat semen seminanti : et panem ad manducandum præstabit, et multiplicabit semen vestrum, et augebit incrementa frugum justitiæ vestræ :</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Och han som giver såningsmannen »säd till att så och bröd till att äta», han skall ock giva eder utsädet och låta det föröka sig och skall bereda växt åt eder rättfärdighets frukt.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">ut in omnibus locupletati abundetis in omnem simplicitatem, quæ operatur per nos gratiarum actionem Deo.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">I skolen bliva så rika på allt, att I av gott hjärta kunnen giva allahanda gåvor, vilka, när de överlämnas genom oss, skola framkalla tacksägelse till Gud.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quoniam ministerium hujus officii non solum supplet ea quæ desunt sanctis, sed etiam abundat per multas gratiarum actiones in Domino,</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Ty det understöd, som kommer till stånd genom denna eder tjänst, skall icke allenast avhjälpa de heligas brist, utan verka ännu långt mer genom att framkalla många tacksägelser till Gud.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">per probationem ministerii hujus, glorificantes Deum in obedientia confessionis vestræ, in Evangelium Christi, et simplicitate communicationis in illos, et in omnes,</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">De skola nämligen, därför att I visen eder så väl hålla provet i fråga om detta understöd, komma att prisa Gud för att I med så lydaktigt sinne bekännen eder till Kristi evangelium och av så gott hjärta visen dem och alla andra edert deltagande.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">et in ipsorum obsecratione pro vobis, desiderantium vos propter eminentem gratiam Dei in vobis.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">De skola ock själva bedja för eder och längta efter eder, för den Guds nåds skull, som i så översvinnligen rikt mått beskäres eder.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Gratias Deo super inenarrabili dono ejus.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Ja, Gud vare tack för hans outsägligt rika gåva!</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch10">
+    <div class="chapter-marker">
+      <span class="ch-roman">X</span>
+      <span class="ch-label">Caput 10</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v10-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ipse autem ego Paulus obsecro vos per mansuetudinem et modestiam Christi, qui in facie quidem humilis sum inter vos, absens autem confido in vos.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Jag Paulus själv, som »är så ödmjuk, när jag står ansikte mot ansikte med eder, men visar mig så modig mot eder, när jag är långt borta», jag förmanar eder vid Kristi saktmod och mildhet</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Rogo autem vos ne præsens audeam per eam confidentiam, qua existimor audere in quosdam, qui arbitrantur nos tamquam secundum carnem ambulemus.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">och beder eder se till, att jag icke, när jag en gång är hos eder, måste »visa mig modig», i det jag helt oförskräckt tänker våga mig på somliga som mena att vi »vandra efter köttet».</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">In carne enim ambulantes, non secundum carnem militamus.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Ty fastän vi vandra i köttet, föra vi dock icke en strid efter köttet.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nam arma militiæ nostræ non carnalia sunt, sed potentia Deo ad destructionem munitionum, consilia destruentes,</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Våra stridsvapen äro nämligen icke av köttslig art; de äro tvärtom så mäktiga inför Gud, att de kunna bryta ned fästen.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">et omnem altitudinem extollentem se adversus scientiam Dei, et in captivitatem redigentes omnem intellectum in obsequium Christi,</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Ja, vi bryta ned tankebyggnader och alla slags höga bålverk, som uppresas mot kunskapen om Gud, och vi taga alla slags tankefunder till fånga och lägga dem under Kristi lydnad.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">et in promptu habentes ulcisci omnem inobedientiam, cum impleta fuerit vestra obedientia.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Och när lydnaden fullt har kommit till väldet bland eder, då äro vi redo att näpsa all olydnad.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quæ secundum faciem sunt, videte. Si quis confidit sibi Christi se esse, hoc cogitet iterum apud se : quia sicut ipse Christi est, ita et nos.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Sen då vad som ligger öppet för allas ögon. Om någon i sitt sinne är viss om att han hör Kristus till, så må han ytterligare besinna inom sig, att lika visst som han själv hör Kristus till, lika visst göra också vi det.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nam etsi amplius aliquid gloriatus fuero de potestate nostra, quam dedit nobis Dominus in ædificationem, et non in destructionem vestram, non erubescam.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Och om jag än något härutöver berömmer mig, då nu fråga är om vår myndighet -- den som Herren har givit oss, till att uppbygga eder och icke till att nedbryta -- så skall jag dock icke komma på skam därmed.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ut autem non existimer tamquam terrere vos per epistolas :</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Jag vill icke att det skall se ut, som om jag med mina brev allenast tänkte skrämma eder.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">quoniam quidem epistolæ, inquiunt, graves sunt et fortes : præsentia autem corporis infirma, et sermo contemptibilis :</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Ty man säger ju: »Hans brev äro väl myndiga och stränga, men när han kommer själv, uppträder han utan kraft, och på hans ord aktar ingen.»</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">hoc cogitet qui ejusmodi est, quia quales sumus verbo per epistolas absentes, tales et præsentes in facto.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Den som säger sådant, han må emellertid göra sig beredd på att sådana som vi äro i orden, genom våra brev, när vi äro frånvarande, sådana skola vi ock visa oss i gärningarna, när vi äro närvarande.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non enim audemus inserere, aut comparare nos quibusdam, qui seipsos commendant : sed ipsi in nobis nosmetipsos metientes, et comparantes nosmetipsos nobis.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Ty vi äro icke nog dristiga att räkna oss till eller jämföra oss med somliga som giva sig själva gott vitsord, men som äro utan förstånd, i det att de mäta sig allenast efter sig själva och jämföra sig allenast med sig själva.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nos autem non in immensum gloriabimur, sed secundum mensuram regulæ, qua mensus est nobis Deus, mensuram pertingendi usque ad vos.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Vi för vår del vilja icke berömma oss till övermått, utan allenast efter måttet av det område som Gud tillmätte åt oss, när han bestämde att vi skulle nå fram jämväl till eder.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non enim quasi non pertingentes ad vos, superextendimus nos : usque ad vos enim pervenimus in Evangelio Christi.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Ty vi sträcka oss icke utom vårt område, såsom nådde vi icke rätteligen fram till eder; vi hava ju redan med evangelium om Kristus hunnit fram jämväl till eder.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non in immensum gloriantes in alienis laboribus : spem autem habentes crescentis fidei vestræ, in vobis magnificari secundum regulam nostram in abundantiam,</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">När vi säga detta, berömma vi oss icke till övermått, icke av andras arbete. Men väl hava vi det hoppet, att i samma mån som eder tro växer till, vi inom det område som har tillfallit oss skola bland eder vinna framgång, i så överflödande mått,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">etiam in illa, quæ ultra vos sunt, evangelizare, non in aliena regula in iis quæ præparata sunt gloriari.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">att vi också få förkunna evangelium i trakter som ligga bortom eder -- och detta utan att vi, inom ett område som tillhör andra, berömma oss i fråga om det som redan där är uträttat.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui autem gloriatur, in Domino glorietur.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Men »den som vill berömma sig, han berömme sig av Herren».</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non enim qui seipsum commendat, ille probatus est : sed quem Deus commendat.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Ty icke den håller provet, som giver sig själv gott vitsord, utan den som Herren giver sådant vitsord.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch11">
+    <div class="chapter-marker">
+      <span class="ch-roman">XI</span>
+      <span class="ch-label">Caput 11</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v11-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Utinam sustineretis modicum quid insipientiæ meæ, sed et supportare me :</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Jag skulle önska att I villen hava fördrag med mig, om jag nu talar något litet efter dårars sätt. Dock, I haven helt visst fördrag med mig.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">æmulor enim vos Dei æmulatione. Despondi enim vos uni viro, virginem castam exhibere Christo.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Ty jag nitälskar för eder såsom Gud nitälskar, och jag har trolovat eder med Kristus, och ingen annan, för att kunna ställa fram inför honom en ren jungfru.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Timeo autem ne sicut serpens Hevam seduxit astutia sua, ita corrumpantur sensus vestri, et excidant a simplicitate, quæ est in Christo.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Men jag fruktar att såsom ormen i sin illfundighet bedrog Eva, så skola till äventyrs också edra sinnen fördärvas och dragas ifrån den uppriktiga troheten mot Kristus.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nam si is qui venit, alium Christum prædicat, quem non prædicavimus, aut alium spiritum accipitis, quem non accepistis : aut aliud Evangelium, quod non recepistis : recte pateremini.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Om någon kommer och predikar en annan Jesus, än den vi hava predikat, eller om I undfån ett annat slags ande, än den I förut haven undfått, eller ett annat slags evangelium, än det I förut haven mottagit, då fördragen I ju sådant alltför väl.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Existimo enim nihil me minus fecisse a magnis Apostolis.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Jag menar nu att jag icke i något stycke står tillbaka för dessa så övermåttan höga »apostlar».</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nam etsi imperitus sermone, sed non scientia, in omnibus autem manifestati sumus vobis.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Om jag än är oförfaren i talkonsten, så är jag det likväl icke i fråga om kunskap. Tvärtom, vi hava på allt sätt, i alla stycken, lagt vår kunskap i dagen inför eder.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Aut numquid peccatum feci, meipsum humilians, ut vos exaltemini ? quoniam gratis Evangelium Dei evangelizavi vobis ?</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Eller var det väl en synd jag begick, när jag för intet förkunnade Guds evangelium för eder och sålunda ödmjukade mig, på det att I skullen bliva upphöjda?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Alias ecclesias expoliavi, accipiens stipendium ad ministerium vestrum.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Andra församlingar plundrade jag, i det jag, för att kunna tjäna eder, tog lön av dem.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et cum essem apud vos, et egerem, nulli onerosus fui : nam quod mihi deerat, suppleverunt fratres, qui venerunt a Macedonia : et in omnibus sine onere me vobis servavi, et servabo.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Och när jag under min vistelse hos eder led brist, låg jag ändå ingen till last; ty den brist jag led avhjälptes av bröderna, när de kommo från Macedonien. Ja, på allt sätt aktade jag mig för att vara eder till tunga, och allt framgent skall jag akta mig därför.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Est veritas Christi in me, quoniam hæc gloriatio non infringetur in me in regionibus Achaiæ.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Så visst som Kristi sannfärdighet är i mig, den berömmelsen skall icke få tagas ifrån mig i Akajas bygder.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quare ? quia non diligo vos ? Deus scit.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Varför? Månne därför att jag icke älskar eder? Gud vet att jag så gör.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quod autem facio, et faciam : ut amputem occasionem eorum qui volunt occasionem, ut in quo gloriantur, inveniantur sicut et nos.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Och vad jag nu gör, det skall jag ock framgent göra, för att de som trakta efter tillfälle att bliva likställda med oss i fråga om berömmelse skola genom mig berövas tillfället därtill.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nam ejusmodi pseudoapostoli sunt operarii subdoli, transfigurantes se in apostolos Christi.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Ty de männen äro falska apostlar, oredliga arbetare, som förskapa sig till Kristi apostlar.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et non mirum : ipse enim Satanas transfigurat se in angelum lucis.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Och detta är icke att undra på. Satan själv förskapar sig ju till en ljusets ängel.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non est ergo magnum, si ministri ejus transfigurentur velut ministri justitiæ : quorum finis erit secundum opera ipsorum.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Det är då icke något märkligt, om jämväl hans tjänare så förskapa sig, att de likna rättfärdighetens tjänare. Men deras ände skall svara emot deras gärningar.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Iterum dico (ne quis me putet insipientem esse, alioquin velut insipientem accipite me, ut et ego modicum quid glorier),</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Åter säger jag: Ingen må mena att jag är en dåre; men om jag vore det, så mån I ändå hålla till godo med mig -- låt vara såsom med en dåre -- så att ock jag får berömma mig något litet.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">quod loquor, non loquor secundum Deum, sed quasi in insipientia, in hac substantia gloriæ.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Vad jag talar, då jag nu med sådan tillförsikt berömmer mig, det talar jag icke efter Herrens sinne, utan efter dårars sätt.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quoniam multi gloriantur secundum carnem : et ego gloriabor.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Då så många berömma sig på köttsligt vis, vill ock jag berömma mig;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">Libenter enim suffertis insipientes, cum sitis ipsi sapientes.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">I haven ju gärna fördrag med dårar, I som själva ären så kloka.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sustinetis enim si quis vos in servitutem redigit, si quis devorat, si quis accipit, si quis extollitur, si quis in faciem vos cædit.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">I fördragen ju, om man trälbinder eder, om man utsuger eder, om man fångar eder, om man förhäver sig över eder, om man slår eder i ansiktet.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">Secundum ignobilitatem dico, quasi nos infirmi fuerimus in hac parte. In quo quis audet (in insipientia dico) audeo et ego :</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Till vår skam måste jag tillstå att vi för vår del hava »varit för svaga» till sådant. Men eljest, vadhelst andra kunna göra sig stora med, det kan också jag göra mig stor med -- om jag nu får tala efter dårars sätt.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-22">
+      <div class="verse-num-col"><div class="verse-num">22</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hebræi sunt, et ego : Israëlitæ sunt, et ego : semen Abrahæ sunt, et ego.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Äro de hebréer, så är jag det ock. Äro de israeliter, så är jag det ock. Äro de Abrahams säd, så är jag det ock.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-23">
+      <div class="verse-num-col"><div class="verse-num">23</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ministri Christi sunt (ut minus sapiens dico), plus ego : in laboribus plurimis, in carceribus abundantius, in plagis supra modum, in mortibus frequenter.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Äro de Kristi tjänare, så är jag det ännu mer -- om jag nu får tala såsom vore jag en dåre. Jag har haft mer arbete, oftare varit i fängelse, fått hugg och slag till överflöd, varit i dödsnöd många gånger.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-24">
+      <div class="verse-num-col"><div class="verse-num">24</div></div>
+      <div class="verse-texts">
+        <div class="latin">A Judæis quinquies, quadragenas, una minus, accepi.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Av judarna har jag fem gånger fått fyrtio slag, på ett när.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-25">
+      <div class="verse-num-col"><div class="verse-num">25</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ter virgis cæsus sum, semel lapidatus sum : ter naufragium feci, nocte et die in profundo maris fui,</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Tre gånger har jag blivit piskad med spön, en gång har jag blivit stenad, tre gånger har jag lidit skeppsbrott, ett helt dygn har jag drivit omkring på djupa havet.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-26">
+      <div class="verse-num-col"><div class="verse-num">26</div></div>
+      <div class="verse-texts">
+        <div class="latin">in itineribus sæpe, periculis fluminum, periculis latronum, periculis ex genere, periculis ex gentibus, periculis in civitate, periculis in solitudine, periculis in mari, periculis in falsis fratribus :</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Jag har ofta måst vara ute på resor; jag har utstått faror på floder, faror bland rövare, faror genom landsmän, faror genom hedningar, faror i städer, faror i öknar, faror på havet, faror bland falska bröder --</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-27">
+      <div class="verse-num-col"><div class="verse-num">27</div></div>
+      <div class="verse-texts">
+        <div class="latin">in labore et ærumna, in vigiliis multis, in fame et siti, in jejuniis multis, in frigore et nuditate,</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">allt under arbete och möda, under mångfaldiga vakor, under hunger och törst, under svält titt och ofta, under köld och nakenhet.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-28">
+      <div class="verse-num-col"><div class="verse-num">28</div></div>
+      <div class="verse-texts">
+        <div class="latin">præter illa quæ extrinsecus sunt, instantia mea quotidiana, sollicitudo omnium ecclesiarum.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Och till allt annat kommer det, att jag var dag är överlupen, då jag måste hava omsorg om alla församlingarna.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-29">
+      <div class="verse-num-col"><div class="verse-num">29</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quis infirmatur, et ego non infirmor ? quis scandalizatur, et ego non uror ?</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Vem är svag, utan att också jag bliver svag? Vem kommer på fall, utan att jag bliver upptänd? --</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-30">
+      <div class="verse-num-col"><div class="verse-num">30</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si gloriari oportet, quæ infirmitatis meæ sunt, gloriabor.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Om jag nu måste berömma mig, så vill jag berömma mig av min svaghet.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-31">
+      <div class="verse-num-col"><div class="verse-num">31</div></div>
+      <div class="verse-texts">
+        <div class="latin">Deus et Pater Domini nostri Jesu Christi, qui est benedictus in sæcula, scit quod non mentior.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Herren Jesu Gud och Fader, han som är högtlovad i evighet, vet att jag icke ljuger.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-32">
+      <div class="verse-num-col"><div class="verse-num">32</div></div>
+      <div class="verse-texts">
+        <div class="latin">Damasci præpositus gentis Aretæ regis custodiebat civitatem Damascenorum ut me comprehenderet :</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">I Damaskus lät konung Aretas' ståthållare sätta ut vakt vid damaskenernas stad för att gripa mig;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-33">
+      <div class="verse-num-col"><div class="verse-num">33</div></div>
+      <div class="verse-texts">
+        <div class="latin">et per fenestram in sporta dimissus sum per murum, et sic effugi manus ejus.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">och jag måste i en korg släppas ned genom en öppning på muren och kom så undan hans händer.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch12">
+    <div class="chapter-marker">
+      <span class="ch-roman">XII</span>
+      <span class="ch-label">Caput 12</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v12-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si gloriari oportet (non expedit quidem), veniam autem ad visiones et revelationes Domini.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Jag måste ytterligare berömma mig. Väl är sådant icke eljest nyttigt, men jag kommer nu till syner och uppenbarelser, som hava beskärts mig av Herren.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Scio hominem in Christo ante annos quatuordecim, sive in corpore nescio, sive extra corpus nescio, Deus scit, raptum hujusmodi usque ad tertium cælum.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Jag vet om en man som är i Kristus, att han för fjorton år sedan blev uppryckt ända till tredje himmelen; huruvida det nu var i kroppslig måtto, eller om han var skild från sin kropp, det vet jag icke, Gud allena vet det.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et scio hujusmodi hominem sive in corpore, sive extra corpus nescio, Deus scit :</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Ja, jag vet om denne man, att han -- huruvida det nu var i kroppslig måtto, eller om han var skild från sin kropp, det vet jag icke, Gud allena vet det --</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">quoniam raptus est in paradisum : et audivit arcana verba, quæ non licet homini loqui.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">jag vet om honom, att han blev uppryckt till paradiset och fick höra outsägliga ord, sådana som det icke är lovligt för en människa att uttala.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Pro hujusmodi gloriabor : pro me autem nihil gloriabor nisi in infirmitatibus meis.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">I fråga om den mannen vill jag berömma mig, men i fråga om mig själv vill jag icke berömma mig, om icke av min svaghet.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nam etsi voluero gloriari, non ero insipiens : veritatem enim dicam : parco autem, ne quis me existimet supra id quod videt in me, aut aliquid audit ex me.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Visserligen skulle jag icke vara en dåre, om jag ville berömma mig själv, ty det vore sanning som jag då skulle tala; men likväl avhåller jag mig därifrån, för att ingen skall hava högre tankar om mig än skäligt är, efter vad han ser hos mig eller hör av mig.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et ne magnitudo revelationum extollat me, datus est mihi stimulus carnis meæ angelus Satanæ, qui me colaphizet.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Och för att jag icke skall förhäva mig på grund av mina övermåttan höga uppenbarelser, har jag fått en törntagg i mitt kött, en Satans ängel, som skall slå mig i ansiktet, för att jag icke skall förhäva mig.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Propter quod ter Dominum rogavi ut discederet a me :</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Att denne måtte vika ifrån mig, därom har jag tre gånger bett till Herren.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">et dixit mihi : Sufficit tibi gratia mea : nam virtus in infirmitate perficitur. Libenter igitur gloriabor in infirmitatibus meis, ut inhabitet in me virtus Christi.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Men Herren har sagt till mig; »Min nåd är dig nog, ty kraften fullkomnas i svaghet.» Därför vill jag hellre med glädje berömma mig av min svaghet, på det att Kristi kraft må komma och vila över mig.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Propter quod placeo mihi in infirmitatibus meis, in contumeliis, in necessitatibus, in persecutionibus, in angustiis pro Christo : cum enim infirmor, tunc potens sum.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Ja, därför finner jag behag i svaghet, i misshandling, i nöd, i förföljelse, i ångest för Kristi skull; ty när jag är svag, då är jag stark.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Factus sum insipiens, vos me coëgistis. Ego enim a vobis debui commendari : nihil enim minus fui ab iis, qui sunt supra modum Apostoli : tametsi nihil sum :</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Så har jag nu gjort mig till en dåre; I haven själva nödgat mig därtill. Jag hade ju bort få gott vitsord av eder; ty om jag än är ett intet, så har jag dock icke i något stycke stått tillbaka för dessa så övermåttan höga »apostlar».</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">signa tamen apostolatus mei facta sunt super vos in omni patientia, in signis, et prodigiis, et virtutibus.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">De gärningar som äro en apostels kännemärken hava ock med all uthållighet blivit gjorda bland eder, genom tecken och under och kraftgärningar.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quid est enim, quod minus habuistis præ ceteris ecclesiis, nisi quod ego ipse non gravavi vos ? donate mihi hanc injuriam.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Och haven I väl i något stycke blivit tillbakasatta för de andra församlingarna? Dock, kanhända i det stycket, att jag för min del icke har legat eder till last? Den oförrätten mån I då förlåta mig.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ecce tertio hoc paratus sum venire ad vos : et non ero gravis vobis. Non enim quæro quæ vestra sunt, sed vos. Nec enim debent filii parentibus thesaurizare, sed parentes filiis.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Se, det är nu tredje gången som jag står redo att komma till eder. Och jag skall icke ligga eder till last, ty icke edert söker jag, utan eder själva. Och barnen äro ju icke pliktiga att spara åt föräldrarna, utan föräldrarna åt barnen.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ego autem libentissime impendam, et super impendar ipse pro animabus vestris : licet plus vos diligens, minus diligar.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Och för min del vill jag gärna för edra själar både offra vad jag äger och låta mig själv offras hel och hållen. Om jag nu så högt älskar eder, skall jag väl därför bliva mindre älskad?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sed esto : ego vos non gravavi : sed cum essem astutus, dolo vos cepi.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Dock, det kunde ju vara så, att jag visserligen icke själv hade betungat eder, men att jag på en listig omväg hade fångat eder, jag som är så illfundig.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Numquid per aliquem eorum, quod misi ad vos, circumveni vos ?</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Har jag då verkligen, genom någon av dem som jag har sänt till eder, berett mig någon orätt vinning av eder?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Rogavi Titum, et misi cum illo fratrem. Numquid Titus vos circumvenit ? nonne eodem spiritu ambulavimus ? nonne iisdem vestigiis ?</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Sant är att jag bad Titus fara och sände med honom den andre brodern. Men icke har väl Titus berett mig någon orätt vinning av eder? Hava vi icke båda vandrat i en och samme Ande? Hava vi icke båda gått i samma fotspår?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">Olim putatis quod excusemus nos apud vos ? coram Deo in Christo loquimur : omnia autem, carissimi, propter ædificationem vestram.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Nu torden I redan länge hava menat att det är inför eder som vi försvara oss. Nej, det är inför Gud, i Kristus, som vi tala, men visserligen alltsammans för att uppbygga eder, I älskade.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">Timeo enim ne forte cum venero, non quales volo, inveniam vos : et ego inveniar a vobis, qualem non vultis : ne forte contentiones, æmulationes, animositates, dissensiones, detractiones, susurrationes, inflationes, seditiones sint inter vos :</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Ty jag fruktar att jag vid min ankomst till äventyrs icke skall finna eder sådana som jag skulle önska, och att jag själv då av eder skall befinnas vara sådan som I icke skullen önska. Jag fruktar att till äventyrs kiv, avund, vrede, genstridighet, förtal, skvaller, uppblåsthet och oordning råda bland eder.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">ne iterum cum venero, humiliet me Deus apud vos, et lugeam multos ex iis qui ante peccaverunt, et non egerunt pœnitentiam super immunditia, et fornicatione, et impudicitia, quam gesserunt.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Ja, jag fruktar att min Gud skall låta mig vid min ankomst åter bliva förödmjukad genom eder, och att jag skall få sörja över många av dem som förut hava syndat, och som ännu icke hava känt ånger över den orenhet och otukt och lösaktighet som de hava övat.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch13">
+    <div class="chapter-marker">
+      <span class="ch-roman">XIII</span>
+      <span class="ch-label">Caput 13</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v13-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ecce tertio hoc venio ad vos : in ore duorum vel trium testium stabit omne verbum.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Det är nu tredje gången som jag skall komma till eder; »efter två eller tre vittnens utsago skall var sak avgöras».</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Prædixi, et prædico, ut præsens, et nunc absens iis qui ante peccaverunt, et ceteris omnibus, quoniam si venero iterum, non parcam.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Till dem som förut hava syndat och till alla de andra har jag redan i förväg sagt, och jag säger nu åter i förväg -- nu då jag är borta ifrån eder, likasom förut då jag för andra gången var hos eder -- att jag icke skall visa någon skonsamhet, när jag kommer igen.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">An experimentum quæritis ejus, qui in me loquitur Christus, qui in vobis non infirmatur, sed potens est in vobis ?</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">I viljen ju hava ett bevis för att det är Kristus som talar i mig, han som icke är svag mot eder, utan är stark bland eder.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nam etsi crucifixus est ex infirmitate : sed vivit ex virtute Dei. Nam et nos infirmi sumus in illo : sed vivemus cum eo ex virtute Dei in vobis.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Ty om han än blev korsfäst i följd av svaghet, så lever han dock av Guds kraft. Också vi äro ju svaga i honom, men av Guds kraft skola vi leva med honom och bevisa det på eder.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vosmetipsos tentate si estis in fide : ipsi vos probate. An non cognoscitis vosmetipsos quia Christus Jesus in vobis est ? nisi forte reprobi estis.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Rannsaken eder själva, huruvida I ären i tron, ja, pröven eder själva. Eller kännen I icke med eder själva att Jesus Kristus är i eder? Varom icke, så hållen I ej provet.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Spero autem quod cognoscetis, quia nos non sumus reprobi.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Att vi för vår del icke äro av dem som ej hålla provet, det hoppas jag att I skolen få lära känna.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Oramus autem Deum ut nihil mali faciatis, non ut nos probati appareamus, sed ut vos quod bonum est faciatis : nos autem ut reprobi simus.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Men vi bedja till Gud att I icke mån göra något ont, detta icke för att vi å vår sida skola synas hålla provet, utan för att I själva verkligen skolen göra vad gott är. Sedan må vi å vår sida gärna anses icke hålla provet.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non enim possumus aliquid adversus veritatem, sed pro veritate.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Ty icke mot sanningen, utan allenast för sanningen förmå vi något.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Gaudemus enim, quoniam nos infirmi sumus, vos autem potentes estis. Hoc et oramus, vestram consummationem.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Och vi glädja oss, när vi äro svaga, men I ären starka. Just detta bedja vi också om, att I mån alltmer fullkomnas.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ideo hæc absens scribo, ut non præsens durius agam secundum potestatem, quam Dominus dedit mihi in ædificationem, et non in destructionem.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Och medan jag ännu är borta ifrån eder, skriver jag detta, för att jag icke, när jag är hos eder, skall nödgas uppträda med stränghet, i kraft av den myndighet som Herren har givit mig, till att uppbygga och icke till att nedbryta.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">De cetero, fratres, gaudete, perfecti estote, exhortamini, idem sapite, pacem habete, et Deus pacis et dilectionis erit vobiscum.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">För övrigt, mina bröder, varen glada, låten fullkomna eder, låten förmana eder, varen ens till sinnes, hållen frid; då skall kärlekens och fridens Gud vara med eder.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Salutate invicem in osculo sancto. Salutant vos omnes sancti.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Hälsen varandra med en helig kyss. Alla de heliga hälsa eder.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Gratia Domini nostri Jesu Christi, et caritas Dei, et communicatio Sancti Spiritus sit cum omnibus vobis. Amen.</div>
+        <div class="trans-label">✦ Svenska</div>
+        <div class="trans">Herrens, Jesu Kristi, nåd och Guds kärlek och den helige Andes delaktighet vare med eder alla.</div>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <nav class="book-nav">
+    <a href="046-1co.html">← I Ad Corinthios</a>
+    <span class="center">II Ad Corinthios · Svenska</span>
+    <a href="048-gal.html">Ad Galatas →</a>
+  </nav>
+
+  <footer class="page-footer">
+    BIBLIA CATHOLICA INTERLINEARIS &nbsp;·&nbsp; Vulgata Clementina &amp; Svenska Bibeln
+    &nbsp;·&nbsp; Gemeinfreie Texte / Public Domain
+  </footer>
+
+</body>
+</html>

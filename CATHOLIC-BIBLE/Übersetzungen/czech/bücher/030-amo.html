@@ -1,1351 +1,1479 @@
 <!DOCTYPE html>
 <html lang="cs">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Amos &middot; Čeština &middot; Biblia Catholica</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&display=swap" rel="stylesheet">
-<style>
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
-body{
-  background:#2C0810;
-  background-image:radial-gradient(ellipse at 50% 20%,#4A1020 0%,#1A0407 100%);
-  font-family:'EB Garamond',serif;
-  color:#1A0E06;
-  font-size:17px;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Amos · Čeština · Biblia Catholica</title>
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
+
+:root {
+  --gold:        #C8A96E;
+  --gold-light:  #EDD58A;
+  --gold-dark:   #8B6914;
+  --navy:        #1A1F3A;
+  --navy-mid:    #252B4A;
+  --navy-light:  #2E3560;
+  --parchment:   #F5E9CC;
+  --parchment-d: #EDD9A3;
+  --cream:       #FDF6E3;
+  --latin-color: #6B1E0E;
+  --trans-color: #0F1D2E;
+  --border:      rgba(200,169,110,.35);
+  --font-title:  'Cinzel Decorative', 'Cinzel', Georgia, serif;
+  --font-sub:    'Cinzel', Georgia, serif;
+  --font-body:   'EB Garamond', Georgia, serif;
 }
 
-/* ──────────────────────────────────────────
-   BUCHKOPF
-────────────────────────────────────────── */
-.bhead{
-  background:
-    repeating-linear-gradient( 45deg,transparent,transparent 36px,rgba(200,160,48,.028) 36px,rgba(200,160,48,.028) 37px),
-    repeating-linear-gradient(-45deg,transparent,transparent 36px,rgba(200,160,48,.028) 36px,rgba(200,160,48,.028) 37px),
-    linear-gradient(162deg,#2C0810 0%,#4A1020 45%,#5C1828 65%,#4A1020 85%,#2C0810 100%);
-  padding:36px 28px 28px;
-  text-align:center;
-  border-bottom:4px solid #B8962E;
-  position:relative;overflow:hidden;
-}
-/* Innerer Rahmen — äußerer Ring */
-.bhead::before{
-  content:'';position:absolute;inset:14px;
-  border:1px solid rgba(200,160,48,.22);
-  pointer-events:none;
-}
-/* Innerer Rahmen — innerer Ring */
-.bhead::after{
-  content:'';position:absolute;inset:22px;
-  border:1px solid rgba(200,160,48,.08);
-  pointer-events:none;
-}
-.btestament{
-  display:inline-block;
-  border:1px solid rgba(200,160,48,.32);
-  color:rgba(200,160,48,.52);
-  font-family:'Cinzel',serif;font-size:.55rem;
-  letter-spacing:.3em;padding:4px 18px;
-  border-radius:2px;margin-bottom:16px;
-  position:relative;
-}
-.blatin{
-  font-family:'Cinzel Decorative',serif;
-  font-size:clamp(1.9rem,7vw,3.4rem);
-  color:#EDD882;
-  text-shadow:0 3px 20px rgba(0,0,0,.55);
-  letter-spacing:.06em;position:relative;
-}
-.btrans{
-  font-family:'Cinzel',serif;
-  font-size:.88rem;
-  color:#C8A030;margin-top:10px;
-  letter-spacing:.16em;position:relative;
-}
-.bmeta{
-  font-family:'Cinzel',serif;font-size:.62rem;
-  color:rgba(200,160,48,.4);margin-top:6px;
-  letter-spacing:.08em;position:relative;
-}
+*,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+html { font-size:16px; scroll-behavior:smooth; }
+body { background:var(--cream); color:var(--trans-color); font-family:var(--font-body); }
 
-/* ──────────────────────────────────────────
-   KAPITELINHALT
-────────────────────────────────────────── */
-.content{
-  max-width:960px;
-  margin:36px auto 36px;
-  padding:48px 72px 100px;
-  background:#FAF5E8;
+/* ── NAV ─────────────────────────────────────────────── */
+.nav-bar {
+  background:var(--navy); padding:10px 28px;
+  display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  border-bottom:2px solid var(--gold);
+  position:sticky; top:0; z-index:100;
+  box-shadow:0 3px 12px rgba(0,0,0,.45);
+}
+.nav-bar a {
+  color:var(--gold); text-decoration:none;
+  font-family:var(--font-sub); font-size:.75rem; letter-spacing:.05em;
+  transition:color .15s;
+}
+.nav-bar a:hover { color:var(--gold-light); }
+.nav-bar .home { font-weight:700; font-size:.82rem; }
+.nav-bar .spacer { flex:1; }
+.nav-bar .pos { color:rgba(200,169,110,.45); font-size:.7rem; font-family:var(--font-sub); }
+
+/* ── BUCHKOPF ────────────────────────────────────────── */
+.book-header {
+  background:linear-gradient(160deg,var(--navy) 0%,var(--navy-mid) 55%,var(--navy-light) 100%);
+  padding:44px 36px 34px; text-align:center;
+  border-bottom:4px solid var(--gold);
+  position:relative; overflow:hidden;
+}
+.book-header::before {
+  content:'';
+  position:absolute; inset:0;
   background-image:
-    radial-gradient(ellipse at top left,rgba(184,150,46,.06) 0%,transparent 55%),
-    radial-gradient(ellipse at bottom right,rgba(184,150,46,.05) 0%,transparent 55%);
-  box-shadow:0 8px 80px rgba(0,0,0,.55),0 2px 12px rgba(0,0,0,.35),inset 0 0 0 1px rgba(184,150,46,.18);
-  border-left:4px solid #B8962E;
-  border-right:4px solid #B8962E;
-  border-top:2px solid rgba(184,150,46,.4);
-  border-bottom:2px solid rgba(184,150,46,.4);
-  position:relative;
-}
-.content::before{
-  content:'';
-  position:absolute;
-  inset:12px;
-  border:1px solid rgba(184,150,46,.08);
+    repeating-linear-gradient( 45deg,transparent,transparent 30px,rgba(200,169,110,.038) 30px,rgba(200,169,110,.038) 31px),
+    repeating-linear-gradient(-45deg,transparent,transparent 30px,rgba(200,169,110,.038) 30px,rgba(200,169,110,.038) 31px);
   pointer-events:none;
 }
-
-.chap{margin-top:0;}
-
-.chhead{
-  text-align:center;
-  padding:40px 0 20px;
-  margin-bottom:16px;
-  position:relative;
+.testament-badge {
+  display:inline-block;
+  border:1px solid rgba(200,169,110,.4); color:rgba(200,169,110,.65);
+  font-family:var(--font-sub); font-size:.62rem; letter-spacing:.25em;
+  padding:4px 14px; border-radius:2px; margin-bottom:14px; position:relative;
 }
-.chhead::before{
-  content:'——— ✦ ✦ ✦ ———';
-  display:block;
-  font-size:.7rem;
-  color:rgba(184,150,46,.45);
-  letter-spacing:.35em;
-  margin-bottom:16px;
+.book-name-latin {
+  font-family:var(--font-title); font-size:3rem; color:var(--gold-light);
+  text-shadow:0 3px 18px rgba(0,0,0,.55); letter-spacing:.08em; position:relative;
 }
-.chhead::after{
-  content:'';
-  display:block;
-  width:200px;
-  height:1px;
-  margin:14px auto 0;
-  background:linear-gradient(to right,transparent,#B8962E,transparent);
+.book-name-trans {
+  font-family:var(--font-sub); font-size:1.1rem; color:var(--gold);
+  margin-top:8px; letter-spacing:.12em; position:relative;
 }
-.chrom{
-  font-family:'Cinzel Decorative',serif;
-  font-size:4rem;color:#8B6914;
-  display:block;
-  text-shadow:0 2px 18px rgba(184,150,46,.2);
-  line-height:1;
-}
-.chlbl{
-  font-family:'Cinzel',serif;font-size:.58rem;
-  color:rgba(184,150,46,.42);letter-spacing:.32em;
-  display:block;margin-top:8px;
+.book-meta {
+  font-size:.74rem; color:rgba(200,169,110,.5); margin-top:7px;
+  font-family:var(--font-sub); letter-spacing:.07em; position:relative;
 }
 
-/* ──────────────────────────────────────────
-   VERSE
-────────────────────────────────────────── */
-.vb{
-  display:flex;
-  padding:20px 6px;
-  border-bottom:1px solid rgba(184,150,46,.12);
-  background:none;
-  border-radius:2px;
-  transition:background .15s;
-}
-.vb:hover{
-  background:rgba(184,150,46,.04);
+/* ── ORNAMENT-TRENNLINIE ─────────────────────────────── */
+.ornament-bar {
+  text-align:center; padding:16px 0 4px;
+  color:var(--gold); font-size:1.1rem; letter-spacing:.7em;
 }
 
-/* Versnummer */
-.vn{
-  flex-shrink:0;
-  width:38px;
-  padding-top:4px;
-  font-family:'Cinzel',serif;font-size:.56rem;
-  color:rgba(184,150,46,.52);text-align:right;
-  padding-right:12px;line-height:2.4;
+/* ── HAUPT-CONTAINER ─────────────────────────────────── */
+.content { max-width:960px; margin:0 auto; padding:0 24px 80px; }
+
+/* ── KAPITEL-MARKER ──────────────────────────────────── */
+.chapter-marker {
+  display:flex; align-items:center; gap:16px;
+  padding:28px 6px 12px; margin-bottom:4px;
+  border-bottom:2px solid var(--border);
+}
+.ch-roman {
+  font-family:var(--font-title); font-size:2.2rem; color:var(--gold);
+  min-width:56px; text-align:center; flex-shrink:0;
+  text-shadow:0 1px 8px rgba(200,169,110,.3);
+}
+.ch-label {
+  font-family:var(--font-sub); font-size:.72rem; color:rgba(200,169,110,.6);
+  letter-spacing:.22em; text-transform:uppercase;
 }
 
-.vt{
-  flex:1;
-  padding:0 20px 0 4px;
+/* ── VERS-BLOCK ──────────────────────────────────────── */
+.verse-block {
+  display:flex; gap:0; border-bottom:1px solid rgba(200,169,110,.15);
+}
+.verse-block:nth-child(odd)  { background:var(--cream); }
+.verse-block:nth-child(even) { background:var(--parchment); }
+
+.verse-num-col {
+  flex-shrink:0; width:42px; padding:16px 6px 16px 0; text-align:right;
+}
+.verse-num {
+  display:inline-block; width:28px; height:28px; border-radius:50%;
+  background:var(--gold-dark); color:var(--cream);
+  font-family:var(--font-sub); font-size:.64rem; font-weight:700;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 1px 5px rgba(0,0,0,.25);
 }
 
-/* LATEIN — PRIMÄR: groß, warm, maßgebend */
-.lat{
-  font-family:'EB Garamond',serif;
-  font-size:1.2rem;
-  font-weight:500;
-  line-height:2.1;
-  color:#3D1A08;
+.verse-texts { flex:1; padding:16px 16px 18px 8px; }
+
+/* ── LATEINISCHER TEXT (oben / primär) ───────────────── */
+.latin {
+  font-family:var(--font-body); font-size:1.12rem; line-height:1.9;
+  color:var(--latin-color); font-weight:500;
+  border-left:3px solid var(--gold); padding-left:12px;
+  margin-bottom:8px;
 }
 
-/* ÜBERSETZUNG — SEKUNDÄR: kleiner, kursiv, unter dem Latein */
-.tra{
-  font-family:'EB Garamond',serif;
-  font-size:.93rem;
-  font-style:italic;
-  line-height:1.95;
-  color:#1E2848;
-  margin-top:5px;
-  padding-left:14px;
-  border-left:2px solid rgba(90,110,170,.2);
+/* ── ÜBERSETZUNGS-TEXT (unten / sekundär) ────────────── */
+.trans-label {
+  font-family:var(--font-sub); font-size:.6rem; letter-spacing:.17em;
+  text-transform:uppercase; color:var(--gold-dark); margin-bottom:5px; opacity:.78;
+}
+.trans {
+  font-family:var(--font-body); font-size:1.04rem; line-height:1.85;
+  color:var(--trans-color); font-style:italic;
+  padding-left:15px;
 }
 
-/* Drop-Cap: erster Vers eines Kapitels — auf dem Latein */
-.vb.first .lat::first-letter{
-  font-family:'Cinzel Decorative',serif;
-  font-size:4em;
-  float:left;
-  line-height:.7;
-  padding-right:.08em;
-  margin-top:.07em;
-  color:#B8962E;
-  text-shadow:1px 2px 6px rgba(0,0,0,.12);
+/* Erste Vers jedes Kapitels: Drop-Cap */
+.verse-block:first-of-type .latin::first-letter {
+  font-size:4.2em; float:left; line-height:.72;
+  padding-right:.08em; margin-top:.06em;
+  font-family:var(--font-title); color:var(--gold);
 }
 
-/* ──────────────────────────────────────────
-   BUCH-NAVIGATION (unten)
-────────────────────────────────────────── */
-.bnav{
-  display:flex;justify-content:space-between;align-items:center;
-  background:#2C0810;border-top:3px solid #B8962E;
-  padding:12px 24px;gap:12px;
+/* ── NAVIGATION ZWISCHEN BÜCHERN ─────────────────────── */
+.book-nav {
+  display:flex; justify-content:space-between; align-items:center;
+  background:var(--navy); border-top:3px solid var(--gold);
+  padding:12px 26px; gap:12px;
 }
-.bnav a,.bnav .dim{
-  color:#C8A030;text-decoration:none;
-  font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:.07em;
-  padding:6px 16px;
-  border:1px solid rgba(200,160,48,.28);
-  border-radius:2px;transition:background .18s;
+.book-nav a {
+  color:var(--gold); text-decoration:none;
+  font-family:var(--font-sub); font-size:.78rem; letter-spacing:.07em;
+  padding:6px 14px; border:1px solid rgba(200,169,110,.3); border-radius:3px;
+  transition:background .18s;
 }
-.bnav a:hover{background:rgba(200,160,48,.12);}
-.bnav .dim{color:rgba(200,160,48,.2);border-color:rgba(200,160,48,.1);}
-.bnav .center{
-  font-family:'Cinzel',serif;font-size:.68rem;
-  color:rgba(200,160,48,.65);text-align:center;
-  letter-spacing:.06em;text-decoration:none;
-  border:1px solid rgba(200,160,48,.28);border-radius:2px;
-  padding:6px 20px;transition:background .18s;
-}
-.bnav .center:hover{background:rgba(200,160,48,.1);}
-
-/* DRUCK */
-@media print{
-  .bnav{display:none;}
-  .bhead{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-  .vb{break-inside:avoid;}
+.book-nav a:hover { background:rgba(200,169,110,.15); }
+.book-nav .center {
+  font-family:var(--font-sub); font-size:.7rem; color:rgba(200,169,110,.55);
+  letter-spacing:.1em; text-align:center;
 }
 
-/* MOBIL */
-@media(max-width:600px){
-  .blatin{font-size:1.8rem;}
-  .lat{font-size:1rem;}
-  .tra{font-size:.84rem;}
-  .content{padding:16px 18px 60px;margin:0;border-left:none;border-right:none;border-radius:0;}
-  .chrom{font-size:1.8rem;}
+/* ── FUßZEILE ────────────────────────────────────────── */
+.page-footer {
+  background:var(--navy); border-top:2px solid rgba(200,169,110,.3);
+  padding:18px 28px; text-align:center;
+  color:rgba(200,169,110,.45); font-family:var(--font-sub);
+  font-size:.68rem; letter-spacing:.1em;
+}
+
+/* ── DRUCK ───────────────────────────────────────────── */
+@media print {
+  .nav-bar, .book-nav { display:none; }
+  .verse-block { break-inside:avoid; }
+  .book-header { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+}
+
+/* ── MOBIL ───────────────────────────────────────────── */
+@media (max-width:640px) {
+  .book-name-latin { font-size:2.1rem; }
+  .ch-roman { font-size:1.6rem; }
+  .latin { font-size:.98rem; }
+  .trans { font-size:.93rem; }
+  .content { padding:0 12px 60px; }
 }
 </style>
 </head>
 <body>
 
-<header class="bhead">
-  <div class="btestament">VETUS TESTAMENTUM</div>
-  <div class="blatin">AMOS</div>
-  <div class="btrans">Ámos &nbsp;&middot;&nbsp; <em>Čeština</em></div>
-  <div class="bmeta">9 Capita &nbsp;&middot;&nbsp; 147 Versus</div>
-</header>
+  <nav class="nav-bar">
+    <a class="home" href="../../../index.html">✞ BIBLIA CATHOLICA</a>
+    <a href="../index.html">🇨🇿 Čeština</a>
+    <span class="spacer"></span>
+    <span class="pos">030 / 066</span>
+  </nav>
 
-<main class="content">
-<section class="chap" id="c1">
-  <div class="chhead">
-    <span class="chrom">I</span>
-    <span class="chlbl">Caput 1</span>
-  </div>
-<div class="vb first" id="v1-1">
-  <span class="vn">1</span>
-  <div class="vt">
-    <p class="lat">Verba Amos, qui fuit in pastoribus de Thecue, quæ vidit super Israël in diebus Oziæ, regis Juda, et in diebus Jeroboam, filii Joas, regis Israël, ante duos annos terræmotus.</p>
-    <p class="tra">Slova Amosova, (kterýž byl mezi pastýři) z Tekoa, kteráž viděl o Izraelovi za dnů Uziáše krále Judského, a za dnů Jeroboáma syna Joasova, krále Izraelského, dvě létě před země třesením.</p>
-  </div>
-</div>
-<div class="vb" id="v1-2">
-  <span class="vn">2</span>
-  <div class="vt">
-    <p class="lat">Et dixit :   Dominus de Sion rugiet,  et de Jerusalem dabit vocem suam ;  et luxerunt speciosa pastorum,  et exsiccatus est vertex Carmeli.</p>
-    <p class="tra">I řekl: Hospodin řváti bude z Siona, a z Jeruzaléma vydá hlas svůj, i budou kvíliti salášové pastýřů, a vyschnou pole nejvýbornější.</p>
-  </div>
-</div>
-<div class="vb" id="v1-3">
-  <span class="vn">3</span>
-  <div class="vt">
-    <p class="lat">Hæc dicit Dominus :  Super tribus sceleribus Damasci,  et super quatuor non convertam eum,  eo quod trituraverint in plaustris ferreis Galaad.</p>
-    <p class="tra">Takto praví Hospodin: Pro troji nešlechetnost Damašku, ovšem pro čtveru neodpustím jemu, proto že mlátili Galáda cepami okovanými.</p>
-  </div>
-</div>
-<div class="vb" id="v1-4">
-  <span class="vn">4</span>
-  <div class="vt">
-    <p class="lat">Et mittam ignem in domum Azaël,  et devorabit domos Benadad.</p>
-    <p class="tra">Ale pošli oheň na dům Hazaelův, kterýžto zžíře paláce Benadadovy.</p>
-  </div>
-</div>
-<div class="vb" id="v1-5">
-  <span class="vn">5</span>
-  <div class="vt">
-    <p class="lat">Et conteram vectem Damasci :  et disperdam habitatorem de campo idoli,  et tenentem sceptrum de domo voluptatis :  et transferetur populus Syriæ Cyrenen,  dicit Dominus.</p>
-    <p class="tra">I polámi závoru Damašku, a vypléním obyvatele z údolí Aven, a toho, kterýž drží berlu, z domu Eden, i půjde v zajetí lid Syrský do Kir, dí Hospodin.</p>
-  </div>
-</div>
-<div class="vb" id="v1-6">
-  <span class="vn">6</span>
-  <div class="vt">
-    <p class="lat">Hæc dicit Dominus :  Super tribus sceleribus Gazæ,  et super quatuor non convertam eum,  eo quod transtulerint captivitatem perfectam,  ut concluderent eam in Idumæa.</p>
-    <p class="tra">Takto praví Hospodin: Pro troji nešlechetnost Gázy, ovšem pro čtveru neslituji se nad ním, proto že je zajímajíce, v zajetí věčné podrobovali Idumejským.</p>
-  </div>
-</div>
-<div class="vb" id="v1-7">
-  <span class="vn">7</span>
-  <div class="vt">
-    <p class="lat">Et mittam ignem in murum Gazæ,  et devorabit ædes ejus.</p>
-    <p class="tra">Ale pošli oheň na zed Gázy, kterýžto zžíře paláce její,</p>
-  </div>
-</div>
-<div class="vb" id="v1-8">
-  <span class="vn">8</span>
-  <div class="vt">
-    <p class="lat">Et disperdam habitatorem de Azoto,  et tenentem sceptrum de Ascalone :  et convertam manum meam super Accaron,  et peribunt reliqui Philisthinorum,  dicit Dominus Deus.</p>
-    <p class="tra">A vypléním obyvatele z Azotu, i toho, kterýž drží berlu, z Aškalon, a obrátím ruku svou proti Akaron, i zahyne ostatek Filistinských, praví Panovník Hospodin.</p>
-  </div>
-</div>
-<div class="vb" id="v1-9">
-  <span class="vn">9</span>
-  <div class="vt">
-    <p class="lat">Hæc dicit Dominus :  Super tribus sceleribus Tyri,  et super quatuor non convertam eum,  eo quod concluserint captivitatem perfectam in Idumæa,  et non sint recordati fœderis fratrum.</p>
-    <p class="tra">Takto praví Hospodin: Pro troji nešlechetnost Týru, ovšem pro čtveru neodpustím jemu, proto že je v zajetí věčné podrobili Idumejským, a nepamatovali na smlouvu bratrskou.</p>
-  </div>
-</div>
-<div class="vb" id="v1-10">
-  <span class="vn">10</span>
-  <div class="vt">
-    <p class="lat">Et mittam ignem in murum Tyri,  et devorabit ædes ejus.</p>
-    <p class="tra">Ale pošli oheň na zed Tyrskou, kterýžto zžíře paláce jeho.</p>
-  </div>
-</div>
-<div class="vb" id="v1-11">
-  <span class="vn">11</span>
-  <div class="vt">
-    <p class="lat">Hæc dicit Dominus :  Super tribus sceleribus Edom,  et super quatuor non convertam eum,  eo quod persecutus sit in gladio fratrem suum,  et violaverit misericordiam ejus,  et tenuerit ultra furorem suum,  et indignationem suam servaverit usque in finem.</p>
-    <p class="tra">Takto praví Hospodin: Pro troji nešlechetnost Edoma, ovšem pro čtveru neslituji se nad ním, proto že udusiv v sobě všecku lítostivost, stihá mečem bratra svého, a hněv jeho ustavičně rozsapává, anobrž vzteklost jeho špehuje bez přestání.</p>
-  </div>
-</div>
-<div class="vb" id="v1-12">
-  <span class="vn">12</span>
-  <div class="vt">
-    <p class="lat">Mittam ignem in Theman,  et devorabit ædes Bosræ.</p>
-    <p class="tra">Ale pošli oheň na Teman, kterýžto zžíře paláce v Bozra.</p>
-  </div>
-</div>
-<div class="vb" id="v1-13">
-  <span class="vn">13</span>
-  <div class="vt">
-    <p class="lat">Hæc dicit Dominus :  Super tribus sceleribus filiorum Ammon,  et super quatuor non convertam eum,  eo quod dissecuerit prægnantes Galaad  ad dilatandum terminum suum.</p>
-    <p class="tra">Toto praví Hospodin: Pro troji nešlechetnost synů Ammon, ovšem pro čtveru neodpustím jemu, proto že roztínali těhotné Galádské, jen aby rozšiřovali pomezí své.</p>
-  </div>
-</div>
-<div class="vb" id="v1-14">
-  <span class="vn">14</span>
-  <div class="vt">
-    <p class="lat">Et succendam ignem in muro Rabba,  et devorabit ædes ejus in ululatu in die belli,  et in turbine in die commotionis.</p>
-    <p class="tra">Ale zanítím oheň na zdi Rabba, kterýžto zžíře paláce její, s troubením v den boje a s bouří v den vichřice.</p>
-  </div>
-</div>
-<div class="vb" id="v1-15">
-  <span class="vn">15</span>
-  <div class="vt">
-    <p class="lat">Et ibit Melchom in captivitatem,  ipse et principes ejus simul,  dicit Dominus.</p>
-    <p class="tra">I půjde král jejich v zajetí, on i knížata jeho s ním, praví Hospodin.</p>
-  </div>
-</div>
-</section>
+  <header class="book-header">
+    <div class="testament-badge">VETUS TESTAMENTUM</div>
+    <div class="book-name-latin">AMOS</div>
+    <div class="book-name-trans">Amos</div>
+    <div class="book-meta">Vulgata Clementina · Bible Kralická (1613) · 9 Capita · 147 Versus</div>
+  </header>
 
-<section class="chap" id="c2">
-  <div class="chhead">
-    <span class="chrom">II</span>
-    <span class="chlbl">Caput 2</span>
-  </div>
-<div class="vb first" id="v2-1">
-  <span class="vn">1</span>
-  <div class="vt">
-    <p class="lat">Hæc dicit Dominus :  Super tribus sceleribus Moab,  et super quatuor non convertam eum,  eo quod incenderit ossa regis Idumææ usque ad cinerem.</p>
-    <p class="tra">Takto praví Hospodin: Pro troji nešlechetnost Moábovu, ovšem pro čtveru neodpustím jemu, proto že spálil kosti krále Idumejského na vápno.</p>
-  </div>
-</div>
-<div class="vb" id="v2-2">
-  <span class="vn">2</span>
-  <div class="vt">
-    <p class="lat">Et mittam ignem in Moab,  et devorabit ædes Carioth :  et morietur in sonitu Moab, in clangore tubæ.</p>
-    <p class="tra">Ale pošli oheň na Moába, kterýžto zžíře paláce Kariot, i umře s hlukem Moáb, s křikem a s hlasem trouby.</p>
-  </div>
-</div>
-<div class="vb" id="v2-3">
-  <span class="vn">3</span>
-  <div class="vt">
-    <p class="lat">Et disperdam judicem de medio ejus,  et omnes principes ejus interficiam cum eo,  dicit Dominus.</p>
-    <p class="tra">A vypléním soudce jeho, i všecka knížata jeho zmorduji s ním, praví Hospodin.</p>
-  </div>
-</div>
-<div class="vb" id="v2-4">
-  <span class="vn">4</span>
-  <div class="vt">
-    <p class="lat">Hæc dicit Dominus :  Super tribus sceleribus Juda,  et super quatuor non convertam eum,  eo quod abjecerit legem Domini  et mandata ejus non custodierit :  deceperant enim eos idola sua,  post quæ abierant patres eorum.</p>
-    <p class="tra">Takto praví Hospodin: Pro troji nešlechetnost Judovu, ovšem pro čtveru neslituji se nad ním, proto že oni pohrdají zákonem Hospodinovým, a ustanovení jeho neostříhají, a svodí se lžmi svými, jichž následovali otcové jejich.</p>
-  </div>
-</div>
-<div class="vb" id="v2-5">
-  <span class="vn">5</span>
-  <div class="vt">
-    <p class="lat">Et mittam ignem in Juda,  et devorabit ædes Jerusalem.</p>
-    <p class="tra">Ale pošli oheň na Judu, kterýžto zžíře paláce Jeruzalémské.</p>
-  </div>
-</div>
-<div class="vb" id="v2-6">
-  <span class="vn">6</span>
-  <div class="vt">
-    <p class="lat">Hæc dicit Dominus :  Super tribus sceleribus Israël,  et super quatuor non convertam eum,  pro eo quod vendiderit pro argento justum,  et pauperem pro calceamentis.</p>
-    <p class="tra">Takto praví Hospodin: Pro troji nešlechetnost Izraelovu, ovšem pro čtveru neodpustím jemu, proto že prodávají spravedlivého za peníze, a nuzného za pár střevíců.</p>
-  </div>
-</div>
-<div class="vb" id="v2-7">
-  <span class="vn">7</span>
-  <div class="vt">
-    <p class="lat">Qui conterunt super pulverem terræ capita pauperum,  et viam humilium declinant :  et filius ac pater ejus ierunt ad puellam,  ut violarent nomen sanctum meum.</p>
-    <p class="tra">Kteříž dychtí, aby chudé s prstí smísili, a cestu tichých převracejí; nadto syn i otec vcházejí k jedné a též mladici, aby poškvrnili jména svatosti mé.</p>
-  </div>
-</div>
-<div class="vb" id="v2-8">
-  <span class="vn">8</span>
-  <div class="vt">
-    <p class="lat">Et super vestimentis pignoratis accubuerunt juxta omne altare,  et vinum damnatorum bibebant in domo Dei sui.</p>
-    <p class="tra">A na oděvu zastaveném klanějí se při každém oltáři, a víno pokutovaných pijí v domě bohů svých,</p>
-  </div>
-</div>
-<div class="vb" id="v2-9">
-  <span class="vn">9</span>
-  <div class="vt">
-    <p class="lat">Ego autem exterminavi Amorrhæum a facie eorum,  cujus altitudo, cedrorum altitudo ejus,  et fortis ipse quasi quercus ;  et contrivi fructum ejus desuper,  et radices ejus subter.</p>
-    <p class="tra">Ješto jsem já vyhladil Amorejského od tváři jejich, jehož vysokost byla jako vysokost cedrů. Ačkoli pevně stál jako dub, však jsem zkazil svrchu ovoce jeho, pospodu pak kořeny jeho.</p>
-  </div>
-</div>
-<div class="vb" id="v2-10">
-  <span class="vn">10</span>
-  <div class="vt">
-    <p class="lat">Ego sum qui ascendere vos feci de terra Ægypti,  et duxi vos in deserto quadraginta annis,  ut possideretis terram Amorrhæi.</p>
-    <p class="tra">A vás já jsem vyvedl z země Egyptské, a vyvedl jsem vás po poušti čtyřidceti let, abyste dědičně vládli zemí Amorejského.</p>
-  </div>
-</div>
-<div class="vb" id="v2-11">
-  <span class="vn">11</span>
-  <div class="vt">
-    <p class="lat">Et suscitavi de filiis vestris in prophetas,  et de juvenibus vestris nazaræos.  Numquid non ita est, filii Israël ? dicit Dominus.</p>
-    <p class="tra">A vzbuzoval jsem z synů vašich proroky, a z mládenců vašich Nazarejské. Zdaliž není tak, ó synové Izraelští? praví Hospodin.</p>
-  </div>
-</div>
-<div class="vb" id="v2-12">
-  <span class="vn">12</span>
-  <div class="vt">
-    <p class="lat">Et propinabitis nazaræis vinum,  et prophetis mandabitis, dicentes :  Ne prophetetis.</p>
-    <p class="tra">Ale vy jste napájeli Nazarejské vínem, a prorokům jste zapovídali, řkouce: Neprorokujte.</p>
-  </div>
-</div>
-<div class="vb" id="v2-13">
-  <span class="vn">13</span>
-  <div class="vt">
-    <p class="lat">Ecce ego stridebo subter vos,  sicut stridet plaustrum onustum fœno.</p>
-    <p class="tra">Aj, já tlačiti budu zemi vaši tak, jako vůz těžký tlačí snopy.</p>
-  </div>
-</div>
-<div class="vb" id="v2-14">
-  <span class="vn">14</span>
-  <div class="vt">
-    <p class="lat">Et peribit fuga a veloce,  et fortis non obtinebit virtutem suam,  et robustus non salvabit animam suam :</p>
-    <p class="tra">I zahyne utíkání od rychlého, silný též neužive síly své, a udatný nevysvobodí života svého.</p>
-  </div>
-</div>
-<div class="vb" id="v2-15">
-  <span class="vn">15</span>
-  <div class="vt">
-    <p class="lat">et tenens arcum non stabit,  et velox pedibus suis non salvabitur,  et ascensor equi non salvabit animam suam :</p>
-    <p class="tra">A ten, kterýž se chápá lučiště, neostojí, a čerstvý na nohy své neuteče, a ten, kterýž jezdí na koni, nevysvobodí života svého.</p>
-  </div>
-</div>
-<div class="vb" id="v2-16">
-  <span class="vn">16</span>
-  <div class="vt">
-    <p class="lat">et robustus corde inter fortes nudus fugiet in illa die,  dicit Dominus.</p>
-    <p class="tra">Ale i zmužilého srdce mezi nejudatnějšími nahý utíkati bude v ten den, praví Hospodin.</p>
-  </div>
-</div>
-</section>
+  <div class="ornament-bar">❧ ✦ ❧ ✦ ❧</div>
 
-<section class="chap" id="c3">
-  <div class="chhead">
-    <span class="chrom">III</span>
-    <span class="chlbl">Caput 3</span>
-  </div>
-<div class="vb first" id="v3-1">
-  <span class="vn">1</span>
-  <div class="vt">
-    <p class="lat">Audite verbum quod locutus est Dominus super vos, filii Israël,  super omnem cognationem quam eduxi de terra Ægypti, dicens :</p>
-    <p class="tra">Slyšte slovo to, kteréž mluví Hospodin proti vám, synové Izraelští, proti vší té rodině, kterouž jsem vyvedl z země Egyptské, řka:</p>
-  </div>
-</div>
-<div class="vb" id="v3-2">
-  <span class="vn">2</span>
-  <div class="vt">
-    <p class="lat">Tantummodo vos cognovi ex omnibus cognationibus terræ ;  idcirco visitabo super vos omnes iniquitates vestras.</p>
-    <p class="tra">Toliko vás samy poznal jsem ze všeliké rodiny země, protož trestati vás budu ze všech nepravostí vašich.</p>
-  </div>
-</div>
-<div class="vb" id="v3-3">
-  <span class="vn">3</span>
-  <div class="vt">
-    <p class="lat">Numquid ambulabunt duo pariter,  nisi convenerit eis ?</p>
-    <p class="tra">Zdaliž půjdou dva spolu, leč by se snesli?</p>
-  </div>
-</div>
-<div class="vb" id="v3-4">
-  <span class="vn">4</span>
-  <div class="vt">
-    <p class="lat">numquid rugiet leo in saltu,  nisi habuerit prædam ?  numquid dabit catulus leonis vocem de cubili suo,  nisi aliquid apprehenderit ?</p>
-    <p class="tra">Zdaliž zařve lev v lese, když by nebylo žádné loupeže? Vydá-liž lvíček hlas svůj z peleše své, kdyby lapiti neměl?</p>
-  </div>
-</div>
-<div class="vb" id="v3-5">
-  <span class="vn">5</span>
-  <div class="vt">
-    <p class="lat">numquid cadet avis in laqueum terræ  absque aucupe ?  numquid auferetur laqueus de terra  antequam quid ceperit ?</p>
-    <p class="tra">Padne-liž ptáče do osídla na zem, když by žádné léčky nebylo? Bude-liž zdviženo osídlo z země, když by nic neuvázlo?</p>
-  </div>
-</div>
-<div class="vb" id="v3-6">
-  <span class="vn">6</span>
-  <div class="vt">
-    <p class="lat">si clanget tuba in civitate,  et populus non expavescet ?  si erit malum in civitate,  quod Dominus non fecerit ?</p>
-    <p class="tra">Zdaliž když se troubí trubou v městě, lid s strachem se nezbíhá? Zdaž když se má státi v městě co zlého, Hospodin toho známa nečiní?</p>
-  </div>
-</div>
-<div class="vb" id="v3-7">
-  <span class="vn">7</span>
-  <div class="vt">
-    <p class="lat">Quia non facit Dominus Deus verbum,  nisi revelaverit secretum suum ad servos suos prophetas.</p>
-    <p class="tra">Nečiníť zajisté Panovník Hospodin ničeho, leč by zjevil tajemství své služebníkům svým prorokům.</p>
-  </div>
-</div>
-<div class="vb" id="v3-8">
-  <span class="vn">8</span>
-  <div class="vt">
-    <p class="lat">Leo rugiet, quis non timebit ?  Dominus Deus locutus est, quis non prophetabit ?</p>
-    <p class="tra">Lev řve, kdož by se nebál? Panovník Hospodin velí, kdož by neprorokoval?</p>
-  </div>
-</div>
-<div class="vb" id="v3-9">
-  <span class="vn">9</span>
-  <div class="vt">
-    <p class="lat">Auditum facite in ædibus Azoti,  et in ædibus terræ Ægypti,  et dicite : Congregamini super montes Samariæ,  et videte insanias multas in medio ejus,  et calumniam patientes in penetralibus ejus.</p>
-    <p class="tra">Rozhlaste po palácích v Azotu, a po palácích v zemi Egyptské, a rcete: Sbeřte se na hory Samaří, a vizte znepokojení veliká u prostřed něho a nátisk trpící v něm,</p>
-  </div>
-</div>
-<div class="vb" id="v3-10">
-  <span class="vn">10</span>
-  <div class="vt">
-    <p class="lat">Et nescierunt facere rectum, dicit Dominus,  thesaurizantes iniquitatem et rapinas in ædibus suis.</p>
-    <p class="tra">A že neumějí dělati upřímě, dí Hospodin. Poklady skládají z nátisku a loupeže na palácích svých.</p>
-  </div>
-</div>
-<div class="vb" id="v3-11">
-  <span class="vn">11</span>
-  <div class="vt">
-    <p class="lat">Propterea hæc dicit Dominus Deus :  Tribulabitur et circuietur terra :  et detrahetur ex te fortitudo tua,  et diripientur ædes tuæ.</p>
-    <p class="tra">Protož takto praví Panovník Hospodin: Aj, nepřítel, a to na zemi tuto vůkol, a tenť odejme od tebe sílu tvou, i budou rozchvátáni palácové tvoji.</p>
-  </div>
-</div>
-<div class="vb" id="v3-12">
-  <span class="vn">12</span>
-  <div class="vt">
-    <p class="lat">Hæc dicit Dominus :  Quomodo si eruat pastor de ore leonis  duo crura, aut extremum auriculæ,  sic eruentur filii Israël, qui habitant in Samaria  in plaga lectuli, et in Damasci grabato.</p>
-    <p class="tra">Takto praví Hospodin: Jako když vytrhne pastýř z úst lva dva hnáty aneb kus ucha, tak vytrženi budou synové Izraelští, sedící v Samaří lhostejně na postelích, a na ložcích rozkošných.</p>
-  </div>
-</div>
-<div class="vb" id="v3-13">
-  <span class="vn">13</span>
-  <div class="vt">
-    <p class="lat">Audite, et contestamini in domo Jacob,  dicit Dominus Deus exercituum ;</p>
-    <p class="tra">Slyšte a osvědčte v domě Jákobově, dí Panovník Hospodin, Bůh zástupů,</p>
-  </div>
-</div>
-<div class="vb" id="v3-14">
-  <span class="vn">14</span>
-  <div class="vt">
-    <p class="lat">quia in die cum visitare cœpero prævaricationes Israël,  super eum visitabo, et super altaria Bethel ;  et amputabuntur cornua altaris, et cadent in terram.</p>
-    <p class="tra">Že v ten den, když Izraele trestati budu pro přestoupení jeho, navštívím také oltáře v Bethel, a odťati budou rohové oltáře, tak že spadnou na zem.</p>
-  </div>
-</div>
-<div class="vb" id="v3-15">
-  <span class="vn">15</span>
-  <div class="vt">
-    <p class="lat">Et percutiam domum hiemalem cum domo æstiva,  et peribunt domus eburneæ,  et dissipabuntur ædes multæ,  dicit Dominus.</p>
-    <p class="tra">A udeřím domem zimním o dům letní, i zahynou domové z kostí slonových, a konec vezmou domové velicí, praví Hospodin.</p>
-  </div>
-</div>
-</section>
+  <main class="content">
 
-<section class="chap" id="c4">
-  <div class="chhead">
-    <span class="chrom">IV</span>
-    <span class="chlbl">Caput 4</span>
-  </div>
-<div class="vb first" id="v4-1">
-  <span class="vn">1</span>
-  <div class="vt">
-    <p class="lat">Audite verbum hoc, vaccæ pingues,  quæ estis in monte Samariæ,  quæ calumniam facitis egenis  et confringitis pauperes ;  quæ dicitis dominis vestris : Afferte, et bibemus.</p>
-    <p class="tra">Slyšte slovo toto, ó krávy Bázanské, kteréž jste na horách Samařských, kteréž nátisk činíte chudým, a potíráte nuzné, kteréž říkáte pánům jejich: Přineste, ať pijeme.</p>
-  </div>
-</div>
-<div class="vb" id="v4-2">
-  <span class="vn">2</span>
-  <div class="vt">
-    <p class="lat">Juravit Dominus Deus in sancto suo,  quia ecce dies venient super vos,  et levabunt vos in contis,  et reliquias vestras in ollis ferventibus.</p>
-    <p class="tra">Přisáhl Panovník Hospodin skrze svatost svou, že aj, dnové jdou na vás, v nichž vezme vás na háky, a potomky vaše na udice rybářské.</p>
-  </div>
-</div>
-<div class="vb" id="v4-3">
-  <span class="vn">3</span>
-  <div class="vt">
-    <p class="lat">Et per aperturas exibitis altera contra alteram,  et projiciemini in Armon,  dicit Dominus.</p>
-    <p class="tra">I vyjdete mezerami, každá tak, jakž stojí, a budete rozhazovati, což na palácích, dí Hospodin.</p>
-  </div>
-</div>
-<div class="vb" id="v4-4">
-  <span class="vn">4</span>
-  <div class="vt">
-    <p class="lat">Venite ad Bethel, et impie agite ;  ad Galgalam, et multiplicate prævaricationem :  et afferte mane victimas vestras,  tribus diebus decimas vestras.</p>
-    <p class="tra">Jdětež do Bethel, a buďtež poběhlci Galgala, rozmnožujte převrácenost, a přinášejte každého jitra oběti své, třetího roku desátky své.</p>
-  </div>
-</div>
-<div class="vb" id="v4-5">
-  <span class="vn">5</span>
-  <div class="vt">
-    <p class="lat">Et sacrificate de fermentato laudem,  et vocate voluntarias oblationes, et annuntiate ;  sic enim voluistis, filii Israël,  dicit Dominus Deus.</p>
-    <p class="tra">A pálíce obět chvály z kvašených věcí, provolejte i oběti dobrovolné, a rozhlaste, poněvadž se vám tak líbí, ó synové Izraelští, dí Panovník Hospodin.</p>
-  </div>
-</div>
-<div class="vb" id="v4-6">
-  <span class="vn">6</span>
-  <div class="vt">
-    <p class="lat">Unde et ego dedi vobis stuporem dentium in cunctis urbibus vestris,  et indigentiam panum in omnibus locis vestris ;  et non estis reversi ad me,  dicit Dominus.</p>
-    <p class="tra">A ačkoli já dal jsem vám čistotu zubů po všech městech vašich, totiž nedostatek chleba na všech místech vašich, a však jste se ke mně neobrátili, dí Hospodin.</p>
-  </div>
-</div>
-<div class="vb" id="v4-7">
-  <span class="vn">7</span>
-  <div class="vt">
-    <p class="lat">Ego quoque prohibui a vobis imbrem,  cum adhuc tres menses superessent usque ad messem :  et plui super unam civitatem,  et super alteram civitatem non plui ;  pars una compluta est,  et pars super quam non plui, aruit.</p>
-    <p class="tra">Já také zadržel jsem vám déšť, když ještě tři měsícové byli do žně, a dštil jsem na jedno město, a na druhé město jsem nedštil; jeden díl deštěm svlažen byl, a ten díl, na kterýž nepršelo, uschl.</p>
-  </div>
-</div>
-<div class="vb" id="v4-8">
-  <span class="vn">8</span>
-  <div class="vt">
-    <p class="lat">Et venerunt duæ et tres civitates ad unam civitatem  ut biberent aquam, et non sunt satiatæ ;  et non redistis ad me,  dicit Dominus.</p>
-    <p class="tra">A toulali se dvě i tři města k jednomu městu, aby se napili vody, aniž se napiti mohli, a však jste se neobrátili ke mně, dí Hospodin.</p>
-  </div>
-</div>
-<div class="vb" id="v4-9">
-  <span class="vn">9</span>
-  <div class="vt">
-    <p class="lat">Percussi vos in vento urente, et in aurugine :  multitudinem hortorum vestrorum et vinearum vestrarum,  oliveta vestra et ficeta vestra comedit eruca :  et non redistis ad me,  dicit Dominus.</p>
-    <p class="tra">Bil jsem vás suchem a rzí; hojnost, kterouž přinášely zahrady vaše a vinice vaše, i fíkoví vaše, i olivoví vaše, pojedly housenky, a však jste se neobrátili ke mně, dí Hospodin.</p>
-  </div>
-</div>
-<div class="vb" id="v4-10">
-  <span class="vn">10</span>
-  <div class="vt">
-    <p class="lat">Misi in vos mortem in via Ægypti ;  percussi in gladio juvenes vestros,  usque ad captivitatem equorum vestrorum,  et ascendere feci putredinem castrorum vestrorum in nares vestras :  et non redistis ad me,  dicit Dominus.</p>
-    <p class="tra">Poslal jsem na vás mor tak jako na Egypt, zbil jsem mečem mládence vaše, v zajetí jsem vydal koně vaše, a učinil jsem, že vstupoval smrad vojsk vašich i v chřípě vaše, a však jste se neobrátili ke mně, dí Hospodin.</p>
-  </div>
-</div>
-<div class="vb" id="v4-11">
-  <span class="vn">11</span>
-  <div class="vt">
-    <p class="lat">Subverti vos sicut subvertit Deus Sodomam et Gomorrham,  et facti estis quasi torris raptus ab incendio :  et non redistis ad me,  dicit Dominus.</p>
-    <p class="tra">Podvrátil jsem vás, jako podvrátil Bůh Sodomu a Gomoru, tak že jste byli jako hlavně vychvácená z ohně, vždy však neobrátili jste se ke mně, dí Hospodin.</p>
-  </div>
-</div>
-<div class="vb" id="v4-12">
-  <span class="vn">12</span>
-  <div class="vt">
-    <p class="lat">Quapropter hæc faciam tibi, Israël :  postquam autem hæc fecero tibi,  præparare in occursum Dei tui, Israël.</p>
-    <p class="tra">A protož takť učiním, ó Izraeli, a poněvadž takť učiniti míním, připraviž se vstříc Bohu svému, ó Izraeli.</p>
-  </div>
-</div>
-<div class="vb" id="v4-13">
-  <span class="vn">13</span>
-  <div class="vt">
-    <p class="lat">Quia ecce formans montes,  et creans ventum,  et annuntians homini eloquium suum,  faciens matutinam nebulam,  et gradiens super excelsa terræ :  Dominus Deus exercituum nomen ejus.</p>
-    <p class="tra">Nebo aj, on jest sformovatel hor a stvořitel větrů, a oznamuje člověku, jaké by bylo jeho myšlení; činí z záře jitřní tmu, a šlapá po vysokostech země. Hospodin Bůh zástupů jest jméno jeho.</p>
-  </div>
-</div>
-</section>
+  <section class="chapter" id="ch1">
+    <div class="chapter-marker">
+      <span class="ch-roman">I</span>
+      <span class="ch-label">Caput 1</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v1-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Verba Amos, qui fuit in pastoribus de Thecue, quæ vidit super Israël in diebus Oziæ, regis Juda, et in diebus Jeroboam, filii Joas, regis Israël, ante duos annos terræmotus.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Slova Amosova, (kterýž byl mezi pastýři) z Tekoa, kteráž viděl o Izraelovi za dnů Uziáše krále Judského, a za dnů Jeroboáma syna Joasova, krále Izraelského, dvě létě před země třesením.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et dixit :   Dominus de Sion rugiet,  et de Jerusalem dabit vocem suam ;  et luxerunt speciosa pastorum,  et exsiccatus est vertex Carmeli.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">I řekl: Hospodin řváti bude z Siona, a z Jeruzaléma vydá hlas svůj, i budou kvíliti salášové pastýřů, a vyschnou pole nejvýbornější.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hæc dicit Dominus :  Super tribus sceleribus Damasci,  et super quatuor non convertam eum,  eo quod trituraverint in plaustris ferreis Galaad.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Takto praví Hospodin: Pro troji nešlechetnost Damašku, ovšem pro čtveru neodpustím jemu, proto že mlátili Galáda cepami okovanými.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et mittam ignem in domum Azaël,  et devorabit domos Benadad.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Ale pošli oheň na dům Hazaelův, kterýžto zžíře paláce Benadadovy.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et conteram vectem Damasci :  et disperdam habitatorem de campo idoli,  et tenentem sceptrum de domo voluptatis :  et transferetur populus Syriæ Cyrenen,  dicit Dominus.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">I polámi závoru Damašku, a vypléním obyvatele z údolí Aven, a toho, kterýž drží berlu, z domu Eden, i půjde v zajetí lid Syrský do Kir, dí Hospodin.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hæc dicit Dominus :  Super tribus sceleribus Gazæ,  et super quatuor non convertam eum,  eo quod transtulerint captivitatem perfectam,  ut concluderent eam in Idumæa.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Takto praví Hospodin: Pro troji nešlechetnost Gázy, ovšem pro čtveru neslituji se nad ním, proto že je zajímajíce, v zajetí věčné podrobovali Idumejským.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et mittam ignem in murum Gazæ,  et devorabit ædes ejus.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Ale pošli oheň na zed Gázy, kterýžto zžíře paláce její,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et disperdam habitatorem de Azoto,  et tenentem sceptrum de Ascalone :  et convertam manum meam super Accaron,  et peribunt reliqui Philisthinorum,  dicit Dominus Deus.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">A vypléním obyvatele z Azotu, i toho, kterýž drží berlu, z Aškalon, a obrátím ruku svou proti Akaron, i zahyne ostatek Filistinských, praví Panovník Hospodin.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hæc dicit Dominus :  Super tribus sceleribus Tyri,  et super quatuor non convertam eum,  eo quod concluserint captivitatem perfectam in Idumæa,  et non sint recordati fœderis fratrum.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Takto praví Hospodin: Pro troji nešlechetnost Týru, ovšem pro čtveru neodpustím jemu, proto že je v zajetí věčné podrobili Idumejským, a nepamatovali na smlouvu bratrskou.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et mittam ignem in murum Tyri,  et devorabit ædes ejus.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Ale pošli oheň na zed Tyrskou, kterýžto zžíře paláce jeho.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hæc dicit Dominus :  Super tribus sceleribus Edom,  et super quatuor non convertam eum,  eo quod persecutus sit in gladio fratrem suum,  et violaverit misericordiam ejus,  et tenuerit ultra furorem suum,  et indignationem suam servaverit usque in finem.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Takto praví Hospodin: Pro troji nešlechetnost Edoma, ovšem pro čtveru neslituji se nad ním, proto že udusiv v sobě všecku lítostivost, stihá mečem bratra svého, a hněv jeho ustavičně rozsapává, anobrž vzteklost jeho špehuje bez přestání.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Mittam ignem in Theman,  et devorabit ædes Bosræ.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Ale pošli oheň na Teman, kterýžto zžíře paláce v Bozra.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hæc dicit Dominus :  Super tribus sceleribus filiorum Ammon,  et super quatuor non convertam eum,  eo quod dissecuerit prægnantes Galaad  ad dilatandum terminum suum.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Toto praví Hospodin: Pro troji nešlechetnost synů Ammon, ovšem pro čtveru neodpustím jemu, proto že roztínali těhotné Galádské, jen aby rozšiřovali pomezí své.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et succendam ignem in muro Rabba,  et devorabit ædes ejus in ululatu in die belli,  et in turbine in die commotionis.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Ale zanítím oheň na zdi Rabba, kterýžto zžíře paláce její, s troubením v den boje a s bouří v den vichřice.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et ibit Melchom in captivitatem,  ipse et principes ejus simul,  dicit Dominus.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">I půjde král jejich v zajetí, on i knížata jeho s ním, praví Hospodin.</div>
+      </div>
+    </div>
+  </section>
 
-<section class="chap" id="c5">
-  <div class="chhead">
-    <span class="chrom">V</span>
-    <span class="chlbl">Caput 5</span>
-  </div>
-<div class="vb first" id="v5-1">
-  <span class="vn">1</span>
-  <div class="vt">
-    <p class="lat">Audite verbum istud,  quod ego levo super vos planctum :  domus Israël cecidit,  et non adjiciet ut resurgat.</p>
-    <p class="tra">Slyšte slovo toto, kteréž já vynáším proti vám, totiž naříkání nad domem Izraelským.</p>
-  </div>
-</div>
-<div class="vb" id="v5-2">
-  <span class="vn">2</span>
-  <div class="vt">
-    <p class="lat">Virgo Israël projecta est in terram suam,  non est qui suscitet eam.</p>
-    <p class="tra">Padneť, aniž více povstane panna Izraelská; opuštěna bude v zemi své, nebude žádného, kdo by jí pozdvihl.</p>
-  </div>
-</div>
-<div class="vb" id="v5-3">
-  <span class="vn">3</span>
-  <div class="vt">
-    <p class="lat">Quia hæc dicit Dominus Deus :  Urbs de qua egrediebantur mille,  relinquentur in ea centum ;  et de qua egrediebantur centum,  relinquentur in ea decem in domo Israël.</p>
-    <p class="tra">Nebo takto praví Panovník Hospodin: V městě, z kteréhož vycházelo tisíc, zůstane sto, v tom pak, z kteréhož vycházelo sto, zůstane deset domu Izraelskému.</p>
-  </div>
-</div>
-<div class="vb" id="v5-4">
-  <span class="vn">4</span>
-  <div class="vt">
-    <p class="lat">Quia hæc dicit Dominus domui Israël :  Quærite me, et vivetis.</p>
-    <p class="tra">Nebo takto praví Hospodin domu Izraelskému: Hledejte mne a živi buďte.</p>
-  </div>
-</div>
-<div class="vb" id="v5-5">
-  <span class="vn">5</span>
-  <div class="vt">
-    <p class="lat">Et nolite quærere Bethel,  et in Galgalam nolite intrare,  et in Bersabee non transibitis,  quia Galgala captiva ducetur,  et Bethel erit inutilis.</p>
-    <p class="tra">A nehledejte Bethel, aniž choďte do Galgala, a do Bersabé se nesmýkejte; nebo Galgal jistotně se přestěhuje, a Bethel přijde na nic.</p>
-  </div>
-</div>
-<div class="vb" id="v5-6">
-  <span class="vn">6</span>
-  <div class="vt">
-    <p class="lat">Quærite Dominum, et vivite  (ne forte comburatur ut ignis domus Joseph, et devorabit,  et non erit qui extinguat Bethel :</p>
-    <p class="tra">Hledejte Hospodina, (a živi buďte, aby nepronikl jako oheň domu Jozefova, a nesehltil, a nebylo by žádného, kdo by uhasil Bethelské,</p>
-  </div>
-</div>
-<div class="vb" id="v5-7">
-  <span class="vn">7</span>
-  <div class="vt">
-    <p class="lat">qui convertitis in absinthium judicium,  et justitiam in terra relinquitis) :</p>
-    <p class="tra">Kteříž proměňují v pelynek soud, a spravedlnosti na zemi zanechávají,)</p>
-  </div>
-</div>
-<div class="vb" id="v5-8">
-  <span class="vn">8</span>
-  <div class="vt">
-    <p class="lat">facientem Arcturum et Orionem,  et convertentem in mane tenebras,  et diem in noctem mutantem ;  qui vocat aquas maris,  et effundit eas super faciem terræ ;  Dominus nomen est ejus :</p>
-    <p class="tra">Toho, kterýž učinil Kuřátka i Oriona, kterýž proměňuje stín smrti v jitro, a den v temnosti noční, kterýž přivolává vody mořské, a vylévá je na svrchek země, jehož jméno jest Hospodin,</p>
-  </div>
-</div>
-<div class="vb" id="v5-9">
-  <span class="vn">9</span>
-  <div class="vt">
-    <p class="lat">qui subridet vastitatem super robustum,  et depopulationem super potentem affert.</p>
-    <p class="tra">Kterýž očerstvuje zemdleného proti silnému, tak že zemdlený do pevnosti vchází.</p>
-  </div>
-</div>
-<div class="vb" id="v5-10">
-  <span class="vn">10</span>
-  <div class="vt">
-    <p class="lat">Odio habuerunt corripientem in porta,  et loquentem perfecte abominati sunt.</p>
-    <p class="tra">Nenávidí trescícího v bráně, a toho, kdož mluví věci pravé, v ohavnosti mají.</p>
-  </div>
-</div>
-<div class="vb" id="v5-11">
-  <span class="vn">11</span>
-  <div class="vt">
-    <p class="lat">Idcirco, pro eo quod diripiebatis pauperem,  et prædam electam tollebatis ab eo,  domos quadro lapide ædificabitis,  et non habitabitis in eis ;  vineas plantabis amantissimas,  et non bibetis vinum earum.</p>
-    <p class="tra">A protož, proto že loupíte chudého, a břímě obilé béřete od něho, domů z tesaného kamení nastavěli jste, ale nebudete bydliti v nich; vinic výborných naštěpovali jste, ale nebudete píti vína z nich.</p>
-  </div>
-</div>
-<div class="vb" id="v5-12">
-  <span class="vn">12</span>
-  <div class="vt">
-    <p class="lat">Quia cognovi multa scelera vestra,  et fortia peccata vestra :  hostes justi, accipientes munus,  et pauperes deprimentes in porta.</p>
-    <p class="tra">Nebo já vím o mnohých nešlechetnostech vašich a velikých hříších vašich, že trápíte spravedlivého, berouce poctu, a nuzných při v bráně převracíte.</p>
-  </div>
-</div>
-<div class="vb" id="v5-13">
-  <span class="vn">13</span>
-  <div class="vt">
-    <p class="lat">Ideo prudens in tempore illo tacebit,  quia tempus malum est.</p>
-    <p class="tra">Protož rozumný v ten čas mlčeti musí, nebo čas ten zlý jest.</p>
-  </div>
-</div>
-<div class="vb" id="v5-14">
-  <span class="vn">14</span>
-  <div class="vt">
-    <p class="lat">Quærite bonum, et non malum, ut vivatis ;  et erit Dominus Deus exercituum vobiscum, sicut dixistis.</p>
-    <p class="tra">Hledejte dobrého a ne zlého, abyste živi byli, a budeť tak Hospodin Bůh zástupů s vámi, jakž pravíte.</p>
-  </div>
-</div>
-<div class="vb" id="v5-15">
-  <span class="vn">15</span>
-  <div class="vt">
-    <p class="lat">Odite malum et diligite bonum,  et constituite in porta judicium :  si forte misereatur Dominus Deus exercituum reliquiis Joseph.</p>
-    <p class="tra">Mějte v nenávisti zlé, a milujte dobré, a ustanovte v bráně soud; snad Hospodin Bůh zástupů milost učiní ostatkům Jozefovým.</p>
-  </div>
-</div>
-<div class="vb" id="v5-16">
-  <span class="vn">16</span>
-  <div class="vt">
-    <p class="lat">Propterea hæc dicit Dominus Deus exercituum, dominator :  In omnibus plateis planctus ;  et in cunctis quæ foris sunt, dicetur : Væ, væ !  et vocabunt agricolam ad luctum,  et ad planctum eos qui sciunt plangere.</p>
-    <p class="tra">Protož takto praví Panovník Hospodin, Bůh zástupů: Po všech ulicích bude kvílení, a na všecky strany zkřiknou: Ouvech, ouvech, a povolají oráče k pláči a kvílení s těmi, kteříž umějí naříkati.</p>
-  </div>
-</div>
-<div class="vb" id="v5-17">
-  <span class="vn">17</span>
-  <div class="vt">
-    <p class="lat">Et in omnibus vineis erit planctus,  quia pertransibo in medio tui,  dicit Dominus.</p>
-    <p class="tra">Nýbrž i po všech vinicích bude kvílení, když projdu prostředkem tebe, dí Hospodin.</p>
-  </div>
-</div>
-<div class="vb" id="v5-18">
-  <span class="vn">18</span>
-  <div class="vt">
-    <p class="lat">Væ desiderantibus diem Domini !  ad quid eam vobis ?  Dies Domini ista, tenebræ, et non lux.</p>
-    <p class="tra">Běda těm, kteříž žádají dne Hospodinova. K čemuž jest vám ten den Hospodinův, poněvadž jest tmy a ne světla?</p>
-  </div>
-</div>
-<div class="vb" id="v5-19">
-  <span class="vn">19</span>
-  <div class="vt">
-    <p class="lat">Quomodo si fugiat vir a facie leonis,  et occurrat ei ursus ;  et ingrediatur domum, et innitatur manu sua super parietem,  et mordeat eum coluber.</p>
-    <p class="tra">Jako když by někdo utíkal před lvem, potkal by se s ním nedvěd; aneb když by všel do domu, a zpolehna rukou svou na stěnu, ušťkl by ho had.</p>
-  </div>
-</div>
-<div class="vb" id="v5-20">
-  <span class="vn">20</span>
-  <div class="vt">
-    <p class="lat">Numquid non tenebræ dies Domini, et non lux ;  et caligo, et non splendor in ea ?</p>
-    <p class="tra">Zdali není tmy a ne světla den Hospodinův, v němž není blesku, ale mrákota?</p>
-  </div>
-</div>
-<div class="vb" id="v5-21">
-  <span class="vn">21</span>
-  <div class="vt">
-    <p class="lat">Odi, et projeci festivitates vestras,  et non capiam odorem cœtuum vestrorum.</p>
-    <p class="tra">Nenávidím, zavrhl jsem svátky vaše, aniž sobě chutnám slavností vašich.</p>
-  </div>
-</div>
-<div class="vb" id="v5-22">
-  <span class="vn">22</span>
-  <div class="vt">
-    <p class="lat">Quod si obtuleritis mihi holocautomata, et munera vestra,  non suscipiam ;  et vota pinguium vestrorum non respiciam.</p>
-    <p class="tra">Nebo budete-li mi obětovati zápaly a suché oběti vaše, neoblíbím jich, a na pokojné oběti krmného dobytka vašeho nepopatřím.</p>
-  </div>
-</div>
-<div class="vb" id="v5-23">
-  <span class="vn">23</span>
-  <div class="vt">
-    <p class="lat">Aufer a me tumultum carminum tuorum ;  et cantica lyræ tuæ non audiam.</p>
-    <p class="tra">Odejmi ode mne hluk písní svých, ani hudby louten vašich nechci poslouchati.</p>
-  </div>
-</div>
-<div class="vb" id="v5-24">
-  <span class="vn">24</span>
-  <div class="vt">
-    <p class="lat">Et revelabitur quasi aqua judicium,  et justitia quasi torrens fortis.</p>
-    <p class="tra">Ale povalí se jako voda soud, a spravedlnost jako potok silný.</p>
-  </div>
-</div>
-<div class="vb" id="v5-25">
-  <span class="vn">25</span>
-  <div class="vt">
-    <p class="lat">Numquid hostias et sacrificium obtulistis mihi  in deserto quadraginta annis, domus Israël ?</p>
-    <p class="tra">Zdali jste mně oběti a dary obětovali na poušti za čtyřidceti let, dome Izraelský?</p>
-  </div>
-</div>
-<div class="vb" id="v5-26">
-  <span class="vn">26</span>
-  <div class="vt">
-    <p class="lat">et portastis tabernaculum Moloch vestro,  et imaginem idolorum vestrorum, sidus dei vestri,  quæ fecistis vobis.</p>
-    <p class="tra">Nýbrž nosili jste stánek Melecha vašeho a Kijuna, obrazy vaše, hvězdu boha vašeho, kteréžto věci sami jste sobě zdělali.</p>
-  </div>
-</div>
-<div class="vb" id="v5-27">
-  <span class="vn">27</span>
-  <div class="vt">
-    <p class="lat">Et migrare vos faciam trans Damascum, dicit Dominus :  Deus exercituum nomen ejus.</p>
-    <p class="tra">Protož přestěhuji vás dále než Damašské, praví Hospodin, jehož jméno jest Bůh zástupů.</p>
-  </div>
-</div>
-</section>
+  <section class="chapter" id="ch2">
+    <div class="chapter-marker">
+      <span class="ch-roman">II</span>
+      <span class="ch-label">Caput 2</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v2-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hæc dicit Dominus :  Super tribus sceleribus Moab,  et super quatuor non convertam eum,  eo quod incenderit ossa regis Idumææ usque ad cinerem.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Takto praví Hospodin: Pro troji nešlechetnost Moábovu, ovšem pro čtveru neodpustím jemu, proto že spálil kosti krále Idumejského na vápno.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et mittam ignem in Moab,  et devorabit ædes Carioth :  et morietur in sonitu Moab, in clangore tubæ.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Ale pošli oheň na Moába, kterýžto zžíře paláce Kariot, i umře s hlukem Moáb, s křikem a s hlasem trouby.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et disperdam judicem de medio ejus,  et omnes principes ejus interficiam cum eo,  dicit Dominus.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">A vypléním soudce jeho, i všecka knížata jeho zmorduji s ním, praví Hospodin.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hæc dicit Dominus :  Super tribus sceleribus Juda,  et super quatuor non convertam eum,  eo quod abjecerit legem Domini  et mandata ejus non custodierit :  deceperant enim eos idola sua,  post quæ abierant patres eorum.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Takto praví Hospodin: Pro troji nešlechetnost Judovu, ovšem pro čtveru neslituji se nad ním, proto že oni pohrdají zákonem Hospodinovým, a ustanovení jeho neostříhají, a svodí se lžmi svými, jichž následovali otcové jejich.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et mittam ignem in Juda,  et devorabit ædes Jerusalem.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Ale pošli oheň na Judu, kterýžto zžíře paláce Jeruzalémské.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hæc dicit Dominus :  Super tribus sceleribus Israël,  et super quatuor non convertam eum,  pro eo quod vendiderit pro argento justum,  et pauperem pro calceamentis.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Takto praví Hospodin: Pro troji nešlechetnost Izraelovu, ovšem pro čtveru neodpustím jemu, proto že prodávají spravedlivého za peníze, a nuzného za pár střevíců.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui conterunt super pulverem terræ capita pauperum,  et viam humilium declinant :  et filius ac pater ejus ierunt ad puellam,  ut violarent nomen sanctum meum.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Kteříž dychtí, aby chudé s prstí smísili, a cestu tichých převracejí; nadto syn i otec vcházejí k jedné a též mladici, aby poškvrnili jména svatosti mé.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et super vestimentis pignoratis accubuerunt juxta omne altare,  et vinum damnatorum bibebant in domo Dei sui.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">A na oděvu zastaveném klanějí se při každém oltáři, a víno pokutovaných pijí v domě bohů svých,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ego autem exterminavi Amorrhæum a facie eorum,  cujus altitudo, cedrorum altitudo ejus,  et fortis ipse quasi quercus ;  et contrivi fructum ejus desuper,  et radices ejus subter.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Ješto jsem já vyhladil Amorejského od tváři jejich, jehož vysokost byla jako vysokost cedrů. Ačkoli pevně stál jako dub, však jsem zkazil svrchu ovoce jeho, pospodu pak kořeny jeho.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ego sum qui ascendere vos feci de terra Ægypti,  et duxi vos in deserto quadraginta annis,  ut possideretis terram Amorrhæi.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">A vás já jsem vyvedl z země Egyptské, a vyvedl jsem vás po poušti čtyřidceti let, abyste dědičně vládli zemí Amorejského.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et suscitavi de filiis vestris in prophetas,  et de juvenibus vestris nazaræos.  Numquid non ita est, filii Israël ? dicit Dominus.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">A vzbuzoval jsem z synů vašich proroky, a z mládenců vašich Nazarejské. Zdaliž není tak, ó synové Izraelští? praví Hospodin.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et propinabitis nazaræis vinum,  et prophetis mandabitis, dicentes :  Ne prophetetis.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Ale vy jste napájeli Nazarejské vínem, a prorokům jste zapovídali, řkouce: Neprorokujte.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ecce ego stridebo subter vos,  sicut stridet plaustrum onustum fœno.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Aj, já tlačiti budu zemi vaši tak, jako vůz těžký tlačí snopy.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et peribit fuga a veloce,  et fortis non obtinebit virtutem suam,  et robustus non salvabit animam suam :</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">I zahyne utíkání od rychlého, silný též neužive síly své, a udatný nevysvobodí života svého.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">et tenens arcum non stabit,  et velox pedibus suis non salvabitur,  et ascensor equi non salvabit animam suam :</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">A ten, kterýž se chápá lučiště, neostojí, a čerstvý na nohy své neuteče, a ten, kterýž jezdí na koni, nevysvobodí života svého.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">et robustus corde inter fortes nudus fugiet in illa die,  dicit Dominus.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Ale i zmužilého srdce mezi nejudatnějšími nahý utíkati bude v ten den, praví Hospodin.</div>
+      </div>
+    </div>
+  </section>
 
-<section class="chap" id="c6">
-  <div class="chhead">
-    <span class="chrom">VI</span>
-    <span class="chlbl">Caput 6</span>
-  </div>
-<div class="vb first" id="v6-1">
-  <span class="vn">1</span>
-  <div class="vt">
-    <p class="lat">Væ qui opulenti estis in Sion,  et confiditis in monte Samariæ :  optimates capita populorum,  ingredientes pompatice domum Israël !</p>
-    <p class="tra">Běda pokoj majícím na Sionu, a doufajícím v horu Samařskou, kteréžto hory jsou slovoutné mimo jiné u těch národů, k nimž se scházejí dům Izraelský.</p>
-  </div>
-</div>
-<div class="vb" id="v6-2">
-  <span class="vn">2</span>
-  <div class="vt">
-    <p class="lat">Transite in Chalane, et videte,  et ite inde in Emath magnam,  et descendite in Geth Palæstinorum,  et ad optima quæque regna horum :  si latior terminus eorum termino vestro est.</p>
-    <p class="tra">Projděte až do Chalne, a odtud jděte do Emat veliké, a sstupte do Gát Filistinských, a shlédněte, jsou-li která království lepší nežli tato? Jest-li větší jejich kraj nežli kraj váš?</p>
-  </div>
-</div>
-<div class="vb" id="v6-3">
-  <span class="vn">3</span>
-  <div class="vt">
-    <p class="lat">Qui separati estis in diem malum,  et appropinquatis solio iniquitatis ;</p>
-    <p class="tra">Kteříž smyslíte, že jest daleko den bídy, a přistavujete stolici nátisku.</p>
-  </div>
-</div>
-<div class="vb" id="v6-4">
-  <span class="vn">4</span>
-  <div class="vt">
-    <p class="lat">qui dormitis in lectis eburneis,  et lascivitis in stratis vestris ;  qui comeditis agnum de grege,  et vitulos de medio armenti ;</p>
-    <p class="tra">Kteříž léhají na ložcích slonových, a rozkošně sobě počínají na postelích svých, kteříž jídají berany z stáda a telata nejtučnější,</p>
-  </div>
-</div>
-<div class="vb" id="v6-5">
-  <span class="vn">5</span>
-  <div class="vt">
-    <p class="lat">qui canitis ad vocem psalterii,  sicut David putaverunt se habere vasa cantici,</p>
-    <p class="tra">Přizpěvujíce k loutně jako David, vymýšlejíce sobě nástroje muzické.</p>
-  </div>
-</div>
-<div class="vb" id="v6-6">
-  <span class="vn">6</span>
-  <div class="vt">
-    <p class="lat">bibentes vinum in phialis,  et optimo unguento delibuti,  et nihil patiebantur super contritione Joseph.</p>
-    <p class="tra">Kteříž pijí z bání vinných, a drahými mastmi se maží, aniž jsou čitelni bolesti pro potření Jozefovo.</p>
-  </div>
-</div>
-<div class="vb" id="v6-7">
-  <span class="vn">7</span>
-  <div class="vt">
-    <p class="lat">Quapropter nunc migrabunt in capite transmigrantium,  et auferetur factio lascivientium.</p>
-    <p class="tra">Pročež jižť půjdou v zajetí v prvním houfu stěhujících se, a tak nastane žalost těm, kteříž sobě rozkošně počínají.</p>
-  </div>
-</div>
-<div class="vb" id="v6-8">
-  <span class="vn">8</span>
-  <div class="vt">
-    <p class="lat">Juravit Dominus Deus in anima sua,  dicit Dominus Deus exercituum :  Detestor ego superbiam Jacob,  et domos ejus odi,  et tradam civitatem cum habitatoribus suis.</p>
-    <p class="tra">Přisáhl Panovník Hospodin skrze sebe samého, dí Hospodin Bůh zástupů: V ohavnosti mám pýchu Jákobovu, i paláců jeho nenávidím, pročež vydám město i vše, což v něm jest.</p>
-  </div>
-</div>
-<div class="vb" id="v6-9">
-  <span class="vn">9</span>
-  <div class="vt">
-    <p class="lat">Quod si reliqui fuerint decem viri in domo una,  et ipsi morientur.</p>
-    <p class="tra">I stane se, že pozůstane-li deset osob v domě jednom, i ti zemrou.</p>
-  </div>
-</div>
-<div class="vb" id="v6-10">
-  <span class="vn">10</span>
-  <div class="vt">
-    <p class="lat">Et tollet eum propinquus suus, et comburet eum,  ut efferat ossa de domo ;  et dicet ei, qui in penetralibus domus est :  Numquid adhuc est penes te ?</p>
-    <p class="tra">A vezme někoho strýc jeho, aneb ten, kterýž mu strojí pohřeb, aby vynesl kosti z domu, a dí tomu, kdož jest v pokoji domu: Jest-liž ještě s tebou kdo? I dí: Není žádného. I řekne: Mlč, proto že nepřipomínali jména Hospodinova.</p>
-  </div>
-</div>
-<div class="vb" id="v6-11">
-  <span class="vn">11</span>
-  <div class="vt">
-    <p class="lat">Et respondebit : Finis est.  Et dicet ei : Tace,  et non recorderis nominis Domini.</p>
-    <p class="tra">Nebo aj, Hospodin přikáže, a bíti bude na dům veliký přívaly, a na dům menší rozsedlinami.</p>
-  </div>
-</div>
-<div class="vb" id="v6-12">
-  <span class="vn">12</span>
-  <div class="vt">
-    <p class="lat">Quia ecce Dominus mandabit,  et percutiet domum majorem ruinis,  et domum minorem scissionibus.</p>
-    <p class="tra">Zdaliž koni běžeti mohou po skále? Zdaliž ji kdo orati může voly? Nebo jste proměnili soud v jed, a ovoce spravedlnosti v pelynek,</p>
-  </div>
-</div>
-<div class="vb" id="v6-13">
-  <span class="vn">13</span>
-  <div class="vt">
-    <p class="lat">Numquid currere queunt in petris equi,  aut arari potest in bubalis ?  quoniam convertistis in amaritudinem judicium,  et fructum justitiæ in absinthium.</p>
-    <p class="tra">Vy, kteříž se veselíte, ano není z čeho, říkajíce: Zdaliž jsme svou silou nevzali sobě rohů?</p>
-  </div>
-</div>
-<div class="vb" id="v6-14">
-  <span class="vn">14</span>
-  <div class="vt">
-    <p class="lat">Qui lætamini in nihilo ; qui dicitis :  Numquid non in fortitudine nostra assumpsimus nobis cornua ?</p>
-    <p class="tra">Ale aj, já vzbudím proti vám, ó dome Izraelský, praví Hospodin Bůh zástupů, národ, kterýž vás ssouží, odtud, kudy se jde do Emat, až do potoka roviny.</p>
-  </div>
-</div>
-<div class="vb" id="v6-15">
-  <span class="vn">15</span>
-  <div class="vt">
-    <p class="lat">Ecce enim suscitabo super vos, domus Israël,  dicit Dominus Deus exercituum, gentem,  et conteret vos ab introitu Emath usque ad torrentem deserti.</p>
-  </div>
-</div>
-</section>
+  <section class="chapter" id="ch3">
+    <div class="chapter-marker">
+      <span class="ch-roman">III</span>
+      <span class="ch-label">Caput 3</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v3-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Audite verbum quod locutus est Dominus super vos, filii Israël,  super omnem cognationem quam eduxi de terra Ægypti, dicens :</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Slyšte slovo to, kteréž mluví Hospodin proti vám, synové Izraelští, proti vší té rodině, kterouž jsem vyvedl z země Egyptské, řka:</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Tantummodo vos cognovi ex omnibus cognationibus terræ ;  idcirco visitabo super vos omnes iniquitates vestras.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Toliko vás samy poznal jsem ze všeliké rodiny země, protož trestati vás budu ze všech nepravostí vašich.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Numquid ambulabunt duo pariter,  nisi convenerit eis ?</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Zdaliž půjdou dva spolu, leč by se snesli?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">numquid rugiet leo in saltu,  nisi habuerit prædam ?  numquid dabit catulus leonis vocem de cubili suo,  nisi aliquid apprehenderit ?</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Zdaliž zařve lev v lese, když by nebylo žádné loupeže? Vydá-liž lvíček hlas svůj z peleše své, kdyby lapiti neměl?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">numquid cadet avis in laqueum terræ  absque aucupe ?  numquid auferetur laqueus de terra  antequam quid ceperit ?</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Padne-liž ptáče do osídla na zem, když by žádné léčky nebylo? Bude-liž zdviženo osídlo z země, když by nic neuvázlo?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">si clanget tuba in civitate,  et populus non expavescet ?  si erit malum in civitate,  quod Dominus non fecerit ?</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Zdaliž když se troubí trubou v městě, lid s strachem se nezbíhá? Zdaž když se má státi v městě co zlého, Hospodin toho známa nečiní?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quia non facit Dominus Deus verbum,  nisi revelaverit secretum suum ad servos suos prophetas.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Nečiníť zajisté Panovník Hospodin ničeho, leč by zjevil tajemství své služebníkům svým prorokům.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Leo rugiet, quis non timebit ?  Dominus Deus locutus est, quis non prophetabit ?</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Lev řve, kdož by se nebál? Panovník Hospodin velí, kdož by neprorokoval?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Auditum facite in ædibus Azoti,  et in ædibus terræ Ægypti,  et dicite : Congregamini super montes Samariæ,  et videte insanias multas in medio ejus,  et calumniam patientes in penetralibus ejus.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Rozhlaste po palácích v Azotu, a po palácích v zemi Egyptské, a rcete: Sbeřte se na hory Samaří, a vizte znepokojení veliká u prostřed něho a nátisk trpící v něm,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et nescierunt facere rectum, dicit Dominus,  thesaurizantes iniquitatem et rapinas in ædibus suis.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">A že neumějí dělati upřímě, dí Hospodin. Poklady skládají z nátisku a loupeže na palácích svých.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Propterea hæc dicit Dominus Deus :  Tribulabitur et circuietur terra :  et detrahetur ex te fortitudo tua,  et diripientur ædes tuæ.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Protož takto praví Panovník Hospodin: Aj, nepřítel, a to na zemi tuto vůkol, a tenť odejme od tebe sílu tvou, i budou rozchvátáni palácové tvoji.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hæc dicit Dominus :  Quomodo si eruat pastor de ore leonis  duo crura, aut extremum auriculæ,  sic eruentur filii Israël, qui habitant in Samaria  in plaga lectuli, et in Damasci grabato.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Takto praví Hospodin: Jako když vytrhne pastýř z úst lva dva hnáty aneb kus ucha, tak vytrženi budou synové Izraelští, sedící v Samaří lhostejně na postelích, a na ložcích rozkošných.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Audite, et contestamini in domo Jacob,  dicit Dominus Deus exercituum ;</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Slyšte a osvědčte v domě Jákobově, dí Panovník Hospodin, Bůh zástupů,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">quia in die cum visitare cœpero prævaricationes Israël,  super eum visitabo, et super altaria Bethel ;  et amputabuntur cornua altaris, et cadent in terram.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Že v ten den, když Izraele trestati budu pro přestoupení jeho, navštívím také oltáře v Bethel, a odťati budou rohové oltáře, tak že spadnou na zem.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et percutiam domum hiemalem cum domo æstiva,  et peribunt domus eburneæ,  et dissipabuntur ædes multæ,  dicit Dominus.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">A udeřím domem zimním o dům letní, i zahynou domové z kostí slonových, a konec vezmou domové velicí, praví Hospodin.</div>
+      </div>
+    </div>
+  </section>
 
-<section class="chap" id="c7">
-  <div class="chhead">
-    <span class="chrom">VII</span>
-    <span class="chlbl">Caput 7</span>
-  </div>
-<div class="vb first" id="v7-1">
-  <span class="vn">1</span>
-  <div class="vt">
-    <p class="lat">Hæc ostendit mihi Dominus Deus : et ecce fictor locustæ in principio germinantium serotini imbris, et ecce serotinus post tonsionem regis.</p>
-    <p class="tra">Toto mi ukázal Panovník Hospodin, že aj, formoval kobylky, když nejprvé počala růsti otava, když aj, otava byla po královském posečení.</p>
-  </div>
-</div>
-<div class="vb" id="v7-2">
-  <span class="vn">2</span>
-  <div class="vt">
-    <p class="lat">Et factum est, cum consummasset comedere herbam terræ, dixi : Domine Deus, propitius esto, obsecro ; quis suscitabit Jacob, quia parvulus est ?</p>
-    <p class="tra">I stalo se, když snědly byliny zemské, že jsem řekl: Panovníče Hospodine, odpustiž, prosím. Kdož zůstane Jákobovi? Neboť ho maličko jest.</p>
-  </div>
-</div>
-<div class="vb" id="v7-3">
-  <span class="vn">3</span>
-  <div class="vt">
-    <p class="lat">Misertus est Dominus super hoc : Non erit, dixit Dominus.</p>
-    <p class="tra">I želel Hospodin toho. Nestaneť se, řekl Hospodin.</p>
-  </div>
-</div>
-<div class="vb" id="v7-4">
-  <span class="vn">4</span>
-  <div class="vt">
-    <p class="lat">Hæc ostendit mihi Dominus Deus : et ecce vocabat judicium ad ignem Dominus Deus ; et devoravit abyssum multam, et comedit simul partem.</p>
-    <p class="tra">Tedy ukázal mi Panovník Hospodin, a aj, Panovník Hospodin volal, že při svou povede ohněm. A spáliv propast velikou, spálil i díl.</p>
-  </div>
-</div>
-<div class="vb" id="v7-5">
-  <span class="vn">5</span>
-  <div class="vt">
-    <p class="lat">Et dixi : Domine Deus, quiesce, obsecro ; quis suscitabit Jacob, quia parvulus est ?</p>
-    <p class="tra">Já pak řekl jsem: Panovníče Hospodine, přestaniž, prosím. Kdož zůstane Jákobovi? Neboť ho maličko jest.</p>
-  </div>
-</div>
-<div class="vb" id="v7-6">
-  <span class="vn">6</span>
-  <div class="vt">
-    <p class="lat">Misertus est Dominus super hoc : Sed et istud non erit, dixit Dominus Deus.</p>
-    <p class="tra">I želel Hospodin toho. A ani toho se nestane, řekl Panovník Hospodin.</p>
-  </div>
-</div>
-<div class="vb" id="v7-7">
-  <span class="vn">7</span>
-  <div class="vt">
-    <p class="lat">Hæc ostendit mihi Dominus : et ecce Dominus stans super murum litum, et in manu ejus trulla cæmentarii.</p>
-    <p class="tra">Potom ukázal mi, a aj, Pán stál na zdi podlé pravidla vzdělané, v jehož ruce bylo pravidlo.</p>
-  </div>
-</div>
-<div class="vb" id="v7-8">
-  <span class="vn">8</span>
-  <div class="vt">
-    <p class="lat">Et dixit Dominus ad me : Quid tu vides, Amos ? Et dixi : Trullam cæmentarii. Et dixit Dominus :   Ecce ego ponam trullam in medio populi mei Israël ;  non adjiciam ultra superinducere eum.</p>
-    <p class="tra">I řekl mi Hospodin: Co vidíš, Amose? Řekl jsem: Pravidlo. I řekl Pán: Aj, já položím pravidlo u prostřed lidu svého Izraelského, nebuduť již více promíjeti jemu.</p>
-  </div>
-</div>
-<div class="vb" id="v7-9">
-  <span class="vn">9</span>
-  <div class="vt">
-    <p class="lat">Et demolientur excelsa idoli,  et sanctificationes Israël desolabuntur,  et consurgam super domum Jeroboam in gladio.</p>
-    <p class="tra">Nebo zpuštěny budou výsosti Izákovy, a svatyně Izraelovy zpustnou, tehdáž, když povstanu proti domu Jeroboámovu s mečem.</p>
-  </div>
-</div>
-<div class="vb" id="v7-10">
-  <span class="vn">10</span>
-  <div class="vt">
-    <p class="lat">Et misit Amasias, sacerdos Bethel, ad Jeroboam, regem Israël, dicens : Rebellavit contra te Amos in medio domus Israël ; non poterit terra sustinere universos sermones ejus.</p>
-    <p class="tra">Tedy poslal Amaziáš kněz Bethelský k Jeroboámovi králi Izraelskému, řka: Spuntoval se proti tobě Amos u prostřed domu Izraelského, ta země nemohla by snésti všech slov jeho.</p>
-  </div>
-</div>
-<div class="vb" id="v7-11">
-  <span class="vn">11</span>
-  <div class="vt">
-    <p class="lat">Hæc enim dicit Amos : In gladio morietur Jeroboam, et Israël captivus migrabit de terra sua.</p>
-    <p class="tra">Nebo takto praví Amos: Od meče umře Jeroboám, a Izrael jistotně přestěhován bude z země své.</p>
-  </div>
-</div>
-<div class="vb" id="v7-12">
-  <span class="vn">12</span>
-  <div class="vt">
-    <p class="lat">Et dixit Amasias ad Amos : Qui vides, gradere : fuge in terram Juda, et comede ibi panem, et prophetabis ibi.</p>
-    <p class="tra">Potom řekl Amaziáš Amosovi: Ó vidoucí, ujdi, radímť, utec do země Judské, a jez tam chléb, a tam prorokuj.</p>
-  </div>
-</div>
-<div class="vb" id="v7-13">
-  <span class="vn">13</span>
-  <div class="vt">
-    <p class="lat">Et in Bethel non adjicies ultra ut prophetes, quia sanctificatio regis est, et domus regni est.</p>
-    <p class="tra">Ale v Bethel již více neprorokuj, nebo ono svatyně králova i dům královský jest.</p>
-  </div>
-</div>
-<div class="vb" id="v7-14">
-  <span class="vn">14</span>
-  <div class="vt">
-    <p class="lat">Responditque Amos, et dixit ad Amasiam : Non sum propheta, et non sum filius prophetæ : sed armentarius ego sum vellicans sycomoros.</p>
-    <p class="tra">Tedy odpovídaje Amos, řekl Amaziášovi: Nebylť jsem já prorokem, ano ani synem prorockým, ale byl jsem skotákem, a česával jsem plané fíky.</p>
-  </div>
-</div>
-<div class="vb" id="v7-15">
-  <span class="vn">15</span>
-  <div class="vt">
-    <p class="lat">Et tulit me Dominus cum sequerer gregem, et dixit Dominus ad me : Vade, propheta ad populum meum Israël.</p>
-    <p class="tra">Ale Hospodin mne vzal, když jsem chodil za stádem, a řekl mi Hospodin: Jdi, prorokuj lidu mému Izraelskému.</p>
-  </div>
-</div>
-<div class="vb" id="v7-16">
-  <span class="vn">16</span>
-  <div class="vt">
-    <p class="lat">Et nunc audi verbum Domini :  Tu dicis : Non prophetabis super Israël,  et non stillabis super domum idoli.</p>
-    <p class="tra">Nyní tedy slyšiž slovo Hospodinovo. Ty pravíš: Neprorokuj v Izraeli, a nekaž v domě Izákově.</p>
-  </div>
-</div>
-<div class="vb" id="v7-17">
-  <span class="vn">17</span>
-  <div class="vt">
-    <p class="lat">Propter hoc hæc dicit Dominus :  Uxor tua in civitate fornicabitur,  et filii tui et filiæ tuæ in gladio cadent,  et humus tua funiculo metietur :  et tu in terra polluta morieris,  et Israël captivus migrabit de terra sua.</p>
-    <p class="tra">Protož takto praví Hospodin: Žena tvá cizoložiti bude v městě, synové pak tvoji i dcery tvé od meče padnou; a země tvá provazcem dělena bude, a ty v zemi nečisté umřeš, Izrael pak jistotně přestěhován bude z země své.</p>
-  </div>
-</div>
-</section>
+  <section class="chapter" id="ch4">
+    <div class="chapter-marker">
+      <span class="ch-roman">IV</span>
+      <span class="ch-label">Caput 4</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v4-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Audite verbum hoc, vaccæ pingues,  quæ estis in monte Samariæ,  quæ calumniam facitis egenis  et confringitis pauperes ;  quæ dicitis dominis vestris : Afferte, et bibemus.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Slyšte slovo toto, ó krávy Bázanské, kteréž jste na horách Samařských, kteréž nátisk činíte chudým, a potíráte nuzné, kteréž říkáte pánům jejich: Přineste, ať pijeme.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Juravit Dominus Deus in sancto suo,  quia ecce dies venient super vos,  et levabunt vos in contis,  et reliquias vestras in ollis ferventibus.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Přisáhl Panovník Hospodin skrze svatost svou, že aj, dnové jdou na vás, v nichž vezme vás na háky, a potomky vaše na udice rybářské.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et per aperturas exibitis altera contra alteram,  et projiciemini in Armon,  dicit Dominus.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">I vyjdete mezerami, každá tak, jakž stojí, a budete rozhazovati, což na palácích, dí Hospodin.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Venite ad Bethel, et impie agite ;  ad Galgalam, et multiplicate prævaricationem :  et afferte mane victimas vestras,  tribus diebus decimas vestras.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Jdětež do Bethel, a buďtež poběhlci Galgala, rozmnožujte převrácenost, a přinášejte každého jitra oběti své, třetího roku desátky své.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et sacrificate de fermentato laudem,  et vocate voluntarias oblationes, et annuntiate ;  sic enim voluistis, filii Israël,  dicit Dominus Deus.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">A pálíce obět chvály z kvašených věcí, provolejte i oběti dobrovolné, a rozhlaste, poněvadž se vám tak líbí, ó synové Izraelští, dí Panovník Hospodin.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Unde et ego dedi vobis stuporem dentium in cunctis urbibus vestris,  et indigentiam panum in omnibus locis vestris ;  et non estis reversi ad me,  dicit Dominus.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">A ačkoli já dal jsem vám čistotu zubů po všech městech vašich, totiž nedostatek chleba na všech místech vašich, a však jste se ke mně neobrátili, dí Hospodin.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ego quoque prohibui a vobis imbrem,  cum adhuc tres menses superessent usque ad messem :  et plui super unam civitatem,  et super alteram civitatem non plui ;  pars una compluta est,  et pars super quam non plui, aruit.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Já také zadržel jsem vám déšť, když ještě tři měsícové byli do žně, a dštil jsem na jedno město, a na druhé město jsem nedštil; jeden díl deštěm svlažen byl, a ten díl, na kterýž nepršelo, uschl.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et venerunt duæ et tres civitates ad unam civitatem  ut biberent aquam, et non sunt satiatæ ;  et non redistis ad me,  dicit Dominus.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">A toulali se dvě i tři města k jednomu městu, aby se napili vody, aniž se napiti mohli, a však jste se neobrátili ke mně, dí Hospodin.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Percussi vos in vento urente, et in aurugine :  multitudinem hortorum vestrorum et vinearum vestrarum,  oliveta vestra et ficeta vestra comedit eruca :  et non redistis ad me,  dicit Dominus.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Bil jsem vás suchem a rzí; hojnost, kterouž přinášely zahrady vaše a vinice vaše, i fíkoví vaše, i olivoví vaše, pojedly housenky, a však jste se neobrátili ke mně, dí Hospodin.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Misi in vos mortem in via Ægypti ;  percussi in gladio juvenes vestros,  usque ad captivitatem equorum vestrorum,  et ascendere feci putredinem castrorum vestrorum in nares vestras :  et non redistis ad me,  dicit Dominus.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Poslal jsem na vás mor tak jako na Egypt, zbil jsem mečem mládence vaše, v zajetí jsem vydal koně vaše, a učinil jsem, že vstupoval smrad vojsk vašich i v chřípě vaše, a však jste se neobrátili ke mně, dí Hospodin.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Subverti vos sicut subvertit Deus Sodomam et Gomorrham,  et facti estis quasi torris raptus ab incendio :  et non redistis ad me,  dicit Dominus.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Podvrátil jsem vás, jako podvrátil Bůh Sodomu a Gomoru, tak že jste byli jako hlavně vychvácená z ohně, vždy však neobrátili jste se ke mně, dí Hospodin.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quapropter hæc faciam tibi, Israël :  postquam autem hæc fecero tibi,  præparare in occursum Dei tui, Israël.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">A protož takť učiním, ó Izraeli, a poněvadž takť učiniti míním, připraviž se vstříc Bohu svému, ó Izraeli.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quia ecce formans montes,  et creans ventum,  et annuntians homini eloquium suum,  faciens matutinam nebulam,  et gradiens super excelsa terræ :  Dominus Deus exercituum nomen ejus.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Nebo aj, on jest sformovatel hor a stvořitel větrů, a oznamuje člověku, jaké by bylo jeho myšlení; činí z záře jitřní tmu, a šlapá po vysokostech země. Hospodin Bůh zástupů jest jméno jeho.</div>
+      </div>
+    </div>
+  </section>
 
-<section class="chap" id="c8">
-  <div class="chhead">
-    <span class="chrom">VIII</span>
-    <span class="chlbl">Caput 8</span>
-  </div>
-<div class="vb first" id="v8-1">
-  <span class="vn">1</span>
-  <div class="vt">
-    <p class="lat">Hæc ostendit mihi Dominus Deus : et ecce uncinus pomorum.</p>
-    <p class="tra">Také mi ukázal Panovník Hospodin, a aj, byl koš ovoce letního.</p>
-  </div>
-</div>
-<div class="vb" id="v8-2">
-  <span class="vn">2</span>
-  <div class="vt">
-    <p class="lat">Et dixit : Quid tu vides, Amos ? Et dixi : Uncinum pomorum. Et dixit Dominus ad me :   Venit finis super populum meum Israël ;  non adjiciam ultra ut pertranseam eum.</p>
-    <p class="tra">A řekl: Co ty vidíš, Amose? I řekl jsem: Koš ovoce letního. Opět mi řekl Hospodin: Přišeltě konec lidu mému Izraelskému, nebuduť již více promíjeti jemu.</p>
-  </div>
-</div>
-<div class="vb" id="v8-3">
-  <span class="vn">3</span>
-  <div class="vt">
-    <p class="lat">Et stridebunt cardines templi in die illa,  dicit Dominus Deus :  multi morientur ;  in omni loco projicietur silentium.</p>
-    <p class="tra">Pročež kvíliti budou zpěvové chrámoví v ten den, praví Panovník Hospodin. Množství mrtvých, mlče, namece na všelijaké místo.</p>
-  </div>
-</div>
-<div class="vb" id="v8-4">
-  <span class="vn">4</span>
-  <div class="vt">
-    <p class="lat">Audite hoc, qui conteritis pauperem,  et deficere facitis egenos terræ,</p>
-    <p class="tra">Slyštež to vy, kteříž sehlcujete chudého, abyste vyhladili nuzné z země,</p>
-  </div>
-</div>
-<div class="vb" id="v8-5">
-  <span class="vn">5</span>
-  <div class="vt">
-    <p class="lat">dicentes : Quando transibit mensis,  et venundabimus merces ?  et sabbatum, et aperiemus frumentum,  ut imminuamus mensuram, et augeamus siclum,  et supponamus stateras dolosas,</p>
-    <p class="tra">Říkajíce: Skoro-liž pomine novměsíce, abychom prodávali obilé, a sobota, abychom otevřeli obilnice, abychom ujímali efi, a přivětšovali váhy, a faleš provodili vážkami falešnými,</p>
-  </div>
-</div>
-<div class="vb" id="v8-6">
-  <span class="vn">6</span>
-  <div class="vt">
-    <p class="lat">ut possideamus in argento egenos et pauperes pro calceamentis,  et quisquilias frumenti vendamus ?</p>
-    <p class="tra">Kupujíce za peníze nuzné, a chudého za pár střevíců, nadto abychom plevy obilné prodávali?</p>
-  </div>
-</div>
-<div class="vb" id="v8-7">
-  <span class="vn">7</span>
-  <div class="vt">
-    <p class="lat">Juravit Dominus in superbiam Jacob :  Si oblitus fuero usque ad finem omnia opera eorum.</p>
-    <p class="tra">Přisáhl Hospodin skrze důstojnost Jákobovu: Žeť se nezapomenu na věky na všecky skutky jejich.</p>
-  </div>
-</div>
-<div class="vb" id="v8-8">
-  <span class="vn">8</span>
-  <div class="vt">
-    <p class="lat">Numquid super isto non commovebitur terra,  et lugebit omnis habitator ejus,  et ascendet quasi fluvius universus,  et ejicicetur, et defluet, quasi rivus Ægypti ?</p>
-    <p class="tra">Nad tím-liž by se netřásla i země, a nekvílil by každý, kdož přebývá na ní? Proto-liž by neměla vystoupiti všecka jako potok, a zachvácena i zatopena býti jako potokem Egyptským?</p>
-  </div>
-</div>
-<div class="vb" id="v8-9">
-  <span class="vn">9</span>
-  <div class="vt">
-    <p class="lat">Et erit in die illa, dicit Dominus Deus :  occidet sol in meridie,  et tenebrescere faciam terram in die luminis :</p>
-    <p class="tra">Anobrž stane se v ten den, praví Panovník Hospodin, učiním, že slunce zajde o poledni, a uvedu tmy na zemi v jasný den.</p>
-  </div>
-</div>
-<div class="vb" id="v8-10">
-  <span class="vn">10</span>
-  <div class="vt">
-    <p class="lat">et convertam festivitates vestras in luctum,  et omnia cantica vestra in planctum,  et inducam super omne dorsum vestrum saccum,  et super omne caput calvitium :  et ponam eam quasi luctum unigeniti,  et novissima ejus quasi diem amarum.</p>
-    <p class="tra">A proměním svátky vaše v kvílení, a všecky zpěvy vaše v naříkání, a způsobím to, že bude na každých bedrách žíně, a na každé hlavě lysina, a bude v zemi této kvílení jako nad jednorozeným, a poslední věci její jako den hořkosti.</p>
-  </div>
-</div>
-<div class="vb" id="v8-11">
-  <span class="vn">11</span>
-  <div class="vt">
-    <p class="lat">Ecce dies veniunt, dicet Dominus,  et mittam famem in terram :  non famem panis, neque sitim aquæ,  sed audiendi verbum Domini.</p>
-    <p class="tra">Aj, dnové jdou, dí Panovník Hospodin, že pošli hlad na zemi, ne hlad chleba, ani žízeň vody, ale slyšení slov Hospodinových,</p>
-  </div>
-</div>
-<div class="vb" id="v8-12">
-  <span class="vn">12</span>
-  <div class="vt">
-    <p class="lat">Et commovebuntur a mari usque ad mare,  et ab aquilone usque ad orientem :  circuibunt quærentes verbum Domini,  et non invenient.</p>
-    <p class="tra">Tak že toulati se budou od moře až k moři, a od půlnoci až na východ běhati, hledajíce slova Hospodinova, však nenajdou.</p>
-  </div>
-</div>
-<div class="vb" id="v8-13">
-  <span class="vn">13</span>
-  <div class="vt">
-    <p class="lat">In die illa deficient virgines pulchræ et adolescentes in siti,</p>
-    <p class="tra">V ten čas umdlévati budou panny krásné, ano i mládenci tou žízní,</p>
-  </div>
-</div>
-<div class="vb" id="v8-14">
-  <span class="vn">14</span>
-  <div class="vt">
-    <p class="lat">qui jurant in delicto Samariæ,  et dicunt : Vivit Deus tuus, Dan,  et vivit via Bersabee ;  et cadent, et non resurgent ultra.</p>
-    <p class="tra">Kteříž přisahají skrze ohavnost Samařskou, a říkají: Živť jest Bůh tvůj, ó Dan, a živa jest cesta Bersabé. I padnou, a nepovstanou více.</p>
-  </div>
-</div>
-</section>
+  <section class="chapter" id="ch5">
+    <div class="chapter-marker">
+      <span class="ch-roman">V</span>
+      <span class="ch-label">Caput 5</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v5-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Audite verbum istud,  quod ego levo super vos planctum :  domus Israël cecidit,  et non adjiciet ut resurgat.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Slyšte slovo toto, kteréž já vynáším proti vám, totiž naříkání nad domem Izraelským.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Virgo Israël projecta est in terram suam,  non est qui suscitet eam.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Padneť, aniž více povstane panna Izraelská; opuštěna bude v zemi své, nebude žádného, kdo by jí pozdvihl.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quia hæc dicit Dominus Deus :  Urbs de qua egrediebantur mille,  relinquentur in ea centum ;  et de qua egrediebantur centum,  relinquentur in ea decem in domo Israël.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Nebo takto praví Panovník Hospodin: V městě, z kteréhož vycházelo tisíc, zůstane sto, v tom pak, z kteréhož vycházelo sto, zůstane deset domu Izraelskému.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quia hæc dicit Dominus domui Israël :  Quærite me, et vivetis.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Nebo takto praví Hospodin domu Izraelskému: Hledejte mne a živi buďte.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et nolite quærere Bethel,  et in Galgalam nolite intrare,  et in Bersabee non transibitis,  quia Galgala captiva ducetur,  et Bethel erit inutilis.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">A nehledejte Bethel, aniž choďte do Galgala, a do Bersabé se nesmýkejte; nebo Galgal jistotně se přestěhuje, a Bethel přijde na nic.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quærite Dominum, et vivite  (ne forte comburatur ut ignis domus Joseph, et devorabit,  et non erit qui extinguat Bethel :</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Hledejte Hospodina, (a živi buďte, aby nepronikl jako oheň domu Jozefova, a nesehltil, a nebylo by žádného, kdo by uhasil Bethelské,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui convertitis in absinthium judicium,  et justitiam in terra relinquitis) :</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Kteříž proměňují v pelynek soud, a spravedlnosti na zemi zanechávají,)</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">facientem Arcturum et Orionem,  et convertentem in mane tenebras,  et diem in noctem mutantem ;  qui vocat aquas maris,  et effundit eas super faciem terræ ;  Dominus nomen est ejus :</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Toho, kterýž učinil Kuřátka i Oriona, kterýž proměňuje stín smrti v jitro, a den v temnosti noční, kterýž přivolává vody mořské, a vylévá je na svrchek země, jehož jméno jest Hospodin,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui subridet vastitatem super robustum,  et depopulationem super potentem affert.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Kterýž očerstvuje zemdleného proti silnému, tak že zemdlený do pevnosti vchází.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Odio habuerunt corripientem in porta,  et loquentem perfecte abominati sunt.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Nenávidí trescícího v bráně, a toho, kdož mluví věci pravé, v ohavnosti mají.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Idcirco, pro eo quod diripiebatis pauperem,  et prædam electam tollebatis ab eo,  domos quadro lapide ædificabitis,  et non habitabitis in eis ;  vineas plantabis amantissimas,  et non bibetis vinum earum.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">A protož, proto že loupíte chudého, a břímě obilé béřete od něho, domů z tesaného kamení nastavěli jste, ale nebudete bydliti v nich; vinic výborných naštěpovali jste, ale nebudete píti vína z nich.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quia cognovi multa scelera vestra,  et fortia peccata vestra :  hostes justi, accipientes munus,  et pauperes deprimentes in porta.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Nebo já vím o mnohých nešlechetnostech vašich a velikých hříších vašich, že trápíte spravedlivého, berouce poctu, a nuzných při v bráně převracíte.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ideo prudens in tempore illo tacebit,  quia tempus malum est.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Protož rozumný v ten čas mlčeti musí, nebo čas ten zlý jest.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quærite bonum, et non malum, ut vivatis ;  et erit Dominus Deus exercituum vobiscum, sicut dixistis.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Hledejte dobrého a ne zlého, abyste živi byli, a budeť tak Hospodin Bůh zástupů s vámi, jakž pravíte.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Odite malum et diligite bonum,  et constituite in porta judicium :  si forte misereatur Dominus Deus exercituum reliquiis Joseph.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Mějte v nenávisti zlé, a milujte dobré, a ustanovte v bráně soud; snad Hospodin Bůh zástupů milost učiní ostatkům Jozefovým.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Propterea hæc dicit Dominus Deus exercituum, dominator :  In omnibus plateis planctus ;  et in cunctis quæ foris sunt, dicetur : Væ, væ !  et vocabunt agricolam ad luctum,  et ad planctum eos qui sciunt plangere.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Protož takto praví Panovník Hospodin, Bůh zástupů: Po všech ulicích bude kvílení, a na všecky strany zkřiknou: Ouvech, ouvech, a povolají oráče k pláči a kvílení s těmi, kteříž umějí naříkati.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et in omnibus vineis erit planctus,  quia pertransibo in medio tui,  dicit Dominus.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Nýbrž i po všech vinicích bude kvílení, když projdu prostředkem tebe, dí Hospodin.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Væ desiderantibus diem Domini !  ad quid eam vobis ?  Dies Domini ista, tenebræ, et non lux.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Běda těm, kteříž žádají dne Hospodinova. K čemuž jest vám ten den Hospodinův, poněvadž jest tmy a ne světla?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quomodo si fugiat vir a facie leonis,  et occurrat ei ursus ;  et ingrediatur domum, et innitatur manu sua super parietem,  et mordeat eum coluber.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Jako když by někdo utíkal před lvem, potkal by se s ním nedvěd; aneb když by všel do domu, a zpolehna rukou svou na stěnu, ušťkl by ho had.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">Numquid non tenebræ dies Domini, et non lux ;  et caligo, et non splendor in ea ?</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Zdali není tmy a ne světla den Hospodinův, v němž není blesku, ale mrákota?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">Odi, et projeci festivitates vestras,  et non capiam odorem cœtuum vestrorum.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Nenávidím, zavrhl jsem svátky vaše, aniž sobě chutnám slavností vašich.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-22">
+      <div class="verse-num-col"><div class="verse-num">22</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quod si obtuleritis mihi holocautomata, et munera vestra,  non suscipiam ;  et vota pinguium vestrorum non respiciam.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Nebo budete-li mi obětovati zápaly a suché oběti vaše, neoblíbím jich, a na pokojné oběti krmného dobytka vašeho nepopatřím.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-23">
+      <div class="verse-num-col"><div class="verse-num">23</div></div>
+      <div class="verse-texts">
+        <div class="latin">Aufer a me tumultum carminum tuorum ;  et cantica lyræ tuæ non audiam.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Odejmi ode mne hluk písní svých, ani hudby louten vašich nechci poslouchati.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-24">
+      <div class="verse-num-col"><div class="verse-num">24</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et revelabitur quasi aqua judicium,  et justitia quasi torrens fortis.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Ale povalí se jako voda soud, a spravedlnost jako potok silný.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-25">
+      <div class="verse-num-col"><div class="verse-num">25</div></div>
+      <div class="verse-texts">
+        <div class="latin">Numquid hostias et sacrificium obtulistis mihi  in deserto quadraginta annis, domus Israël ?</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Zdali jste mně oběti a dary obětovali na poušti za čtyřidceti let, dome Izraelský?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-26">
+      <div class="verse-num-col"><div class="verse-num">26</div></div>
+      <div class="verse-texts">
+        <div class="latin">et portastis tabernaculum Moloch vestro,  et imaginem idolorum vestrorum, sidus dei vestri,  quæ fecistis vobis.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Nýbrž nosili jste stánek Melecha vašeho a Kijuna, obrazy vaše, hvězdu boha vašeho, kteréžto věci sami jste sobě zdělali.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-27">
+      <div class="verse-num-col"><div class="verse-num">27</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et migrare vos faciam trans Damascum, dicit Dominus :  Deus exercituum nomen ejus.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Protož přestěhuji vás dále než Damašské, praví Hospodin, jehož jméno jest Bůh zástupů.</div>
+      </div>
+    </div>
+  </section>
 
-<section class="chap" id="c9">
-  <div class="chhead">
-    <span class="chrom">IX</span>
-    <span class="chlbl">Caput 9</span>
-  </div>
-<div class="vb first" id="v9-1">
-  <span class="vn">1</span>
-  <div class="vt">
-    <p class="lat">Vidi Dominum stantem super altare, et dixit :   Percute cardinem,  et commoveantur superliminaria :  avaritia enim in capite omnium,  et novissimum eorum in gladio interficiam ;  non erit fuga eis.  Fugient, et non salvabitur ex eis qui fugerit.</p>
-    <p class="tra">Viděl jsem Pána, an se postavil na oltáři a řekl: Udeř v makovici, až se zatřesou ty veřeje, a rozetni je všecky od vrchu jejich, ostatek pak mečem zmorduji. Neutečeť žádný z nich, aniž kdo z nich bude, ješto by toho znikl.</p>
-  </div>
-</div>
-<div class="vb" id="v9-2">
-  <span class="vn">2</span>
-  <div class="vt">
-    <p class="lat">Si descenderint usque ad infernum,  inde manus mea educet eos ;  et si ascenderint usque in cælum,  inde detraham eos.</p>
-    <p class="tra">Byť se pak do země zakopali, i odtud by je ruka má vzala; pakli by vstoupili do nebe, i odtud bych je strhl.</p>
-  </div>
-</div>
-<div class="vb" id="v9-3">
-  <span class="vn">3</span>
-  <div class="vt">
-    <p class="lat">Et si absconditi fuerint in vertice Carmeli,  inde scrutans auferam eos ;  et si celaverint se ab oculis meis in profundo maris,  ibi mandabo serpenti, et mordebit eos.</p>
-    <p class="tra">A jestliže by se schovali na vrchu Karmele, vyhledám a vezmu je odtud; pakli by se skryli před očima mýma na dně moře, přikáži hadu, aby je i odtud vyhryzl.</p>
-  </div>
-</div>
-<div class="vb" id="v9-4">
-  <span class="vn">4</span>
-  <div class="vt">
-    <p class="lat">Et si abierint in captivitatem coram inimicis suis,  ibi mandabo gladio, et occidet eos :  et ponam oculos meos super eos in malum,  et non in bonum.</p>
-    <p class="tra">Pakliť by šli v zajetí před nepřátely svými, i tam přikáži meči, aby je zmordoval; obrátím zajisté oko své proti nim k zlému, a ne k dobrému.</p>
-  </div>
-</div>
-<div class="vb" id="v9-5">
-  <span class="vn">5</span>
-  <div class="vt">
-    <p class="lat">Et Dominus Deus exercituum, qui tangit terram, et tabescet,  et lugebunt omnes habitantes in ea :  et ascendet sicut rivus omnis,  et defluet sicut fluvius Ægypti.</p>
-    <p class="tra">Nebo Panovník Hospodin zástupů když se jen dotkne země, rozplývá se, a kvílí všickni přebývající na ní, a vystupuje všecka jako potok, a zatopena bývá jako potokem Egyptským,</p>
-  </div>
-</div>
-<div class="vb" id="v9-6">
-  <span class="vn">6</span>
-  <div class="vt">
-    <p class="lat">Qui ædificat in cælo ascensionem suam,  et fasciculum suum super terram fundavit ;  qui vocat aquas maris,  et effundit eas super faciem terræ :  Dominus nomen ejus.</p>
-    <p class="tra">Kterýž vzdělal na nebesích paláce své, a zástup svůj na zemi sšikoval, kterýž může zavolati vody mořské, a vyliti ji na svrchek země, jehož jméno jest Hospodin.</p>
-  </div>
-</div>
-<div class="vb" id="v9-7">
-  <span class="vn">7</span>
-  <div class="vt">
-    <p class="lat">Numquid non ut filii Æthiopum  vos estis mihi, filii Israël ? ait Dominus.  Numquid non Israël ascendere feci de terra Ægypti,  et Palæstinos de Cappadocia,  et Syros de Cyrene ?</p>
-    <p class="tra">Zdaliž nejste podobni synům Mouřenínů přede mnou, ó synové Izraelovi? dí Hospodin. Zdaliž jsem Izraele nevyvedl z země Egyptské, tak jako Filistinské z Kaftor, a Syrské z Kir?</p>
-  </div>
-</div>
-<div class="vb" id="v9-8">
-  <span class="vn">8</span>
-  <div class="vt">
-    <p class="lat">Ecce oculi Domini Dei super regnum peccans :  et conteram illud a facie terræ ;  verumtamen conterens non conteram domum Jacob,  dicit Dominus.</p>
-    <p class="tra">Aj, oči Panovníka Hospodina proti království tomuto hřešícímu, abych je vyhladil se svrchku země, a však nevyhladím docela domu Jákobova, dí Hospodin.</p>
-  </div>
-</div>
-<div class="vb" id="v9-9">
-  <span class="vn">9</span>
-  <div class="vt">
-    <p class="lat">Ecce enim mandabo ego,  et concutiam in omnibus gentibus domum Israël,  sicut concutitur triticum in cribro,  et non cadet lapillus super terram.</p>
-    <p class="tra">Nebo aj, já přikázal jsem, a budu zmítati domem Izraelským mezi všemi národy, tak jako zmítáno bývá na říčici, tak že ani kameníčko nepropadne na zem.</p>
-  </div>
-</div>
-<div class="vb" id="v9-10">
-  <span class="vn">10</span>
-  <div class="vt">
-    <p class="lat">In gladio morientur omnes peccatores populi mei,  qui dicunt : Non appropinquabit,  et non veniet super nos malum.</p>
-    <p class="tra">Mečem zbiti budou všickni hříšníci z lidu mého, kteříž říkají: Nepřiblížíť se, aniž potká nás to zlé.</p>
-  </div>
-</div>
-<div class="vb" id="v9-11">
-  <span class="vn">11</span>
-  <div class="vt">
-    <p class="lat">In die illa suscitabo tabernaculum David, quod cecidit :  et reædificabo aperturas murorum ejus,  et ea quæ corruerant instaurabo :  et reædificabo illud sicut in diebus antiquis,</p>
-    <p class="tra">V ten den zdvihnu stánek Davidův, kterýž klesá, a zahradím mezery jeho, a zbořeniny jeho opravím, a vzdělám jej jako za dnů starodávních,</p>
-  </div>
-</div>
-<div class="vb" id="v9-12">
-  <span class="vn">12</span>
-  <div class="vt">
-    <p class="lat">ut possideant reliquias Idumææ, et omnes nationes :  eo quod invocatum sit nomen meum super eos,  dicit Dominus faciens hæc.</p>
-    <p class="tra">Aby dědili s ostatky Idumejských a se všechněmi národy, nad kterýmiž jest vzýváno jméno mé, dí Hospodin, kterýž to učiní.</p>
-  </div>
-</div>
-<div class="vb" id="v9-13">
-  <span class="vn">13</span>
-  <div class="vt">
-    <p class="lat">Ecce dies veniunt, dicit Dominus,  et comprehendet arator messorem,  et calcator uvæ mittentem semen :  et stillabunt montes dulcedinem,  et omnes colli culti erunt.</p>
-    <p class="tra">Aj, dnové jdou, dí Hospodin, že postihati bude oráč žence, a ten, kdož tlačí hrozny, rozsevače, hory pak dštíti budou mstem, a všickni pahrbkové oplývati.</p>
-  </div>
-</div>
-<div class="vb" id="v9-14">
-  <span class="vn">14</span>
-  <div class="vt">
-    <p class="lat">Et convertam captivitatem populi mei Israël ;  et ædificabunt civitates desertas, et inhabitabunt ;  et plantabunt vineas, et bibent vinum earum,  et facient hortos, et comedent fructus eorum.</p>
-    <p class="tra">Přivedu také zase zajatý lid svůj Izraelský, a vystavějí města zpuštěná, aby v nich bydlili; a budou štěpovati vinice, a píti víno jejich, nadělají i zahrad, a jísti budou ovoce jejich.</p>
-  </div>
-</div>
-<div class="vb" id="v9-15">
-  <span class="vn">15</span>
-  <div class="vt">
-    <p class="lat">Et plantabo eos super humum suam,  et non evellam eos ultra de terra sua, quam dedi eis,  dicit Dominus Deus tuus.</p>
-    <p class="tra">A tak je štípím v zemi jejich, že nebudou vykořeněni více z země své, kterouž jsem dal jim, praví Hospodin Bůh tvůj.</p>
-  </div>
-</div>
-</section>
-</main>
+  <section class="chapter" id="ch6">
+    <div class="chapter-marker">
+      <span class="ch-roman">VI</span>
+      <span class="ch-label">Caput 6</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v6-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Væ qui opulenti estis in Sion,  et confiditis in monte Samariæ :  optimates capita populorum,  ingredientes pompatice domum Israël !</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Běda pokoj majícím na Sionu, a doufajícím v horu Samařskou, kteréžto hory jsou slovoutné mimo jiné u těch národů, k nimž se scházejí dům Izraelský.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Transite in Chalane, et videte,  et ite inde in Emath magnam,  et descendite in Geth Palæstinorum,  et ad optima quæque regna horum :  si latior terminus eorum termino vestro est.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Projděte až do Chalne, a odtud jděte do Emat veliké, a sstupte do Gát Filistinských, a shlédněte, jsou-li která království lepší nežli tato? Jest-li větší jejich kraj nežli kraj váš?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui separati estis in diem malum,  et appropinquatis solio iniquitatis ;</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Kteříž smyslíte, že jest daleko den bídy, a přistavujete stolici nátisku.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui dormitis in lectis eburneis,  et lascivitis in stratis vestris ;  qui comeditis agnum de grege,  et vitulos de medio armenti ;</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Kteříž léhají na ložcích slonových, a rozkošně sobě počínají na postelích svých, kteříž jídají berany z stáda a telata nejtučnější,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui canitis ad vocem psalterii,  sicut David putaverunt se habere vasa cantici,</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Přizpěvujíce k loutně jako David, vymýšlejíce sobě nástroje muzické.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">bibentes vinum in phialis,  et optimo unguento delibuti,  et nihil patiebantur super contritione Joseph.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Kteříž pijí z bání vinných, a drahými mastmi se maží, aniž jsou čitelni bolesti pro potření Jozefovo.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quapropter nunc migrabunt in capite transmigrantium,  et auferetur factio lascivientium.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Pročež jižť půjdou v zajetí v prvním houfu stěhujících se, a tak nastane žalost těm, kteříž sobě rozkošně počínají.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Juravit Dominus Deus in anima sua,  dicit Dominus Deus exercituum :  Detestor ego superbiam Jacob,  et domos ejus odi,  et tradam civitatem cum habitatoribus suis.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Přisáhl Panovník Hospodin skrze sebe samého, dí Hospodin Bůh zástupů: V ohavnosti mám pýchu Jákobovu, i paláců jeho nenávidím, pročež vydám město i vše, což v něm jest.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quod si reliqui fuerint decem viri in domo una,  et ipsi morientur.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">I stane se, že pozůstane-li deset osob v domě jednom, i ti zemrou.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et tollet eum propinquus suus, et comburet eum,  ut efferat ossa de domo ;  et dicet ei, qui in penetralibus domus est :  Numquid adhuc est penes te ?</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">A vezme někoho strýc jeho, aneb ten, kterýž mu strojí pohřeb, aby vynesl kosti z domu, a dí tomu, kdož jest v pokoji domu: Jest-liž ještě s tebou kdo? I dí: Není žádného. I řekne: Mlč, proto že nepřipomínali jména Hospodinova.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et respondebit : Finis est.  Et dicet ei : Tace,  et non recorderis nominis Domini.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Nebo aj, Hospodin přikáže, a bíti bude na dům veliký přívaly, a na dům menší rozsedlinami.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quia ecce Dominus mandabit,  et percutiet domum majorem ruinis,  et domum minorem scissionibus.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Zdaliž koni běžeti mohou po skále? Zdaliž ji kdo orati může voly? Nebo jste proměnili soud v jed, a ovoce spravedlnosti v pelynek,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Numquid currere queunt in petris equi,  aut arari potest in bubalis ?  quoniam convertistis in amaritudinem judicium,  et fructum justitiæ in absinthium.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Vy, kteříž se veselíte, ano není z čeho, říkajíce: Zdaliž jsme svou silou nevzali sobě rohů?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui lætamini in nihilo ; qui dicitis :  Numquid non in fortitudine nostra assumpsimus nobis cornua ?</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Ale aj, já vzbudím proti vám, ó dome Izraelský, praví Hospodin Bůh zástupů, národ, kterýž vás ssouží, odtud, kudy se jde do Emat, až do potoka roviny.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ecce enim suscitabo super vos, domus Israël,  dicit Dominus Deus exercituum, gentem,  et conteret vos ab introitu Emath usque ad torrentem deserti.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+  </section>
 
-<nav class="bnav">
-  <a href="029-joe.html">&#8592; Ioel</a>
-  <a href="../index.html" class="center">↑ &nbsp; Inhaltsverzeichnis</a>
-  <a href="031-oba.html">Abdias &#8594;</a>
-</nav>
+  <section class="chapter" id="ch7">
+    <div class="chapter-marker">
+      <span class="ch-roman">VII</span>
+      <span class="ch-label">Caput 7</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v7-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hæc ostendit mihi Dominus Deus : et ecce fictor locustæ in principio germinantium serotini imbris, et ecce serotinus post tonsionem regis.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Toto mi ukázal Panovník Hospodin, že aj, formoval kobylky, když nejprvé počala růsti otava, když aj, otava byla po královském posečení.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et factum est, cum consummasset comedere herbam terræ, dixi : Domine Deus, propitius esto, obsecro ; quis suscitabit Jacob, quia parvulus est ?</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">I stalo se, když snědly byliny zemské, že jsem řekl: Panovníče Hospodine, odpustiž, prosím. Kdož zůstane Jákobovi? Neboť ho maličko jest.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Misertus est Dominus super hoc : Non erit, dixit Dominus.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">I želel Hospodin toho. Nestaneť se, řekl Hospodin.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hæc ostendit mihi Dominus Deus : et ecce vocabat judicium ad ignem Dominus Deus ; et devoravit abyssum multam, et comedit simul partem.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Tedy ukázal mi Panovník Hospodin, a aj, Panovník Hospodin volal, že při svou povede ohněm. A spáliv propast velikou, spálil i díl.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et dixi : Domine Deus, quiesce, obsecro ; quis suscitabit Jacob, quia parvulus est ?</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Já pak řekl jsem: Panovníče Hospodine, přestaniž, prosím. Kdož zůstane Jákobovi? Neboť ho maličko jest.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Misertus est Dominus super hoc : Sed et istud non erit, dixit Dominus Deus.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">I želel Hospodin toho. A ani toho se nestane, řekl Panovník Hospodin.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hæc ostendit mihi Dominus : et ecce Dominus stans super murum litum, et in manu ejus trulla cæmentarii.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Potom ukázal mi, a aj, Pán stál na zdi podlé pravidla vzdělané, v jehož ruce bylo pravidlo.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et dixit Dominus ad me : Quid tu vides, Amos ? Et dixi : Trullam cæmentarii. Et dixit Dominus :   Ecce ego ponam trullam in medio populi mei Israël ;  non adjiciam ultra superinducere eum.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">I řekl mi Hospodin: Co vidíš, Amose? Řekl jsem: Pravidlo. I řekl Pán: Aj, já položím pravidlo u prostřed lidu svého Izraelského, nebuduť již více promíjeti jemu.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et demolientur excelsa idoli,  et sanctificationes Israël desolabuntur,  et consurgam super domum Jeroboam in gladio.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Nebo zpuštěny budou výsosti Izákovy, a svatyně Izraelovy zpustnou, tehdáž, když povstanu proti domu Jeroboámovu s mečem.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et misit Amasias, sacerdos Bethel, ad Jeroboam, regem Israël, dicens : Rebellavit contra te Amos in medio domus Israël ; non poterit terra sustinere universos sermones ejus.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Tedy poslal Amaziáš kněz Bethelský k Jeroboámovi králi Izraelskému, řka: Spuntoval se proti tobě Amos u prostřed domu Izraelského, ta země nemohla by snésti všech slov jeho.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hæc enim dicit Amos : In gladio morietur Jeroboam, et Israël captivus migrabit de terra sua.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Nebo takto praví Amos: Od meče umře Jeroboám, a Izrael jistotně přestěhován bude z země své.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et dixit Amasias ad Amos : Qui vides, gradere : fuge in terram Juda, et comede ibi panem, et prophetabis ibi.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Potom řekl Amaziáš Amosovi: Ó vidoucí, ujdi, radímť, utec do země Judské, a jez tam chléb, a tam prorokuj.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et in Bethel non adjicies ultra ut prophetes, quia sanctificatio regis est, et domus regni est.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Ale v Bethel již více neprorokuj, nebo ono svatyně králova i dům královský jest.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Responditque Amos, et dixit ad Amasiam : Non sum propheta, et non sum filius prophetæ : sed armentarius ego sum vellicans sycomoros.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Tedy odpovídaje Amos, řekl Amaziášovi: Nebylť jsem já prorokem, ano ani synem prorockým, ale byl jsem skotákem, a česával jsem plané fíky.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et tulit me Dominus cum sequerer gregem, et dixit Dominus ad me : Vade, propheta ad populum meum Israël.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Ale Hospodin mne vzal, když jsem chodil za stádem, a řekl mi Hospodin: Jdi, prorokuj lidu mému Izraelskému.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et nunc audi verbum Domini :  Tu dicis : Non prophetabis super Israël,  et non stillabis super domum idoli.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Nyní tedy slyšiž slovo Hospodinovo. Ty pravíš: Neprorokuj v Izraeli, a nekaž v domě Izákově.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Propter hoc hæc dicit Dominus :  Uxor tua in civitate fornicabitur,  et filii tui et filiæ tuæ in gladio cadent,  et humus tua funiculo metietur :  et tu in terra polluta morieris,  et Israël captivus migrabit de terra sua.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Protož takto praví Hospodin: Žena tvá cizoložiti bude v městě, synové pak tvoji i dcery tvé od meče padnou; a země tvá provazcem dělena bude, a ty v zemi nečisté umřeš, Izrael pak jistotně přestěhován bude z země své.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch8">
+    <div class="chapter-marker">
+      <span class="ch-roman">VIII</span>
+      <span class="ch-label">Caput 8</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v8-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hæc ostendit mihi Dominus Deus : et ecce uncinus pomorum.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Také mi ukázal Panovník Hospodin, a aj, byl koš ovoce letního.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et dixit : Quid tu vides, Amos ? Et dixi : Uncinum pomorum. Et dixit Dominus ad me :   Venit finis super populum meum Israël ;  non adjiciam ultra ut pertranseam eum.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">A řekl: Co ty vidíš, Amose? I řekl jsem: Koš ovoce letního. Opět mi řekl Hospodin: Přišeltě konec lidu mému Izraelskému, nebuduť již více promíjeti jemu.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et stridebunt cardines templi in die illa,  dicit Dominus Deus :  multi morientur ;  in omni loco projicietur silentium.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Pročež kvíliti budou zpěvové chrámoví v ten den, praví Panovník Hospodin. Množství mrtvých, mlče, namece na všelijaké místo.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Audite hoc, qui conteritis pauperem,  et deficere facitis egenos terræ,</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Slyštež to vy, kteříž sehlcujete chudého, abyste vyhladili nuzné z země,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">dicentes : Quando transibit mensis,  et venundabimus merces ?  et sabbatum, et aperiemus frumentum,  ut imminuamus mensuram, et augeamus siclum,  et supponamus stateras dolosas,</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Říkajíce: Skoro-liž pomine novměsíce, abychom prodávali obilé, a sobota, abychom otevřeli obilnice, abychom ujímali efi, a přivětšovali váhy, a faleš provodili vážkami falešnými,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">ut possideamus in argento egenos et pauperes pro calceamentis,  et quisquilias frumenti vendamus ?</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Kupujíce za peníze nuzné, a chudého za pár střevíců, nadto abychom plevy obilné prodávali?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Juravit Dominus in superbiam Jacob :  Si oblitus fuero usque ad finem omnia opera eorum.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Přisáhl Hospodin skrze důstojnost Jákobovu: Žeť se nezapomenu na věky na všecky skutky jejich.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Numquid super isto non commovebitur terra,  et lugebit omnis habitator ejus,  et ascendet quasi fluvius universus,  et ejicicetur, et defluet, quasi rivus Ægypti ?</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Nad tím-liž by se netřásla i země, a nekvílil by každý, kdož přebývá na ní? Proto-liž by neměla vystoupiti všecka jako potok, a zachvácena i zatopena býti jako potokem Egyptským?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et erit in die illa, dicit Dominus Deus :  occidet sol in meridie,  et tenebrescere faciam terram in die luminis :</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Anobrž stane se v ten den, praví Panovník Hospodin, učiním, že slunce zajde o poledni, a uvedu tmy na zemi v jasný den.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">et convertam festivitates vestras in luctum,  et omnia cantica vestra in planctum,  et inducam super omne dorsum vestrum saccum,  et super omne caput calvitium :  et ponam eam quasi luctum unigeniti,  et novissima ejus quasi diem amarum.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">A proměním svátky vaše v kvílení, a všecky zpěvy vaše v naříkání, a způsobím to, že bude na každých bedrách žíně, a na každé hlavě lysina, a bude v zemi této kvílení jako nad jednorozeným, a poslední věci její jako den hořkosti.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ecce dies veniunt, dicet Dominus,  et mittam famem in terram :  non famem panis, neque sitim aquæ,  sed audiendi verbum Domini.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Aj, dnové jdou, dí Panovník Hospodin, že pošli hlad na zemi, ne hlad chleba, ani žízeň vody, ale slyšení slov Hospodinových,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et commovebuntur a mari usque ad mare,  et ab aquilone usque ad orientem :  circuibunt quærentes verbum Domini,  et non invenient.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Tak že toulati se budou od moře až k moři, a od půlnoci až na východ běhati, hledajíce slova Hospodinova, však nenajdou.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">In die illa deficient virgines pulchræ et adolescentes in siti,</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">V ten čas umdlévati budou panny krásné, ano i mládenci tou žízní,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui jurant in delicto Samariæ,  et dicunt : Vivit Deus tuus, Dan,  et vivit via Bersabee ;  et cadent, et non resurgent ultra.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Kteříž přisahají skrze ohavnost Samařskou, a říkají: Živť jest Bůh tvůj, ó Dan, a živa jest cesta Bersabé. I padnou, a nepovstanou více.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch9">
+    <div class="chapter-marker">
+      <span class="ch-roman">IX</span>
+      <span class="ch-label">Caput 9</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v9-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vidi Dominum stantem super altare, et dixit :   Percute cardinem,  et commoveantur superliminaria :  avaritia enim in capite omnium,  et novissimum eorum in gladio interficiam ;  non erit fuga eis.  Fugient, et non salvabitur ex eis qui fugerit.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Viděl jsem Pána, an se postavil na oltáři a řekl: Udeř v makovici, až se zatřesou ty veřeje, a rozetni je všecky od vrchu jejich, ostatek pak mečem zmorduji. Neutečeť žádný z nich, aniž kdo z nich bude, ješto by toho znikl.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si descenderint usque ad infernum,  inde manus mea educet eos ;  et si ascenderint usque in cælum,  inde detraham eos.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Byť se pak do země zakopali, i odtud by je ruka má vzala; pakli by vstoupili do nebe, i odtud bych je strhl.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et si absconditi fuerint in vertice Carmeli,  inde scrutans auferam eos ;  et si celaverint se ab oculis meis in profundo maris,  ibi mandabo serpenti, et mordebit eos.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">A jestliže by se schovali na vrchu Karmele, vyhledám a vezmu je odtud; pakli by se skryli před očima mýma na dně moře, přikáži hadu, aby je i odtud vyhryzl.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et si abierint in captivitatem coram inimicis suis,  ibi mandabo gladio, et occidet eos :  et ponam oculos meos super eos in malum,  et non in bonum.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Pakliť by šli v zajetí před nepřátely svými, i tam přikáži meči, aby je zmordoval; obrátím zajisté oko své proti nim k zlému, a ne k dobrému.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et Dominus Deus exercituum, qui tangit terram, et tabescet,  et lugebunt omnes habitantes in ea :  et ascendet sicut rivus omnis,  et defluet sicut fluvius Ægypti.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Nebo Panovník Hospodin zástupů když se jen dotkne země, rozplývá se, a kvílí všickni přebývající na ní, a vystupuje všecka jako potok, a zatopena bývá jako potokem Egyptským,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui ædificat in cælo ascensionem suam,  et fasciculum suum super terram fundavit ;  qui vocat aquas maris,  et effundit eas super faciem terræ :  Dominus nomen ejus.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Kterýž vzdělal na nebesích paláce své, a zástup svůj na zemi sšikoval, kterýž může zavolati vody mořské, a vyliti ji na svrchek země, jehož jméno jest Hospodin.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Numquid non ut filii Æthiopum  vos estis mihi, filii Israël ? ait Dominus.  Numquid non Israël ascendere feci de terra Ægypti,  et Palæstinos de Cappadocia,  et Syros de Cyrene ?</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Zdaliž nejste podobni synům Mouřenínů přede mnou, ó synové Izraelovi? dí Hospodin. Zdaliž jsem Izraele nevyvedl z země Egyptské, tak jako Filistinské z Kaftor, a Syrské z Kir?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ecce oculi Domini Dei super regnum peccans :  et conteram illud a facie terræ ;  verumtamen conterens non conteram domum Jacob,  dicit Dominus.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Aj, oči Panovníka Hospodina proti království tomuto hřešícímu, abych je vyhladil se svrchku země, a však nevyhladím docela domu Jákobova, dí Hospodin.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ecce enim mandabo ego,  et concutiam in omnibus gentibus domum Israël,  sicut concutitur triticum in cribro,  et non cadet lapillus super terram.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Nebo aj, já přikázal jsem, a budu zmítati domem Izraelským mezi všemi národy, tak jako zmítáno bývá na říčici, tak že ani kameníčko nepropadne na zem.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">In gladio morientur omnes peccatores populi mei,  qui dicunt : Non appropinquabit,  et non veniet super nos malum.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Mečem zbiti budou všickni hříšníci z lidu mého, kteříž říkají: Nepřiblížíť se, aniž potká nás to zlé.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">In die illa suscitabo tabernaculum David, quod cecidit :  et reædificabo aperturas murorum ejus,  et ea quæ corruerant instaurabo :  et reædificabo illud sicut in diebus antiquis,</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">V ten den zdvihnu stánek Davidův, kterýž klesá, a zahradím mezery jeho, a zbořeniny jeho opravím, a vzdělám jej jako za dnů starodávních,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">ut possideant reliquias Idumææ, et omnes nationes :  eo quod invocatum sit nomen meum super eos,  dicit Dominus faciens hæc.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Aby dědili s ostatky Idumejských a se všechněmi národy, nad kterýmiž jest vzýváno jméno mé, dí Hospodin, kterýž to učiní.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ecce dies veniunt, dicit Dominus,  et comprehendet arator messorem,  et calcator uvæ mittentem semen :  et stillabunt montes dulcedinem,  et omnes colli culti erunt.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Aj, dnové jdou, dí Hospodin, že postihati bude oráč žence, a ten, kdož tlačí hrozny, rozsevače, hory pak dštíti budou mstem, a všickni pahrbkové oplývati.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et convertam captivitatem populi mei Israël ;  et ædificabunt civitates desertas, et inhabitabunt ;  et plantabunt vineas, et bibent vinum earum,  et facient hortos, et comedent fructus eorum.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">Přivedu také zase zajatý lid svůj Izraelský, a vystavějí města zpuštěná, aby v nich bydlili; a budou štěpovati vinice, a píti víno jejich, nadělají i zahrad, a jísti budou ovoce jejich.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et plantabo eos super humum suam,  et non evellam eos ultra de terra sua, quam dedi eis,  dicit Dominus Deus tuus.</div>
+        <div class="trans-label">✦ Čeština</div>
+        <div class="trans">A tak je štípím v zemi jejich, že nebudou vykořeněni více z země své, kterouž jsem dal jim, praví Hospodin Bůh tvůj.</div>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <nav class="book-nav">
+    <a href="029-joe.html">← Ioel</a>
+    <span class="center">Amos · Čeština</span>
+    <a href="031-oba.html">Abdias →</a>
+  </nav>
+
+  <footer class="page-footer">
+    BIBLIA CATHOLICA INTERLINEARIS &nbsp;·&nbsp; Vulgata Clementina &amp; Bible Kralická (1613)
+    &nbsp;·&nbsp; Gemeinfreie Texte / Public Domain
+  </footer>
 
 </body>
 </html>
