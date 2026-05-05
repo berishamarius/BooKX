@@ -1,0 +1,1927 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Osee · Italiano · Biblia Catholica</title>
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
+
+:root {
+  --gold:        #C8A96E;
+  --gold-light:  #EDD58A;
+  --gold-dark:   #8B6914;
+  --navy:        #1A1F3A;
+  --navy-mid:    #252B4A;
+  --navy-light:  #2E3560;
+  --parchment:   #F5E9CC;
+  --parchment-d: #EDD9A3;
+  --cream:       #FDF6E3;
+  --latin-color: #6B1E0E;
+  --trans-color: #0F1D2E;
+  --border:      rgba(200,169,110,.35);
+  --font-title:  'Cinzel Decorative', 'Cinzel', Georgia, serif;
+  --font-sub:    'Cinzel', Georgia, serif;
+  --font-body:   'EB Garamond', Georgia, serif;
+}
+
+*,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+html { font-size:16px; scroll-behavior:smooth; }
+body { background:var(--cream); color:var(--trans-color); font-family:var(--font-body); }
+
+/* ── NAV ─────────────────────────────────────────────── */
+.nav-bar {
+  background:var(--navy); padding:10px 28px;
+  display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  border-bottom:2px solid var(--gold);
+  position:sticky; top:0; z-index:100;
+  box-shadow:0 3px 12px rgba(0,0,0,.45);
+}
+.nav-bar a {
+  color:var(--gold); text-decoration:none;
+  font-family:var(--font-sub); font-size:.75rem; letter-spacing:.05em;
+  transition:color .15s;
+}
+.nav-bar a:hover { color:var(--gold-light); }
+.nav-bar .home { font-weight:700; font-size:.82rem; }
+.nav-bar .spacer { flex:1; }
+.nav-bar .pos { color:rgba(200,169,110,.45); font-size:.7rem; font-family:var(--font-sub); }
+
+/* ── BUCHKOPF ────────────────────────────────────────── */
+.book-header {
+  background:linear-gradient(160deg,var(--navy) 0%,var(--navy-mid) 55%,var(--navy-light) 100%);
+  padding:44px 36px 34px; text-align:center;
+  border-bottom:4px solid var(--gold);
+  position:relative; overflow:hidden;
+}
+.book-header::before {
+  content:'';
+  position:absolute; inset:0;
+  background-image:
+    repeating-linear-gradient( 45deg,transparent,transparent 30px,rgba(200,169,110,.038) 30px,rgba(200,169,110,.038) 31px),
+    repeating-linear-gradient(-45deg,transparent,transparent 30px,rgba(200,169,110,.038) 30px,rgba(200,169,110,.038) 31px);
+  pointer-events:none;
+}
+.testament-badge {
+  display:inline-block;
+  border:1px solid rgba(200,169,110,.4); color:rgba(200,169,110,.65);
+  font-family:var(--font-sub); font-size:.62rem; letter-spacing:.25em;
+  padding:4px 14px; border-radius:2px; margin-bottom:14px; position:relative;
+}
+.book-name-latin {
+  font-family:var(--font-title); font-size:3rem; color:var(--gold-light);
+  text-shadow:0 3px 18px rgba(0,0,0,.55); letter-spacing:.08em; position:relative;
+}
+.book-name-trans {
+  font-family:var(--font-sub); font-size:1.1rem; color:var(--gold);
+  margin-top:8px; letter-spacing:.12em; position:relative;
+}
+.book-meta {
+  font-size:.74rem; color:rgba(200,169,110,.5); margin-top:7px;
+  font-family:var(--font-sub); letter-spacing:.07em; position:relative;
+}
+
+/* ── ORNAMENT-TRENNLINIE ─────────────────────────────── */
+.ornament-bar {
+  text-align:center; padding:16px 0 4px;
+  color:var(--gold); font-size:1.1rem; letter-spacing:.7em;
+}
+
+/* ── HAUPT-CONTAINER ─────────────────────────────────── */
+.content { max-width:960px; margin:0 auto; padding:0 24px 80px; }
+
+/* ── KAPITEL-MARKER ──────────────────────────────────── */
+.chapter-marker {
+  display:flex; align-items:center; gap:16px;
+  padding:28px 6px 12px; margin-bottom:4px;
+  border-bottom:2px solid var(--border);
+}
+.ch-roman {
+  font-family:var(--font-title); font-size:2.2rem; color:var(--gold);
+  min-width:56px; text-align:center; flex-shrink:0;
+  text-shadow:0 1px 8px rgba(200,169,110,.3);
+}
+.ch-label {
+  font-family:var(--font-sub); font-size:.72rem; color:rgba(200,169,110,.6);
+  letter-spacing:.22em; text-transform:uppercase;
+}
+
+/* ── VERS-BLOCK ──────────────────────────────────────── */
+.verse-block {
+  display:flex; gap:0; border-bottom:1px solid rgba(200,169,110,.15);
+}
+.verse-block:nth-child(odd)  { background:var(--cream); }
+.verse-block:nth-child(even) { background:var(--parchment); }
+
+.verse-num-col {
+  flex-shrink:0; width:42px; padding:16px 6px 16px 0; text-align:right;
+}
+.verse-num {
+  display:inline-block; width:28px; height:28px; border-radius:50%;
+  background:var(--gold-dark); color:var(--cream);
+  font-family:var(--font-sub); font-size:.64rem; font-weight:700;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 1px 5px rgba(0,0,0,.25);
+}
+
+.verse-texts { flex:1; padding:16px 16px 18px 8px; }
+
+/* ── LATEINISCHER TEXT (oben / primär) ───────────────── */
+.latin {
+  font-family:var(--font-body); font-size:1.12rem; line-height:1.9;
+  color:var(--latin-color); font-weight:500;
+  border-left:3px solid var(--gold); padding-left:12px;
+  margin-bottom:8px;
+}
+
+/* ── ÜBERSETZUNGS-TEXT (unten / sekundär) ────────────── */
+.trans-label {
+  font-family:var(--font-sub); font-size:.6rem; letter-spacing:.17em;
+  text-transform:uppercase; color:var(--gold-dark); margin-bottom:5px; opacity:.78;
+}
+.trans {
+  font-family:var(--font-body); font-size:1.04rem; line-height:1.85;
+  color:var(--trans-color); font-style:italic;
+  padding-left:15px;
+}
+
+/* Erste Vers jedes Kapitels: Drop-Cap */
+.verse-block:first-of-type .latin::first-letter {
+  font-size:4.2em; float:left; line-height:.72;
+  padding-right:.08em; margin-top:.06em;
+  font-family:var(--font-title); color:var(--gold);
+}
+
+/* ── NAVIGATION ZWISCHEN BÜCHERN ─────────────────────── */
+.book-nav {
+  display:flex; justify-content:space-between; align-items:center;
+  background:var(--navy); border-top:3px solid var(--gold);
+  padding:12px 26px; gap:12px;
+}
+.book-nav a {
+  color:var(--gold); text-decoration:none;
+  font-family:var(--font-sub); font-size:.78rem; letter-spacing:.07em;
+  padding:6px 14px; border:1px solid rgba(200,169,110,.3); border-radius:3px;
+  transition:background .18s;
+}
+.book-nav a:hover { background:rgba(200,169,110,.15); }
+.book-nav .center {
+  font-family:var(--font-sub); font-size:.7rem; color:rgba(200,169,110,.55);
+  letter-spacing:.1em; text-align:center;
+}
+
+/* ── FUßZEILE ────────────────────────────────────────── */
+.page-footer {
+  background:var(--navy); border-top:2px solid rgba(200,169,110,.3);
+  padding:18px 28px; text-align:center;
+  color:rgba(200,169,110,.45); font-family:var(--font-sub);
+  font-size:.68rem; letter-spacing:.1em;
+}
+
+/* ── DRUCK ───────────────────────────────────────────── */
+@media print {
+  .nav-bar, .book-nav { display:none; }
+  .verse-block { break-inside:avoid; }
+  .book-header { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+}
+
+/* ── MOBIL ───────────────────────────────────────────── */
+@media (max-width:640px) {
+  .book-name-latin { font-size:2.1rem; }
+  .ch-roman { font-size:1.6rem; }
+  .latin { font-size:.98rem; }
+  .trans { font-size:.93rem; }
+  .content { padding:0 12px 60px; }
+}
+</style>
+</head>
+<body>
+
+  <nav class="nav-bar">
+    <a class="home" href="../../../index.html">✞ BIBLIA CATHOLICA</a>
+    <a href="../index.html">🇮🇹 Italiano</a>
+    <span class="spacer"></span>
+    <span class="pos">028 / 066</span>
+  </nav>
+
+  <header class="book-header">
+    <div class="testament-badge">VETUS TESTAMENTUM</div>
+    <div class="book-name-latin">OSEE</div>
+    <div class="book-name-trans">Hosea</div>
+    <div class="book-meta">Vulgata Clementina · Giovanni Diodati · 14 Capita · 198 Versus</div>
+  </header>
+
+  <div class="ornament-bar">❧ ✦ ❧ ✦ ❧</div>
+
+  <main class="content">
+
+  <section class="chapter" id="ch1">
+    <div class="chapter-marker">
+      <span class="ch-roman">I</span>
+      <span class="ch-label">Caput 1</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v1-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Verbum Domini, quod factum est ad Osee, filium Beeri, in diebus Oziæ, Joathan, Achaz, Ezechiæ, regum Juda ; et in diebus Jeroboam, filii Joas, regis Israël.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Principium loquendi Domino in Osee. Et dixit Dominus ad Osee : Vade, sume tibi uxorem fornicationum, et fac tibi filios fornicationum, quia fornicans fornicabitur terra a Domino.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et abiit, et accepit Gomer, filiam Debelaim : et concepit, et peperit ei filium.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et dixit Dominus ad eum : Voca nomen ejus Jezrahel, quoniam adhuc modicum, et visitabo sanguinem Jezrahel super domum Jehu, et quiescere faciam regnum domus Israël.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et in illa die conteram arcum Israël in valle Jezrahel.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et concepit adhuc, et peperit filiam. Et dixit ei : Voca nomen ejus, Absque misericordia, quia non addam ultra misereri domui Israël, sed oblivione obliviscar eorum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et domui Juda miserebor, et salvabo eos in Domino Deo suo ; et non salvabo eos in arcu et gladio, et in bello, et in equis, et in equitibus.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et ablactavit eam quæ erat Absque misericordia. Et concepit, et peperit filium.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et dixit : Voca nomen ejus, Non populus meus, quia vos non populus meus, et ego non ero vester.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et erit numerus filiorum Israël quasi arena maris, quæ sine mensura est, et non numerabitur. Et erit in loco ubi dicetur eis : Non populus meus vos : dicetur eis : Filii Dei viventis.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et congregabuntur filii Juda et filii Israël pariter ; et ponent sibimet caput unum, et ascendent de terra, quia magnus dies Jezrahel.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch2">
+    <div class="chapter-marker">
+      <span class="ch-roman">II</span>
+      <span class="ch-label">Caput 2</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v2-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Dicite fratribus vestris : Populus meus ; et sorori vestræ : Misericordiam consecuta.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Judicate matrem vestram, judicate,  quoniam ipsa non uxor mea,  et ego non vir ejus.  Auferat fornicationes suas a facie sua,  et adulteria sua de medio uberum suorum ;</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">ne forte expoliem eam nudam,  et statuam eam secundum diem nativitatis suæ,  et ponam eam quasi solitudinem,  et statuam eam velut terram inviam,  et interficiam eam siti.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et filiorum illius non miserebor,  quoniam filii fornicationum sunt.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quia fornicata est mater eorum,  confusa est quæ concepit eos ;  quia dixit : Vadam post amatores meos,  qui dant panes mihi, et aquas meas,  lanam meam, et linum meum,  oleum meum, et potum meum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Propter hoc ecce ego sepiam viam tuam spinis,  et sepiam eam maceria, et semitas suas non inveniet.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et sequetur amatores suos, et non apprehendet eos ;  et quæret eos, et non inveniet :  et dicet : Vadam, et revertar ad virum meum priorem,  quia bene mihi erat tunc magis quam nunc.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et hæc nescivit, quia ego dedi ei frumentum, et vinum, et oleum,  et argentum multiplicavi ei, et aurum,  quæ fecerunt Baal.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Idcirco convertar, et sumam frumentum meum in tempore suo,  et vinum meum in tempore suo.  Et liberabo lanam meam et linum meum,  quæ operiebant ignominiam ejus.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et nunc revelabo stultitiam ejus in oculis amatorum ejus ;  et vir non eruet eam de manu mea ;</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">et cessare faciam omne gaudium ejus,  solemnitatem ejus, neomeniam ejus, sabbatum ejus,  et omnia festa tempora ejus.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et corrumpam vineam ejus, et ficum ejus,  de quibus dixit : Mercedes hæ meæ sunt,  quas dederunt mihi amatores mei ;  et ponam eam in saltum,  et comedet eam bestia agri.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et visitabo super eam dies Baalim,  quibus accendebat incensum,  et ornabatur in aure sua, et monili suo.  Et ibat post amatores suos,  et mei obliviscebatur, dicit Dominus.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Propter hoc ecce ego lactabo eam,  et ducam eam in solitudinem,  et loquar ad cor ejus.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et dabo ei vinitores ejus ex eodem loco,  et vallem Achor, ad aperiendam spem ;  et canet ibi juxta dies juventutis suæ,  et juxta dies ascensionis suæ de terra Ægypti.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et erit in die illa, ait Dominus :  vocabit me, Vir meus,  et non vocabit me ultra Baali.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et auferam nomina Baalim de ore ejus,  et non recordabitur ultra nominis eorum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et percutiam cum eis fœdus in die illa, cum bestia agri,  et cum volucre cæli, et cum reptili terræ ;  et arcum, et gladium, et bellum conteram de terra,  et dormire eos faciam fiducialiter.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et sponsabo te mihi in sempiternum ;  et sponsabo te mihi in justitia, et judicio,  et in misericordia, et in miserationibus.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et sponsabo te mihi in fide ;  et scies quia ego Dominus.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et erit in die illa :  exaudiam, dicit Dominus, exaudiam cælos,  et illi exaudient terram.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-22">
+      <div class="verse-num-col"><div class="verse-num">22</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et terra exaudiet triticum, et vinum, et oleum,  et hæc exaudient Jezrahel.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-23">
+      <div class="verse-num-col"><div class="verse-num">23</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et seminabo eam mihi in terra,  et miserebor ejus quæ fuit Absque misericordia.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-24">
+      <div class="verse-num-col"><div class="verse-num">24</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et dicam Non populo meo : Populus meus es tu ;  et ipse dicet : Deus meus es tu.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch3">
+    <div class="chapter-marker">
+      <span class="ch-roman">III</span>
+      <span class="ch-label">Caput 3</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v3-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et dixit Dominus ad me : Adhuc vade, et dilige mulierem dilectam amico et adulteram, sicut diligit Dominus filios Israël, et ipsi respiciunt ad deos alienos, et diligunt vinacia uvarum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et fodi eam mihi quindecim argenteis, et coro hordei, et dimidio coro hordæi.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et dixi ad eam : Dies multos exspectabis me ; non fornicaberis, et non eris viro ; sed et ego exspectabo te.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quia dies multos sedebunt filii Israël sine rege, et sine principe, et sine sacrificio, et sine altari, et sine ephod, et sine theraphim.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et post hæc revertentur filii Israël, et quærent Dominum Deum suum, et David regem suum : et pavebunt ad Dominum, et ad bonum ejus, in novissimo dierum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch4">
+    <div class="chapter-marker">
+      <span class="ch-roman">IV</span>
+      <span class="ch-label">Caput 4</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v4-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Audite verbum Domini, filii Israël,  quia judicium Domino cum habitatoribus terræ :  non est enim veritas, et non est misericordia,  et non est scientia Dei in terra.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Maledictum, et mendacium,  et homicidium, et furtum, et adulterium inundaverunt,  et sanguis sanguinem tetigit.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Propter hoc lugebit terra,  et infirmabitur omnis qui habitat in ea,  in bestia agri, et in volucre cæli ;  sed et pisces maris congregabuntur.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Verumtamen unusquisque non judicet,  et non arguatur vir :  populus enim tuus sicut hi qui contradicunt sacerdoti.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et corrues hodie,  et corruet etiam propheta tecum.  Nocte tacere feci matrem tuam.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Conticuit populus meus,  eo quod non habuerit scientiam :  quia tu scientiam repulisti,  repellam te, ne sacerdotio fungaris mihi ;  et oblita es legis Dei tui,  obliviscar filiorum tuorum et ego.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Secundum multitudinem eorum sic peccaverunt mihi :  gloriam eorum in ignominiam commutabo.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Peccata populi mei comedent,  et ad iniquitatem eorum sublevabunt animas eorum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et erit sicut populus, sic sacerdos ;  et visitabo super eum vias ejus,  et cogitationes ejus reddam ei.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et comedent, et non saturabuntur ;  fornicati sunt, et non cessaverunt :  quoniam Dominum dereliquerunt in non custodiendo.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Fornicatio, et vinum, et ebrietas auferunt cor.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Populus meus in ligno suo interrogavit,  et baculus ejus annuntiavit ei ;  spiritus enim fornicationum decepit eos,  et fornicati sunt a Deo suo.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Super capita montium sacrificabant,  et super colles ascendebant thymiama ;  subtus quercum, et populum, et terebinthum,  quia bona erat umbra ejus ;  ideo fornicabuntur filiæ vestræ,  et sponsæ vestræ adulteræ erunt.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non visitabo super filias vestras cum fuerint fornicatæ,  et super sponsas vestras cum adulteraverint,  quoniam ipsi cum meretricibus conversabantur,  et cum effeminatis sacrificabant ;  et populus non intelligens vapulabit.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si fornicaris tu, Israël,  non delinquat saltem Juda ;  et nolite ingredi in Galgala,  et ne ascenderitis in Bethaven,  neque juraveritis : Vivit Dominus !</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quoniam sicut vacca lasciviens declinavit Israël ;  nunc pascet eos Dominus, quasi agnum in latitudine.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Particeps idolorum Ephraim : dimitte eum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Separatum est convivium eorum ;  fornicatione fornicati sunt :  dilexerunt afferre ignominiam protectores ejus.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ligavit eum spiritus in alis suis,  et confundentur a sacrificiis suis.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch5">
+    <div class="chapter-marker">
+      <span class="ch-roman">V</span>
+      <span class="ch-label">Caput 5</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v5-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Audite hoc, sacerdotes,  et attendite, domus Israël,  et domus regis, auscultate :  quia vobis judicium est,  quoniam laqueus facti estis speculationi,  et rete expansum super Thabor.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et victimas declinastis in profundum ;  et ego eruditor omnium eorum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ego scio Ephraim,  et Israël non est absconditus a me :  quia nunc fornicatus est Ephraim ;  contaminatus est Israël.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non dabunt cogitationes suas ut revertantur ad Deum suum,  quia spiritus fornicationum in medio eorum,  et Dominum non cognoverunt.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et respondebit arrogantia Israël in facie ejus,  et Israël et Ephraim ruent in iniquitate sua :  ruet etiam Judas cum eis.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">In gregibus suis et in armentis suis vadent ad quærendum Dominum,  et non invenient :  ablatus est ab eis.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">In Dominum prævaricati sunt,  quia filios alienos genuerunt :  nunc devorabit eos mensis, cum partibus suis.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Clangite buccina in Gabaa,  tuba in Rama ;  ululate in Bethaven,  post tergum tuum, Benjamin.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ephraim in desolatione erit in die correptionis ;  in tribubus Israël ostendi fidem.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Facti sunt principes Juda quasi assumentes terminum ;  super eos effundam quasi aquam iram meam.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Calumniam patiens est Ephraim, fractus judicio,  quoniam cœpit abire post sordes.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et ego quasi tinea Ephraim,  et quasi putredo domui Juda.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et vidit Ephraim languorem suum,  et Juda vinculum suum ;  et abiit Ephraim ad Assur,  et misit ad regem ultorem :  et ipse non poterit sanare vos,  nec solvere poterit a vobis vinculum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quoniam ego quasi leæna Ephraim,  et quasi catulus leonis domui Juda.  Ego, ego capiam, et vadam ;  tollam, et non est qui eruat.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vadens revertar ad locum meum,  donec deficiatis, et quæratis faciem meam.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch6">
+    <div class="chapter-marker">
+      <span class="ch-roman">VI</span>
+      <span class="ch-label">Caput 6</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v6-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">In tribulatione sua mane consurgent ad me :  Venite, et revertamur ad Dominum,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">quia ipse cepit, et sanabit nos ;  percutiet, et curabit nos.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vivificabit nos post duos dies ;  in die tertia suscitabit nos,  et vivemus in conspectu ejus.  Sciemus, sequemurque ut cognoscamus Dominum :  quasi diluculum præparatus est egressus ejus,  et veniet quasi imber nobis temporaneus et serotinus terræ.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quid faciam tibi, Ephraim ?  quid faciam tibi, Juda ?  misericordia vestra quasi nubes matutina,  et quasi ros mane pertransiens.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Propter hoc dolavi in prophetis ;  occidi eos in verbis oris mei :  et judicia tua quasi lux egredientur.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quia misericordiam volui, et non sacrificium ;  et scientiam Dei plus quam holocausta.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ipsi autem sicut Adam transgressi sunt pactum :  ibi prævaricati sunt in me.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Galaad civitas operantium idolum,  supplantata sanguine.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et quasi fauces virorum latronum,  particeps sacerdotum, in via interficientium pergentes de Sichem :  quia scelus operati sunt.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">In domo Israël vidi horrendum :  ibi fornicationes Ephraim,  contaminatus est Israël.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sed et Juda, pone messem tibi,  cum convertero captivitatem populi mei.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch7">
+    <div class="chapter-marker">
+      <span class="ch-roman">VII</span>
+      <span class="ch-label">Caput 7</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v7-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Cum sanare vellem Israël,  revelata est iniquitas Ephraim,  et malitia Samariæ,  quia operati sunt mendacium ;  et fur ingressus est spolians,  latrunculus foris.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et ne forte dicant in cordibus suis,  omnem malitiam eorum me recordatum,  nunc circumdederunt eos adinventiones suæ :  coram facie mea factæ sunt.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">In malitia sua lætificaverunt regem,  et in mendaciis suis principes.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Omnes adulterantes,  quasi clibanus succensus a coquente ;  quievit paululum civitas a commistione fermenti,  donec fermentaretur totum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Dies regis nostri : cœperunt principes furere a vino ;  extendit manum suam cum illusoribus.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quia applicuerunt quasi clibanum cor suum,  cum insidiaretur eis ;  tota nocte dormivit coquens eos :  mane ipse succensus quasi ignis flammæ.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Omnes calefacti sunt quasi clibanus,  et devoraverunt judices suos :  omnes reges eorum ceciderunt ;  non est qui clamat in eis ad me.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ephraim in populis ipse commiscebatur ;  Ephraim factus est subcinericius panis, qui non reversatur.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Comederunt alieni robur ejus, et ipse nescivit ;  sed et cani effusi sunt in eo, et ipse ignoravit.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et humiliabitur superbia Israël in facie ejus ;  nec reversi sunt ad Dominum Deum suum,  et non quæsierunt eum in omnibus his.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et factus est Ephraim quasi columba seducta non habens cor.  Ægyptum invocabant ; ad Assyrios abierunt.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et cum profecti fuerint,  expandam super eos rete meum :  quasi volucrem cæli detraham eos ;  cædam eos secundum auditionem cœtus eorum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Væ eis, quoniam recesserunt a me !  vastabuntur, quia prævaricati sunt in me,  et ego redemi eos,  et ipsi locuti sunt contra me mendacia.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et non clamaverunt ad me in corde suo,  sed ululabant in cubilibus suis :  super triticum et vinum ruminabant ;  recesserunt a me.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et ego erudivi eos, et confortavi brachia eorum,  et in me cogitaverunt malitiam.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Reversi sunt ut essent absque jugo ;  facti sunt quasi arcus dolosus :  cadent in gladio principes eorum, a furore linguæ suæ.  Ista subsannatio eorum in terra Ægypti.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch8">
+    <div class="chapter-marker">
+      <span class="ch-roman">VIII</span>
+      <span class="ch-label">Caput 8</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v8-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">In gutture tuo sit tuba  quasi aquila super domum Domini,  pro eo quod transgressi sunt fœdus meum,  et legem meam prævaricati sunt.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Me invocabunt : Deus meus,  cognovimus te Israël.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Projecit Israël bonum :  inimicus persequetur eum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ipsi regnaverunt, et non ex me ;  principes exstiterunt, et non cognovi :  argentum suum et aurum suum fecerunt sibi idola,  ut interirent.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Projectus est vitulus tuus, Samaria ;  iratus est furor meus in eos.  Usquequo non poterunt emundari ?</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quia ex Israël et ipse est :  artifex fecit illum, et non est deus ;  quoniam in aranearum telas erit vitulus Samariæ.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quia ventum seminabunt,  et turbinem metent :  culmus stans non est in eo ;  germen non faciet farinam :  quod etsi fecerit, alieni comedent eam.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Devoratus est Israël ;  nunc factus est in nationibus quasi vas immundum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quia ipsi ascenderunt ad Assur,  onager solitarius sibi ;  Ephraim munera dederunt amatoribus.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sed et cum mercede conduxerint nationes,  nunc congregabo eos,  et quiescent paulisper ab onere regis et principum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quia multiplicavit Ephraim altaria ad peccandum ;  factæ sunt ei aræ in delictum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Scribam ei multiplices leges meas,  quæ velut alienæ computatæ sunt.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hostias offerent,  immolabunt carnes et comedent,  et Dominus non suscipiet eas :  nunc recordabitur iniquitatis eorum,  et visitabit peccata eorum :  ipsi in Ægyptum convertentur.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et oblitus est Israël factoris sui,  et ædificavit delubra ;  et Judas multiplicavit urbes munitas ;  et mittam ignem in civitates ejus,  et devorabit ædes illius.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch9">
+    <div class="chapter-marker">
+      <span class="ch-roman">IX</span>
+      <span class="ch-label">Caput 9</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v9-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Noli lætari, Israël ;  noli exsultare sicut populi :  quia fornicatus es a Deo tuo ;  dilexisti mercedem super omnes areas tritici.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Area et torcular non pascet eos,  et vinum mentietur eis :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">non habitabunt in terra Domini.  Reversus est Ephraim in Ægyptum,  et in Assyriis pollutum comedit.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non libabunt Domino vinum,  et non placebunt ei.  Sacrificia eorum quasi panis lugentium ;  omnes qui comedent eum, contaminabuntur :  quia panis eorum animæ ipsorum :  non intrabit in domum Domini.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quid facietis in die solemni,  in die festivitatis Domini ?</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ecce enim profecti sunt a vastitate :  Ægyptus congregabit eos ;  Memphis sepeliet eos :  desiderabile argentum eorum urtica hæreditabit,  lappa in tabernaculis eorum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Venerunt dies visitationis,  venerunt dies retributionis.  Scitote, Israël,  stultum prophetam,  insanum virum spiritualem,  propter multitudinem iniquitatis tuæ,  et multitudinem amentiæ.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Speculator Ephraim cum Deo meo,  propheta laqueus ruinæ factus est super omnes vias ejus ;  insania in domo Dei ejus.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Profunde peccaverunt, sicut in diebus Gabaa.  Recordabitur iniquitatis eorum,  et visitabit peccata eorum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quasi uvas in deserto inveni Israël,  quasi prima poma ficulneæ in cacumine ejus vidi patres eorum :  ipsi autem intraverunt ad Beelphegor,  et abalienati sunt in confusionem,  et facti sunt abominabiles sicut ea quæ dilexerunt.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ephraim quasi avis avolavit ;  gloria eorum a partu, et ab utero, et a conceptu.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quod etsi enutrierint filios suos,  absque liberis eos faciam in hominibus ;  sed et væ eis cum recessero ab eis !</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ephraim, ut vidi, Tyrus erat fundata in pulchritudine ;  et Ephraim educet ad interfectorem filios suos.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Da eis, Domine. Quid dabis eis ?  da eis vulvam sine liberis, et ubera arentia.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Omnes nequitiæ eorum in Galgal,  quia ibi exosos habui eos.  Propter malitiam adinventionum eorum,  de domo mea ejiciam eos ;  non addam ut diligam eos :  omnes principes eorum recedentes.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Percussus est Ephraim ;  radix eorum exsiccata est :  fructum nequaquam facient,  quod etsi genuerint,  interficiam amantissima uteri eorum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Abjiciet eos Deus meus, quia non audierunt eum,  et erunt vagi in nationibus.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch10">
+    <div class="chapter-marker">
+      <span class="ch-roman">X</span>
+      <span class="ch-label">Caput 10</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v10-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vitis frondosa Israël,  fructus adæquatus est ei :  secundum multitudinem fructus sui multiplicavit altaria,  juxta ubertatem terræ suæ exuberavit simulacris.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Divisum est cor eorum, nunc interibunt ;  ipse confringet simulacra eorum,  depopulabitur aras eorum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quia nunc dicent : Non est rex nobis,  non enim timemus Dominum ;  et rex quid faciet nobis ?</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Loquimini verba visionis inutilis, et ferietis fœdus ;  et germinabit quasi amaritudo judicium super sulcos agri.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vaccas Bethaven coluerunt habitatores Samariæ ;  quia luxit super eum populus ejus,  et æditui ejus super eum exsultaverunt  in gloria ejus, quia migravit ab eo.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Siquidem et ipse in Assur delatus est,  munus regi ultori.  Confusio Ephraim capiet,  et confundetur Israël in voluntate sua.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Transire fecit Samaria regem suum  quasi spumam super faciem aquæ.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et disperdentur excelsa idoli, peccatum Israël ;  lappa et tribulus ascendet super aras eorum :  et dicent montibus : Operite nos,  et collibus : Cadite super nos.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ex diebus Gabaa peccavit Israël ;  ibi steterunt.  Non comprehendet eos in Gabaa  prælium super filios iniquitatis.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Juxta desiderium meum corripiam eos :  congregabuntur super eos populi,  cum corripientur propter duas iniquitates suas.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ephraim vitula docta diligere trituram,  et ego transivi super pulchritudinem colli ejus :  ascendam super Ephraim,  arabit Judas ;  confringet sibi sulcos Jacob.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Seminate vobis in justitia,  et metite in ore misericordiæ.  Innovate vobis novale ;  tempus autem requirendi Dominum,  cum venerit qui docebit vos justitiam.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Arastis impietatem,  iniquitatem messuistis :  comedistis frugem mendacii,  quia confisus es in viis tuis,  in multitudine fortium tuorum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Consurget tumultus in populo tuo ;  et omnes munitiones tuæ vastabuntur,  sicut vastatus est Salmana a domo ejus qui judicavit Baal  in die prælii, matre super filios allisa.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sic fecit vobis Bethel,  a facie malitiæ nequitiarum vestrarum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch11">
+    <div class="chapter-marker">
+      <span class="ch-roman">XI</span>
+      <span class="ch-label">Caput 11</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v11-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sicut mane transiit, pertransiit rex Israël.  Quia puer Israël, et dilexi eum ;  et ex Ægypto vocavi filium meum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vocaverunt eos, sic abierunt a facie eorum ;  Baalim immolabant, et simulacris sacrificabant.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et ego quasi nutritius Ephraim :  portabam eos in brachiis meis,  et nescierunt quod curarem eos.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">In funiculis Adam traham eos,  in vinculis caritatis ;  et ero eis quasi exaltans jugum super maxillas eorum,  et declinavi ad eum ut vesceretur.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non revertetur in terram Ægypti, et Assur ipse rex ejus,  quoniam noluerunt converti.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Cœpit gladius in civitatibus ejus,  et consumet electos ejus,  et comedet capita eorum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et populus meus pendebit ad reditum meum ;  jugum autem imponetur eis simul, quod non auferetur.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quomodo dabo te, Ephraim ?  protegam te, Israël ?  Quomodo dabo te sicut Adama,  ponam te ut Seboim ?  Conversum est in me cor meum,  pariter conturbata est pœnitudo mea.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non faciam furorem iræ meæ ;  non convertar ut disperdam Ephraim,  quoniam Deus ego, et non homo ;  in medio tui sanctus,  et non ingrediar civitatem.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Post Dominum ambulabunt ;  quasi leo rugiet,  quia ipse rugiet,  et formidabunt filii maris.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et avolabunt quasi avis ex Ægypto,  et quasi columba de terra Assyriorum :  et collocabo eos in domibus suis, dicit Dominus.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Circumdedit me in negatione Ephraim,  et in dolo domus Israël ;  Judas autem testis descendit cum Deo,  et cum sanctis fidelis.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch12">
+    <div class="chapter-marker">
+      <span class="ch-roman">XII</span>
+      <span class="ch-label">Caput 12</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v12-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ephraim pascit ventum,  et sequitur æstum ;  tota die mendacium et vastitatem multiplicat :  et fœdus cum Assyriis iniit,  et oleum in Ægyptum ferebat.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Judicium ergo Domini cum Juda,  et visitatio super Jacob :  juxta vias ejus, et juxta adinventiones ejus reddet ei.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">In utero supplantavit fratrem suum,  et in fortitudine sua directus est cum angelo.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et invaluit ad angelum, et confortatus est ;  flevit, et rogavit eum.  In Bethel invenit eum,  et ibi locutus est nobiscum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et Dominus Deus exercituum,  Dominus memoriale ejus.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et tu ad Deum tuum converteris ;  misericordiam et judicium custodi,  et spera in Deo tuo semper.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Chanaan, in manu ejus statera dolosa,  calumniam dilexit.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et dixit Ephraim : Verumtamen dives effectus sum ;  inveni idolum mihi :  omnes labores mei non invenient mihi iniquitatem quam peccavi.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et ego Dominus Deus tuus ex terra Ægypti :  adhuc sedere te faciam in tabernaculis, sicut in diebus festivitatis.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et locutus sum super prophetas,  et ego visionem multiplicavi,  et in manu prophetarum assimilatus sum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si Galaad idolum, ergo frustra erant in Galgal bobus immolantes ;  nam et altaria eorum quasi acervi super sulcos agri.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Fugit Jacob in regionem Syriæ,  et servivit Israël in uxorem,  et in uxorem servavit.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">In propheta autem eduxit Dominus Israël de Ægypto,  et in propheta servatus est.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ad iracundiam me provocavit Ephraim in amaritudinibus suis :  et sanguis ejus super eum veniet,  et opprobrium ejus restituet ei Dominus suus.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch13">
+    <div class="chapter-marker">
+      <span class="ch-roman">XIII</span>
+      <span class="ch-label">Caput 13</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v13-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Loquente Ephraim, horror invasit Israël ;  et deliquit in Baal, et mortuus est.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et nunc addiderunt ad peccandum ;  feceruntque sibi conflatile de argento suo  quasi similitudinem idolorum :  factura artificum totum est :  his ipsi dicunt : Immolate homines, vitulos adorantes.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Idcirco erunt quasi nubes matutina,  et sicut ros matutinus præteriens ;  sicut pulvis turbine raptus ex area,  et sicut fumus de fumario.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ego autem Dominus Deus tuus, ex terra Ægypti ;  et Deum absque me nescies,  et salvator non est præter me.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ego cognovi te in deserto,  in terra solitudinis.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Juxta pascua sua adimpleti sunt et saturati sunt ;  et levaverunt cor suum, et obliti sunt mei.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et ego ero eis quasi leæna,  sicut pardus in via Assyriorum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Occurram eis quasi ursa raptis catulis,  et dirumpam interiora jecoris eorum,  et consumam eos ibi quasi leo :  bestia agri scindet eos.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Perditio tua, Israël : tantummodo in me auxilium tuum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ubi est rex tuus ?  maxime nunc salvet te in omnibus urbibus tuis ;  et judices tui, de quibus dixisti :  Da mihi regem et principes.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Dabo tibi regem in furore meo,  et auferam in indignatione mea.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Colligata est iniquitas Ephraim ;  absconditum peccatum ejus.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Dolores parturientis venient ei :  ipse filius non sapiens :  nunc enim non stabit in contritione filiorum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">De manu mortis liberabo eos ;  de morte redimam eos.  Ero mors tua, o mors !  morsus tuus ero, inferne !  consolatio abscondita est ab oculis meis.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quia ipse inter fratres dividet :  adducet urentem ventum Dominus de deserto ascendentem,  et siccabit venas ejus,  et desolabit fontem ejus :  et ipse diripiet thesaurum omnis vasis desiderabilis.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch14">
+    <div class="chapter-marker">
+      <span class="ch-roman">XIV</span>
+      <span class="ch-label">Caput 14</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v14-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Pereat Samaria, quoniam ad amaritudinem concitavit Deum suum !  in gladio pereant,  parvuli eorum elidantur,  et fœtæ ejus discindantur !</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v14-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Convertere, Israël, ad Dominum Deum tuum,  quoniam corruisti in iniquitate tua.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v14-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Tollite vobiscum verba,  et convertimini ad Dominum ; et dicite ei :  Omnem aufer iniquitatem, accipe bonum,  et reddemus vitulos labiorum nostrorum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v14-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Assur non salvabit nos :  super equum non ascendemus,  nec dicemus ultra, Dii nostri opera manuum nostrarum :  quia ejus, qui in te est, misereberis pupilli.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v14-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sanabo contritiones eorum ;  diligam eos spontanee :  quia aversus est furor meus ab eis.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v14-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ero quasi ros ;  Israël germinabit sicut lilium,  et erumpet radix ejus ut Libani.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v14-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ibunt rami ejus,  et erit quasi oliva gloria ejus,  et odor ejus ut Libani.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v14-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Convertentur sedentes in umbra ejus ;  vivent tritico, et germinabunt quasi vinea ;  memoriale ejus sicut vinum Libani.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v14-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ephraim, quid mihi ultra idola ?  Ego exaudiam, et dirigam eum ego ut abietem virentem ;  ex me fructus tuus inventus est.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v14-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quis sapiens, et intelliget ista ? intelligens, et sciet hæc ?  quia rectæ viæ Domini,  et justi ambulabunt in eis ;  prævaricatores vero corruent in eis.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <nav class="book-nav">
+    <a href="027-dan.html">← Daniel</a>
+    <span class="center">Osee · Italiano</span>
+    <a href="029-joe.html">Ioel →</a>
+  </nav>
+
+  <footer class="page-footer">
+    BIBLIA CATHOLICA INTERLINEARIS &nbsp;·&nbsp; Vulgata Clementina &amp; Giovanni Diodati
+    &nbsp;·&nbsp; Gemeinfreie Texte / Public Domain
+  </footer>
+
+</body>
+</html>

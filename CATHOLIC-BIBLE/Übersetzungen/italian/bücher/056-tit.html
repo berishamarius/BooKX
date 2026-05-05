@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Ad Titum · Italiano · Biblia Catholica</title>
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
+
+:root {
+  --gold:        #C8A96E;
+  --gold-light:  #EDD58A;
+  --gold-dark:   #8B6914;
+  --navy:        #1A1F3A;
+  --navy-mid:    #252B4A;
+  --navy-light:  #2E3560;
+  --parchment:   #F5E9CC;
+  --parchment-d: #EDD9A3;
+  --cream:       #FDF6E3;
+  --latin-color: #6B1E0E;
+  --trans-color: #0F1D2E;
+  --border:      rgba(200,169,110,.35);
+  --font-title:  'Cinzel Decorative', 'Cinzel', Georgia, serif;
+  --font-sub:    'Cinzel', Georgia, serif;
+  --font-body:   'EB Garamond', Georgia, serif;
+}
+
+*,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+html { font-size:16px; scroll-behavior:smooth; }
+body { background:var(--cream); color:var(--trans-color); font-family:var(--font-body); }
+
+/* ── NAV ─────────────────────────────────────────────── */
+.nav-bar {
+  background:var(--navy); padding:10px 28px;
+  display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  border-bottom:2px solid var(--gold);
+  position:sticky; top:0; z-index:100;
+  box-shadow:0 3px 12px rgba(0,0,0,.45);
+}
+.nav-bar a {
+  color:var(--gold); text-decoration:none;
+  font-family:var(--font-sub); font-size:.75rem; letter-spacing:.05em;
+  transition:color .15s;
+}
+.nav-bar a:hover { color:var(--gold-light); }
+.nav-bar .home { font-weight:700; font-size:.82rem; }
+.nav-bar .spacer { flex:1; }
+.nav-bar .pos { color:rgba(200,169,110,.45); font-size:.7rem; font-family:var(--font-sub); }
+
+/* ── BUCHKOPF ────────────────────────────────────────── */
+.book-header {
+  background:linear-gradient(160deg,var(--navy) 0%,var(--navy-mid) 55%,var(--navy-light) 100%);
+  padding:44px 36px 34px; text-align:center;
+  border-bottom:4px solid var(--gold);
+  position:relative; overflow:hidden;
+}
+.book-header::before {
+  content:'';
+  position:absolute; inset:0;
+  background-image:
+    repeating-linear-gradient( 45deg,transparent,transparent 30px,rgba(200,169,110,.038) 30px,rgba(200,169,110,.038) 31px),
+    repeating-linear-gradient(-45deg,transparent,transparent 30px,rgba(200,169,110,.038) 30px,rgba(200,169,110,.038) 31px);
+  pointer-events:none;
+}
+.testament-badge {
+  display:inline-block;
+  border:1px solid rgba(200,169,110,.4); color:rgba(200,169,110,.65);
+  font-family:var(--font-sub); font-size:.62rem; letter-spacing:.25em;
+  padding:4px 14px; border-radius:2px; margin-bottom:14px; position:relative;
+}
+.book-name-latin {
+  font-family:var(--font-title); font-size:3rem; color:var(--gold-light);
+  text-shadow:0 3px 18px rgba(0,0,0,.55); letter-spacing:.08em; position:relative;
+}
+.book-name-trans {
+  font-family:var(--font-sub); font-size:1.1rem; color:var(--gold);
+  margin-top:8px; letter-spacing:.12em; position:relative;
+}
+.book-meta {
+  font-size:.74rem; color:rgba(200,169,110,.5); margin-top:7px;
+  font-family:var(--font-sub); letter-spacing:.07em; position:relative;
+}
+
+/* ── ORNAMENT-TRENNLINIE ─────────────────────────────── */
+.ornament-bar {
+  text-align:center; padding:16px 0 4px;
+  color:var(--gold); font-size:1.1rem; letter-spacing:.7em;
+}
+
+/* ── HAUPT-CONTAINER ─────────────────────────────────── */
+.content { max-width:960px; margin:0 auto; padding:0 24px 80px; }
+
+/* ── KAPITEL-MARKER ──────────────────────────────────── */
+.chapter-marker {
+  display:flex; align-items:center; gap:16px;
+  padding:28px 6px 12px; margin-bottom:4px;
+  border-bottom:2px solid var(--border);
+}
+.ch-roman {
+  font-family:var(--font-title); font-size:2.2rem; color:var(--gold);
+  min-width:56px; text-align:center; flex-shrink:0;
+  text-shadow:0 1px 8px rgba(200,169,110,.3);
+}
+.ch-label {
+  font-family:var(--font-sub); font-size:.72rem; color:rgba(200,169,110,.6);
+  letter-spacing:.22em; text-transform:uppercase;
+}
+
+/* ── VERS-BLOCK ──────────────────────────────────────── */
+.verse-block {
+  display:flex; gap:0; border-bottom:1px solid rgba(200,169,110,.15);
+}
+.verse-block:nth-child(odd)  { background:var(--cream); }
+.verse-block:nth-child(even) { background:var(--parchment); }
+
+.verse-num-col {
+  flex-shrink:0; width:42px; padding:16px 6px 16px 0; text-align:right;
+}
+.verse-num {
+  display:inline-block; width:28px; height:28px; border-radius:50%;
+  background:var(--gold-dark); color:var(--cream);
+  font-family:var(--font-sub); font-size:.64rem; font-weight:700;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 1px 5px rgba(0,0,0,.25);
+}
+
+.verse-texts { flex:1; padding:16px 16px 18px 8px; }
+
+/* ── LATEINISCHER TEXT (oben / primär) ───────────────── */
+.latin {
+  font-family:var(--font-body); font-size:1.12rem; line-height:1.9;
+  color:var(--latin-color); font-weight:500;
+  border-left:3px solid var(--gold); padding-left:12px;
+  margin-bottom:8px;
+}
+
+/* ── ÜBERSETZUNGS-TEXT (unten / sekundär) ────────────── */
+.trans-label {
+  font-family:var(--font-sub); font-size:.6rem; letter-spacing:.17em;
+  text-transform:uppercase; color:var(--gold-dark); margin-bottom:5px; opacity:.78;
+}
+.trans {
+  font-family:var(--font-body); font-size:1.04rem; line-height:1.85;
+  color:var(--trans-color); font-style:italic;
+  padding-left:15px;
+}
+
+/* Erste Vers jedes Kapitels: Drop-Cap */
+.verse-block:first-of-type .latin::first-letter {
+  font-size:4.2em; float:left; line-height:.72;
+  padding-right:.08em; margin-top:.06em;
+  font-family:var(--font-title); color:var(--gold);
+}
+
+/* ── NAVIGATION ZWISCHEN BÜCHERN ─────────────────────── */
+.book-nav {
+  display:flex; justify-content:space-between; align-items:center;
+  background:var(--navy); border-top:3px solid var(--gold);
+  padding:12px 26px; gap:12px;
+}
+.book-nav a {
+  color:var(--gold); text-decoration:none;
+  font-family:var(--font-sub); font-size:.78rem; letter-spacing:.07em;
+  padding:6px 14px; border:1px solid rgba(200,169,110,.3); border-radius:3px;
+  transition:background .18s;
+}
+.book-nav a:hover { background:rgba(200,169,110,.15); }
+.book-nav .center {
+  font-family:var(--font-sub); font-size:.7rem; color:rgba(200,169,110,.55);
+  letter-spacing:.1em; text-align:center;
+}
+
+/* ── FUßZEILE ────────────────────────────────────────── */
+.page-footer {
+  background:var(--navy); border-top:2px solid rgba(200,169,110,.3);
+  padding:18px 28px; text-align:center;
+  color:rgba(200,169,110,.45); font-family:var(--font-sub);
+  font-size:.68rem; letter-spacing:.1em;
+}
+
+/* ── DRUCK ───────────────────────────────────────────── */
+@media print {
+  .nav-bar, .book-nav { display:none; }
+  .verse-block { break-inside:avoid; }
+  .book-header { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+}
+
+/* ── MOBIL ───────────────────────────────────────────── */
+@media (max-width:640px) {
+  .book-name-latin { font-size:2.1rem; }
+  .ch-roman { font-size:1.6rem; }
+  .latin { font-size:.98rem; }
+  .trans { font-size:.93rem; }
+  .content { padding:0 12px 60px; }
+}
+</style>
+</head>
+<body>
+
+  <nav class="nav-bar">
+    <a class="home" href="../../../index.html">✞ BIBLIA CATHOLICA</a>
+    <a href="../index.html">🇮🇹 Italiano</a>
+    <span class="spacer"></span>
+    <span class="pos">056 / 066</span>
+  </nav>
+
+  <header class="book-header">
+    <div class="testament-badge">NOVUM TESTAMENTUM</div>
+    <div class="book-name-latin">AD TITUM</div>
+    <div class="book-name-trans">Titus</div>
+    <div class="book-meta">Vulgata Clementina · Giovanni Diodati · 3 Capita · 46 Versus</div>
+  </header>
+
+  <div class="ornament-bar">❧ ✦ ❧ ✦ ❧</div>
+
+  <main class="content">
+
+  <section class="chapter" id="ch1">
+    <div class="chapter-marker">
+      <span class="ch-roman">I</span>
+      <span class="ch-label">Caput 1</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v1-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Paulus servus Dei, Apostolus autem Jesu Christi secundum fidem electorum Dei, et agnitionem veritatis, quæ secundum pietatem est</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">in spem vitæ æternæ, quam promisit qui non mentitur, Deus, ante tempora sæcularia :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">manifestavit autem temporibus suis verbum suum in prædicatione, quæ credita est mihi secundum præceptum Salvatoris nostri Dei :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Tito dilecto filio secundum communem fidem, gratia, et pax a Deo Patre, et Christo Jesu Salvatore nostro.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hujus rei gratia reliqui te Cretæ, ut ea quæ desunt, corrigas, et constituas per civitates presbyteros, sicut et ego disposui tibi,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">si quis sine crimine est, unius uxoris vir, filios habens fideles, non in accusatione luxuriæ, aut non subditos.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Oportet enim episcopum sine crimine esse, sicut Dei dispensatorem : non superbum, non iracundum, non vinolentum, non percussorem, non turpis lucri cupidum :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">sed hospitalem, benignum, sobrium, justum, sanctum, continentem,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">amplectentem eum, qui secundum doctrinam est, fidelem sermonem : ut potens sit exhortari in doctrina sana, et eos qui contradicunt, arguere.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sunt enim multi etiam inobedientes, vaniloqui, et seductores : maxime qui de circumcisione sunt :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">quos oportet redargui : qui universas domos subvertunt, docentes quæ non oportet, turpis lucri gratia.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Dixit quidam ex illis, proprius ipsorum propheta : Cretenses semper mendaces, malæ bestiæ, ventres pigri.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Testimonium hoc verum est. Quam ob causam increpa illos dure, ut sani sint in fide,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">non intendentes judaicis fabulis, et mandatis hominum, aversantium se a veritate.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Omnia munda mundis : coinquinatis autem et infidelibus, nihil est mundum, sed inquinatæ sunt eorum et mens et conscientia.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Confitentur se nosse Deum, factis autem negant : cum sint abominati, et incredibiles, et ad omne opus bonum reprobi.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch2">
+    <div class="chapter-marker">
+      <span class="ch-roman">II</span>
+      <span class="ch-label">Caput 2</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v2-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Tu autem loquere quæ decent sanam doctrinam :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">senes ut sobrii sint, pudici, prudentes, sani in fide, in dilectione, in patientia :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">anus similiter in habitu sancto, non criminatrices, non multo vino servientes, bene docentes :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">ut prudentiam doceant adolescentulas, ut viros suos ament, filios suos diligant,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">prudentes, castas, sobrias, domus curam habentes, benignas, subditas viris suis, ut non blasphemetur verbum Dei.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Juvenes similiter hortare ut sobrii sint.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">In omnibus teipsum præbe exemplum bonorum operum, in doctrina, in integritate, in gravitate,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">verbum sanum, irreprehensibile : ut is qui ex adverso est, vereatur, nihil habens malum dicere de nobis.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Servos dominis suis subditos esse, in omnibus placentes, non contradicentes,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">non fraudantes, sed in omnibus fidem bonam ostendentes : ut doctrinam Salvatoris nostri Dei ornent in omnibus.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Apparuit enim gratia Dei Salvatoris nostri omnibus hominibus,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">erudiens nos, ut abnegantes impietatem, et sæcularia desideria, sobrie, et juste, et pie vivamus in hoc sæculo,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">exspectantes beatam spem, et adventum gloriæ magni Dei, et Salvatoris nostri Jesu Christi :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui dedit semetipsum pro nobis, ut nos redimeret ab omni iniquitate, et mundaret sibi populum acceptabilem, sectatorem bonorum operum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hæc loquere, et exhortare, et argue cum omni imperio. Nemo te contemnat.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch3">
+    <div class="chapter-marker">
+      <span class="ch-roman">III</span>
+      <span class="ch-label">Caput 3</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v3-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Admone illos principibus, et potestatibus subditos esse, dicto obedire, ad omne opus bonum paratos esse :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">neminem blasphemare, non litigiosos esse, sed modestos, omnem ostendentes mansuetudinem ad omnes homines.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Eramus enim aliquando et nos insipientes, increduli, errantes, servientes desideriis, et voluptatibus variis, in malitia et invidia agentes, odibiles, odientes invicem.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Cum autem benignitas et humanitas apparuit Salvatoris nostri Dei,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">non ex operibus justitiæ, quæ fecimus nos, sed secundum suam misericordiam salvos nos fecit per lavacrum regenerationis et renovationis Spiritus Sancti,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">quem effudit in nos abunde per Jesum Christum Salvatorem nostrum :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">ut justificati gratia ipsius, hæredes simus secundum spem vitæ æternæ.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Fidelis sermo est : et de his volo te confirmare : ut curent bonis operibus præesse qui credunt Deo. Hæc sunt bona, et utilia hominibus.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Stultas autem quæstiones, et genealogias, et contentiones, et pugnas legis devita : sunt enim inutiles, et vanæ.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hæreticum hominem post unam et secundam correptionem devita :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">sciens quia subversus est, qui ejusmodi est, et delinquit, cum sit proprio judicio condemnatus.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Cum misero ad te Artemam, aut Tychicum, festina ad me venire Nicopolim : ibi enim statui hiemare.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Zenam legisperitum et Apollo sollicite præmitte, ut nihil illis desit.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Discant autem et nostri bonis operibus præesse ad usus necessarios : ut non sint infructuosi.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Salutant te qui mecum sunt omnes : saluta eos qui nos amant in fide. Gratia Dei cum omnibus vobis. Amen.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <nav class="book-nav">
+    <a href="055-2ti.html">← II Ad Timotheum</a>
+    <span class="center">Ad Titum · Italiano</span>
+    <a href="057-phm.html">Ad Philemonem →</a>
+  </nav>
+
+  <footer class="page-footer">
+    BIBLIA CATHOLICA INTERLINEARIS &nbsp;·&nbsp; Vulgata Clementina &amp; Giovanni Diodati
+    &nbsp;·&nbsp; Gemeinfreie Texte / Public Domain
+  </footer>
+
+</body>
+</html>

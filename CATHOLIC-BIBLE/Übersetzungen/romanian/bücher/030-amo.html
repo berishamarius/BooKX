@@ -1,0 +1,1479 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Amos · Română · Biblia Catholica</title>
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
+
+:root {
+  --gold:        #C8A96E;
+  --gold-light:  #EDD58A;
+  --gold-dark:   #8B6914;
+  --navy:        #1A1F3A;
+  --navy-mid:    #252B4A;
+  --navy-light:  #2E3560;
+  --parchment:   #F5E9CC;
+  --parchment-d: #EDD9A3;
+  --cream:       #FDF6E3;
+  --latin-color: #6B1E0E;
+  --trans-color: #0F1D2E;
+  --border:      rgba(200,169,110,.35);
+  --font-title:  'Cinzel Decorative', 'Cinzel', Georgia, serif;
+  --font-sub:    'Cinzel', Georgia, serif;
+  --font-body:   'EB Garamond', Georgia, serif;
+}
+
+*,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+html { font-size:16px; scroll-behavior:smooth; }
+body { background:var(--cream); color:var(--trans-color); font-family:var(--font-body); }
+
+/* ── NAV ─────────────────────────────────────────────── */
+.nav-bar {
+  background:var(--navy); padding:10px 28px;
+  display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  border-bottom:2px solid var(--gold);
+  position:sticky; top:0; z-index:100;
+  box-shadow:0 3px 12px rgba(0,0,0,.45);
+}
+.nav-bar a {
+  color:var(--gold); text-decoration:none;
+  font-family:var(--font-sub); font-size:.75rem; letter-spacing:.05em;
+  transition:color .15s;
+}
+.nav-bar a:hover { color:var(--gold-light); }
+.nav-bar .home { font-weight:700; font-size:.82rem; }
+.nav-bar .spacer { flex:1; }
+.nav-bar .pos { color:rgba(200,169,110,.45); font-size:.7rem; font-family:var(--font-sub); }
+
+/* ── BUCHKOPF ────────────────────────────────────────── */
+.book-header {
+  background:linear-gradient(160deg,var(--navy) 0%,var(--navy-mid) 55%,var(--navy-light) 100%);
+  padding:44px 36px 34px; text-align:center;
+  border-bottom:4px solid var(--gold);
+  position:relative; overflow:hidden;
+}
+.book-header::before {
+  content:'';
+  position:absolute; inset:0;
+  background-image:
+    repeating-linear-gradient( 45deg,transparent,transparent 30px,rgba(200,169,110,.038) 30px,rgba(200,169,110,.038) 31px),
+    repeating-linear-gradient(-45deg,transparent,transparent 30px,rgba(200,169,110,.038) 30px,rgba(200,169,110,.038) 31px);
+  pointer-events:none;
+}
+.testament-badge {
+  display:inline-block;
+  border:1px solid rgba(200,169,110,.4); color:rgba(200,169,110,.65);
+  font-family:var(--font-sub); font-size:.62rem; letter-spacing:.25em;
+  padding:4px 14px; border-radius:2px; margin-bottom:14px; position:relative;
+}
+.book-name-latin {
+  font-family:var(--font-title); font-size:3rem; color:var(--gold-light);
+  text-shadow:0 3px 18px rgba(0,0,0,.55); letter-spacing:.08em; position:relative;
+}
+.book-name-trans {
+  font-family:var(--font-sub); font-size:1.1rem; color:var(--gold);
+  margin-top:8px; letter-spacing:.12em; position:relative;
+}
+.book-meta {
+  font-size:.74rem; color:rgba(200,169,110,.5); margin-top:7px;
+  font-family:var(--font-sub); letter-spacing:.07em; position:relative;
+}
+
+/* ── ORNAMENT-TRENNLINIE ─────────────────────────────── */
+.ornament-bar {
+  text-align:center; padding:16px 0 4px;
+  color:var(--gold); font-size:1.1rem; letter-spacing:.7em;
+}
+
+/* ── HAUPT-CONTAINER ─────────────────────────────────── */
+.content { max-width:960px; margin:0 auto; padding:0 24px 80px; }
+
+/* ── KAPITEL-MARKER ──────────────────────────────────── */
+.chapter-marker {
+  display:flex; align-items:center; gap:16px;
+  padding:28px 6px 12px; margin-bottom:4px;
+  border-bottom:2px solid var(--border);
+}
+.ch-roman {
+  font-family:var(--font-title); font-size:2.2rem; color:var(--gold);
+  min-width:56px; text-align:center; flex-shrink:0;
+  text-shadow:0 1px 8px rgba(200,169,110,.3);
+}
+.ch-label {
+  font-family:var(--font-sub); font-size:.72rem; color:rgba(200,169,110,.6);
+  letter-spacing:.22em; text-transform:uppercase;
+}
+
+/* ── VERS-BLOCK ──────────────────────────────────────── */
+.verse-block {
+  display:flex; gap:0; border-bottom:1px solid rgba(200,169,110,.15);
+}
+.verse-block:nth-child(odd)  { background:var(--cream); }
+.verse-block:nth-child(even) { background:var(--parchment); }
+
+.verse-num-col {
+  flex-shrink:0; width:42px; padding:16px 6px 16px 0; text-align:right;
+}
+.verse-num {
+  display:inline-block; width:28px; height:28px; border-radius:50%;
+  background:var(--gold-dark); color:var(--cream);
+  font-family:var(--font-sub); font-size:.64rem; font-weight:700;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 1px 5px rgba(0,0,0,.25);
+}
+
+.verse-texts { flex:1; padding:16px 16px 18px 8px; }
+
+/* ── LATEINISCHER TEXT (oben / primär) ───────────────── */
+.latin {
+  font-family:var(--font-body); font-size:1.12rem; line-height:1.9;
+  color:var(--latin-color); font-weight:500;
+  border-left:3px solid var(--gold); padding-left:12px;
+  margin-bottom:8px;
+}
+
+/* ── ÜBERSETZUNGS-TEXT (unten / sekundär) ────────────── */
+.trans-label {
+  font-family:var(--font-sub); font-size:.6rem; letter-spacing:.17em;
+  text-transform:uppercase; color:var(--gold-dark); margin-bottom:5px; opacity:.78;
+}
+.trans {
+  font-family:var(--font-body); font-size:1.04rem; line-height:1.85;
+  color:var(--trans-color); font-style:italic;
+  padding-left:15px;
+}
+
+/* Erste Vers jedes Kapitels: Drop-Cap */
+.verse-block:first-of-type .latin::first-letter {
+  font-size:4.2em; float:left; line-height:.72;
+  padding-right:.08em; margin-top:.06em;
+  font-family:var(--font-title); color:var(--gold);
+}
+
+/* ── NAVIGATION ZWISCHEN BÜCHERN ─────────────────────── */
+.book-nav {
+  display:flex; justify-content:space-between; align-items:center;
+  background:var(--navy); border-top:3px solid var(--gold);
+  padding:12px 26px; gap:12px;
+}
+.book-nav a {
+  color:var(--gold); text-decoration:none;
+  font-family:var(--font-sub); font-size:.78rem; letter-spacing:.07em;
+  padding:6px 14px; border:1px solid rgba(200,169,110,.3); border-radius:3px;
+  transition:background .18s;
+}
+.book-nav a:hover { background:rgba(200,169,110,.15); }
+.book-nav .center {
+  font-family:var(--font-sub); font-size:.7rem; color:rgba(200,169,110,.55);
+  letter-spacing:.1em; text-align:center;
+}
+
+/* ── FUßZEILE ────────────────────────────────────────── */
+.page-footer {
+  background:var(--navy); border-top:2px solid rgba(200,169,110,.3);
+  padding:18px 28px; text-align:center;
+  color:rgba(200,169,110,.45); font-family:var(--font-sub);
+  font-size:.68rem; letter-spacing:.1em;
+}
+
+/* ── DRUCK ───────────────────────────────────────────── */
+@media print {
+  .nav-bar, .book-nav { display:none; }
+  .verse-block { break-inside:avoid; }
+  .book-header { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+}
+
+/* ── MOBIL ───────────────────────────────────────────── */
+@media (max-width:640px) {
+  .book-name-latin { font-size:2.1rem; }
+  .ch-roman { font-size:1.6rem; }
+  .latin { font-size:.98rem; }
+  .trans { font-size:.93rem; }
+  .content { padding:0 12px 60px; }
+}
+</style>
+</head>
+<body>
+
+  <nav class="nav-bar">
+    <a class="home" href="../../../index.html">✞ BIBLIA CATHOLICA</a>
+    <a href="../index.html">🇷🇴 Română</a>
+    <span class="spacer"></span>
+    <span class="pos">030 / 066</span>
+  </nav>
+
+  <header class="book-header">
+    <div class="testament-badge">VETUS TESTAMENTUM</div>
+    <div class="book-name-latin">AMOS</div>
+    <div class="book-name-trans">Amos</div>
+    <div class="book-meta">Vulgata Clementina · Cornilescu (1921) · 9 Capita · 147 Versus</div>
+  </header>
+
+  <div class="ornament-bar">❧ ✦ ❧ ✦ ❧</div>
+
+  <main class="content">
+
+  <section class="chapter" id="ch1">
+    <div class="chapter-marker">
+      <span class="ch-roman">I</span>
+      <span class="ch-label">Caput 1</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v1-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Verba Amos, qui fuit in pastoribus de Thecue, quæ vidit super Israël in diebus Oziæ, regis Juda, et in diebus Jeroboam, filii Joas, regis Israël, ante duos annos terræmotus.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et dixit :   Dominus de Sion rugiet,  et de Jerusalem dabit vocem suam ;  et luxerunt speciosa pastorum,  et exsiccatus est vertex Carmeli.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hæc dicit Dominus :  Super tribus sceleribus Damasci,  et super quatuor non convertam eum,  eo quod trituraverint in plaustris ferreis Galaad.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et mittam ignem in domum Azaël,  et devorabit domos Benadad.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et conteram vectem Damasci :  et disperdam habitatorem de campo idoli,  et tenentem sceptrum de domo voluptatis :  et transferetur populus Syriæ Cyrenen,  dicit Dominus.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hæc dicit Dominus :  Super tribus sceleribus Gazæ,  et super quatuor non convertam eum,  eo quod transtulerint captivitatem perfectam,  ut concluderent eam in Idumæa.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et mittam ignem in murum Gazæ,  et devorabit ædes ejus.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et disperdam habitatorem de Azoto,  et tenentem sceptrum de Ascalone :  et convertam manum meam super Accaron,  et peribunt reliqui Philisthinorum,  dicit Dominus Deus.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hæc dicit Dominus :  Super tribus sceleribus Tyri,  et super quatuor non convertam eum,  eo quod concluserint captivitatem perfectam in Idumæa,  et non sint recordati fœderis fratrum.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et mittam ignem in murum Tyri,  et devorabit ædes ejus.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hæc dicit Dominus :  Super tribus sceleribus Edom,  et super quatuor non convertam eum,  eo quod persecutus sit in gladio fratrem suum,  et violaverit misericordiam ejus,  et tenuerit ultra furorem suum,  et indignationem suam servaverit usque in finem.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Mittam ignem in Theman,  et devorabit ædes Bosræ.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hæc dicit Dominus :  Super tribus sceleribus filiorum Ammon,  et super quatuor non convertam eum,  eo quod dissecuerit prægnantes Galaad  ad dilatandum terminum suum.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et succendam ignem in muro Rabba,  et devorabit ædes ejus in ululatu in die belli,  et in turbine in die commotionis.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et ibit Melchom in captivitatem,  ipse et principes ejus simul,  dicit Dominus.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch2">
+    <div class="chapter-marker">
+      <span class="ch-roman">II</span>
+      <span class="ch-label">Caput 2</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v2-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hæc dicit Dominus :  Super tribus sceleribus Moab,  et super quatuor non convertam eum,  eo quod incenderit ossa regis Idumææ usque ad cinerem.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et mittam ignem in Moab,  et devorabit ædes Carioth :  et morietur in sonitu Moab, in clangore tubæ.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et disperdam judicem de medio ejus,  et omnes principes ejus interficiam cum eo,  dicit Dominus.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hæc dicit Dominus :  Super tribus sceleribus Juda,  et super quatuor non convertam eum,  eo quod abjecerit legem Domini  et mandata ejus non custodierit :  deceperant enim eos idola sua,  post quæ abierant patres eorum.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et mittam ignem in Juda,  et devorabit ædes Jerusalem.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hæc dicit Dominus :  Super tribus sceleribus Israël,  et super quatuor non convertam eum,  pro eo quod vendiderit pro argento justum,  et pauperem pro calceamentis.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui conterunt super pulverem terræ capita pauperum,  et viam humilium declinant :  et filius ac pater ejus ierunt ad puellam,  ut violarent nomen sanctum meum.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et super vestimentis pignoratis accubuerunt juxta omne altare,  et vinum damnatorum bibebant in domo Dei sui.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ego autem exterminavi Amorrhæum a facie eorum,  cujus altitudo, cedrorum altitudo ejus,  et fortis ipse quasi quercus ;  et contrivi fructum ejus desuper,  et radices ejus subter.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ego sum qui ascendere vos feci de terra Ægypti,  et duxi vos in deserto quadraginta annis,  ut possideretis terram Amorrhæi.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et suscitavi de filiis vestris in prophetas,  et de juvenibus vestris nazaræos.  Numquid non ita est, filii Israël ? dicit Dominus.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et propinabitis nazaræis vinum,  et prophetis mandabitis, dicentes :  Ne prophetetis.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ecce ego stridebo subter vos,  sicut stridet plaustrum onustum fœno.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et peribit fuga a veloce,  et fortis non obtinebit virtutem suam,  et robustus non salvabit animam suam :</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">et tenens arcum non stabit,  et velox pedibus suis non salvabitur,  et ascensor equi non salvabit animam suam :</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">et robustus corde inter fortes nudus fugiet in illa die,  dicit Dominus.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch3">
+    <div class="chapter-marker">
+      <span class="ch-roman">III</span>
+      <span class="ch-label">Caput 3</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v3-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Audite verbum quod locutus est Dominus super vos, filii Israël,  super omnem cognationem quam eduxi de terra Ægypti, dicens :</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Tantummodo vos cognovi ex omnibus cognationibus terræ ;  idcirco visitabo super vos omnes iniquitates vestras.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Numquid ambulabunt duo pariter,  nisi convenerit eis ?</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">numquid rugiet leo in saltu,  nisi habuerit prædam ?  numquid dabit catulus leonis vocem de cubili suo,  nisi aliquid apprehenderit ?</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">numquid cadet avis in laqueum terræ  absque aucupe ?  numquid auferetur laqueus de terra  antequam quid ceperit ?</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">si clanget tuba in civitate,  et populus non expavescet ?  si erit malum in civitate,  quod Dominus non fecerit ?</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quia non facit Dominus Deus verbum,  nisi revelaverit secretum suum ad servos suos prophetas.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Leo rugiet, quis non timebit ?  Dominus Deus locutus est, quis non prophetabit ?</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Auditum facite in ædibus Azoti,  et in ædibus terræ Ægypti,  et dicite : Congregamini super montes Samariæ,  et videte insanias multas in medio ejus,  et calumniam patientes in penetralibus ejus.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et nescierunt facere rectum, dicit Dominus,  thesaurizantes iniquitatem et rapinas in ædibus suis.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Propterea hæc dicit Dominus Deus :  Tribulabitur et circuietur terra :  et detrahetur ex te fortitudo tua,  et diripientur ædes tuæ.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hæc dicit Dominus :  Quomodo si eruat pastor de ore leonis  duo crura, aut extremum auriculæ,  sic eruentur filii Israël, qui habitant in Samaria  in plaga lectuli, et in Damasci grabato.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Audite, et contestamini in domo Jacob,  dicit Dominus Deus exercituum ;</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">quia in die cum visitare cœpero prævaricationes Israël,  super eum visitabo, et super altaria Bethel ;  et amputabuntur cornua altaris, et cadent in terram.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et percutiam domum hiemalem cum domo æstiva,  et peribunt domus eburneæ,  et dissipabuntur ædes multæ,  dicit Dominus.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch4">
+    <div class="chapter-marker">
+      <span class="ch-roman">IV</span>
+      <span class="ch-label">Caput 4</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v4-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Audite verbum hoc, vaccæ pingues,  quæ estis in monte Samariæ,  quæ calumniam facitis egenis  et confringitis pauperes ;  quæ dicitis dominis vestris : Afferte, et bibemus.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Juravit Dominus Deus in sancto suo,  quia ecce dies venient super vos,  et levabunt vos in contis,  et reliquias vestras in ollis ferventibus.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et per aperturas exibitis altera contra alteram,  et projiciemini in Armon,  dicit Dominus.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Venite ad Bethel, et impie agite ;  ad Galgalam, et multiplicate prævaricationem :  et afferte mane victimas vestras,  tribus diebus decimas vestras.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et sacrificate de fermentato laudem,  et vocate voluntarias oblationes, et annuntiate ;  sic enim voluistis, filii Israël,  dicit Dominus Deus.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Unde et ego dedi vobis stuporem dentium in cunctis urbibus vestris,  et indigentiam panum in omnibus locis vestris ;  et non estis reversi ad me,  dicit Dominus.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ego quoque prohibui a vobis imbrem,  cum adhuc tres menses superessent usque ad messem :  et plui super unam civitatem,  et super alteram civitatem non plui ;  pars una compluta est,  et pars super quam non plui, aruit.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et venerunt duæ et tres civitates ad unam civitatem  ut biberent aquam, et non sunt satiatæ ;  et non redistis ad me,  dicit Dominus.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Percussi vos in vento urente, et in aurugine :  multitudinem hortorum vestrorum et vinearum vestrarum,  oliveta vestra et ficeta vestra comedit eruca :  et non redistis ad me,  dicit Dominus.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Misi in vos mortem in via Ægypti ;  percussi in gladio juvenes vestros,  usque ad captivitatem equorum vestrorum,  et ascendere feci putredinem castrorum vestrorum in nares vestras :  et non redistis ad me,  dicit Dominus.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Subverti vos sicut subvertit Deus Sodomam et Gomorrham,  et facti estis quasi torris raptus ab incendio :  et non redistis ad me,  dicit Dominus.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quapropter hæc faciam tibi, Israël :  postquam autem hæc fecero tibi,  præparare in occursum Dei tui, Israël.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quia ecce formans montes,  et creans ventum,  et annuntians homini eloquium suum,  faciens matutinam nebulam,  et gradiens super excelsa terræ :  Dominus Deus exercituum nomen ejus.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch5">
+    <div class="chapter-marker">
+      <span class="ch-roman">V</span>
+      <span class="ch-label">Caput 5</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v5-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Audite verbum istud,  quod ego levo super vos planctum :  domus Israël cecidit,  et non adjiciet ut resurgat.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Virgo Israël projecta est in terram suam,  non est qui suscitet eam.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quia hæc dicit Dominus Deus :  Urbs de qua egrediebantur mille,  relinquentur in ea centum ;  et de qua egrediebantur centum,  relinquentur in ea decem in domo Israël.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quia hæc dicit Dominus domui Israël :  Quærite me, et vivetis.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et nolite quærere Bethel,  et in Galgalam nolite intrare,  et in Bersabee non transibitis,  quia Galgala captiva ducetur,  et Bethel erit inutilis.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quærite Dominum, et vivite  (ne forte comburatur ut ignis domus Joseph, et devorabit,  et non erit qui extinguat Bethel :</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui convertitis in absinthium judicium,  et justitiam in terra relinquitis) :</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">facientem Arcturum et Orionem,  et convertentem in mane tenebras,  et diem in noctem mutantem ;  qui vocat aquas maris,  et effundit eas super faciem terræ ;  Dominus nomen est ejus :</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui subridet vastitatem super robustum,  et depopulationem super potentem affert.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Odio habuerunt corripientem in porta,  et loquentem perfecte abominati sunt.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Idcirco, pro eo quod diripiebatis pauperem,  et prædam electam tollebatis ab eo,  domos quadro lapide ædificabitis,  et non habitabitis in eis ;  vineas plantabis amantissimas,  et non bibetis vinum earum.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quia cognovi multa scelera vestra,  et fortia peccata vestra :  hostes justi, accipientes munus,  et pauperes deprimentes in porta.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ideo prudens in tempore illo tacebit,  quia tempus malum est.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quærite bonum, et non malum, ut vivatis ;  et erit Dominus Deus exercituum vobiscum, sicut dixistis.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Odite malum et diligite bonum,  et constituite in porta judicium :  si forte misereatur Dominus Deus exercituum reliquiis Joseph.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Propterea hæc dicit Dominus Deus exercituum, dominator :  In omnibus plateis planctus ;  et in cunctis quæ foris sunt, dicetur : Væ, væ !  et vocabunt agricolam ad luctum,  et ad planctum eos qui sciunt plangere.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et in omnibus vineis erit planctus,  quia pertransibo in medio tui,  dicit Dominus.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Væ desiderantibus diem Domini !  ad quid eam vobis ?  Dies Domini ista, tenebræ, et non lux.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quomodo si fugiat vir a facie leonis,  et occurrat ei ursus ;  et ingrediatur domum, et innitatur manu sua super parietem,  et mordeat eum coluber.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">Numquid non tenebræ dies Domini, et non lux ;  et caligo, et non splendor in ea ?</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">Odi, et projeci festivitates vestras,  et non capiam odorem cœtuum vestrorum.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-22">
+      <div class="verse-num-col"><div class="verse-num">22</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quod si obtuleritis mihi holocautomata, et munera vestra,  non suscipiam ;  et vota pinguium vestrorum non respiciam.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-23">
+      <div class="verse-num-col"><div class="verse-num">23</div></div>
+      <div class="verse-texts">
+        <div class="latin">Aufer a me tumultum carminum tuorum ;  et cantica lyræ tuæ non audiam.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-24">
+      <div class="verse-num-col"><div class="verse-num">24</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et revelabitur quasi aqua judicium,  et justitia quasi torrens fortis.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-25">
+      <div class="verse-num-col"><div class="verse-num">25</div></div>
+      <div class="verse-texts">
+        <div class="latin">Numquid hostias et sacrificium obtulistis mihi  in deserto quadraginta annis, domus Israël ?</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-26">
+      <div class="verse-num-col"><div class="verse-num">26</div></div>
+      <div class="verse-texts">
+        <div class="latin">et portastis tabernaculum Moloch vestro,  et imaginem idolorum vestrorum, sidus dei vestri,  quæ fecistis vobis.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-27">
+      <div class="verse-num-col"><div class="verse-num">27</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et migrare vos faciam trans Damascum, dicit Dominus :  Deus exercituum nomen ejus.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch6">
+    <div class="chapter-marker">
+      <span class="ch-roman">VI</span>
+      <span class="ch-label">Caput 6</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v6-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Væ qui opulenti estis in Sion,  et confiditis in monte Samariæ :  optimates capita populorum,  ingredientes pompatice domum Israël !</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Transite in Chalane, et videte,  et ite inde in Emath magnam,  et descendite in Geth Palæstinorum,  et ad optima quæque regna horum :  si latior terminus eorum termino vestro est.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui separati estis in diem malum,  et appropinquatis solio iniquitatis ;</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui dormitis in lectis eburneis,  et lascivitis in stratis vestris ;  qui comeditis agnum de grege,  et vitulos de medio armenti ;</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui canitis ad vocem psalterii,  sicut David putaverunt se habere vasa cantici,</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">bibentes vinum in phialis,  et optimo unguento delibuti,  et nihil patiebantur super contritione Joseph.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quapropter nunc migrabunt in capite transmigrantium,  et auferetur factio lascivientium.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Juravit Dominus Deus in anima sua,  dicit Dominus Deus exercituum :  Detestor ego superbiam Jacob,  et domos ejus odi,  et tradam civitatem cum habitatoribus suis.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quod si reliqui fuerint decem viri in domo una,  et ipsi morientur.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et tollet eum propinquus suus, et comburet eum,  ut efferat ossa de domo ;  et dicet ei, qui in penetralibus domus est :  Numquid adhuc est penes te ?</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et respondebit : Finis est.  Et dicet ei : Tace,  et non recorderis nominis Domini.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quia ecce Dominus mandabit,  et percutiet domum majorem ruinis,  et domum minorem scissionibus.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Numquid currere queunt in petris equi,  aut arari potest in bubalis ?  quoniam convertistis in amaritudinem judicium,  et fructum justitiæ in absinthium.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui lætamini in nihilo ; qui dicitis :  Numquid non in fortitudine nostra assumpsimus nobis cornua ?</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ecce enim suscitabo super vos, domus Israël,  dicit Dominus Deus exercituum, gentem,  et conteret vos ab introitu Emath usque ad torrentem deserti.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch7">
+    <div class="chapter-marker">
+      <span class="ch-roman">VII</span>
+      <span class="ch-label">Caput 7</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v7-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hæc ostendit mihi Dominus Deus : et ecce fictor locustæ in principio germinantium serotini imbris, et ecce serotinus post tonsionem regis.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et factum est, cum consummasset comedere herbam terræ, dixi : Domine Deus, propitius esto, obsecro ; quis suscitabit Jacob, quia parvulus est ?</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Misertus est Dominus super hoc : Non erit, dixit Dominus.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hæc ostendit mihi Dominus Deus : et ecce vocabat judicium ad ignem Dominus Deus ; et devoravit abyssum multam, et comedit simul partem.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et dixi : Domine Deus, quiesce, obsecro ; quis suscitabit Jacob, quia parvulus est ?</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Misertus est Dominus super hoc : Sed et istud non erit, dixit Dominus Deus.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hæc ostendit mihi Dominus : et ecce Dominus stans super murum litum, et in manu ejus trulla cæmentarii.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et dixit Dominus ad me : Quid tu vides, Amos ? Et dixi : Trullam cæmentarii. Et dixit Dominus :   Ecce ego ponam trullam in medio populi mei Israël ;  non adjiciam ultra superinducere eum.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et demolientur excelsa idoli,  et sanctificationes Israël desolabuntur,  et consurgam super domum Jeroboam in gladio.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et misit Amasias, sacerdos Bethel, ad Jeroboam, regem Israël, dicens : Rebellavit contra te Amos in medio domus Israël ; non poterit terra sustinere universos sermones ejus.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hæc enim dicit Amos : In gladio morietur Jeroboam, et Israël captivus migrabit de terra sua.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et dixit Amasias ad Amos : Qui vides, gradere : fuge in terram Juda, et comede ibi panem, et prophetabis ibi.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et in Bethel non adjicies ultra ut prophetes, quia sanctificatio regis est, et domus regni est.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Responditque Amos, et dixit ad Amasiam : Non sum propheta, et non sum filius prophetæ : sed armentarius ego sum vellicans sycomoros.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et tulit me Dominus cum sequerer gregem, et dixit Dominus ad me : Vade, propheta ad populum meum Israël.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et nunc audi verbum Domini :  Tu dicis : Non prophetabis super Israël,  et non stillabis super domum idoli.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Propter hoc hæc dicit Dominus :  Uxor tua in civitate fornicabitur,  et filii tui et filiæ tuæ in gladio cadent,  et humus tua funiculo metietur :  et tu in terra polluta morieris,  et Israël captivus migrabit de terra sua.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch8">
+    <div class="chapter-marker">
+      <span class="ch-roman">VIII</span>
+      <span class="ch-label">Caput 8</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v8-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hæc ostendit mihi Dominus Deus : et ecce uncinus pomorum.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et dixit : Quid tu vides, Amos ? Et dixi : Uncinum pomorum. Et dixit Dominus ad me :   Venit finis super populum meum Israël ;  non adjiciam ultra ut pertranseam eum.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et stridebunt cardines templi in die illa,  dicit Dominus Deus :  multi morientur ;  in omni loco projicietur silentium.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Audite hoc, qui conteritis pauperem,  et deficere facitis egenos terræ,</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">dicentes : Quando transibit mensis,  et venundabimus merces ?  et sabbatum, et aperiemus frumentum,  ut imminuamus mensuram, et augeamus siclum,  et supponamus stateras dolosas,</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">ut possideamus in argento egenos et pauperes pro calceamentis,  et quisquilias frumenti vendamus ?</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Juravit Dominus in superbiam Jacob :  Si oblitus fuero usque ad finem omnia opera eorum.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Numquid super isto non commovebitur terra,  et lugebit omnis habitator ejus,  et ascendet quasi fluvius universus,  et ejicicetur, et defluet, quasi rivus Ægypti ?</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et erit in die illa, dicit Dominus Deus :  occidet sol in meridie,  et tenebrescere faciam terram in die luminis :</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">et convertam festivitates vestras in luctum,  et omnia cantica vestra in planctum,  et inducam super omne dorsum vestrum saccum,  et super omne caput calvitium :  et ponam eam quasi luctum unigeniti,  et novissima ejus quasi diem amarum.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ecce dies veniunt, dicet Dominus,  et mittam famem in terram :  non famem panis, neque sitim aquæ,  sed audiendi verbum Domini.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et commovebuntur a mari usque ad mare,  et ab aquilone usque ad orientem :  circuibunt quærentes verbum Domini,  et non invenient.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">In die illa deficient virgines pulchræ et adolescentes in siti,</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui jurant in delicto Samariæ,  et dicunt : Vivit Deus tuus, Dan,  et vivit via Bersabee ;  et cadent, et non resurgent ultra.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch9">
+    <div class="chapter-marker">
+      <span class="ch-roman">IX</span>
+      <span class="ch-label">Caput 9</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v9-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vidi Dominum stantem super altare, et dixit :   Percute cardinem,  et commoveantur superliminaria :  avaritia enim in capite omnium,  et novissimum eorum in gladio interficiam ;  non erit fuga eis.  Fugient, et non salvabitur ex eis qui fugerit.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si descenderint usque ad infernum,  inde manus mea educet eos ;  et si ascenderint usque in cælum,  inde detraham eos.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et si absconditi fuerint in vertice Carmeli,  inde scrutans auferam eos ;  et si celaverint se ab oculis meis in profundo maris,  ibi mandabo serpenti, et mordebit eos.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et si abierint in captivitatem coram inimicis suis,  ibi mandabo gladio, et occidet eos :  et ponam oculos meos super eos in malum,  et non in bonum.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et Dominus Deus exercituum, qui tangit terram, et tabescet,  et lugebunt omnes habitantes in ea :  et ascendet sicut rivus omnis,  et defluet sicut fluvius Ægypti.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui ædificat in cælo ascensionem suam,  et fasciculum suum super terram fundavit ;  qui vocat aquas maris,  et effundit eas super faciem terræ :  Dominus nomen ejus.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Numquid non ut filii Æthiopum  vos estis mihi, filii Israël ? ait Dominus.  Numquid non Israël ascendere feci de terra Ægypti,  et Palæstinos de Cappadocia,  et Syros de Cyrene ?</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ecce oculi Domini Dei super regnum peccans :  et conteram illud a facie terræ ;  verumtamen conterens non conteram domum Jacob,  dicit Dominus.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ecce enim mandabo ego,  et concutiam in omnibus gentibus domum Israël,  sicut concutitur triticum in cribro,  et non cadet lapillus super terram.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">In gladio morientur omnes peccatores populi mei,  qui dicunt : Non appropinquabit,  et non veniet super nos malum.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">In die illa suscitabo tabernaculum David, quod cecidit :  et reædificabo aperturas murorum ejus,  et ea quæ corruerant instaurabo :  et reædificabo illud sicut in diebus antiquis,</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">ut possideant reliquias Idumææ, et omnes nationes :  eo quod invocatum sit nomen meum super eos,  dicit Dominus faciens hæc.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ecce dies veniunt, dicit Dominus,  et comprehendet arator messorem,  et calcator uvæ mittentem semen :  et stillabunt montes dulcedinem,  et omnes colli culti erunt.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et convertam captivitatem populi mei Israël ;  et ædificabunt civitates desertas, et inhabitabunt ;  et plantabunt vineas, et bibent vinum earum,  et facient hortos, et comedent fructus eorum.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et plantabo eos super humum suam,  et non evellam eos ultra de terra sua, quam dedi eis,  dicit Dominus Deus tuus.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <nav class="book-nav">
+    <a href="029-joe.html">← Ioel</a>
+    <span class="center">Amos · Română</span>
+    <a href="031-oba.html">Abdias →</a>
+  </nav>
+
+  <footer class="page-footer">
+    BIBLIA CATHOLICA INTERLINEARIS &nbsp;·&nbsp; Vulgata Clementina &amp; Cornilescu (1921)
+    &nbsp;·&nbsp; Gemeinfreie Texte / Public Domain
+  </footer>
+
+</body>
+</html>

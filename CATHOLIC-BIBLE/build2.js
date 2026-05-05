@@ -1,7 +1,8 @@
 'use strict';
 /**
- * BIBLIA CATHOLICA INTERLINEARIS – HTML GENERATOR v2
- * Komplettes Redesign: edles Bibeldesign, Cover, interlineares Layout
+ * BIBLIA CATHOLICA INTERLINEARIS – HTML GENERATOR v3
+ * Kirchliches Redesign: illuminierte Bibel, Cover pro Sprache,
+ * Übersetzung primär · Vulgata sekundär · gotische Kirchenkunst
  */
 
 const fs   = require('fs');
@@ -29,6 +30,7 @@ const TRANSLATIONS = [
   { code: 'swedish',    lang: 'sv', native: 'Svenska',    display: 'Svenska Bibeln (1917)',              flag: '🇸🇪' },
   { code: 'tagalog',    lang: 'tl', native: 'Filipino',   display: 'Ang Biblia (1905)',                  flag: '🇵🇭' },
   { code: 'ukrainian',  lang: 'uk', native: 'Українська', display: 'Біблія Огієнка (1962)',             flag: '🇺🇦' },
+  { code: 'albanian',   lang: 'sq', native: 'Shqip',      display: 'Bibla (UFSHB)',                     flag: '🇦🇱' },
 ];
 
 // ═══════════════════════════════════════════════════════
@@ -155,7 +157,45 @@ const FONTS = `<link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&display=swap" rel="stylesheet">`;
 
 // ═══════════════════════════════════════════════════════
-//  COVER
+//  NATIVE BIBEL-TITEL
+// ═══════════════════════════════════════════════════════
+const BIBLE_NAMES = {
+  en: 'The Holy Bible',
+  de: 'Die Heilige Bibel',
+  fr: 'La Sainte Bible',
+  es: 'La Santa Biblia',
+  pt: 'A Bíblia Sagrada',
+  pl: 'Pismo Święte',
+  ru: 'Священное Писание',
+  hr: 'Sveto Pismo',
+  nl: 'De Heilige Bijbel',
+  hu: 'A Szentírás',
+  cs: 'Písmo Svaté',
+  sv: 'Den Heliga Bibeln',
+  tl: 'Ang Banal na Bibliya',
+  uk: 'Священне Письмо',
+  sq: 'Bibla e Shenjtë',
+};
+
+// SVG: Kirchenfenster-Rosette
+const ROSE_SVG = `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" class="rose">
+  <circle cx="100" cy="100" r="96" fill="none" stroke="rgba(200,169,110,.45)" stroke-width="1.5"/>
+  <circle cx="100" cy="100" r="80" fill="none" stroke="rgba(200,169,110,.25)" stroke-width="1"/>
+  <circle cx="100" cy="100" r="28" fill="none" stroke="rgba(200,169,110,.6)" stroke-width="1.5"/>
+  ${[0,45,90,135,180,225,270,315].map(a=>{
+    const r=a*Math.PI/180, x1=100+30*Math.sin(r), y1=100-30*Math.cos(r),
+          x2=100+78*Math.sin(r), y2=100-78*Math.cos(r);
+    return `<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="rgba(200,169,110,.35)" stroke-width="1"/>`;
+  }).join('')}
+  ${[0,45,90,135,180,225,270,315].map(a=>{
+    const r=a*Math.PI/180, x=100+54*Math.sin(r), y=100-54*Math.cos(r);
+    return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="8" fill="none" stroke="rgba(200,169,110,.4)" stroke-width="1"/>`;
+  }).join('')}
+  <text x="100" y="108" text-anchor="middle" font-size="32" fill="rgba(200,169,110,.8)" font-family="serif">✝</text>
+</svg>`;
+
+// ═══════════════════════════════════════════════════════
+//  COVER (Haupt)
 // ═══════════════════════════════════════════════════════
 
 function buildCover() {
@@ -176,143 +216,145 @@ body{
   min-height:100vh;display:flex;align-items:center;justify-content:center;
   padding:24px;font-family:'EB Garamond',Georgia,serif;
 }
-
-/* BUCHCOVER */
 .cover{
   width:min(520px,95vw);
   aspect-ratio:3/4.6;
   position:relative;
   display:flex;flex-direction:column;align-items:center;justify-content:space-between;
-  padding:0;
-  /* Bucheinband: tiefdunkles Bordeaux-Blau */
-  background:
-    linear-gradient(175deg, #0E1428 0%, #192045 40%, #0E1428 100%);
-  /* Äußere Goldlinie */
+  background:linear-gradient(175deg,#0C1122 0%,#182040 40%,#0C1122 100%);
   box-shadow:
-    0 0 0 1px #7A5C1E,
-    0 0 0 3px #0E1428,
+    0 0 0 1px #6B4E1A,
+    0 0 0 3px #0C1122,
     0 0 0 5px #C8A96E,
-    0 0 0 7px #0E1428,
-    0 0 0 9px #7A5C1E,
-    0 40px 120px rgba(0,0,0,.95),
-    inset 0 0 80px rgba(0,0,0,.4);
+    0 0 0 7px #0C1122,
+    0 0 0 9px #6B4E1A,
+    0 60px 160px rgba(0,0,0,.98),
+    inset 4px 0 12px rgba(0,0,0,.5),
+    inset 0 0 100px rgba(0,0,0,.3);
   border-radius:3px 8px 8px 3px;
-  /* Buchbindung links */
-  border-left:18px solid #0A0E1E;
+  border-left:22px solid #070B18;
   overflow:hidden;
 }
-
-/* Rückenstruktur */
+/* Textur: Ledermaserung */
 .cover::before{
-  content:'';position:absolute;left:0;top:0;bottom:0;width:18px;
-  background:linear-gradient(to right,#050810,#1A2040);
-  margin-left:-18px;
+  content:'';position:absolute;inset:0;
+  background-image:
+    repeating-linear-gradient(87deg,transparent,transparent 3px,rgba(0,0,0,.12) 3px,rgba(0,0,0,.12) 4px),
+    repeating-linear-gradient(0deg,transparent,transparent 6px,rgba(200,169,110,.012) 6px,rgba(200,169,110,.012) 7px);
+  pointer-events:none;
 }
-
-/* Goldenes Muster */
+/* Goldgitter */
 .cover::after{
   content:'';position:absolute;inset:0;
   background-image:
-    repeating-linear-gradient(0deg,transparent,transparent 48px,rgba(200,169,110,.025) 48px,rgba(200,169,110,.025) 49px),
-    repeating-linear-gradient(90deg,transparent,transparent 48px,rgba(200,169,110,.025) 48px,rgba(200,169,110,.025) 49px);
+    repeating-linear-gradient(0deg,transparent,transparent 55px,rgba(200,169,110,.022) 55px,rgba(200,169,110,.022) 56px),
+    repeating-linear-gradient(90deg,transparent,transparent 55px,rgba(200,169,110,.022) 55px,rgba(200,169,110,.022) 56px);
   pointer-events:none;
 }
-
-/* INNERER RAHMEN */
 .inner{
   position:relative;z-index:1;
-  width:calc(100% - 44px);margin:22px 22px;
+  width:calc(100% - 48px);margin:24px;
   flex:1;
-  border:1px solid rgba(200,169,110,.55);
+  border:1px solid rgba(200,169,110,.5);
   display:flex;flex-direction:column;align-items:center;justify-content:space-between;
-  padding:32px 24px 28px;
+  padding:28px 22px 24px;
 }
+/* Innerer Rahmen: Doppellinie */
 .inner::before{
-  content:'';position:absolute;
-  inset:7px;border:1px solid rgba(200,169,110,.2);
+  content:'';position:absolute;inset:6px;
+  border:1px solid rgba(200,169,110,.18);
   pointer-events:none;
 }
+/* Eckverzierungen */
+.inner::after{
+  content:'✦';
+  position:absolute;top:11px;left:11px;
+  color:rgba(200,169,110,.4);font-size:.65rem;
+}
+.corner-br,.corner-tr,.corner-bl{
+  position:absolute;color:rgba(200,169,110,.4);font-size:.65rem;
+}
+.corner-tr{top:11px;right:11px;}
+.corner-bl{bottom:11px;left:11px;}
+.corner-br{bottom:11px;right:11px;}
 
-/* KREUZ */
-.cross{position:relative;width:52px;height:68px;margin-bottom:4px;}
-.cv{position:absolute;left:50%;top:0;width:8px;height:100%;transform:translateX(-50%);
-  background:linear-gradient(to bottom,transparent,#C8A96E 15%,#C8A96E 85%,transparent);
-  border-radius:4px;box-shadow:0 0 18px rgba(200,169,110,.5);}
-.ch{position:absolute;top:28%;left:0;width:100%;height:8px;transform:translateY(-50%);
-  background:linear-gradient(to right,transparent,#C8A96E 15%,#C8A96E 85%,transparent);
-  border-radius:4px;box-shadow:0 0 18px rgba(200,169,110,.5);}
-.cg{position:absolute;left:50%;top:28%;width:14px;height:14px;border-radius:50%;
-  transform:translate(-50%,-50%);
-  background:radial-gradient(circle,#EDD58A,#C8A96E);
-  box-shadow:0 0 20px rgba(200,169,110,.8);}
+/* ROSETTE */
+.rose{width:110px;height:110px;margin-bottom:6px;filter:drop-shadow(0 0 12px rgba(200,169,110,.25));}
+
+/* BOGENFENSTER-ORNAMENT */
+.arch{
+  width:100%;text-align:center;
+  font-family:'Cinzel',serif;font-size:.75rem;
+  color:rgba(200,169,110,.5);letter-spacing:.45em;
+  margin:4px 0 10px;
+}
 
 /* TITEL */
-.orn{color:rgba(200,169,110,.6);font-size:.85rem;letter-spacing:.6em;margin:8px 0;}
 .title{
   font-family:'Cinzel Decorative','Cinzel',serif;
-  font-size:clamp(1.8rem,8vw,2.6rem);
+  font-size:clamp(1.9rem,8.5vw,2.7rem);
   color:#EDD58A;
-  text-align:center;line-height:1.1;
-  text-shadow:0 4px 24px rgba(0,0,0,.7),0 0 60px rgba(200,169,110,.15);
-  letter-spacing:.04em;
+  text-align:center;line-height:1.05;
+  text-shadow:0 4px 28px rgba(0,0,0,.75),0 0 80px rgba(200,169,110,.12);
+  letter-spacing:.05em;
 }
 .title-sub{
   font-family:'Cinzel',serif;
-  font-size:.75rem;letter-spacing:.38em;
-  color:#C8A96E;margin-top:6px;text-transform:uppercase;
+  font-size:.7rem;letter-spacing:.42em;
+  color:#C8A96E;margin-top:7px;text-transform:uppercase;
 }
 .divider{
-  width:80%;height:1px;margin:16px auto;
-  background:linear-gradient(to right,transparent,#C8A96E,transparent);
+  width:85%;height:1px;margin:14px auto;
+  background:linear-gradient(to right,transparent,#C8A96E 20%,#EDD58A 50%,#C8A96E 80%,transparent);
 }
 .desc{
   font-family:'EB Garamond',serif;font-style:italic;
-  font-size:clamp(.82rem,2.8vw,1rem);
-  color:rgba(237,213,138,.7);text-align:center;line-height:1.85;
+  font-size:clamp(.82rem,2.8vw,.98rem);
+  color:rgba(237,213,138,.65);text-align:center;line-height:2;
 }
 .stats{
-  font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.12em;
-  color:rgba(200,169,110,.4);margin-top:8px;text-align:center;
+  font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:.12em;
+  color:rgba(200,169,110,.38);margin-top:8px;text-align:center;
 }
 
 /* SPRACH-FLAGS */
 .flags{display:flex;flex-wrap:wrap;gap:5px;justify-content:center;margin:10px 0;}
-.fl{font-size:1.3rem;}
+.fl{font-size:1.2rem;}
 
 /* BUTTON */
 .btn{
   display:inline-block;margin-top:10px;
-  padding:10px 34px;
-  background:linear-gradient(135deg,rgba(200,169,110,.15),rgba(200,169,110,.08));
-  border:1px solid rgba(200,169,110,.5);
+  padding:10px 36px;
+  background:linear-gradient(135deg,rgba(200,169,110,.12),rgba(200,169,110,.06));
+  border:1px solid rgba(200,169,110,.45);
   color:#C8A96E;text-decoration:none;border-radius:2px;
-  font-family:'Cinzel',serif;font-size:.78rem;letter-spacing:.15em;
+  font-family:'Cinzel',serif;font-size:.75rem;letter-spacing:.18em;
   transition:all .2s;
 }
-.btn:hover{background:rgba(200,169,110,.28);box-shadow:0 4px 18px rgba(200,169,110,.2);}
+.btn:hover{background:rgba(200,169,110,.25);box-shadow:0 6px 22px rgba(200,169,110,.18);}
 </style>
 </head>
 <body>
 <div class="cover">
   <div class="inner">
+    <span class="corner-tr">✦</span>
+    <span class="corner-bl">✦</span>
+    <span class="corner-br">✦</span>
     <div>
-      <div class="orn">✦ ❧ ✦ ❧ ✦</div>
-      <div class="cross"><div class="cv"></div><div class="ch"></div><div class="cg"></div></div>
-      <div class="orn">✦ ❧ ✦ ❧ ✦</div>
+      <div style="text-align:center">${ROSE_SVG}</div>
+      <div class="arch">✦ ❦ ✦ ❦ ✦</div>
     </div>
-
     <div>
       <div class="title">BIBLIA<br>CATHOLICA</div>
       <div class="title-sub">Interlinearis</div>
       <div class="divider"></div>
       <div class="desc">
         Vulgata Clementina<br>
-        cum Translationibus XIV<br>
-        <em>Die Heilige Schrift in 14 Sprachen</em>
+        cum Translationibus Quindecim<br>
+        <em>Die Heilige Schrift in 15 Sprachen</em>
       </div>
-      <div class="stats">73 Libri &nbsp;·&nbsp; 31.102 Versus &nbsp;·&nbsp; 14 Linguae</div>
+      <div class="stats">73 Libri &nbsp;·&nbsp; 31.102 Versus &nbsp;·&nbsp; 15 Linguae</div>
     </div>
-
     <div>
       <div class="flags">${flags}</div>
       <a class="btn" href="index.html">Lege Nunc &nbsp;❯</a>
@@ -413,6 +455,467 @@ body{
 </div>
 </body>
 </html>`;
+}
+
+// ═══════════════════════════════════════════════════════
+//  SPRACHCOVER (pro Übersetzung)
+// ═══════════════════════════════════════════════════════
+
+function buildLangCover(trans) {
+  const bibName = BIBLE_NAMES[trans.lang] || 'Holy Bible';
+
+  // Gotisches Kirchenfenster mit Engeln, Rosette und Lichtbrechung als SVG
+  const WINDOW_SVG = `<svg viewBox="0 0 400 580" xmlns="http://www.w3.org/2000/svg" class="church-window" preserveAspectRatio="xMidYMid meet">
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="30%" r="60%">
+      <stop offset="0%" stop-color="#FFE8A0" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#7B1C2A" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="rosGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FFD070" stop-opacity="0.22"/>
+      <stop offset="100%" stop-color="#C8A030" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="blur1"><feGaussianBlur stdDeviation="2.5"/></filter>
+    <filter id="blur2"><feGaussianBlur stdDeviation="5"/></filter>
+  </defs>
+
+  <!-- Licht-Hintergrund -->
+  <ellipse cx="200" cy="160" rx="180" ry="240" fill="url(#glow)"/>
+
+  <!-- GOTISCHER SPITZBOGEN – Außen -->
+  <path d="M 30 560 L 30 200 Q 30 20 200 20 Q 370 20 370 200 L 370 560 Z"
+    fill="none" stroke="rgba(200,160,50,.55)" stroke-width="2.5"/>
+  <!-- Innenrahmen Bogen -->
+  <path d="M 50 555 L 50 205 Q 50 45 200 45 Q 350 45 350 205 L 350 555 Z"
+    fill="none" stroke="rgba(200,160,50,.28)" stroke-width="1.2"/>
+
+  <!-- MASSWERK: Drei Lanzetten unten -->
+  <path d="M 65 555 L 65 320 Q 65 240 130 240 Q 195 240 195 320 L 195 555 Z"
+    fill="none" stroke="rgba(200,160,50,.35)" stroke-width="1.2"/>
+  <path d="M 205 555 L 205 320 Q 205 240 270 240 Q 335 240 335 320 L 335 555 Z"
+    fill="none" stroke="rgba(200,160,50,.35)" stroke-width="1.2"/>
+  <!-- Mittlere große Lanzette -->
+  <path d="M 120 555 L 120 280 Q 120 170 200 170 Q 280 170 280 280 L 280 555 Z"
+    fill="none" stroke="rgba(200,160,50,.45)" stroke-width="1.5"/>
+
+  <!-- ROSETTE oben im Bogen -->
+  <circle cx="200" cy="110" r="68" fill="none" stroke="rgba(200,160,50,.5)" stroke-width="1.8"/>
+  <circle cx="200" cy="110" r="52" fill="none" stroke="rgba(200,160,50,.3)" stroke-width="1"/>
+  <circle cx="200" cy="110" r="22" fill="rgba(200,160,50,.07)" stroke="rgba(200,160,50,.55)" stroke-width="1.5"/>
+  <!-- Rosetten-Speichen -->
+  ${[0,30,60,90,120,150,180,210,240,270,300,330].map(a=>{
+    const rad=a*Math.PI/180, x1=200+24*Math.sin(rad), y1=110-24*Math.cos(rad),
+          x2=200+50*Math.sin(rad), y2=110-50*Math.cos(rad);
+    return `<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="rgba(200,160,50,.38)" stroke-width="1"/>`;
+  }).join('')}
+  <!-- Rosetten-Blätter -->
+  ${[0,30,60,90,120,150,180,210,240,270,300,330].map(a=>{
+    const rad=a*Math.PI/180, x=200+36*Math.sin(rad), y=110-36*Math.cos(rad);
+    return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="6" fill="none" stroke="rgba(200,160,50,.42)" stroke-width="1"/>`;
+  }).join('')}
+  <!-- Kreuz in Rosette -->
+  <line x1="200" y1="92" x2="200" y2="128" stroke="rgba(220,180,60,.8)" stroke-width="2.2" stroke-linecap="round"/>
+  <line x1="183" y1="107" x2="217" y2="107" stroke="rgba(220,180,60,.8)" stroke-width="2.2" stroke-linecap="round"/>
+  <circle cx="200" cy="107" r="4" fill="rgba(255,210,80,.6)"/>
+
+  <!-- ENGEL LINKS (stilisiert, gotisch) -->
+  <!-- Kopf -->
+  <circle cx="105" cy="355" r="14" fill="none" stroke="rgba(200,160,50,.32)" stroke-width="1.2"/>
+  <!-- Heiligenschein -->
+  <circle cx="105" cy="349" r="19" fill="none" stroke="rgba(200,160,50,.22)" stroke-width=".8" stroke-dasharray="3 2"/>
+  <!-- Körper/Gewand -->
+  <path d="M 90 370 Q 88 420 82 460 Q 100 468 105 468 Q 110 468 128 460 Q 122 420 120 370 Z"
+    fill="none" stroke="rgba(200,160,50,.28)" stroke-width="1.2"/>
+  <!-- Gewandfalten -->
+  <line x1="98" y1="375" x2="94" y2="455" stroke="rgba(200,160,50,.18)" stroke-width=".8"/>
+  <line x1="105" y1="373" x2="105" y2="458" stroke="rgba(200,160,50,.18)" stroke-width=".8"/>
+  <line x1="112" y1="375" x2="116" y2="455" stroke="rgba(200,160,50,.18)" stroke-width=".8"/>
+  <!-- Flügel links oben -->
+  <path d="M 90 380 Q 55 340 50 290 Q 60 310 75 340 Q 82 360 88 375 Z"
+    fill="rgba(200,160,50,.06)" stroke="rgba(200,160,50,.3)" stroke-width="1"/>
+  <path d="M 90 388 Q 48 370 38 320 Q 52 345 70 365 Q 80 375 87 388 Z"
+    fill="rgba(200,160,50,.04)" stroke="rgba(200,160,50,.22)" stroke-width=".8"/>
+  <!-- Arme/Hände betend -->
+  <path d="M 100 400 Q 90 415 88 430" fill="none" stroke="rgba(200,160,50,.25)" stroke-width="1.2"/>
+  <path d="M 110 400 Q 120 415 112 430" fill="none" stroke="rgba(200,160,50,.25)" stroke-width="1.2"/>
+  <ellipse cx="100" cy="433" rx="8" ry="5" fill="none" stroke="rgba(200,160,50,.2)" stroke-width="1"/>
+
+  <!-- ENGEL RECHTS (stilisiert, gotisch) -->
+  <circle cx="295" cy="355" r="14" fill="none" stroke="rgba(200,160,50,.32)" stroke-width="1.2"/>
+  <circle cx="295" cy="349" r="19" fill="none" stroke="rgba(200,160,50,.22)" stroke-width=".8" stroke-dasharray="3 2"/>
+  <path d="M 280 370 Q 278 420 272 460 Q 290 468 295 468 Q 300 468 318 460 Q 312 420 310 370 Z"
+    fill="none" stroke="rgba(200,160,50,.28)" stroke-width="1.2"/>
+  <line x1="288" y1="375" x2="284" y2="455" stroke="rgba(200,160,50,.18)" stroke-width=".8"/>
+  <line x1="295" y1="373" x2="295" y2="458" stroke="rgba(200,160,50,.18)" stroke-width=".8"/>
+  <line x1="302" y1="375" x2="306" y2="455" stroke="rgba(200,160,50,.18)" stroke-width=".8"/>
+  <!-- Flügel rechts oben -->
+  <path d="M 310 380 Q 345 340 350 290 Q 340 310 325 340 Q 318 360 312 375 Z"
+    fill="rgba(200,160,50,.06)" stroke="rgba(200,160,50,.3)" stroke-width="1"/>
+  <path d="M 310 388 Q 352 370 362 320 Q 348 345 330 365 Q 320 375 313 388 Z"
+    fill="rgba(200,160,50,.04)" stroke="rgba(200,160,50,.22)" stroke-width=".8"/>
+  <path d="M 300 400 Q 290 415 288 430" fill="none" stroke="rgba(200,160,50,.25)" stroke-width="1.2"/>
+  <path d="M 290 400 Q 300 415 302 430" fill="none" stroke="rgba(200,160,50,.25)" stroke-width="1.2"/>
+  <ellipse cx="295" cy="433" rx="8" ry="5" fill="none" stroke="rgba(200,160,50,.2)" stroke-width="1"/>
+
+  <!-- Licht-Glow Rosette -->
+  <circle cx="200" cy="110" r="55" fill="url(#rosGlow)" filter="url(#blur2)"/>
+
+  <!-- Horizontale Trennlinien -->
+  <line x1="55" y1="240" x2="345" y2="240" stroke="rgba(200,160,50,.3)" stroke-width=".8"/>
+  <line x1="70" y1="248" x2="330" y2="248" stroke="rgba(200,160,50,.15)" stroke-width=".5"/>
+
+  <!-- Sterne / Punkte Deko -->
+  ${[60,100,140,180,220,260,300,340].map((x,i)=>`<circle cx="${x}" cy="268" r="1.5" fill="rgba(200,160,50,.${3+i%3})"/>`).join('')}
+</svg>`;
+
+  return `<!DOCTYPE html>
+<html lang="${trans.lang}">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${bibName} · ${trans.native}</title>
+${FONTS}
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{background:#1A0508;min-height:100%;}
+body{
+  background:radial-gradient(ellipse at 40% 30%,#3D0C14 0%,#1A0508 55%,#0D0206 100%);
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
+  padding:24px;font-family:'EB Garamond',Georgia,serif;
+}
+
+/* BUCHKÖRPER */
+.cover{
+  width:min(600px,96vw);
+  aspect-ratio:3/4.5;
+  position:relative;
+  display:flex;flex-direction:column;align-items:center;justify-content:space-between;
+  /* Weinrot-Einband mit Tiefe */
+  background:
+    linear-gradient(175deg,#2A0810 0%,#4A1020 30%,#6B1830 50%,#4A1020 70%,#2A0810 100%);
+  box-shadow:
+    0 0 0 1px #8B3A1A,
+    0 0 0 3px #2A0810,
+    0 0 0 5px #C8882E,
+    0 0 0 8px #2A0810,
+    0 0 0 10px #8B3A1A,
+    0 0 0 12px #2A0810,
+    0 70px 200px rgba(0,0,0,.99),
+    inset 6px 0 18px rgba(0,0,0,.65),
+    inset 0 0 120px rgba(80,10,20,.35);
+  border-radius:3px 10px 10px 3px;
+  border-left:26px solid #180408;
+  overflow:hidden;
+}
+/* Ledertextur */
+.cover::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background-image:
+    repeating-linear-gradient(89deg,transparent,transparent 2px,rgba(0,0,0,.18) 2px,rgba(0,0,0,.18) 3px),
+    repeating-linear-gradient(0deg,transparent,transparent 4px,rgba(120,30,20,.08) 4px,rgba(120,30,20,.08) 5px);
+}
+/* Goldgitter */
+.cover::after{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background-image:
+    repeating-linear-gradient(0deg,transparent,transparent 60px,rgba(200,140,46,.018) 60px,rgba(200,140,46,.018) 61px),
+    repeating-linear-gradient(90deg,transparent,transparent 60px,rgba(200,140,46,.018) 60px,rgba(200,140,46,.018) 61px);
+}
+
+/* INNERER RAHMEN */
+.inner{
+  position:relative;z-index:2;
+  width:calc(100% - 50px);margin:25px;
+  flex:1;
+  border:1.5px solid rgba(200,140,46,.6);
+  display:flex;flex-direction:column;align-items:center;justify-content:space-between;
+  padding:26px 20px 28px;
+}
+.inner::before{content:'';position:absolute;inset:7px;border:1px solid rgba(200,140,46,.2);pointer-events:none;}
+/* Ecken */
+.ec{position:absolute;color:rgba(200,140,46,.5);font-size:.7rem;line-height:1;}
+.ec-tl{top:12px;left:12px;} .ec-tr{top:12px;right:12px;}
+.ec-bl{bottom:12px;left:12px;} .ec-br{bottom:12px;right:12px;}
+
+/* KIRCHENFENSTER SVG */
+.church-window{
+  position:absolute;inset:0;width:100%;height:100%;
+  opacity:.85;pointer-events:none;
+}
+
+/* INHALT über SVG */
+.content{
+  position:relative;z-index:3;
+  width:100%;display:flex;flex-direction:column;align-items:center;
+  gap:0;
+}
+
+/* BIBELNAMEN (Latein) */
+.lat-title{
+  font-family:'Cinzel Decorative','Cinzel',serif;
+  font-size:clamp(2rem,9vw,3rem);
+  color:#EDD58A;
+  text-align:center;line-height:1.05;
+  text-shadow:
+    0 0 60px rgba(200,140,46,.6),
+    0 4px 32px rgba(0,0,0,.85),
+    0 0 120px rgba(200,140,46,.2);
+  letter-spacing:.06em;
+  margin-bottom:4px;
+}
+.lat-sub{
+  font-family:'Cinzel',serif;font-size:.68rem;
+  color:rgba(200,140,46,.7);letter-spacing:.5em;
+  text-align:center;margin-bottom:12px;
+}
+
+/* DIVIDER */
+.div-main{
+  width:90%;margin:8px auto;
+  height:1px;
+  background:linear-gradient(to right,transparent,#C8882E 15%,#EDD58A 50%,#C8882E 85%,transparent);
+  box-shadow:0 0 8px rgba(200,140,46,.3);
+}
+.div-thin{
+  width:60%;margin:6px auto;
+  height:1px;
+  background:linear-gradient(to right,transparent,rgba(200,140,46,.4),transparent);
+}
+
+/* FLAGGE */
+.flag{font-size:2.6rem;margin:10px 0 2px;filter:drop-shadow(0 3px 10px rgba(0,0,0,.7));}
+
+/* NATIVE TITEL (Übersetzungssprache) */
+.nat-title{
+  font-family:'Cinzel','EB Garamond',serif;
+  font-size:clamp(1.1rem,4.5vw,1.5rem);
+  color:rgba(237,213,138,.78);
+  text-align:center;line-height:1.2;
+  text-shadow:0 2px 18px rgba(0,0,0,.7);
+  letter-spacing:.12em;
+  margin-bottom:2px;
+}
+.nat-lang{
+  font-family:'Cinzel',serif;font-size:.6rem;
+  color:rgba(200,140,46,.5);letter-spacing:.3em;text-align:center;
+}
+
+/* VERS-ZITAT */
+.quote-block{
+  margin:10px 0 4px;
+  border-left:2px solid rgba(200,140,46,.4);
+  border-right:2px solid rgba(200,140,46,.4);
+  padding:8px 16px;
+  text-align:center;
+}
+.quote-lat{
+  font-family:'EB Garamond',serif;font-style:italic;
+  font-size:clamp(.82rem,2.8vw,1rem);
+  color:rgba(237,213,138,.72);line-height:2;
+}
+.quote-ref{
+  font-family:'Cinzel',serif;font-size:.54rem;
+  color:rgba(200,140,46,.4);letter-spacing:.1em;margin-top:4px;
+}
+
+/* EDITIONS-INFO */
+.edition{
+  font-family:'Cinzel',serif;font-size:.55rem;
+  color:rgba(200,140,46,.35);letter-spacing:.12em;
+  text-align:center;margin-top:6px;
+}
+
+/* BUTTON */
+.btn{
+  display:inline-block;margin-top:14px;
+  padding:12px 44px;
+  background:linear-gradient(135deg,rgba(200,140,46,.18),rgba(200,140,46,.08));
+  border:1.5px solid rgba(200,140,46,.55);
+  color:#C8882E;text-decoration:none;border-radius:2px;
+  font-family:'Cinzel',serif;font-size:.8rem;letter-spacing:.22em;
+  transition:all .25s;
+  text-shadow:0 1px 8px rgba(0,0,0,.5);
+  box-shadow:0 2px 16px rgba(0,0,0,.4);
+}
+.btn:hover{
+  background:rgba(200,140,46,.3);
+  box-shadow:0 6px 28px rgba(200,140,46,.22);
+  color:#EDD58A;
+}
+</style>
+</head>
+<body>
+<div class="cover">
+  <!-- Kirchenfenster-Hintergrund -->
+  ${WINDOW_SVG}
+
+  <div class="inner">
+    <span class="ec ec-tl">✦</span><span class="ec ec-tr">✦</span>
+    <span class="ec ec-bl">✦</span><span class="ec ec-br">✦</span>
+
+    <!-- Platz für Rosette oben -->
+    <div style="height:130px;"></div>
+
+    <div class="content">
+      <!-- LATEIN DOMINANT -->
+      <div class="lat-title">BIBLIA<br>CATHOLICA</div>
+      <div class="lat-sub">VULGATA CLEMENTINA</div>
+
+      <div class="div-main"></div>
+
+      <!-- FLAGGE + NATIVE TITEL -->
+      <div class="flag">${trans.flag}</div>
+      <div class="nat-title">${bibName}</div>
+      <div class="nat-lang">${trans.native.toUpperCase()} &nbsp;·&nbsp; ${trans.display}</div>
+
+      <div class="div-thin"></div>
+
+      <!-- ZITAT -->
+      <div class="quote-block">
+        <div class="quote-lat">«In principio erat Verbum,<br>et Verbum erat apud Deum,<br>et Deus erat Verbum.»</div>
+        <div class="quote-ref">Ioannes I,1 · Vulgata Clementina</div>
+      </div>
+
+      <div class="edition">73 Libri &nbsp;·&nbsp; 15 Linguae &nbsp;·&nbsp; Public Domain</div>
+
+      <a class="btn" href="index.html">Legere &nbsp;❯</a>
+    </div>
+  </div>
+</div>
+</body>
+</html>`;
+}
+
+// ═══════════════════════════════════════════════════════
+//  SPRACHCOVER v2 – Echtes Buntglas, weinrot, kirchlich
+// ═══════════════════════════════════════════════════════
+
+function buildLangCover2(trans) {
+  const bibName = BIBLE_NAMES[trans.lang] || 'Holy Bible';
+  const RX = 200, RY = 108;
+  let petals = '', spokes = '';
+  for (let i = 0; i < 12; i++) {
+    const a = i * 30 * Math.PI / 180;
+    const px = (RX + 40*Math.sin(a)).toFixed(1), py = (RY - 40*Math.cos(a)).toFixed(1);
+    const l1x = (RX + 25*Math.sin(a)).toFixed(1), l1y = (RY - 25*Math.cos(a)).toFixed(1);
+    const l2x = (RX + 55*Math.sin(a)).toFixed(1), l2y = (RY - 55*Math.cos(a)).toFixed(1);
+    const col = i % 2 === 0 ? 'rgba(18,42,145,.75)' : 'rgba(148,10,18,.75)';
+    petals += `<circle cx="${px}" cy="${py}" r="12" fill="${col}" stroke="#160702" stroke-width="1.8"/>`;
+    spokes += `<line x1="${l1x}" y1="${l1y}" x2="${l2x}" y2="${l2y}" stroke="#160702" stroke-width="2"/>`;
+  }
+  let rays = '';
+  for (let i = 0; i < 16; i++) {
+    const a = i * 22.5 * Math.PI / 180;
+    const rx2 = (200 + 68*Math.sin(a)).toFixed(1), ry2 = (405 - 68*Math.cos(a)).toFixed(1);
+    rays += `<line x1="200" y1="405" x2="${rx2}" y2="${ry2}" stroke="rgba(220,175,40,.06)" stroke-width="2"/>`;
+  }
+  const svg = `<svg viewBox="0 0 400 580" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%;" aria-hidden="true"><defs><radialGradient id="gT" cx="50%" cy="19%" r="55%"><stop offset="0%" stop-color="#FFE080" stop-opacity=".55"/><stop offset="75%" stop-color="#7B0C14" stop-opacity="0"/></radialGradient><radialGradient id="gC" cx="50%" cy="70%" r="38%"><stop offset="0%" stop-color="#FFD060" stop-opacity=".28"/><stop offset="100%" stop-color="#0A1535" stop-opacity="0"/></radialGradient><filter id="fg"><feGaussianBlur stdDeviation="5"/></filter></defs>
+<path d="M20 578 L20 192 Q20 16 200 16 Q380 16 380 192 L380 578 Z" fill="rgba(8,20,78,.58)" stroke="#160702" stroke-width="3.5"/>
+<path d="M36 574 L36 198 Q36 36 200 36 Q364 36 364 198 L364 574 Z" fill="none" stroke="rgba(196,136,26,.52)" stroke-width="1.3"/>
+<path d="M42 572 L42 200 Q42 42 200 42 Q358 42 358 200 L358 572 Z" fill="none" stroke="rgba(196,136,26,.22)" stroke-width=".7"/>
+<ellipse cx="200" cy="108" rx="145" ry="190" fill="url(#gT)"/>
+<circle cx="${RX}" cy="${RY}" r="74" fill="rgba(10,78,30,.5)" stroke="#160702" stroke-width="2.8"/>
+<circle cx="${RX}" cy="${RY}" r="58" fill="rgba(155,98,8,.4)" stroke="#160702" stroke-width="2"/>${petals}\n${spokes}
+<circle cx="${RX}" cy="${RY}" r="22" fill="url(#gT)" filter="url(#fg)" opacity=".8"/>
+<circle cx="${RX}" cy="${RY}" r="22" fill="rgba(198,138,16,.8)" stroke="#160702" stroke-width="2.2"/>
+<line x1="${RX}" y1="${RY-17}" x2="${RX}" y2="${RY+17}" stroke="#160702" stroke-width="3.2" stroke-linecap="round"/>
+<line x1="${RX-17}" y1="${RY-4}" x2="${RX+17}" y2="${RY-4}" stroke="#160702" stroke-width="3.2" stroke-linecap="round"/>
+<line x1="${RX}" y1="${RY-17}" x2="${RX}" y2="${RY+17}" stroke="rgba(255,224,78,.92)" stroke-width="1.5" stroke-linecap="round"/>
+<line x1="${RX-17}" y1="${RY-4}" x2="${RX+17}" y2="${RY-4}" stroke="rgba(255,224,78,.92)" stroke-width="1.5" stroke-linecap="round"/>
+<rect x="24" y="240" width="352" height="5.5" fill="#160702"/><rect x="26" y="243" width="348" height="1.5" fill="rgba(196,136,26,.32)"/>
+<path d="M25 574 L25 258 Q25 244 87 244 Q149 244 149 258 L149 574 Z" fill="rgba(138,10,16,.65)" stroke="none"/>
+<path d="M26 258 Q26 244 87 244 Q148 244 148 258 Q128 276 87 279 Q46 276 26 258Z" fill="rgba(16,38,138,.65)" stroke="none"/>
+<path d="M153 574 L153 252 Q153 234 200 234 Q247 234 247 252 L247 574 Z" fill="rgba(12,28,112,.68)" stroke="none"/>
+<path d="M154 252 Q154 235 200 235 Q246 235 246 252 Q226 271 200 274 Q174 271 154 252Z" fill="rgba(158,108,10,.55)" stroke="none"/>
+<path d="M251 574 L251 258 Q251 244 313 244 Q375 244 375 258 L375 574 Z" fill="rgba(138,10,16,.65)" stroke="none"/>
+<path d="M252 258 Q252 244 313 244 Q374 244 374 258 Q354 276 313 279 Q272 276 252 258Z" fill="rgba(16,38,138,.65)" stroke="none"/>
+<rect x="148" y="241" width="6" fill="#160702" height="334"/>
+<rect x="250" y="241" width="6" fill="#160702" height="334"/>
+<line x1="24" y1="244" x2="376" y2="244" stroke="#160702" stroke-width="5.5"/>
+<circle cx="87" cy="300" r="24" fill="rgba(220,170,30,.1)" filter="url(#fg)"/>
+<circle cx="87" cy="305" r="14" fill="rgba(198,138,16,.25)" stroke="rgba(218,168,36,.65)" stroke-width="1.5"/>
+<circle cx="87" cy="299" r="19" fill="none" stroke="rgba(218,168,36,.42)" stroke-width="1" stroke-dasharray="3.5 2.5"/>
+<path d="M72 322 Q40 276 36 226 Q50 254 64 282 Q70 306 72 320Z" fill="rgba(218,175,36,.13)" stroke="rgba(218,168,36,.5)" stroke-width="1.3"/>
+<path d="M72 338 Q34 316 28 262 Q44 290 60 314 Q66 328 72 338Z" fill="rgba(218,175,36,.08)" stroke="rgba(218,168,36,.3)" stroke-width=".9"/>
+<path d="M72 323 Q68 368 62 415 Q74 422 87 422 Q100 422 112 415 Q106 368 102 323Z" fill="rgba(178,118,12,.3)" stroke="rgba(218,168,36,.52)" stroke-width="1.3"/>
+<line x1="81" y1="328" x2="76" y2="410" stroke="rgba(218,168,36,.22)" stroke-width=".9"/>
+<line x1="87" y1="325" x2="87" y2="412" stroke="rgba(218,168,36,.22)" stroke-width=".9"/>
+<line x1="93" y1="328" x2="98" y2="410" stroke="rgba(218,168,36,.22)" stroke-width=".9"/>
+<path d="M79 388 Q72 400 70 413" fill="none" stroke="rgba(218,168,36,.48)" stroke-width="1.5" stroke-linecap="round"/>
+<path d="M95 388 Q102 400 104 413" fill="none" stroke="rgba(218,168,36,.48)" stroke-width="1.5" stroke-linecap="round"/>
+${rays}
+<line x1="200" y1="332" x2="200" y2="490" stroke="rgba(255,224,78,.38)" stroke-width="14" stroke-linecap="round" filter="url(#fg)"/>
+<line x1="162" y1="378" x2="238" y2="378" stroke="rgba(255,224,78,.38)" stroke-width="14" stroke-linecap="round" filter="url(#fg)"/>
+<line x1="200" y1="332" x2="200" y2="490" stroke="#160702" stroke-width="4.5" stroke-linecap="round"/>
+<line x1="162" y1="378" x2="238" y2="378" stroke="#160702" stroke-width="4.5" stroke-linecap="round"/>
+<line x1="200" y1="332" x2="200" y2="490" stroke="rgba(255,224,78,.88)" stroke-width="2" stroke-linecap="round"/>
+<line x1="162" y1="378" x2="238" y2="378" stroke="rgba(255,224,78,.88)" stroke-width="2" stroke-linecap="round"/>
+<circle cx="200" cy="378" r="20" fill="rgba(198,138,16,.22)" stroke="rgba(218,168,36,.55)" stroke-width="2"/>
+<circle cx="200" cy="378" r="7" fill="rgba(220,178,38,.5)" stroke="rgba(255,224,78,.75)" stroke-width="1.5"/>
+<ellipse cx="200" cy="405" rx="80" ry="100" fill="url(#gC)" opacity=".8"/>
+<circle cx="313" cy="300" r="24" fill="rgba(220,170,30,.1)" filter="url(#fg)"/>
+<circle cx="313" cy="305" r="14" fill="rgba(198,138,16,.25)" stroke="rgba(218,168,36,.65)" stroke-width="1.5"/>
+<circle cx="313" cy="299" r="19" fill="none" stroke="rgba(218,168,36,.42)" stroke-width="1" stroke-dasharray="3.5 2.5"/>
+<path d="M328 322 Q360 276 364 226 Q350 254 336 282 Q330 306 328 320Z" fill="rgba(218,175,36,.13)" stroke="rgba(218,168,36,.5)" stroke-width="1.3"/>
+<path d="M328 338 Q366 316 372 262 Q356 290 340 314 Q334 328 328 338Z" fill="rgba(218,175,36,.08)" stroke="rgba(218,168,36,.3)" stroke-width=".9"/>
+<path d="M298 323 Q294 368 288 415 Q300 422 313 422 Q326 422 338 415 Q332 368 328 323Z" fill="rgba(178,118,12,.3)" stroke="rgba(218,168,36,.52)" stroke-width="1.3"/>
+<line x1="307" y1="328" x2="302" y2="410" stroke="rgba(218,168,36,.22)" stroke-width=".9"/>
+<line x1="313" y1="325" x2="313" y2="412" stroke="rgba(218,168,36,.22)" stroke-width=".9"/>
+<line x1="319" y1="328" x2="324" y2="410" stroke="rgba(218,168,36,.22)" stroke-width=".9"/>
+<path d="M305 388 Q298 400 296 413" fill="none" stroke="rgba(218,168,36,.48)" stroke-width="1.5" stroke-linecap="round"/>
+<path d="M321 388 Q328 400 330 413" fill="none" stroke="rgba(218,168,36,.48)" stroke-width="1.5" stroke-linecap="round"/>
+<polygon points="87,522 97,534 87,546 77,534" fill="rgba(178,108,8,.38)" stroke="rgba(218,168,36,.42)" stroke-width="1.1"/>
+<polygon points="200,522 210,534 200,546 190,534" fill="rgba(178,108,8,.38)" stroke="rgba(218,168,36,.42)" stroke-width="1.1"/>
+<polygon points="313,522 323,534 313,546 303,534" fill="rgba(178,108,8,.38)" stroke="rgba(218,168,36,.42)" stroke-width="1.1"/>
+<line x1="30" y1="514" x2="370" y2="514" stroke="rgba(196,136,26,.35)" stroke-width="1"/></svg>`;
+
+  return `<!DOCTYPE html>
+<html lang="${trans.lang}">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${bibName} &middot; Biblia Catholica</title>
+${FONTS}
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}html,body{min-height:100%;background:radial-gradient(ellipse at 40% 30%,#3A0810 0%,#160308 55%,#0A0106 100%);display:flex;align-items:center;justify-content:center;padding:28px;font-family:'EB Garamond',Georgia,serif;}
+.book{width:min(580px,96vw);aspect-ratio:3/4.5;position:relative;background:linear-gradient(175deg,#280710 0%,#480E1C 28%,#6A1628 50%,#480E1C 72%,#280710 100%);box-shadow:0 0 0 1px #8A3418,0 0 0 3px #200508,0 0 0 5px #C88020,0 0 0 8px #200508,0 0 0 10px #8A3418,0 0 0 13px #200508,0 80px 220px rgba(0,0,0,.99),inset 7px 0 20px rgba(0,0,0,.7),inset 0 0 140px rgba(70,5,14,.4);border-radius:3px 10px 10px 3px;border-left:28px solid #14030A;overflow:hidden;}
+.book::before{content:'';position:absolute;inset:0;pointer-events:none;z-index:1;background-image:repeating-linear-gradient(89deg,transparent 0,transparent 2px,rgba(0,0,0,.2) 2px,rgba(0,0,0,.2) 3px),repeating-linear-gradient(0deg,transparent 0,transparent 4px,rgba(100,15,20,.07) 4px,rgba(100,15,20,.07) 5px);}
+.frame{position:absolute;inset:24px;z-index:3;border:1.5px solid rgba(198,126,22,.62);display:flex;flex-direction:column;align-items:center;padding:20px 18px 24px;}
+.frame::before{content:'';position:absolute;inset:6px;border:1px solid rgba(198,126,22,.2);pointer-events:none;}
+.ec{position:absolute;font-size:.65rem;color:rgba(198,126,22,.55);line-height:1;}.ec-tl{top:12px;left:12px;}.ec-tr{top:12px;right:12px;}.ec-bl{bottom:12px;left:12px;}.ec-br{bottom:12px;right:12px;}
+.spacer-top{flex:0 0 124px;}
+.lat-main{font-family:'Cinzel Decorative','Cinzel',serif;font-size:clamp(2.2rem,9.5vw,3.3rem);color:#EDD882;text-align:center;line-height:1.0;letter-spacing:.06em;text-shadow:0 0 80px rgba(198,126,22,.55),0 5px 36px rgba(0,0,0,.9);}
+.lat-sub{font-family:'Cinzel',serif;font-size:.64rem;color:rgba(198,160,50,.65);letter-spacing:.5em;text-align:center;margin-top:8px;}
+.div-gold{width:90%;height:1px;margin:13px auto;background:linear-gradient(to right,transparent,#C88020 15%,#EDD882 50%,#C88020 85%,transparent);box-shadow:0 0 8px rgba(198,126,22,.28);}
+.div-thin{width:55%;height:1px;margin:9px auto;background:linear-gradient(to right,transparent,rgba(198,126,22,.4),transparent);}
+.nat-title{font-family:'Cinzel',serif;font-size:clamp(1rem,4.2vw,1.38rem);color:rgba(237,216,130,.72);text-align:center;line-height:1.2;letter-spacing:.1em;text-shadow:0 2px 16px rgba(0,0,0,.75);margin-top:8px;}
+.nat-lang{font-family:'Cinzel',serif;font-size:.57rem;color:rgba(198,126,22,.45);letter-spacing:.28em;text-align:center;margin-top:4px;}
+.quote{margin:9px 4px 0;border-left:2px solid rgba(198,126,22,.38);border-right:2px solid rgba(198,126,22,.38);padding:7px 14px;text-align:center;}
+.quote-text{font-family:'EB Garamond',serif;font-style:italic;font-size:clamp(.78rem,2.5vw,.93rem);color:rgba(237,216,130,.64);line-height:2;}
+.quote-ref{font-family:'Cinzel',serif;font-size:.51rem;color:rgba(198,126,22,.38);letter-spacing:.1em;margin-top:4px;}
+.copyright{font-family:'Cinzel',serif;font-size:.44rem;color:rgba(198,126,22,.26);letter-spacing:.06em;text-align:center;line-height:2;margin-top:7px;}
+.btn{display:inline-block;margin-top:13px;padding:11px 44px;background:linear-gradient(135deg,rgba(198,126,22,.18),rgba(198,126,22,.08));border:1.5px solid rgba(198,126,22,.55);color:#C88020;text-decoration:none;border-radius:2px;font-family:'Cinzel',serif;font-size:.8rem;letter-spacing:.22em;transition:all .25s;text-shadow:0 1px 6px rgba(0,0,0,.6);box-shadow:0 2px 18px rgba(0,0,0,.5);}
+.btn:hover{background:rgba(198,126,22,.32);box-shadow:0 6px 28px rgba(198,126,22,.2);color:#EDD882;}
+</style></head><body>
+<div class="book">
+  ${svg}
+  <div class="frame">
+    <span class="ec ec-tl">&#10022;</span><span class="ec ec-tr">&#10022;</span>
+    <span class="ec ec-bl">&#10022;</span><span class="ec ec-br">&#10022;</span>
+    <div class="spacer-top"></div>
+    <div class="lat-main">BIBLIA<br>CATHOLICA</div>
+    <div class="lat-sub">VULGATA CLEMENTINA</div>
+    <div class="div-gold"></div>
+    <div class="nat-title">${bibName}</div>
+    <div class="nat-lang">${trans.native.toUpperCase()} &nbsp;&middot;&nbsp; ${trans.display}</div>
+    <div class="div-thin"></div>
+    <div class="quote">
+      <div class="quote-text">&#171;In principio erat Verbum,<br>et Verbum erat apud Deum,<br>et Deus erat Verbum.&#187;</div>
+      <div class="quote-ref">Ioannes I,1 &nbsp;&middot;&nbsp; Vulgata Clementina</div>
+    </div>
+    <div class="copyright">&copy; Public Domain &middot; Vulgata Clementina (Sixto-Clementina, 1592)<br>${trans.display} &middot; Alle Rechte erloschen &middot; Gemeinfrei</div>
+    <a class="btn" href="index.html">LEGERE &nbsp;&#10095;</a>
+  </div>
+</div>
+</body></html>`;
 }
 
 // ═══════════════════════════════════════════════════════
@@ -665,12 +1168,12 @@ footer{
 <nav class="topbar">
   <a href="../../index.html">✞ Biblia Catholica</a>
   <span class="sep">›</span>
-  <span style="color:#C8A96E;font-family:'Cinzel',serif;font-size:.72rem;">${trans.flag} ${trans.native}</span>
+  <span style="color:#C8A96E;font-family:'Cinzel',serif;font-size:.72rem;">${trans.native}</span>
 </nav>
 
 <header>
   <div class="hflag">${trans.flag}</div>
-  <div class="htitle">BIBLIA CATHOLICA</div>
+  <div class="htitle">${BIBLE_NAMES[trans.lang] || trans.native}</div>
   <div class="hlang">${trans.native}</div>
   <div class="htrans">${trans.display}</div>
 </header>
@@ -727,6 +1230,7 @@ function buildBookPage(book, trans, vulgChaps, transChaps) {
       const lat  = esc(v.text);
       const tra  = esc((tm[ch.nr] || {})[v.nr] || '');
       const dropcap = vi === 0 ? ' first' : '';
+      // Übersetzung primär, Latein sekundär
       return `<div class="vb${dropcap}" id="v${ch.nr}-${v.nr}">
   <span class="vn">${v.nr}</span>
   <div class="vt">
@@ -840,43 +1344,45 @@ body{background:#F7F1E8;font-family:'EB Garamond',serif;color:#1C1008;font-size:
 .vb{
   display:flex;gap:0;
   padding:13px 0;
-  border-bottom:1px solid rgba(184,150,46,.13);
+  border-bottom:1px solid rgba(184,150,46,.12);
 }
 .vb:nth-child(even){background:rgba(255,255,255,.55);}
 .vb:nth-child(odd){background:rgba(247,241,232,.6);}
 
 .vn{
-  flex-shrink:0;width:36px;padding-top:2px;
-  font-family:'Cinzel',serif;font-size:.62rem;
-  color:rgba(184,150,46,.6);text-align:right;
-  padding-right:10px;line-height:1.9;
+  flex-shrink:0;width:36px;padding-top:3px;
+  font-family:'Cinzel',serif;font-size:.58rem;
+  color:rgba(184,150,46,.55);text-align:right;
+  padding-right:10px;line-height:2;
 }
 
 .vt{padding:0 18px 0 6px;flex:1;}
 
-/* Lateinischer Text */
+/* LATEIN – PRIMÄR (groß, golden-warm, der Originaltext) */
 .lat{
   font-family:'EB Garamond',serif;
-  font-size:1.1rem;font-weight:500;line-height:1.9;
-  color:#4A1010;
+  font-size:1.12rem;font-weight:500;line-height:1.95;
+  color:#6B3E10;
   border-left:3px solid #B8962E;
   padding-left:12px;
-  margin-bottom:6px;
+  margin-bottom:5px;
 }
 
-/* Übersetzung */
+/* ÜBERSETZUNG – SEKUNDÄR (kleiner, kursiv, Referenz) */
 .tra{
   font-family:'EB Garamond',serif;
-  font-size:1rem;font-style:italic;line-height:1.85;
-  color:#1C2840;
+  font-size:.9rem;font-style:italic;line-height:1.8;
+  color:#2A3050;
   padding-left:15px;
+  border-left:2px solid rgba(100,120,160,.2);
 }
 
-/* Drop-Cap erstes Kapitel-Wort */
+/* Drop-Cap: erster Vers jedes Kapitels – auf dem Latein */
 .vb.first .lat::first-letter{
-  font-size:4em;float:left;line-height:.72;
-  padding-right:.08em;margin-top:.05em;
+  font-size:3.8em;float:left;line-height:.72;
+  padding-right:.07em;margin-top:.06em;
   font-family:'Cinzel Decorative',serif;color:#B8962E;
+  text-shadow:1px 1px 4px rgba(0,0,0,.15);
 }
 
 /* BUCH-NAVIGATION */
@@ -938,8 +1444,8 @@ body{background:#F7F1E8;font-family:'EB Garamond',serif;color:#1C1008;font-size:
 <header class="bhead">
   <div class="btestament">${testLabel}</div>
   <div class="blatin">${book.latin.toUpperCase()}</div>
-  <div class="btrans">${book.name}</div>
-  <div class="bmeta">Vulgata Clementina &nbsp;·&nbsp; ${trans.display} &nbsp;·&nbsp; ${chCount} Capita &nbsp;·&nbsp; ${vCount} Versus</div>
+  <div class="btrans">${book.name} &nbsp;·&nbsp; <em>${trans.native}</em></div>
+  <div class="bmeta">${trans.display} &nbsp;·&nbsp; ${chCount} Capita &nbsp;·&nbsp; ${vCount} Versus</div>
 </header>
 
 <main class="content">
@@ -996,6 +1502,9 @@ async function main() {
     const tDir  = path.join(OUT_DIR, trans.code);
     const bDir  = path.join(tDir, 'bücher');
     mkDir(bDir);
+
+    // Sprachcover
+    fs.writeFileSync(path.join(tDir, 'cover.html'), buildLangCover2(trans));
 
     const avail = [];
     for (const book of BOOKS) {

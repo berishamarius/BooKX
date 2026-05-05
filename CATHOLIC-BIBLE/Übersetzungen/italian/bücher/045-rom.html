@@ -1,0 +1,3823 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Ad Romanos · Italiano · Biblia Catholica</title>
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
+
+:root {
+  --gold:        #C8A96E;
+  --gold-light:  #EDD58A;
+  --gold-dark:   #8B6914;
+  --navy:        #1A1F3A;
+  --navy-mid:    #252B4A;
+  --navy-light:  #2E3560;
+  --parchment:   #F5E9CC;
+  --parchment-d: #EDD9A3;
+  --cream:       #FDF6E3;
+  --latin-color: #6B1E0E;
+  --trans-color: #0F1D2E;
+  --border:      rgba(200,169,110,.35);
+  --font-title:  'Cinzel Decorative', 'Cinzel', Georgia, serif;
+  --font-sub:    'Cinzel', Georgia, serif;
+  --font-body:   'EB Garamond', Georgia, serif;
+}
+
+*,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+html { font-size:16px; scroll-behavior:smooth; }
+body { background:var(--cream); color:var(--trans-color); font-family:var(--font-body); }
+
+/* ── NAV ─────────────────────────────────────────────── */
+.nav-bar {
+  background:var(--navy); padding:10px 28px;
+  display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  border-bottom:2px solid var(--gold);
+  position:sticky; top:0; z-index:100;
+  box-shadow:0 3px 12px rgba(0,0,0,.45);
+}
+.nav-bar a {
+  color:var(--gold); text-decoration:none;
+  font-family:var(--font-sub); font-size:.75rem; letter-spacing:.05em;
+  transition:color .15s;
+}
+.nav-bar a:hover { color:var(--gold-light); }
+.nav-bar .home { font-weight:700; font-size:.82rem; }
+.nav-bar .spacer { flex:1; }
+.nav-bar .pos { color:rgba(200,169,110,.45); font-size:.7rem; font-family:var(--font-sub); }
+
+/* ── BUCHKOPF ────────────────────────────────────────── */
+.book-header {
+  background:linear-gradient(160deg,var(--navy) 0%,var(--navy-mid) 55%,var(--navy-light) 100%);
+  padding:44px 36px 34px; text-align:center;
+  border-bottom:4px solid var(--gold);
+  position:relative; overflow:hidden;
+}
+.book-header::before {
+  content:'';
+  position:absolute; inset:0;
+  background-image:
+    repeating-linear-gradient( 45deg,transparent,transparent 30px,rgba(200,169,110,.038) 30px,rgba(200,169,110,.038) 31px),
+    repeating-linear-gradient(-45deg,transparent,transparent 30px,rgba(200,169,110,.038) 30px,rgba(200,169,110,.038) 31px);
+  pointer-events:none;
+}
+.testament-badge {
+  display:inline-block;
+  border:1px solid rgba(200,169,110,.4); color:rgba(200,169,110,.65);
+  font-family:var(--font-sub); font-size:.62rem; letter-spacing:.25em;
+  padding:4px 14px; border-radius:2px; margin-bottom:14px; position:relative;
+}
+.book-name-latin {
+  font-family:var(--font-title); font-size:3rem; color:var(--gold-light);
+  text-shadow:0 3px 18px rgba(0,0,0,.55); letter-spacing:.08em; position:relative;
+}
+.book-name-trans {
+  font-family:var(--font-sub); font-size:1.1rem; color:var(--gold);
+  margin-top:8px; letter-spacing:.12em; position:relative;
+}
+.book-meta {
+  font-size:.74rem; color:rgba(200,169,110,.5); margin-top:7px;
+  font-family:var(--font-sub); letter-spacing:.07em; position:relative;
+}
+
+/* ── ORNAMENT-TRENNLINIE ─────────────────────────────── */
+.ornament-bar {
+  text-align:center; padding:16px 0 4px;
+  color:var(--gold); font-size:1.1rem; letter-spacing:.7em;
+}
+
+/* ── HAUPT-CONTAINER ─────────────────────────────────── */
+.content { max-width:960px; margin:0 auto; padding:0 24px 80px; }
+
+/* ── KAPITEL-MARKER ──────────────────────────────────── */
+.chapter-marker {
+  display:flex; align-items:center; gap:16px;
+  padding:28px 6px 12px; margin-bottom:4px;
+  border-bottom:2px solid var(--border);
+}
+.ch-roman {
+  font-family:var(--font-title); font-size:2.2rem; color:var(--gold);
+  min-width:56px; text-align:center; flex-shrink:0;
+  text-shadow:0 1px 8px rgba(200,169,110,.3);
+}
+.ch-label {
+  font-family:var(--font-sub); font-size:.72rem; color:rgba(200,169,110,.6);
+  letter-spacing:.22em; text-transform:uppercase;
+}
+
+/* ── VERS-BLOCK ──────────────────────────────────────── */
+.verse-block {
+  display:flex; gap:0; border-bottom:1px solid rgba(200,169,110,.15);
+}
+.verse-block:nth-child(odd)  { background:var(--cream); }
+.verse-block:nth-child(even) { background:var(--parchment); }
+
+.verse-num-col {
+  flex-shrink:0; width:42px; padding:16px 6px 16px 0; text-align:right;
+}
+.verse-num {
+  display:inline-block; width:28px; height:28px; border-radius:50%;
+  background:var(--gold-dark); color:var(--cream);
+  font-family:var(--font-sub); font-size:.64rem; font-weight:700;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 1px 5px rgba(0,0,0,.25);
+}
+
+.verse-texts { flex:1; padding:16px 16px 18px 8px; }
+
+/* ── LATEINISCHER TEXT (oben / primär) ───────────────── */
+.latin {
+  font-family:var(--font-body); font-size:1.12rem; line-height:1.9;
+  color:var(--latin-color); font-weight:500;
+  border-left:3px solid var(--gold); padding-left:12px;
+  margin-bottom:8px;
+}
+
+/* ── ÜBERSETZUNGS-TEXT (unten / sekundär) ────────────── */
+.trans-label {
+  font-family:var(--font-sub); font-size:.6rem; letter-spacing:.17em;
+  text-transform:uppercase; color:var(--gold-dark); margin-bottom:5px; opacity:.78;
+}
+.trans {
+  font-family:var(--font-body); font-size:1.04rem; line-height:1.85;
+  color:var(--trans-color); font-style:italic;
+  padding-left:15px;
+}
+
+/* Erste Vers jedes Kapitels: Drop-Cap */
+.verse-block:first-of-type .latin::first-letter {
+  font-size:4.2em; float:left; line-height:.72;
+  padding-right:.08em; margin-top:.06em;
+  font-family:var(--font-title); color:var(--gold);
+}
+
+/* ── NAVIGATION ZWISCHEN BÜCHERN ─────────────────────── */
+.book-nav {
+  display:flex; justify-content:space-between; align-items:center;
+  background:var(--navy); border-top:3px solid var(--gold);
+  padding:12px 26px; gap:12px;
+}
+.book-nav a {
+  color:var(--gold); text-decoration:none;
+  font-family:var(--font-sub); font-size:.78rem; letter-spacing:.07em;
+  padding:6px 14px; border:1px solid rgba(200,169,110,.3); border-radius:3px;
+  transition:background .18s;
+}
+.book-nav a:hover { background:rgba(200,169,110,.15); }
+.book-nav .center {
+  font-family:var(--font-sub); font-size:.7rem; color:rgba(200,169,110,.55);
+  letter-spacing:.1em; text-align:center;
+}
+
+/* ── FUßZEILE ────────────────────────────────────────── */
+.page-footer {
+  background:var(--navy); border-top:2px solid rgba(200,169,110,.3);
+  padding:18px 28px; text-align:center;
+  color:rgba(200,169,110,.45); font-family:var(--font-sub);
+  font-size:.68rem; letter-spacing:.1em;
+}
+
+/* ── DRUCK ───────────────────────────────────────────── */
+@media print {
+  .nav-bar, .book-nav { display:none; }
+  .verse-block { break-inside:avoid; }
+  .book-header { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+}
+
+/* ── MOBIL ───────────────────────────────────────────── */
+@media (max-width:640px) {
+  .book-name-latin { font-size:2.1rem; }
+  .ch-roman { font-size:1.6rem; }
+  .latin { font-size:.98rem; }
+  .trans { font-size:.93rem; }
+  .content { padding:0 12px 60px; }
+}
+</style>
+</head>
+<body>
+
+  <nav class="nav-bar">
+    <a class="home" href="../../../index.html">✞ BIBLIA CATHOLICA</a>
+    <a href="../index.html">🇮🇹 Italiano</a>
+    <span class="spacer"></span>
+    <span class="pos">045 / 066</span>
+  </nav>
+
+  <header class="book-header">
+    <div class="testament-badge">NOVUM TESTAMENTUM</div>
+    <div class="book-name-latin">AD ROMANOS</div>
+    <div class="book-name-trans">Romans</div>
+    <div class="book-meta">Vulgata Clementina · Giovanni Diodati · 16 Capita · 433 Versus</div>
+  </header>
+
+  <div class="ornament-bar">❧ ✦ ❧ ✦ ❧</div>
+
+  <main class="content">
+
+  <section class="chapter" id="ch1">
+    <div class="chapter-marker">
+      <span class="ch-roman">I</span>
+      <span class="ch-label">Caput 1</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v1-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Paulus, servus Jesu Christi, vocatus Apostolus, segregatus in Evangelium Dei,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">quod ante promiserat per prophetas suos in Scripturis sanctis</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">de Filio suo, qui factus est ei ex semine David secundum carnem,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui prædestinatus est Filius Dei in virtute secundum spiritum sanctificationis ex resurrectione mortuorum Jesu Christi Domini nostri :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">per quem accepimus gratiam, et apostolatum ad obediendum fidei in omnibus gentibus pro nomine ejus,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">in quibus estis et vos vocati Jesu Christi :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">omnibus qui sunt Romæ, dilectis Dei, vocatis sanctis. Gratia vobis, et pax a Deo Patre nostro, et Domino Jesu Christo.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Primum quidem gratias ago Deo meo per Jesum Christum pro omnibus vobis : quia fides vestra annuntiatur in universo mundo.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Testis enim mihi est Deus, cui servio in spiritu meo in Evangelio Filii ejus, quod sine intermissione memoriam vestri facio</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">semper in orationibus meis : obsecrans, si quomodo tandem aliquando prosperum iter habeam in voluntate Dei veniendi ad vos.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Desidero enim videre vos, ut aliquid impertiar vobis gratiæ spiritualis ad confirmandos vos :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">id est, simul consolari in vobis per eam quæ invicem est, fidem vestram atque meam.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nolo autem vos ignorare fratres : quia sæpe proposui venire ad vos (et prohibitus sum usque adhuc) ut aliquem fructum habeam et in vobis, sicut et in ceteris gentibus.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Græcis ac barbaris, sapientibus, et insipientibus debitor sum :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">ita (quod in me) promptum est et vobis, qui Romæ estis, evangelizare.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non enim erubesco Evangelium. Virtus enim Dei est in salutem omni credenti, Judæo primum, et Græco.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Justitia enim Dei in eo revelatur ex fide in fidem : sicut scriptum est : Justus autem ex fide vivit.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Revelatur enim ira Dei de cælo super omnem impietatem, et injustitiam hominum eorum, qui veritatem Dei in injustitia detinent :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">quia quod notum est Dei, manifestum est in illis. Deus enim illis manifestavit.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">Invisibilia enim ipsius, a creatura mundi, per ea quæ facta sunt, intellecta, conspiciuntur : sempiterna quoque ejus virtus, et divinitas : ita ut sint inexcusabiles.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quia cum cognovissent Deum, non sicut Deum glorificaverunt, aut gratias egerunt : sed evanuerunt in cogitationibus suis, et obscuratum est insipiens cor eorum :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-22">
+      <div class="verse-num-col"><div class="verse-num">22</div></div>
+      <div class="verse-texts">
+        <div class="latin">dicentes enim se esse sapientes, stulti facti sunt.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-23">
+      <div class="verse-num-col"><div class="verse-num">23</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et mutaverunt gloriam incorruptibilis Dei in similitudinem imaginis corruptibilis hominis, et volucrum, et quadrupedum, et serpentium.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-24">
+      <div class="verse-num-col"><div class="verse-num">24</div></div>
+      <div class="verse-texts">
+        <div class="latin">Propter quod tradidit illos Deus in desideria cordis eorum, in immunditiam, ut contumeliis afficiant corpora sua in semetipsis :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-25">
+      <div class="verse-num-col"><div class="verse-num">25</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui commutaverunt veritatem Dei in mendacium : et coluerunt, et servierunt creaturæ potius quam Creatori, qui est benedictus in sæcula. Amen.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-26">
+      <div class="verse-num-col"><div class="verse-num">26</div></div>
+      <div class="verse-texts">
+        <div class="latin">Propterea tradidit illos Deus in passiones ignominiæ : nam feminæ eorum immutaverunt naturalem usum in eum usum qui est contra naturam.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-27">
+      <div class="verse-num-col"><div class="verse-num">27</div></div>
+      <div class="verse-texts">
+        <div class="latin">Similiter autem et masculi, relicto naturali usu feminæ, exarserunt in desideriis suis in invicem, masculi in masculos turpitudinem operantes, et mercedem, quam oportuit, erroris sui in semetipsis recipientes.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-28">
+      <div class="verse-num-col"><div class="verse-num">28</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et sicut non probaverunt Deum habere in notitia, tradidit illos Deus in reprobum sensum, ut faciant ea quæ non conveniunt,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-29">
+      <div class="verse-num-col"><div class="verse-num">29</div></div>
+      <div class="verse-texts">
+        <div class="latin">repletos omni iniquitate, malitia, fornicatione, avaritia, nequitia, plenos invidia, homicidio, contentione, dolo, malignitate : susurrones,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-30">
+      <div class="verse-num-col"><div class="verse-num">30</div></div>
+      <div class="verse-texts">
+        <div class="latin">detractores, Deo odibiles, contumeliosos, superbos, elatos, inventores malorum, parentibus non obedientes,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-31">
+      <div class="verse-num-col"><div class="verse-num">31</div></div>
+      <div class="verse-texts">
+        <div class="latin">insipientes, incompositos, sine affectione, absque fœdere, sine misericordia.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-32">
+      <div class="verse-num-col"><div class="verse-num">32</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui cum justitiam Dei cognovissent, non intellexerunt quoniam qui talia agunt, digni sunt morte : et non solum qui ea faciunt, sed etiam qui consentiunt facientibus.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch2">
+    <div class="chapter-marker">
+      <span class="ch-roman">II</span>
+      <span class="ch-label">Caput 2</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v2-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Propter quod inexcusabilis es, o homo omnis qui judicas. In quo enim judicas alterum, teipsum condemnas : eadem enim agis quæ judicas.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Scimus enim quoniam judicium Dei est secundum veritatem in eos qui talia agunt.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Existimas autem hoc, o homo, qui judicas eos qui talia agunt, et facis ea, quia tu effugies judicium Dei ?</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">an divitias bonitatis ejus, et patientiæ, et longanimitatis contemnis ? ignoras quoniam benignitas Dei ad pœnitentiam te adducit ?</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Secundum autem duritiam tuam, et impœnitens cor, thesaurizas tibi iram in die iræ, et revelationis justi judicii Dei,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui reddet unicuique secundum opera ejus :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">iis quidem qui secundum patientiam boni operis, gloriam, et honorem, et incorruptionem quærunt, vitam æternam :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">iis autem qui sunt ex contentione, et qui non acquiescunt veritati, credunt autem iniquitati, ira et indignatio.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Tribulatio et angustia in omnem animam hominis operantis malum, Judæi primum, et Græci :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">gloria autem, et honor, et pax omni operanti bonum, Judæo primum, et Græco :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">non enim est acceptio personarum apud Deum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quicumque enim sine lege peccaverunt, sine lege peribunt : et quicumque in lege peccaverunt, per legem judicabuntur.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non enim auditores legis justi sunt apud Deum, sed factores legis justificabuntur.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Cum autem gentes, quæ legem non habent, naturaliter ea, quæ legis sunt, faciunt, ejusmodi legem non habentes, ipsi sibi sunt lex :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui ostendunt opus legis scriptum in cordibus suis, testimonium reddente illis conscientia ipsorum, et inter se invicem cogitationibus accusantibus, aut etiam defendentibus,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">in die, cum judicabit Deus occulta hominum, secundum Evangelium meum per Jesum Christum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si autem tu Judæus cognominaris, et requiescis in lege, et gloriaris in Deo,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">et nosti voluntatem ejus, et probas utiliora, instructus per legem,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">confidis teipsum esse ducem cæcorum, lumen eorum qui in tenebris sunt,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">eruditorem insipientium, magistrum infantium, habentem formam scientiæ, et veritatis in lege.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui ergo alium doces, teipsum non doces : qui prædicas non furandum, furaris :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-22">
+      <div class="verse-num-col"><div class="verse-num">22</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui dicis non mœchandum, mœcharis : qui abominaris idola, sacrilegium facis :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-23">
+      <div class="verse-num-col"><div class="verse-num">23</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui in lege gloriaris, per prævaricationem legis Deum inhonoras.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-24">
+      <div class="verse-num-col"><div class="verse-num">24</div></div>
+      <div class="verse-texts">
+        <div class="latin">(Nomen enim Dei per vos blasphematur inter gentes, sicut scriptum est.)</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-25">
+      <div class="verse-num-col"><div class="verse-num">25</div></div>
+      <div class="verse-texts">
+        <div class="latin">Circumcisio quidem prodest, si legem observes : si autem prævaricator legis sis, circumcisio tua præputium facta est.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-26">
+      <div class="verse-num-col"><div class="verse-num">26</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si igitur præputium justitias legis custodiat, nonne præputium illius in circumcisionem reputabitur ?</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-27">
+      <div class="verse-num-col"><div class="verse-num">27</div></div>
+      <div class="verse-texts">
+        <div class="latin">et judicabit id quod ex natura est præputium, legem consummans, te, qui per litteram et circumcisionem prævaricator legis es ?</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-28">
+      <div class="verse-num-col"><div class="verse-num">28</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non enim qui in manifesto, Judæus est : neque quæ in manifesto, in carne, est circumcisio :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-29">
+      <div class="verse-num-col"><div class="verse-num">29</div></div>
+      <div class="verse-texts">
+        <div class="latin">sed qui in abscondito, Judæus est : et circumcisio cordis in spiritu, non littera : cujus laus non ex hominibus, sed ex Deo est.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch3">
+    <div class="chapter-marker">
+      <span class="ch-roman">III</span>
+      <span class="ch-label">Caput 3</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v3-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quid ergo amplius Judæo est ? aut quæ utilitas circumcisionis ?</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Multum per omnem modum. Primum quidem quia credita sunt illis eloquia Dei.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quid enim si quidam illorum non crediderunt ? numquid incredulitas illorum fidem Dei evacuabit ? Absit.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Est autem Deus verax : omnis autem homo mendax, sicut scriptum est :   Ut justificeris in sermonibus tuis :  et vincas cum judicaris.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si autem iniquitas nostra justitiam Dei commendat, quid dicemus ? Numquid iniquus est Deus, qui infert iram ?</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">secundum hominem dico. Absit. Alioquin quomodo judicabit Deus hunc mundum ?</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si enim veritas Dei in meo mendacio abundavit in gloriam ipsius : quid adhuc et ego tamquam peccator judicor ?</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">et non (sicut blasphemamur, et sicut aiunt quidam nos dicere) faciamus mala ut veniant bona : quorum damnatio justa est.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quid ergo ? præcellimus eos ? Nequaquam. Causati enim sumus Judæos et Græcos omnes sub peccato esse,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">sicut scriptum est :   Quia non est justus quisquam :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">non est intelligens, non est requirens Deum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Omnes declinaverunt, simul inutiles facti sunt :  non est qui faciat bonum, non est usque ad unum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sepulchrum patens est guttur eorum,  linguis suis dolose agebant :  venenum aspidum sub labiis eorum :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">quorum os maledictione, et amaritudine plenum est :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">veloces pedes eorum ad effundendum sanguinem :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">contritio et infelicitas in viis eorum :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">et viam pacis non cognoverunt :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">non est timor Dei ante oculos eorum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">Scimus autem quoniam quæcumque lex loquitur, iis, qui in lege sunt, loquitur : ut omne os obstruatur, et subditus fiat omnis mundus Deo :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">quia ex operibus legis non justificabitur omnis caro coram illo. Per legem enim cognitio peccati.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nunc autem sine lege justitia Dei manifestata est : testificata a lege et prophetis.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-22">
+      <div class="verse-num-col"><div class="verse-num">22</div></div>
+      <div class="verse-texts">
+        <div class="latin">Justitia autem Dei per fidem Jesu Christi in omnes et super omnes qui credunt in eum : non enim est distinctio :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-23">
+      <div class="verse-num-col"><div class="verse-num">23</div></div>
+      <div class="verse-texts">
+        <div class="latin">omnes enim peccaverunt, et egent gloria Dei.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-24">
+      <div class="verse-num-col"><div class="verse-num">24</div></div>
+      <div class="verse-texts">
+        <div class="latin">Justificati gratis per gratiam ipsius, per redemptionem quæ est in Christo Jesu,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-25">
+      <div class="verse-num-col"><div class="verse-num">25</div></div>
+      <div class="verse-texts">
+        <div class="latin">quem proposuit Deus propitiationem per fidem in sanguine ipsius, ad ostensionem justitiæ suæ propter remissionem præcedentium delictorum</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-26">
+      <div class="verse-num-col"><div class="verse-num">26</div></div>
+      <div class="verse-texts">
+        <div class="latin">in sustentatione Dei, ad ostensionem justitiæ ejus in hoc tempore : ut sit ipse justus, et justificans eum, qui est ex fide Jesu Christi.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-27">
+      <div class="verse-num-col"><div class="verse-num">27</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ubi est ergo gloriatio tua ? Exclusa est. Per quam legem ? Factorum ? Non : sed per legem fidei.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-28">
+      <div class="verse-num-col"><div class="verse-num">28</div></div>
+      <div class="verse-texts">
+        <div class="latin">Arbitramur enim justificari hominem per fidem sine operibus legis.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-29">
+      <div class="verse-num-col"><div class="verse-num">29</div></div>
+      <div class="verse-texts">
+        <div class="latin">An Judæorum Deus tantum ? nonne et gentium ? Immo et gentium :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-30">
+      <div class="verse-num-col"><div class="verse-num">30</div></div>
+      <div class="verse-texts">
+        <div class="latin">quoniam quidem unus est Deus, qui justificat circumcisionem ex fide, et præputium per fidem.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-31">
+      <div class="verse-num-col"><div class="verse-num">31</div></div>
+      <div class="verse-texts">
+        <div class="latin">Legem ergo destruimus per fidem ? Absit : sed legem statuimus.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch4">
+    <div class="chapter-marker">
+      <span class="ch-roman">IV</span>
+      <span class="ch-label">Caput 4</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v4-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quid ergo dicemus invenisse Abraham patrem nostrum secundum carnem ?</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si enim Abraham ex operibus justificatus est, habet gloriam, sed non apud Deum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quid enim dicit Scriptura ? Credidit Abraham Deo, et reputatum est illi ad justitiam.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ei autem qui operatur, merces non imputatur secundum gratiam, sed secundum debitum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ei vero qui non operatur, credenti autem in eum, qui justificat impium, reputatur fides ejus ad justitiam secundum propositum gratiæ Dei.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sicut et David dicit beatitudinem hominis, cui Deus accepto fert justitiam sine operibus :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Beati, quorum remissæ sunt iniquitates,  et quorum tecta sunt peccata.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Beatus vir, cui non imputavit Dominus peccatum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Beatitudo ergo hæc in circumcisione tantum manet, an etiam in præputio ? Dicimus enim quia reputata est Abrahæ fides ad justitiam.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quomodo ergo reputata est ? in circumcisione, an in præputio ? Non in circumcisione, sed in præputio.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et signum accepit circumcisionis, signaculum justitiæ fidei, quæ est in præputio : ut sit pater omnium credentium per præputium, ut reputetur et illis ad justitiam :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">et sit pater circumcisionis non iis tantum, qui sunt ex circumcisione, sed et iis qui sectantur vestigia fidei, quæ est in præputio patris nostri Abrahæ.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non enim per legem promissio Abrahæ, aut semini ejus ut hæres esset mundi : sed per justitiam fidei.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si enim qui ex lege, hæredes sunt : exinanita est fides, abolita est promissio.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Lex enim iram operatur. Ubi enim non est lex, nec prævaricatio.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ideo ex fide, ut secundum gratiam firma sit promissio omni semini, non ei qui ex lege est solum, sed et ei qui ex fide est Abrahæ, qui pater est omnium nostrum</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">(sicut scriptum est : Quia patrem multarum gentium posui te) ante Deum, cui credidit, qui vivificat mortuos, et vocat ea quæ non sunt, tamquam ea quæ sunt :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui contra spem in spem credidit, ut fieret pater multarum gentium secundum quod dictum est ei : Sic erit semen tuum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et non infirmatus est fide, nec consideravit corpus suum emortuum, cum jam fere centum esset annorum, et emortuam vulvam Saræ.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">In repromissione etiam Dei non hæsitavit diffidentia, sed confortatus est fide, dans gloriam Deo :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">plenissime sciens, quia quæcumque promisit, potens est et facere.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-22">
+      <div class="verse-num-col"><div class="verse-num">22</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ideo et reputatum est illi ad justitiam.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-23">
+      <div class="verse-num-col"><div class="verse-num">23</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non est autem scriptum tantum propter ipsum quia reputatum est illi ad justitiam :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-24">
+      <div class="verse-num-col"><div class="verse-num">24</div></div>
+      <div class="verse-texts">
+        <div class="latin">sed et propter nos, quibus reputabitur credentibus in eum, qui suscitavit Jesum Christum Dominum nostrum a mortuis,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-25">
+      <div class="verse-num-col"><div class="verse-num">25</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui traditus est propter delicta nostra, et resurrexit propter justificationem nostram.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch5">
+    <div class="chapter-marker">
+      <span class="ch-roman">V</span>
+      <span class="ch-label">Caput 5</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v5-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Justificati ergo ex fide, pacem habeamus ad Deum per Dominum nostrum Jesum Christum :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">per quem et habemus accessum per fidem in gratiam istam, in qua stamus, et gloriamur in spe gloriæ filiorum Dei.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non solum autem, sed et gloriamur in tribulationibus : scientes quod tribulatio patientiam operatur :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">patientia autem probationem, probatio vero spem,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">spes autem non confundit : quia caritas Dei diffusa est in cordibus nostris per Spiritum Sanctum, qui datus est nobis.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ut quid enim Christus, cum adhuc infirmi essemus, secundum tempus, pro impiis mortuus est ?</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">vix enim pro justo quis moritur : nam pro bono forsitan quis audeat mori.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Commendat autem caritatem suam Deus in nobis : quoniam cum adhuc peccatores essemus, secundum tempus,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Christus pro nobis mortuus est : multo igitur magis nunc justificati in sanguine ipsius, salvi erimus ab ira per ipsum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si enim cum inimici essemus, reconciliati sumus Deo per mortem filii ejus : multo magis reconciliati, salvi erimus in vita ipsius.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non solum autem : sed et gloriamur in Deo per Dominum nostrum Jesum Christum, per quem nunc reconciliationem accepimus.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Propterea sicut per unum hominem peccatum in hunc mundum intravit, et per peccatum mors, et ita in omnes homines mors pertransiit, in quo omnes peccaverunt.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Usque ad legem enim peccatum erat in mundo : peccatum autem non imputabatur, cum lex non esset.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sed regnavit mors ab Adam usque ad Moysen etiam in eos qui non peccaverunt in similitudinem prævaricationis Adæ, qui est forma futuri.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sed non sicut delictum, ita et donum : si enim unius delicto multi mortui sunt : multo magis gratia Dei et donum in gratia unius hominis Jesu Christi in plures abundavit.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et non sicut per unum peccatum, ita et donum. Nam judicium quidem ex uno in condemnationem : gratia autem ex multis delictis in justificationem.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si enim unius delicto mors regnavit per unum : multo magis abundantiam gratiæ, et donationis, et justitiæ accipientes, in vita regnabunt per unum Jesum Christum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Igitur sicut per unius delictum in omnes homines in condemnationem : sic et per unius justitiam in omnes homines in justificationem vitæ.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sicut enim per inobedientiam unius hominis, peccatores constituti sunt multi : ita et per unius obeditionem, justi constituentur multi.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">Lex autem subintravit ut abundaret delictum. Ubi autem abundavit delictum, superabundavit gratia :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">ut sicut regnavit peccatum in mortem : ita et gratia regnet per justitiam in vitam æternam, per Jesum Christum Dominum nostrum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch6">
+    <div class="chapter-marker">
+      <span class="ch-roman">VI</span>
+      <span class="ch-label">Caput 6</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v6-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quid ergo dicemus ? permanebimus in peccato ut gratia abundet ?</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Absit. Qui enim mortui sumus peccato, quomodo adhuc vivemus in illo ?</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">an ignoratis quia quicumque baptizati sumus in Christo Jesu, in morte ipsius baptizati sumus ?</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Consepulti enim sumus cum illo per baptismum in mortem : ut quomodo Christus surrexit a mortuis per gloriam Patris, ita et nos in novitate vitæ ambulemus.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si enim complantati facti sumus similitudini mortis ejus : simul et resurrectionis erimus.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hoc scientes, quia vetus homo noster simul crucifixus est, ut destruatur corpus peccati, et ultra non serviamus peccato.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui enim mortuus est, justificatus est a peccato.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si autem mortui sumus cum Christo, credimus quia simul etiam vivemus cum Christo,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">scientes quod Christus resurgens ex mortuis jam non moritur : mors illi ultra non dominabitur.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quod enim mortuus est peccato, mortuus est semel : quod autem vivit, vivit Deo.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ita et vos existimate vos mortuos quidem esse peccato, viventes autem Deo, in Christo Jesu Domino nostro.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non ergo regnet peccatum in vestro mortali corpore ut obediatis concupiscentiis ejus.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sed neque exhibeatis membra vestra arma iniquitatis peccato : sed exhibete vos Deo, tamquam ex mortuis viventes : et membra vestra arma justitiæ Deo.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Peccatum enim vobis non dominabitur : non enim sub lege estis, sed sub gratia.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quid ergo ? peccabimus, quoniam non sumus sub lege, sed sub gratia ? Absit.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nescitis quoniam cui exhibetis vos servos ad obediendum, servi estis ejus, cui obeditis, sive peccati ad mortem, sive obeditionis ad justitiam ?</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Gratias autem Deo quod fuistis servi peccati, obedistis autem ex corde in eam formam doctrinæ, in quam traditi estis.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Liberati autem a peccato, servi facti estis justitiæ.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">Humanum dico, propter infirmitatem carnis vestræ : sicut enim exhibuistis membra vestra servire immunditiæ, et iniquitati ad iniquitatem, ita nunc exhibete membra vestra servire justitiæ in sanctificationem.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">Cum enim servi essetis peccati, liberi fuistis justitiæ.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quem ergo fructum habuistis tunc in illis, in quibus nunc erubescitis ? nam finis illorum mors est.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-22">
+      <div class="verse-num-col"><div class="verse-num">22</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nunc vero liberati a peccato, servi autem facti Deo, habetis fructum vestrum in sanctificationem, finem vero vitam æternam.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-23">
+      <div class="verse-num-col"><div class="verse-num">23</div></div>
+      <div class="verse-texts">
+        <div class="latin">Stipendia enim peccati, mors. Gratia autem Dei, vita æterna, in Christo Jesu Domino nostro.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch7">
+    <div class="chapter-marker">
+      <span class="ch-roman">VII</span>
+      <span class="ch-label">Caput 7</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v7-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">An ignoratis, fratres (scientibus enim legem loquor), quia lex in homine dominatur quanto tempore vivit ?</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nam quæ sub viro est mulier, vivente viro, alligata est legi : si autem mortuus fuerit vir ejus, soluta est a lege viri.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Igitur, vivente viro, vocabitur adultera si fuerit cum alio viro : si autem mortuus fuerit vir ejus, liberata est a lege viri, ut non sit adultera si fuerit cum alio viro.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Itaque fratres mei, et vos mortificati estis legi per corpus Christi : ut sitis alterius, qui ex mortuis resurrexit, ut fructificemus Deo.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Cum enim essemus in carne, passiones peccatorum, quæ per legem erant, operabantur in membris nostris, ut fructificarent morti.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nunc autem soluti sumus a lege mortis, in qua detinebamur, ita ut serviamus in novitate spiritus, et non in vetustate litteræ.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quid ergo dicemus ? lex peccatum est ? Absit. Sed peccatum non cognovi, nisi per legem : nam concupiscentiam nesciebam, nisi lex diceret : Non concupisces.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Occasione autem accepta, peccatum per mandatum operatum est in me omnem concupiscentiam. Sine lege enim peccatum mortuum erat.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ego autem vivebam sine lege aliquando : sed cum venisset mandatum, peccatum revixit.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ego autem mortuus sum : et inventum est mihi mandatum, quod erat ad vitam, hoc esse ad mortem.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nam peccatum occasione accepta per mandatum, seduxit me, et per illud occidit.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Itaque lex quidem sancta, et mandatum sanctum, et justum, et bonum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quod ergo bonum est, mihi factum est mors ? Absit. Sed peccatum, ut appareat peccatum, per bonum operatum est mihi mortem : ut fiat supra modum peccans peccatum per mandatum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Scimus enim quia lex spiritualis est : ego autem carnalis sum, venundatus sub peccato.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quod enim operor, non intelligo : non enim quod volo bonum, hoc ago : sed quod odi malum, illud facio.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si autem quod nolo, illud facio : consentio legi, quoniam bona est.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nunc autem jam non ego operor illud, sed quod habitat in me peccatum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Scio enim quia non habitat in me, hoc est in carne mea, bonum. Nam velle, adjacet mihi : perficere autem bonum, non invenio.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non enim quod volo bonum, hoc facio : sed quod nolo malum, hoc ago.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si autem quod nolo, illud facio : jam non ego operor illud, sed quod habitat in me, peccatum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">Invenio igitur legem, volenti mihi facere bonum, quoniam mihi malum adjacet :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-22">
+      <div class="verse-num-col"><div class="verse-num">22</div></div>
+      <div class="verse-texts">
+        <div class="latin">condelector enim legi Dei secundum interiorem hominem :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-23">
+      <div class="verse-num-col"><div class="verse-num">23</div></div>
+      <div class="verse-texts">
+        <div class="latin">video autem aliam legem in membris meis, repugnantem legi mentis meæ, et captivantem me in lege peccati, quæ est in membris meis.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-24">
+      <div class="verse-num-col"><div class="verse-num">24</div></div>
+      <div class="verse-texts">
+        <div class="latin">Infelix ego homo, quis me liberabit de corpore mortis hujus ?</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-25">
+      <div class="verse-num-col"><div class="verse-num">25</div></div>
+      <div class="verse-texts">
+        <div class="latin">gratia Dei per Jesum Christum Dominum nostrum. Igitur ego ipse mente servio legi Dei : carne autem, legi peccati.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch8">
+    <div class="chapter-marker">
+      <span class="ch-roman">VIII</span>
+      <span class="ch-label">Caput 8</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v8-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nihil ergo nunc damnationis est iis qui sunt in Christo Jesu : qui non secundum carnem ambulant.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Lex enim spiritus vitæ in Christo Jesu liberavit me a lege peccati et mortis.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nam quod impossibile erat legi, in quo infirmabatur per carnem : Deus Filium suum mittens in similitudinem carnis peccati et de peccato, damnavit peccatum in carne,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">ut justificatio legis impleretur in nobis, qui non secundum carnem ambulamus, sed secundum spiritum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui enim secundum carnem sunt, quæ carnis sunt, sapiunt : qui vero secundum spiritum sunt, quæ sunt spiritus, sentiunt.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nam prudentia carnis, mors est : prudentia autem spiritus, vita et pax :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">quoniam sapientia carnis inimica est Deo : legi enim Dei non est subjecta, nec enim potest.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui autem in carne sunt, Deo placere non possunt.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vos autem in carne non estis, sed in spiritu : si tamen Spiritus Dei habitat in vobis. Si quis autem Spiritum Christi non habet, hic non est ejus.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si autem Christus in vobis est, corpus quidem mortuum est propter peccatum, spiritus vero vivit propter justificationem.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quod si Spiritus ejus, qui suscitavit Jesum a mortuis, habitat in vobis : qui suscitavit Jesum Christum a mortuis, vivificabit et mortalia corpora vestra, propter inhabitantem Spiritum ejus in vobis.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ergo fratres, debitores sumus non carni, ut secundum carnem vivamus.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si enim secundum carnem vixeritis, moriemini : si autem spiritu facta carnis mortificaveritis, vivetis.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quicumque enim Spiritu Dei aguntur, ii sunt filii Dei.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non enim accepistis spiritum servitutis iterum in timore, sed accepistis spiritum adoptionis filiorum, in quo clamamus : Abba (Pater).</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ipse enim Spiritus testimonium reddit spiritui nostro quod sumus filii Dei.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si autem filii, et hæredes : hæredes, quidem Dei, cohæredes autem Christi : si tamen compatimur ut et conglorificemur.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Existimo enim quod non sunt condignæ passiones hujus temporis ad futuram gloriam, quæ revelabitur in nobis.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nam exspectatio creaturæ revelationem filiorum Dei exspectat.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vanitati enim creatura subjecta est non volens, sed propter eum, qui subjecit eam in spe :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">quia et ipsa creatura liberabitur a servitute corruptionis in libertatem gloriæ filiorum Dei.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-22">
+      <div class="verse-num-col"><div class="verse-num">22</div></div>
+      <div class="verse-texts">
+        <div class="latin">Scimus enim quod omnis creatura ingemiscit, et parturit usque adhuc.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-23">
+      <div class="verse-num-col"><div class="verse-num">23</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non solum autem illa, sed et nos ipsi primitias spiritus habentes : et ipsi intra nos gemimus adoptionem filiorum Dei exspectantes, redemptionem corporis nostri.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-24">
+      <div class="verse-num-col"><div class="verse-num">24</div></div>
+      <div class="verse-texts">
+        <div class="latin">Spe enim salvi facti sumus. Spes autem, quæ videtur, non est spes : nam quod videt quis, quid sperat ?</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-25">
+      <div class="verse-num-col"><div class="verse-num">25</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si autem quod non videmus, speramus : per patientiam exspectamus.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-26">
+      <div class="verse-num-col"><div class="verse-num">26</div></div>
+      <div class="verse-texts">
+        <div class="latin">Similiter autem et Spiritus adjuvat infirmitatem nostram : nam quid oremus, sicut oportet, nescimus : sed ipse Spiritus postulat pro nobis gemitibus inenarrabilibus.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-27">
+      <div class="verse-num-col"><div class="verse-num">27</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui autem scrutatur corda, scit quid desideret Spiritus : quia secundum Deum postulat pro sanctis.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-28">
+      <div class="verse-num-col"><div class="verse-num">28</div></div>
+      <div class="verse-texts">
+        <div class="latin">Scimus autem quoniam diligentibus Deum omnia cooperantur in bonum, iis qui secundum propositum vocati sunt sancti.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-29">
+      <div class="verse-num-col"><div class="verse-num">29</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nam quos præscivit, et prædestinavit conformes fieri imaginis Filii sui, ut sit ipse primogenitus in multis fratribus.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-30">
+      <div class="verse-num-col"><div class="verse-num">30</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quos autem prædestinavit, hos et vocavit : et quos vocavit, hos et justificavit : quos autem justificavit, illos et glorificavit.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-31">
+      <div class="verse-num-col"><div class="verse-num">31</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quid ergo dicemus ad hæc ? si Deus pro nobis, quis contra nos ?</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-32">
+      <div class="verse-num-col"><div class="verse-num">32</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui etiam proprio Filio suo non pepercit, sed pro nobis omnibus tradidit illum : quomodo non etiam cum illo omnia nobis donavit ?</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-33">
+      <div class="verse-num-col"><div class="verse-num">33</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quis accusabit adversus electos Dei ? Deus qui justificat,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-34">
+      <div class="verse-num-col"><div class="verse-num">34</div></div>
+      <div class="verse-texts">
+        <div class="latin">quis est qui condemnet ? Christus Jesus, qui mortuus est, immo qui et resurrexit, qui est ad dexteram Dei, qui etiam interpellat pro nobis.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-35">
+      <div class="verse-num-col"><div class="verse-num">35</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quis ergo nos separabit a caritate Christi ? tribulatio ? an angustia ? an fames ? an nuditas ? an periculum ? an persecutio ? an gladius ?</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-36">
+      <div class="verse-num-col"><div class="verse-num">36</div></div>
+      <div class="verse-texts">
+        <div class="latin">(Sicut scriptum est :   Quia propter te mortificamur tota die :  æstimati sumus sicut oves occisionis.)</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-37">
+      <div class="verse-num-col"><div class="verse-num">37</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sed in his omnibus superamus propter eum qui dilexit nos.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-38">
+      <div class="verse-num-col"><div class="verse-num">38</div></div>
+      <div class="verse-texts">
+        <div class="latin">Certus sum enim quia neque mors, neque vita, neque angeli, neque principatus, neque virtutes, neque instantia, neque futura, neque fortitudo,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-39">
+      <div class="verse-num-col"><div class="verse-num">39</div></div>
+      <div class="verse-texts">
+        <div class="latin">neque altitudo, neque profundum, neque creatura alia poterit nos separare a caritate Dei, quæ est in Christo Jesu Domino nostro.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch9">
+    <div class="chapter-marker">
+      <span class="ch-roman">IX</span>
+      <span class="ch-label">Caput 9</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v9-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Veritatem dico in Christo, non mentior : testimonium mihi perhibente conscientia mea in Spiritu Sancto :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">quoniam tristitia mihi magna est, et continuus dolor cordi meo.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Optabam enim ego ipse anathema esse a Christo pro fratribus meis, qui sunt cognati mei secundum carnem,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui sunt Israëlitæ, quorum adoptio est filiorum, et gloria, et testamentum, et legislatio, et obsequium, et promissa :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">quorum patres, et ex quibus est Christus secundum carnem, qui est super omnia Deus benedictus in sæcula. Amen.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non autem quod exciderit verbum Dei. Non enim omnes qui ex Israël sunt, ii sunt Israëlitæ :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">neque qui semen sunt Abrahæ, omnes filii : sed in Isaac vocabitur tibi semen :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">id est, non qui filii carnis, hi filii Dei : sed qui filii sunt promissionis, æstimantur in semine.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Promissionis enim verbum hoc est : Secundum hoc tempus veniam : et erit Saræ filius.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non solum autem illa : sed et Rebecca ex uno concubitu habens, Isaac patris nostri.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Cum enim nondum nati fuissent, aut aliquid boni egissent, aut mali (ut secundum electionem propositum Dei maneret),</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">non ex operibus, sed ex vocante dictum est ei quia major serviet minori,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">sicut scriptum est : Jacob dilexi, Esau autem odio habui.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quid ergo dicemus ? numquid iniquitas apud Deum ? Absit.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Moysi enim dicit : Miserebor cujus misereor : et misericordiam præstabo cujus miserebor.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Igitur non volentis, neque currentis, sed miserentis est Dei.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Dicit enim Scriptura Pharaoni : Quia in hoc ipsum excitavi te, ut ostendam in te virtutem meam : et ut annuntietur nomen meum in universa terra.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ergo cujus vult miseretur, et quem vult indurat.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">Dicis itaque mihi : Quid adhuc queritur ? voluntati enim ejus quis resistit ?</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">O homo, tu quis es, qui respondeas Deo ? numquid dicit figmentum ei qui se finxit : Quid me fecisti sic ?</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">an non habet potestatem figulus luti ex eadem massa facere aliud quidem vas in honorem, aliud vero in contumeliam ?</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-22">
+      <div class="verse-num-col"><div class="verse-num">22</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quod si Deus volens ostendere iram, et notum facere potentiam suam, sustinuit in multa patientia vasa iræ, apta in interitum,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-23">
+      <div class="verse-num-col"><div class="verse-num">23</div></div>
+      <div class="verse-texts">
+        <div class="latin">ut ostenderet divitias gloriæ suæ in vasa misericordiæ, quæ præparavit in gloriam.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-24">
+      <div class="verse-num-col"><div class="verse-num">24</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quos et vocavit nos non solum ex Judæis, sed etiam in gentibus,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-25">
+      <div class="verse-num-col"><div class="verse-num">25</div></div>
+      <div class="verse-texts">
+        <div class="latin">sicut in Osee dicit : Vocabo non plebem meam, plebem meam : et non dilectam, dilectam : et non misericordiam consecutam, misericordiam consecutam.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-26">
+      <div class="verse-num-col"><div class="verse-num">26</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et erit : in loco, ubi dictum est eis : Non plebs mea vos : ibi vocabuntur filii Dei vivi.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-27">
+      <div class="verse-num-col"><div class="verse-num">27</div></div>
+      <div class="verse-texts">
+        <div class="latin">Isaias autem clamat pro Israël : Si fuerit numerus filiorum Israël tamquam arena maris, reliquiæ salvæ fient.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-28">
+      <div class="verse-num-col"><div class="verse-num">28</div></div>
+      <div class="verse-texts">
+        <div class="latin">Verbum enim consummans, et abbrevians in æquitate : quia verbum breviatum faciet Dominus super terram :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-29">
+      <div class="verse-num-col"><div class="verse-num">29</div></div>
+      <div class="verse-texts">
+        <div class="latin">et sicut prædixit Isaias : Nisi Dominus Sabaoth reliquisset nobis semen, sicut Sodoma facti essemus, et sicut Gomorrha similes fuissemus.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-30">
+      <div class="verse-num-col"><div class="verse-num">30</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quid ergo dicemus ? Quod gentes, quæ non sectabantur justitiam, apprehenderunt justitiam : justitiam autem, quæ ex fide est.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-31">
+      <div class="verse-num-col"><div class="verse-num">31</div></div>
+      <div class="verse-texts">
+        <div class="latin">Israël vero sectando legem justitiæ, in legem justitiæ non pervenit.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-32">
+      <div class="verse-num-col"><div class="verse-num">32</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quare ? Quia non ex fide, sed quasi ex operibus : offenderunt enim in lapidem offensionis,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-33">
+      <div class="verse-num-col"><div class="verse-num">33</div></div>
+      <div class="verse-texts">
+        <div class="latin">sicut scriptum est : Ecce pono in Sion lapidem offensionis, et petram scandali : et omnis qui credit in eum, non confundetur.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch10">
+    <div class="chapter-marker">
+      <span class="ch-roman">X</span>
+      <span class="ch-label">Caput 10</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v10-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Fratres, voluntas quidem cordis mei, et obsecratio ad Deum, fit pro illis in salutem.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Testimonium enim perhibeo illis quod æmulationem Dei habent, sed non secundum scientiam.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ignorantes enim justitiam Dei, et suam quærentes statuere, justitiæ Dei non sunt subjecti.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Finis enim legis, Christus, ad justitiam omni credenti.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Moyses enim scripsit, quoniam justitiam, quæ ex lege est, qui fecerit homo, vivet in ea.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quæ autem ex fide est justitia, sic dicit : Ne dixeris in corde tuo : Quis ascendet in cælum ? id est, Christum deducere :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">aut, Quis descendet in abyssum ? hoc est, Christum a mortuis revocare.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sed quid dicit Scriptura ? Prope est verbum in ore tuo, et in corde tuo : hoc est verbum fidei, quod prædicamus.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quia si confitearis in ore tuo Dominum Jesum, et in corde tuo credideris quod Deus illum suscitavit a mortuis, salvus eris.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Corde enim creditur ad justitiam : ore autem confessio fit ad salutem.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Dicit enim Scriptura : Omnis qui credit in illum, non confundetur.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non enim est distinctio Judæi et Græci : nam idem Dominus omnium, dives in omnes qui invocant illum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Omnis enim quicumque invocaverit nomen Domini, salvus erit.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quomodo ergo invocabunt, in quem non crediderunt ? aut quomodo credent ei, quem non audierunt ? quomodo autem audient sine prædicante ?</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">quomodo vero prædicabunt nisi mittantur ? sicut scriptum est : Quam speciosi pedes evangelizantium pacem, evangelizantium bona !</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sed non omnes obediunt Evangelio. Isaias enim dicit : Domine, quis credidit auditui nostro ?</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ergo fides ex auditu, auditus autem per verbum Christi.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sed dico : Numquid non audierunt ? Et quidem in omnem terram exivit sonus eorum, et in fines orbis terræ verba eorum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sed dico : Numquid Israël non cognovit ? Primus Moyses dicit : Ego ad æmulationem vos adducam in non gentem : in gentem insipientem, in iram vos mittam.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">Isaias autem audet, et dicit : Inventus sum a non quærentibus me : palam apparui iis qui me non interrogabant.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ad Israël autem dicit : Tota die expandi manus meas ad populum non credentem, et contradicentem.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch11">
+    <div class="chapter-marker">
+      <span class="ch-roman">XI</span>
+      <span class="ch-label">Caput 11</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v11-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Dico ergo : Numquid Deus repulit populum suum ? Absit. Nam et ego Israëlita sum ex semine Abraham, de tribu Benjamin :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">non repulit Deus plebem suam, quam præscivit. An nescitis in Elia quid dicit Scriptura ? quemadmodum interpellat Deum adversum Israël :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Domine, prophetas tuos occiderunt, altaria tua suffoderunt : et ego relictus sum solus, et quærunt animam meam.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sed quid dicit illi divinum responsum ? Reliqui mihi septem millia virorum, qui non curvaverunt genua ante Baal.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sic ergo et in hoc tempore reliquiæ secundum electionem gratiæ salvæ factæ sunt.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si autem gratia, jam non ex operibus : alioquin gratia jam non est gratia.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quid ergo ? Quod quærebat Israël, hoc non est consecutus : electio autem consecuta est : ceteri vero excæcati sunt :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">sicut scriptum est : Dedit illis Deus spiritum compunctionis : oculos ut non videant, et aures ut non audiant, usque in hodiernum diem.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et David dicit : Fiat mensa eorum in laqueum, et in captionem, et in scandalum, et in retributionem illis.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Obscurentur oculi eorum ne videant : et dorsum eorum semper incurva.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Dico ergo : Numquid sic offenderunt ut caderent ? Absit. Sed illorum delicto, salus est gentibus ut illos æmulentur.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quod si delictum illorum divitiæ sunt mundi, et diminutio eorum divitiæ gentium : quanto magis plenitudo eorum ?</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vobis enim dico gentibus : Quamdiu quidem ego sum gentium Apostolus, ministerium meum honorificabo,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">si quomodo ad æmulandum provocem carnem meam, et salvos faciam aliquos ex illis.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si enim amissio eorum, reconciliatio est mundi : quæ assumptio, nisi vita ex mortuis ?</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quod si delibatio sancta est, et massa : et si radix sancta, et rami.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quod si aliqui ex ramis fracti sunt, tu autem cum oleaster esses, insertus es in illis, et socius radicis, et pinguedinis olivæ factus es,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">noli gloriari adversus ramos. Quod si gloriaris : non tu radicem portas, sed radix te.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">Dices ergo : Fracti sunt rami ut ego inserar.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">Bene : propter incredulitatem fracti sunt. Tu autem fide stas : noli altum sapere, sed time.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si enim Deus naturalibus ramis non pepercit : ne forte nec tibi parcat.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-22">
+      <div class="verse-num-col"><div class="verse-num">22</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vide ergo bonitatem, et severitatem Dei : in eos quidem qui ceciderunt, severitatem : in te autem bonitatem Dei, si permanseris in bonitate, alioquin et tu excideris.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-23">
+      <div class="verse-num-col"><div class="verse-num">23</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sed et illi, si non permanserint in incredulitate, inserentur : potens est enim Deus iterum inserere illos.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-24">
+      <div class="verse-num-col"><div class="verse-num">24</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nam si tu ex naturali excisus es oleastro, et contra naturam insertus es in bonam olivam : quanto magis ii qui secundum naturam inserentur suæ olivæ ?</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-25">
+      <div class="verse-num-col"><div class="verse-num">25</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nolo enim vos ignorare, fratres, mysterium hoc (ut non sitis vobis ipsis sapientes), quia cæcitas ex parte contigit in Israël, donec plenitudo gentium intraret,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-26">
+      <div class="verse-num-col"><div class="verse-num">26</div></div>
+      <div class="verse-texts">
+        <div class="latin">et sic omnis Israël salvus fieret, sicut scriptum est : Veniet ex Sion, qui eripiat, et avertat impietatem a Jacob.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-27">
+      <div class="verse-num-col"><div class="verse-num">27</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et hoc illis a me testamentum : cum abstulero peccata eorum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-28">
+      <div class="verse-num-col"><div class="verse-num">28</div></div>
+      <div class="verse-texts">
+        <div class="latin">Secundum Evangelium quidem, inimici propter vos : secundum electionem autem, carissimi propter patres.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-29">
+      <div class="verse-num-col"><div class="verse-num">29</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sine pœnitentia enim sunt dona et vocatio Dei.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-30">
+      <div class="verse-num-col"><div class="verse-num">30</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sicut enim aliquando et vos non credidistis Deo, nunc autem misericordiam consecuti estis propter incredulitatem illorum :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-31">
+      <div class="verse-num-col"><div class="verse-num">31</div></div>
+      <div class="verse-texts">
+        <div class="latin">ita et isti nunc non crediderunt in vestram misericordiam : ut et ipsi misericordiam consequantur.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-32">
+      <div class="verse-num-col"><div class="verse-num">32</div></div>
+      <div class="verse-texts">
+        <div class="latin">Conclusit enim Deus omnia in incredulitate, ut omnium misereatur.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-33">
+      <div class="verse-num-col"><div class="verse-num">33</div></div>
+      <div class="verse-texts">
+        <div class="latin">O altitudo divitiarum sapientiæ, et scientiæ Dei : quam incomprehensibilia sunt judicia ejus, et investigabiles viæ ejus !</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-34">
+      <div class="verse-num-col"><div class="verse-num">34</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quis enim cognovit sensum Domini ? aut quis consiliarius ejus fuit ?</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-35">
+      <div class="verse-num-col"><div class="verse-num">35</div></div>
+      <div class="verse-texts">
+        <div class="latin">aut quis prior dedit illi, et retribuetur ei ?</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v11-36">
+      <div class="verse-num-col"><div class="verse-num">36</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quoniam ex ipso, et per ipsum, et in ipso sunt omnia : ipsi gloria in sæcula. Amen.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch12">
+    <div class="chapter-marker">
+      <span class="ch-roman">XII</span>
+      <span class="ch-label">Caput 12</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v12-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Obsecro itaque vos fratres per misericordiam Dei, ut exhibeatis corpora vestra hostiam viventem, sanctam, Deo placentem, rationabile obsequium vestrum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et nolite conformari huic sæculo, sed reformamini in novitate sensus vestri : ut probetis quæ sit voluntas Dei bona, et beneplacens, et perfecta.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Dico enim per gratiam quæ data est mihi, omnibus qui sunt inter vos, non plus sapere quam oportet sapere, sed sapere ad sobrietatem : et unicuique sicut Deus divisit mensuram fidei.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sicut enim in uno corpore multa membra habemus, omnia autem membra non eumdem actum habent :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">ita multi unum corpus sumus in Christo, singuli autem alter alterius membra.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Habentes autem donationes secundum gratiam, quæ data est nobis, differentes : sive prophetiam secundum rationem fidei,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">sive ministerium in ministrando, sive qui docet in doctrina,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui exhortatur in exhortando, qui tribuit in simplicitate, qui præest in sollicitudine, qui miseretur in hilaritate.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Dilectio sine simulatione : odientes malum, adhærentes bono :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">caritate fraternitatis invicem diligentes : honore invicem prævenientes :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">sollicitudine non pigri : spiritu ferventes : Domino servientes :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">spe gaudentes : in tribulatione patientes : orationi instantes :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">necessitatibus sanctorum communicantes : hospitalitatem sectantes.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Benedicite persequentibus vos : benedicite, et nolite maledicere.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Gaudere cum gaudentibus, flere cum flentibus :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">idipsum invicem sentientes : non alta sapientes, sed humilibus consentientes. Nolite esse prudentes apud vosmetipsos :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">nulli malum pro malo reddentes : providentes bona non tantum coram Deo, sed etiam coram omnibus hominibus.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si fieri potest, quod ex vobis est, cum omnibus hominibus pacem habentes :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">non vosmetipsos defendentes carissimi, sed date locum iræ. Scriptum est enim : Mihi vindicta : ego retribuam, dicit Dominus.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sed si esurierit inimicus tuus, ciba illum : si sitit, potum da illi : hoc enim faciens, carbones ignis congeres super caput ejus.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v12-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">Noli vinci a malo, sed vince in bono malum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch13">
+    <div class="chapter-marker">
+      <span class="ch-roman">XIII</span>
+      <span class="ch-label">Caput 13</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v13-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Omnis anima potestatibus sublimioribus subdita sit : non est enim potestas nisi a Deo : quæ autem sunt, a Deo ordinatæ sunt.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Itaque qui resistit potestati, Dei ordinationi resistit. Qui autem resistunt, ipsi sibi damnationem acquirunt :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">nam principes non sunt timori boni operis, sed mali. Vis autem non timere potestatem ? Bonum fac : et habebis laudem ex illa :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Dei enim minister est tibi in bonum. Si autem malum feceris, time : non enim sine causa gladium portat. Dei enim minister est : vindex in iram ei qui malum agit.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ideo necessitate subditi estote non solum propter iram, sed etiam propter conscientiam.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ideo enim et tributa præstatis : ministri enim Dei sunt, in hoc ipsum servientes.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Reddite ergo omnibus debita : cui tributum, tributum : cui vectigal, vectigal : cui timorem, timorem : cui honorem, honorem.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nemini quidquam debeatis, nisi ut invicem diligatis : qui enim diligit proximum, legem implevit.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nam : Non adulterabis : non occides : non furaberis : non falsum testimonium dices : non concupisces : et si quod est aliud mandatum, in hoc verbo instauratur : diliges proximum tuum sicut teipsum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Dilectio proximi malum non operatur. Plenitudo ergo legis est dilectio.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et hoc scientes tempus : quia hora est jam nos de somno surgere. Nunc enim propior est nostra salus, quam cum credidimus.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nox præcessit, dies autem appropinquavit. Abjiciamus ergo opera tenebrarum, et induamur arma lucis.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sicut in die honeste ambulemus : non in comessationibus, et ebrietatibus, non in cubilibus, et impudicitiis, non in contentione, et æmulatione :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v13-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">sed induimini Dominum Jesum Christum, et carnis curam ne feceritis in desideriis.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch14">
+    <div class="chapter-marker">
+      <span class="ch-roman">XIV</span>
+      <span class="ch-label">Caput 14</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v14-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Infirmum autem in fide assumite, non in disceptationibus cogitationum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v14-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Alius enim credit se manducare omnia : qui autem infirmus est, olus manducet.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v14-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Is qui manducat, non manducantem non spernat : et qui non manducat, manducantem non judicet : Deus enim illum assumpsit.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v14-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Tu quis es, qui judicas alienum servum ? domino suo stat, aut cadit : stabit autem : potens est enim Deus statuere illum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v14-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nam alius judicat diem inter diem : alius autem judicat omnem diem : unusquisque in suo sensu abundet.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v14-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui sapit diem, Domino sapit, et qui manducat, Domino manducat : gratias enim agit Deo. Et qui non manducat, Domino non manducat, et gratias agit Deo.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v14-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nemo enim nostrum sibi vivit, et nemo sibi moritur.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v14-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sive enim vivemus, Domino vivimus : sive morimur, Domino morimur. Sive ergo vivimus, sive morimur, Domini sumus.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v14-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">In hoc enim Christus mortuus est, et resurrexit : ut et mortuorum et vivorum dominetur.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v14-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Tu autem quid judicas fratrem tuum ? aut tu quare spernis fratrem tuum ? omnes enim stabimus ante tribunal Christi.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v14-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Scriptum est enim : Vivo ego, dicit Dominus, quoniam mihi flectetur omne genu : et omnis lingua confitebitur Deo.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v14-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Itaque unusquisque nostrum pro se rationem reddet Deo.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v14-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non ergo amplius invicem judicemus : sed hoc judicate magis, ne ponatis offendiculum fratri, vel scandalum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v14-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Scio, et confido in Domino Jesu, quia nihil commune per ipsum, nisi ei qui existimat quid commune esset, illi commune est.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v14-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si enim propter cibum frater tuus contristatur, jam non secundum caritatem ambulas. Noli cibo tuo illum perdere, pro quo Christus mortuus est.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v14-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non ergo blasphemetur bonum nostrum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v14-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non est enim regnum Dei esca et potus : sed justitia, et pax, et gaudium in Spiritu Sancto :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v14-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui enim in hoc servit Christo, placet Deo, et probatus est hominibus.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v14-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">Itaque quæ pacis sunt, sectemur : et quæ ædificationis sunt, in invicem custodiamus.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v14-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">Noli propter escam destruere opus Dei, omnia quidem sunt munda : sed malum est homini, qui per offendiculum manducat.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v14-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">Bonum est non manducare carnem, et non bibere vinum, neque in quo frater tuus offenditur, aut scandalizatur, aut infirmatur.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v14-22">
+      <div class="verse-num-col"><div class="verse-num">22</div></div>
+      <div class="verse-texts">
+        <div class="latin">Tu fidem habes ? penes temetipsum habe coram Deo. Beatus qui non judicat semetipsum in eo quod probat.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v14-23">
+      <div class="verse-num-col"><div class="verse-num">23</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui autem discernit, si manducaverit, damnatus est : quia non ex fide. Omne autem, quod non est ex fide, peccatum est.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch15">
+    <div class="chapter-marker">
+      <span class="ch-roman">XV</span>
+      <span class="ch-label">Caput 15</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v15-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Debemus autem nos firmiores imbecillitates infirmorum sustinere, et non nobis placere.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v15-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Unusquisque vestrum proximo suo placeat in bonum, ad ædificationem.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v15-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Etenim Christus non sibi placuit, sed sicut scriptum est : Improperia improperantium tibi ceciderunt super me.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v15-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quæcumque enim scripta sunt, ad nostram doctrinam scripta sunt : ut per patientiam, et consolationem Scripturarum, spem habeamus.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v15-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Deus autem patientiæ et solatii det vobis idipsum sapere in alterutrum secundum Jesum Christum :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v15-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">ut unanimes, uno ore honorificetis Deum et patrem Domini nostri Jesu Christi.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v15-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Propter quod suscipite invicem, sicut et Christus suscepit vos in honorem Dei.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v15-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Dico enim Christum Jesum ministrum fuisse circumcisionis propter veritatem Dei, ad confirmandas promissiones patrum :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v15-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">gentes autem super misericordia honorare Deum, sicut scriptum est : Propterea confitebor tibi in gentibus, Domine, et nomini tuo cantabo.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v15-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et iterum dicit : Lætamini gentes cum plebe ejus.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v15-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et iterum : Laudate omnes gentes Dominum : et magnificate eum omnes populi.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v15-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et rursus Isaias ait : Erit radix Jesse, et qui exsurget regere gentes, in eum gentes sperabunt.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v15-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Deus autem spei repleat vos omni gaudio, et pace in credendo : ut abundetis in spe, et virtute Spiritus Sancti.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v15-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Certus sum autem fratres mei et ego ipse de vobis, quoniam et ipsi pleni estis dilectione, repleti omni scientia, ita ut possitis alterutrum monere.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v15-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Audacius autem scripsi vobis fratres ex parte, tamquam in memoriam vos reducens : propter gratiam, quæ data est mihi a Deo,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v15-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">ut sim minister Christi Jesu in gentibus : sanctificans Evangelium Dei, ut fiat oblatio gentium accepta, et sanctificata in Spiritu Sancto.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v15-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Habeo igitur gloriam in Christo Jesu ad Deum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v15-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non enim audeo aliquid loqui eorum, quæ per me non efficit Christus in obedientiam gentium, verbo et factis :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v15-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">in virtute signorum, et prodigiorum, in virtute Spiritus Sancti : ita ut ab Jerusalem per circuitum usque ad Illyricum repleverim Evangelium Christi.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v15-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sic autem prædicavi Evangelium hoc, non ubi nominatus est Christus, ne super alienum fundamentum ædificarem :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v15-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">sed sicut scriptum est : Quibus non est annuntiatum de eo, videbunt : et qui non audierunt, intelligent.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v15-22">
+      <div class="verse-num-col"><div class="verse-num">22</div></div>
+      <div class="verse-texts">
+        <div class="latin">Propter quod et impediebar plurimum venire ad vos, et prohibitus sum usque adhuc.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v15-23">
+      <div class="verse-num-col"><div class="verse-num">23</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nunc vero ulterius locum non habens in his regionibus, cupiditatem autem habens veniendi ad vos ex multis jam præcedentibus annis :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v15-24">
+      <div class="verse-num-col"><div class="verse-num">24</div></div>
+      <div class="verse-texts">
+        <div class="latin">cum in Hispaniam proficisci cœpero, spero quod præteriens videam vos, et a vobis deducar illuc, si vobis primum ex parte fruitus fuero.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v15-25">
+      <div class="verse-num-col"><div class="verse-num">25</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nunc igitur proficiscar in Jerusalem ministrare sanctis.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v15-26">
+      <div class="verse-num-col"><div class="verse-num">26</div></div>
+      <div class="verse-texts">
+        <div class="latin">Probaverunt enim Macedonia et Achaia collationem aliquam facere in pauperes sanctorum, qui sunt in Jerusalem.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v15-27">
+      <div class="verse-num-col"><div class="verse-num">27</div></div>
+      <div class="verse-texts">
+        <div class="latin">Placuit enim eis : et debitores sunt eorum. Nam si spiritualium eorum participes facti sunt gentiles, debent et in carnalibus ministrare illis.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v15-28">
+      <div class="verse-num-col"><div class="verse-num">28</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hoc igitur cum consummavero, et assignavero eis fructum hunc, per vos proficiscar in Hispaniam.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v15-29">
+      <div class="verse-num-col"><div class="verse-num">29</div></div>
+      <div class="verse-texts">
+        <div class="latin">Scio autem quoniam veniens ad vos, in abundantia benedictionis Evangelii Christi veniam.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v15-30">
+      <div class="verse-num-col"><div class="verse-num">30</div></div>
+      <div class="verse-texts">
+        <div class="latin">Obsecro ergo vos fratres per Dominum nostrum Jesum Christum, et per caritatem Sancti Spiritus, ut adjuvetis me in orationibus vestris pro me ad Deum,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v15-31">
+      <div class="verse-num-col"><div class="verse-num">31</div></div>
+      <div class="verse-texts">
+        <div class="latin">ut liberer ab infidelibus, qui sunt in Judæa, et obsequii mei oblatio accepta fiat in Jerusalem sanctis,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v15-32">
+      <div class="verse-num-col"><div class="verse-num">32</div></div>
+      <div class="verse-texts">
+        <div class="latin">ut veniam ad vos in gaudio per voluntatem Dei, et refrigerer vobiscum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v15-33">
+      <div class="verse-num-col"><div class="verse-num">33</div></div>
+      <div class="verse-texts">
+        <div class="latin">Deus autem pacis sit cum omnibus vobis. Amen.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch16">
+    <div class="chapter-marker">
+      <span class="ch-roman">XVI</span>
+      <span class="ch-label">Caput 16</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v16-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Commendo autem vobis Phœben sororem nostram, quæ est in ministerio ecclesiæ, quæ est in Cenchris :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v16-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">ut eam suscipiatis in Domino digne sanctis : et assistatis ei in quocumque negotio vestri indiguerit : etenim ipsa quoque astitit multis, et mihi ipsi.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v16-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Salutate Priscam et Aquilam, adjutores meos in Christo Jesu</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v16-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">(qui pro anima mea suas cervices supposuerunt : quibus non solus ego gratias ago, sed et cunctæ ecclesiæ gentium),</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v16-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">et domesticam ecclesiam eorum. Salutate Epænetum dilectum mihi, qui est primitivus Asiæ in Christo.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v16-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Salutate Mariam, quæ multum laboravit in vobis.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v16-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Salutate Andronicum et Juniam, cognatos, et concaptivos meos : qui sunt nobiles in Apostolis, qui et ante me fuerunt in Christo.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v16-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Salutate Ampliatum dilectissimum mihi in Domino.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v16-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Salutate Urbanum adjutorem nostrum in Christo Jesu, et Stachyn dilectum meum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v16-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Salutate Apellen probum in Christo.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v16-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Salutate eos qui sunt ex Aristoboli domo. Salutate Herodionem cognatum meum. Salutate eos qui sunt ex Narcisi domo, qui sunt in Domino.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v16-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Salutate Tryphænam et Tryphosam, quæ laborant in Domino. Salutate Persidem carissimam, quæ multum laboravit in Domino.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v16-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Salutate Rufum electum in Domino, et matrem ejus, et meam.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v16-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Salutate Asyncritum, Phlegontem, Hermam, Patrobam, Hermen, et qui cum eis sunt, fratres.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v16-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Salutate Philologum et Juliam, Nereum, et sororem ejus, et Olympiadem, et omnes qui cum eis sunt, sanctos.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v16-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Salutate invicem in osculo sancto. Salutant vos omnes ecclesiæ Christi.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v16-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Rogo autem vos fratres, ut observetis eos qui dissensiones et offendicula, præter doctrinam, quam vos didicistis, faciunt, et declinate ab illis.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v16-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hujuscemodi enim Christo Domino nostro non serviunt, sed suo ventri : et per dulces sermones et benedictiones seducunt corda innocentium.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v16-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vestra enim obedientia in omnem locum divulgata est. Gaudeo igitur in vobis. Sed volo vos sapientes esse in bono, et simplices in malo.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v16-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">Deus autem pacis conterat Satanam sub pedibus vestris velociter. Gratia Domini nostri Jesu Christi vobiscum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v16-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">Salutat vos Timotheus adjutor meus, et Lucius, et Jason, et Sosipater cognati mei.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v16-22">
+      <div class="verse-num-col"><div class="verse-num">22</div></div>
+      <div class="verse-texts">
+        <div class="latin">Saluto vos ego Tertius, qui scripsi epistolam, in Domino.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v16-23">
+      <div class="verse-num-col"><div class="verse-num">23</div></div>
+      <div class="verse-texts">
+        <div class="latin">Salutat vos Cajus hospes meus, et universa ecclesia. Salutat vos Erastus arcarius civitatis, et Quartus, frater.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v16-24">
+      <div class="verse-num-col"><div class="verse-num">24</div></div>
+      <div class="verse-texts">
+        <div class="latin">Gratia Domini nostri Jesu Christi cum omnibus vobis. Amen.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v16-25">
+      <div class="verse-num-col"><div class="verse-num">25</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ei autem, qui potens est vos confirmare juxta Evangelium meum, et prædicationem Jesu Christi, secundum revelationem mysterii temporibus æternis taciti</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v16-26">
+      <div class="verse-num-col"><div class="verse-num">26</div></div>
+      <div class="verse-texts">
+        <div class="latin">(quod nunc patefactum est per Scripturas prophetarum secundum præceptum æterni Dei, ad obeditionem fidei), in cunctis gentibus cogniti,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v16-27">
+      <div class="verse-num-col"><div class="verse-num">27</div></div>
+      <div class="verse-texts">
+        <div class="latin">soli sapienti Deo, per Jesum Christum, cui honor et gloria in sæcula sæculorum. Amen.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <nav class="book-nav">
+    <a href="044-act.html">← Actus Apostolorum</a>
+    <span class="center">Ad Romanos · Italiano</span>
+    <a href="046-1co.html">I Ad Corinthios →</a>
+  </nav>
+
+  <footer class="page-footer">
+    BIBLIA CATHOLICA INTERLINEARIS &nbsp;·&nbsp; Vulgata Clementina &amp; Giovanni Diodati
+    &nbsp;·&nbsp; Gemeinfreie Texte / Public Domain
+  </footer>
+
+</body>
+</html>

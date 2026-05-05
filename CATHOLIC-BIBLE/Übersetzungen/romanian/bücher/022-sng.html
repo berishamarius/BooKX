@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Canticum Canticorum · Română · Biblia Catholica</title>
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
+
+:root {
+  --gold:        #C8A96E;
+  --gold-light:  #EDD58A;
+  --gold-dark:   #8B6914;
+  --navy:        #1A1F3A;
+  --navy-mid:    #252B4A;
+  --navy-light:  #2E3560;
+  --parchment:   #F5E9CC;
+  --parchment-d: #EDD9A3;
+  --cream:       #FDF6E3;
+  --latin-color: #6B1E0E;
+  --trans-color: #0F1D2E;
+  --border:      rgba(200,169,110,.35);
+  --font-title:  'Cinzel Decorative', 'Cinzel', Georgia, serif;
+  --font-sub:    'Cinzel', Georgia, serif;
+  --font-body:   'EB Garamond', Georgia, serif;
+}
+
+*,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+html { font-size:16px; scroll-behavior:smooth; }
+body { background:var(--cream); color:var(--trans-color); font-family:var(--font-body); }
+
+/* ── NAV ─────────────────────────────────────────────── */
+.nav-bar {
+  background:var(--navy); padding:10px 28px;
+  display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  border-bottom:2px solid var(--gold);
+  position:sticky; top:0; z-index:100;
+  box-shadow:0 3px 12px rgba(0,0,0,.45);
+}
+.nav-bar a {
+  color:var(--gold); text-decoration:none;
+  font-family:var(--font-sub); font-size:.75rem; letter-spacing:.05em;
+  transition:color .15s;
+}
+.nav-bar a:hover { color:var(--gold-light); }
+.nav-bar .home { font-weight:700; font-size:.82rem; }
+.nav-bar .spacer { flex:1; }
+.nav-bar .pos { color:rgba(200,169,110,.45); font-size:.7rem; font-family:var(--font-sub); }
+
+/* ── BUCHKOPF ────────────────────────────────────────── */
+.book-header {
+  background:linear-gradient(160deg,var(--navy) 0%,var(--navy-mid) 55%,var(--navy-light) 100%);
+  padding:44px 36px 34px; text-align:center;
+  border-bottom:4px solid var(--gold);
+  position:relative; overflow:hidden;
+}
+.book-header::before {
+  content:'';
+  position:absolute; inset:0;
+  background-image:
+    repeating-linear-gradient( 45deg,transparent,transparent 30px,rgba(200,169,110,.038) 30px,rgba(200,169,110,.038) 31px),
+    repeating-linear-gradient(-45deg,transparent,transparent 30px,rgba(200,169,110,.038) 30px,rgba(200,169,110,.038) 31px);
+  pointer-events:none;
+}
+.testament-badge {
+  display:inline-block;
+  border:1px solid rgba(200,169,110,.4); color:rgba(200,169,110,.65);
+  font-family:var(--font-sub); font-size:.62rem; letter-spacing:.25em;
+  padding:4px 14px; border-radius:2px; margin-bottom:14px; position:relative;
+}
+.book-name-latin {
+  font-family:var(--font-title); font-size:3rem; color:var(--gold-light);
+  text-shadow:0 3px 18px rgba(0,0,0,.55); letter-spacing:.08em; position:relative;
+}
+.book-name-trans {
+  font-family:var(--font-sub); font-size:1.1rem; color:var(--gold);
+  margin-top:8px; letter-spacing:.12em; position:relative;
+}
+.book-meta {
+  font-size:.74rem; color:rgba(200,169,110,.5); margin-top:7px;
+  font-family:var(--font-sub); letter-spacing:.07em; position:relative;
+}
+
+/* ── ORNAMENT-TRENNLINIE ─────────────────────────────── */
+.ornament-bar {
+  text-align:center; padding:16px 0 4px;
+  color:var(--gold); font-size:1.1rem; letter-spacing:.7em;
+}
+
+/* ── HAUPT-CONTAINER ─────────────────────────────────── */
+.content { max-width:960px; margin:0 auto; padding:0 24px 80px; }
+
+/* ── KAPITEL-MARKER ──────────────────────────────────── */
+.chapter-marker {
+  display:flex; align-items:center; gap:16px;
+  padding:28px 6px 12px; margin-bottom:4px;
+  border-bottom:2px solid var(--border);
+}
+.ch-roman {
+  font-family:var(--font-title); font-size:2.2rem; color:var(--gold);
+  min-width:56px; text-align:center; flex-shrink:0;
+  text-shadow:0 1px 8px rgba(200,169,110,.3);
+}
+.ch-label {
+  font-family:var(--font-sub); font-size:.72rem; color:rgba(200,169,110,.6);
+  letter-spacing:.22em; text-transform:uppercase;
+}
+
+/* ── VERS-BLOCK ──────────────────────────────────────── */
+.verse-block {
+  display:flex; gap:0; border-bottom:1px solid rgba(200,169,110,.15);
+}
+.verse-block:nth-child(odd)  { background:var(--cream); }
+.verse-block:nth-child(even) { background:var(--parchment); }
+
+.verse-num-col {
+  flex-shrink:0; width:42px; padding:16px 6px 16px 0; text-align:right;
+}
+.verse-num {
+  display:inline-block; width:28px; height:28px; border-radius:50%;
+  background:var(--gold-dark); color:var(--cream);
+  font-family:var(--font-sub); font-size:.64rem; font-weight:700;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 1px 5px rgba(0,0,0,.25);
+}
+
+.verse-texts { flex:1; padding:16px 16px 18px 8px; }
+
+/* ── LATEINISCHER TEXT (oben / primär) ───────────────── */
+.latin {
+  font-family:var(--font-body); font-size:1.12rem; line-height:1.9;
+  color:var(--latin-color); font-weight:500;
+  border-left:3px solid var(--gold); padding-left:12px;
+  margin-bottom:8px;
+}
+
+/* ── ÜBERSETZUNGS-TEXT (unten / sekundär) ────────────── */
+.trans-label {
+  font-family:var(--font-sub); font-size:.6rem; letter-spacing:.17em;
+  text-transform:uppercase; color:var(--gold-dark); margin-bottom:5px; opacity:.78;
+}
+.trans {
+  font-family:var(--font-body); font-size:1.04rem; line-height:1.85;
+  color:var(--trans-color); font-style:italic;
+  padding-left:15px;
+}
+
+/* Erste Vers jedes Kapitels: Drop-Cap */
+.verse-block:first-of-type .latin::first-letter {
+  font-size:4.2em; float:left; line-height:.72;
+  padding-right:.08em; margin-top:.06em;
+  font-family:var(--font-title); color:var(--gold);
+}
+
+/* ── NAVIGATION ZWISCHEN BÜCHERN ─────────────────────── */
+.book-nav {
+  display:flex; justify-content:space-between; align-items:center;
+  background:var(--navy); border-top:3px solid var(--gold);
+  padding:12px 26px; gap:12px;
+}
+.book-nav a {
+  color:var(--gold); text-decoration:none;
+  font-family:var(--font-sub); font-size:.78rem; letter-spacing:.07em;
+  padding:6px 14px; border:1px solid rgba(200,169,110,.3); border-radius:3px;
+  transition:background .18s;
+}
+.book-nav a:hover { background:rgba(200,169,110,.15); }
+.book-nav .center {
+  font-family:var(--font-sub); font-size:.7rem; color:rgba(200,169,110,.55);
+  letter-spacing:.1em; text-align:center;
+}
+
+/* ── FUßZEILE ────────────────────────────────────────── */
+.page-footer {
+  background:var(--navy); border-top:2px solid rgba(200,169,110,.3);
+  padding:18px 28px; text-align:center;
+  color:rgba(200,169,110,.45); font-family:var(--font-sub);
+  font-size:.68rem; letter-spacing:.1em;
+}
+
+/* ── DRUCK ───────────────────────────────────────────── */
+@media print {
+  .nav-bar, .book-nav { display:none; }
+  .verse-block { break-inside:avoid; }
+  .book-header { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+}
+
+/* ── MOBIL ───────────────────────────────────────────── */
+@media (max-width:640px) {
+  .book-name-latin { font-size:2.1rem; }
+  .ch-roman { font-size:1.6rem; }
+  .latin { font-size:.98rem; }
+  .trans { font-size:.93rem; }
+  .content { padding:0 12px 60px; }
+}
+</style>
+</head>
+<body>
+
+  <nav class="nav-bar">
+    <a class="home" href="../../../index.html">✞ BIBLIA CATHOLICA</a>
+    <a href="../index.html">🇷🇴 Română</a>
+    <span class="spacer"></span>
+    <span class="pos">022 / 066</span>
+  </nav>
+
+  <header class="book-header">
+    <div class="testament-badge">VETUS TESTAMENTUM</div>
+    <div class="book-name-latin">CANTICUM CANTICORUM</div>
+    <div class="book-name-trans">Song of Solomon</div>
+    <div class="book-meta">Vulgata Clementina · Cornilescu (1921) · 8 Capita · 116 Versus</div>
+  </header>
+
+  <div class="ornament-bar">❧ ✦ ❧ ✦ ❧</div>
+
+  <main class="content">
+
+  <section class="chapter" id="ch1">
+    <div class="chapter-marker">
+      <span class="ch-roman">I</span>
+      <span class="ch-label">Caput 1</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v1-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Osculetur me osculo oris sui ;  quia meliora sunt ubera tua vino,</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">fragrantia unguentis optimis.  Oleum effusum nomen tuum ;  ideo adolescentulæ dilexerunt te.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Trahe me, post te curremus  in odorem unguentorum tuorum.  Introduxit me rex in cellaria sua ;  exsultabimus et lætabimur in te,  memores uberum tuorum super vinum.  Recti diligunt te.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nigra sum, sed formosa, filiæ Jerusalem,  sicut tabernacula Cedar, sicut pelles Salomonis.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nolite me considerare quod fusca sim,  quia decoloravit me sol.  Filii matris meæ pugnaverunt contra me ;  posuerunt me custodem in vineis :  vineam meam non custodivi.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Indica mihi, quem diligit anima mea, ubi pascas,  ubi cubes in meridie,  ne vagari incipiam post greges sodalium tuorum.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si ignoras te, o pulcherrima inter mulieres,  egredere, et abi post vestigia gregum,  et pasce hædos tuos juxta tabernacula pastorum.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Equitatui meo in curribus Pharaonis  assimilavi te, amica mea.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Pulchræ sunt genæ tuæ sicut turturis ;  collum tuum sicut monilia.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Murenulas aureas faciemus tibi,  vermiculatas argento.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Dum esset rex in accubitu suo,  nardus mea dedit odorem suum.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Fasciculus myrrhæ dilectus meus mihi ;  inter ubera mea commorabitur.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Botrus cypri dilectus meus mihi  in vineis Engaddi.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ecce tu pulchra es, amica mea ! ecce tu pulchra es !  Oculi tui columbarum.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ecce tu pulcher es, dilecte mi, et decorus !  Lectulus noster floridus.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Tigna domorum nostrarum cedrina,  laquearia nostra cypressina.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch2">
+    <div class="chapter-marker">
+      <span class="ch-roman">II</span>
+      <span class="ch-label">Caput 2</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v2-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ego flos campi,  et lilium convallium.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sicut lilium inter spinas,  sic amica mea inter filias.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sicut malus inter ligna silvarum,  sic dilectus meus inter filios.  Sub umbra illius quem desideraveram sedi,  et fructus ejus dulcis gutturi meo.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Introduxit me in cellam vinariam ;  ordinavit in me caritatem.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Fulcite me floribus,  stipate me malis,  quia amore langueo.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Læva ejus sub capite meo,  et dextera illius amplexabitur me.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Adjuro vos, filiæ Jerusalem,  per capreas cervosque camporum,  ne suscitetis, neque evigilare faciatis dilectam,  quoadusque ipsa velit.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vox dilecti mei ; ecce iste venit,  saliens in montibus, transiliens colles.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Similis est dilectus meus capreæ,  hinnuloque cervorum.  En ipse stat post parietem nostrum,  respiciens per fenestras,  prospiciens per cancellos.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">En dilectus meus loquitur mihi.     Surge, propera, amica mea,  columba mea, formosa mea, et veni :</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">jam enim hiems transiit ;  imber abiit, et recessit.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Flores apparuerunt in terra nostra ;  tempus putationis advenit :  vox turturis audita est in terra nostra ;</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">ficus protulit grossos suos ;  vineæ florentes dederunt odorem suum.  Surge, amica mea, speciosa mea, et veni :</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">columba mea, in foraminibus petræ, in caverna maceriæ,  ostende mihi faciem tuam,  sonet vox tua in auribus meis :  vox enim tua dulcis, et facies tua decora.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Capite nobis vulpes parvulas  quæ demoliuntur vineas :  nam vinea nostra floruit.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Dilectus meus mihi, et ego illi,  qui pascitur inter lilia,</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">donec aspiret dies, et inclinentur umbræ.  Revertere ; similis esto, dilecte mi, capreæ,  hinnuloque cervorum super montes Bether.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch3">
+    <div class="chapter-marker">
+      <span class="ch-roman">III</span>
+      <span class="ch-label">Caput 3</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v3-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">In lectulo meo, per noctes,  quæsivi quem diligit anima mea :  quæsivi illum, et non inveni.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Surgam, et circuibo civitatem :  per vicos et plateas  quæram quem diligit anima mea :  quæsivi illum, et non inveni.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Invenerunt me vigiles qui custodiunt civitatem :  Num quem diligit anima mea vidistis ?</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Paululum cum pertransissem eos,  inveni quem diligit anima mea :  tenui eum, nec dimittam,  donec introducam illum in domum matris meæ,  et in cubiculum genetricis meæ.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Adjuro vos, filiæ Jerusalem,  per capreas cervosque camporum,  ne suscitetis, neque evigilare faciatis dilectam,  donec ipsa velit.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quæ est ista quæ ascendit per desertum  sicut virgula fumi ex aromatibus myrrhæ,  et thuris, et universi pulveris pigmentarii ?</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">En lectulum Salomonis sexaginta fortes ambiunt  ex fortissimis Israël,</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">omnes tenentes gladios, et ad bella doctissimi :  uniuscujusque ensis super femur suum  propter timores nocturnos.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ferculum fecit sibi rex Salomon  de lignis Libani ;</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">columnas ejus fecit argenteas,  reclinatorium aureum, ascensum purpureum ;  media caritate constravit,  propter filias Jerusalem.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Egredimini et videte, filiæ Sion,  regem Salomonem in diademate quo coronavit illum mater sua  in die desponsationis illius,  et in die lætitiæ cordis ejus.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch4">
+    <div class="chapter-marker">
+      <span class="ch-roman">IV</span>
+      <span class="ch-label">Caput 4</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v4-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quam pulchra es, amica mea ! quam pulchra es !  Oculi tui columbarum,  absque eo quod intrinsecus latet.  Capilli tui sicut greges caprarum  quæ ascenderunt de monte Galaad.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Dentes tui sicut greges tonsarum  quæ ascenderunt de lavacro ;  omnes gemellis fœtibus,  et sterilis non est inter eas.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sicut vitta coccinea labia tua,  et eloquium tuum dulce.  Sicut fragmen mali punici, ita genæ tuæ,  absque eo quod intrinsecus latet.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sicut turris David collum tuum,  quæ ædificata est cum propugnaculis ;  mille clypei pendent ex ea,  omnis armatura fortium.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Duo ubera tua sicut duo hinnuli,  capreæ gemelli, qui pascuntur in liliis.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Donec aspiret dies, et inclinentur umbræ,  vadam ad montem myrrhæ, et ad collem thuris.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Tota pulchra es, amica mea,  et macula non est in te.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Veni de Libano, sponsa mea :  veni de Libano, veni, coronaberis :  de capite Amana, de vertice Sanir et Hermon,  de cubilibus leonum, de montibus pardorum.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vulnerasti cor meum, soror mea, sponsa ;  vulnerasti cor meum in uno oculorum tuorum,  et in uno crine colli tui.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quam pulchræ sunt mammæ tuæ, soror mea sponsa !  pulchriora sunt ubera tua vino,  et odor unguentorum tuorum super omnia aromata.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Favus distillans labia tua, sponsa ;  mel et lac sub lingua tua :  et odor vestimentorum tuorum sicut odor thuris.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hortus conclusus soror mea, sponsa,  hortus conclusus, fons signatus.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Emissiones tuæ paradisus malorum punicorum,  cum pomorum fructibus, cypri cum nardo.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nardus et crocus, fistula et cinnamomum,  cum universis lignis Libani ;  myrrha et aloë, cum omnibus primis unguentis.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Fons hortorum, puteus aquarum viventium,  quæ fluunt impetu de Libano.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Surge, aquilo, et veni, auster :  perfla hortum meum, et fluant aromata illius.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch5">
+    <div class="chapter-marker">
+      <span class="ch-roman">V</span>
+      <span class="ch-label">Caput 5</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v5-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Veniat dilectus meus in hortum suum,  et comedat fructum pomorum suorum.     Veni in hortum meum, soror mea, sponsa ;  messui myrrham meam cum aromatibus meis ;  comedi favum cum melle meo ;  bibi vinum meum cum lacte meo ;  comedite, amici, et bibite,  et inebriamini, carissimi.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ego dormio, et cor meum vigilat.  Vox dilecti mei pulsantis :     Aperi mihi, soror mea, amica mea,  columba mea, immaculata mea,  quia caput meum plenum est rore,  et cincinni mei guttis noctium.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Expoliavi me tunica mea : quomodo induar illa ?  lavi pedes meos : quomodo inquinabo illos ?</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Dilectus meus misit manum suam per foramen,  et venter meus intremuit ad tactum ejus.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Surrexi ut aperirem dilecto meo ;  manus meæ stillaverunt myrrham,  et digiti mei pleni myrrha probatissima.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Pessulum ostii mei aperui dilecto meo,  at ille declinaverat, atque transierat.  Anima mea liquefacta est, ut locutus est ;  quæsivi, et non inveni illum ;  vocavi, et non respondit mihi.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Invenerunt me custodes qui circumeunt civitatem ;  percusserunt me, et vulneraverunt me.  Tulerunt pallium meum mihi custodes murorum.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Adjuro vos, filiæ Jerusalem,  si inveneritis dilectum meum,  ut nuntietis ei quia amore langueo.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qualis est dilectus tuus ex dilecto, o pulcherrima mulierum ?  qualis est dilectus tuus ex dilecto, quia sic adjurasti nos ?</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Dilectus meus candidus et rubicundus ;  electus ex millibus.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Caput ejus aurum optimum ;  comæ ejus sicut elatæ palmarum, nigræ quasi corvus.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Oculi ejus sicut columbæ super rivulos aquarum,  quæ lacte sunt lotæ, et resident juxta fluenta plenissima.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Genæ illius sicut areolæ aromatum,  consitæ a pigmentariis.  Labia ejus lilia,  distillantia myrrham primam.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Manus illius tornatiles, aureæ,  plenæ hyacinthis.  Venter ejus eburneus,  distinctus sapphiris.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Crura illius columnæ marmoreæ  quæ fundatæ sunt super bases aureas.  Species ejus ut Libani,  electus ut cedri.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Guttur illius suavissimum,  et totus desiderabilis.  Talis est dilectus meus,  et ipse est amicus meus, filiæ Jerusalem.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quo abiit dilectus tuus, o pulcherrima mulierum ?  quo declinavit dilectus tuus ?  et quæremus eum tecum.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch6">
+    <div class="chapter-marker">
+      <span class="ch-roman">VI</span>
+      <span class="ch-label">Caput 6</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v6-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Dilectus meus descendit in hortum suum ad areolam aromatum,  ut pascatur in hortis, et lilia colligat.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ego dilecto meo, et dilectus meus mihi,  qui pascitur inter lilia.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Pulchra es, amica mea ;  suavis, et decora sicut Jerusalem ;  terribilis ut castrorum acies ordinata.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Averte oculos tuos a me,  quia ipsi me avolare fecerunt.  Capilli tui sicut grex caprarum  quæ apparuerunt de Galaad.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Dentes tui sicut grex ovium  quæ ascenderunt de lavacro :  omnes gemellis fœtibus,  et sterilis non est in eis.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sicut cortex mali punici, sic genæ tuæ,  absque occultis tuis.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sexaginta sunt reginæ, et octoginta concubinæ,  et adolescentularum non est numerus.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Una est columba mea, perfecta mea,  una est matris suæ, electa genetrici suæ.  Viderunt eam filiæ, et beatissimam prædicaverunt ;  reginæ et concubinæ, et laudaverunt eam.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quæ est ista quæ progreditur quasi aurora consurgens,  pulchra ut luna, electa ut sol,  terribilis ut castrorum acies ordinata ?</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Descendi in hortum nucum,  ut viderem poma convallium,  et inspicerem si floruisset vinea,  et germinassent mala punica.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nescivi : anima mea conturbavit me,  propter quadrigas Aminadab.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Revertere, revertere, Sulamitis !  revertere, revertere ut intueamur te.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch7">
+    <div class="chapter-marker">
+      <span class="ch-roman">VII</span>
+      <span class="ch-label">Caput 7</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v7-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quid videbis in Sulamite, nisi choros castrorum ?     Quam pulchri sunt gressus tui in calceamentis, filia principis !  Juncturæ femorum tuorum sicut monilia  quæ fabricata sunt manu artificis.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Umbilicus tuus crater tornatilis,  numquam indigens poculis.  Venter tuus sicut acervus tritici vallatus liliis.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Duo ubera tua sicut duo hinnuli,  gemelli capreæ.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Collum tuum sicut turris eburnea ;  oculi tui sicut piscinæ in Hesebon  quæ sunt in porta filiæ multitudinis.  Nasus tuus sicut turris Libani,  quæ respicit contra Damascum.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Caput tuum ut Carmelus ;  et comæ capitis tui sicut purpura regis  vincta canalibus.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quam pulchra es, et quam decora,  carissima, in deliciis !</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Statura tua assimilata est palmæ,  et ubera tua botris.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Dixi : Ascendam in palmam,  et apprehendam fructus ejus ;  et erunt ubera tua sicut botri vineæ,  et odor oris tui sicut malorum.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Guttur tuum sicut vinum optimum,  dignum dilecto meo ad potandum,  labiisque et dentibus illius ad ruminandum.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ego dilecto meo,  et ad me conversio ejus.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Veni, dilecte mi, egrediamur in agrum,  commoremur in villis.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Mane surgamus ad vineas :  videamus si floruit vinea,  si flores fructus parturiunt,  si floruerunt mala punica ;  ibi dabo tibi ubera mea.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Mandragoræ dederunt odorem  in portis nostris omnia poma :  nova et vetera, dilecte mi, servavi tibi.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch8">
+    <div class="chapter-marker">
+      <span class="ch-roman">VIII</span>
+      <span class="ch-label">Caput 8</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v8-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quis mihi det te fratrem meum,  sugentem ubera matris meæ,  ut inveniam te foris, et deosculer te,  et jam me nemo despiciat ?</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Apprehendam te, et ducam in domum matris meæ :  ibi me docebis,  et dabo tibi poculum ex vino condito,  et mustum malorum granatorum meorum.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Læva ejus sub capite meo,  et dextera illius amplexabitur me.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Adjuro vos, filiæ Jerusalem,  ne suscitetis, neque evigilare faciatis dilectam,  donec ipsa velit.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quæ est ista quæ ascendit de deserto, deliciis affluens,  innixa super dilectum suum ?     Sub arbore malo suscitavi te ;  ibi corrupta est mater tua,  ibi violata est genitrix tua.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Pone me ut signaculum super cor tuum,  ut signaculum super brachium tuum,  quia fortis est ut mors dilectio,  dura sicut infernus æmulatio :  lampades ejus lampades ignis atque flammarum.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Aquæ multæ non potuerunt extinguere caritatem,  nec flumina obruent illam.  Si dederit homo omnem substantiam domus suæ pro dilectione,  quasi nihil despiciet eam.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Soror nostra parva,  et ubera non habet ;  quid faciemus sorori nostræ  in die quando alloquenda est ?</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si murus est,  ædificemus super eum propugnacula argentea ;  si ostium est, compingamus illud tabulis cedrinis.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ego murus, et ubera mea sicut turris,  ex quo facta sum coram eo, quasi pacem reperiens.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vinea fuit pacifico in ea quæ habet populos :  tradidit eam custodibus ;  vir affert pro fructu ejus mille argenteos.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vinea mea coram me est.  Mille tui pacifici,  et ducenti his qui custodiunt fructus ejus.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quæ habitas in hortis, amici auscultant ;  fac me audire vocem tuam.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Fuge, dilecte mi, et assimilare capreæ,  hinnuloque cervorum super montes aromatum.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <nav class="book-nav">
+    <a href="021-ecc.html">← Ecclesiastes</a>
+    <span class="center">Canticum Canticorum · Română</span>
+    <a href="023-isa.html">Isaias →</a>
+  </nav>
+
+  <footer class="page-footer">
+    BIBLIA CATHOLICA INTERLINEARIS &nbsp;·&nbsp; Vulgata Clementina &amp; Cornilescu (1921)
+    &nbsp;·&nbsp; Gemeinfreie Texte / Public Domain
+  </footer>
+
+</body>
+</html>
