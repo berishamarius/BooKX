@@ -814,22 +814,45 @@ ${verseBlocks}
 }
 
 // ════════════════════════════════════════════════════
-//  MAIN
+//  MAIN  (v7.1 — liest Cache aus overhaul.js wenn vorhanden)
 // ════════════════════════════════════════════════════
+const CACHE_DIR = path.join(BASE_DIR, 'cache');
+
+function loadFromCache(lang, surahId) {
+  const f = path.join(CACHE_DIR, lang, `${surahId}.json`);
+  if (fs.existsSync(f)) return JSON.parse(fs.readFileSync(f, 'utf8'));
+  return null;
+}
+
 async function main(){
-  console.log('\n  ╔══════════════════════════════════╗');
-  console.log('  ║   AL-QURAN · Redesign  v 7 . 0   ║');
-  console.log('  ╚══════════════════════════════════╝\n');
+  const hasCacheMeta = fs.existsSync(path.join(CACHE_DIR,'_chapters.json'));
+  const hasCacheAr   = fs.existsSync(path.join(CACHE_DIR,'_arabic.json'));
+
+  console.log('\n  ╔══════════════════════════════════════════╗');
+  console.log('  ║   AL-QURAN · Redesign  v 7 . 1           ║');
+  console.log(hasCacheMeta
+    ? '  ║   Modus: lokaler Cache (overhaul.js)     ║'
+    : '  ║   Modus: Live-API (api.quran.com)        ║');
+  console.log('  ╚══════════════════════════════════════════╝\n');
 
   process.stdout.write('  Kapitel-Metadaten … ');
-  const ch = await fetchRetry('https://api.quran.com/api/v4/chapters?language=de');
-  const chapters = ch.chapters;
+  let chapters;
+  if (hasCacheMeta) {
+    chapters = JSON.parse(fs.readFileSync(path.join(CACHE_DIR,'_chapters.json'),'utf8'));
+  } else {
+    const ch = await fetchRetry('https://api.quran.com/api/v4/chapters?language=de');
+    chapters = ch.chapters;
+  }
   console.log(`${chapters.length} ✓`);
 
   process.stdout.write('  Arabischer Text (Imlaei) … ');
-  const ar = await fetchRetry('https://api.quran.com/api/v4/quran/verses/imlaei');
-  const arabicMap = {};
-  for(const v of ar.verses) arabicMap[v.verse_key]=v.text_imlaei;
+  let arabicMap = {};
+  if (hasCacheAr) {
+    arabicMap = JSON.parse(fs.readFileSync(path.join(CACHE_DIR,'_arabic.json'),'utf8'));
+  } else {
+    const ar = await fetchRetry('https://api.quran.com/api/v4/quran/verses/imlaei');
+    for(const v of ar.verses) arabicMap[v.verse_key]=v.text_imlaei;
+  }
   console.log(`${Object.keys(arabicMap).length} Verse ✓\n`);
 
   fs.writeFileSync(path.join(BASE_DIR,'cover.html'), mainCoverHTML(), 'utf8');
@@ -846,16 +869,24 @@ async function main(){
     process.stdout.write(`  ${t.name}: cover+intro+index ✓   Suren … `);
     let n=0;
     for(const c of chapters){
-      const url  = `https://api.quran.com/api/v4/verses/by_chapter/${c.id}?translations=${t.transId}&per_page=300&fields=verse_key`;
-      const data = await fetchRetry(url);
-      const html = surahHTML(c,data.verses||[],arabicMap,t,chapters);
+      // Cache bevorzugen (aus overhaul.js), sonst Live-API
+      const cached = loadFromCache(t.lang, c.id);
+      let verses;
+      if (cached) {
+        verses = cached;
+      } else {
+        const url = `https://api.quran.com/api/v4/verses/by_chapter/${c.id}?translations=${t.transId}&per_page=300&fields=verse_key`;
+        const data = await fetchRetry(url);
+        verses = data.verses || [];
+      }
+      const html = surahHTML(c, verses, arabicMap, t, chapters);
       fs.writeFileSync(path.join(surenDir,surahFile(c)),html,'utf8');
       n++;
       if(n%25===0) process.stdout.write('.');
     }
     console.log(` ${n} ✓`);
   }
-  console.log('\n  ✅  Redesign v7.0 abgeschlossen\n');
+  console.log('\n  ✅  Redesign v7.1 abgeschlossen\n');
 }
 
 main().catch(e=>{console.error('\n  ✗',e.message);process.exit(1);});
