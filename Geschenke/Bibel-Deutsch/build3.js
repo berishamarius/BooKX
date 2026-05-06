@@ -111,6 +111,14 @@ const BOOKS = [
   { nr:71,  abbrev:'wis', latin:'Sapientia',             name:'Wisdom',           testament:'DK' },
   { nr:72,  abbrev:'sir', latin:'Ecclesiasticus',        name:'Sirach',           testament:'DK' },
   { nr:73,  abbrev:'bar', latin:'Baruch',                name:'Baruch',           testament:'DK' },
+  // Orthodoxe Zusatz-Bücher (nur im Orthodox-Modus sichtbar)
+  { nr:74,  abbrev:'1es', latin:'I Esdras',              name:'1 Esdras',           testament:'OX' },
+  { nr:75,  abbrev:'2es', latin:'II Esdras',             name:'2 Esdras',           testament:'OX' },
+  { nr:76,  abbrev:'prm', latin:'Oratio Manassis',       name:'Prayer of Manasseh', testament:'OX' },
+  { nr:77,  abbrev:'pra', latin:'Azariae Oratio',        name:'Prayer of Azariah',  testament:'OX' },
+  { nr:78,  abbrev:'sus', latin:'Susanna',               name:'Susanna',            testament:'OX' },
+  { nr:79,  abbrev:'bel', latin:'Bel et Draco',          name:'Bel and the Dragon', testament:'OX' },
+  { nr:80,  abbrev:'aes', latin:'Addita Esther',         name:'Additions to Esther',testament:'OX' },
 ];
 
 const BIBLE_NAMES = {
@@ -167,7 +175,32 @@ function toRoman(n) {
 
 function bookFile(book) { return `${pad3(book.nr)}-${book.abbrev}.html`; }
 
+// Lutherbibel + Griechisch liegen im CATHOLIC-BIBLE-Ordner (gemeinsame Daten)
+const CATHOLIC_DIR = path.join(__dirname, '..', '..', 'CATHOLIC-BIBLE');
+const LUTHER_DIR   = path.join(CATHOLIC_DIR, 'data-luther');
+const GREEK_DIR    = path.join(CATHOLIC_DIR, 'data-greek');
+const ORTHO_DIR    = path.join(CATHOLIC_DIR, 'data-orthodox');
+
+function loadLutherBook(nr) {
+  const f = path.join(LUTHER_DIR, `${pad3(nr)}.json`);
+  if (!fs.existsSync(f)) return null;
+  try { return JSON.parse(fs.readFileSync(f, 'utf8')); } catch (_) { return null; }
+}
+
+function loadGreekBook(nr) {
+  const f = path.join(GREEK_DIR, `${pad3(nr)}.json`);
+  if (!fs.existsSync(f)) return null;
+  try { return JSON.parse(fs.readFileSync(f, 'utf8')); } catch (_) { return null; }
+}
+
 function loadBook(code, nr) {
+  if (nr >= 74) {
+    const fo = path.join(ORTHO_DIR, code, `${pad3(nr)}.json`);
+    if (fs.existsSync(fo)) try { return JSON.parse(fs.readFileSync(fo, 'utf8')); } catch (_) { return null; }
+    const fe = path.join(ORTHO_DIR, 'kjv', `${pad3(nr)}.json`);
+    if (fs.existsSync(fe)) try { return JSON.parse(fs.readFileSync(fe, 'utf8')); } catch (_) { return null; }
+    return null;
+  }
   const f = path.join(DATA_DIR, code, `${pad3(nr)}.json`);
   if (!fs.existsSync(f)) return null;
   try { return JSON.parse(fs.readFileSync(f, 'utf8')); } catch (_) { return null; }
@@ -869,14 +902,14 @@ body{
 
 function buildLangIndex(trans, availBooks) {
   const byTest = g => availBooks.filter(b => b.testament === g);
-  const booksVT = byTest('VT'), booksNT = byTest('NT'), booksDK = byTest('DK');
+  const booksVT = byTest('VT'), booksNT = byTest('NT'), booksDK = byTest('DK'), booksOX = byTest('OX');
 
   function bookList(books) {
     return books.map(b => `
-  <a href="bücher/${bookFile(b)}" class="toc-item">
+  <a href="bücher/${bookFile(b)}" class="toc-item" data-testament="${b.testament}">
     <span class="tnr">${pad3(b.nr)}</span>
     <span class="tlat">${b.latin}</span>
-    <span class="tname">${(BOOK_NAMES[trans.lang]||BOOK_NAMES.en)[b.nr-1]}</span>
+    <span class="tname">${(BOOK_NAMES[trans.lang]||BOOK_NAMES.en)[b.nr-1]||b.name}</span>
     <span class="tdots"></span>
     <span class="tchap">${b.chapCount ? b.chapCount + ' Cap.' : ''}</span>
     <span class="tarr">›</span>
@@ -884,13 +917,23 @@ function buildLangIndex(trans, availBooks) {
   }
 
   const dkSec = booksDK.length ? `
-<div class="sec-group">
+<div class="sec-group sec-dk">
 <div class="sec-head">
   <span class="sec-t">Libri Deuterocanonoci</span>
   <div class="sec-rule"></div>
   <span class="sec-s">L I B R I &nbsp; D E U T E R O C A N O N I C I &nbsp;·&nbsp; ${booksDK.length} &nbsp; L I B R I</span>
 </div>
 ${bookList(booksDK)}
+</div>` : '';
+
+  const oxSec = booksOX.length ? `
+<div class="sec-group sec-ox">
+<div class="sec-head">
+  <span class="sec-t">Libri Orthodoxi</span>
+  <div class="sec-rule"></div>
+  <span class="sec-s">L I B R I &nbsp; O R T H O D O X I &nbsp;·&nbsp; ${booksOX.length} &nbsp; L I B R I</span>
+</div>
+${bookList(booksOX)}
 </div>` : '';
 
   return `<!DOCTYPE html>
@@ -1041,6 +1084,37 @@ header::after{
   color:#8B6914;flex-shrink:0;white-space:nowrap;
 }
 .tarr{color:rgba(184,150,46,.4);margin-left:14px;font-size:1rem;}
+
+/* ── Konfessions-Switcher ── */
+.conf-bar{
+  display:flex;justify-content:center;gap:0;
+  padding:18px 24px 0;
+  font-family:'Cinzel',serif;
+}
+.conf-btn{
+  padding:9px 24px;font-size:.65rem;letter-spacing:.16em;
+  border:1px solid rgba(184,150,46,.35);background:transparent;
+  color:rgba(184,150,46,.5);cursor:pointer;transition:all .18s;
+  text-transform:uppercase;
+}
+.conf-btn:first-child{border-radius:2px 0 0 2px;}
+.conf-btn:last-child{border-radius:0 2px 2px 0;}
+.conf-btn:not(:first-child){border-left:none;}
+.conf-btn.active{background:rgba(184,150,46,.14);color:#B8962E;border-color:rgba(184,150,46,.6);}
+.conf-btn:hover:not(.active){background:rgba(184,150,46,.07);color:rgba(184,150,46,.8);}
+
+body[data-conf="protestant"] .sec-dk,
+body[data-conf="protestant"] .sec-ox { display:none; }
+body[data-conf="protestant"] .toc-item[data-testament="DK"],
+body[data-conf="protestant"] .toc-item[data-testament="OX"] { display:none; }
+
+body:not([data-conf="orthodox"]) .sec-ox { display:none; }
+body[data-conf="orthodox"] .sec-ox { display:block; }
+
+.conf-note{
+  text-align:center;font-family:'Cinzel',serif;font-size:.58rem;
+  color:rgba(184,150,46,.38);letter-spacing:.1em;padding:6px 24px 0;
+}
 </style>
 </head>
 <body>
@@ -1059,6 +1133,14 @@ header::after{
 </header>
 
 <main class="index-body">
+
+<!-- ── Konfessions-Switcher ── -->
+<div class="conf-bar">
+  <button class="conf-btn" data-conf="catholic">✝ Katholisch</button>
+  <button class="conf-btn" data-conf="protestant">☩ Protestantisch</button>
+  <button class="conf-btn" data-conf="orthodox">☦ Orthodox</button>
+</div>
+<div class="conf-note" id="conf-note"></div>
 
 <div class="sec-group">
 <div class="sec-head">
@@ -1079,6 +1161,7 @@ ${bookList(booksNT)}
 </div>
 
 ${dkSec}
+${oxSec}
 
 </main>
 
@@ -1086,6 +1169,28 @@ ${dkSec}
   KX Books &nbsp;&middot;&nbsp; Ein Zweig von KX KroniX Tech &nbsp;&middot;&nbsp; Alle Rechte vorbehalten
 </footer>
 
+<script>
+(function(){
+  var NOTES = {
+    catholic:    '73 Bücher · Vulgata Clementina + Deuterokanonisch',
+    protestant:  '66 Bücher · Altes & Neues Testament',
+    orthodox:    '80 Bücher · inkl. 1 Esdras, Gebet des Manasse, Susanna u.a.'
+  };
+  var saved = localStorage.getItem('biblia_conf') || 'catholic';
+  var btns  = document.querySelectorAll('.conf-btn');
+  var note  = document.getElementById('conf-note');
+  function setConf(c) {
+    document.body.dataset.conf = c;
+    localStorage.setItem('biblia_conf', c);
+    btns.forEach(function(b){ b.classList.toggle('active', b.dataset.conf === c); });
+    note.textContent = NOTES[c] || '';
+  }
+  setConf(saved);
+  btns.forEach(function(b){
+    b.addEventListener('click', function(){ setConf(b.dataset.conf); });
+  });
+})();
+</script>
 </body>
 </html>`;
 }
@@ -1094,13 +1199,29 @@ ${dkSec}
 //  BUCHSEITE (Interlinear)
 // ═══════════════════════════════════════════════════════
 
-function buildBookPage(book, trans, vulgChaps, transChaps) {
+function buildBookPage(book, trans, vulgChaps, transChaps, lutherChaps, greekChaps) {
   // Vers-Map für Übersetzung
   const tm = {};
   if (transChaps) {
     for (const ch of transChaps) {
       tm[ch.nr] = {};
       for (const v of ch.verses) tm[ch.nr][v.nr] = v.text;
+    }
+  }
+  // Luther-Map (Protestantisch)
+  const lm = {};
+  if (lutherChaps) {
+    for (const ch of lutherChaps) {
+      lm[ch.nr] = {};
+      for (const v of ch.verses) lm[ch.nr][v.nr] = v.text;
+    }
+  }
+  // Griechisch-Map (Orthodox)
+  const gm = {};
+  if (greekChaps) {
+    for (const ch of greekChaps) {
+      gm[ch.nr] = {};
+      for (const v of ch.verses) gm[ch.nr][v.nr] = v.text;
     }
   }
 
@@ -1117,12 +1238,17 @@ function buildBookPage(book, trans, vulgChaps, transChaps) {
   const chapBlocks = vulgChaps.map(ch => {
     const verseBlocks = ch.verses.map((v, vi) => {
       const lat    = esc(v.text);
+      const lut    = esc((lm[ch.nr] || {})[v.nr] || '');
+      const gre    = esc((gm[ch.nr] || {})[v.nr] || '');
       const tra    = esc((tm[ch.nr] || {})[v.nr] || '');
       const isFirst = vi === 0 ? ' first' : '';
       return `<div class="vb${isFirst}" id="v${ch.nr}-${v.nr}">
   <span class="vn">${v.nr}</span>
   <div class="vt">
-    <p class="lat">${lat}</p>${tra ? `\n    <p class="tra">${tra}</p>` : ''}
+    <p class="base base-c">${lat}</p>
+    ${lut ? `<p class="base base-p">${lut}</p>` : '<p class="base base-p"></p>'}
+    ${gre ? `<p class="base base-o">${gre}</p>` : '<p class="base base-o"></p>'}
+    ${tra ? `<p class="tra">${tra}</p>` : ''}
   </div>
 </div>`;
     }).join('\n');
@@ -1305,14 +1431,20 @@ body{
   padding:0 20px 0 4px;
 }
 
-/* LATEIN — PRIMÄR: groß, warm, maßgebend */
-.lat{
+/* BASIS-TEXT — wechselt je nach Konfession */
+.base{
   font-family:'EB Garamond',serif;
   font-size:1.2rem;
   font-weight:500;
   line-height:2.1;
   color:#3D1A08;
+  display:none;
 }
+body:not([data-conf]) .base-c,
+body[data-conf="catholic"] .base-c { display:block; }
+body[data-conf="protestant"] .base-p { display:block; }
+body[data-conf="orthodox"] .base-o { display:block; }
+.base:empty { display:none !important; }
 
 /* ÜBERSETZUNG — SEKUNDÄR: kleiner, kursiv, unter dem Latein */
 .tra{
@@ -1326,8 +1458,8 @@ body{
   border-left:2px solid rgba(90,110,170,.2);
 }
 
-/* Drop-Cap: erster Vers eines Kapitels — auf dem Latein */
-.vb.first .lat::first-letter{
+/* Drop-Cap: erster Vers eines Kapitels */
+.vb.first .base::first-letter{
   font-family:'Cinzel Decorative',serif;
   font-size:4em;
   float:left;
@@ -1374,7 +1506,7 @@ body{
 /* MOBIL */
 @media(max-width:600px){
   .blatin{font-size:1.8rem;}
-  .lat{font-size:1rem;}
+  .base{font-size:1rem;}
   .tra{font-size:.84rem;}
   .content{padding:16px 18px 60px;margin:0;border-left:none;border-right:none;border-radius:0;}
   .chrom{font-size:1.8rem;}
@@ -1400,6 +1532,12 @@ ${chapBlocks}
   ${nextLink}
 </nav>
 
+<script>
+(function(){
+  var c = localStorage.getItem('biblia_conf') || 'catholic';
+  document.body.dataset.conf = c;
+})();
+</script>
 </body>
 </html>`;
 }
@@ -1426,13 +1564,18 @@ async function main() {
   fs.writeFileSync(path.join(OUT_DIR, 'back-cover.html'), buildBackCover());
   console.log('  ✓ back-cover.html');
 
-  // Vulgata laden
+  // Vulgata laden (Bücher 1–73; OX-Bücher 74–80 aus data-orthodox/kjv/)
   const vulg = {};
   for (const book of BOOKS) {
-    const raw = loadBook('vulgate', book.nr);
-    if (raw) vulg[book.nr] = parseBook(raw);
+    if (book.testament === 'OX') {
+      const raw = loadBook('kjv', book.nr);
+      if (raw) vulg[book.nr] = parseBook(raw);
+    } else {
+      const raw = loadBook('vulgate', book.nr);
+      if (raw) vulg[book.nr] = parseBook(raw);
+    }
   }
-  console.log(`  ✓ Vulgata: ${Object.keys(vulg).length} Bücher`);
+  console.log(`  ✓ Vulgata + Orthodox: ${Object.keys(vulg).length} Bücher`);
 
   // Pro Übersetzung
   for (const trans of TRANSLATIONS) {
@@ -1447,11 +1590,18 @@ async function main() {
 
     const avail = [];
     for (const book of BOOKS) {
-      if (!vulg[book.nr]) continue;
-      const tRaw  = loadBook(trans.code, book.nr);
-      const tChap = tRaw ? parseBook(tRaw) : null;
-      fs.writeFileSync(path.join(bDir, bookFile(book)), buildBookPage(book, trans, vulg[book.nr], tChap));
-      avail.push({...book, chapCount: vulg[book.nr].length});
+      const vulgData = book.testament === 'OX'
+        ? (vulg[book.nr] || parseBook(loadBook('kjv', book.nr)))
+        : vulg[book.nr];
+      if (!vulgData) continue;
+      const tRaw      = loadBook(trans.code, book.nr);
+      const tChap     = tRaw ? parseBook(tRaw) : null;
+      const lutherRaw = loadLutherBook(book.nr);
+      const lutherChap = lutherRaw ? parseBook(lutherRaw) : null;
+      const greekRaw  = loadGreekBook(book.nr);
+      const greekChap = greekRaw ? parseBook(greekRaw) : null;
+      fs.writeFileSync(path.join(bDir, bookFile(book)), buildBookPage(book, trans, vulgData, tChap, lutherChap, greekChap));
+      avail.push({...book, chapCount: vulgData.length});
     }
     fs.writeFileSync(path.join(tDir, 'index.html'), buildLangIndex(trans, avail));
     process.stdout.write(` ✓ (${avail.length} Bücher)\n`);
