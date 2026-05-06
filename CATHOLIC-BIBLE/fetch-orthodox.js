@@ -41,12 +41,28 @@ const ORTHO_BOOKS = [
   { nr:80, name:'Additions to Esther',  kjvaName:'Additions to Esther',  latin:'Addita Esther'    },
 ];
 
-// ── Alle Projekt-Übersetzungen ────────────────────────────────────────────────
-// Für orthodoxe Bücher: Englisch aus KJVA, andere Sprachen als Fallback KJV
-const TRANS_CODES = [
-  'kjv','german','french','spanish','portuguese','polish',
-  'russian','croatian','dutch','hungarian','czech','swedish',
-  'tagalog','ukrainian','albanian',
+// ── Quellen pro Sprache für orthodoxe Bücher ─────────────────────────────────
+// Natives scrollmapper-JSON verwenden wo verfügbar, KJVA als Fallback.
+// RusSynodal hat Esdras A/B (als 3./4. Esra), GerTextbibel hat Susanna/Bel im
+// Luther-Anhang nicht → KJVA als DE-Fallback für rein orthodox.
+// VulgClementine hat Prayer of Manasses + I/II Esdras auf Latein.
+const TRANS_MAP = [
+  // code          scrollmapper-SC          Sprache
+  { code:'kjv',      sc:'KJVA'                },  // KJV + Apocrypha PD ✓
+  { code:'german',   sc:'KJVA'                },  // kein DE-Apokryphen in scrollmapper
+  { code:'french',   sc:'KJVA'                },  // FreCrampon hat keine OX-Bücher
+  { code:'spanish',  sc:'KJVA'                },
+  { code:'portuguese',sc:'KJVA'               },
+  { code:'polish',   sc:'KJVA'                },
+  { code:'russian',  sc:'RusSynodal', hasOX:true }, // hat 3. + 4. Esra (Esdras A/B)
+  { code:'croatian', sc:'KJVA'                },
+  { code:'dutch',    sc:'KJVA'                },
+  { code:'hungarian',sc:'KJVA'                },
+  { code:'czech',    sc:'KJVA'                },
+  { code:'swedish',  sc:'KJVA'                },
+  { code:'tagalog',  sc:'KJVA'                },
+  { code:'ukrainian',sc:'KJVA'                },
+  { code:'albanian', sc:'KJVA'                },
 ];
 
 // ── Helfer ────────────────────────────────────────────────────────────────────
@@ -92,50 +108,64 @@ function findBook(books, names) {
   return null;
 }
 
-let kjvaBible = null;
+// Globaler Bibel-Cache (kein Doppelt-Download)
+const bibleCache = {};
 
-async function getKJVA() {
-  if (kjvaBible) return kjvaBible;
-  const cacheFile = path.join(DATA_DIR, '_KJVA.json');
+async function getBible(sc) {
+  if (bibleCache[sc]) return bibleCache[sc];
+  const cacheFile = path.join(DATA_DIR, `_${sc}.json`);
   if (fs.existsSync(cacheFile)) {
-    kjvaBible = JSON.parse(fs.readFileSync(cacheFile, 'utf8'));
-    return kjvaBible;
+    bibleCache[sc] = JSON.parse(fs.readFileSync(cacheFile, 'utf8'));
+    return bibleCache[sc];
   }
-  process.stdout.write('\n  → lade KJVA.json (KJV + Apocrypha) …');
-  kjvaBible = await download(`${RAW_BASE}/KJVA.json`);
-  fs.writeFileSync(cacheFile, JSON.stringify(kjvaBible));
+  process.stdout.write(`\n  → lade ${sc}.json …`);
+  const data = await download(`${RAW_BASE}/${sc}.json`);
+  fs.writeFileSync(cacheFile, JSON.stringify(data));
   process.stdout.write(' ✓\n');
-  return kjvaBible;
+  bibleCache[sc] = data;
+  return data;
 }
 
 // ── Hauptprogramm ─────────────────────────────────────────────────────────────
 async function main() {
   console.log('\n╔══════════════════════════════════════════════════════════╗');
   console.log('║  BIBLIA CATHOLICA · Orthodoxe Zusatz-Bücher (74–80)    ║');
+  console.log('║  Alle Sprachen · native Quellen wo verfügbar           ║');
   console.log('╚══════════════════════════════════════════════════════════╝\n');
 
   mkDir(ORTHO_DIR);
 
-  // KJVA laden
-  const kjva = await getKJVA();
-
   let totalSaved = 0;
 
-  // Für jede Übersetzung: orthodoxe Bücher aus KJVA speichern
-  for (const code of TRANS_CODES) {
-    const dir = path.join(ORTHO_DIR, code);
+  for (const tr of TRANS_MAP) {
+    const dir = path.join(ORTHO_DIR, tr.code);
     mkDir(dir);
-    let saved = 0, skip = 0;
 
+    const bible = await getBible(tr.sc);
+
+    let saved = 0;
     for (const ob of ORTHO_BOOKS) {
       const outFile = path.join(dir, `${pad3(ob.nr)}.json`);
-      if (fs.existsSync(outFile)) { skip++; continue; }
 
-      // Für alle Sprachen: KJVA als Quelle (einzige verfügbare PD-Vollbibel mit Apokryphen)
-      // Russisch und Ukrainisch haben im scrollmapper keine orthodoxen Apokryphen-Versionen
-      const bookData = findBook(kjva.books, [ob.kjvaName, ob.name]);
+      // Immer neu schreiben (überschreibt alten KJVA-only Stand)
+      const searchNames = [ob.kjvaName, ob.name];
+      // Russisch: RusSynodal-Bücher anders benannt
+      if (tr.sc === 'RusSynodal') {
+        if (ob.nr === 74) searchNames.push('III Esdras','3 Esdras','Третья Ездры');
+        if (ob.nr === 75) searchNames.push('IV Esdras','4 Esdras','Четвёртая Ездры');
+      }
+
+      const bookData = findBook(bible.books, searchNames);
       if (!bookData) {
-        console.log(`  ⚠  ${ob.name} nicht in KJVA gefunden`);
+        // Fallback zu KJVA
+        const kjva = await getBible('KJVA');
+        const fb = findBook(kjva.books, [ob.kjvaName, ob.name]);
+        if (fb) {
+          fs.writeFileSync(outFile, JSON.stringify(toCache(fb)));
+          saved++;
+        } else {
+          console.log(`  ⚠  ${ob.name} nicht in ${tr.sc} oder KJVA gefunden`);
+        }
         continue;
       }
 
@@ -144,10 +174,10 @@ async function main() {
     }
 
     totalSaved += saved;
-    if (saved > 0) console.log(`  ✓  ${code.padEnd(12)} → ${saved} Bücher gespeichert`);
+    console.log(`  ✓  ${tr.code.padEnd(12)} ← ${tr.sc.padEnd(12)} → ${saved} Bücher gespeichert`);
   }
 
-  // Buch-Metadaten für build3.js speichern
+  // Buch-Metadaten
   const metaFile = path.join(ORTHO_DIR, '_books.json');
   fs.writeFileSync(metaFile, JSON.stringify(ORTHO_BOOKS, null, 2));
 
