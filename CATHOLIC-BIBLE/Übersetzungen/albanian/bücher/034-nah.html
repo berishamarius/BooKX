@@ -6,7 +6,7 @@
 <title>Nahum &middot; Shqip &middot; Biblia Catholica</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 body{
@@ -17,26 +17,26 @@ body{
   font-size:17px;
 }
 
-/* ──────────────────────────────────────────
+/* ------------------------------------------
    BUCHKOPF
-────────────────────────────────────────── */
+------------------------------------------ */
 .bhead{
   background:
     repeating-linear-gradient( 45deg,transparent,transparent 36px,rgba(200,160,48,.028) 36px,rgba(200,160,48,.028) 37px),
     repeating-linear-gradient(-45deg,transparent,transparent 36px,rgba(200,160,48,.028) 36px,rgba(200,160,48,.028) 37px),
-    linear-gradient(162deg,#2C0810 0%,#4A1020 45%,#5C1828 65%,#4A1020 85%,#2C0810 100%);
+    linear-gradient(162deg,#1A0407 0%,#2C0810 45%,#4A1020 65%,#2C0810 85%,#1A0407 100%);
   padding:36px 28px 28px;
   text-align:center;
   border-bottom:4px solid #B8962E;
   position:relative;overflow:hidden;
 }
-/* Innerer Rahmen — äußerer Ring */
+/* Innerer Rahmen - äußerer Ring */
 .bhead::before{
   content:'';position:absolute;inset:14px;
   border:1px solid rgba(200,160,48,.22);
   pointer-events:none;
 }
-/* Innerer Rahmen — innerer Ring */
+/* Innerer Rahmen - innerer Ring */
 .bhead::after{
   content:'';position:absolute;inset:22px;
   border:1px solid rgba(200,160,48,.08);
@@ -52,12 +52,16 @@ body{
   position:relative;
 }
 .blatin{
-  font-family:'Cinzel Decorative',serif;
+  display:none;
+  font-family:'UnifrakturMaguntia',cursive;
   font-size:clamp(1.9rem,7vw,3.4rem);
   color:#EDD882;
   text-shadow:0 3px 20px rgba(0,0,0,.55);
-  letter-spacing:.06em;position:relative;
+  letter-spacing:.04em;position:relative;
 }
+body:not([data-conf]) .blatin-c,
+body[data-conf="catholic"] .blatin-c{display:block;}
+body[data-conf="protestant"] .blatin-p{display:block;}
 .btrans{
   font-family:'Cinzel',serif;
   font-size:.88rem;
@@ -70,9 +74,9 @@ body{
   letter-spacing:.08em;position:relative;
 }
 
-/* ──────────────────────────────────────────
+/* ------------------------------------------
    KAPITELINHALT
-────────────────────────────────────────── */
+------------------------------------------ */
 .content{
   max-width:960px;
   margin:36px auto 36px;
@@ -86,7 +90,7 @@ body{
   border-right:4px solid #B8962E;
   border-top:2px solid rgba(184,150,46,.4);
   border-bottom:2px solid rgba(184,150,46,.4);
-  position:relative;
+  position:relative;overflow:clip;
 }
 .content::before{
   content:'';
@@ -130,12 +134,15 @@ body{
 .chlbl{
   font-family:'Cinzel',serif;font-size:.58rem;
   color:rgba(184,150,46,.42);letter-spacing:.32em;
-  display:block;margin-top:8px;
+  display:none;margin-top:8px;
 }
+body:not([data-conf]) .chlbl-c
+body[data-conf="catholic"] .chlbl-c{display:block;}
+body[data-conf="protestant"] .chlbl-p{display:block;}
 
-/* ──────────────────────────────────────────
+/* ------------------------------------------
    VERSE
-────────────────────────────────────────── */
+------------------------------------------ */
 .vb{
   display:flex;
   padding:20px 6px;
@@ -163,7 +170,7 @@ body{
   padding:0 20px 0 4px;
 }
 
-/* BASIS-TEXT — wechselt je nach Konfession */
+/* BASIS-TEXT - wechselt je nach Konfession */
 .base{
   font-family:'EB Garamond',serif;
   font-size:1.2rem;
@@ -176,7 +183,6 @@ body{
 body:not([data-conf]) .base-c,
 body[data-conf="catholic"] .base-c { display:block; }
 body[data-conf="protestant"] .base-p { display:block; }
-body[data-conf="orthodox"] .base-o { display:block; }
 /* Leere Basis-Paragraphen ausblenden */
 .base:empty { display:none !important; }
 
@@ -192,8 +198,9 @@ body[data-conf="orthodox"] .base-o { display:block; }
   border-left:2px solid rgba(90,110,170,.2);
 }
 
-/* Drop-Cap: erster Vers eines Kapitels */
-.vb.first .base::first-letter{
+/* Drop-Cap: erster Vers eines Kapitels — nur Latein und Luther, nicht Griechisch */
+.vb.first .base-c::first-letter,
+.vb.first .base-p::first-letter{
   font-family:'Cinzel Decorative',serif;
   font-size:4em;
   float:left;
@@ -204,9 +211,9 @@ body[data-conf="orthodox"] .base-o { display:block; }
   text-shadow:1px 2px 6px rgba(0,0,0,.12);
 }
 
-/* ──────────────────────────────────────────
+/* ------------------------------------------
    BUCH-NAVIGATION (unten)
-────────────────────────────────────────── */
+------------------------------------------ */
 .bnav{
   display:flex;justify-content:space-between;align-items:center;
   background:#2C0810;border-top:3px solid #B8962E;
@@ -245,29 +252,34 @@ body[data-conf="orthodox"] .base-o { display:block; }
   .content{padding:16px 18px 60px;margin:0;border-left:none;border-right:none;border-radius:0;}
   .chrom{font-size:1.8rem;}
 }
+/* KREUZ-GRAVUR */
+.b-wm{position:sticky;top:calc(50vh - 37.5vmin);width:50vmin;height:75vmin;margin:0 auto -75vmin;display:block;pointer-events:none;z-index:0;user-select:none;}
+.b-wm svg{width:100%;height:auto;display:block;}
+.b-wm path{fill:none;stroke:rgba(184,150,46,.06);stroke-width:1.5;stroke-linecap:square;}
 </style>
 </head>
 <body>
-
 <header class="bhead">
   <div class="btestament">VETUS TESTAMENTUM</div>
-  <div class="blatin">NAHUM</div>
+  <div class="blatin blatin-c">NAHUM</div>
+  <div class="blatin blatin-p">NAHUMI</div>
   <div class="btrans">Nahumi &nbsp;&middot;&nbsp; <em>Shqip</em></div>
   <div class="bmeta">3 Capita &nbsp;&middot;&nbsp; 47 Versus</div>
 </header>
 
 <main class="content">
+<div class="b-wm"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 14"><path d="M5,0V14M0,4H10"/></svg></div>
 <section class="chap" id="c1">
   <div class="chhead">
     <span class="chrom">I</span>
-    <span class="chlbl">Caput 1</span>
+    <span class="chlbl chlbl-c">Caput I</span>
+    <span class="chlbl chlbl-p">Das 1. Capitel</span>
   </div>
 <div class="vb first" id="v1-1">
   <span class="vn">1</span>
   <div class="vt">
     <p class="base base-c">Onus Ninive. Liber visionis Nahum Elcesæi.</p>
     <p class="base base-p">Dies ist die Last uber Ninive und das Buch der Weissagung Nahums von Elkos.</p>
-    <p class="base base-o">Η κατά της Νινευή προφητεία· βιβλίον της οράσεως Ναούμ του Ελκοσαίου.</p>
     <p class="tra">Profecia mbi Niniven. Libri i vegimit të Nahumit nga Elkoshi.</p>
   </div>
 </div>
@@ -276,7 +288,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Deus æmulator, et ulciscens Dominus :  ulciscens Dominus, et habens furorem :  ulciscens Dominus in hostes suos,  et irascens ipse inimicis suis.</p>
     <p class="base base-p">Der HERR ist ein eifriger Gott und ein Racher, ja ein Racher ist der HERR und zornig; der HERR ist ein Racher wider seine Widersacher, und der es seinen Feinden nicht vergessen wird.</p>
-    <p class="base base-o">Ζηλότυπος είναι ο Θεός και εκδικείται ο Κύριος· ο Κύριος εκδικείται και οργίζεται· ο Κύριος θέλει εκδικηθή τους εναντίους αυτού και φυλάττει οργήν κατά των εχθρών αυτού.</p>
     <p class="tra">Zoti është një Perëndi xheloz dhe hakmarrës; Zoti është hakmarrës dhe plot tërbim. Zoti hakmerret me kundërshtarët e tij dhe e ruan zemërimin për armiqtë e tij.</p>
   </div>
 </div>
@@ -285,7 +296,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Dominus patiens, et magnus fortitudine,  et mundans non faciet innocentem.  Dominus in tempestate et turbine viæ ejus,  et nebulæ pulvis pedum ejus.</p>
     <p class="base base-p">Der HERR ist geduldig und von grower Kraft, vor welchem niemand unschuldig ist; er ist der HERR, des Wege im Wetter und Sturm sind und unter seinen Füften dicker Staub,</p>
-    <p class="base base-o">Ο Κύριος είναι μακρόθυμος και μέγας την ισχύν, και ουδόλως θέλει αθωώσει τον ασεβή· η οδός του Κυρίου είναι μετά ανεμοστροβίλου και θυέλλης, και νεφέλαι ο κονιορτός των ποδών αυτού.</p>
     <p class="tra">Zoti është i ngadalshëm në zemërim dhe pushtetmadh, por nuk e lë pa e ndëshkuar aspak të ligun. Zoti vazhdon rrugën e tij në shakullimë dhe në furtunë dhe retë janë pluhuri i këmbëve të tij.</p>
   </div>
 </div>
@@ -294,7 +304,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Increpans mare, et exsiccans illud,  et omnia flumina ad desertum deducens.  Infirmatus est Basan et Carmelus,  et flos Libani elanguit.</p>
     <p class="base base-p">der das Meer schilt und trocken macht und alle Wasser vertrocknet. Basan und Karmel verschmachten, und was auf dem Berge Libanon blühet, verschmachtet.</p>
-    <p class="base base-o">Επιτιμά την θάλασσαν και ξηραίνει αυτήν και καταξηραίνει πάντας τους ποταμούς· μαραίνεται η Βασάν και ο Κάρμηλος και το άνθος του Λιβάνου μαραίνεται.</p>
     <p class="tra">Ai e qorton rëndë detin dhe e than, i bën të thahen të gjithë lumenjtë. Bashani dhe Karmeli thahen dhe lulja e Libanit fishket.</p>
   </div>
 </div>
@@ -303,7 +312,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Montes commoti sunt ab eo,  et colles desolati sunt :  et contremuit terra a facie ejus,  et orbis, et omnes habitantes in eo.</p>
     <p class="base base-p">Die Berge zittern vor ihm, und die Hugel zergehen; das Erdreich bebet vor ihm, dazu der Weltkreis und alle, die drinnen wohnen.</p>
-    <p class="base base-o">Τα όρη σείονται απ' αυτού και οι λόφοι διαλύονται, η δε γη τρέμει από της παρουσίας αυτού, ναι, η οικουμένη, και πάντες οι κατοικούντες εν αυτή.</p>
     <p class="tra">Malet dridhen para tij, kodrat treten; në prani të tij toka ngrihet, po, bota dhe tërë banorët e saj.</p>
   </div>
 </div>
@@ -312,7 +320,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Ante faciem indignationis ejus quis stabit ?  et quis resistet in ira furoris ejus ?  Indignatio ejus effusa est ut ignis,  et petræ dissolutæ sunt ab eo.</p>
     <p class="base base-p">Wer kann vor seinem Zorn stehen und wer kann vor seinem Grimm bleiben? Sein Zorn brennet wie Feuer, und die Felsen zerspringen vor ihm.</p>
-    <p class="base base-o">Τις δύναται να ανθέξη ενώπιον της αγανακτήσεως αυτού; και τις δύναται να σταθή εις την έξαψιν της οργής αυτού; ο θυμός αυτού εκχέεται ως πυρ και οι βράχοι συντρίβονται έμπροσθεν αυτού.</p>
     <p class="tra">Kush mund t'i rezistojë indinjatës së tij dhe kush mund të durojë zjarrin e zemërimit të tij? Tërbimi i tij derdhet si zjarr dhe shkëmbinjtë janë prej tij të thërmuara.</p>
   </div>
 </div>
@@ -321,7 +328,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Bonus Dominus,  et confortans in die tribulationis,  et sciens sperantes in se.</p>
     <p class="base base-p">Der HERR ist gütig und eine Feste zur Zeit der Not und kennet die, so auf ihn trauen.</p>
-    <p class="base base-o">Ο Κύριος είναι αγαθός, οχύρωμα εν ημέρα θλίψεως, και γνωρίζει τους ελπίζοντας επ' αυτόν.</p>
     <p class="tra">Zoti është i mirë, është një fortesë në ditën e fatkeqësisë; ai i njeh ata që kërkojnë strehë tek ai.</p>
   </div>
 </div>
@@ -330,7 +336,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et in diluvio prætereunte consummationem faciet loci ejus,  et inimicos ejus persequentur tenebræ.</p>
     <p class="base base-p">Wenn die Flut uberher lauft, so macht er's mit derselbigen ein Ende; aber seine Feinde verfolgt er mit Finsternis.</p>
-    <p class="base base-o">Πλην με πλημμύραν κατακλύζουσαν θέλει κάμει συντέλειαν του τόπου αυτής, και σκότος θέλει καταδιώξει τους εχθρούς αυτού.</p>
     <p class="tra">Por me një përmbytje të madhe ai do të kryejë një shkatërrim të plotë të vendit të tij dhe armiqtë e tij do të përndiqen nga terri.</p>
   </div>
 </div>
@@ -339,7 +344,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Quid cogitatis contra Dominum ?  Consummationem ipse faciet :  non consurget duplex tribulatio,</p>
     <p class="base base-p">Was gedenket ihr wider den HERRN? Er wird's doch ein Ende machen; es wird das Ungluck nicht zweimal kommen.</p>
-    <p class="base base-o">Τι βουλεύεσθε κατά του Κυρίου; αυτός θέλει κάμει συντέλειαν· θλίψις δεν θέλει επέλθει εκ δευτέρου.</p>
     <p class="tra">Çfarë projektoni kundër Zotit? Ai do të kryejë një shkatërrim të plotë: fatkeqësia nuk do të ndodhë dy herë.</p>
   </div>
 </div>
@@ -348,7 +352,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">quia sicut spinæ se invicem complectuntur,  sic convivium eorum pariter potantium ;  consumentur quasi stipula ariditate plena.</p>
     <p class="base base-p">Denn gleich als wenn die Dornen, so noch ineinanderwachsen und im besten Saft sind, verbrannt werden, wie ganz durr Stroh,</p>
-    <p class="base base-o">Διότι ενώ συμπεριπλέκονται ως άκανθαι και μεθύουσιν ως μεθυσταί, θέλουσι καταναλωθή ως κατάξηρον άχυρον.</p>
     <p class="tra">Edhe sikur të ishin si ferrat e dendura edhe të dehur nga vera që kanë pirë, ata do të gllabërohen si kashta fare e thatë.</p>
   </div>
 </div>
@@ -357,7 +360,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Ex te exibit cogitans contra Dominum malitiam,  mente pertractans prævaricationem.</p>
     <p class="base base-p">also wird sein der Schalksrat, der von dir kommt und Boses wider den HERRN gedenket.</p>
-    <p class="base base-o">Από σου εξήλθε διαλογιζόμενος πονηρά κατά του Κυρίου, σύμβουλος πονηρός.</p>
     <p class="tra">Prej teje doli ai që ka kurdisur të keqen kundër Zotit, ai që ka konceptuar ligësinë.</p>
   </div>
 </div>
@@ -366,7 +368,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Hæc dicit Dominus :  Si perfecti fuerint, et ita plures,  sic quoque attondentur, et pertransibit :  afflixi te, et non affligam te ultra.</p>
     <p class="base base-p">So spricht der HERR: Sie kommen so gerustet und machtig, als sie wollen, sollen sie doch umgehauen werden und dahinfahren. Ich habe dich gedemutiget; aber ich will dich nicht wiederum demutigen.</p>
-    <p class="base base-o">Ούτω λέγει Κύριος· Αν και ήναι εν τη ακμή αυτών και έτι πολλοί, θέλουσιν όμως κουρευθή, όταν αυτός διαβή· αν και σε κατέθλιψα, δεν θέλω σε καταθλίψει πλέον.</p>
     <p class="tra">Kështu thotë Zoti: &quot;Edhe sikur të ishin plot forcë dhe të shumtë, do të kositen dhe do të zhduken. Ndonëse të kam pikëlluar, nuk do të pikëlloj më.</p>
   </div>
 </div>
@@ -375,7 +376,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et nunc conteram virgam ejus de dorso tuo,  et vincula tua disrumpam.</p>
     <p class="base base-p">Alsdann will ich sein Joch, das du tragst, zerbrechen und deine Bande zerreifien.</p>
-    <p class="base base-o">Διότι τώρα θέλω συντρίψει τον ζυγόν αυτού από σου και θέλω διαρρήξει τους δεσμούς σου.</p>
     <p class="tra">Tani do të thyej zgjedhën e saj nga trupi yt dhe do t'i shkul lidhjet e tua&quot;.</p>
   </div>
 </div>
@@ -384,7 +384,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et præcipiet super te Dominus ;  non seminabitur ex nomine tuo amplius :  de domo Dei tui interficiam sculptile, et conflatile ;  ponam sepulchrum tuum, quia inhonoratus es.</p>
     <p class="base base-p">Aber wider dich hat der HERR geboten, daß deines Namens Same keiner mehr soil bleiben. Vom Hause deines Gottes will ich dich ausrotten, die Gotzen und Bilderwill ich dirzum Grabe machen; denn du bist zunichte worden.</p>
-    <p class="base base-o">Και ο Κύριος έδωκε προσταγήν περί σου, ότι δεν θέλει σπαρθή πλέον εκ του ονόματός σου· από του οίκου των θεών σου θέλω εκκόψει τα γλυπτά και τα χωνευτά· θέλω κάμει αυτόν τάφον σου, διότι είσαι βδελυκτός.</p>
     <p class="tra">Por lidhur me ty Zoti ka dhënë këtë urdhër: &quot;Emri yt nuk do të përjetësohet më. Nga tempulli i perëndive të tua do të zhduk figurat e gdhendura dhe ato të derdhura. Do të të përgatis varrin se je i neveritshëm&quot;.</p>
   </div>
 </div>
@@ -393,7 +392,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Ecce super montes pedes evangelizantis,  et annuntiantis pacem.  Celebra, Juda, festivitates tuas,  et redde vota tua,  quia non adjiciet ultra ut pertranseat in te Belial :  universus interiit.</p>
     <p class="base base-p"></p>
-    <p class="base base-o">Ιδού, επί των ορέων οι πόδες του ευαγγελιζομένου, του κηρύττοντος ειρήνην. Εόρταζε, Ιούδα, τας επισήμους εορτάς σου, απόδος τας ευχάς σου, διότι ο εξολοθρευτής δεν θέλει διαβή πλέον διά σού· ολοτελώς απεκόπη.</p>
     <p class="tra">Ja mbi male këmbët e atij që njofton lajme të mira dhe që shpall paqen! Kremto festat e tua solemne, o Judë, plotëso betimet e tua, sepse i ligu nuk do të kalojë më në mes teje; ai do të shfaroset krejt.</p>
   </div>
 </div>
@@ -402,14 +400,14 @@ body[data-conf="orthodox"] .base-o { display:block; }
 <section class="chap" id="c2">
   <div class="chhead">
     <span class="chrom">II</span>
-    <span class="chlbl">Caput 2</span>
+    <span class="chlbl chlbl-c">Caput II</span>
+    <span class="chlbl chlbl-p">Das 2. Capitel</span>
   </div>
 <div class="vb first" id="v2-1">
   <span class="vn">1</span>
   <div class="vt">
     <p class="base base-c">Ascendit qui dispergat coram te,  qui custodiat obsidionem :  contemplare viam, conforta lumbos,  robora virtutem valde.</p>
     <p class="base base-p">Siehe, auf den Bergen kommen Fufte eines guten Boten, der da Frieden predigt: Halte deine Feiertage, Juda, und bezahle deine Gelubde! Denn es wird der Schalk nicht mehr fiber dich kommen; er ist gar ausgerottet.</p>
-    <p class="base base-o">Ο κατασυντρίβων ανέβη έμπροσθεν του προσώπου σου· φύλαττε το οχύρωμα, σκόπευσον την οδόν, ενίσχυσον τας οσφύς, ενδυνάμωσον την ισχύν σου σφόδρα.</p>
     <p class="tra">Ka dalë kundër teje një shkatërrues. Ruaje mirë fortesën, mbikqyr rrugën, forco ijët e tua, mblidh tërë forcat e tua.</p>
   </div>
 </div>
@@ -418,7 +416,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Quia reddidit Dominus superbiam Jacob,  sicut superbiam Israël ;  quia vastatores dissipaverunt eos,  et propagines eorum corruperunt.</p>
     <p class="base base-p">Es wird der Zerstreuer wider dich heraufziehen und die Feste belagern. Aber ja, berenne die Strafte wohl, niste dich aufs beste und starke dich aufs gewaltigste!</p>
-    <p class="base base-o">Επειδή ο Κύριος απέστρεψε την δόξαν του Ιακώβ καθώς την δόξαν του Ισραήλ· διότι οι τινακταί εξετίναξαν αυτούς και διέφθειραν τα κλήματα αυτών.</p>
     <p class="tra">Sepse Zoti do të rivendosë lavdinë e Jakobit dhe lavdinë e Izraelit, sepse cubat i kanë plaçkitur dhe kanë shkatërruar shermendet e tyre.</p>
   </div>
 </div>
@@ -427,7 +424,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Clypeus fortium ejus ignitus,  viri exercitus in coccineis ;  igneæ habenæ currus in die præparationis ejus,  et agitatores consopiti sunt.</p>
     <p class="base base-p">Denn der HERR wird die Hoffart Jakobs vergelten wie die Hoffart Israels; denn die Ableser werden sie ablesen und ihre Feser verderben.</p>
-    <p class="base base-o">Η ασπίς των ισχυρών αυτού είναι κοκκινοβαφής, οι άνδρες δυνάμεως ενδεδυμένοι ερυθρά· αι άμαξαι θέλουσι κινείσθαι με σίδηρον λάμποντα εν τη ημέρα της ετοιμασίας αυτού, και τα ελάτινα δόρατα θέλουσι σεισθή τρομερά.</p>
     <p class="tra">Mburoja e trimave të tij është ngjyrosur me të kuq, trimat e tij janë veshur me rroba të kuqe; ditën që ai përgatit hekuri i qerreve do të nxjerrë shkëndi si zjarri dhe do të vringëllojnë ushtat e qiparisit.</p>
   </div>
 </div>
@@ -436,7 +432,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">In itineribus conturbati sunt ;  quadrigæ collisæ sunt in plateis :  aspectus eorum quasi lampades,  quasi fulgura discurrentia.</p>
     <p class="base base-p">Die Schilde seiner Starken sind rot, sein Heeresvolk siehet wie Purpur, seine Wagen leuchten wie Feuer, wenn er treffen will; ihre Spiefte beben.</p>
-    <p class="base base-o">Αι άμαξαι θέλουσι θορυβείσθαι εν ταις οδοίς, θέλουσι συγκρούεσθαι η μία μετά της άλλης εν ταις πλατείαις· η θέα αυτών θέλει είσθαι ως λαμπάδες, θέλουσι τρέχει ως αστραπαί.</p>
     <p class="tra">Qerret do të lëshohen me tërbim nëpër rrugë do t'u bien kryq e tërthor shesheve; do të duken si pishtarë, do të vetëtijnë si rrufe.</p>
   </div>
 </div>
@@ -445,7 +440,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Recordabitur fortium suorum ;  ruent in itineribus suis :  velociter ascendent muros ejus,  et præparabitur umbraculum.</p>
     <p class="base base-p">Die Wagen rollen auf den Gassen und rasseln auf den Straften; sie blicken wie Fackeln und fahren untereinander her wie die Blitze.</p>
-    <p class="base base-o">Θέλει ενθυμηθή τους ανδρείους αυτού· αλλά θέλουσι κατολισθήσει εν τη οδώ αυτών· θέλουσι σπεύσει εις τα τείχη αυτής και ο συνασπισμός θέλει ετοιμασθή.</p>
     <p class="tra">Ai do të kujtojë burrat e tij të fuqishëm, por ata do të pengohen në marshimin e tyre, do të sulen drejt mureve dhe mbrojtja do të përgatitet.</p>
   </div>
 </div>
@@ -454,7 +448,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Portæ fluviorum apertæ sunt,  et templum ad solum dirutum.</p>
     <p class="base base-p">Er aber wird an seine Gewaltigen gedenken; doch werden dieselbigen fallen, wo sie hinaus wollen; und werden eilen zur Mauer und zu dem Schirm, da sie sicher seien.</p>
-    <p class="base base-o">Αι πύλαι των ποταμών θέλουσιν ανοιχθή και τα παλάτια θέλουσι διαλυθή.</p>
     <p class="tra">Portat e lumenjve do të hapen dhe pallati do të shembet.</p>
   </div>
 </div>
@@ -463,7 +456,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et miles captivus abductus est,  et ancillæ ejus minabantur gementes ut columbæ,  murmurantes in cordibus suis.</p>
     <p class="base base-p">Aber die Tore an den Wassern werden doch geoffnet, und der Palast wird untergehen.</p>
-    <p class="base base-o">Και η καθεστώσα θέλει γυμνωθή, θέλει μετοικισθή, και αι δούλαι αυτής θέλουσιν αναδίδει στεναγμούς ως η φωνή των περιστερών, τύπτουσαι τα στήθη αυτών.</p>
     <p class="tra">Atë që rrinte palëvizur do ta zhveshin dhe do ta marrin; shërbëtoret e saj do të vajtojnë me zë si të pëllumbeshës, duke i rënë gjoksit.</p>
   </div>
 </div>
@@ -472,7 +464,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et Ninive quasi piscina aquarum aquæ ejus ;  ipsi vero fugerunt. State, state !  et non est qui revertatur.</p>
     <p class="base base-p">Die Konigin wird gefangen weggefuhret werden; und ihre Jungfrauen werden seufzen wie die Tauben und an ihre Brust schlagen.</p>
-    <p class="base base-o">Και η Νινευή είναι παλαιόθεν ως λίμνη υδάτων· ταύτα όμως θέλουσι φύγει. Στήτε, στήτε, θέλουσι φωνάζει· και ουδείς ο βλέπων οπίσω.</p>
     <p class="tra">Ndonëse Ninive i kohëve të kaluara ishte si një rezervuar uji, tani ata ikin. &quot;Ndaluni, ndaluni!&quot;, bërtasin, por askush nuk kthehet.</p>
   </div>
 </div>
@@ -481,7 +472,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Diripite argentum, diripite aurum :  et non est finis divitiarum ex omnibus vasis desiderabilibus.</p>
     <p class="base base-p">Denn Ninive ist wie ein Teich voll Wassers; aber dasselbige wird verflieften müssen. Stehet, stehet! (werden sie rufen); aber da wird sich niemand umwenden.</p>
-    <p class="base base-o">Λαφυραγωγείτε το αργύριον, λαφυραγωγείτε το χρυσίον· διότι δεν είναι τέλος των θησαυρών αυτής· είναι πλήθος παντός σκεύους επιθυμητού.</p>
     <p class="tra">Plaçkitni argjendin, plaçkitni arin! Ka thesare pa fund, pasuri të çfarëdo sendi të çmuar.</p>
   </div>
 </div>
@@ -490,7 +480,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Dissipata est, et scissa, et dilacerata ;  et cor tabescens, et dissolutio geniculorum,  et defectio in cunctis renibus,  et facies omnium eorum sicut nigredo ollæ.</p>
     <p class="base base-p">So raubet nun Silber, raubet Gold! Denn hie ist der Schatze kein Ende und die Menge aller kdstlichen Kleinode.</p>
-    <p class="base base-o">Εξεκενώθη και εξετινάχθη και ηρημώθη και η καρδία διαλύεται και τα γόνατα κλονίζονται και ωδίνες είναι εις πάσας τας οσφύς, τα δε πρόσωπα πάντων είναι απησβολωμένα.</p>
     <p class="tra">Ai është i shkretuar, bosh dhe i rrënuar; zemra ligështohet, gjunjët dridhen, ka një dhembje të madhe në të gjitha ijët dhe tërë fytyrat e tyre zverdhen.</p>
   </div>
 </div>
@@ -499,7 +488,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Ubi est habitaculum leonum,  et pascua catulorum leonum,  ad quam ivit leo ut ingrederetur illuc catulus leonis,  et non est qui exterreat ?</p>
     <p class="base base-p">Aber nun muft sie rein abgelesen und geplundert werden, daß ihr Herz muft verzagen, die Kniee schlottern, alle Lenden zittern, und aller Angesicht bleich sehen, wie ein Topf.</p>
-    <p class="base base-o">Που είναι το κατοικητήριον των λεόντων και η βοσκή των σκύμνων, όπου ο λέων, ο γηραιός λέων, περιεπάτει και ο σκύμνος του λέοντος, και δεν υπήρχεν ο εκφοβών;</p>
     <p class="tra">Ku është strofka e luanëve, vendi ku ushqeheshin luanët e vegjël, ku silleshin luani, luanesha dhe të vegjëlit e saj dhe askush nuk i trembte?</p>
   </div>
 </div>
@@ -508,7 +496,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Leo cepit sufficienter catulis suis,  et necavit leænis suis,  et implevit præda speluncas suas,  et cubile suum rapina.</p>
     <p class="base base-p">Wo ist nun die Wohnung der Lowen und die Weide der jungen Lowen, da der Lowe und die Lowin mit den jungen Lowen wandelten, und niemand durfte sie scheuchen?</p>
-    <p class="base base-o">Ο λέων διεσπάραττεν ικανά διά τους σκύμνους αυτού και απέπνιγε διά τας λεαίνας αυτού, και εγέμιζε τα σπήλαια αυτού από θηράματος και τα κατοικητήρια αυτού από αρπαγής.</p>
     <p class="tra">Luani shqyente për të vegjëlit e tij, mbyste për luaneshat e tij dhe mbushte strofkat e tij me gjah dhe strofullat me gjënë e grabitur.</p>
   </div>
 </div>
@@ -517,7 +504,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Ecce ego ad te, dicit Dominus exercituum,  et succendam usque ad fumum quadrigas tuas,  et leunculos tuos comedet gladius,  et exterminabo de terra prædam tuam,  et non audietur ultra vox nuntiorum tuorum.</p>
     <p class="base base-p">Sondern der Lowe raubete genug fur seine Jungen und würgete es seinen Lowinnen; seine Hohlen füllete er mit Raub und seine Wohnung mit dem, das er zerrissen hatte.</p>
-    <p class="base base-o">Ιδού, εγώ είμαι εναντίον σου, λέγει ο Κύριος των δυνάμεων, και θέλω καύσει τας αμάξας σου μέχρι καπνού και η ρομφαία θέλει καταφάγει τους σκύμνους σου, και θέλω εξολοθρεύσει το θήραμά σου εκ της γης, και δεν θέλει ακουσθή πλέον η φωνή των πρέσβεών σου.</p>
     <p class="tra">&quot;Ja, unë jam kundër teje&quot;, thotë Zoti i ushtrive, &quot;unë do t'i djeg dhe do t'i bëj tym qerret e tua dhe shpata do të gllabërojë luanët e tu të vegjël; unë do të zhduk grabitjen tënde nga dheu dhe zëri i lajmëtarëve të tu nuk do të dëgjohet më&quot;.</p>
   </div>
 </div>
@@ -526,14 +512,14 @@ body[data-conf="orthodox"] .base-o { display:block; }
 <section class="chap" id="c3">
   <div class="chhead">
     <span class="chrom">III</span>
-    <span class="chlbl">Caput 3</span>
+    <span class="chlbl chlbl-c">Caput III</span>
+    <span class="chlbl chlbl-p">Das 3. Capitel</span>
   </div>
 <div class="vb first" id="v3-1">
   <span class="vn">1</span>
   <div class="vt">
     <p class="base base-c">Væ civitas sanguinum,  universa mendacii dilaceratione plena !  non recedet a te rapina.</p>
     <p class="base base-p">Wehe der morderischen Stadt, die voll Lugen und Rauberei ist und von ihrem Rauben nicht lassen will!</p>
-    <p class="base base-o">Ουαί εις την πόλιν των αιμάτων· όλη είναι πλήρης ψεύδους και αρπαγής· το θήραμα δεν απολείπει.</p>
     <p class="tra">Mjerë qyteti gjakatar, që është plot me hile dhe me dhunë dhe që nuk po heq dorë nga grabitjet!</p>
   </div>
 </div>
@@ -542,7 +528,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Vox flagelli, et vox impetus rotæ, et equi frementis,  et quadrigæ ferventis, et equitis ascendentis,</p>
     <p class="base base-p">Denn da wird man horen die Geifteln klappen und die Rader rasseln und die Rosse schreien und die Wagen rollen.</p>
-    <p class="base base-o">Φωνή μαστίγων ακούεται και φωνή θορύβου τροχών και ίππων ορμώντων και αρμάτων αναπηδώντων,</p>
     <p class="tra">Kërcet kamxhiku, zhurmë shurdhuese rrotash, kuajsh që vrapojnë dhe qerresh që hovin,</p>
   </div>
 </div>
@@ -551,7 +536,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">et micantis gladii, et fulgurantis hastæ,  et multitudinis interfectæ, et gravis ruinæ ;  nec est finis cadaverum,  et corruent in corporibus suis.</p>
     <p class="base base-p">Er bringet Reiter herauf mit glanzenden Schwertern und mit blitzenden Spieften. Da liegen viel Erschlagene und grofte Haufen Leichname, daß derselbigen keine Zahl ist und man uber ihre Leichname fallen muft.</p>
-    <p class="base base-o">ιππέως αναβαίνοντος και ρομφαίας στιλβούσης και λόγχης εξαστραπτούσης, και πλήθος τραυματιζομένων και μέγας αριθμός πτωμάτων, και δεν είναι τέλος των πτωμάτων· προσκόπτουσιν εις τα πτώματα αυτών·</p>
     <p class="tra">kalorës në sulm shpata flakëruese, ushta që shndritin, një shumicë e madhe të vrarësh, të vdekur të shumtë, kufoma pa fund; pengohesh te kufomat.</p>
   </div>
 </div>
@@ -560,7 +544,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Propter multitudinem fornicationum meretricis  speciosæ, et gratæ, et habentis maleficia,  quæ vendidit gentes in fornicationibus suis,  et familias in maleficiis suis.</p>
     <p class="base base-p">Das alles um der großen Hurerei willen der schonen lieben Hure, die mit Zauberei umgehet, die mit ihrer Hurerei die Heiden und mit ihrer Zauberei Land und Leute erworben hat.</p>
-    <p class="base base-o">από του πλήθους των πορνειών της θελκτικής πόρνης, της εμπείρου εις γοητείας, ήτις πωλεί έθνη διά των πορνειών αυτής και φυλάς διά των γοητειών αυτής.</p>
     <p class="tra">Të gjitha këto për shkak të kurvërimeve të shumta të prostitutes joshëse, mjeshtre në artet magjike që i shiste kombet me kurvërimet e saj dhe popujt me artet e saj magjike.</p>
   </div>
 </div>
@@ -569,7 +552,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Ecce ego ad te, dicit Dominus exercituum,  et revelabo pudenda tua in facie tua ;  et ostendam gentibus nuditatem tuam,  et regnis ignominiam tuam.</p>
     <p class="base base-p">Siehe, ich will an dich, spricht der HERR Zebaoth! Ich will dir dein Gebrame aufdecken unter dein Angesicht und will den Heiden deine Bloße und den Konigreichen deine Schande zeigen.</p>
-    <p class="base base-o">Ιδού, εγώ είμαι εναντίον σου, λέγει ο Κύριος των δυνάμεων· και θέλω ανασηκώσει τα κράσπεδά σου επί το πρόσωπόν σου, και θέλω δείξει εις τα έθνη την αισχύνην σου και εις τα βασίλεια την ατιμίαν σου.</p>
     <p class="tra">&quot;Ja, unë jam kundër teje&quot;, thotë Zoti i ushtrive, &quot;unë do të ngre cepat e rrobës sate deri në fytyrë dhe do t'u tregoj kombeve lakuriqësinë tënde dhe mbretërive turpin tënd.</p>
   </div>
 </div>
@@ -578,7 +560,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et projiciam super te abominationes,  et contumeliis te afficiam,  et ponam te in exemplum.</p>
     <p class="base base-p">Ich will dich ganz greulich machen und dich schanden und ein Scheusal aus dir machen,</p>
-    <p class="base base-o">Και θέλω ρίψει βδελυράν ακαθαρσίαν επί σε και θέλω σε καταισχύνει και θέλω σε καταστήσει εις θέαμα.</p>
     <p class="tra">Do të të hedh përsipër ndyrësi, do të të bëj të neveritshme dhe do të të nxjerr te shtylla e turpit.</p>
   </div>
 </div>
@@ -587,7 +568,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et erit : omnis qui viderit te resiliet a te,  et dicet : Vastata est Ninive.  Quis commovebit super te caput ?  unde quæram consolatorem tibi ?</p>
     <p class="base base-p">daß alle, die dich sehen, von dir fliehen und sagen sollen: Ninive ist verstoret; wer will Mitleid mit ihr haben, und wo soil ich dir Troster suchen?</p>
-    <p class="base base-o">Και πάντες οι βλέποντές σε θέλουσι φεύγει από σου και θέλουσι λέγει, Η Νινευή ηρημώθη· τις θέλει συλλυπηθή αυτήν; πόθεν θέλω ζητήσει παρηγορητάς διά σε;</p>
     <p class="tra">Do të ndodhë që të gjithë ata që do të të shikojnë do të largohen prej teje dhe do të thonë: &quot;Ninive është shkretuar! Kujt do t'i vijë keq për të?&quot;. Ku t'i kërkoj ngushëllonjësit e saj?&quot;.</p>
   </div>
 </div>
@@ -596,7 +576,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Numquid melior es Alexandria populorum,  quæ habitat in fluminibus ?  aquæ in circuitu ejus ;  cujus divitiæ, mare ;  aquæ, muri ejus.</p>
     <p class="base base-p">Meinest du, du seiest besser denn die Stadt No der Regenten, die da lag an den Wassern und ringsumher Wasser hatte, welcher Mauern und Feste war das Meer?</p>
-    <p class="base base-o">είσαι καλητέρα της Νω Αμμών, της κειμένης μεταξύ των ποταμών, της περικυκλουμένης από υδάτων, της οποίας προμαχών ήτο η θάλασσα και τείχος αυτής το πέλαγος;</p>
     <p class="tra">A je më e bukur se No-Amoni, që ndodhet midis kanaleve të Nilit, i rrethuar nga ujërat dhe që e kishte detin si ledh dhe detin si mur?</p>
   </div>
 </div>
@@ -605,7 +584,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Æthiopia fortitudo ejus, et Ægyptus, et non est finis ;  Africa et Libyes fuerunt in auxilio tuo.</p>
     <p class="base base-p">Mohren und Agypten war ihre unzahlige Macht, Put und Libyen waren deine Hilfe.</p>
-    <p class="base base-o">Η Αιθιοπία ήτο η ισχύς αυτής και η Αίγυπτος και άλλοι απέραντοι· η Φούθ και οι Λίβυες ήσαν οι βοηθοί σου.</p>
     <p class="tra">Etiopia dhe Egjipti ishin forca e tij dhe nuk kishin kufi; Puti dhe Libianët ishin aleatët e tij.</p>
   </div>
 </div>
@@ -614,7 +592,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Sed et ipsa in transmigrationem ducta est in captivitatem :  parvuli ejus elisi sunt in capite omnium viarum,  et super inclytos ejus miserunt sortem,  et omnes optimates ejus confixi sunt in compedibus.</p>
     <p class="base base-p">Noch hat sie müssen vertrieben werden und gefangen wegziehen, und sind ihre Kinder auf alien Gassen erschlagen worden; und um ihre Edlen wart man das Los, und alle ihre Gewaltigen wurden in Ketten und Fesseln gelegt.</p>
-    <p class="base base-o">Αλλά και αυτή μετωκίσθη, υπήγεν εις αιχμαλωσίαν, τα δε νήπια αυτής συνετρίφθησαν επί των άκρων πασών των οδών· και έρριψαν κλήρους επί τους ενδόξους αυτής άνδρας, και πάντες οι μεγιστάνες αυτής εδέθησαν με αλύσεις.</p>
     <p class="tra">Megjithatë edhe ai u internua, shkoi në robëri; edhe fëmijët e tij u bënë copë-copë në hyrje të çdo rruge; kanë hedhur shortin mbi fisnikët e tij dhe tërë të mëdhenjtë e tij u lidhën me zinxhirë.</p>
   </div>
 </div>
@@ -623,7 +600,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et tu ergo inebriaberis, et eris despecta :  et tu quæres auxilium ab inimico.</p>
     <p class="base base-p">Also mußt du auch trunken werden und dich verbergen und eine Feste suchen vor dem Feinde.</p>
-    <p class="base base-o">Και συ θέλεις μεθυσθή, θέλεις μένει αφανής· και συ θέλεις ζητήσει δύναμιν εναντίον του εχθρού.</p>
     <p class="tra">Ti gjithashtu do të jesh e dehur dhe do të fshihesh; ti gjithashtu do të kërkosh një vend të fortifikuar përpara armikut.</p>
   </div>
 </div>
@@ -632,7 +608,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Omnes munitiones tuæ sicut ficus cum grossis suis :  si concussæ fuerint, cadent in os comedentis.</p>
     <p class="base base-p">Alle deine festen Stadte sind wie Feigenbaume mit reifen Feigen, wenn man sie schüttelt, daß sie dem ins Maul fallen, der sie essen will.</p>
-    <p class="base base-o">Πάντα τα οχυρώματά σου θέλουσιν είσθαι ως συκαί με τα πρωτοφανή σύκα αυτών· εάν σεισθώσι, θέλουσι βεβαίως πέσει εις το στόμα του τρώγοντος.</p>
     <p class="tra">Tërë fortesat e tua do të jenë si druri i fikut me fiq të parë; po t'i shkundësh, bien në gojë të atij që i ha.</p>
   </div>
 </div>
@@ -641,7 +616,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Ecce populus tuus mulieres in medio tui :  inimicis tuis adapertione pandentur portæ terræ tuæ,  devorabit ignis vectes tuos.</p>
     <p class="base base-p">Siehe, dein Volk soil zu Weibern werden in dir, und die Tore deines Landes sollen deinen Feinden geoffnet werden; und das Feuer soil deine Riegel verzehren.</p>
-    <p class="base base-o">Ιδού, ο λαός σου είναι γυναίκες εν μέσω σου· αι πύλαι της γης σου θέλουσιν είσθαι όλως ανεωγμέναι εις τους εχθρούς σου· το πυρ θέλει καταφάγει τους μοχλούς σου.</p>
     <p class="tra">Ja, trupat e tua në mes teje janë si gra; portat e vendit tënd janë të hapura përpara armiqve të tu; zjarri ka gllabëruar hekurat e portave të tua.</p>
   </div>
 </div>
@@ -650,7 +624,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Aquam propter obsidionem hauri tibi :  exstrue munitiones tuas,  intra in lutum, et calca,  subigens tene laterem.</p>
     <p class="base base-p">Schdpfe dir Wasser, denn du wirst belagert werden; bessere deine Festen; gehe in den Ton und tritt den Leimen und mache starke Ziegel.</p>
-    <p class="base base-o">Ανάσυρον εις σεαυτόν ύδωρ διά την πολιορκίαν, ενδυνάμωσον τα οχυρώματά σου· είσελθε εις τον πηλόν και πάτησον την άργιλλον, επισκεύασον την κεραμικήν κάμινον·</p>
     <p class="tra">Mblidh për vete ujin e nevojshëm për rrethimin, përforco fortifikimet e tua, ngjeshe argjilën, punoje llaçin, ndreqe furrën për tulla.</p>
   </div>
 </div>
@@ -659,7 +632,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Ibi comedet te ignis,  peribis gladio, devorabit te ut bruchus :  congregare ut bruchus,  multiplicare ut locusta.</p>
     <p class="base base-p">Aber das Feuer wird dich fressen und das Schwert toten; es wird dich abfressen wie die Kafer, es wird dich uberfallen wie Kafer, es wird dich überfallen wie Heuschrecken;</p>
-    <p class="base base-o">εκεί θέλει σε καταφάγει το πύρ· η ρομφαία θέλει σε εξολοθρεύσει, θέλει σε καταφάγει ως βρούχος· πληθύνου ως βρούχος, πληθύνου ως ακρίς.</p>
     <p class="tra">Atje zjarri do të të gllabërojë, shpata do të të shkatërrojë, do të të hajë si një larvë karkaleci; shumohu si larvat e karkalecave, shumohu si karkalecat.</p>
   </div>
 </div>
@@ -668,7 +640,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Plures fecisti negotiationes tuas quam stellæ sint cæli ;  bruchus expansus est, et avolavit.</p>
     <p class="base base-p">Du hast mehr Handler, denn Sterne am Himmel sind; aber nun werden sie sich ausbreiten wie Kafer und davonfliegen.</p>
-    <p class="base base-o">Επλήθυνας τους εμπόρους σου υπέρ τα άστρα του ουρανού· ο βρούχος εξηπλώθη και εξεπέταξεν.</p>
     <p class="tra">I ke shumuar tregjet e tua më tepër se yjet e qiellit; larvat e karkalecave zhveshin çdo gjë dhe pastaj fluturojnë tutje.</p>
   </div>
 </div>
@@ -677,7 +648,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Custodes tui quasi locustæ,  et parvuli tui quasi locustæ locustarum,  quæ considunt in sepibus in die frigoris :  sol ortus est, et avolaverunt,  et non est cognitus locus earum ubi fuerint.</p>
     <p class="base base-p">Deiner Herren ist so viel als der Heuschrecken und deiner Hauptleute als der Kafer, die sich an die Zaune lagern in den kalten Tagen; wenn aber die Sonne aufgehet, heben sie sich davon, daß man nicht weifi, wo sie bleiben.</p>
-    <p class="base base-o">Οι μεγιστάνές σου είναι ως ακρίδες και οι σατράπαι σου ως μεγάλαι ακρίδες, αίτινες επικάθηνται επί τους φραγμούς εν ημέρα ψύχους· αλλ' όταν ο ήλιος ανατείλη, φεύγουσι και ο τόπος αυτών δεν γνωρίζεται που ήσαν.</p>
     <p class="tra">Princat e tu janë si karkalecat, oficerët e tu si mizëri karkalecash që ndalen midis gjerdheve në ditët e ftohta; po, kur del dielli, fluturojnë tutje, por nuk dihet se ku kanë shkuar.</p>
   </div>
 </div>
@@ -686,7 +656,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Dormitaverunt pastores tui, rex Assur,  sepelientur principes tui :  latitavit populus tuus in montibus,  et non est qui congreget.</p>
     <p class="base base-p">Deine Hirten werden schlafen, o Konig zu Assur, deine Machtigen werden sich legen und dein Volk wird auf den Bergen zerstreuet sein, und niemand wird sie versammeln.</p>
-    <p class="base base-o">Οι ποιμένες σου ενύσταξαν, βασιλεύ της Ασσυρίας· οι δυνατοί σου απεκοιμήθησαν· ο λαός σου εσκορπίσθη επί τα όρη και δεν υπάρχει ο συνάγων.</p>
     <p class="tra">O mbret i Asirisë, barinjtë e tu po flenë, fisnikët e tu pushojnë; populli yt u shpërnda ndër male dhe kurrkush nuk po i mbledh.</p>
   </div>
 </div>
@@ -695,7 +664,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Non est obscura contritio tua ;  pessima est plaga tua.  Omnes qui audierunt auditionem tuam compresserunt manum super te :  quia super quem non transiit malitia tua semper ?</p>
     <p class="base base-p">Niemand wird um deinen Schaden trauern, noch sich um deine Plage kranken, sondern alle, die solches von dir horen, werden mit ihren Handen uber dich klappen. Denn uber wen ist nicht deine Bosheit ohne Unterlali gegangen?</p>
-    <p class="base base-o">Δεν είναι ίασις εις το σύντριμμά σου· η πληγή σου είναι χαλεπή· πάντες οι ακούοντες την αγγελίαν σου θέλουσι κροτήσει χείρας επί σέ· διότι επί τίνα δεν επήλθε πάντοτε η κακία σου;</p>
     <p class="tra">Nuk ka ilaç për plagën tënde, plaga jote është vdekjeprurëse; të gjithë ata që do të dëgjojnë të flitet për ty, do të përplasin duart për fatin tënd. Sepse mbi kë nuk është ushtruar vazhdimisht ligësia jote?</p>
   </div>
 </div>
@@ -704,7 +672,7 @@ body[data-conf="orthodox"] .base-o { display:block; }
 
 <nav class="bnav">
   <a href="033-mic.html">&#8592; Micheas</a>
-  <a href="../index.html" class="center">↑ &nbsp; Inhaltsverzeichnis</a>
+  <a href="../index.html" class="center">? &nbsp; Inhaltsverzeichnis</a>
   <a href="035-hab.html">Habacuc &#8594;</a>
 </nav>
 

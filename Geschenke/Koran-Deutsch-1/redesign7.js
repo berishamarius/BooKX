@@ -1,4 +1,7 @@
-'use strict';
+﻿'use strict';
+
+const DE_CHAPTER_NAMES={1:"Die Eröffnende",2:"Die Kuh",3:"Familie Imrans",4:"Die Frauen",5:"Der Tisch",6:"Das Vieh",7:"Die Höhen",8:"Die Kriegsbeute",9:"Die Reue",10:"Yunus",11:"Hud",12:"Yusuf",13:"Der Donner",14:"Ibrahim",15:"Der Fels",16:"Die Biene",17:"Die Nachtreise",18:"Die Höhle",19:"Maryam",20:"Ta Ha",21:"Die Propheten",22:"Der Pilgerzug",23:"Die Gläubigen",24:"Das Licht",25:"Der Unterschied",26:"Die Dichter",27:"Die Ameise",28:"Die Geschichte",29:"Die Spinne",30:"Die Römer",31:"Luqman",32:"Die Niederwerfung",33:"Die Verbündeten",34:"Saba",35:"Der Schöpfer",36:"Ya Sin",37:"Die Aufgereihten",38:"Sad",39:"Die Scharen",40:"Der Vergebende",41:"Klar dargelegt",42:"Die Beratung",43:"Der Schmuck",44:"Der Rauch",45:"Die Kniende",46:"Al-Ahqaf",47:"Muhammad",48:"Der Sieg",49:"Die Gemächer",50:"Qaf",51:"Die Streuenden",52:"Der Berg",53:"Der Stern",54:"Der Mond",55:"Der Allerbarmer",56:"Das Ereignis",57:"Das Eisen",58:"Die Streitende",59:"Die Versammlung",60:"Die Geprüfte",61:"Das Schlachtfeld",62:"Das Freitagsgebet",63:"Die Heuchler",64:"Das wechselseitige Betrügen",65:"Die Scheidung",66:"Das Verbot",67:"Die Herrschaft",68:"Der Griffel",69:"Die Unabwendbare",70:"Die Aufstiege",71:"Nuh",72:"Die Dschinn",73:"Der Verhüllte",74:"Der Zugedeckte",75:"Die Auferstehung",76:"Der Mensch",77:"Die Gesandten",78:"Die Botschaft",79:"Die Ausreißenden",80:"Er runzelte die Stirn",81:"Das Verhüllen",82:"Das Auseinanderbrechen",83:"Die Betrüger",84:"Das Aufreißen",85:"Die Sternzeichen",86:"Der Nachtstern",87:"Der Höchste",88:"Das Überwältigende",89:"Die Morgenröte",90:"Das Land",91:"Die Sonne",92:"Die Nacht",93:"Der Morgen",94:"Das Öffnen",95:"Die Feige",96:"Der Embryo",97:"Die Nacht der Bestimmung",98:"Der klare Beweis",99:"Das Erdbeben",100:"Die Rennenden",101:"Der Lärmende",102:"Das Wetteifern",103:"Das Zeitalter",104:"Der Verleumder",105:"Der Elefant",106:"Die Quraisch",107:"Die Kleinen Gefälligkeiten",108:"Al-Kauthar",109:"Die Ungläubigen",110:"Die Hilfe",111:"Palmenfaser",112:"Die Aufrichtigkeit",113:"Der Morgen",114:"Die Menschen"};
+
 /**
  * AL-QURAN · Redesign v7.0
  *
@@ -18,24 +21,18 @@ const https = require('https');
 const fs    = require('fs');
 const path  = require('path');
 
-const BASE_DIR = __dirname;
-const OUT_DIR  = path.join(BASE_DIR, 'Übersetzungen');
+const BASE_DIR  = __dirname;
+const OUT_DIR   = path.join(BASE_DIR, 'Übersetzungen');
+const CACHE_DIR = path.join(__dirname, '..', '..', 'AL-QURAN', 'cache');
+
+function loadFromCache(lang, surahId) {
+  const f = path.join(CACHE_DIR, lang, `${surahId}.json`);
+  if (fs.existsSync(f)) return JSON.parse(fs.readFileSync(f, 'utf8'));
+  return null;
+}
 
 const TRANSLATIONS = [
-  { name:'Deutsch',     lang:'de', dir:'ltr', transId:27,  titleNative:'Deutsch',         readBtn:'Lesen',             introTitle:'Vorwort',     indexTitle:'Inhaltsverzeichnis' },
-  { name:'Englisch',    lang:'en', dir:'ltr', transId:20,  titleNative:'English',          readBtn:'Read',              introTitle:'Foreword',    indexTitle:'Table of Contents'  },
-  { name:'Türkisch',    lang:'tr', dir:'ltr', transId:77,  titleNative:'Türkçe',           readBtn:'Okumaya Başla',     introTitle:'Önsöz',       indexTitle:'İçindekiler'        },
-  { name:'Indonesisch', lang:'id', dir:'ltr', transId:33,  titleNative:'Bahasa Indonesia', readBtn:'Mulai Membaca',     introTitle:'Pendahuluan', indexTitle:'Daftar Isi'         },
-  { name:'Urdu',        lang:'ur', dir:'rtl', transId:97,  titleNative:'اردو',             readBtn:'پڑھنا شروع کریں',  introTitle:'دیباچہ',      indexTitle:'فہرست'              },
-  { name:'Persisch',    lang:'fa', dir:'rtl', transId:135, titleNative:'فارسی',            readBtn:'شروع به خواندن',   introTitle:'مقدمه',       indexTitle:'فهرست مطالب'        },
-  { name:'Russisch',    lang:'ru', dir:'ltr', transId:45,  titleNative:'Русский',          readBtn:'Начать чтение',     introTitle:'Предисловие', indexTitle:'Оглавление'         },
-  { name:'Bengalisch',  lang:'bn', dir:'ltr', transId:161, titleNative:'বাংলা',            readBtn:'পড়া শুরু করুন',    introTitle:'ভূমিকা',      indexTitle:'বিষয়সূচি'           },
-  { name:'Hindi',       lang:'hi', dir:'ltr', transId:122, titleNative:'हिन्दी',           readBtn:'पढ़ना शुरू करें',  introTitle:'प्रस्तावना', indexTitle:'विषय-सूची'          },
-  { name:'Hausa',       lang:'ha', dir:'ltr', transId:32,  titleNative:'Hausa',            readBtn:'Fara Karanta',      introTitle:'Gabatarwa',   indexTitle:'Jerin Abubuwa'      },
-  { name:'Bosnisch',    lang:'bs', dir:'ltr', transId:126, titleNative:'Bosanski',         readBtn:'Počni Čitati',      introTitle:'Predgovor',   indexTitle:'Sadržaj'            },
-  { name:'Albanisch',   lang:'sq', dir:'ltr', transId:88,  titleNative:'Shqip',            readBtn:'Fillo Leximin',     introTitle:'Parathënie',  indexTitle:'Tabela e Permbajtjes'},
-  { name:'Chinesisch',  lang:'zh', dir:'ltr', transId:56,  titleNative:'中文',              readBtn:'开始阅读',           introTitle:'序言',        indexTitle:'目录'                },
-  { name:'Uygurisch',   lang:'ug', dir:'rtl', transId:76,  titleNative:'ئۇيغۇرچە',        readBtn:'ئوقۇشنى باشلاش',  introTitle:'مۇقەددىمە',  indexTitle:'مۇندەرىجە'          },
+  { name:'Deutsch', lang:'de', dir:'ltr', transId:27, titleNative:'Deutsch', readBtn:'Zum Koran', introTitle:'Vorwort', indexTitle:'Inhaltsverzeichnis' },
 ];
 
 const DISC = {
@@ -90,7 +87,7 @@ const DISC_LONG = {
 };
 
 const INTRO_BODY = {
-  de:['Der Quran wurde dem Propheten Muhammad ﷺ über dreiundzwanzig Jahre herabgesandt. Er ist die Grundlage des islamischen Glaubens und des muslimischen Lebens.','Was hier vorliegt, ist eine sinngemäße Übersetzung ins Deutsche — kein Ersatz für das arabische Original. Jede Übersetzung nähert sich dem Sinn, ohne ihn vollständig zu fassen. Das Arabische ist der Quran; alles andere ist Annäherung.','Lies, was hier steht, als einen Hinweis. Wer den arabischen Urtext hören und lesen kann, geht den unmittelbaren Weg.','Das Design dieser Ausgabe ist eine bewusste Entscheidung: arabischer Text groß und im Vordergrund, die Übersetzung klein und zurückhaltend — um dem Original in Wort und Geist so nah wie möglich zu sein.'],
+  de:['Dieses Buch gehört dir. Weil du für mich da warst, ohne es zu müssen.','Es gibt Menschen, die einem das Gefühl geben, nicht allein zu sein. Du bist so jemand. Das vergesse ich nie.','Der Quran ist mehr als ein Buch. Er ist Ruhe, wenn alles laut wird. Kraft, wenn man nicht mehr kann. Licht, wenn man den Weg nicht sieht. Ich wünsche dir, dass du darin genau das findest.','In tiefer Dankbarkeit, für dich.'],
   en:['The Quran was revealed to the Prophet Muhammad ﷺ over twenty-three years. It is the foundation of Islamic belief and Muslim life.','What follows is a translation of its meanings into English — not a substitute for the Arabic original. Every translation approximates the sense without fully capturing it. The Arabic is the Quran; everything else is approximation.','Read what is here as a signpost. Those who can hear and read the Arabic original walk the direct path.','The design of this edition is a deliberate choice: Arabic text large and foremost, translation small and receding — to remain as close as possible to the original in word and spirit.'],
   tr:["Kur'an, Peygamber Muhammed ﷺ'e yirmi üç yıl boyunca vahyedildi. İslam inancının ve Müslüman hayatının temelidir.","Buradakiler, Kur'an'ın Türkçe anlamsal bir çevirisidir — Arapça orijinalin yerini tutmaz. Her çeviri, anlama yaklaşır; onu tam olarak aktaramaz. Kur'an Arapçadır; geri kalan her şey bir yaklaşımdır.",'Burada okuduklarını bir işaret olarak gör. Arapça orijinali duyup okuyabilen, doğrudan yolda yürür.',"Bu baskının tasarımı bilinçli bir karardır: Arapça metin büyük ve ön planda, çeviri küçük ve geri planda — özgüne söz ve ruhta mümkün olduğunca yakın kalmak için."],
   id:["Al-Qur'an diturunkan kepada Nabi Muhammad ﷺ selama dua puluh tiga tahun. Ia adalah landasan keyakinan Islam dan kehidupan Muslim.","Yang disajikan di sini adalah terjemahan makna dalam Bahasa Indonesia — bukan pengganti teks Arab aslinya. Setiap terjemahan mendekati maknanya tanpa bisa sepenuhnya menangkapnya. Al-Qur'an adalah bahasa Arabnya; yang lain hanyalah pendekatan.",'Bacalah ini sebagai petunjuk arah. Mereka yang dapat mendengar dan membaca teks Arab asli berjalan di jalan yang langsung.','Desain edisi ini adalah pilihan yang disengaja: teks Arab besar dan di depan, terjemahan kecil dan memudar — sedekat mungkin dengan aslinya dalam kata dan jiwa.'],
@@ -208,40 +205,27 @@ const GEO = `
   border-top:1px solid rgba(192,155,60,.35);
   border-bottom:1px solid rgba(192,155,60,.22);}`;
 
-// ── Pergament-Hintergrund (ohne Ecken-CSS) ────────────────────────────────────
+// ── Hintergrund ─────────────────────────────────────────────────────────────
 const PAGE_BG = `
-body{
-  background-color:#f3ecca;
-  background-image:
-    repeating-linear-gradient(45deg,rgba(160,122,34,.03) 0,rgba(160,122,34,.03) 1px,transparent 0,transparent 50%),
-    repeating-linear-gradient(-45deg,rgba(160,122,34,.03) 0,rgba(160,122,34,.03) 1px,transparent 0,transparent 50%);
-  background-size:24px 24px;}`;
+body{background:#FEFCF5;}`;
 
 // ── Header-CSS für Intro/Index-Seiten ────────────────────────────────────────
 function pageHeaderCSS(){return `
-.ph{background:#122e16;border-bottom:2px solid rgba(140,102,14,.3);position:relative;overflow:hidden}
-.ph-bg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.ph{background:rgba(192,155,60,.06);border-bottom:1px solid rgba(192,155,60,.2);position:relative;overflow:hidden}
 .ph-g1,.ph-g2{height:14px;background-image:
   repeating-linear-gradient(60deg,transparent,transparent 4px,rgba(192,155,60,.1) 4px,rgba(192,155,60,.1) 5px),
   repeating-linear-gradient(-60deg,transparent,transparent 4px,rgba(192,155,60,.1) 4px,rgba(192,155,60,.1) 5px);
   background-size:10px 14px;}
-.ph-g1{border-bottom:1px solid rgba(140,102,14,.22)}
-.ph-g2{border-top:1px solid rgba(140,102,14,.22)}
+.ph-g1{border-bottom:1px solid rgba(192,155,60,.18)}
+.ph-g2{border-top:1px solid rgba(192,155,60,.18)}
 .ph-in{padding:28px 24px 24px;text-align:center;position:relative;z-index:2}
 .ph-rub{font-family:${AR_DECO};font-size:1.4rem;color:rgba(192,155,60,.55);direction:rtl;display:block;margin-bottom:8px}
 .ph-ar{font-family:${AR_DECO};font-size:2rem;color:#c9a84c;direction:rtl;line-height:1.5;display:block}
 .ph-hr{width:60px;height:1px;background:rgba(192,155,60,.28);margin:10px auto}
-.ph-sub{font-family:${AR_DECO};font:.58rem/1 sans-serif;color:rgba(192,155,60,.32);letter-spacing:.22em;text-transform:uppercase;display:block}`;}
+.ph-sub{font-family:${AR_DECO};font:.58rem/1 sans-serif;color:rgba(192,155,60,.4);letter-spacing:.22em;text-transform:uppercase;display:block}`;}
 
 function pageHeader(arText, sub){
-  const bgSVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 260" class="ph-bg" aria-hidden="true">
-<g fill="none" stroke="rgba(192,155,60,0.04)" stroke-width="0.7">
-<ellipse cx="450" cy="130" rx="430" ry="118"/><ellipse cx="450" cy="130" rx="310" ry="82"/>
-<ellipse cx="450" cy="130" rx="190" ry="50"/><ellipse cx="450" cy="130" rx="88" ry="24"/>
-<line x1="450" y1="12" x2="450" y2="248"/><line x1="32" y1="130" x2="868" y2="130"/>
-</g></svg>`;
   return `<div class="ph">
-  ${bgSVG}
   <div class="ph-g1"></div>
   <div class="ph-in">
     <span class="ph-rub">۞</span>
@@ -253,16 +237,13 @@ function pageHeader(arText, sub){
 </div>`;}
 
 // ── KX Books Footer-Zeile ───────────────────────────────────────────────────────
-const KX_FOOTER = `<div class="kx-copy">KX Books · ein Produkt von KX KroniX Tech · Alle Rechte vorbehalten</div>`;
-const KX_CSS = `.kx-copy{font:.42rem sans-serif;color:rgba(192,155,60,.12);text-align:center;padding:6px 20px;letter-spacing:.08em}`;
+const KX_FOOTER = `<div class="kx-copy">Eigentum von Meliha</div>`;
+const KX_CSS = `.kx-copy{font:.7rem sans-serif;color:rgba(192,155,60,.55);text-align:center;padding:6px 20px;letter-spacing:.08em;font-weight:600}`;
 
 // ════════════════════════════════════════════════════
 //  HAUPT-PORTAL-COVER
 // ════════════════════════════════════════════════════
 function mainCoverHTML(){
-  const links = TRANSLATIONS.map(t=>
-    `<a href="Übersetzungen/${t.name}/cover.html" class="li">${t.titleNative}</a>`
-  ).join('');
   return `<!DOCTYPE html>
 <html lang="ar"><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -271,164 +252,39 @@ ${COPYRIGHT_META}
 ${FONT_LINKS}
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-html,body{height:100%;min-height:100vh;background:#091a0c;display:flex;align-items:center;justify-content:center;overflow:hidden}
-.book{
-  height:min(700px,88vh);width:min(467px,calc(min(700px,88vh)*2/3),90vw);
-  background:radial-gradient(ellipse 90% 75% at 50% 38%,#183618 0%,#0e2010 50%,#060c07 100%);
-  position:relative;overflow:hidden;z-index:1;
-  border:2px solid rgba(192,155,60,.8);
-  box-shadow:0 30px 80px rgba(0,0,0,.7);
-}
-.book::before{content:'';position:absolute;inset:10px;border:1px solid rgba(192,155,60,.28);pointer-events:none;z-index:8}
-.book::after{content:'';position:absolute;inset:16px;border:0.5px solid rgba(192,155,60,.12);pointer-events:none;z-index:8}
-.shamsa{position:absolute;width:92%;height:92%;left:50%;top:44%;transform:translate(-50%,-50%);z-index:1}
-.cnt{
-  position:absolute;top:46px;left:12px;right:12px;bottom:48px;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  z-index:4;text-align:center;
-}
-.bsm{font-family:${AR_DECO};font-size:.88rem;color:rgba(192,155,60,.26);direction:rtl;display:block;margin-bottom:6px}
-.div{color:rgba(192,155,60,.22);font-size:.5rem;letter-spacing:6px;margin:6px 0;display:block}
-.ttl{font-family:${AR_DECO};font-size:clamp(3rem,14vw,5.5rem);color:#c9a84c;direction:rtl;line-height:1.2;display:block;text-shadow:0 2px 40px rgba(192,155,60,.12)}
-.lbl{font:.48rem/1 sans-serif;color:rgba(192,155,60,.2);letter-spacing:.3em;text-transform:uppercase;margin:12px 0 8px;display:block}
-.langs{display:flex;flex-wrap:wrap;justify-content:center;gap:3px 10px;max-width:90%}
-.li{color:rgba(192,155,60,.3);text-decoration:none;font:.52rem sans-serif;padding:2px 5px;transition:color .2s}
-.li:hover{color:rgba(192,155,60,.88)}
+html,body{margin:0;padding:0;height:100%;}
+body{background:#F5F0E3;}
+a.cv{display:block;width:100%;height:100vh;}
+a.cv img{width:100%;height:100%;object-fit:contain;display:block;}
 </style></head><body>
-<div class="book">
-  <div class="cnt">
-    <span class="bsm">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</span>
-    <span class="div">─ ۞ ─</span>
-    <span class="ttl">القرآن<br>الكريم</span>
-    <span class="div">─ ۞ ─</span>
-    <span class="lbl">Sprache wählen</span>
-    <div class="langs">${links}</div>
-  </div>
-</div>
+<a class="cv" href="Übersetzungen/Deutsch/intro.html">
+  <img src="../../Cover%20geschenke.png" alt="Cover">
+</a>
 </body></html>`;
 }
 
 // ════════════════════════════════════════════════════
-//  SPRACH-COVER
+//  RÜCKSEITE
 // ════════════════════════════════════════════════════
-function langCoverHTML(t){
+function backCoverHTML(t){
   return `<!DOCTYPE html>
 <html lang="${t.lang}"><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>القرآن الكريم · ${t.titleNative}</title>
+<title>Rückseite · القرآن الكريم</title>
 ${COPYRIGHT_META}
-${FONT_LINKS}
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-html,body{height:100%;min-height:100vh;background:#091a0c;display:flex;align-items:center;justify-content:center;overflow:hidden}
-
-.book{
-  height:min(700px,88vh);width:min(467px,calc(min(700px,88vh)*2/3),90vw);
-  position:relative;overflow:hidden;z-index:1;
-  border:2px solid rgba(192,155,60,.8);
-  box-shadow:0 30px 80px rgba(0,0,0,.7);
-}
-.book-bg{
-  position:absolute;inset:0;
-  background:radial-gradient(ellipse 95% 80% at 50% 35%,#1d4020 0%,#112615 38%,#0a1a0c 68%,#060d07 100%);
-  z-index:0;
-}
-.book::before{content:'';position:absolute;inset:10px;border:1px solid rgba(192,155,60,.28);pointer-events:none;z-index:8}
-.book::after{content:'';position:absolute;inset:15px;border:1px solid rgba(192,155,60,.14);pointer-events:none;z-index:8}
-
-/* Shamsa füllt den ganzen Buchdeckel */
-.shamsa{position:absolute;width:88%;height:88%;left:50%;top:50%;transform:translate(-50%,-50%);z-index:1}
-.cover-frame{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:8}
-
-/* Zone 1: Bismillah */
-.z-bismi{position:absolute;top:50px;left:20px;right:20px;text-align:center;z-index:6}
-.bismi-line{font-family:${AR_DECO};font-size:.95rem;color:rgba(192,155,60,.32);direction:rtl;display:block;margin-bottom:6px}
-.bismi-rule{display:flex;align-items:center;justify-content:center;gap:8px;color:rgba(192,155,60,.18);font-size:.48rem;letter-spacing:4px}
-.bismi-rule::before,.bismi-rule::after{content:'──';letter-spacing:1px}
-
-/* Zone 2: Titel */
-.z-title{position:absolute;left:12px;right:12px;top:50%;transform:translateY(-58%);text-align:center;z-index:6}
-.ttl{font-family:${AR_DECO};font-size:clamp(3.2rem,15vw,5.8rem);color:#c9a84c;direction:rtl;line-height:1.22;display:block;text-shadow:0 0 60px rgba(192,155,60,.08),0 2px 0 rgba(0,0,0,.35)}
-.div-orn{color:rgba(192,155,60,.28);font-size:.55rem;letter-spacing:7px;display:block;margin:10px 0}
-
-/* Zone 3: Sprach-Panel */
-.z-lang{
-  position:absolute;bottom:72px;left:20px;right:20px;z-index:6;
-  border-top:1px solid rgba(192,155,60,.2);border-bottom:1px solid rgba(192,155,60,.15);
-  padding:10px 14px;background:rgba(0,0,0,.18);
-}
-.lang-name{display:block;text-align:center;font:.72rem/1 sans-serif;color:rgba(192,155,60,.5);letter-spacing:.32em;text-transform:uppercase;margin-bottom:6px}
-.lang-disc{display:block;text-align:center;font:.45rem/1.7 sans-serif;color:rgba(192,155,60,.2);font-style:italic}
-
-/* Zone 4: Öffnen-Button */
-.z-btn{position:absolute;bottom:0;left:0;right:0;z-index:9}
-.open-btn{
-  display:flex;align-items:center;justify-content:center;gap:14px;padding:17px 0;
-  background:#0d2810;border-top:2px solid rgba(192,155,60,.55);
-  color:#c9a84c;text-decoration:none;transition:all .3s;
-}
-.btn-orn{font-size:.85rem;color:rgba(192,155,60,.38);transition:color .3s;font-family:${AR_DECO}}
-.btn-txt{font:.72rem sans-serif;letter-spacing:.36em;text-transform:uppercase}
-.open-btn:hover{background:#173d1b;border-top-color:rgba(192,155,60,.9)}
-.open-btn:hover .btn-orn{color:rgba(192,155,60,.8)}
-
-
-.back{position:absolute;top:4px;left:50%;transform:translateX(-50%);font:.38rem sans-serif;color:rgba(192,155,60,.07);text-decoration:none;z-index:10;white-space:nowrap;transition:color .2s;letter-spacing:.08em}
-.back:hover{color:rgba(192,155,60,.4)}
+html,body{margin:0;padding:0;height:100%;}
+body{background:#000;}
+a.bc{display:block;width:100%;height:100vh;}
+a.bc img{width:100%;height:100%;object-fit:contain;display:block;}
+.nav-b{position:fixed;top:14px;left:18px;font:.6rem sans-serif;color:rgba(192,155,60,.55);text-decoration:none;letter-spacing:.06em;z-index:10;}
+.nav-b:hover{color:#c9a84c;}
 </style></head><body>
-<div class="book">
-  <div class="book-bg"></div>
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 300" class="cover-frame" aria-hidden="true" preserveAspectRatio="none">
-    <g fill="none" stroke="rgba(192,155,60,0.5)" stroke-width="0.7">
-      <rect x="8" y="8" width="184" height="284"/>
-      <rect x="14" y="14" width="172" height="272"/>
-      <path d="M8,30 L8,8 L30,8" stroke-width="1.4"/>
-      <path d="M170,8 L192,8 L192,30" stroke-width="1.4"/>
-      <path d="M8,270 L8,292 L30,292" stroke-width="1.4"/>
-      <path d="M170,292 L192,292 L192,270" stroke-width="1.4"/>
-      <path d="M14,36 L14,14 L36,14" stroke-width="0.6"/>
-      <path d="M164,14 L186,14 L186,36" stroke-width="0.6"/>
-      <path d="M14,264 L14,286 L36,286" stroke-width="0.6"/>
-      <path d="M164,286 L186,286 L186,264" stroke-width="0.6"/>
-      <line x1="100" y1="8" x2="100" y2="14"/>
-      <line x1="100" y1="286" x2="100" y2="292"/>
-      <line x1="8" y1="150" x2="14" y2="150"/>
-      <line x1="186" y1="150" x2="192" y2="150"/>
-    </g>
-    <g fill="rgba(192,155,60,0.65)" stroke="none">
-      <circle cx="8" cy="8" r="3"/><circle cx="192" cy="8" r="3"/>
-      <circle cx="8" cy="292" r="3"/><circle cx="192" cy="292" r="3"/>
-      <polygon points="100,4 103,8 100,12 97,8"/>
-      <polygon points="100,288 103,292 100,296 97,292"/>
-      <polygon points="4,150 8,147 12,150 8,153"/>
-      <polygon points="188,150 192,147 196,150 192,153"/>
-    </g>
-  </svg>
-
-  <div class="z-bismi">
-    <span class="bismi-line">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</span>
-    <span class="bismi-rule">۞</span>
-  </div>
-
-  <div class="z-title">
-    <span class="ttl">القرآن<br>الكريم</span>
-    <span class="div-orn">─ ─ ۞ ─ ─</span>
-  </div>
-
-  <div class="z-lang">
-    <span class="lang-name">${t.titleNative}</span>
-    <span class="lang-disc">${DISC[t.lang]||DISC.de}</span>
-  </div>
-
-  <div class="z-btn">
-    <a href="intro.html" class="open-btn">
-      <span class="btn-orn">۞</span>
-      <span class="btn-txt">${t.introTitle}</span>
-      <span class="btn-orn">۞</span>
-    </a>
-  </div>
-  <a href="../../cover.html" class="back">← alle Sprachen</a>
-</div>
+<a class="bc" href="intro.html">
+  <img src="../../../../Back%20Geschenke.png" alt="Rückseite">
+</a>
+<a class="nav-b" href="intro.html">← Vorwort</a>
 </body></html>`;
 }
 
@@ -445,61 +301,56 @@ ${COPYRIGHT_META}
 ${FONT_LINKS}
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-${PAGE_BG}
-body{color:#1a0c00;font-family:'Noto Serif',serif;min-height:100vh}
-nav{background:#122e16;height:46px;display:flex;align-items:center;padding:0 24px;gap:12px;border-bottom:2px solid rgba(140,102,14,.28);position:sticky;top:0;z-index:200}
-nav a{color:rgba(192,155,60,.48);text-decoration:none;font:.66rem sans-serif;letter-spacing:.09em;transition:color .2s}
-nav a:hover{color:rgba(192,155,60,.95)}
-nav .orn{font-family:${AR_DECO};font-size:1rem;color:rgba(192,155,60,.28)}
+body{background:#F5F0E3;color:#1A0A02;font-family:'Noto Serif',serif;min-height:100vh;display:flex;flex-direction:column;}
+nav{background:rgba(254,252,245,.97);height:46px;display:flex;align-items:center;padding:0 24px;gap:12px;border-bottom:1px solid rgba(192,155,60,.2);position:sticky;top:0;z-index:200;flex-shrink:0;}
+nav a{color:rgba(192,155,60,.6);text-decoration:none;font:.66rem sans-serif;letter-spacing:.09em;transition:color .2s}
+nav a:hover{color:#c9a84c}
+nav .orn{font-family:${AR_DECO};font-size:1rem;color:rgba(192,155,60,.35)}
 nav .sp{flex:1}
-${pageHeaderCSS()}
-.disc-banner{background:rgba(130,92,8,.05);border-top:1px solid rgba(130,92,8,.16);border-bottom:1px solid rgba(130,92,8,.14);padding:18px 30px;text-align:center;font:.8rem/1.95 sans-serif;color:rgba(88,50,5,.72);font-style:italic}
-.disc-banner strong{color:rgba(105,62,7,.92);font-style:normal}
-main{max-width:min(740px,96vw);margin:72px auto 110px;padding:0 44px}
-h2{font-size:1.18rem;font-weight:400;color:#3a1e00;padding-bottom:14px;border-bottom:1px solid rgba(130,92,8,.22)}
-p{font-size:.96rem;font-weight:300;line-height:2.2;color:#2a1200;margin:1.7em 0}
-.bismi-box{margin:52px 0 14px;border:1px solid rgba(130,92,8,.28);background:#e8dcc0;position:relative}
-.bismi-in{border:1px solid rgba(130,92,8,.12);margin:5px;padding:0}
-.bismi-geo{height:10px;background-image:repeating-linear-gradient(60deg,transparent,transparent 3px,rgba(130,92,8,.07) 3px,rgba(130,92,8,.07) 4px),repeating-linear-gradient(-60deg,transparent,transparent 3px,rgba(130,92,8,.07) 3px,rgba(130,92,8,.07) 4px);background-size:8px 10px;border-bottom:1px solid rgba(130,92,8,.16)}
-.bismi-geo-b{height:10px;background-image:repeating-linear-gradient(60deg,transparent,transparent 3px,rgba(130,92,8,.07) 3px,rgba(130,92,8,.07) 4px),repeating-linear-gradient(-60deg,transparent,transparent 3px,rgba(130,92,8,.07) 3px,rgba(130,92,8,.07) 4px);background-size:8px 10px;border-top:1px solid rgba(130,92,8,.16)}
-.bismi-txt{display:block;text-align:center;font-family:${AR_FONT};font-size:2.4rem;color:#5a3e00;direction:rtl;line-height:1.9;padding:26px 14px 12px}
+main{flex:1;min-height:0;background:url('../../../../Vorwort%20geschenke.png') top center/contain no-repeat;overflow-y:auto;display:flex;flex-direction:column;align-items:center;padding:0;}
+.intro-c{width:min(calc((100vh - 130px)*0.64),90vw);padding:5vh 5% 40px;}
+h2{font-size:.92rem;font-weight:600;color:#1A0A02;padding-bottom:10px;border-bottom:1px solid rgba(192,155,60,.22)}
+p{font-size:.82rem;font-weight:400;line-height:1.8;color:rgba(26,10,2,.85);margin:1em 0;hyphens:none;-webkit-hyphens:none}
+.bismi-box{margin:52px 0 14px;border:1px solid rgba(192,155,60,.28);background:rgba(192,155,60,.04);position:relative}
+.bismi-in{border:1px solid rgba(192,155,60,.12);margin:5px;padding:0}
+.bismi-geo{height:10px;background-image:repeating-linear-gradient(60deg,transparent,transparent 3px,rgba(192,155,60,.07) 3px,rgba(192,155,60,.07) 4px),repeating-linear-gradient(-60deg,transparent,transparent 3px,rgba(192,155,60,.07) 3px,rgba(192,155,60,.07) 4px);background-size:8px 10px;border-bottom:1px solid rgba(192,155,60,.15)}
+.bismi-geo-b{height:10px;background-image:repeating-linear-gradient(60deg,transparent,transparent 3px,rgba(192,155,60,.07) 3px,rgba(192,155,60,.07) 4px),repeating-linear-gradient(-60deg,transparent,transparent 3px,rgba(192,155,60,.07) 3px,rgba(192,155,60,.07) 4px);background-size:8px 10px;border-top:1px solid rgba(192,155,60,.15)}
+.bismi-txt{display:block;text-align:center;font-family:${AR_FONT};font-size:1.6rem;color:#c9a84c;direction:rtl;line-height:1.7;padding:16px 14px 8px}
 .bismi-tr{display:block;text-align:center;font-family:'Noto Serif',serif;font-size:.82rem;color:rgba(90,58,5,.62);padding:0 14px 20px;font-style:italic}
-.cta{text-align:center;margin-top:44px}
-.cta a{display:inline-flex;align-items:center;gap:14px;padding:16px 60px;background:#122e16;color:#c9a84c;font:.74rem sans-serif;letter-spacing:.3em;text-transform:uppercase;text-decoration:none;border:1.5px solid rgba(130,92,8,.46);border-top:2px solid rgba(192,155,60,.4);transition:all .3s}
-.cta a:hover{background:#1a3e1e;border-color:#c9a84c;letter-spacing:.36em}
-.cta-orn{color:rgba(192,155,60,.4);font-size:.8rem;font-family:${AR_DECO}}
-footer{background:#122e16;border-top:2px solid rgba(130,92,8,.2);padding:0}
-.ft-geo{height:11px;background-image:repeating-linear-gradient(60deg,transparent,transparent 4px,rgba(192,155,60,.07) 4px,rgba(192,155,60,.07) 5px),repeating-linear-gradient(-60deg,transparent,transparent 4px,rgba(192,155,60,.07) 4px,rgba(192,155,60,.07) 5px);background-size:10px 11px;border-bottom:1px solid rgba(130,92,8,.18)}
+.cta{text-align:center;margin-top:16px}
+.cta a{display:inline-flex;align-items:center;gap:14px;padding:16px 60px;background:#c9a84c;color:#1A0A02;font:.74rem sans-serif;letter-spacing:.3em;text-transform:uppercase;text-decoration:none;border:1.5px solid rgba(192,155,60,.45);transition:all .3s}
+.cta a:hover{background:#ddb83a;border-color:#c9a84c;letter-spacing:.36em}
+.cta-orn{color:rgba(26,10,2,.4);font-size:.8rem;font-family:${AR_DECO}}
+footer{background:rgba(192,155,60,.06);border-top:1px solid rgba(192,155,60,.18);padding:0;position:relative;z-index:1;}
+.ft-geo{height:11px;background-image:repeating-linear-gradient(60deg,transparent,transparent 4px,rgba(192,155,60,.08) 4px,rgba(192,155,60,.08) 5px),repeating-linear-gradient(-60deg,transparent,transparent 4px,rgba(192,155,60,.08) 4px,rgba(192,155,60,.08) 5px);background-size:10px 11px;border-bottom:1px solid rgba(192,155,60,.15)}
 .ft-in{padding:10px 22px;text-align:center}
-.ft-note{font:.48rem sans-serif;color:rgba(192,155,60,.18);font-style:italic;display:block;margin-bottom:4px}
+.ft-note{font:.48rem sans-serif;color:rgba(192,155,60,.25);font-style:italic;display:block;margin-bottom:4px}
 ${KX_CSS}
 </style></head><body>
 <nav>
   <span class="orn">۞</span>
-  <a href="cover.html">← ${t.titleNative}</a>
+  <a href="../../cover.html">← Vorderseite</a>
   <span class="sp"></span>
+  <a href="back-cover.html">Rückseite →</a>
 </nav>
-${pageHeader('بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ', `${t.titleNative} · القرآن الكريم`)}
-<div class="disc-banner">${DISC_LONG[t.lang]||DISC_LONG.de}</div>
 <main>
+<div class="intro-c">
   <h2>${t.introTitle}</h2>
   ${body}
   <div class="bismi-box">
     <div class="bismi-in">
-      <div class="bismi-geo"></div>
-      <span class="bismi-txt">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</span>      <span class="bismi-tr">${BISMI_TR[t.lang]||BISMI_TR.de}</span>      <div class="bismi-geo-b"></div>
-    </div>
+      <span class="bismi-txt">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</span>      <span class="bismi-tr">${BISMI_TR[t.lang]||BISMI_TR.de}</span>    </div>
   </div>
   <div class="cta">
     <a href="index.html">
       <span class="cta-orn">۞</span>${t.readBtn}<span class="cta-orn">۞</span>
     </a>
   </div>
+</div>
 </main>
 <footer>
   <div class="ft-geo"></div>
   <div class="ft-in">
-    <span class="ft-note">${DISC[t.lang]||DISC.de}</span>
     ${KX_FOOTER}
   </div>
 </footer>
@@ -527,42 +378,39 @@ ${COPYRIGHT_META}
 ${FONT_LINKS}
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-${PAGE_BG}
-body{color:#1a0c00;font-family:'Noto Serif',serif}
-nav{background:#122e16;height:46px;display:flex;align-items:center;padding:0 24px;gap:12px;border-bottom:2px solid rgba(140,102,14,.28);position:sticky;top:0;z-index:200}
-nav a{color:rgba(192,155,60,.48);text-decoration:none;font:.66rem sans-serif;letter-spacing:.09em;transition:color .2s}
-nav a:hover{color:rgba(192,155,60,.95)}
-nav .orn{font-family:${AR_DECO};font-size:1rem;color:rgba(192,155,60,.28)}
+body{background:#F5F0E3;color:#1A0A02;font-family:'Noto Serif',serif;min-height:100vh;display:flex;flex-direction:column;}
+nav{background:rgba(192,155,60,.08);height:46px;display:flex;align-items:center;padding:0 24px;gap:12px;border-bottom:1px solid rgba(192,155,60,.2);position:sticky;top:0;z-index:200;flex-shrink:0;}
+nav a{color:rgba(192,155,60,.6);text-decoration:none;font:.66rem sans-serif;letter-spacing:.09em;transition:color .2s}
+nav a:hover{color:#c9a84c}
+nav .orn{font-family:${AR_DECO};font-size:1rem;color:rgba(192,155,60,.35)}
 nav .sp{flex:1}
-${pageHeaderCSS()}
-.list{max-width:800px;margin:24px auto 90px;padding:0 24px}
-.row{display:flex;align-items:center;gap:16px;padding:16px 12px;border-bottom:1px solid rgba(130,92,8,.12);text-decoration:none;color:#1a0c00;transition:background .18s}
-.row:first-child{border-top:1px solid rgba(130,92,8,.12)}
-.row:hover{background:rgba(130,92,8,.06)}
-.rn{font:.6rem sans-serif;color:rgba(130,92,8,.42);min-width:28px;font-variant-numeric:tabular-nums}
-.ra{font-family:${AR_FONT};font-size:1.85rem;color:#8a6a18;min-width:96px;text-align:right;direction:rtl}
+.list{flex:1;min-height:0;background:url('../../../../Inhalsangabe%20Geschenke.png') top center/contain no-repeat;overflow-y:auto;display:flex;flex-direction:column;align-items:center;padding:0;}
+.list-rows{width:min(calc((100vh - 130px)*0.56),86vw);padding-top:13vh;}
+.row{display:flex;align-items:center;gap:16px;padding:16px 12px;border-bottom:1px solid rgba(192,155,60,.18);text-decoration:none;color:#1A0A02;transition:background .18s}
+.row:first-child{border-top:1px solid rgba(192,155,60,.18)}
+.row:hover{background:rgba(192,155,60,.07)}
+.rn{font:.7rem sans-serif;color:rgba(192,155,60,.55);min-width:28px;font-variant-numeric:tabular-nums}
+.ra{font-family:${AR_FONT};font-size:2rem;color:#c9a84c;min-width:96px;text-align:right;direction:rtl}
 .ri{flex:1}
-.rs{display:block;font-size:.9rem;color:#2a1200}
-.rt{display:block;font-size:.7rem;color:#8a7030;margin-top:3px;font-weight:300}
-.rv{font:.6rem sans-serif;color:rgba(130,92,8,.3);min-width:24px;text-align:right}
-footer{background:#122e16;border-top:2px solid rgba(130,92,8,.2);padding:0}
-.ft-geo{height:11px;background-image:repeating-linear-gradient(60deg,transparent,transparent 4px,rgba(192,155,60,.07) 4px,rgba(192,155,60,.07) 5px),repeating-linear-gradient(-60deg,transparent,transparent 4px,rgba(192,155,60,.07) 4px,rgba(192,155,60,.07) 5px);background-size:10px 11px;border-bottom:1px solid rgba(130,92,8,.18)}
+.rs{display:block;font-size:1.05rem;color:#1A0A02}
+.rt{display:block;font-size:.84rem;color:rgba(26,10,2,.65);margin-top:3px;font-weight:400}
+.rv{font:.6rem sans-serif;color:rgba(192,155,60,.35);min-width:24px;text-align:right}
+footer{flex-shrink:0;background:rgba(192,155,60,.06);border-top:1px solid rgba(192,155,60,.18);padding:0;position:relative;z-index:1;}
+.ft-geo{height:11px;background-image:repeating-linear-gradient(60deg,transparent,transparent 4px,rgba(192,155,60,.08) 4px,rgba(192,155,60,.08) 5px),repeating-linear-gradient(-60deg,transparent,transparent 4px,rgba(192,155,60,.08) 4px,rgba(192,155,60,.08) 5px);background-size:10px 11px;border-bottom:1px solid rgba(192,155,60,.15)}
 .ft-in{padding:10px 22px;text-align:center}
-.ft-note{font:.48rem sans-serif;color:rgba(192,155,60,.18);font-style:italic;display:block;margin-bottom:4px}
+.ft-note{font:.48rem sans-serif;color:rgba(192,155,60,.25);font-style:italic;display:block;margin-bottom:4px}
 ${KX_CSS}
 </style></head><body>
 <nav>
   <span class="orn">۞</span>
   <a href="intro.html">← ${t.introTitle}</a>
   <span class="sp"></span>
-  <a href="cover.html">${t.titleNative}</a>
+  <a href="back-cover.html">Rückseite →</a>
 </nav>
-${pageHeader('القرآن الكريم', `${t.titleNative} · 114 سورة`)}
-<main class="list">${rows}</main>
+<main class="list"><div class="list-rows">${rows}</div></main>
 <footer>
   <div class="ft-geo"></div>
   <div class="ft-in">
-    <span class="ft-note">${DISC[t.lang]||DISC.de}</span>
     ${KX_FOOTER}
   </div>
 </footer>
@@ -579,149 +427,55 @@ ${pageHeader('القرآن الكريم', `${t.titleNative} · 114 سورة`)}
 function surahCSS(dir){
   const align = dir==='rtl'?'right':'left';
   return `
-:root{--gold:#7a5800;--ink:#1a0e00;--tr:rgba(35,16,0,.82);--rule:rgba(130,92,8,.13)}
+:root{--gold:#c9a84c;--ink:#1A0A02;--ink-dim:rgba(26,10,2,.65);--rule:rgba(192,155,60,.22)}
 *{margin:0;padding:0;box-sizing:border-box}
-${PAGE_BG}
-body{color:var(--ink);min-height:100vh;overflow-x:hidden}
+body{color:var(--ink);background:#F5F0E3;min-height:100vh;overflow-x:hidden;display:flex;flex-direction:column;}
 
-/* ── Sura-Header: Dunkelgrün mit Ornament-Hintergrund ── */
-.sh{
-  background:linear-gradient(180deg,#1c3d20 0%,#0f2412 100%);
-  border-bottom:2px solid rgba(130,92,8,.35);
-  text-align:center;position:relative;overflow:hidden;
-}
-.sh-bg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:.45}
-.sh-g1,.sh-g2{height:12px;background-image:
-  repeating-linear-gradient(60deg,transparent,transparent 4px,rgba(192,155,60,.18) 4px,rgba(192,155,60,.18) 5px),
-  repeating-linear-gradient(-60deg,transparent,transparent 4px,rgba(192,155,60,.18) 4px,rgba(192,155,60,.18) 5px);
-  background-size:10px 12px;position:relative;z-index:3}
-.sh-g1{border-bottom:1px solid rgba(130,92,8,.4)}
-.sh-g2{border-top:1px solid rgba(130,92,8,.4)}
-.sh-in{padding:24px 24px 20px;position:relative;z-index:2;text-align:center}
-.sh-rub{font-family:${AR_DECO};font-size:1.8rem;color:rgba(192,155,60,.72);direction:rtl;display:block;margin-bottom:12px}
-/* Cartouche: sauberer Rahmen um Suren-Name, vollständig im Header */
-.sh-crtt{
-  display:inline-block;position:relative;
-  padding:12px 48px;margin:0 auto;
-}
-.sh-crtt::before{
-  content:'';position:absolute;inset:0;
-  border:1.5px solid rgba(192,155,60,.65);
-  background:rgba(192,155,60,.04);
-}
-.sh-crtt::after{
-  content:'';position:absolute;inset:5px;
-  border:0.5px solid rgba(192,155,60,.22);
-}
-.sh-name{font-family:${AR_DECO};font-size:4.6rem;color:#c9a84c;direction:rtl;line-height:1.2;display:block;text-shadow:0 2px 40px rgba(192,155,60,.2);position:relative;z-index:3}
-.sh-meta{font-family:${AR_DECO};font-size:.84rem;color:rgba(192,155,60,.52);display:block;margin-top:16px}
+/* ── Sura-Header ── */
+.sh{text-align:center;padding:52px 24px 36px;border-bottom:1px solid rgba(192,155,60,.2);position:relative;z-index:1;}
+.sh-in{padding:0;text-align:center}
+.sh-rub{font-family:${AR_DECO};font-size:1.8rem;color:rgba(192,155,60,.55);direction:rtl;display:block;margin-bottom:12px}
+.sh-crtt{display:inline-block;position:relative;padding:10px 48px;border:1px solid rgba(192,155,60,.45);background:rgba(192,155,60,.04);}
+.sh-name{font-family:${AR_DECO};font-size:4.6rem;color:#1A0A02;direction:rtl;line-height:1.2;display:block;}
+.sh-meta{font-family:${AR_DECO};font-size:.84rem;color:rgba(26,10,2,.45);display:block;margin-top:14px}
 
 /* ── Bismillah ── */
-.bismi-area{background:#e8dcc0;border-bottom:1px solid rgba(130,92,8,.18)}
-.bismi-geo,.bismi-geo-b{height:10px;background-image:repeating-linear-gradient(60deg,transparent,transparent 3px,rgba(130,92,8,.07) 3px,rgba(130,92,8,.07) 4px),repeating-linear-gradient(-60deg,transparent,transparent 3px,rgba(130,92,8,.07) 3px,rgba(130,92,8,.07) 4px);background-size:8px 10px}
-.bismi-geo{border-bottom:1px solid rgba(130,92,8,.16)}
-.bismi-geo-b{border-top:1px solid rgba(130,92,8,.16)}
-.bismi-txt{
-  display:block;text-align:center;padding:32px 24px;
-  font-family:${AR_FONT};
-  font-size:2.4rem;color:#5a3e00;direction:rtl;line-height:2;
-}
+.bismi-area{border-bottom:1px solid rgba(192,155,60,.15);position:relative;z-index:1;}
+.bismi-geo,.bismi-geo-b{height:10px;background-image:repeating-linear-gradient(60deg,transparent,transparent 3px,rgba(192,155,60,.07) 3px,rgba(192,155,60,.07) 4px),repeating-linear-gradient(-60deg,transparent,transparent 3px,rgba(192,155,60,.07) 3px,rgba(192,155,60,.07) 4px);background-size:8px 10px}
+.bismi-geo{border-bottom:1px solid rgba(192,155,60,.12)}
+.bismi-geo-b{border-top:1px solid rgba(192,155,60,.12)}
+.bismi-txt{display:block;text-align:center;padding:32px 24px;font-family:${AR_FONT};font-size:2.4rem;color:#c9a84c;direction:rtl;line-height:2;}
 
-/* ── Seiten-Rahmen: ornamentaler Rahmen um Versbereich ── */
-.page-wrap{
-  max-width:min(960px,96vw);margin:0 auto;
-  position:relative;
-  border:2px solid rgba(130,92,8,.45);
-  box-shadow:0 0 0 5px rgba(243,236,202,1),0 0 0 7px rgba(130,92,8,.3),0 0 0 12px rgba(243,236,202,1),0 0 0 13px rgba(130,92,8,.15);
-  margin-left:auto;margin-right:auto;
-}
-.pf-top,.pf-bot{
-  height:13px;
-  background-image:
-    repeating-linear-gradient(90deg,rgba(130,92,8,.18) 0,rgba(130,92,8,.18) 1px,transparent 1px,transparent 8px),
-    repeating-linear-gradient(0deg,rgba(130,92,8,.08) 0,rgba(130,92,8,.08) 1px,transparent 1px,transparent 8px);
-  background-size:8px 13px;
-}
-.pf-top{border-bottom:1px solid rgba(130,92,8,.28)}
-.pf-bot{border-top:1px solid rgba(130,92,8,.28)}
-.corn{
-  position:absolute;width:26px;height:26px;
-  display:flex;align-items:center;justify-content:center;
-  font-family:${AR_DECO};font-size:1.1rem;
-  color:rgba(130,92,8,.7);background:#f3ecca;
-  z-index:10;line-height:1;
-}
-.corn-tl{top:-13px;left:-13px}.corn-tr{top:-13px;right:-13px}
-.corn-bl{bottom:-13px;left:-13px}.corn-br{bottom:-13px;right:-13px}
-.verses{padding:32px 80px 110px}
-.verse{padding:64px 0 50px;border-bottom:1px solid var(--rule)}
+/* ── Seiten-Inhalt ── */
+.page-wrap{flex:1;min-height:0;background:url('../../../../../Suren%20Geschenke.png') top center/contain no-repeat;display:flex;flex-direction:column;align-items:center;overflow-y:auto;position:relative;z-index:1;}
+.verses{width:min(calc((100vh - 310px)*0.52),82vw);padding:4vh 0 60px;box-sizing:border-box;}
+.verse{padding:28px 0 22px;border-bottom:1px solid var(--rule)}
 .verse:last-child{border-bottom:none}
 
 /* ── Arabischer Vers ── */
-.ar{
-  font-family:${AR_FONT};
-  font-size:3.4rem;line-height:2.8;
-  color:#b8922a;direction:rtl;text-align:center;
-}
+.ar{font-family:${AR_FONT};font-size:3.4rem;line-height:2.8;color:#1A0A02;direction:rtl;text-align:center;}
 
 /* ── Vers-Trennzeichen ── */
-.vd{
-  display:flex;align-items:center;justify-content:center;gap:0;
-  margin:36px 0 28px;
-  user-select:none;
-}
-.vd::before,.vd::after{
-  content:'';display:block;width:80px;height:1px;
-  background:linear-gradient(to right,transparent,rgba(130,92,8,.22));
-}
-.vd::after{background:linear-gradient(to left,transparent,rgba(130,92,8,.22))}
-.vd span{display:block;width:6px;height:6px;border-radius:50%;background:rgba(130,92,8,.22);margin:0 14px}
+.vd{display:flex;align-items:center;justify-content:center;gap:0;margin:36px 0 28px;user-select:none;}
+.vd::before,.vd::after{content:'';display:block;width:80px;height:1px;background:linear-gradient(to right,transparent,rgba(192,155,60,.3));}
+.vd::after{background:linear-gradient(to left,transparent,rgba(192,155,60,.3))}
+.vd span{display:block;width:6px;height:6px;border-radius:50%;background:rgba(192,155,60,.3);margin:0 14px}
 
 /* ── Übersetzung ── */
-.tr{
-  font-family:'Noto Serif',Georgia,serif;
-  font-size:.86rem;font-weight:300;line-height:1.95;
-  color:rgba(35,16,0,.5);direction:${dir};text-align:${align};
-  padding:8px 20px;
-  border-${dir==='rtl'?'right':'left'}:2px solid rgba(130,92,8,.22);
-  margin-top:4px;
-}
+.tr{font-family:'Noto Serif',Georgia,serif;font-size:1rem;font-weight:400;line-height:1.9;color:rgba(26,10,2,.85);direction:${dir};text-align:${align};hyphens:none;-webkit-hyphens:none;padding:10px 20px;border-${dir==='rtl'?'right':'left'}:2px solid rgba(192,155,60,.3);margin-top:6px;}
 
-/* ═══ UNTERE NAVIGATION: Grün, grid 1fr auto 1fr ═══ */
-.bot-nav{
-  background:#122e16;
-  border-top:2px solid rgba(130,92,8,.28);
-  display:grid;
-  grid-template-columns:1fr auto 1fr;
-  align-items:stretch;
-  min-height:64px;
-}
-.bn{
-  padding:16px 22px;
-  color:rgba(192,155,60,.58);
-  text-decoration:none;
-  font-family:${AR_DECO};
-  font-size:1.05rem;
-  display:flex;align-items:center;gap:8px;
-  transition:color .25s,background .25s;
-  overflow:hidden;
-}
-.bn:hover{color:#c9a84c;background:rgba(130,92,8,.12)}
-.bn-p{justify-content:flex-end;border-right:1px solid rgba(130,92,8,.22);padding-right:28px}
-.bn-n{justify-content:flex-start;border-left:1px solid rgba(130,92,8,.22);padding-left:28px}
-.bn-ghost{display:block;background:#122e16}
-.bn-c{
-  padding:14px 28px;
-  display:flex;align-items:center;justify-content:center;
-  text-decoration:none;transition:background .25s;
-  border-left:1px solid rgba(130,92,8,.22);
-  border-right:1px solid rgba(130,92,8,.22);
-  min-width:130px;
-}
-.bn-c:hover{background:rgba(130,92,8,.12)}
-.bn-ix{font:.56rem sans-serif;color:rgba(192,155,60,.45);letter-spacing:.22em;text-transform:uppercase}
+/* ── Navigation ── */
+.bot-nav{flex-shrink:0;background:rgba(192,155,60,.06);border-top:1px solid rgba(192,155,60,.2);display:grid;grid-template-columns:1fr auto 1fr;align-items:stretch;min-height:64px;position:relative;z-index:1;}
+.bn{padding:16px 22px;color:rgba(192,155,60,.7);text-decoration:none;font-family:${AR_DECO};font-size:1.05rem;display:flex;align-items:center;gap:8px;transition:color .25s,background .25s;overflow:hidden;}
+.bn:hover{color:#c9a84c;background:rgba(192,155,60,.1)}
+.bn-p{justify-content:flex-end;border-right:1px solid rgba(192,155,60,.15);padding-right:28px}
+.bn-n{justify-content:flex-start;border-left:1px solid rgba(192,155,60,.15);padding-left:28px}
+.bn-ghost{display:block;}
+.bn-c{padding:14px 28px;display:flex;align-items:center;justify-content:center;text-decoration:none;transition:background .25s;border-left:1px solid rgba(192,155,60,.15);border-right:1px solid rgba(192,155,60,.15);min-width:130px;}
+.bn-c:hover{background:rgba(192,155,60,.1)}
+.bn-ix{font:.56rem sans-serif;color:rgba(192,155,60,.5);letter-spacing:.22em;text-transform:uppercase}
 
-@media(max-width:600px){.ar{font-size:2.1rem}.sh-name{font-size:3.2rem}.verses{padding:10px 20px 70px}.bn{font-size:.88rem;padding:13px 12px}.bn-c{min-width:90px;padding:10px 14px}}
+@media(max-width:600px){.ar{font-size:2.1rem}.sh-name{font-size:3.2rem}.verses{padding:10px 20px 70px}.page-wrap{max-width:96vw}.bn{font-size:.88rem;padding:13px 12px}.bn-c{min-width:90px;padding:10px 14px}}
 `;}
 
 function surahHTML(chapter, verses, arabicMap, t, chapters){
@@ -738,7 +492,7 @@ function surahHTML(chapter, verses, arabicMap, t, chapters){
   const verseBlocks = verses.map(v=>{
     const num   = v.verse_key.split(':')[1];
     const arNum = toArabicNum(num);
-    const arTxt = arabicMap[v.verse_key]||'';
+    const arTxt = (arabicMap[v.verse_key]||'').replace(/\uFFFD/g,'');
     const raw   = (v.translations&&v.translations[0])?v.translations[0].text:'';
     const trans = raw.replace(/<sup[^>]*>.*?<\/sup>/gi,'').replace(/<[^>]+>/g,'').trim()||'—';
     return `<div class="verse" id="v${num}">
@@ -769,40 +523,18 @@ ${FONT_LINKS}
 <style>${surahCSS(t.dir)}</style>
 </head><body>
 <div class="sh">
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 320" class="sh-bg" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
-    <g fill="none">
-      <ellipse cx="600" cy="160" rx="560" ry="148" stroke="rgba(192,155,60,0.09)" stroke-width="1"/>
-      <ellipse cx="600" cy="160" rx="440" ry="110" stroke="rgba(192,155,60,0.07)" stroke-width="0.8"/>
-      <ellipse cx="600" cy="160" rx="300" ry="72" stroke="rgba(192,155,60,0.06)" stroke-width="0.6"/>
-      <ellipse cx="600" cy="160" rx="160" ry="38" stroke="rgba(192,155,60,0.06)" stroke-width="0.5"/>
-      <line x1="600" y1="10" x2="600" y2="310" stroke="rgba(192,155,60,0.05)" stroke-width="0.6"/>
-      <line x1="30" y1="160" x2="1170" y2="160" stroke="rgba(192,155,60,0.05)" stroke-width="0.6"/>
-      <line x1="30" y1="10" x2="1170" y2="310" stroke="rgba(192,155,60,0.03)" stroke-width="0.5"/>
-      <line x1="1170" y1="10" x2="30" y2="310" stroke="rgba(192,155,60,0.03)" stroke-width="0.5"/>
-    </g>
-  </svg>
-  <div class="sh-g1"></div>
   <div class="sh-in">
     <span class="sh-rub">۞</span>
     <div class="sh-crtt">
       <span class="sh-name">${chapter.name_arabic}</span>
     </div>
-    <span class="sh-meta">${chapter.name_simple}${chapter.translated_name ? ' · ' + chapter.translated_name.name : ''}</span>
+    <span class="sh-meta">${chapter.name_simple}${DE_CHAPTER_NAMES[chapter.id] ? ' · ' + DE_CHAPTER_NAMES[chapter.id] : chapter.translated_name ? ' · ' + chapter.translated_name.name : ''}</span>
   </div>
-  <div class="sh-g2"></div>
 </div>
 ${bismi}
-<div class="page-wrap">
-  <span class="corn corn-tl">✦</span>
-  <span class="corn corn-tr">✦</span>
-  <div class="pf-top"></div>
-<main class="verses">
+<div class="page-wrap"><main class="verses">
 ${verseBlocks}
-</main>
-  <div class="pf-bot"></div>
-  <span class="corn corn-bl">✦</span>
-  <span class="corn corn-br">✦</span>
-</div>
+</main></div>
 <div class="bot-nav">
   ${prevBtn}
   <a href="../index.html" class="bn-c">
@@ -821,15 +553,27 @@ async function main(){
   console.log('  ║   AL-QURAN · Redesign  v 7 . 0   ║');
   console.log('  ╚══════════════════════════════════╝\n');
 
+  const hasCacheMeta = fs.existsSync(path.join(CACHE_DIR,'_chapters.json'));
+  const hasCacheAr   = fs.existsSync(path.join(CACHE_DIR,'_arabic.json'));
+
   process.stdout.write('  Kapitel-Metadaten … ');
-  const ch = await fetchRetry('https://api.quran.com/api/v4/chapters?language=de');
-  const chapters = ch.chapters;
+  let chapters;
+  if (hasCacheMeta) {
+    chapters = JSON.parse(fs.readFileSync(path.join(CACHE_DIR,'_chapters.json'),'utf8'));
+  } else {
+    const ch = await fetchRetry('https://api.quran.com/api/v4/chapters?language=de');
+    chapters = ch.chapters;
+  }
   console.log(`${chapters.length} ✓`);
 
   process.stdout.write('  Arabischer Text (Imlaei) … ');
-  const ar = await fetchRetry('https://api.quran.com/api/v4/quran/verses/imlaei');
-  const arabicMap = {};
-  for(const v of ar.verses) arabicMap[v.verse_key]=v.text_imlaei;
+  let arabicMap = {};
+  if (hasCacheAr) {
+    arabicMap = JSON.parse(fs.readFileSync(path.join(CACHE_DIR,'_arabic.json'),'utf8'));
+  } else {
+    const ar = await fetchRetry('https://api.quran.com/api/v4/quran/verses/imlaei');
+    for(const v of ar.verses) arabicMap[v.verse_key]=v.text_imlaei;
+  }
   console.log(`${Object.keys(arabicMap).length} Verse ✓\n`);
 
   fs.writeFileSync(path.join(BASE_DIR,'cover.html'), mainCoverHTML(), 'utf8');
@@ -840,15 +584,22 @@ async function main(){
     const surenDir = path.join(tDir,'suren');
     if(!fs.existsSync(tDir))      fs.mkdirSync(tDir,     {recursive:true});
     if(!fs.existsSync(surenDir))  fs.mkdirSync(surenDir,  {recursive:true});
-    fs.writeFileSync(path.join(tDir,'cover.html'), langCoverHTML(t),      'utf8');
+    fs.writeFileSync(path.join(tDir,'back-cover.html'), backCoverHTML(t), 'utf8');
     fs.writeFileSync(path.join(tDir,'intro.html'), introHTML(t),          'utf8');
     fs.writeFileSync(path.join(tDir,'index.html'), indexHTML(t,chapters), 'utf8');
-    process.stdout.write(`  ${t.name}: cover+intro+index ✓   Suren … `);
+    process.stdout.write(`  ${t.name}: intro+index ✓   Suren … `);
     let n=0;
     for(const c of chapters){
-      const url  = `https://api.quran.com/api/v4/verses/by_chapter/${c.id}?translations=${t.transId}&per_page=300&fields=verse_key`;
-      const data = await fetchRetry(url);
-      const html = surahHTML(c,data.verses||[],arabicMap,t,chapters);
+      const cached = loadFromCache(t.lang, c.id);
+      let verses;
+      if (cached) {
+        verses = cached;
+      } else {
+        const url  = `https://api.quran.com/api/v4/verses/by_chapter/${c.id}?translations=${t.transId}&per_page=300&fields=verse_key`;
+        const data = await fetchRetry(url);
+        verses = data.verses || [];
+      }
+      const html = surahHTML(c,verses,arabicMap,t,chapters);
       fs.writeFileSync(path.join(surenDir,surahFile(c)),html,'utf8');
       n++;
       if(n%25===0) process.stdout.write('.');

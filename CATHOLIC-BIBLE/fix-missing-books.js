@@ -43,7 +43,7 @@ const DK_BOOKS = [
 // ── Quellen-Konfiguration ────────────────────────────────────────────────────
 // code = Projektcode in data/{code}/  |  sc = scrollmapper-Dateiname
 const SOURCES = [
-  { code:'german',    sc:'GerTextbibel',  hasDK: true  },
+  { code:'german',    sc:'GerTextbibel',  hasDK: true,  fallback:'kjv' },
   { code:'french',    sc:'FreCrampon',    hasDK: true  },
   { code:'russian',   sc:'RusSynodal',    hasDK: true  },
   { code:'croatian',  sc:'CroSaric',      hasDK: true  },

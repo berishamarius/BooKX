@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ionas &middot; Deutsch &middot; Biblia Catholica</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+body{
+  background:#2C0810;
+  background-image:radial-gradient(ellipse at 50% 20%,#4A1020 0%,#1A0407 100%);
+  font-family:'EB Garamond',serif;
+  color:#1A0E06;
+  font-size:17px;
+}
+
+/* ------------------------------------------
+   BUCHKOPF
+------------------------------------------ */
+.bhead{
+  background:
+    repeating-linear-gradient( 45deg,transparent,transparent 36px,rgba(200,160,48,.028) 36px,rgba(200,160,48,.028) 37px),
+    repeating-linear-gradient(-45deg,transparent,transparent 36px,rgba(200,160,48,.028) 36px,rgba(200,160,48,.028) 37px),
+    linear-gradient(162deg,#1A0407 0%,#2C0810 45%,#4A1020 65%,#2C0810 85%,#1A0407 100%);
+  padding:36px 28px 28px;
+  text-align:center;
+  border-bottom:4px solid #B8962E;
+  position:relative;overflow:hidden;
+}
+/* Innerer Rahmen � �u�erer Ring */
+.bhead::before{
+  content:'';position:absolute;inset:14px;
+  border:1px solid rgba(200,160,48,.22);
+  pointer-events:none;
+}
+/* Innerer Rahmen � innerer Ring */
+.bhead::after{
+  content:'';position:absolute;inset:22px;
+  border:1px solid rgba(200,160,48,.08);
+  pointer-events:none;
+}
+.btestament{
+  display:inline-block;
+  border:1px solid rgba(200,160,48,.32);
+  color:rgba(200,160,48,.52);
+  font-family:'Cinzel',serif;font-size:.55rem;
+  letter-spacing:.3em;padding:4px 18px;
+  border-radius:2px;margin-bottom:16px;
+  position:relative;
+}
+.blatin{
+  display:none;
+  font-family:'UnifrakturMaguntia',cursive;
+  font-size:clamp(1.9rem,7vw,3.4rem);
+  color:#EDD882;
+  text-shadow:0 3px 20px rgba(0,0,0,.55);
+  letter-spacing:.04em;position:relative;
+}
+body:not([data-conf]) .blatin-c,
+body[data-conf="catholic"] .blatin-c{display:block;}
+body[data-conf="protestant"] .blatin-p{display:block;}
+.btrans{
+  font-family:'Cinzel',serif;
+  font-size:.88rem;
+  color:#C8A030;margin-top:10px;
+  letter-spacing:.16em;position:relative;
+}
+.bmeta{
+  font-family:'Cinzel',serif;font-size:.62rem;
+  color:rgba(200,160,48,.4);margin-top:6px;
+  letter-spacing:.08em;position:relative;
+}
+
+/* ------------------------------------------
+   KAPITELINHALT
+------------------------------------------ */
+.content{
+  max-width:960px;
+  margin:36px auto 36px;
+  padding:48px 72px 100px;
+  background:#FAF5E8;
+  background-image:
+    radial-gradient(ellipse at top left,rgba(184,150,46,.06) 0%,transparent 55%),
+    radial-gradient(ellipse at bottom right,rgba(184,150,46,.05) 0%,transparent 55%);
+  box-shadow:0 8px 80px rgba(0,0,0,.55),0 2px 12px rgba(0,0,0,.35),inset 0 0 0 1px rgba(184,150,46,.18);
+  border-left:4px solid #B8962E;
+  border-right:4px solid #B8962E;
+  border-top:2px solid rgba(184,150,46,.4);
+  border-bottom:2px solid rgba(184,150,46,.4);
+  position:relative;overflow:clip;
+}
+.content::before{
+  content:'';
+  position:absolute;
+  inset:12px;
+  border:1px solid rgba(184,150,46,.08);
+  pointer-events:none;
+}
+
+.chap{margin-top:0;}
+
+.chhead{
+  text-align:center;
+  padding:40px 0 20px;
+  margin-bottom:16px;
+  position:relative;
+}
+.chhead::before{
+  content:'����?�?�?����';
+  display:block;
+  font-size:.7rem;
+  color:rgba(184,150,46,.45);
+  letter-spacing:.35em;
+  margin-bottom:16px;
+}
+.chhead::after{
+  content:'';
+  display:block;
+  width:200px;
+  height:1px;
+  margin:14px auto 0;
+  background:linear-gradient(to right,transparent,#B8962E,transparent);
+}
+.chrom{
+  font-family:'Cinzel Decorative',serif;
+  font-size:4rem;color:#8B6914;
+  display:block;
+  text-shadow:0 2px 18px rgba(184,150,46,.2);
+  line-height:1;
+}
+.chlbl{
+  font-family:'Cinzel',serif;font-size:.58rem;
+  color:rgba(184,150,46,.42);letter-spacing:.32em;
+  display:none;margin-top:8px;
+}
+body:not([data-conf]) .chlbl-c
+body[data-conf="catholic"] .chlbl-c{display:block;}
+body[data-conf="protestant"] .chlbl-p{display:block;}
+
+/* ------------------------------------------
+   VERSE
+------------------------------------------ */
+.vb{
+  display:flex;
+  padding:20px 6px;
+  border-bottom:1px solid rgba(184,150,46,.12);
+  background:none;
+  border-radius:2px;
+  transition:background .15s;
+}
+.vb:hover{
+  background:rgba(184,150,46,.04);
+}
+
+/* Versnummer */
+.vn{
+  flex-shrink:0;
+  width:38px;
+  padding-top:4px;
+  font-family:'Cinzel',serif;font-size:.56rem;
+  color:rgba(184,150,46,.52);text-align:right;
+  padding-right:12px;line-height:2.4;
+}
+
+.vt{
+  flex:1;
+  padding:0 20px 0 4px;
+}
+
+/* BASIS-TEXT � wechselt je nach Konfession */
+.base{
+  font-family:'EB Garamond',serif;
+  font-size:1.2rem;
+  font-weight:500;
+  line-height:2.1;
+  color:#3D1A08;
+  display:none;
+}
+/* Standardm��ig (kein data-conf): katholisch = Latein */
+body:not([data-conf]) .base-c,
+body[data-conf="catholic"] .base-c { display:block; }
+body[data-conf="protestant"] .base-p { display:block; }
+/* Leere Basis-Paragraphen ausblenden */
+.base:empty { display:none !important; }
+
+/* �BERSETZUNG � SEKUND�R: kleiner, kursiv, unter dem Latein */
+.tra{
+  font-family:'EB Garamond',serif;
+  font-size:.93rem;
+  font-style:italic;
+  line-height:1.95;
+  color:#1E2848;
+  margin-top:5px;
+  padding-left:14px;
+  border-left:2px solid rgba(90,110,170,.2);
+}
+
+/* Drop-Cap: erster Vers eines Kapitels � nur Latein und Luther, nicht Griechisch */
+.vb.first .base-c::first-letter,
+.vb.first .base-p::first-letter{
+  font-family:'Cinzel Decorative',serif;
+  font-size:4em;
+  float:left;
+  line-height:.7;
+  padding-right:.08em;
+  margin-top:.07em;
+  color:#B8962E;
+  text-shadow:1px 2px 6px rgba(0,0,0,.12);
+}
+
+/* ------------------------------------------
+   BUCH-NAVIGATION (unten)
+------------------------------------------ */
+.bnav{
+  display:flex;justify-content:space-between;align-items:center;
+  background:#2C0810;border-top:3px solid #B8962E;
+  padding:12px 24px;gap:12px;
+}
+.bnav a,.bnav .dim{
+  color:#C8A030;text-decoration:none;
+  font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:.07em;
+  padding:6px 16px;
+  border:1px solid rgba(200,160,48,.28);
+  border-radius:2px;transition:background .18s;
+}
+.bnav a:hover{background:rgba(200,160,48,.12);}
+.bnav .dim{color:rgba(200,160,48,.2);border-color:rgba(200,160,48,.1);}
+.bnav .center{
+  font-family:'Cinzel',serif;font-size:.68rem;
+  color:rgba(200,160,48,.65);text-align:center;
+  letter-spacing:.06em;text-decoration:none;
+  border:1px solid rgba(200,160,48,.28);border-radius:2px;
+  padding:6px 20px;transition:background .18s;
+}
+.bnav .center:hover{background:rgba(200,160,48,.1);}
+
+/* DRUCK */
+@media print{
+  .bnav{display:none;}
+  .bhead{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .vb{break-inside:avoid;}
+}
+
+/* MOBIL */
+@media(max-width:600px){
+  .blatin{font-size:1.8rem;}
+  .base{font-size:1rem;}
+  .tra{font-size:.84rem;}
+  .content{padding:16px 18px 60px;margin:0;border-left:none;border-right:none;border-radius:0;}
+  .chrom{font-size:1.8rem;}
+}
+/* KREUZ-GRAVUR */
+.b-wm{position:sticky;top:calc(50vh - 37.5vmin);width:50vmin;height:75vmin;margin:0 auto -75vmin;display:block;pointer-events:none;z-index:0;user-select:none;}
+.b-wm svg{width:100%;height:auto;display:block;}
+.b-wm path{fill:none;stroke:rgba(184,150,46,.07);stroke-width:.018;stroke-linecap:butt;}
+</style>
+</head>
+<body>
+<header class="bhead">
+  <div class="btestament">VETUS TESTAMENTUM</div>
+  <div class="blatin blatin-c">IONAS</div>
+  <div class="blatin blatin-p">JONA</div>
+  <div class="btrans">Jona &nbsp;&middot;&nbsp; <em>Deutsch</em></div>
+  <div class="bmeta">4 Capita &nbsp;&middot;&nbsp; 48 Versus</div>
+</header>
+
+<main class="content">
+<div class="b-wm"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2 3"><path d="M1,0V3M0,.9H2"/></svg></div>
+<section class="chap" id="c1">
+  <div class="chhead">
+    <span class="chrom">I</span>
+    <span class="chlbl chlbl-c">Caput I</span>
+    <span class="chlbl chlbl-p">Das 1. Capitel</span>
+  </div>
+<div class="vb first" id="v1-1">
+  <span class="vn">1</span>
+  <div class="vt">
+    <p class="base base-c">Et factum est verbum Domini ad Jonam, filium Amathi, dicens :</p>
+    <p class="base base-p">Es geschah das Wort des HERRN zu Jona, dem Sohn Amithais, und sprach:</p>
+    <p class="tra">Es erging aber das Wort Jahwes an Jona, den Sohn Amittais, folgendermaßen:</p>
+  </div>
+</div>
+<div class="vb" id="v1-2">
+  <span class="vn">2</span>
+  <div class="vt">
+    <p class="base base-c">Surge, et vade in Niniven, civitatem grandem, et prædica in ea, quia ascendit malitia ejus coram me.</p>
+    <p class="base base-p">Mache dich auf und gehe in die grofte Stadt Ninive und predige drinnen; denn ihre Bosheit ist heraufkommen vormich.</p>
+    <p class="tra">Auf, begieb dich nach Nineve, der großen Stadt, und predige wider sie; denn ihre Bosheit ist heraufgekommen vor mich!</p>
+  </div>
+</div>
+<div class="vb" id="v1-3">
+  <span class="vn">3</span>
+  <div class="vt">
+    <p class="base base-c">Et surrexit Jonas, ut fugeret in Tharsis a facie Domini, et descendit in Joppen : et invenit navem euntem in Tharsis, et dedit naulum ejus, et descendit in eam ut iret cum eis in Tharsis a facie Domini.</p>
+    <p class="base base-p">Aber Jona machte sich auf und floh vor dem HERRN; und wollte aufs Meer und kam hinab gen Japho. Und da erein Schiff fand, das aufs Meer wollte fahren, gab er Fahrgeld und trat, darein, daß er mit ihnen aufs Meer fuhre vor dem HERRN.</p>
+    <p class="tra">Aber Jona machte sich auf, um vor Jahwe nach Tarsis zu fliehen, und als er hinab nach Japho gelangt war und ein Schiff gefunden hatte, das nach Tarsis gehen sollte, erlegte er das Fährgeld und bestieg es, um mit ihnen nach Tarsis zu fahren und so Jahwe zu entrinnen.</p>
+  </div>
+</div>
+<div class="vb" id="v1-4">
+  <span class="vn">4</span>
+  <div class="vt">
+    <p class="base base-c">Dominus autem misit ventum magnum in mare : et facta est tempestas magna in mari, et navis periclitabatur conteri.</p>
+    <p class="base base-p">Da lieft der HERR einen groften Wind aufs Meer kommen und hub sich ein groli Ungewitter auf dem Meer, daß man meinete, das Schiff wurde zerbrechen.</p>
+    <p class="tra">Jahwe aber sandte einen gewaltigen Wind auf das Meer, so daß ein gewaltiger Sturm auf dem Meer entstand und das Schiff zu zerbrechen drohte.</p>
+  </div>
+</div>
+<div class="vb" id="v1-5">
+  <span class="vn">5</span>
+  <div class="vt">
+    <p class="base base-c">Et timuerunt nautæ, et clamaverunt viri ad deum suum, et miserunt vasa quæ erant in navi, in mare, ut alleviaretur ab eis ; et Jonas descendit ad interiora navis, et dormiebat sopore gravi.</p>
+    <p class="base base-p">Und die Schiffsleute furchteten sich und schrieen ein jeglicher zu seinem Gott; und warfen das Gerat, das im Schiff war, ins Meer, daß es leichter wurde. Aber Jona war hinunter in das Schiff gestiegen, lag und schlief.</p>
+    <p class="tra">Da gerieten die Schiffer in Furcht und schrieen ein jeder zu seinem Gott. Und die Geräte, die im Schiffe waren, warfen sie ins Meer, um sich zu erleichtern. Jona aber war in den untersten Schiffsraum hinabgestiegen, hatte sich hingelegt und war fest eingeschlafen.</p>
+  </div>
+</div>
+<div class="vb" id="v1-6">
+  <span class="vn">6</span>
+  <div class="vt">
+    <p class="base base-c">Et accessit ad eum gubernator, et dixit ei : Quid tu sopore deprimeris ? surge, invoca Deum tuum, si forte recogitet Deus de nobis, et non pereamus.</p>
+    <p class="base base-p">Da trat zu ihm der Schiffsherr und sprach zu ihm: Was schlafst du? Stehe auf, rufe deinen Gott an, ob vielleicht Gott an uns gedenken wolite, daß wir nicht verdurben!</p>
+    <p class="tra">Da trat der Schiffshauptmann zu ihm und sprach zu ihm: Was kommt dir bei, zu schlafen? Auf, rufe deinen Gott an! Vielleicht gedenkt dieser Gott unser, daß wir nicht untergehen!</p>
+  </div>
+</div>
+<div class="vb" id="v1-7">
+  <span class="vn">7</span>
+  <div class="vt">
+    <p class="base base-c">Et dixit vir ad collegam suum : Venite et mittamus sortes, et sciamus quare hoc malum sit nobis. Et miserunt sortes, et cecidit sors super Jonam.</p>
+    <p class="base base-p">Und einer sprach zum andern: Kommt, wir wollen losen, daß wir erfahren, urn welches willen es uns so ubel gehe! Und da sie loseten, traf es Jona.</p>
+    <p class="tra">Da sprachen sie zu einander: Wohlan, laßt uns Lose werfen, daß wir erfahren, durch wessen Schuld uns dieses Unheil widerfährt! Als sie aber die Lose warfen, traf das Los Jona.</p>
+  </div>
+</div>
+<div class="vb" id="v1-8">
+  <span class="vn">8</span>
+  <div class="vt">
+    <p class="base base-c">Et dixerunt ad eum : Indica nobis cujus causa malum istud sit nobis : quod est opus tuum ? quæ terra tua, et quo vadis ? vel ex quo populo es tu ?</p>
+    <p class="base base-p">Da sprachen sie zu ihm: Sage uns, warum gehet es uns so ubel? Was ist dein Gewerbe, und wo kommst du her? Aus welchem Lande bist du und von welchem Volk bist du?</p>
+    <p class="tra">Da sprachen sie zu ihm: Thue uns doch kund, durch wessen Schuld uns dieses Unheil widerfährt! Was ist dein Gewerbe und wo kommst du her? Welches ist deine Heimat und von welchem Volke stammst du?</p>
+  </div>
+</div>
+<div class="vb" id="v1-9">
+  <span class="vn">9</span>
+  <div class="vt">
+    <p class="base base-c">Et dixit ad eos : Hebræus ego sum, et Dominum Deum cæli ego timeo, qui fecit mare et aridam.</p>
+    <p class="base base-p">Er sprach zu ihnen: Ich bin ein Ebraer und furchte den HERRN, Gott vom Himmel, welcher gemacht hat das Meer und das Trockene.</p>
+    <p class="tra">Da sprach er zu ihnen: Ich bin ein Hebräer und verehre Jahwe, den Gott des Himmels, der das Meer und das Festland geschaffen hat.</p>
+  </div>
+</div>
+<div class="vb" id="v1-10">
+  <span class="vn">10</span>
+  <div class="vt">
+    <p class="base base-c">Et timuerunt viri timore magno, et dixerunt ad eum : Quid hoc fecisti ? cognoverunt enim viri quod a facie Domini fugeret, quia indicaverat eis.</p>
+    <p class="base base-p">Da furchteten sich die Leute sehr und sprachen zu ihm: Warum hast du denn solches getan? Denn sie wuftten, daß er vor dem HERRN floh; denn er hatte es ihnen gesagt.</p>
+    <p class="tra">Da gerieten die Männer in große Furcht und sprachen zu ihm: Was hast du gethan! Die Männer wußten nämlich, daß er sich auf der Flucht vor Jahwe befand, denn er hatte es ihnen berichtet.</p>
+  </div>
+</div>
+<div class="vb" id="v1-11">
+  <span class="vn">11</span>
+  <div class="vt">
+    <p class="base base-c">Et dixerunt ad eum : Quid faciemus tibi, et cessabit mare a nobis ? quia mare ibat, et intumescebat.</p>
+    <p class="base base-p">Da sprachen sie zu ihm: Was sollen wir denn mit dir tun, daß uns das Meer stille werde? Denn das Meerfuhr ungestüm.</p>
+    <p class="tra">Sodann fragten sie ihn: Was sollen wir mit dir anfangen, daß sich das Meer beruhige und uns nicht länger bedrohe? Denn das Meer tobte immer ärger.</p>
+  </div>
+</div>
+<div class="vb" id="v1-12">
+  <span class="vn">12</span>
+  <div class="vt">
+    <p class="base base-c">Et dixit ad eos : Tollite me, et mittite in mare, et cessabit mare a vobis : scio enim ego quoniam propter me tempestas hæc grandis venit super vos.</p>
+    <p class="base base-p">Er sprach zu ihnen: Nehmet mich und werfet mich ins Meer, so wird euch das Meer stille werden. Denn ich weift, daß solch graft Ungewitter ube euch kommt urn meinetwillen.</p>
+    <p class="tra">Da sprach er zu ihnen: Nehmt mich und werft mich ins Meer, so wird sich das Meer beruhigen und euch nicht länger bedrohen. Denn ich weiß wohl, daß euch dieser gewaltige Sturm um meinetwillen überfallen hat!</p>
+  </div>
+</div>
+<div class="vb" id="v1-13">
+  <span class="vn">13</span>
+  <div class="vt">
+    <p class="base base-c">Et remigabant viri ut reverterentur ad aridam, et non valebant, quia mare ibat, et intumescebat super eos.</p>
+    <p class="base base-p">Und die Leute trieben, daß sie wiederzu Lande kamen, aber sie konnten nicht; denn das Meer fuhr ungestüm wider sie.</p>
+    <p class="tra">Die Männer strengten sich an, das Schiff wieder ans Land zu treiben, aber es gelang ihnen nicht; denn das Meer stürmte immer ärger gegen sie an.</p>
+  </div>
+</div>
+<div class="vb" id="v1-14">
+  <span class="vn">14</span>
+  <div class="vt">
+    <p class="base base-c">Et clamaverunt ad Dominum, et dixerunt : Quæsumus, Domine, ne pereamus in anima viri istius, et ne des super nos sanguinem innocentem : quia tu, Domine, sicut voluisti, fecisti.</p>
+    <p class="base base-p">Da riefen sie zu dem HERRN und sprachen: Ach, HERR, laft uns nicht verderben urn dieses Mannes Seele willen und rechne uns nicht zu unschuldig Blut; denn du, HERR, tust, wie dir's gefallt!</p>
+    <p class="tra">Da riefen sie Jahwe an und sprachen: Ach, Jahwe! Laß uns doch nicht umkommen um des Lebens dieses Mannes willen und laß uns nicht unschuldig vergossenes Blut zur Last fallen! Denn du, Jahwe, thatest, wie es dir wohlgefiel!</p>
+  </div>
+</div>
+<div class="vb" id="v1-15">
+  <span class="vn">15</span>
+  <div class="vt">
+    <p class="base base-c">Et tulerunt Jonam, et miserunt in mare : et stetit mare a fervore suo.</p>
+    <p class="base base-p">Und sie nahmen Jona und warfen ihn ins Meer. Da stund das Meer stille von seinem Wüten.</p>
+    <p class="tra">Hierauf nahmen sie Jona und warfen ihn ins Meer; da stand das Meer von seinem Toben ab. Die Männer aber gerieten in große Furcht vor Jahwe, brachten Jahwe ein Schlachtopfer und gelobten Gelübde.</p>
+  </div>
+</div>
+<div class="vb" id="v1-16">
+  <span class="vn">16</span>
+  <div class="vt">
+    <p class="base base-c">Et timuerunt viri timore magno Dominum : et immolaverunt hostias Domino, et voverunt vota.</p>
+    <p class="base base-p">Und die Leute furchteten den HERRN sehr und taten dem HERRN Opfer und Gelubde.</p>
+    
+  </div>
+</div>
+</section>
+
+<section class="chap" id="c2">
+  <div class="chhead">
+    <span class="chrom">II</span>
+    <span class="chlbl chlbl-c">Caput II</span>
+    <span class="chlbl chlbl-p">Das 2. Capitel</span>
+  </div>
+<div class="vb first" id="v2-1">
+  <span class="vn">1</span>
+  <div class="vt">
+    <p class="base base-c">Et præparavit Dominus piscem grandem ut deglutiret Jonam : et erat Jonas in ventre piscis tribus diebus et tribus noctibus.</p>
+    <p class="base base-p">Aber der HERR verschaffte einen groften Fisch, Jona zu verschlingen. Und Jona war im Leibe des Fisches drei Tage und drei Nachte.</p>
+    <p class="tra">Jahwe aber beorderte einen großen Fisch, Jona zu verschlingen. Und Jona war im Leibe des Fisches drei Tage und drei Nächte.</p>
+  </div>
+</div>
+<div class="vb" id="v2-2">
+  <span class="vn">2</span>
+  <div class="vt">
+    <p class="base base-c">Et oravit Jonas ad Dominum Deum suum de ventre piscis,</p>
+    <p class="base base-p">Und Jona betete zudem HERRN, seinem Gott, im Leibe des Fisches</p>
+    <p class="tra">Da betete Jona im Leibe des Fisches zu Jahwe, seinem Gott,</p>
+  </div>
+</div>
+<div class="vb" id="v2-3">
+  <span class="vn">3</span>
+  <div class="vt">
+    <p class="base base-c">et dixit :   Clamavi de tribulatione mea ad Dominum,  et exaudivit me ;  de ventre inferi clamavi,  et exaudisti vocem meam.</p>
+    <p class="base base-p">und sprach: Ich rief zu dem HERRN in meiner Angst, und er antwortete mir ich schrie aus dem Bauch der Hblle, und du horetest meine Stimme.</p>
+    <p class="tra">und sprach: Aus meiner Bedrängnis rief ich Jahwe an, da antwortete er mir; aus dem Schoße der Unterwelt schrie ich um Hilfe, und du hörtest mein Rufen.</p>
+  </div>
+</div>
+<div class="vb" id="v2-4">
+  <span class="vn">4</span>
+  <div class="vt">
+    <p class="base base-c">Et projecisti me in profundum in corde maris,  et flumen circumdedit me :  omnes gurgites tui, et fluctus tui super me transierunt.</p>
+    <p class="base base-p">Du warfst mich in die Tiefe mitten im Meer, daß die Fluten mich umgaben; alle deine Wogen und Wellen gingen uber mich,</p>
+    <p class="tra">Du schleudertest mich in die Tiefe, mitten ins Meer, daß die Strömung mich umringte; alle deine Wogen und Wellen überfluteten mich.</p>
+  </div>
+</div>
+<div class="vb" id="v2-5">
+  <span class="vn">5</span>
+  <div class="vt">
+    <p class="base base-c">Et ego dixi :  Abjectus sum a conspectu oculorum tuorum ;  verumtamen rursus videbo templum sanctum tuum.</p>
+    <p class="base base-p">daß ich gedachte, ich ware von deinen Augen verstoften, ich wurde deinen heiligen Tempel nicht mehrsehen.</p>
+    <p class="tra">Schon dachte ich: Ich bin aus deinen Augen verstoßen! Werde ich je deinen heiligen Tempel wieder erblicken?</p>
+  </div>
+</div>
+<div class="vb" id="v2-6">
+  <span class="vn">6</span>
+  <div class="vt">
+    <p class="base base-c">Circumdederunt me aquæ usque ad animam :  abyssus vallavit me,  pelagus operuit caput meum.</p>
+    <p class="base base-p">Wasser umgaben mich bis an mein Leben; die Tiefe umringete mich; Schilf bedeckte mein Haupt.</p>
+    <p class="tra">Die Wasser umfingen mich und gingen mir bis ans Leben. Es umringte mich die Flut; Meergras war um mein Haupt geschlungen.</p>
+  </div>
+</div>
+<div class="vb" id="v2-7">
+  <span class="vn">7</span>
+  <div class="vt">
+    <p class="base base-c">Ad extrema montium descendi ;  terræ vectes concluserunt me in æternum :  et sublevabis de corruptione vitam meam, Domine Deus meus.</p>
+    <p class="base base-p">Ich sank hinunter zu der Berge Grunden; die Erde hatte mich verriegeit ewiglich. Aber du hast mein Leben aus dem Verderben geführet, HERR, mein Gott!</p>
+    <p class="tra">Zu den tiefsten Gründen der Berge war ich hinabgefahren; der Erde Riegel umschlossen mich für immer. Da zogst du mein Leben aus der Grube empor, Jahwe, mein Gott!</p>
+  </div>
+</div>
+<div class="vb" id="v2-8">
+  <span class="vn">8</span>
+  <div class="vt">
+    <p class="base base-c">Cum angustiaretur in me anima mea,  Domini recordatus sum :  ut veniat ad te oratio mea,  ad templum sanctum tuum.</p>
+    <p class="base base-p">Da meine Seele bei mir verzagte, gedachte ich an den HERRN; und mein Gebet kam zu dir in deinen heiligen Tempel.</p>
+    <p class="tra">Als meine Seele in mir verzagte, da gedachte ich an Jahwe, und mein Gebet drang zu dir in deinen heiligen Tempel.</p>
+  </div>
+</div>
+<div class="vb" id="v2-9">
+  <span class="vn">9</span>
+  <div class="vt">
+    <p class="base base-c">Qui custodiunt vanitates frustra,  misericordiam suam derelinquunt.</p>
+    <p class="base base-p">Die da halten über dem Nichtigen, verlassen ihre Gnade.</p>
+    <p class="tra">Die sich an die nichtigen Götzen halten, die geben ihr Bestes preis.</p>
+  </div>
+</div>
+<div class="vb" id="v2-10">
+  <span class="vn">10</span>
+  <div class="vt">
+    <p class="base base-c">Ego autem in voce laudis immolabo tibi :  quæcumque vovi, reddam pro salute Domino.</p>
+    <p class="base base-p">Ich aber will mit Dank opfern; meine Gelubde will ich bezahlen dem HERRN, daß er mir geholfen hat.</p>
+    <p class="tra">Ich aber will mit lautem Danke dir opfern; was ich gelobt, will ich bezahlen: von Jahwe kommt die Hilfe!</p>
+  </div>
+</div>
+<div class="vb" id="v2-11">
+  <span class="vn">11</span>
+  <div class="vt">
+    <p class="base base-c">Et dixit Dominus pisci, et evomuit Jonam in aridam.</p>
+    <p class="base base-p">Und der HERR sprach zum Fisch, und derselbe speiete Jona aus ans Land.</p>
+    <p class="tra">Jahwe aber befahl dem Fisch, Jona ans Land zu speien.</p>
+  </div>
+</div>
+</section>
+
+<section class="chap" id="c3">
+  <div class="chhead">
+    <span class="chrom">III</span>
+    <span class="chlbl chlbl-c">Caput III</span>
+    <span class="chlbl chlbl-p">Das 3. Capitel</span>
+  </div>
+<div class="vb first" id="v3-1">
+  <span class="vn">1</span>
+  <div class="vt">
+    <p class="base base-c">Et factum est verbum Domini ad Jonam secundo, dicens :</p>
+    <p class="base base-p">Und es geschah das Wort des HERRN zum andernmal zu Jona und sprach:</p>
+    <p class="tra">Hierauf erging das Wort Jahwes zum zweiten Male folgendermaßen an Jona:</p>
+  </div>
+</div>
+<div class="vb" id="v3-2">
+  <span class="vn">2</span>
+  <div class="vt">
+    <p class="base base-c">Surge, et vade in Niniven, civitatem magnam, et prædica in ea prædicationem quam ego loquor ad te.</p>
+    <p class="base base-p">Mache dich auf, gehe in die grofte Stadt Ninive und predige ihr die Predigt, die ich dir sage!</p>
+    <p class="tra">Auf, begieb dich nach Nineve, der großen Stadt, und richte an sie die Predigt, die ich dir gebieten werde.</p>
+  </div>
+</div>
+<div class="vb" id="v3-3">
+  <span class="vn">3</span>
+  <div class="vt">
+    <p class="base base-c">Et surrexit Jonas, et abiit in Niniven juxta verbum Domini : et Ninive erat civitas magna, itinere trium dierum.</p>
+    <p class="base base-p">Da machte sich Jona auf und ging hin gen Ninive, wie der HERR gesagt hatte. Ninive aber war eine grofte Stadt Gottes, drei Tagereisen graft.</p>
+    <p class="tra">Da machte sich Jona auf und begab sich nach Nineve, wie Jahwe befohlen hatte; Nineve aber war eine unmenschlich große Stadt - drei Tagereisen lang.</p>
+  </div>
+</div>
+<div class="vb" id="v3-4">
+  <span class="vn">4</span>
+  <div class="vt">
+    <p class="base base-c">Et cœpit Jonas introire in civitatem itinere diei unius : et clamavit, et dixit : Adhuc quadraginta dies, et Ninive subvertetur.</p>
+    <p class="base base-p">Und da Jona anfing, hineinzugehen eine Tagereise in die Stadt, predigte er und sprach: Es sind noch vierzig Tage, so wird Ninive untergehen.</p>
+    <p class="tra">Und Jona fing an, in die Stadt hineinzugehen, eine Tagereise weit, predigte und sprach: Noch vierzig Tage, so wird Nineve zerstört!</p>
+  </div>
+</div>
+<div class="vb" id="v3-5">
+  <span class="vn">5</span>
+  <div class="vt">
+    <p class="base base-c">Et crediderunt viri Ninivitæ in Deum, et prædicaverunt jejunium, et vestiti sunt saccis, a majore usque ad minorem.</p>
+    <p class="base base-p">Da glaubten die Leute zu Ninive an Gott und lieften predigen, man sollte fasten, und zogen Sacke an, beide, graft und klein.</p>
+    <p class="tra">Die Leute von Nineve aber glaubten Gotte, riefen ein Fasten aus und zogen Trauergewänder an, vom Größten bis zum Kleinsten.</p>
+  </div>
+</div>
+<div class="vb" id="v3-6">
+  <span class="vn">6</span>
+  <div class="vt">
+    <p class="base base-c">Et pervenit verbum ad regem Ninive : et surrexit de solio suo, et abjecit vestimentum suum a se, et indutus est sacco, et sedit in cinere.</p>
+    <p class="base base-p">Und da das vor den Konig zu Ninive kam, stund er auf von seinem Thron und legte seinen Purpur ab und hüllete einen Sack urn sich und setzte sich in die Asche.</p>
+    <p class="tra">Und als die Kunde davon zum Könige von Nineve drang, erhob er sich von seinem Throne, legte seinen Mantel ab und hüllte sich in ein Trauergewand; sodann setzte er sich in den Staub.</p>
+  </div>
+</div>
+<div class="vb" id="v3-7">
+  <span class="vn">7</span>
+  <div class="vt">
+    <p class="base base-c">Et clamavit, et dixit in Ninive ex ore regis et principum ejus, dicens : Homines, et jumenta, et boves, et pecora non gustent quidquam : nec pascantur, et aquam non bibant.</p>
+    <p class="base base-p">Und lieft ausschreien und sagen zu Ninive aus Befehl des Koniges und seiner Gewaltigen also: Es soil weder Mensch noch Tier, weder Ochsen noch Schafe etwas kosten, und man soil sie nicht weiden noch Wasser trinken lassen;</p>
+    <p class="tra">Und er ließ in Nineve ausrufen und gebieten: Auf Befehl des Königs und seiner Großen wird Folgendes verordnet: Es sollen weder Menschen noch Vieh, weder Rinder noch Schafe irgend etwas genießen; sie dürfen weder weiden, noch Wasser trinken.</p>
+  </div>
+</div>
+<div class="vb" id="v3-8">
+  <span class="vn">8</span>
+  <div class="vt">
+    <p class="base base-c">Et operiantur saccis homines et jumenta, et clament ad Dominum in fortitudine : et convertatur vir a via sua mala, et ab iniquitate quæ est in manibus eorum.</p>
+    <p class="base base-p">und sollen Sacke um sich hüllen beide, Menschen und Tier, und zu Gott rufen heftig; und ein jeglicher bekehre sich von seinem bosen Wege und vom Frevel seiner Hande!</p>
+    <p class="tra">Vielmehr sollen sie sich - sowohl Menschen, als Vieh - in Trauergewänder hüllen und mit aller Macht Gott anrufen, und sollen ein jeder von seinem schlimmen Wandel ablassen und von dem Frevel, der an ihren Händen klebt.</p>
+  </div>
+</div>
+<div class="vb" id="v3-9">
+  <span class="vn">9</span>
+  <div class="vt">
+    <p class="base base-c">Quis scit si convertatur et ignoscat Deus, et revertatur a furore iræ suæ, et non peribimus ?</p>
+    <p class="base base-p">Wer weiß, Gott mochte sich kehren und ihn reuen und sich wenden von seinem grimmigen Zorn, da(3&amp;gt; wir nicht verderben.</p>
+    <p class="tra">Vielleicht lenkt Gott ein und läßt sich's gereuen und läßt ab von seinem heftigen Zorn, daß wir nicht untergehen!</p>
+  </div>
+</div>
+<div class="vb" id="v3-10">
+  <span class="vn">10</span>
+  <div class="vt">
+    <p class="base base-c">Et vidit Deus opera eorum, quia conversi sunt de via sua mala : et misertus est Deus super malitiam quam locutus fuerat ut faceret eis, et non fecit.</p>
+    <p class="base base-p">Da aber Gott sah ihre Werke, dafi sie sich bekehreten von ihrem bosen Wege, reuete ihn des libels, das er geredet hatte, ihnen zu tun, und tat's nicht.</p>
+    <p class="tra">Als nun Gott ihr Thun gewahrte, daß sie von ihrem schlimmen Wandel abließen, da ließ sich Gott das Unheil gereuen, das er ihnen angedroht hatte, und fügte es ihnen nicht zu.</p>
+  </div>
+</div>
+</section>
+
+<section class="chap" id="c4">
+  <div class="chhead">
+    <span class="chrom">IV</span>
+    <span class="chlbl chlbl-c">Caput IV</span>
+    <span class="chlbl chlbl-p">Das 4. Capitel</span>
+  </div>
+<div class="vb first" id="v4-1">
+  <span class="vn">1</span>
+  <div class="vt">
+    <p class="base base-c">Et afflictus est Jonas afflictione magna, et iratus est :</p>
+    <p class="base base-p">Das verdroft Jona fast sehr und ward zornig</p>
+    <p class="tra">Das verdroß Jona schwer, und er geriet in Zorn</p>
+  </div>
+</div>
+<div class="vb" id="v4-2">
+  <span class="vn">2</span>
+  <div class="vt">
+    <p class="base base-c">et oravit ad Dominum, et dixit : Obsecro, Domine, numquid non hoc est verbum meum cum adhuc essem in terra mea ? propter hoc præoccupavi ut fugerem in Tharsis : scio enim quia tu Deus clemens et misericors es, patiens et multæ miserationis, et ignoscens super malitia.</p>
+    <p class="base base-p">und betete zum HERRN und sprach: Ach, HERR, das ist's, das ich sagte, da ich noch in meinem Lande war; darum ich auch wollte zuvorkommen, zu fliehen aufs Meer; denn ich weiß, daß du gnadig, barmherzig, langmutig und von grafter Güte bist und lassest dich des Ubels reuen.</p>
+    <p class="tra">und betete zu Jahwe und sprach: Ach, Jahwe, das ist's ja, was ich sagte, als ich noch in meiner Heimat war, - eben dem hatte ich mit der Flucht nach Tarsis zuvorkommen wollen! Denn ich wußte wohl, daß du ein gnädiger und barmherziger Gott bist, langsam zum Zorn und reich an Huld, und daß du dich das Unheil gereuen lässest!</p>
+  </div>
+</div>
+<div class="vb" id="v4-3">
+  <span class="vn">3</span>
+  <div class="vt">
+    <p class="base base-c">Et nunc, Domine, tolle, quæso, animam meam a me, quia melior est mihi mors quam vita.</p>
+    <p class="base base-p">So nimm doch nun, HERR, meine Seele von mir; denn ich wollte lieber tot sein denn leben!</p>
+    <p class="tra">So nimm doch nun, Jahwe, mein Leben dahin; denn es ist besser für mich, ich sterbe, als daß ich leben bleibe!</p>
+  </div>
+</div>
+<div class="vb" id="v4-4">
+  <span class="vn">4</span>
+  <div class="vt">
+    <p class="base base-c">Et dixit Dominus : Putasne bene irasceris tu ?</p>
+    <p class="base base-p">Aber der HERR sprach: Meinest du, daß du billig zurnest?</p>
+    <p class="tra">Jahwe aber sprach: Bist du mit Recht so erzürnt?</p>
+  </div>
+</div>
+<div class="vb" id="v4-5">
+  <span class="vn">5</span>
+  <div class="vt">
+    <p class="base base-c">Et egressus est Jonas de civitate, et sedit contra orientem civitatis : et fecit sibimet umbraculum ibi, et sedebat subter illud in umbra, donec videret quid accideret civitati.</p>
+    <p class="base base-p">Und Jona ging zur Stadt hinaus und setzte sich gegen morgenwarts der Stadt und machte sich daselbst eine Hutte; da setzte er sich unter, in den Schatten, bis er sahe, was der Stadt widerfahren würde.</p>
+    <p class="tra">Hierauf verließ Jona die Stadt und nahm seinen Aufenthalt östlich von der Stadt. Daselbst machte er sich eine Hütte und setzte sich darunter in den Schatten, um abzuwarten, was mit der Stadt geschehen würde.</p>
+  </div>
+</div>
+<div class="vb" id="v4-6">
+  <span class="vn">6</span>
+  <div class="vt">
+    <p class="base base-c">Et præparavit Dominus Deus hederam, et ascendit super caput Jonæ, ut esset umbra super caput ejus, et protegeret eum (laboraverat enim) : et lætatus est Jonas super hedera lætitia magna.</p>
+    <p class="base base-p">Gott der HERR aber verschaffte einen Kürbis, der wuchs uber Jona, daß er Schatten gab über sein Haupt, und errettete ihn von seinem libel. Und Jona freuete sich sehr uber den Kürbis.</p>
+    <p class="tra">Da beorderte Jahwe Gott einen Ricinus; der wuchs über Jona empor, damit er Schatten über seinem Haupte hätte, und ihm von seinem Unmute geholfen würde, und Jona hatte große Freude über den Ricinus.</p>
+  </div>
+</div>
+<div class="vb" id="v4-7">
+  <span class="vn">7</span>
+  <div class="vt">
+    <p class="base base-c">Et paravit Deus vermen ascensu diluculi in crastinum : et percussit hederam, et exaruit.</p>
+    <p class="base base-p">Aber der HERR verschaffte einen Wurm des Morgens, da die Morgenrote anbrach; derstach den Kürbis, daß er verdorrete.</p>
+    <p class="tra">Als aber des anderen Tags die Morgenröte anbrach, beorderte Gott einen Wurm, der stach den Ricinus, daß er verdorrte.</p>
+  </div>
+</div>
+<div class="vb" id="v4-8">
+  <span class="vn">8</span>
+  <div class="vt">
+    <p class="base base-c">Et cum ortus fuisset sol, præcepit Dominus vento calido et urenti : et percussit sol super caput Jonæ, et æstuabat : et petivit animæ suæ ut moreretur, et dixit : Melius est mihi mori quam vivere.</p>
+    <p class="base base-p">Als aber die Sonne aufgegangen war, verschaffte Gott einen dürren Ostwind; und die Sonne stach Jona auf den Kopf, daß er matt ward. Da wünschte er seiner Seele den Tod und sprach: Ich wollte lieber tot sein denn leben!</p>
+    <p class="tra">Als nun die Sonne aufging, beorderte Gott einen glühenden Ostwind, und die Sonne stach Jona auf das Haupt, daß er gänzlich ermattete. Da wünschte er sich den Tod und sprach: Es ist besser für mich, ich sterbe, als daß ich leben bleibe!</p>
+  </div>
+</div>
+<div class="vb" id="v4-9">
+  <span class="vn">9</span>
+  <div class="vt">
+    <p class="base base-c">Et dixit Dominus ad Jonam : Putasne bene irasceris tu super hedera ? Et dixit : Bene irascor ego usque ad mortem.</p>
+    <p class="base base-p">Da sprach Gott zu Jona: Meinest du, daß du billig zurnest um den Kürbis? Und er sprach: Billig züme ich bis an den Tod!</p>
+    <p class="tra">Da sprach Gott zu Jona: Bist du mit Recht so erzürnt wegen des Ricinus? Er antwortete: Mit Recht zürne ich bis zum Tode!</p>
+  </div>
+</div>
+<div class="vb" id="v4-10">
+  <span class="vn">10</span>
+  <div class="vt">
+    <p class="base base-c">Et dixit Dominus : Tu doles super hederam in qua non laborasti, neque fecisti ut cresceret ; quæ sub una nocte nata est, et sub una nocte periit :</p>
+    <p class="base base-p">Und der HERR sprach: Dich jammed des Kürbis, daran du nicht gearbeitet hast, hast ihn auch nicht aufgezogen, welcher in einer Nacht ward und in einer Nacht verdarb,</p>
+    <p class="tra">Jahwe aber sprach: Dich jammert des Ricinus, obschon du dich nicht um ihn gemüht, noch ihn groß gezogen hast, der in einer Nacht entstand und in einer Nacht zu Grunde ging.</p>
+  </div>
+</div>
+<div class="vb" id="v4-11">
+  <span class="vn">11</span>
+  <div class="vt">
+    <p class="base base-c">et ego non parcam Ninive, civitati magnæ, in qua sunt plus quam centum viginti millia hominum qui nesciunt quid sit inter dexteram et sinistram suam, et jumenta multa ?</p>
+    <p class="base base-p">und mich sollte nicht jammern Ninives, solcher groften Stadt, in welcher sind mehr denn hundertundzwanzigtausend Menschen, die nicht wissen Unterschied, was rechts Oder links ist, dazu auch viel Tiere?</p>
+    <p class="tra">Und mich sollte es nicht jammern Nineves, der großen Stadt, in der sich mehr als 120000 Menschen befinden, die nicht zwischen rechts und links zu unterscheiden wissen, und viele Tiere?</p>
+  </div>
+</div>
+</section>
+</main>
+
+<nav class="bnav">
+  <a href="031-oba.html">&#8592; Abdias</a>
+  <a href="../index.html" class="center">? &nbsp; Inhaltsverzeichnis</a>
+  <a href="033-mic.html">Micheas &#8594;</a>
+</nav>
+
+<script>
+(function(){
+  var c = localStorage.getItem('biblia_conf') || 'catholic';
+  document.body.dataset.conf = c;
+})();
+</script>
+</body>
+</html>

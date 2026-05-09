@@ -1,8 +1,8 @@
-﻿'use strict';
+'use strict';
 /**
  * BIBLIA CATHOLICA INTERLINEARIS – HTML GENERATOR v3
- * Würdiges Design: Weinrot · Gold · Pergament · Reine CSS-Typografie
- * Kein SVG · Keine Rahmen-Tricks · Latein dominant
+ * Würdiges Design: Weinrot – Gold – Pergament – Reine CSS-Typografie
+ * Kein SVG – Keine Rahmen-Tricks – Latein dominant
  */
 
 const fs   = require('fs');
@@ -11,31 +11,17 @@ const path = require('path');
 const DATA_DIR = path.join(__dirname, 'data');
 const OUT_DIR  = path.join(__dirname, 'Übersetzungen');
 
-// ═══════════════════════════════════════════════════════
+// -------------------------------------------------------
 //  ÜBERSETZUNGEN
-// ═══════════════════════════════════════════════════════
+// -------------------------------------------------------
 
 const TRANSLATIONS = [
-  { code: 'kjv',        lang: 'en', native: 'English',    display: 'King James Version (1611)',      flag: '🇬🇧' },
-  { code: 'german',     lang: 'de', native: 'Deutsch',    display: 'Textbibel (1906)',               flag: '🇩🇪' },
-  { code: 'french',     lang: 'fr', native: 'Français',   display: 'Crampon (1923)',                 flag: '🇫🇷' },
-  { code: 'spanish',    lang: 'es', native: 'Español',    display: 'Reina-Valera (1909)',            flag: '🇪🇸' },
-  { code: 'portuguese', lang: 'pt', native: 'Português',  display: 'Bíblia Livre',                  flag: '🇧🇷' },
-  { code: 'polish',     lang: 'pl', native: 'Polski',     display: 'Biblia Gdańska (1881)',          flag: '🇵🇱' },
-  { code: 'russian',    lang: 'ru', native: 'Русский',    display: 'Синодальный (1876)',             flag: '🇷🇺' },
-  { code: 'croatian',   lang: 'hr', native: 'Hrvatski',   display: 'Hrvatska Biblija Šarića',       flag: '🇭🇷' },
-  { code: 'dutch',      lang: 'nl', native: 'Nederlands', display: 'Statenvertaling (1637)',         flag: '🇳🇱' },
-  { code: 'hungarian',  lang: 'hu', native: 'Magyar',     display: 'Károli (1908)',                  flag: '🇭🇺' },
-  { code: 'czech',      lang: 'cs', native: 'Čeština',    display: 'Bible Kralická (1613)',          flag: '🇨🇿' },
-  { code: 'swedish',    lang: 'sv', native: 'Svenska',    display: 'Svenska Bibeln (1917)',          flag: '🇸🇪' },
-  { code: 'tagalog',    lang: 'tl', native: 'Filipino',   display: 'Ang Biblia (1905)',              flag: '🇵🇭' },
-  { code: 'ukrainian',  lang: 'uk', native: 'Українська', display: 'Біблія Огієнка (1962)',         flag: '🇺🇦' },
-  { code: 'albanian',   lang: 'sq', native: 'Shqip',      display: 'Bibla (UFSHB)',                 flag: '🇦🇱' },
+  { code: 'german', lang: 'de', native: 'Deutsch', display: 'Textbibel (1906)', flag: '????' },
 ];
 
-// ═══════════════════════════════════════════════════════
+// -------------------------------------------------------
 //  BÜCHERLISTE
-// ═══════════════════════════════════════════════════════
+// -------------------------------------------------------
 
 const BOOKS = [
   { nr: 1,  abbrev:'gen', latin:'Genesis',               name:'Genesis',          testament:'VT' },
@@ -111,55 +97,35 @@ const BOOKS = [
   { nr:71,  abbrev:'wis', latin:'Sapientia',             name:'Wisdom',           testament:'DK' },
   { nr:72,  abbrev:'sir', latin:'Ecclesiasticus',        name:'Sirach',           testament:'DK' },
   { nr:73,  abbrev:'bar', latin:'Baruch',                name:'Baruch',           testament:'DK' },
-  // Orthodoxe Zusatz-Bücher (nur im Orthodox-Modus sichtbar)
-  { nr:74,  abbrev:'1es', latin:'I Esdras',              name:'1 Esdras',           testament:'OX' },
-  { nr:75,  abbrev:'2es', latin:'II Esdras',             name:'2 Esdras',           testament:'OX' },
-  { nr:76,  abbrev:'prm', latin:'Oratio Manassis',       name:'Prayer of Manasseh', testament:'OX' },
-  { nr:77,  abbrev:'pra', latin:'Azariae Oratio',        name:'Prayer of Azariah',  testament:'OX' },
-  { nr:78,  abbrev:'sus', latin:'Susanna',               name:'Susanna',            testament:'OX' },
-  { nr:79,  abbrev:'bel', latin:'Bel et Draco',          name:'Bel and the Dragon', testament:'OX' },
-  { nr:80,  abbrev:'aes', latin:'Addita Esther',         name:'Additions to Esther',testament:'OX' },
 ];
 
 const BIBLE_NAMES = {
   en: 'The Holy Bible',        de: 'Die Heilige Bibel',     fr: 'La Sainte Bible',
   es: 'La Santa Biblia',       pt: 'A Bíblia Sagrada',      pl: 'Pismo Święte',
-  ru: 'Священное Писание',     hr: 'Sveto Pismo',           nl: 'De Heilige Bijbel',
+  ru: '????????? ???????',     hr: 'Sveto Pismo',           nl: 'De Heilige Bijbel',
   hu: 'A Szentírás',           cs: 'Písmo Svaté',           sv: 'Den Heliga Bibeln',
-  tl: 'Ang Banal na Bibliya',  uk: 'Священне Письмо',       sq: 'Bibla e Shenjtë',
+  tl: 'Ang Banal na Bibliya',  uk: '???????? ??????',       sq: 'Bibla e Shenjtë',
 };
 
 // Schaltfläche "Lesen" pro Sprache
 const READ_BTN = {
   en:'R E A D',      de:'L E S E N',    fr:'L I R E',
   es:'L E E R',      pt:'L E R',        pl:'C Z Y T A J',
-  ru:'Ч И Т А Т Ь', hr:'Č I T A J',    nl:'L E Z E N',
-  hu:'O L V A S S',  cs:'Č Í S T',      sv:'L Ä S A',
-  tl:'B A S A H I N',uk:'Ч И Т А Т И', sq:'L E X O',
+  ru:'? ? ? ? ? ?', hr:'C I T A J',    nl:'L E Z E N',
+  hu:'O L V A S S',  cs:'C Ř S T',      sv:'L Ä S A',
+  tl:'B A S A H I N',uk:'? ? ? ? ? ?', sq:'L E X O',
 };
 
 // Buchbezeichnungen pro Sprache (Index = Buchnr - 1)
 const BOOK_NAMES = {
   en:['Genesis','Exodus','Leviticus','Numbers','Deuteronomy','Joshua','Judges','Ruth','1 Samuel','2 Samuel','1 Kings','2 Kings','1 Chronicles','2 Chronicles','Ezra','Nehemiah','Esther','Job','Psalms','Proverbs','Ecclesiastes','Song of Solomon','Isaiah','Jeremiah','Lamentations','Ezekiel','Daniel','Hosea','Joel','Amos','Obadiah','Jonah','Micah','Nahum','Habakkuk','Zephaniah','Haggai','Zechariah','Malachi','Matthew','Mark','Luke','John','Acts','Romans','1 Corinthians','2 Corinthians','Galatians','Ephesians','Philippians','Colossians','1 Thessalonians','2 Thessalonians','1 Timothy','2 Timothy','Titus','Philemon','Hebrews','James','1 Peter','2 Peter','1 John','2 John','3 John','Jude','Revelation','Tobit','Judith','1 Maccabees','2 Maccabees','Wisdom','Sirach','Baruch'],
-  de:['Genesis','Exodus','Levitikus','Numeri','Deuteronomium','Josua','Richter','Rut','1. Samuel','2. Samuel','1. Könige','2. Könige','1. Chronik','2. Chronik','Esra','Nehemia','Ester','Hiob','Psalmen','Sprichwörter','Kohelet','Hoheslied','Jesaja','Jeremia','Klagelieder','Ezechiel','Daniel','Hosea','Joel','Amos','Obadja','Jona','Micha','Nahum','Habakuk','Zefanja','Haggai','Sacharja','Maleachi','Matthäus','Markus','Lukas','Johannes','Apostelgeschichte','Römer','1. Korinther','2. Korinther','Galater','Epheser','Philipper','Kolosser','1. Thessalonicher','2. Thessalonicher','1. Timotheus','2. Timotheus','Titus','Philemon','Hebräer','Jakobus','1. Petrus','2. Petrus','1. Johannes','2. Johannes','3. Johannes','Judas','Offenbarung','Tobias','Judit','1. Makkabäer','2. Makkabäer','Weisheit','Sirach','Baruch'],
-  fr:['Genèse','Exode','Lévitique','Nombres','Deutéronome','Josué','Juges','Ruth','1 Samuel','2 Samuel','1 Rois','2 Rois','1 Chroniques','2 Chroniques','Esdras','Néhémie','Esther','Job','Psaumes','Proverbes','Ecclésiaste','Cantique des Cantiques','Isaïe','Jérémie','Lamentations','Ézéchiel','Daniel','Osée','Joël','Amos','Abdias','Jonas','Michée','Nahum','Habacuc','Sophonie','Aggée','Zacharie','Malachie','Matthieu','Marc','Luc','Jean','Actes','Romains','1 Corinthiens','2 Corinthiens','Galates','Éphésiens','Philippiens','Colossiens','1 Thessaloniciens','2 Thessaloniciens','1 Timothée','2 Timothée','Tite','Philémon','Hébreux','Jacques','1 Pierre','2 Pierre','1 Jean','2 Jean','3 Jean','Jude','Apocalypse','Tobie','Judith','1 Maccabées','2 Maccabées','Sagesse','Siracide','Baruch'],
-  es:['Génesis','Éxodo','Levítico','Números','Deuteronomio','Josué','Jueces','Rut','1 Samuel','2 Samuel','1 Reyes','2 Reyes','1 Crónicas','2 Crónicas','Esdras','Nehemías','Ester','Job','Salmos','Proverbios','Eclesiastés','Cantar de los Cantares','Isaías','Jeremías','Lamentaciones','Ezequiel','Daniel','Oseas','Joel','Amós','Abdías','Jonás','Miqueas','Nahúm','Habacuc','Sofonías','Ageo','Zacarías','Malaquías','Mateo','Marcos','Lucas','Juan','Hechos','Romanos','1 Corintios','2 Corintios','Gálatas','Efesios','Filipenses','Colosenses','1 Tesalonicenses','2 Tesalonicenses','1 Timoteo','2 Timoteo','Tito','Filemón','Hebreos','Santiago','1 Pedro','2 Pedro','1 Juan','2 Juan','3 Juan','Judas','Apocalipsis','Tobías','Judit','1 Macabeos','2 Macabeos','Sabiduría','Eclesiástico','Baruc'],
-  pt:['Gênesis','Êxodo','Levítico','Números','Deuteronômio','Josué','Juízes','Rute','1 Samuel','2 Samuel','1 Reis','2 Reis','1 Crônicas','2 Crônicas','Esdras','Neemias','Ester','Jó','Salmos','Provérbios','Eclesiastes','Cântico dos Cânticos','Isaías','Jeremias','Lamentações','Ezequiel','Daniel','Oséias','Joel','Amós','Obadias','Jonas','Miquéias','Naum','Habacuque','Sofonias','Ageu','Zacarias','Malaquias','Mateus','Marcos','Lucas','João','Atos','Romanos','1 Coríntios','2 Coríntios','Gálatas','Efésios','Filipenses','Colossenses','1 Tessalonicenses','2 Tessalonicenses','1 Timóteo','2 Timóteo','Tito','Filêmon','Hebreus','Tiago','1 Pedro','2 Pedro','1 João','2 João','3 João','Judas','Apocalipse','Tobias','Judite','1 Macabeus','2 Macabeus','Sabedoria','Eclesiástico','Baruc'],
-  pl:['Rodzaju','Wyjścia','Kapłańska','Liczb','Powtórzonego Prawa','Jozuego','Sędziów','Rut','1 Samuela','2 Samuela','1 Królewska','2 Królewska','1 Kronik','2 Kronik','Ezdrasza','Nehemiasza','Estery','Hioba','Psalmy','Przysłów','Koheleta','Pieśń nad Pieśniami','Izajasza','Jeremiasza','Lamentacje','Ezechiela','Daniela','Ozeasza','Joela','Amosa','Abdiasza','Jonasza','Micheasza','Nahuma','Habakuka','Sofoniasza','Aggeusza','Zachariasza','Malachiasza','Mateusza','Marka','Łukasza','Jana','Dzieje Apostolskie','Rzymian','1 Koryntian','2 Koryntian','Galatów','Efezjan','Filipian','Kolosan','1 Tesaloniczan','2 Tesaloniczan','1 Tymoteusza','2 Tymoteusza','Tytusa','Filemona','Hebrajczyków','Jakuba','1 Piotra','2 Piotra','1 Jana','2 Jana','3 Jana','Judy','Objawienia','Tobiasza','Judyty','1 Machabejska','2 Machabejska','Mądrości','Syracha','Barucha'],
-  ru:['Бытие','Исход','Левит','Числа','Второзаконие','Иисуса Навина','Судей','Руфь','1 Царств','2 Царств','3 Царств','4 Царств','1 Паралипоменон','2 Паралипоменон','Ездры','Неемии','Есфирь','Иов','Псалтирь','Притчи','Екклесиаст','Песня Песней','Исаия','Иеремия','Плач Иеремии','Иезекиль','Даниил','Осия','Иоиль','Амос','Авдий','Иона','Михей','Наум','Аввакум','София','Аггей','Захария','Малахия','Матфей','Марк','Лука','Иоанн','Деяния','Римлянам','1 Коринфянам','2 Коринфянам','Галатам','Ефесянам','Филиппийцам','Колоссянам','1 Фессалоникийцам','2 Фессалоникийцам','1 Тимофею','2 Тимофею','Титу','Филимону','Евреям','Иакова','1 Петра','2 Петра','1 Иоанна','2 Иоанна','3 Иоанна','Иуда','Откровение','Товит','Иудифь','1 Маккавейская','2 Маккавейская','Премудрость Соломона','Сирах','Варух'],
-  hr:['Postanak','Izlazak','Levitski zakonik','Brojevi','Ponovljeni zakon','Jošua','Suci','Ruta','1 Samuelova','2 Samuelova','1 Kraljevska','2 Kraljevska','1 Ljetopisa','2 Ljetopisa','Ezra','Nehemija','Estera','Job','Psalmi','Mudre izreke','Propovjednik','Pjesma nad pjesmama','Izaija','Jeremija','Tužaljke','Ezekiel','Daniel','Hošea','Joel','Amos','Obadija','Jona','Mihej','Nahum','Habakuk','Sefanija','Hagaj','Zaharija','Malahija','Matej','Marko','Luka','Ivan','Djela apostolska','Rimljanima','1 Korinćanima','2 Korinćanima','Galaćanima','Efežanima','Filipljanima','Kološanima','1 Solunjanima','2 Solunjanima','1 Timoteju','2 Timoteju','Titu','Filemonu','Hebrejima','Jakovljeva','1 Petrova','2 Petrova','1 Ivanova','2 Ivanova','3 Ivanova','Judina','Otkrivenje','Tobija','Judita','1 Makabejska','2 Makabejska','Mudrost','Sirah','Baruh'],
-  nl:['Genesis','Exodus','Leviticus','Numeri','Deuteronomium','Jozua','Rechters','Ruth','1 Samuël','2 Samuël','1 Koningen','2 Koningen','1 Kronieken','2 Kronieken','Ezra','Nehemia','Ester','Job','Psalmen','Spreuken','Prediker','Hooglied','Jesaja','Jeremia','Klaagliederen','Ezechiël','Daniël','Hosea','Joël','Amos','Obadja','Jona','Micha','Nahum','Habakuk','Sefanja','Haggai','Zacharia','Maleachi','Matteüs','Marcus','Lucas','Johannes','Handelingen','Romeinen','1 Korintiërs','2 Korintiërs','Galaten','Efeziërs','Filippenzen','Kolossenzen','1 Tessalonicenzen','2 Tessalonicenzen','1 Timotheüs','2 Timotheüs','Titus','Filemon','Hebreeën','Jakobus','1 Petrus','2 Petrus','1 Johannes','2 Johannes','3 Johannes','Judas','Openbaring','Tobit','Judit','1 Makkabeeën','2 Makkabeeën','Wijsheid','Sirach','Baruch'],
-  hu:['Teremtés','Kivonulás','Leviták könyve','Számok','Második törvénykönyv','Józsue','Bírák','Rút','1 Sámuel','2 Sámuel','1 Királyok','2 Királyok','1 Krónikák','2 Krónikák','Ezdrás','Nehemiás','Eszter','Jób','Zsoltárok','Példabeszédek','Prédikátor','Énekek éneke','Izajás','Jeremiás','Siralmak','Ezekiel','Dániel','Ozeás','Joel','Ámosz','Abdiás','Jónás','Mikeás','Náhum','Habakuk','Szofoniás','Aggeus','Zakariás','Malakiás','Máté','Márk','Lukács','János','Apostolok cselekedetei','Rómaiakhoz','1 Korintusiakhoz','2 Korintusiakhoz','Galatákhoz','Efezusiakhoz','Filippiekhez','Kolosszeiekhez','1 Tesszalonikaiakhoz','2 Tesszalonikaiakhoz','1 Timóteushoz','2 Timóteushoz','Tituszhoz','Filemonhoz','Zsidókhoz','Jakab','1 Péter','2 Péter','1 János','2 János','3 János','Júdás','Jelenések','Tóbit','Judit','1 Makkabeusok','2 Makkabeusok','Bölcsesség','Sirák','Báruk'],
-  cs:['Genesis','Exodus','Leviticus','Numeri','Deuteronomium','Jozue','Soudců','Rút','1 Samuelova','2 Samuelova','1 Královská','2 Královská','1 Paralipomenon','2 Paralipomenon','Ezdráš','Nehemiáš','Ester','Jób','Žalmy','Přísloví','Kazatel','Píseň písní','Izajáš','Jeremiáš','Pláč','Ezechiel','Daniel','Ozeáš','Joel','Ámos','Abdiáš','Jonáš','Micheáš','Nahum','Habakuk','Sofoniáš','Aggeus','Zachariáš','Malachiáš','Matouš','Marek','Lukáš','Jan','Skutky','Římanům','1 Korintským','2 Korintským','Galatským','Efezským','Filipským','Koloským','1 Tesalonickým','2 Tesalonickým','1 Timoteovi','2 Timoteovi','Titovi','Filemonovi','Židům','Jakubův','1 Petrův','2 Petrův','1 Janův','2 Janův','3 Janův','Judův','Zjevení','Tobiáš','Judit','1 Makabejská','2 Makabejská','Moudrost','Sirachovec','Baruch'],
-  sv:['Första Mosebok','Andra Mosebok','Tredje Mosebok','Fjärde Mosebok','Femte Mosebok','Josua','Domarboken','Rut','Första Samuelsboken','Andra Samuelsboken','Första Kungaboken','Andra Kungaboken','Första Krönikeboken','Andra Krönikeboken','Esra','Nehemja','Ester','Job','Psaltaren','Ordspråksboken','Predikaren','Höga visan','Jesaja','Jeremia','Klagovisorna','Hesekiel','Daniel','Hosea','Joel','Amos','Obadja','Jona','Mika','Nahum','Habakuk','Sefanja','Haggai','Sakarja','Malaki','Matteus','Markus','Lukas','Johannes','Apostlagärningarna','Romarbrevet','1 Korintierbrevet','2 Korintierbrevet','Galaterbrevet','Efesierbrevet','Filipperbrevet','Kolosserbrevet','1 Thessalonikerbrevet','2 Thessalonikerbrevet','1 Timoteusbrevet','2 Timoteusbrevet','Titusbrevet','Filemonbrevet','Hebreerbrevet','Jakobsbrevet','1 Petrusbrevet','2 Petrusbrevet','1 Johannesbrevet','2 Johannesbrevet','3 Johannesbrevet','Judasbrevet','Uppenbarelseboken','Tobit','Judit','Första Mackabéerboken','Andra Mackabéerboken','Visdomen','Syrak','Baruk'],
-  tl:['Genesis','Exodo','Levitico','Mga Bilang','Deuteronomio','Josue','Mga Hukom','Rut','1 Samuel','2 Samuel','1 Hari','2 Hari','1 Cronica','2 Cronica','Esdras','Nehemias','Ester','Job','Mga Awit','Kawikaan','Mangangaral','Awit ng mga Awit','Isaias','Jeremias','Panaghoy','Ezekiel','Daniel','Oseas','Joel','Amos','Abdias','Jonas','Mikas','Nahum','Habakuk','Sofonias','Ageo','Zacarias','Malakias','Mateo','Marcos','Lucas','Juan','Mga Gawa','Roma','1 Corinto','2 Corinto','Galacia','Efeso','Filipos','Colosas','1 Tesalonica','2 Tesalonica','1 Timoteo','2 Timoteo','Tito','Filemon','Hebreo','Santiago','1 Pedro','2 Pedro','1 Juan','2 Juan','3 Juan','Judas','Pahayag','Tobit','Judit','1 Macabeo','2 Macabeo','Karunungan','Sirac','Baruc'],
-  uk:['Буття','Вихід','Левит','Числа','Повторення Закону','Ісуса Навина','Суддів','Рут','1 Самуїла','2 Самуїла','1 Царів','2 Царів','1 Хронік','2 Хронік','Ездри','Неємії','Естер','Йов','Псалми','Приповісті','Еклезіаст','Пісня пісень','Ісаї','Єремії','Плач Єремії','Єзекіїла','Даниїла','Осії','Йоїла','Амоса','Авдія','Йони','Михея','Наума','Авакума','Сефанії','Агея','Захарії','Малахії','Матвія','Марка','Луки','Іоанна','Діяння','Римлян','1 Коринтян','2 Коринтян','Галатів','Ефесян','Филип\'ян','Колосян','1 Солунян','2 Солунян','1 Тимофія','2 Тимофія','Тита','Филимона','Євреїв','Якова','1 Петра','2 Петра','1 Іоанна','2 Іоанна','3 Іоанна','Юди','Відкровення','Товит','Юдит','1 Маккавеїв','2 Маккавеїв','Премудрість','Сирах','Варух'],
-  sq:['Zanafilla','Eksodi','Levitiku','Numrat','Ligji i Përtërirë','Jozueu','Gjyqtarët','Ruthi','1 Samueli','2 Samueli','1 Mbretërve','2 Mbretërve','1 Kronikave','2 Kronikave','Esdra','Nehemia','Estera','Jobi','Psalmet','Fjalët e urta','Predikuesi','Kënga e Këngëve','Isaia','Jeremia','Vajtimet','Ezekieli','Danieli','Osea','Joeli','Amosi','Abdia','Jona','Mikea','Nahumi','Habakuku','Sefania','Ageui','Zakaria','Malakia','Mateu','Marku','Luka','Gjoni','Veprat','Romakëve','1 Korintasve','2 Korintasve','Galatasve','Efesianëve','Filipianëve','Kolosianëve','1 Selanikasve','2 Selanikasve','1 Timoteut','2 Timoteut','Titit','Filemonit','Hebrenjve','Jakobi','1 Pjetri','2 Pjetri','1 Gjoni','2 Gjoni','3 Gjoni','Juda','Zbulesa','Tobiti','Judita','1 Makabenjve','2 Makabenjve','Urtësia','Sirak','Baruku'],
+  de:['Genesis','Exodus','Levitikus','Numeri','Deuteronomium','Josua','Richter','Rut','1. Samuel','2. Samuel','1. Könige','2. Könige','1. Chronik','2. Chronik','Esra','Nehemia','Ester','Hiob','Psalmen','Sprichwörter','Kohelet','Hoheslied','Jesaja','Jeremia','Klagelieder','Ezechiel','Daniel','Hosea','Joel','Amos','Obadja','Jona','Micha','Nahum','Habakuk','Zefanja','Haggai','Sacharja','Maleachi','Matthäus','Markus','Lukas','Johannes','Apostelgeschichte','Römer','1. Korinther','2. Korinther','Galater','Epheser','Philipper','Kolosser','1. Thessalonicher','2. Thessalonicher','1. Timotheus','2. Timotheus','Titus','Philemon','Hebräer','Jakobus','1. Petrus','2. Petrus','1. Johannes','2. Johannes','3. Johannes','Judas','Offenbarung','Tobias','Judit','1. Makkabäer','2. Makkabäer','Weisheit','Sirach','Baruch','1. Esra (gr.)','2. Esra (gr.)','Gebet des Manasse','Gebet des Asarja','Susanna','Bel und der Drache','Zusätze zu Ester'],
+  
 };
 
-// ═══════════════════════════════════════════════════════
+// -------------------------------------------------------
 //  HELFER
-// ═══════════════════════════════════════════════════════
+// -------------------------------------------------------
 
 function mkDir(d)  { if (!fs.existsSync(d)) fs.mkdirSync(d, { recursive: true }); }
 function pad3(n)   { return String(n).padStart(3, '0'); }
@@ -175,11 +141,9 @@ function toRoman(n) {
 
 function bookFile(book) { return `${pad3(book.nr)}-${book.abbrev}.html`; }
 
-// Lutherbibel + Griechisch liegen im CATHOLIC-BIBLE-Ordner (gemeinsame Daten)
+// Lutherbibel liegt im CATHOLIC-BIBLE-Ordner (gemeinsame Daten)
 const CATHOLIC_DIR = path.join(__dirname, '..', '..', 'CATHOLIC-BIBLE');
 const LUTHER_DIR   = path.join(CATHOLIC_DIR, 'data-luther');
-const GREEK_DIR    = path.join(CATHOLIC_DIR, 'data-greek');
-const ORTHO_DIR    = path.join(CATHOLIC_DIR, 'data-orthodox');
 
 function loadLutherBook(nr) {
   const f = path.join(LUTHER_DIR, `${pad3(nr)}.json`);
@@ -187,20 +151,7 @@ function loadLutherBook(nr) {
   try { return JSON.parse(fs.readFileSync(f, 'utf8')); } catch (_) { return null; }
 }
 
-function loadGreekBook(nr) {
-  const f = path.join(GREEK_DIR, `${pad3(nr)}.json`);
-  if (!fs.existsSync(f)) return null;
-  try { return JSON.parse(fs.readFileSync(f, 'utf8')); } catch (_) { return null; }
-}
-
 function loadBook(code, nr) {
-  if (nr >= 74) {
-    const fo = path.join(ORTHO_DIR, code, `${pad3(nr)}.json`);
-    if (fs.existsSync(fo)) try { return JSON.parse(fs.readFileSync(fo, 'utf8')); } catch (_) { return null; }
-    const fe = path.join(ORTHO_DIR, 'kjv', `${pad3(nr)}.json`);
-    if (fs.existsSync(fe)) try { return JSON.parse(fs.readFileSync(fe, 'utf8')); } catch (_) { return null; }
-    return null;
-  }
   const f = path.join(DATA_DIR, code, `${pad3(nr)}.json`);
   if (!fs.existsSync(f)) return null;
   try { return JSON.parse(fs.readFileSync(f, 'utf8')); } catch (_) { return null; }
@@ -217,692 +168,341 @@ function parseBook(data) {
   });
 }
 
-// ═══════════════════════════════════════════════════════
+// -------------------------------------------------------
 //  SCHRIFTEN (Google Fonts CDN)
-// ═══════════════════════════════════════════════════════
+// -------------------------------------------------------
 
 const FONTS = `<link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&display=swap" rel="stylesheet">`;
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=UnifrakturMaguntia&display=swap" rel="stylesheet">`;
 
-// ═══════════════════════════════════════════════════════
-//  COVER (Hauptcover – Sprachauswahl)
-// ═══════════════════════════════════════════════════════
+// -------------------------------------------------------
+//  COVER (Hauptcover - Sprachauswahl)
+// -------------------------------------------------------
 
 function buildCover() {
-  const langList = TRANSLATIONS.map(t =>
-    `<a href="${t.code}/cover.html" class="lk">${t.native}</a>`
-  ).join('');
-
   return `<!DOCTYPE html>
-<html lang="la">
+<html lang="de">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Biblia Catholica Interlinearis</title>
+<title>Die Heilige Bibel</title>
 ${FONTS}
 <style>
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
-html,body{
-  min-height:100%;
-  font-family:'EB Garamond',Georgia,serif;
-}
-body{
-  background:#3A0A12;
-  color:#EDD882;
-  display:flex;align-items:stretch;justify-content:center;
-  min-height:100vh;
-}
-
-/* Seite */
-.page{
-  width:100%;max-width:680px;
-  min-height:100vh;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  padding:60px 48px;
-  position:relative;
-  background:linear-gradient(180deg,#2C0810 0%,#4A1020 30%,#5C1828 55%,#4A1020 80%,#2C0810 100%);
-}
-
-/* Äußerer Goldrahmen */
-.page::before{
-  content:'';
-  position:absolute;inset:20px;
-  border:1px solid rgba(200,160,48,.45);
-  pointer-events:none;
-}
-/* Innerer Goldrahmen */
-.page::after{
-  content:'';
-  position:absolute;inset:28px;
-  border:1px solid rgba(200,160,48,.18);
-  pointer-events:none;
-}
-
-.inner{
-  position:relative;z-index:1;
-  display:flex;flex-direction:column;align-items:center;
-  width:100%;
-  gap:0;
-}
-
-/* Oberes Ornament */
-.orn-top{
-  font-size:.75rem;letter-spacing:.65em;
-  color:rgba(200,160,48,.5);
-  margin-bottom:24px;
-}
-
-/* Kreuz */
-.cross{
-  font-size:3.8rem;
-  color:#C8A030;
-  text-shadow:0 0 40px rgba(200,160,48,.35),0 0 80px rgba(200,160,48,.15);
-  line-height:1;
-  margin-bottom:20px;
-}
-
-/* Haupttitel */
-.title{
-  font-family:'Cinzel Decorative','Cinzel',serif;
-  font-size:clamp(2.2rem,7vw,3.4rem);
-  color:#EDD882;
-  text-align:center;
-  line-height:1.08;
-  letter-spacing:.04em;
-  text-shadow:0 2px 20px rgba(0,0,0,.5);
-}
-
-/* Gold-Trennlinie */
-.rule{
-  width:85%;
-  height:1px;
-  margin:20px 0;
-  background:linear-gradient(to right,transparent,#C8A030 20%,#EDD882 50%,#C8A030 80%,transparent);
-}
-.rule-thin{
-  width:50%;
-  height:1px;
-  margin:14px 0;
-  background:linear-gradient(to right,transparent,rgba(200,160,48,.45),transparent);
-}
-
-/* Untertitel */
-.subtitle{
-  font-family:'Cinzel',serif;
-  font-size:.72rem;
-  letter-spacing:.48em;
-  color:rgba(200,160,48,.7);
-  text-align:center;
-  margin-top:6px;
-}
-
-/* Beschreibung */
-.desc{
-  font-style:italic;
-  font-size:1.05rem;
-  color:rgba(237,216,130,.68);
-  text-align:center;
-  line-height:2;
-  margin-top:4px;
-}
-
-/* Statistik */
-.stats{
-  font-family:'Cinzel',serif;
-  font-size:.58rem;
-  letter-spacing:.18em;
-  color:rgba(200,160,48,.4);
-  text-align:center;
-  margin-top:10px;
-}
-
-/* Sprachliste */
-.langs{
-  display:flex;flex-wrap:wrap;gap:6px;justify-content:center;
-  margin-top:4px;
-}
-.lk{
-  font-family:'Cinzel',serif;
-  font-size:.65rem;
-  letter-spacing:.08em;
-  color:rgba(200,160,48,.6);
-  text-decoration:none;
-  border:1px solid rgba(200,160,48,.22);
-  padding:4px 12px;
-  border-radius:2px;
-  transition:all .18s;
-}
-.lk:hover{color:#EDD882;border-color:rgba(200,160,48,.55);background:rgba(200,160,48,.08);}
-
-/* Hauptbutton */
-.btn{
-  display:inline-block;
-  margin-top:18px;
-  padding:13px 52px;
-  border:1.5px solid rgba(200,160,48,.6);
-  color:#C8A030;
-  text-decoration:none;
-  font-family:'Cinzel',serif;
-  font-size:.85rem;
-  letter-spacing:.26em;
-  border-radius:2px;
-  background:rgba(200,160,48,.06);
-  transition:all .22s;
-}
-.btn:hover{background:rgba(200,160,48,.18);color:#EDD882;border-color:rgba(200,160,48,.8);}
-
-/* Copyright */
-.copy{
-  font-family:'Cinzel',serif;
-  font-size:.48rem;
-  letter-spacing:.1em;
-  color:rgba(200,160,48,.28);
-  text-align:center;
-  line-height:2;
-  margin-top:20px;
-}
-
-/* Unteres Ornament */
-.orn-bot{
-  font-size:.75rem;letter-spacing:.65em;
-  color:rgba(200,160,48,.5);
-  margin-top:24px;
-}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{min-height:100vh;background:#e8e0d0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;padding:20px 0;}
+body::before{content:'';position:fixed;inset:16px;border:1px solid rgba(90,32,0,.3);pointer-events:none;z-index:5;}
+body::after{content:'';position:fixed;inset:28px;border:1px solid rgba(90,32,0,.13);pointer-events:none;z-index:5;}
+.book{width:min(500px,90vw);position:relative;z-index:1;display:block;text-decoration:none;cursor:pointer;}
+.book img{width:100%;height:auto;display:block;box-shadow:0 20px 60px rgba(0,0,0,.25);}
+.btn-wrap{text-align:center;position:relative;z-index:1;display:flex;gap:16px;justify-content:center;align-items:center;flex-wrap:wrap;}
+.btn{display:inline-block;padding:13px 56px;color:#f0e8d0;text-decoration:none;font-family:'Cinzel',serif;font-size:.82rem;font-weight:600;letter-spacing:.28em;border:2px solid #5a2000;background:#5a2000;transition:all .22s;}
+.btn:hover{background:#7a3010;border-color:#7a3010;}
+.btn-sec{display:inline-block;padding:10px 28px;color:rgba(90,32,0,.55);text-decoration:none;font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:.18em;border:1px solid rgba(90,32,0,.35);background:transparent;transition:all .22s;}
+.btn-sec:hover{color:#5a2000;border-color:rgba(90,32,0,.6);}
+.corner{position:fixed;width:56px;height:56px;pointer-events:none;z-index:6;}
+.c-tl{top:14px;left:14px;border-top:2px solid rgba(90,32,0,.45);border-left:2px solid rgba(90,32,0,.45);}
+.c-tr{top:14px;right:14px;border-top:2px solid rgba(90,32,0,.45);border-right:2px solid rgba(90,32,0,.45);}
+.c-bl{bottom:14px;left:14px;border-bottom:2px solid rgba(90,32,0,.45);border-left:2px solid rgba(90,32,0,.45);}
+.c-br{bottom:14px;right:14px;border-bottom:2px solid rgba(90,32,0,.45);border-right:2px solid rgba(90,32,0,.45);}
 </style>
 </head>
 <body>
+<div class="corner c-tl"></div>
+<div class="corner c-tr"></div>
+<div class="corner c-bl"></div>
+<div class="corner c-br"></div>
+<a class="book" href="german/vorwort.html">
+  <img src="../../../Die Heilige Bibel - Weiss - Michele.png" alt="Die Heilige Bibel">
+</a>
+</body>
+</html>`;
+}
+
+// -------------------------------------------------------
+//  VORWORT
+// -------------------------------------------------------
+
+function buildVorwort(trans) {
+  const bibName = BIBLE_NAMES[trans.lang] || 'Die Heilige Bibel';
+  return `<!DOCTYPE html>
+<html lang="${trans.lang}">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vorwort &middot; ${bibName}</title>
+${FONTS}
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+body{background:#e8e0d0;font-family:'EB Garamond',serif;color:#2a0008;}
+.topbar{
+  background:#f5f0e8;border-bottom:1px solid rgba(140,100,20,.3);
+  padding:10px 28px;
+}
+.topbar a{
+  font-family:'Cinzel',serif;font-size:.7rem;
+  color:rgba(42,0,8,.6);text-decoration:none;letter-spacing:.08em;
+  border:1px solid rgba(100,60,20,.35);padding:5px 18px;border-radius:2px;
+  display:inline-block;transition:color .15s,border-color .15s;
+}
+.topbar a:hover{color:#5a1020;border-color:rgba(100,60,20,.7);}
+.page{
+  max-width:720px;
+  margin:48px auto 60px;
+  padding:60px 72px 80px;
+  background:#f5f0e8;
+  box-shadow:0 4px 40px rgba(0,0,0,.12),inset 0 0 0 1px rgba(140,100,20,.15);
+  border-left:3px solid #B8962E;
+  border-right:3px solid #B8962E;
+  border-top:1px solid rgba(140,100,20,.3);
+  border-bottom:1px solid rgba(140,100,20,.3);
+  position:relative;
+}
+.page::before{
+  content:'';position:absolute;inset:14px;
+  border:1px solid rgba(140,100,20,.08);pointer-events:none;
+}
+.orn{
+  text-align:center;font-size:.72rem;letter-spacing:.65em;
+  color:rgba(42,0,8,.3);margin-bottom:32px;
+}
+.v-title{
+  font-family:'UnifrakturMaguntia',cursive;
+  font-size:2.8rem;color:#2a0008;
+  text-align:center;margin-bottom:8px;line-height:1.2;
+}
+.rule{
+  width:70%;height:1px;margin:20px auto;
+  background:linear-gradient(to right,transparent,#B8962E 20%,#8B6400 50%,#B8962E 80%,transparent);
+}
+.sub{
+  font-family:'Cinzel',serif;font-size:.62rem;letter-spacing:.35em;
+  color:rgba(42,0,8,.4);text-align:center;margin-bottom:36px;
+}
+.v-body{font-size:1.12rem;line-height:2.1;color:#2a0008;}
+.v-body p{margin-bottom:1.4em;}
+.v-body p:first-child::first-letter{
+  font-family:'UnifrakturMaguntia',cursive;
+  font-size:4em;float:left;line-height:.72;
+  padding-right:.08em;margin-top:.05em;color:#8B6400;
+}
+.sign{
+  margin-top:40px;text-align:right;
+  font-style:italic;font-size:1rem;color:rgba(42,0,8,.55);
+}
+.btn-wrap{text-align:center;margin-top:40px;}
+.btn{
+  display:inline-block;padding:11px 52px;
+  color:#2a0008;text-decoration:none;
+  font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:.22em;
+  border:1px solid rgba(100,60,20,.6);
+  background:rgba(255,255,255,.55);
+  transition:color .22s,border-color .22s,background .22s;
+}
+.btn:hover{color:#5a1020;border-color:rgba(100,60,20,.9);background:rgba(240,230,210,.85);}
+@media(max-width:600px){.page{padding:24px 20px 40px;margin:0;border-left:none;border-right:none;}}
+</style>
+</head>
+<body>
+<nav class="topbar">
+  <a href="index.html">&#8592; Bücherliste</a>
+</nav>
 <div class="page">
-  <div class="inner">
-    <div class="orn-top">✦ &nbsp; ✦ &nbsp; ✦</div>
-
-    <div class="cross">✝</div>
-
-    <div class="title">BIBLIA<br>CATHOLICA</div>
-    <div class="subtitle">I N T E R L I N E A R I S</div>
-
-    <div class="rule"></div>
-
-    <div class="desc">
-      Vulgata Clementina<br>
-      cum Translationibus Quindecim<br>
-      Die Heilige Schrift in 15 Sprachen
-    </div>
-    <div class="stats">73 &thinsp;Libri &nbsp;·&nbsp; 31 102 &thinsp;Versus &nbsp;·&nbsp; 15 &thinsp;Linguae</div>
-
-    <div class="rule-thin"></div>
-
-    <div class="langs">${langList}</div>
-
-    <a class="btn" href="index.html">LEGERE &nbsp;&#8250;</a>
-
-    <div class="copy">
-      KX Books &nbsp;&middot;&nbsp; Ein Zweig von KX KroniX Tech &nbsp;&middot;&nbsp; Alle Rechte vorbehalten
-    </div>
-
-    <div class="orn-bot">✦ &nbsp; ✦ &nbsp; ✦</div>
+  <div class="orn">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+  <div class="v-title">Vorwort</div>
+  <div class="rule"></div>
+  <div class="sub">Z U R &nbsp; V O R L I E G E N D E N &nbsp; A U S G A B E</div>
+  <div class="v-body">
+    <p>Liebe Michele,</p>
+    <p>dieses Bibel gehört dir, nicht wegen der Worte darin, sondern wegen des Menschen, der es in den Händen hält.</p>
+    <p>Du hast jemanden verloren, der dein Leben geprägt hat. Solche Menschen verschwinden nicht wirklich. Sie leben weiter, in einem Lachen, das du plötzlich wiedererkennst, in einem Duft, der eine ganze Welt aufmacht, in stillen Momenten, in denen du spürst: dieser Mensch hat mich zu dem gemacht, was ich bin. Das bleibt. Das kann niemand nehmen.</p>
+    <p>Trauer ist keine Schwäche. Sie ist der Beweis dafür, wie sehr dir dieser Mensch bedeutet hat. Und diese Liebe kennt kein Ende.</p>
+    <p>Ich wünsche dir Momente der Stille, in denen der Schmerz Platz lässt für Erinnerungen, die warm und hell sind. Ich wünsche dir Tage, an denen du lachst ohne schlechtes Gewissen. Und ich wünsche dir Menschen um dich herum, die dich tragen, wenn du es gerade nicht alleine kannst.</p>
+    <p>Du bist nicht allein.</p>
   </div>
+  <div class="sign">Mayo</div>
+  <div class="btn-wrap">
+    <a class="btn" href="index.html">Z U R &nbsp; B &Uuml; C H E R L I S T E &nbsp; &#8250;</a>
+  </div>
+  <div class="orn" style="margin-top:40px;margin-bottom:0;">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
 </div>
 </body>
 </html>`;
 }
 
-// ═══════════════════════════════════════════════════════
-//  RÜCKSEITE
-// ═══════════════════════════════════════════════════════
+// -------------------------------------------------------
+//  RüCKSEITE
+// -------------------------------------------------------
 
 function buildBackCover() {
-  const rows = TRANSLATIONS.map(t =>
-    `<div class="row"><span class="rn">${t.native}</span><span class="rd">${t.display}</span></div>`
-  ).join('');
-
   return `<!DOCTYPE html>
-<html lang="la">
+<html lang="de">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Biblia Catholica – Rückseite</title>
+<title>Die Heilige Bibel - Rückseite</title>
 ${FONTS}
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
-html,body{min-height:100%;font-family:'EB Garamond',Georgia,serif;}
-body{
-  background:#3A0A12;
-  display:flex;align-items:stretch;justify-content:center;
-  min-height:100vh;
-}
-.page{
-  width:100%;max-width:680px;min-height:100vh;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  padding:60px 48px;position:relative;
-  background:linear-gradient(180deg,#2C0810 0%,#4A1020 35%,#5C1828 55%,#4A1020 80%,#2C0810 100%);
-}
-.page::before{content:'';position:absolute;inset:20px;border:1px solid rgba(200,160,48,.45);pointer-events:none;}
-.page::after{content:'';position:absolute;inset:28px;border:1px solid rgba(200,160,48,.18);pointer-events:none;}
-.inner{position:relative;z-index:1;width:100%;display:flex;flex-direction:column;align-items:center;gap:0;}
-.orn{font-size:.75rem;letter-spacing:.65em;color:rgba(200,160,48,.5);margin:18px 0;}
-.title{font-family:'Cinzel Decorative',serif;font-size:2rem;color:#EDD882;text-align:center;line-height:1.15;}
-.rule{width:80%;height:1px;margin:16px 0;background:linear-gradient(to right,transparent,#C8A030 20%,#EDD882 50%,#C8A030 80%,transparent);}
-.blurb{font-style:italic;font-size:1rem;color:rgba(237,216,130,.7);text-align:center;line-height:2;}
-.sec-head{font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.28em;color:rgba(200,160,48,.5);text-align:center;margin:14px 0 10px;}
-.rows{display:grid;grid-template-columns:1fr 1fr;gap:5px;width:100%;}
-.row{display:flex;flex-direction:column;padding:6px 10px;border:1px solid rgba(200,160,48,.14);border-radius:2px;background:rgba(0,0,0,.12);}
-.rn{font-family:'Cinzel',serif;font-size:.72rem;color:rgba(237,216,130,.8);}
-.rd{font-size:.62rem;color:rgba(200,160,48,.38);margin-top:2px;}
-.verse{font-style:italic;font-size:.92rem;color:rgba(237,216,130,.62);text-align:center;line-height:2;}
-.verse-ref{font-family:'Cinzel',serif;font-size:.55rem;color:rgba(200,160,48,.35);text-align:center;margin-top:4px;}
-.copy{font-family:'Cinzel',serif;font-size:.48rem;letter-spacing:.08em;color:rgba(200,160,48,.28);text-align:center;line-height:2;margin-top:8px;}
-.back-link{display:inline-block;margin-top:14px;padding:8px 24px;border:1px solid rgba(200,160,48,.3);color:rgba(200,160,48,.55);text-decoration:none;font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:.1em;border-radius:2px;transition:all .18s;}
-.back-link:hover{color:#C8A030;border-color:rgba(200,160,48,.6);}
+html,body{min-height:100vh;background:#e8e0d0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;padding:20px 0;}
+body::before{content:'';position:fixed;inset:16px;border:1px solid rgba(90,32,0,.28);pointer-events:none;z-index:5;}
+body::after{content:'';position:fixed;inset:28px;border:1px solid rgba(90,32,0,.11);pointer-events:none;z-index:5;}
+.corner{position:fixed;width:52px;height:52px;pointer-events:none;z-index:6;}
+.c-tl{top:14px;left:14px;border-top:2px solid rgba(90,32,0,.4);border-left:2px solid rgba(90,32,0,.4);}
+.c-tr{top:14px;right:14px;border-top:2px solid rgba(90,32,0,.4);border-right:2px solid rgba(90,32,0,.4);}
+.c-bl{bottom:14px;left:14px;border-bottom:2px solid rgba(90,32,0,.4);border-left:2px solid rgba(90,32,0,.4);}
+.c-br{bottom:14px;right:14px;border-bottom:2px solid rgba(90,32,0,.4);border-right:2px solid rgba(90,32,0,.4);}
+.book{width:min(500px,90vw);position:relative;z-index:1;display:block;text-decoration:none;cursor:pointer;}
+.book img{width:100%;height:auto;display:block;box-shadow:0 20px 60px rgba(0,0,0,.25);}
+.overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem 2.2rem;text-align:center;}
+.loss{font-family:'EB Garamond',Georgia,serif;font-style:italic;font-size:.98rem;color:#1a0a04;line-height:1.75;margin-bottom:1.1rem;}
+.rule{width:50%;height:1px;margin:0 auto .9rem;background:linear-gradient(to right,transparent,rgba(90,40,0,.4),transparent);}
+.verse{font-family:'EB Garamond',Georgia,serif;font-style:italic;font-size:1.02rem;color:#1a0a04;line-height:1.8;}
+.verse-ref{font-family:'Cinzel',serif;font-size:.5rem;color:rgba(90,40,0,.7);letter-spacing:.15em;margin-top:5px;}
+.copy{font-family:'Cinzel',serif;font-size:.72rem;font-weight:700;color:rgba(240,200,130,.8);margin-top:1rem;letter-spacing:.12em;}
 </style>
 </head>
 <body>
-<div class="page">
-  <div class="inner">
-    <div class="orn">✦ &nbsp; ✦ &nbsp; ✦</div>
-    <div class="title">BIBLIA<br>CATHOLICA</div>
+<div class="corner c-tl"></div><div class="corner c-tr"></div>
+<div class="corner c-bl"></div><div class="corner c-br"></div>
+<a class="book" href="cover.html">
+  <img src="../../../Bibel-Rueckseite-Michele.png" alt="Rückseite">
+  <div class="overlay">
+    <div class="loss">Du hast jemanden verloren, der dein Herz geformt hat.<br>Solche Menschen gehen nicht wirklich.<br>Sie leben weiter in dem, was du bist.</div>
     <div class="rule"></div>
-    <div class="blurb">
-      Die Heilige Schrift im Wechselgespräch:<br>
-      Vulgata Clementina als Urtext<br>
-      und 15 gemeinfreie Übersetzungen<br>
-      für die christliche Weltbevölkerung.
-    </div>
-    <div class="sec-head">✦ &nbsp; Enthaltene Übersetzungen &nbsp; ✦</div>
-    <div class="rows">${rows}</div>
-    <div class="rule"></div>
-    <div class="verse">«Scrutamini scripturas, quia vos putatis<br>in ipsis vitam aeternam habere.»</div>
-    <div class="verse-ref">Ioannes 5,39 &nbsp;·&nbsp; Vulgata Clementina</div>
-    <div class="copy">
-      KX Books &nbsp;&middot;&nbsp; Ein Zweig von KX KroniX Tech &nbsp;&middot;&nbsp; Alle Rechte vorbehalten
-    </div>
-    <a href="index.html" class="back-link">← Sprachauswahl</a>
-    <div class="orn">✦ &nbsp; ✦ &nbsp; ✦</div>
+    <div class="verse">„Kommet her zu mir alle, die ihr mühselig<br>und beladen seid, so will ich euch erquicken.“</div>
+    <div class="verse-ref">Matthäus 11,28</div>
+
   </div>
-</div>
+</a>
 </body>
 </html>`;
 }
 
-// ═══════════════════════════════════════════════════════
+// -------------------------------------------------------
 //  HAUPTINDEX (Sprachauswahl)
-// ═══════════════════════════════════════════════════════
+// -------------------------------------------------------
 
 function buildMainIndex() {
-  const cards = TRANSLATIONS.map(t => `
-  <a href="${t.code}/index.html" class="lc">
-    <span class="ln">${t.native}</span>
-  </a>`).join('');
-
   return `<!DOCTYPE html>
-<html lang="la">
+<html lang="de">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Biblia Catholica Interlinearis – Sprachauswahl</title>
-${FONTS}
-<style>
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
-body{background:#F5EFE4;font-family:'EB Garamond',serif;color:#1A0E06;}
-
-/* OBERE LEISTE */
-.topbar{
-  background:#2C0810;
-  border-bottom:3px solid #B8962E;
-  padding:11px 32px;
-  display:flex;align-items:center;justify-content:space-between;gap:12px;
-}
-.topbar-brand{
-  font-family:'Cinzel',serif;font-size:.78rem;
-  color:#C8A030;letter-spacing:.1em;text-decoration:none;
-}
-.topbar-links{display:flex;gap:16px;}
-.topbar-links a{
-  font-family:'Cinzel',serif;font-size:.65rem;
-  color:rgba(200,160,48,.6);text-decoration:none;letter-spacing:.06em;
-  transition:color .15s;
-}
-.topbar-links a:hover{color:#C8A030;}
-
-/* HEADER */
-header{
-  background:linear-gradient(165deg,#2C0810 0%,#4A1020 45%,#5C1828 65%,#4A1020 85%,#2C0810 100%);
-  padding:64px 24px 52px;
-  text-align:center;
-  border-bottom:4px solid #B8962E;
-}
-.h-orn{font-size:.75rem;letter-spacing:.6em;color:rgba(200,160,48,.45);margin-bottom:18px;}
-.h-cross{font-size:2.8rem;color:#C8A030;text-shadow:0 0 30px rgba(200,160,48,.3);margin-bottom:12px;}
-.h-title{
-  font-family:'Cinzel Decorative',serif;
-  font-size:clamp(1.8rem,5.5vw,3rem);
-  color:#EDD882;
-  line-height:1.1;
-  text-shadow:0 3px 16px rgba(0,0,0,.45);
-}
-.h-sub{
-  font-family:'Cinzel',serif;font-size:.8rem;
-  color:#C8A030;margin-top:12px;letter-spacing:.22em;
-}
-.h-desc{
-  font-style:italic;font-size:.95rem;
-  color:rgba(237,216,130,.52);margin-top:6px;
-}
-.h-stats{
-  font-family:'Cinzel',serif;font-size:.6rem;
-  color:rgba(200,160,48,.35);letter-spacing:.14em;margin-top:10px;
-}
-.h-rule{
-  width:180px;height:1px;margin:18px auto 0;
-  background:linear-gradient(to right,transparent,#C8A030,transparent);
-}
-
-/* SEKTION */
-.sec{
-  max-width:1040px;margin:36px auto 0;padding:0 24px;
-  text-align:center;
-}
-.sec-label{
-  font-family:'Cinzel',serif;font-size:.68rem;
-  letter-spacing:.28em;color:#8B6914;
-  display:inline-block;
-  border-bottom:1px solid rgba(184,150,46,.35);
-  padding-bottom:6px;margin-bottom:22px;
-}
-
-/* SPRACHKARTEN */
-.grid{
-  max-width:1040px;margin:0 auto 72px;padding:0 24px;
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(190px,1fr));
-  gap:12px;
-}
-.lc{
-  display:flex;flex-direction:column;
-  padding:22px 18px 18px;
-  background:#FEFAF2;
-  border:1px solid rgba(184,150,46,.2);
-  border-top:3px solid #B8962E;
-  border-radius:3px;
-  text-decoration:none;color:#1A0E06;
-  transition:all .2s;
-  box-shadow:0 2px 8px rgba(0,0,0,.05);
-}
-.lc:hover{
-  transform:translateY(-4px);
-  box-shadow:0 8px 28px rgba(184,150,46,.18);
-  background:#FDF6E3;border-top-color:#EDD882;
-}
-.ln{
-  font-family:'Cinzel',serif;font-size:.9rem;
-  font-weight:600;color:#2C0810;
-}
-.ld{font-size:.7rem;color:#8B7040;margin-top:5px;line-height:1.4;}
-
-/* FOOTER */
-footer{
-  background:#2C0810;border-top:3px solid #B8962E;
-  color:rgba(200,160,48,.38);text-align:center;
-  padding:28px 20px;font-family:'Cinzel',serif;
-  font-size:.62rem;letter-spacing:.1em;line-height:2.2;
-}
-</style>
+<meta http-equiv="refresh" content="0;url=cover.html">
+<title>Die Heilige Bibel</title>
 </head>
-<body>
-
-<nav class="topbar">
-  <span class="topbar-brand">✞ &nbsp; BIBLIA CATHOLICA INTERLINEARIS</span>
-  <div class="topbar-links">
-    <a href="cover.html">Cover</a>
-    <a href="back-cover.html">Rückseite</a>
-  </div>
-</nav>
-
-<header>
-  <div class="h-orn">✦ &nbsp; ✦ &nbsp; ✦</div>
-  <div class="h-cross">✝</div>
-  <div class="h-title">BIBLIA CATHOLICA<br>INTERLINEARIS</div>
-  <div class="h-sub">Vulgata Clementina</div>
-  <div class="h-desc">Die Heilige Schrift · 15 Sprachen · 73 Bücher</div>
-  <div class="h-stats">73 Libri &nbsp;·&nbsp; 31 102 Versus &nbsp;·&nbsp; 15 Linguae</div>
-  <div class="h-rule"></div>
-</header>
-
-<div class="sec">
-  <span class="sec-label">❧ &nbsp; Elige Linguam Tuam &nbsp; ❧</span>
-</div>
-
-<main class="grid">
-${cards}
-</main>
-
-<footer>
-  KX Books &nbsp;&middot;&nbsp; Ein Zweig von KX KroniX Tech &nbsp;&middot;&nbsp; Alle Rechte vorbehalten
-</footer>
-
-</body>
+<body></body>
 </html>`;
 }
-
-// ═══════════════════════════════════════════════════════
-//  SPRACHCOVER (pro Übersetzung) — Kein SVG, reines CSS
-// ═══════════════════════════════════════════════════════
-
 function buildLangCover(trans) {
-  const bibName = BIBLE_NAMES[trans.lang] || 'Holy Bible';
+  const bibName = BIBLE_NAMES[trans.lang] || 'Die Heilige Bibel';
+  const btnTxt  = READ_BTN[trans.lang] || 'L E S E N';
 
   return `<!DOCTYPE html>
 <html lang="${trans.lang}">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>${bibName} &middot; Biblia Catholica</title>
-${FONTS}
+<title>${bibName}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=UnifrakturMaguntia&family=EB+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
-html,body{height:100%;font-family:'EB Garamond',Georgia,serif;}
-body{
-  background:
-    repeating-linear-gradient( 45deg,transparent,transparent 38px,rgba(200,160,48,.018) 38px,rgba(200,160,48,.018) 39px),
-    repeating-linear-gradient(-45deg,transparent,transparent 38px,rgba(200,160,48,.018) 38px,rgba(200,160,48,.018) 39px),
-    linear-gradient(170deg,#1A0407 0%,#2C0810 30%,#4A1020 55%,#2C0810 80%,#1A0407 100%);
+html,body{
+  height:100%;
+  background:#e8e0d0;
   display:flex;align-items:center;justify-content:center;
-  height:100vh;overflow:hidden;
-  box-shadow:
-    inset 0 0 0 3px rgba(200,160,48,.5),
-    inset 0 0 0 7px rgba(200,160,48,.08),
-    inset 0 0 0 10px rgba(200,160,48,.35);
 }
-
 .page{
-  width:460px;
-  max-width:calc(100vw - 2cm);
-  height:calc(100vh - 2.5cm);
-  max-height:680px;
-  display:flex;flex-direction:column;align-items:center;
-  justify-content:space-between;
+  width:500px;
+  max-width:calc(100vw - 1.2cm);
+  height:min(calc(100vh - 1.2cm), 680px);
   position:relative;
-  background:linear-gradient(180deg,#2A0810 0%,#4A1220 35%,#5C1828 55%,#4A1220 75%,#2A0810 100%);
-  /* Two clean gold borders, no shadow */
-  border:2px solid #A07828;
-  outline:1px solid rgba(180,138,44,.35);
-  outline-offset:-12px;
+  background:#f5f0e8;
+  overflow:hidden;
 }
-
-/* Corner L-pieces — same size as outline inset */
-.corner{position:absolute;width:26px;height:26px;pointer-events:none;}
-.corner.tl{top:20px;left:20px;border-top:1.5px solid #A07828;border-left:1.5px solid #A07828;}
-.corner.tr{top:20px;right:20px;border-top:1.5px solid #A07828;border-right:1.5px solid #A07828;}
-.corner.bl{bottom:20px;left:20px;border-bottom:1.5px solid #A07828;border-left:1.5px solid #A07828;}
-.corner.br{bottom:20px;right:20px;border-bottom:1.5px solid #A07828;border-right:1.5px solid #A07828;}
-
-/* Top + bottom ornamental bands */
-.top-band,.bot-band{
-  width:100%;padding:18px 36px 14px;
-  display:flex;flex-direction:column;align-items:center;gap:8px;
-  position:relative;z-index:1;
+.frame{position:absolute;inset:0;z-index:2;pointer-events:none;}
+.title-block{
+  position:absolute;z-index:3;
+  top:9%;left:0;right:0;
+  text-align:center;width:100%;
 }
-.bot-band{padding:14px 36px 18px;}
-.band-rule{
-  width:80%;height:1px;
-  background:linear-gradient(to right,transparent,#A07828 20%,#C8A030 50%,#A07828 80%,transparent);
+.heilige{
+  font-family:'Cinzel',serif;
+  font-size:1.1rem;letter-spacing:.5em;
+  color:#2a0008;display:block;margin-bottom:12px;
+  text-shadow:0 1px 3px rgba(255,255,255,.9);
 }
-.band-orn{display:block;width:55%;margin:0 auto;}
-
-/* Center block */
-.center-block{
-  flex:1;display:flex;flex-direction:column;align-items:center;
-  justify-content:center;padding:0 48px;
-  position:relative;z-index:1;gap:0;
+.bibel{
+  font-family:'UnifrakturMaguntia',cursive;
+  font-size:clamp(2.2rem,6vw,3rem);
+  line-height:1.15;
+  color:#2a0008;
+  display:block;
 }
-
-/* Cross SVG */
-.cross-svg{display:block;width:48px;margin:0 auto 18px;}
-
-/* Separator rule */
-.rule-sep{
-  width:82%;height:1px;margin:0 0 18px;
-  background:linear-gradient(to right,transparent,#A07828 15%,#C8A030 50%,#A07828 85%,transparent);
+.lang-sub{
+  font-family:'Cinzel',serif;
+  font-size:.65rem;letter-spacing:.35em;
+  color:rgba(42,0,8,.5);
+  display:block;margin-top:10px;
 }
-
-/* Main title */
-.main-title{
-  font-family:'Cinzel Decorative','Cinzel',serif;
-  font-size:clamp(1.5rem,4.8vw,2.4rem);
-  color:#D4A84A;
-  text-align:center;line-height:1.22;letter-spacing:.06em;
+.back-link{
+  position:absolute;bottom:5%;left:0;right:0;text-align:center;z-index:3;
+  font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.12em;
+  color:rgba(42,0,8,.35);text-decoration:none;
 }
-
-/* Ornament panel */
-.orn-panel{display:block;width:82%;margin:18px auto 0;}
-
-/* Button block */
-.bottom-block{
-  display:flex;flex-direction:column;align-items:center;
-  padding:0 48px;position:relative;z-index:1;margin-bottom:4px;
-}
-.btn{
-  display:inline-block;padding:11px 52px;
-  border:1.5px solid #A07828;
-  color:#C8A030;text-decoration:none;
-  font-family:'Cinzel',serif;font-size:.76rem;letter-spacing:.35em;
-  background:transparent;transition:background .2s,color .2s;
-}
-.btn:hover{background:rgba(160,120,40,.15);color:#D4A84A;}
+.back-link:hover{color:rgba(42,0,8,.65);}
+PLACEHOLDER_BODY_CONTINUE
 </style>
 </head>
 <body>
 <div class="page">
-  <div class="corner tl"></div><div class="corner tr"></div>
-  <div class="corner bl"></div><div class="corner br"></div>
 
-  <!-- TOP BAND: engraved floral border strip -->
-  <div class="top-band">
-    <div class="band-rule"></div>
-    <svg class="band-orn" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 22">
-      <g stroke="#B8962E" fill="none" opacity="0.7" stroke-width="0.8">
-        <!-- horizontal spine -->
-        <line x1="0" y1="11" x2="200" y2="11"/>
-        <!-- centre cross -->
-        <line x1="100" y1="1" x2="100" y2="21" stroke-width="1.4"/>
-        <line x1="91" y1="8" x2="109" y2="8" stroke-width="1.4"/>
-        <!-- left acanthus scrolls -->
-        <path d="M78,11 C72,11 68,5 62,7 C56,9 58,14 62,14 C66,14 64,8 70,10 C76,12 78,11 78,11"/>
-        <path d="M50,11 C44,11 40,5 34,7 C28,9 30,14 34,14 C38,14 36,8 42,10 C48,12 50,11 50,11"/>
-        <!-- right acanthus scrolls (mirrored) -->
-        <path d="M122,11 C128,11 132,5 138,7 C144,9 142,14 138,14 C134,14 136,8 130,10 C124,12 122,11 122,11"/>
-        <path d="M150,11 C156,11 160,5 166,7 C172,9 170,14 166,14 C162,14 164,8 158,10 C152,12 150,11 150,11"/>
-        <!-- small diamonds at intervals -->
-        <path d="M16,11 L19,8 L22,11 L19,14 Z" fill="#B8962E"/>
-        <path d="M178,11 L181,8 L184,11 L181,14 Z" fill="#B8962E"/>
-      </g>
-    </svg>
-    <div class="band-rule"></div>
+  <!-- SVG-RAHMEN (gold, wie Original-Michele-Cover) -->
+  <svg class="frame" xmlns="http://www.w3.org/2000/svg"
+       viewBox="0 0 100 100" preserveAspectRatio="none"
+       style="width:100%;height:100%;position:absolute;top:0;left:0;">
+    <rect x="2.5" y="2.5" width="95" height="95"
+          fill="none" stroke="#C8A030" stroke-width="0.85"/>
+    <rect x="5" y="5" width="90" height="90"
+          fill="none" stroke="#C8A030" stroke-width="0.3" opacity="0.6"/>
+    <rect x="8" y="8" width="84" height="84"
+          fill="none" stroke="#9A7020" stroke-width="0.18" opacity="0.45"/>
+    <g stroke="#C8A030" stroke-width="0.55" opacity="0.9">
+      <line x1="5" y1="5"  x2="18" y2="5"/>  <line x1="5" y1="5"  x2="5"  y2="18"/>
+      <line x1="95" y1="5"  x2="82" y2="5"/> <line x1="95" y1="5"  x2="95" y2="18"/>
+      <line x1="5" y1="95" x2="18" y2="95"/> <line x1="5" y1="95" x2="5"  y2="82"/>
+      <line x1="95" y1="95" x2="82" y2="95"/><line x1="95" y1="95" x2="95" y2="82"/>
+    </g>
+  </svg>
+
+  <!-- Titel-Block -->
+  <div class="title-block">
+    <span class="heilige">D I E &nbsp; H E I L I G E</span>
+    <span class="bibel">${bibName}</span>
+    <span class="lang-sub">${trans.native ? trans.native.toUpperCase() : ''}</span>
   </div>
 
-  <!-- CENTRE -->
-  <div class="center-block">
-    <!-- Latin cross, clean, no filters -->
-    <svg class="cross-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 64">
-      <g fill="#B8962E" opacity="0.85">
-        <rect x="16" y="0" width="8" height="64"/>
-        <rect x="4" y="14" width="32" height="8"/>
-        <!-- serif caps -->
-        <rect x="11" y="0" width="18" height="2"/>
-        <rect x="11" y="62" width="18" height="2"/>
-        <rect x="4" y="12" width="2" height="12"/>
-        <rect x="34" y="12" width="2" height="12"/>
-      </g>
-    </svg>
-
-    <div class="rule-sep"></div>
-    <div class="main-title">${bibName}</div>
-
-    <!-- Engraved ornamental medallion panel — no filters, crisp lines -->
-    <svg class="orn-panel" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 68">
-      <g stroke="#A07828" fill="none" opacity="0.65">
-        <!-- top + bottom bounding lines -->
-        <line x1="0" y1="12" x2="260" y2="12" stroke-width="0.5"/>
-        <line x1="0" y1="56" x2="260" y2="56" stroke-width="0.5"/>
-        <!-- centre circle + cross -->
-        <circle cx="130" cy="34" r="22" stroke-width="1"/>
-        <circle cx="130" cy="34" r="14" stroke-width="0.5"/>
-        <line x1="130" y1="12" x2="130" y2="56" stroke-width="1.2"/>
-        <line x1="108" y1="34" x2="152" y2="34" stroke-width="1.2"/>
-        <!-- diamond at centre -->
-        <path d="M130,27 L136,34 L130,41 L124,34 Z" fill="#A07828" stroke="none" opacity="0.8"/>
-        <!-- left scrollwork -->
-        <path d="M106,34 C94,34 88,20 74,23 C60,26 64,36 70,36 C76,36 72,26 84,30 C96,34 106,34 106,34" stroke-width="0.9"/>
-        <path d="M60,34 C48,34 42,20 28,23 C14,26 18,36 24,36 C30,36 26,26 38,30 C50,34 60,34 60,34" stroke-width="0.9"/>
-        <!-- right scrollwork (mirrored) -->
-        <path d="M154,34 C166,34 172,20 186,23 C200,26 196,36 190,36 C184,36 188,26 176,30 C164,34 154,34 154,34" stroke-width="0.9"/>
-        <path d="M200,34 C212,34 218,20 232,23 C246,26 242,36 236,36 C230,36 234,26 222,30 C210,34 200,34 200,34" stroke-width="0.9"/>
-        <!-- dot accents -->
-        <circle cx="130" cy="16" r="2" fill="#A07828" stroke="none" opacity="0.7"/>
-        <circle cx="130" cy="52" r="2" fill="#A07828" stroke="none" opacity="0.7"/>
-        <circle cx="108" cy="34" r="1.5" fill="#A07828" stroke="none" opacity="0.7"/>
-        <circle cx="152" cy="34" r="1.5" fill="#A07828" stroke="none" opacity="0.7"/>
-        <circle cx="4"   cy="34" r="2.5" fill="#A07828" stroke="none" opacity="0.6"/>
-        <circle cx="256" cy="34" r="2.5" fill="#A07828" stroke="none" opacity="0.6"/>
-      </g>
-    </svg>
+  <!-- LESEN Button -->
+  <div class="btn-wrap">
+    <a class="btn" href="vorwort.html">${btnTxt}</a>
   </div>
 
-  <!-- BUTTON -->
-  <div class="bottom-block">
-    <a class="btn" href="index.html">${READ_BTN[trans.lang]||READ_BTN.en} &nbsp; ›</a>
-  </div>
+  <a class="back-link" href="../cover.html">&#8617; Zur&#252;ck zur &#220;bersicht</a>
 
-  <!-- BOTTOM BAND -->
-  <div class="bot-band">
-    <div class="band-rule"></div>
-    <svg class="band-orn" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 22">
-      <g stroke="#B8962E" fill="none" opacity="0.7" stroke-width="0.8">
-        <line x1="0" y1="11" x2="200" y2="11"/>
-        <line x1="100" y1="1" x2="100" y2="21" stroke-width="1.4"/>
-        <line x1="91" y1="8" x2="109" y2="8" stroke-width="1.4"/>
-        <path d="M78,11 C72,11 68,5 62,7 C56,9 58,14 62,14 C66,14 64,8 70,10 C76,12 78,11 78,11"/>
-        <path d="M50,11 C44,11 40,5 34,7 C28,9 30,14 34,14 C38,14 36,8 42,10 C48,12 50,11 50,11"/>
-        <path d="M122,11 C128,11 132,5 138,7 C144,9 142,14 138,14 C134,14 136,8 130,10 C124,12 122,11 122,11"/>
-        <path d="M150,11 C156,11 160,5 166,7 C172,9 170,14 166,14 C162,14 164,8 158,10 C152,12 150,11 150,11"/>
-        <path d="M16,11 L19,8 L22,11 L19,14 Z" fill="#B8962E"/>
-        <path d="M178,11 L181,8 L184,11 L181,14 Z" fill="#B8962E"/>
-      </g>
-    </svg>
-    <div class="band-rule"></div>
-  </div>
 </div>
 </body>
 </html>`;
 }
 
-// ═══════════════════════════════════════════════════════
+// -------------------------------------------------------
 //  SPRACHINDEX (Bücherliste)
-// ═══════════════════════════════════════════════════════
+// -------------------------------------------------------
 
 function buildLangIndex(trans, availBooks) {
   const byTest = g => availBooks.filter(b => b.testament === g);
-  const booksVT = byTest('VT'), booksNT = byTest('NT'), booksDK = byTest('DK'), booksOX = byTest('OX');
+  const booksVT = byTest('VT'), booksNT = byTest('NT'), booksDK = byTest('DK');
 
   function bookList(books) {
     return books.map(b => `
@@ -919,21 +519,12 @@ function buildLangIndex(trans, availBooks) {
   const dkSec = booksDK.length ? `
 <div class="sec-group sec-dk">
 <div class="sec-head">
-  <span class="sec-t">Libri Deuterocanonoci</span>
+  <span class="sec-t sec-t-c">Libri Deuterocanonoci</span>
+  <span class="sec-t sec-t-p">Deuterokanonische Bücher</span>
   <div class="sec-rule"></div>
-  <span class="sec-s">L I B R I &nbsp; D E U T E R O C A N O N I C I &nbsp;·&nbsp; ${booksDK.length} &nbsp; L I B R I</span>
+  <span class="sec-s">L I B R I &nbsp; D E U T E R O C A N O N I C I &nbsp;–&nbsp; ${booksDK.length} &nbsp; L I B R I</span>
 </div>
 ${bookList(booksDK)}
-</div>` : '';
-
-  const oxSec = booksOX.length ? `
-<div class="sec-group sec-ox">
-<div class="sec-head">
-  <span class="sec-t">Libri Orthodoxi</span>
-  <div class="sec-rule"></div>
-  <span class="sec-s">L I B R I &nbsp; O R T H O D O X I &nbsp;·&nbsp; ${booksOX.length} &nbsp; L I B R I</span>
-</div>
-${bookList(booksOX)}
 </div>` : '';
 
   return `<!DOCTYPE html>
@@ -941,93 +532,93 @@ ${bookList(booksOX)}
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Biblia Catholica &middot; ${trans.native}</title>
+<title>${BIBLE_NAMES[trans.lang]||'Die Heilige Bibel'} &middot; ${trans.native}</title>
 ${FONTS}
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 body{
-  background:#2C0810;
-  background-image:radial-gradient(ellipse at 50% 20%,#4A1020 0%,#1A0407 100%);
-  font-family:'EB Garamond',serif;color:#EDD882;
+  background:#e8e0d0;
+  font-family:'EB Garamond',serif;color:#2a0008;
 }
 
 /* NAV */
 .topbar{
-  background:linear-gradient(to bottom,#2C0810,#1A0407);
-  border-bottom:1px solid rgba(184,150,46,.3);
+  background:#e8e0d0;
+  border-bottom:1px solid rgba(140,100,20,.3);
   padding:10px 28px;
+  display:flex;align-items:center;justify-content:space-between;
 }
 .topbar a{
   font-family:'Cinzel',serif;font-size:.7rem;
-  color:rgba(200,160,48,.72);text-decoration:none;letter-spacing:.08em;
-  border:1px solid rgba(200,160,48,.28);padding:5px 18px;border-radius:2px;
+  color:rgba(42,0,8,.6);text-decoration:none;letter-spacing:.08em;
+  border:1px solid rgba(100,60,20,.35);padding:5px 18px;border-radius:2px;
   display:inline-block;
   transition:color .15s,border-color .15s;
 }
-.topbar a:hover{color:#C8A030;border-color:rgba(200,160,48,.55);}
+.topbar a:hover{color:#5a1020;border-color:rgba(100,60,20,.7);}
 
 /* HEADER */
 header{
-  background:
-    repeating-linear-gradient( 45deg,transparent,transparent 36px,rgba(200,160,48,.028) 36px,rgba(200,160,48,.028) 37px),
-    repeating-linear-gradient(-45deg,transparent,transparent 36px,rgba(200,160,48,.028) 36px,rgba(200,160,48,.028) 37px),
-    linear-gradient(162deg,#240608 0%,#3E0E1A 18%,#5C1828 44%,#62202E 56%,#4A1220 76%,#240608 100%);
-  padding:36px 24px 28px;text-align:center;border-bottom:4px solid #B8962E;
+  background:#f5f0e8;
+  border:1px solid rgba(140,100,20,.35);
+  border-bottom:3px solid #B8962E;
+  padding:36px 24px 28px;text-align:center;
   position:relative;overflow:hidden;
+  margin:0;
 }
 header::before{
   content:'';
-  position:absolute;inset:14px;
-  border:1px solid rgba(200,160,48,.22);
+  position:absolute;inset:12px;
+  border:1px solid rgba(140,100,20,.18);
   pointer-events:none;
 }
 header::after{
   content:'';
-  position:absolute;inset:22px;
-  border:1px solid rgba(200,160,48,.08);
+  position:absolute;inset:20px;
+  border:0.5px solid rgba(140,100,20,.08);
   pointer-events:none;
 }
 .h-orn{
   font-size:.72rem;letter-spacing:.65em;
-  color:rgba(200,160,48,.4);
+  color:rgba(42,0,8,.3);
   margin-bottom:20px;position:relative;
 }
 .h-cross-big{
-  font-size:3.8rem;color:#C8A030;
-  text-shadow:0 0 30px rgba(200,160,48,.5),0 0 70px rgba(200,160,48,.2);
-  line-height:1;margin-bottom:16px;position:relative;
+  display:block;width:40px;height:56px;margin:0 auto 16px;
 }
 .htitle{
-  font-family:'Cinzel Decorative',serif;
+  font-family:'UnifrakturMaguntia',cursive;
   font-size:clamp(2rem,6vw,3.2rem);
-  color:#EDD882;text-shadow:0 3px 20px rgba(0,0,0,.55);
-  position:relative;line-height:1.1;
+  color:#2a0008;
+  position:relative;line-height:1.2;
 }
 .h-rule-full{
   width:65%;height:1px;margin:16px auto;
-  background:linear-gradient(to right,transparent,#B8962E 20%,#EDD882 50%,#B8962E 80%,transparent);
+  background:linear-gradient(to right,transparent,#B8962E 20%,#8B6400 50%,#B8962E 80%,transparent);
   position:relative;
 }
 .h-sub{
   font-family:'Cinzel',serif;font-size:.6rem;
-  letter-spacing:.44em;color:rgba(200,160,48,.48);
+  letter-spacing:.44em;color:rgba(42,0,8,.4);
   position:relative;
 }
 .hlang{
   font-family:'Cinzel',serif;font-size:.7rem;
-  color:rgba(200,160,48,.65);letter-spacing:.25em;
+  color:rgba(42,0,8,.55);letter-spacing:.25em;
   position:relative;margin-top:10px;
 }
 .h-orn-bot{
   font-size:.65rem;letter-spacing:.8em;
-  color:rgba(200,160,48,.3);
+  color:rgba(42,0,8,.25);
   margin-top:18px;position:relative;
 }
 /* SEKTIONEN */
 .sec-head{text-align:center;padding:52px 0 8px;}
-.sec-t{font-family:'Cinzel Decorative',serif;font-size:2rem;color:#3A0A12;text-shadow:none;display:block;margin-bottom:6px;}
-.sec-rule{width:140px;height:1px;margin:10px auto;background:linear-gradient(to right,transparent,#B8962E 20%,#EDD882 50%,#B8962E 80%,transparent);}
-.sec-s{font-family:'Cinzel',serif;font-size:.58rem;color:#8B6914;letter-spacing:.28em;margin-top:4px;display:block;margin-bottom:28px;}
+.sec-t{font-family:'UnifrakturMaguntia',cursive;font-size:2.4rem;color:#2a0008;text-shadow:none;display:none;margin-bottom:6px;}
+body:not([data-conf]) .sec-t-c,body[data-conf="catholic"] .sec-t-c{display:block;}
+body[data-conf="protestant"] .sec-t-p{display:block;}
+.sec-rule{width:140px;height:1px;margin:10px auto;background:linear-gradient(to right,transparent,#B8962E 20%,#8B6400 50%,#B8962E 80%,transparent);}
+.sec-s{font-family:'Cinzel',serif;font-size:.58rem;color:#7a5800;letter-spacing:.28em;margin-top:4px;display:block;margin-bottom:28px;}
 
 /* TOC PARCHMENT BLOCK */
 .index-body{
@@ -1043,7 +634,7 @@ header::after{
   border-right:4px solid #B8962E;
   border-top:2px solid rgba(184,150,46,.4);
   border-bottom:2px solid rgba(184,150,46,.4);
-  position:relative;
+  position:relative;overflow:clip;
 }
 .index-body::before{
   content:'';
@@ -1085,7 +676,7 @@ header::after{
 }
 .tarr{color:rgba(184,150,46,.4);margin-left:14px;font-size:1rem;}
 
-/* ── Konfessions-Switcher ── */
+/* -- Konfessions-Switcher -- */
 .conf-bar{
   display:flex;justify-content:center;gap:0;
   padding:18px 24px 0;
@@ -1093,39 +684,56 @@ header::after{
 }
 .conf-btn{
   padding:9px 24px;font-size:.65rem;letter-spacing:.16em;
-  border:1px solid rgba(184,150,46,.35);background:transparent;
-  color:rgba(184,150,46,.5);cursor:pointer;transition:all .18s;
+  border:1px solid rgba(100,60,20,.3);background:transparent;
+  color:rgba(42,0,8,.45);cursor:pointer;transition:all .18s;
   text-transform:uppercase;
 }
 .conf-btn:first-child{border-radius:2px 0 0 2px;}
 .conf-btn:last-child{border-radius:0 2px 2px 0;}
 .conf-btn:not(:first-child){border-left:none;}
-.conf-btn.active{background:rgba(184,150,46,.14);color:#B8962E;border-color:rgba(184,150,46,.6);}
-.conf-btn:hover:not(.active){background:rgba(184,150,46,.07);color:rgba(184,150,46,.8);}
+.conf-btn.active{background:rgba(140,100,20,.12);color:#5a1020;border-color:rgba(100,60,20,.6);}
+.conf-btn:hover:not(.active){background:rgba(140,100,20,.06);color:rgba(42,0,8,.7);}
 
-body[data-conf="protestant"] .sec-dk,
-body[data-conf="protestant"] .sec-ox { display:none; }
-body[data-conf="protestant"] .toc-item[data-testament="DK"],
-body[data-conf="protestant"] .toc-item[data-testament="OX"] { display:none; }
-
-body:not([data-conf="orthodox"]) .sec-ox { display:none; }
-body[data-conf="orthodox"] .sec-ox { display:block; }
+body[data-conf="protestant"] .sec-dk { display:none; }
+body[data-conf="protestant"] .toc-item[data-testament="DK"] { display:none; }
 
 .conf-note{
   text-align:center;font-family:'Cinzel',serif;font-size:.58rem;
-  color:rgba(184,150,46,.38);letter-spacing:.1em;padding:6px 24px 0;
+  color:rgba(120,80,20,.8);letter-spacing:.1em;padding:6px 24px 0;
 }
+@media(max-width:600px){
+  .index-body{margin:12px 8px 40px;padding:28px 16px 40px;}
+  .toc-item{padding:10px 2px;}
+  .tlat{font-size:.95rem;}
+  .tname{font-size:.85rem;margin-left:6px;}
+  .tdots{display:none;}
+  .tchap{display:none;}
+  .tarr{margin-left:auto;}
+  .conf-bar{flex-direction:column;align-items:center;gap:6px;padding:14px 16px 0;}
+  .conf-btn{width:100%;max-width:260px;text-align:center;border-radius:2px!important;border-left:1px solid rgba(100,60,20,.3)!important;}
+  .h-cross-big{font-size:2.8rem;}
+  .h-orn,.h-orn-bot{letter-spacing:.25em;}
+  .sec-head{padding:30px 0 8px;}
+  .sec-t{font-size:1.8rem;}
+  .topbar{padding:10px 12px;}
+  .topbar a{padding:5px 10px;font-size:.62rem;}
+}
+/* KREUZ-GRAVUR */
+.b-wm{position:sticky;top:calc(50vh - 37.5vmin);width:50vmin;height:75vmin;margin:0 auto -75vmin;display:block;pointer-events:none;z-index:0;user-select:none;}
+.b-wm svg{width:100%;height:auto;display:block;}
+.b-wm path{fill:none;stroke:rgba(184,150,46,.06);stroke-width:1.5;stroke-linecap:square;}
 </style>
 </head>
 <body>
 
 <nav class="topbar">
-  <a href="cover.html">&#8592; Cover</a>
+  <a href="../index.html">&#8592; Zur Übersicht</a>
+  <a href="../back-cover.html" style="margin-left:auto">Rückseite &#8594;</a>
 </nav>
 
 <header>
   <div class="h-orn">✦ &nbsp; ✦ &nbsp; ✦</div>
-  <div class="h-cross-big">✝</div>
+  <svg class="h-cross-big" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 14"><path d="M5,0V14M0,4H10" fill="none" stroke="#C8A030" stroke-width="1.8" stroke-linecap="square"/></svg>
   <div class="htitle">${BIBLE_NAMES[trans.lang] || trans.native}</div>
   <div class="h-rule-full"></div>
   <div class="hlang">${trans.native.toUpperCase()}</div>
@@ -1133,18 +741,19 @@ body[data-conf="orthodox"] .sec-ox { display:block; }
 </header>
 
 <main class="index-body">
+<div class="b-wm"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 14"><path d="M5,0V14M0,4H10"/></svg></div>
 
-<!-- ── Konfessions-Switcher ── -->
+<!-- -- Konfessions-Switcher -- -->
 <div class="conf-bar">
-  <button class="conf-btn" data-conf="catholic">✝ Katholisch</button>
-  <button class="conf-btn" data-conf="protestant">☩ Protestantisch</button>
-  <button class="conf-btn" data-conf="orthodox">☦ Orthodox</button>
+  <button class="conf-btn" data-conf="catholic">✝&#xFE0E; Katholisch</button>
+  <button class="conf-btn" data-conf="protestant">☩  Protestantisch</button>
 </div>
 <div class="conf-note" id="conf-note"></div>
 
 <div class="sec-group">
 <div class="sec-head">
-  <span class="sec-t">Vetus Testamentum</span>
+  <span class="sec-t sec-t-c">Vetus Testamentum</span>
+  <span class="sec-t sec-t-p">Altes Testament</span>
   <div class="sec-rule"></div>
   <span class="sec-s">V E T E R I S &nbsp; T E S T A M E N T I &nbsp;·&nbsp; ${booksVT.length} &nbsp; L I B R I</span>
 </div>
@@ -1153,7 +762,8 @@ ${bookList(booksVT)}
 
 <div class="sec-group">
 <div class="sec-head">
-  <span class="sec-t">Novum Testamentum</span>
+  <span class="sec-t sec-t-c">Novum Testamentum</span>
+  <span class="sec-t sec-t-p">Neues Testament</span>
   <div class="sec-rule"></div>
   <span class="sec-s">N O V I &nbsp; T E S T A M E N T I &nbsp;·&nbsp; ${booksNT.length} &nbsp; L I B R I</span>
 </div>
@@ -1161,7 +771,6 @@ ${bookList(booksNT)}
 </div>
 
 ${dkSec}
-${oxSec}
 
 </main>
 
@@ -1173,8 +782,7 @@ ${oxSec}
 (function(){
   var NOTES = {
     catholic:    '73 Bücher · Vulgata Clementina + Deuterokanonisch',
-    protestant:  '66 Bücher · Altes & Neues Testament',
-    orthodox:    '80 Bücher · inkl. 1 Esdras, Gebet des Manasse, Susanna u.a.'
+    protestant:  '66 Bücher · Altes & Neues Testament'
   };
   var saved = localStorage.getItem('biblia_conf') || 'catholic';
   var btns  = document.querySelectorAll('.conf-btn');
@@ -1195,11 +803,11 @@ ${oxSec}
 </html>`;
 }
 
-// ═══════════════════════════════════════════════════════
+// -------------------------------------------------------
 //  BUCHSEITE (Interlinear)
-// ═══════════════════════════════════════════════════════
+// -------------------------------------------------------
 
-function buildBookPage(book, trans, vulgChaps, transChaps, lutherChaps, greekChaps) {
+function buildBookPage(book, trans, vulgChaps, transChaps, lutherChaps) {
   // Vers-Map für Übersetzung
   const tm = {};
   if (transChaps) {
@@ -1216,21 +824,14 @@ function buildBookPage(book, trans, vulgChaps, transChaps, lutherChaps, greekCha
       for (const v of ch.verses) lm[ch.nr][v.nr] = v.text;
     }
   }
-  // Griechisch-Map (Orthodox)
-  const gm = {};
-  if (greekChaps) {
-    for (const ch of greekChaps) {
-      gm[ch.nr] = {};
-      for (const v of ch.verses) gm[ch.nr][v.nr] = v.text;
-    }
-  }
 
   const bookIdx = BOOKS.findIndex(b => b.nr === book.nr);
   const prev    = BOOKS[bookIdx - 1];
   const next    = BOOKS[bookIdx + 1];
 
   const testLabel = book.testament === 'NT' ? 'NOVUM TESTAMENTUM'
-    : book.testament === 'DK' ? 'LIBRI DEUTEROCANONOCI' : 'VETUS TESTAMENTUM';
+    : book.testament === 'DK' ? 'LIBRI DEUTEROCANONICI'
+    : 'VETUS TESTAMENTUM';
 
   const chCount = vulgChaps.length;
   const vCount  = vulgChaps.reduce((s, c) => s + c.verses.length, 0);
@@ -1239,7 +840,6 @@ function buildBookPage(book, trans, vulgChaps, transChaps, lutherChaps, greekCha
     const verseBlocks = ch.verses.map((v, vi) => {
       const lat    = esc(v.text);
       const lut    = esc((lm[ch.nr] || {})[v.nr] || '');
-      const gre    = esc((gm[ch.nr] || {})[v.nr] || '');
       const tra    = esc((tm[ch.nr] || {})[v.nr] || '');
       const isFirst = vi === 0 ? ' first' : '';
       return `<div class="vb${isFirst}" id="v${ch.nr}-${v.nr}">
@@ -1247,7 +847,6 @@ function buildBookPage(book, trans, vulgChaps, transChaps, lutherChaps, greekCha
   <div class="vt">
     <p class="base base-c">${lat}</p>
     ${lut ? `<p class="base base-p">${lut}</p>` : '<p class="base base-p"></p>'}
-    ${gre ? `<p class="base base-o">${gre}</p>` : '<p class="base base-o"></p>'}
     ${tra ? `<p class="tra">${tra}</p>` : ''}
   </div>
 </div>`;
@@ -1256,7 +855,8 @@ function buildBookPage(book, trans, vulgChaps, transChaps, lutherChaps, greekCha
     return `<section class="chap" id="c${ch.nr}">
   <div class="chhead">
     <span class="chrom">${toRoman(ch.nr)}</span>
-    <span class="chlbl">Caput ${ch.nr}</span>
+    <span class="chlbl chlbl-c">Caput ${toRoman(ch.nr)}</span>
+    <span class="chlbl chlbl-p">Das ${ch.nr}. Capitel</span>
   </div>
 ${verseBlocks}
 </section>`;
@@ -1278,69 +878,66 @@ ${FONTS}
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 body{
-  background:#2C0810;
-  background-image:radial-gradient(ellipse at 50% 20%,#4A1020 0%,#1A0407 100%);
+  background:#e8e0d0;
   font-family:'EB Garamond',serif;
   color:#1A0E06;
   font-size:17px;
 }
 
-/* ──────────────────────────────────────────
+/* ------------------------------------------
    BUCHKOPF
-────────────────────────────────────────── */
+------------------------------------------ */
 .bhead{
-  background:
-    repeating-linear-gradient( 45deg,transparent,transparent 36px,rgba(200,160,48,.028) 36px,rgba(200,160,48,.028) 37px),
-    repeating-linear-gradient(-45deg,transparent,transparent 36px,rgba(200,160,48,.028) 36px,rgba(200,160,48,.028) 37px),
-    linear-gradient(162deg,#2C0810 0%,#4A1020 45%,#5C1828 65%,#4A1020 85%,#2C0810 100%);
+  background:#f5f0e8;
   padding:36px 28px 28px;
   text-align:center;
-  border-bottom:4px solid #B8962E;
+  border-bottom:3px solid #B8962E;
   position:relative;overflow:hidden;
 }
-/* Innerer Rahmen — äußerer Ring */
+/* Innerer Rahmen */
 .bhead::before{
   content:'';position:absolute;inset:14px;
-  border:1px solid rgba(200,160,48,.22);
+  border:1px solid rgba(140,100,20,.2);
   pointer-events:none;
 }
-/* Innerer Rahmen — innerer Ring */
 .bhead::after{
   content:'';position:absolute;inset:22px;
-  border:1px solid rgba(200,160,48,.08);
+  border:0.5px solid rgba(140,100,20,.08);
   pointer-events:none;
 }
 .btestament{
   display:inline-block;
-  border:1px solid rgba(200,160,48,.32);
-  color:rgba(200,160,48,.52);
+  border:1px solid rgba(100,60,20,.28);
+  color:rgba(42,0,8,.45);
   font-family:'Cinzel',serif;font-size:.55rem;
   letter-spacing:.3em;padding:4px 18px;
   border-radius:2px;margin-bottom:16px;
   position:relative;
 }
 .blatin{
-  font-family:'Cinzel Decorative',serif;
+  font-family:'UnifrakturMaguntia',cursive;
   font-size:clamp(1.9rem,7vw,3.4rem);
-  color:#EDD882;
-  text-shadow:0 3px 20px rgba(0,0,0,.55);
-  letter-spacing:.06em;position:relative;
+  color:#2a0008;
+  letter-spacing:.02em;position:relative;
+  display:none;
 }
+body:not([data-conf]) .blatin-c,body[data-conf="catholic"] .blatin-c{display:block;}
+body[data-conf="protestant"] .blatin-p{display:block;}
 .btrans{
   font-family:'Cinzel',serif;
   font-size:.88rem;
-  color:#C8A030;margin-top:10px;
+  color:#5a1020;margin-top:10px;
   letter-spacing:.16em;position:relative;
 }
 .bmeta{
   font-family:'Cinzel',serif;font-size:.62rem;
-  color:rgba(200,160,48,.4);margin-top:6px;
+  color:rgba(42,0,8,.35);margin-top:6px;
   letter-spacing:.08em;position:relative;
 }
 
-/* ──────────────────────────────────────────
+/* ------------------------------------------
    KAPITELINHALT
-────────────────────────────────────────── */
+------------------------------------------ */
 .content{
   max-width:960px;
   margin:36px auto 36px;
@@ -1398,12 +995,14 @@ body{
 .chlbl{
   font-family:'Cinzel',serif;font-size:.58rem;
   color:rgba(184,150,46,.42);letter-spacing:.32em;
-  display:block;margin-top:8px;
+  display:none;margin-top:8px;
 }
+body:not([data-conf]) .chlbl-c,body[data-conf="catholic"] .chlbl-c{display:block;}
+body[data-conf="protestant"] .chlbl-p{display:block;}
 
-/* ──────────────────────────────────────────
+/* ------------------------------------------
    VERSE
-────────────────────────────────────────── */
+------------------------------------------ */
 .vb{
   display:flex;
   padding:20px 6px;
@@ -1443,7 +1042,6 @@ body{
 body:not([data-conf]) .base-c,
 body[data-conf="catholic"] .base-c { display:block; }
 body[data-conf="protestant"] .base-p { display:block; }
-body[data-conf="orthodox"] .base-o { display:block; }
 .base:empty { display:none !important; }
 
 /* ÜBERSETZUNG — SEKUNDÄR: kleiner, kursiv, unter dem Latein */
@@ -1458,8 +1056,9 @@ body[data-conf="orthodox"] .base-o { display:block; }
   border-left:2px solid rgba(90,110,170,.2);
 }
 
-/* Drop-Cap: erster Vers eines Kapitels */
-.vb.first .base::first-letter{
+/* Drop-Cap: erster Vers – nur Latein und Luther */
+.vb.first .base-c::first-letter,
+.vb.first .base-p::first-letter{
   font-family:'Cinzel Decorative',serif;
   font-size:4em;
   float:left;
@@ -1470,31 +1069,38 @@ body[data-conf="orthodox"] .base-o { display:block; }
   text-shadow:1px 2px 6px rgba(0,0,0,.12);
 }
 
-/* ──────────────────────────────────────────
+/* ------------------------------------------
    BUCH-NAVIGATION (unten)
-────────────────────────────────────────── */
+------------------------------------------ */
 .bnav{
   display:flex;justify-content:space-between;align-items:center;
-  background:#2C0810;border-top:3px solid #B8962E;
+  background:#f5f0e8;border-top:3px solid #B8962E;
   padding:12px 24px;gap:12px;
 }
 .bnav a,.bnav .dim{
-  color:#C8A030;text-decoration:none;
+  color:#5a1020;text-decoration:none;
   font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:.07em;
   padding:6px 16px;
-  border:1px solid rgba(200,160,48,.28);
+  border:1px solid rgba(100,60,20,.28);
   border-radius:2px;transition:background .18s;
 }
-.bnav a:hover{background:rgba(200,160,48,.12);}
-.bnav .dim{color:rgba(200,160,48,.2);border-color:rgba(200,160,48,.1);}
+.bnav a:hover{background:rgba(100,60,20,.08);}
+.bnav .dim{color:rgba(42,0,8,.2);border-color:rgba(42,0,8,.1);}
 .bnav .center{
   font-family:'Cinzel',serif;font-size:.68rem;
-  color:rgba(200,160,48,.65);text-align:center;
+  color:rgba(42,0,8,.55);text-align:center;
   letter-spacing:.06em;text-decoration:none;
-  border:1px solid rgba(200,160,48,.28);border-radius:2px;
+  border:1px solid rgba(100,60,20,.28);border-radius:2px;
   padding:6px 20px;transition:background .18s;
 }
-.bnav .center:hover{background:rgba(200,160,48,.1);}
+.bnav .center:hover{background:rgba(100,60,20,.08);}
+
+/* Protestant: Luther-Text in Altdeutsch */
+body[data-conf="protestant"] .base-p{
+  font-family:'UnifrakturMaguntia',cursive;
+  font-size:1.08rem;
+  letter-spacing:.01em;
+}
 
 /* DRUCK */
 @media print{
@@ -1511,24 +1117,29 @@ body[data-conf="orthodox"] .base-o { display:block; }
   .content{padding:16px 18px 60px;margin:0;border-left:none;border-right:none;border-radius:0;}
   .chrom{font-size:1.8rem;}
 }
+/* KREUZ-GRAVUR */
+.b-wm{position:sticky;top:calc(50vh - 37.5vmin);width:50vmin;height:75vmin;margin:0 auto -75vmin;display:block;pointer-events:none;z-index:0;user-select:none;}
+.b-wm svg{width:100%;height:auto;display:block;}
+.b-wm path{fill:none;stroke:rgba(184,150,46,.06);stroke-width:1.5;stroke-linecap:square;}
 </style>
 </head>
 <body>
-
 <header class="bhead">
   <div class="btestament">${testLabel}</div>
-  <div class="blatin">${book.latin.toUpperCase()}</div>
+  <div class="blatin blatin-c">${book.latin.toUpperCase()}</div>
+  <div class="blatin blatin-p">${(BOOK_NAMES[trans.lang]||BOOK_NAMES.de)[book.nr-1]||book.name}</div>
   <div class="btrans">${(BOOK_NAMES[trans.lang]||BOOK_NAMES.en)[book.nr-1]} &nbsp;&middot;&nbsp; <em>${trans.native}</em></div>
   <div class="bmeta">${chCount} Capita &nbsp;&middot;&nbsp; ${vCount} Versus</div>
 </header>
 
 <main class="content">
+<div class="b-wm"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 14"><path d="M5,0V14M0,4H10"/></svg></div>
 ${chapBlocks}
 </main>
 
 <nav class="bnav">
   ${prevLink}
-  <a href="../index.html" class="center">↑ &nbsp; Inhaltsverzeichnis</a>
+  <a href="../index.html" class="center">? &nbsp; Inhaltsverzeichnis</a>
   ${nextLink}
 </nav>
 
@@ -1542,14 +1153,14 @@ ${chapBlocks}
 </html>`;
 }
 
-// ═══════════════════════════════════════════════════════
+// -------------------------------------------------------
 //  HAUPTPROGRAMM
-// ═══════════════════════════════════════════════════════
+// -------------------------------------------------------
 
 async function main() {
-  console.log('\n╔═══════════════════════════════════════════════════════╗');
-  console.log('║  BIBLIA CATHOLICA INTERLINEARIS – BUILD v3           ║');
-  console.log('╚═══════════════════════════════════════════════════════╝\n');
+  console.log('\n+-------------------------------------------------------+');
+  console.log('�  BIBLIA CATHOLICA INTERLINEARIS - BUILD v3           �');
+  console.log('+-------------------------------------------------------+\n');
 
   if (!fs.existsSync(DATA_DIR)) {
     console.error('❌  Kein "data/"-Ordner. Bitte zuerst: node fetch-texts.js\n');
@@ -1564,18 +1175,13 @@ async function main() {
   fs.writeFileSync(path.join(OUT_DIR, 'back-cover.html'), buildBackCover());
   console.log('  ✓ back-cover.html');
 
-  // Vulgata laden (Bücher 1–73; OX-Bücher 74–80 aus data-orthodox/kjv/)
+  // Vulgata laden (Bücher 1–73)
   const vulg = {};
   for (const book of BOOKS) {
-    if (book.testament === 'OX') {
-      const raw = loadBook('kjv', book.nr);
-      if (raw) vulg[book.nr] = parseBook(raw);
-    } else {
-      const raw = loadBook('vulgate', book.nr);
-      if (raw) vulg[book.nr] = parseBook(raw);
-    }
+    const raw = loadBook('vulgate', book.nr);
+    if (raw) vulg[book.nr] = parseBook(raw);
   }
-  console.log(`  ✓ Vulgata + Orthodox: ${Object.keys(vulg).length} Bücher`);
+  console.log(`  ✓ Vulgata: ${Object.keys(vulg).length} Bücher`);
 
   // Pro Übersetzung
   for (const trans of TRANSLATIONS) {
@@ -1585,22 +1191,19 @@ async function main() {
     const bDir = path.join(tDir, 'bücher');
     mkDir(bDir);
 
-    // Sprachcover
-    fs.writeFileSync(path.join(tDir, 'cover.html'), buildLangCover(trans));
+    // Sprachcover + Vorwort
+    fs.writeFileSync(path.join(tDir, 'cover.html'),   buildLangCover(trans));
+    fs.writeFileSync(path.join(tDir, 'vorwort.html'), buildVorwort(trans));
 
     const avail = [];
     for (const book of BOOKS) {
-      const vulgData = book.testament === 'OX'
-        ? (vulg[book.nr] || parseBook(loadBook('kjv', book.nr)))
-        : vulg[book.nr];
+      const vulgData = vulg[book.nr];
       if (!vulgData) continue;
       const tRaw      = loadBook(trans.code, book.nr);
       const tChap     = tRaw ? parseBook(tRaw) : null;
       const lutherRaw = loadLutherBook(book.nr);
       const lutherChap = lutherRaw ? parseBook(lutherRaw) : null;
-      const greekRaw  = loadGreekBook(book.nr);
-      const greekChap = greekRaw ? parseBook(greekRaw) : null;
-      fs.writeFileSync(path.join(bDir, bookFile(book)), buildBookPage(book, trans, vulgData, tChap, lutherChap, greekChap));
+      fs.writeFileSync(path.join(bDir, bookFile(book)), buildBookPage(book, trans, vulgData, tChap, lutherChap));
       avail.push({...book, chapCount: vulgData.length});
     }
     fs.writeFileSync(path.join(tDir, 'index.html'), buildLangIndex(trans, avail));

@@ -6,7 +6,7 @@
 <title>Malachias &middot; Hrvatski &middot; Biblia Catholica</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 body{
@@ -17,26 +17,26 @@ body{
   font-size:17px;
 }
 
-/* ──────────────────────────────────────────
+/* ------------------------------------------
    BUCHKOPF
-────────────────────────────────────────── */
+------------------------------------------ */
 .bhead{
   background:
     repeating-linear-gradient( 45deg,transparent,transparent 36px,rgba(200,160,48,.028) 36px,rgba(200,160,48,.028) 37px),
     repeating-linear-gradient(-45deg,transparent,transparent 36px,rgba(200,160,48,.028) 36px,rgba(200,160,48,.028) 37px),
-    linear-gradient(162deg,#2C0810 0%,#4A1020 45%,#5C1828 65%,#4A1020 85%,#2C0810 100%);
+    linear-gradient(162deg,#1A0407 0%,#2C0810 45%,#4A1020 65%,#2C0810 85%,#1A0407 100%);
   padding:36px 28px 28px;
   text-align:center;
   border-bottom:4px solid #B8962E;
   position:relative;overflow:hidden;
 }
-/* Innerer Rahmen — äußerer Ring */
+/* Innerer Rahmen - äußerer Ring */
 .bhead::before{
   content:'';position:absolute;inset:14px;
   border:1px solid rgba(200,160,48,.22);
   pointer-events:none;
 }
-/* Innerer Rahmen — innerer Ring */
+/* Innerer Rahmen - innerer Ring */
 .bhead::after{
   content:'';position:absolute;inset:22px;
   border:1px solid rgba(200,160,48,.08);
@@ -52,12 +52,16 @@ body{
   position:relative;
 }
 .blatin{
-  font-family:'Cinzel Decorative',serif;
+  display:none;
+  font-family:'UnifrakturMaguntia',cursive;
   font-size:clamp(1.9rem,7vw,3.4rem);
   color:#EDD882;
   text-shadow:0 3px 20px rgba(0,0,0,.55);
-  letter-spacing:.06em;position:relative;
+  letter-spacing:.04em;position:relative;
 }
+body:not([data-conf]) .blatin-c,
+body[data-conf="catholic"] .blatin-c{display:block;}
+body[data-conf="protestant"] .blatin-p{display:block;}
 .btrans{
   font-family:'Cinzel',serif;
   font-size:.88rem;
@@ -70,9 +74,9 @@ body{
   letter-spacing:.08em;position:relative;
 }
 
-/* ──────────────────────────────────────────
+/* ------------------------------------------
    KAPITELINHALT
-────────────────────────────────────────── */
+------------------------------------------ */
 .content{
   max-width:960px;
   margin:36px auto 36px;
@@ -86,7 +90,7 @@ body{
   border-right:4px solid #B8962E;
   border-top:2px solid rgba(184,150,46,.4);
   border-bottom:2px solid rgba(184,150,46,.4);
-  position:relative;
+  position:relative;overflow:clip;
 }
 .content::before{
   content:'';
@@ -130,12 +134,15 @@ body{
 .chlbl{
   font-family:'Cinzel',serif;font-size:.58rem;
   color:rgba(184,150,46,.42);letter-spacing:.32em;
-  display:block;margin-top:8px;
+  display:none;margin-top:8px;
 }
+body:not([data-conf]) .chlbl-c
+body[data-conf="catholic"] .chlbl-c{display:block;}
+body[data-conf="protestant"] .chlbl-p{display:block;}
 
-/* ──────────────────────────────────────────
+/* ------------------------------------------
    VERSE
-────────────────────────────────────────── */
+------------------------------------------ */
 .vb{
   display:flex;
   padding:20px 6px;
@@ -163,7 +170,7 @@ body{
   padding:0 20px 0 4px;
 }
 
-/* BASIS-TEXT — wechselt je nach Konfession */
+/* BASIS-TEXT - wechselt je nach Konfession */
 .base{
   font-family:'EB Garamond',serif;
   font-size:1.2rem;
@@ -176,7 +183,6 @@ body{
 body:not([data-conf]) .base-c,
 body[data-conf="catholic"] .base-c { display:block; }
 body[data-conf="protestant"] .base-p { display:block; }
-body[data-conf="orthodox"] .base-o { display:block; }
 /* Leere Basis-Paragraphen ausblenden */
 .base:empty { display:none !important; }
 
@@ -192,8 +198,9 @@ body[data-conf="orthodox"] .base-o { display:block; }
   border-left:2px solid rgba(90,110,170,.2);
 }
 
-/* Drop-Cap: erster Vers eines Kapitels */
-.vb.first .base::first-letter{
+/* Drop-Cap: erster Vers eines Kapitels — nur Latein und Luther, nicht Griechisch */
+.vb.first .base-c::first-letter,
+.vb.first .base-p::first-letter{
   font-family:'Cinzel Decorative',serif;
   font-size:4em;
   float:left;
@@ -204,9 +211,9 @@ body[data-conf="orthodox"] .base-o { display:block; }
   text-shadow:1px 2px 6px rgba(0,0,0,.12);
 }
 
-/* ──────────────────────────────────────────
+/* ------------------------------------------
    BUCH-NAVIGATION (unten)
-────────────────────────────────────────── */
+------------------------------------------ */
 .bnav{
   display:flex;justify-content:space-between;align-items:center;
   background:#2C0810;border-top:3px solid #B8962E;
@@ -245,29 +252,34 @@ body[data-conf="orthodox"] .base-o { display:block; }
   .content{padding:16px 18px 60px;margin:0;border-left:none;border-right:none;border-radius:0;}
   .chrom{font-size:1.8rem;}
 }
+/* KREUZ-GRAVUR */
+.b-wm{position:sticky;top:calc(50vh - 37.5vmin);width:50vmin;height:75vmin;margin:0 auto -75vmin;display:block;pointer-events:none;z-index:0;user-select:none;}
+.b-wm svg{width:100%;height:auto;display:block;}
+.b-wm path{fill:none;stroke:rgba(184,150,46,.06);stroke-width:1.5;stroke-linecap:square;}
 </style>
 </head>
 <body>
-
 <header class="bhead">
   <div class="btestament">VETUS TESTAMENTUM</div>
-  <div class="blatin">MALACHIAS</div>
+  <div class="blatin blatin-c">MALACHIAS</div>
+  <div class="blatin blatin-p">MALAHIJA</div>
   <div class="btrans">Malahija &nbsp;&middot;&nbsp; <em>Hrvatski</em></div>
   <div class="bmeta">4 Capita &nbsp;&middot;&nbsp; 55 Versus</div>
 </header>
 
 <main class="content">
+<div class="b-wm"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 14"><path d="M5,0V14M0,4H10"/></svg></div>
 <section class="chap" id="c1">
   <div class="chhead">
     <span class="chrom">I</span>
-    <span class="chlbl">Caput 1</span>
+    <span class="chlbl chlbl-c">Caput I</span>
+    <span class="chlbl chlbl-p">Das 1. Capitel</span>
   </div>
 <div class="vb first" id="v1-1">
   <span class="vn">1</span>
   <div class="vt">
     <p class="base base-c">Onus verbi Domini ad Israël in manu Malachiæ.</p>
     <p class="base base-p">Dies ist die Last, die der HERR redet wider Israel durch Maleachi.</p>
-    <p class="base base-o">Το φορτίον του λόγου του Κυρίου διά χειρός Μαλαχίου προς Ισραήλ.</p>
     <p class="tra">Proroštvo. Riječ Gospodnja Izraelu po Malahiji.</p>
   </div>
 </div>
@@ -276,7 +288,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Dilexi vos, dicit Dominus, et dixistis : In quo dilexisti nos ? Nonne frater erat Esau Jacob ? dicit Dominus : et dilexi Jacob,</p>
     <p class="base base-p">Ich hab euch lieb, spricht der HERR. So sprechet ihr: Womit hast du uns lieb? Ist nicht Esau Jakobs Bruder? spricht der HERR; noch hab ich Jakob lieb</p>
-    <p class="base base-o">Εγώ σας ηγάπησα, λέγει Κύριος· και σεις είπετε, Εις τι μας ηγάπησας; δεν ήτο ο Ησαύ αδελφός του Ιακώβ; λέγει Κύριος· πλην ηγάπησα τον Ιακώβ,</p>
     <p class="tra">Ljubio sam vas - govori Jahve, a vi pitate: &quot;Po čemu si nas ljubio?&quot; Ne bijaše li Ezav brat Jakovljev? - riječ je Jahvina -</p>
   </div>
 </div>
@@ -285,7 +296,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Esau autem odio habui, et posui montes ejus in solitudinem, et hæreditatem ejus in dracones deserti.</p>
     <p class="base base-p">und hasse Esau und habe sein Gebirge ode gemacht und sein Erbe den Drachen zur Wüste.</p>
-    <p class="base base-o">τον δε Ησαύ εμίσησα και κατέστησα τα όρη αυτού ερήμωσιν και την κληρονομίαν αυτού κατοικίας ερήμου.</p>
     <p class="tra">ali Jakova sam zavolio, a Ezav mi omrznu: gradove mu u pustoš pretvorih, a baštinu njegovu dadoh pustinjskim šakalima.</p>
   </div>
 </div>
@@ -294,7 +304,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Quod si dixerit Idumæa : Destructi sumus, sed revertentes ædificabimus quæ destructa sunt : hæc dicit Dominus exercituum : Isti ædificabunt, et ego destruam : et vocabuntur termini impietatis, et populus cui iratus est Dominus usque in æternum.</p>
     <p class="base base-p">Und ob Edom sprechen würde: Wirsind verderbet, aber wir wollen das Wüste wieder erbauen, so spricht der HERR Zebaoth also: Werden sie bauen, so will ich abbrechen; und soil heilien die verdammte Grenze und ein Volk, über das, der HERR zurnet ewiglich.</p>
-    <p class="base base-o">Και εάν ο Εδώμ είπη, Ημείς εταλαιπωρήθημεν, πλην θέλομεν οικοδομήσει εκ νέου τους ηρημωμένους τόπους, ούτω λέγει ο Κύριος των δυνάμεων· Αυτοί θέλουσιν οικοδομήσει αλλ' εγώ θέλω καταστρέψει· και θέλουσιν ονομασθή, Όριον ανομίας, και, Ο λαός κατά του οποίου ο Κύριος ηγανάκτησε διαπαντός.</p>
     <p class="tra">Jer, rekne li Edom: Bili smo smrvljeni, ali ćemo opet podići ruševine!&quot; ovako kaže Jahve nad Vojskama: Neka grade oni, a ja ću razgraditi! Zvat će ih zemljom bezbožničkom i narodom na koji se Jahve srdi dovijeka!</p>
   </div>
 </div>
@@ -303,7 +312,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et oculi vestri videbunt, et vos dicetis : Magnificetur Dominus super terminum Israël.</p>
     <p class="base base-p">Das sollen eure Augen sehen, und werdet sagen: Der HERR ist herrlich in den Grenzen Israels.</p>
-    <p class="base base-o">Και οι οφθαλμοί σας θέλουσιν ιδεί και σεις θέλετε ειπεί, Εμεγαλύνθη ο Κύριος από του ορίου του Ισραήλ.</p>
     <p class="tra">Vaše će oči vidjeti, i reći ćete: &quot;Velik je Jahve preko granica zemlje izraelske.&quot;</p>
   </div>
 </div>
@@ -312,7 +320,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Filius honorat patrem, et servus dominum suum. Si ergo pater ego sum, ubi est honor meus ? et si Dominus ego sum, ubi est timor meus ? dicit Dominus exercituum. Ad vos, o sacerdotes, qui despicitis nomen meum, et dixistis : In quo despeximus nomen tuum ?</p>
     <p class="base base-p">Ein Sohn soli seinen Vater ehren und ein Knecht seinen Herm. Bin ich nun Vater, wo ist meine Ehre? Bin ich Herr, wo furchtet man mich? spricht der HERR Zebaoth zu euch Priestern, die meinen Namen verachten. So sprechet ihr: Womit verachten wir deinen Namen?</p>
-    <p class="base base-o">Ο υιός τιμά τον πατέρα και ο δούλος τον κύριον αυτού· αν λοιπόν εγώ ήμαι πατήρ, που είναι η τιμή μου; και αν κύριος εγώ, που ο φόβος μου; λέγει ο Κύριος των δυνάμεων προς εσάς, ιερείς, οίτινες καταφρονείτε το όνομά μου, και λέγετε, Εις τι κατεφρονήσαμεν το όνομά σου;</p>
     <p class="tra">Sin časti oca, a sluga gospodara. Ali, ako sam ja otac, gdje je čast moja? Ako sam gospodar, gdje je strah od mene? To govori Jahve nad Vojskama vama, svećenici, koji moje ime prezirete, a pitate: &quot;Čime smo prezreli ime tvoje?&quot;</p>
   </div>
 </div>
@@ -321,7 +328,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Offertis super altare meum panem pollutum, et dicitis : In quo polluimus te ? in eo quod dicitis : Mensa Domini despecta est.</p>
     <p class="base base-p">Damit, dafi ihr opfert auf meinem Altar unrein Brot. So sprechet ihr: Womit opfern wir dir Unreines? Damit, daß ihr saget: Des HERRN Tisch ist verachtet.</p>
-    <p class="base base-o">Προσεφέρετε άρτον μεμιασμένον επί του θυσιαστηρίου μου και είπετε, Εις τι σε εμιάναμεν; Εις το ότι λέγετε, Η τράπεζα του Κυρίου είναι αξιοκαταφρόνητος.</p>
     <p class="tra">Oskvrnjen kruh na mome prinosite žrtveniku i još pitate: &quot;Čime te oskvrnismo?&quot; Time što kažete &quot;Stol je Jahvin stvar nevažna!&quot;</p>
   </div>
 </div>
@@ -330,7 +336,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Si offeratis cæcum ad immolandum, nonne malum est ? et si offeratis claudum et languidum, nonne malum est ? offer illud duci tuo, si placuerit ei, aut si susceperit faciem tuam, dicit Dominus exercituum.</p>
     <p class="base base-p">Und wenn ihr ein Blindes opfert, so muß es nicht bose heitien; und wenn ihr ein Lahmes Oder Krankes opfert, so muß es auch nicht bose heilien. Bringe es deinem Fursten! Was gilt's, ob du ihm gefallen werdest, Oder ob er deine Person ansehen werde? spricht der HERR Zebaoth.</p>
-    <p class="base base-o">Και αν προσφέρητε τυφλόν εις θυσίαν, δεν είναι κακόν; και αν προσφέρητε χωλόν ή άρρωστον, δεν είναι κακόν; πρόσφερε τώρα τούτο εις τον αρχηγόν σου· θέλει άρα γε ευαρεστηθή εις σε ή υποδεχθή το πρόσωπόν σου; λέγει ο Κύριος των δυνάμεων.</p>
     <p class="tra">A kada za žrtvu slijepu stoku prinosite, zar to nije zlo? I kad prinosite hromo i bolesno, zar to nije zlo? Donesi takvo što svome namjesniku, hoće li biti zadovoljan i dobro te primiti? - govori Jahve nad Vojskama.</p>
   </div>
 </div>
@@ -339,7 +344,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et nunc deprecamini vultum Dei ut misereatur vestri (de manu enim vestra factum est hoc), si quomodo suscipiat facies vestras, dicit Dominus exercituum.</p>
     <p class="base base-p">So bittet nun Gott, daß er uns gnadig sei! Denn solches ist geschehen von euch. Meinet ihr, er werde eure Person ansehen? spricht der HERR Zebaoth.</p>
-    <p class="base base-o">Και τώρα λοιπόν δεήθητε του Θεού διά να ελεήση ημάς· εξ αιτίας σας έγεινε τούτο· θέλει άρα γε υποδεχθή τα πρόσωπά σας; λέγει ο Κύριος των δυνάμεων.</p>
     <p class="tra">Sada umilostivite lice Božje da nam se smiluje. To donose ruke vaše, hoće li vas dobro primiti? - govori Jahve nad Vojskama.</p>
   </div>
 </div>
@@ -348,7 +352,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Quis est in vobis qui claudat ostia, et incendat altare meum gratuito ? non est mihi voluntas in vobis, dicit Dominus exercituum, et munus non suscipiam de manu vestra.</p>
     <p class="base base-p">Wer ist auch unter euch, dereine Tür zuschließe? Ihr zundet auf meinem Altar kein Feuer an umsonst. Ich habe kein Gefallen an euch, spricht der HERR Zebaoth, und das Speisopfer von euren Handen ist mir nicht angenehm.</p>
-    <p class="base base-o">Τις είναι και μεταξύ σας, όστις ήθελε κλείσει τας θύρας, διά να μη ανάπτητε πυρ επί το θυσιαστήριόν μου ματαίως; δεν έχω ευχαρίστησιν εις εσάς, λέγει ο Κύριος των δυνάμεων, και δεν θέλω δεχθή προσφοράν εκ της χειρός σας.</p>
     <p class="tra">O kada bi tko od vas zatvorio vrata da mi zaludu ne palite ognja na žrtveniku! Niste mi mili - govori Jahve nad Vojskama - i ne primam žrtve iz ruke vaše.</p>
   </div>
 </div>
@@ -357,7 +360,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Ab ortu enim solis usque ad occasum, magnum est nomen meum in gentibus, et in omni loco sacrificatur : et offertur nomini meo oblatio munda, quia magnum est nomen meum in gentibus, dicit Dominus exercituum.</p>
     <p class="base base-p">Aber vom Aufgang der Sonne bis zum Niedergang soil mein Name herrlich werden unter den Heiden, und an alien Orten soil meinem Namen gerauchert und ein rein Speisopfer geopfert werden; denn mein Name soil herrlich werden unter den Heiden, spricht der HERR Zebaoth.</p>
-    <p class="base base-o">Διότι από ανατολών ηλίου έως δυσμών αυτού το όνομά μου θέλει είσθαι μέγα μεταξύ των εθνών, και εν παντί τόπω θέλει προσφέρεσθαι θυμίαμα εις το όνομά μου και θυσία καθαρά· διότι μέγα θέλει είσθαι το όνομά μου μεταξύ των εθνών, λέγει ο Κύριος των δυνάμεων.</p>
     <p class="tra">Jer od istoka do zapada veliko je ime moje među narodima, i na svakom mjestu prinosi se kad i žrtva čista Imenu mojemu, jer veliko je Ime moje među narodima - govori Jahve nad Vojskama.</p>
   </div>
 </div>
@@ -366,7 +368,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et vos polluistis illud in eo quod dicitis : Mensa Domini contaminata est, et quod superponitur contemptibilis est, cum igne qui illud devorat.</p>
     <p class="base base-p">Ihr aber entheiliget ihn, damit daß ihr saget: Des HERRN Tisch ist unheilig, und sein Opfer ist verachtet samt seiner Speise.</p>
-    <p class="base base-o">Σεις όμως εβεβηλώσατε αυτό, λέγοντες, Η τράπεζα του Κυρίου είναι μεμιασμένη, και τα επιτιθέμενα επ' αυτήν, το φαγητόν αυτής, αξιοκαταφρόνητον.</p>
     <p class="tra">Ali vi ga skvrnite kada govorite: &quot;Stol je Gospodnji okaljan i hrana na njemu ni za što nije!&quot;</p>
   </div>
 </div>
@@ -375,7 +376,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et dixistis : Ecce de labore, et exsufflastis illud, dicit Dominus exercituum : et intulistis de rapinis claudum et languidum, et intulistis munus : numquid suscipiam illud de manu vestra ? dicit Dominus.</p>
     <p class="base base-p">Und ihr sprechet: Siehe, es istnur Mühe! und schlaget es in den Wind spricht der HERR Zebaoth. Und ihr opfert, das geraubet, lahm und krank ist, und opfert dann Speisopfer her. Solite mir solches gefallen von eurer Hand? spricht der HERR.</p>
-    <p class="base base-o">Σεις είπετε έτι, Ιδού, οποία ενόχλησις· και κατεφρονήσατε αυτήν, λέγει ο Κύριος των δυνάμεων· και εφέρατε το ηρπαγμένον και το χωλόν και το άρρωστον, ναι, τοιαύτην προσφοράν εφέρατε· ήθελον δεχθή αυτήν εκ της χειρός σας; λέγει Κύριος.</p>
     <p class="tra">Kažete još: &quot;Gle, šteta truda!&quot; i prezirete ga - govori Jahve nad Vojskama. Kada dovodite stoku otetu, hromu i bolesnu, te je prinosite kao dar žrtveni, zar da to iz vaše ruke milostivo primim? - govori Jahve nad Vojskama.</p>
   </div>
 </div>
@@ -384,7 +384,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Maledictus dolosus qui habet in grege suo masculum, et votum faciens immolat debile Domino : quia rex magnus ego, dicit Dominus exercituum, et nomen meum horribile in gentibus.</p>
     <p class="base base-p">Verflucht sei der Vorteilische, der in seiner Herde ein Mannlein hat, und wenn erein Gelubde tut, opfert er dem HERRN ein untuchtiges! Denn ich bin ein großer Konig, spricht der HERR Zebaoth, und mein Name ist schrecklich unter den Heiden.</p>
-    <p class="base base-o">Όθεν επικατάρατος ο απατεών, όστις έχει εν τω ποιμνίω αυτού άρσεν και κάμνει ευχήν και θυσιάζει εις τον Κύριον πράγμα διεφθαρμένον· διότι εγώ είμαι βασιλεύς μέγας, λέγει ο Κύριος των δυνάμεων, και το όνομά μου είναι τρομερόν εν τοις έθνεσι.</p>
     <p class="tra">Proklet bio varalica koji u stadu ima ovna što mi ga je zavjetovao, a žrtvuje mi ovcu jalovicu. Jer ja sam velik kralj - govori Jahve nad Vojskama - i strašno je Ime moje među narodima.</p>
   </div>
 </div>
@@ -393,14 +392,14 @@ body[data-conf="orthodox"] .base-o { display:block; }
 <section class="chap" id="c2">
   <div class="chhead">
     <span class="chrom">II</span>
-    <span class="chlbl">Caput 2</span>
+    <span class="chlbl chlbl-c">Caput II</span>
+    <span class="chlbl chlbl-p">Das 2. Capitel</span>
   </div>
 <div class="vb first" id="v2-1">
   <span class="vn">1</span>
   <div class="vt">
     <p class="base base-c">Et nunc ad vos mandatum hoc, o sacerdotes.</p>
     <p class="base base-p">Und nun, ihr Priester, dies Gebot gilt euch!</p>
-    <p class="base base-o">Και τώρα εις εσάς γίνεται η εντολή αύτη, ιερείς.</p>
     <p class="tra">A sad vas opominjem, svećenici!</p>
   </div>
 </div>
@@ -409,7 +408,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Si nolueritis audire, et si nolueritis ponere super cor, ut detis gloriam nomini meo, ait Dominus exercituum, mittam in vos egestatem, et maledicam benedictionibus vestris, et maledicam illis, quoniam non posuistis super cor.</p>
     <p class="base base-p">Wo ihr's nicht horet noch zu Herzen nehmen werdet, daß ihr meinem Namen die Ehre gebet, spricht der HERR Zebaoth, so werde ich den Fluch unter euch schicken und euren Segen verfluchen, ja verfluchen werde ich ihn, weil ihr's nicht wollet zu Herzen nehmen.</p>
-    <p class="base base-o">Εάν δεν ακούσητε και εάν δεν βάλητε τούτο εις την καρδίαν, διά να δώσητε δόξαν εις το όνομά μου, λέγει ο Κύριος των δυνάμεων, τότε θέλω εξαποστείλει την κατάραν εφ' υμάς και θέλω επικαταρασθή τας ευλογίας σας· ναι, μάλιστα και κατηράσθην αυτάς, διότι δεν βάλλετε τούτο εις την καρδίαν σας.</p>
     <p class="tra">Ako ne budete poslušali, ako ne budete k srcu uzeli da proslavite Ime moje - govori Jahve nad Vojskama - kletvu ću na vas svaliti i proklet ću vaš blagoslov. I već ga prokleh jer to niste k srcu uzeli.</p>
   </div>
 </div>
@@ -418,7 +416,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Ecce ego projiciam vobis brachium, et dispergam super vultum vestrum stercus solemnitatum vestrarum, et assumet vos secum.</p>
     <p class="base base-p">Siehe, ich will schelten euch samt dem Samen und den Kot eurer Feiertage euch ins Angesicht werfen, und soli an euch kleben bleiben.</p>
-    <p class="base base-o">Ιδού, εγώ θέλω απορρίψει τα σπέρματά σας και θέλω σκορπίσει κόπρον επί τα πρόσωπά σας, την κόπρον των εορτών σας· και θέλει σας σηκώσει μεθ' εαυτής.</p>
     <p class="tra">I slomit ću vam ruku, bacit ću vam u lice izmetine, izmetine vaših svetkovina, i s njima ću vas splaviti.</p>
   </div>
 </div>
@@ -427,7 +424,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et scietis quia misi ad vos mandatum istud, ut esset pactum meum cum Levi, dicit Dominus exercituum.</p>
     <p class="base base-p">So werdet ihr dann erfahren, daß ich solch Gebot zu euch gesandt habe, daß es mein Bund sein solite mit Levi, spricht der HERR Zebaoth.</p>
-    <p class="base base-o">Και θέλετε γνωρίσει ότι εγώ εξαπέστειλα την εντολήν ταύτην προς εσάς, διά να ήναι η διαθήκη μου μετά του Λευΐ, λέγει ο Κύριος των δυνάμεων.</p>
     <p class="tra">Po tom ćete znati: to je bila moja opomena da ostane Savez moj s Levijem - govori Jahve nad Vojskama.</p>
   </div>
 </div>
@@ -436,7 +432,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Pactum meum fuit cum eo vitæ et pacis : et dedi ei timorem, et timuit me, et a facie nominis mei pavebat.</p>
     <p class="base base-p">Denn mein Bund war mit ihm zum Leben und Frieden; und ich gab ihm die Furcht, daß er mich furchtete und meinen Namen scheuete.</p>
-    <p class="base base-o">Η της ζωής και της ειρήνης διαθήκη μου ήτο μετ' αυτού· και έδωκα αυτάς εις αυτόν διά τον φόβον, τον οποίον με εφοβείτο και ευλαβείτο το όνομά μου.</p>
     <p class="tra">A moj Savez s njim, to bijaše život i mir - ja sam mu ih dao: bijaše to strah - i on me se bojao, Imena se moga plašio.</p>
   </div>
 </div>
@@ -445,7 +440,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Lex veritatis fuit in ore ejus, et iniquitas non est inventa in labiis ejus : in pace et in æquitate ambulavit mecum, et multos avertit ab iniquitate.</p>
     <p class="base base-p">Das Gesetz der Wahrheit war in seinem Munde, und ward kein Boses in seinen Lippen funden. Er wandelte vor mir friedsam und aufrichtig und bekehrete viele von Sunden.</p>
-    <p class="base base-o">Ο νόμος της αληθείας ήτο εν τω στόματι αυτού και ανομία δεν ευρέθη εν τοις χείλεσιν αυτού· περιεπάτησε μετ' εμού εν ειρήνη και ευθύτητι και πολλούς επέστρεψεν από ανομίας.</p>
     <p class="tra">Zakon istine bijaše u njegovim ustima i pakost mu ne kaljaše usana; u miru i pravičnosti hodio je sa mnom i mnoge je od grijeha odvratio.</p>
   </div>
 </div>
@@ -454,7 +448,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Labia enim sacerdotis custodient scientiam, et legem requirent ex ore ejus, quia angelus Domini exercituum est.</p>
     <p class="base base-p">Denn des Priesters Lippen sollen die Lehre bewahren, daß man aus seinem Munde das Gesetz suche; denn er ist ein Engel des HERRN Zebaoth.</p>
-    <p class="base base-o">Επειδή τα χείλη του ιερέως θέλουσι φυλάττει γνώσιν, και εκ του στόματος αυτού θέλουσι ζητήσει νόμον· διότι αυτός είναι άγγελος του Κυρίου των δυνάμεων.</p>
     <p class="tra">Da, usne svećenikove treba da čuvaju znanje, a iz njegovih usta treba tražiti Zakon: ta on je glasnik Jahve nad Vojskama.</p>
   </div>
 </div>
@@ -463,7 +456,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Vos autem recessistis de via, et scandalizastis plurimos in lege : irritum fecistis pactum Levi, dicit Dominus exercituum.</p>
     <p class="base base-p">Ihr aber seid von dem Wege abgetreten und argert viele im Gesetz und habt den Bund Levis gebrochen, spricht der HERR Zebaoth.</p>
-    <p class="base base-o">Αλλά σεις εξεκλίνατε από της οδού· εκάμετε πολλούς να προσκόπτωσιν εις τον νόμον· διεφθείρατε την διαθήκην του Λευΐ, λέγει ο Κύριος των δυνάμεων.</p>
     <p class="tra">Ali vi ste s puta zašli, učinili ste da se mnogi o Zakon spotiču, raskinuli ste Savez Levijev - govori Jahve nad Vojskama.</p>
   </div>
 </div>
@@ -472,7 +464,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Propter quod et ego dedi vos contemptibiles, et humiles omnibus populis, sicut non servastis vias meas, et accepistis faciem in lege.</p>
     <p class="base base-p">Darum hab ich auch euch gemacht, daß ihr verachtet und unwert seid vor dem ganzen Volk, weil ihr meine Wege nicht haltet und sehet Personen an im Gesetze.</p>
-    <p class="base base-o">Διά τούτο και εγώ σας κατέστησα καταφρονητούς και εξουδενωμένους εις πάντα τον λαόν, καθότι δεν εφυλάξατε τας οδούς μου αλλ' ήσθε προσωπολήπται εις τον νόμον.</p>
     <p class="tra">Zato učinih da vas preziru i ponizuju svi narodi jer se putova mojih vi držali niste, nego ste bili pristrani primjenjujuć Zakon.</p>
   </div>
 </div>
@@ -481,7 +472,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Numquid non pater unus omnium nostrum ? numquid non Deus unus creavit nos ? quare ergo despicit unusquisque nostrum fratrem suum, violans pactum patrum nostrorum ?</p>
     <p class="base base-p">Denn haben wir nicht alle einen Vater? Hat uns nicht ein Gott geschaffen? Warum verachten wir denn einer den andern und entheiligen den Bund, mit unsern Vatern gemacht?</p>
-    <p class="base base-o">Δεν είναι εις ο πατήρ πάντων ημών; δεν έπλασεν ημάς εις Θεός; διά τι δολιευόμεθα έκαστος κατά του αδελφού αυτού, βεβηλούντες την διαθήκην των πατέρων ημών;</p>
     <p class="tra">Nemamo li svi jednog Oca? Nije li nas jedan Bog stvorio? Zašto smo onda jedan drugome nevjerni te skvrnimo Savez svojih otaca?</p>
   </div>
 </div>
@@ -490,7 +480,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Transgressus est Juda, et abominatio facta est in Israël et in Jerusalem, quia contaminavit Juda sanctificationem Domini, quam dilexit, et habuit filiam dei alieni.</p>
     <p class="base base-p">Denn Juda ist ein Verachter worden, und in Israel und zu Jerusalem geschehen Greuel. Denn Juda entheiliget die Heiligkeit des HERRN, die er lieb hat, und buhlet mit eines fremden Gottes Tochter.</p>
-    <p class="base base-o">Ο Ιούδας εφέρθη δολίως και επράχθη βδέλυγμα εν Ισραήλ και εν Ιερουσαλήμ· διότι εβεβήλωσεν ο Ιούδας το άγιον του Κυρίου, το οποίον ηγάπησε, και ενυμφεύθη θυγατέρα θεού αλλοτρίου.</p>
     <p class="tra">Iznevjerio se Juda: učinili su sramotu u Izraelu i Jeruzalemu, jer Juda je oskvrnuo Svetinju, Jahvi dragu, i ženi se kćerju tuđega božanstva.</p>
   </div>
 </div>
@@ -499,7 +488,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Disperdet Dominus virum qui fecerit hoc, magistrum et discipulum, de tabernaculis Jacob, et offerentem munus Domino exercituum.</p>
     <p class="base base-p">Aber der HERR wird den, so solches tut, ausrotten aus der Hutte Jakobs, beide, Meister und Schuler, samt dem, der dem HERRN Zebaoth Speisopfer bringet.</p>
-    <p class="base base-o">Ο Κύριος θέλει εξολοθρεύσει εκ των σκηνωμάτων του Ιακώβ τον άνθρωπον τον πράττοντα τούτο, τον σκοπόν και τον αποκρινόμενον και τον προσφέροντα προσφοράν εις τον Κύριον των δυνάμεων.</p>
     <p class="tra">Svakog tko tako učini, ma tko bio on, nek iskorijeni Jahve iz šatora Jakovljevih i izmeđ onih koji prinose žrtvu Jahvi nad Vojskama!</p>
   </div>
 </div>
@@ -508,7 +496,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et hoc rursum fecistis : operiebatis lacrimis altare Domini, fletu et mugitu, ita ut non respiciam ultra ad sacrificium, nec accipiam placabile quid de manu vestra.</p>
     <p class="base base-p">Weiter tut ihr auch das, daß vor dem Altar des HERRN eitel Tranen und Weinen und Seufzen ist, daß ich nicht mehr mag das Speisopfer ansehen noch etwas Angenehmes von euren Handen empfahen.</p>
-    <p class="base base-o">Εκάμετε ότι και τούτο· εκαλύπτετε το θυσιαστήριον του Κυρίου με δάκρυα, με κλαυθμόν και με στεναγμούς· όθεν δεν αποβλέπει πλέον εις την προσφοράν και δεν δέχεται αυτήν με ευαρέστησιν εκ της χειρός σας.</p>
     <p class="tra">I ovo još vi činite: zalijevate suzama Jahvin žrtvenik tužeći i ridajući, jer on više neće da se žr tvi prikloni, iz ruke mu vaše ona nije ugodna.</p>
   </div>
 </div>
@@ -517,7 +504,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et dixistis : Quam ob causam ? Quia Dominus testificatus est inter te et uxorem pubertatis tuæ, quam tu despexisti : et hæc particeps tua, et uxor fœderis tui.</p>
     <p class="base base-p">Und so sprechet ihr: Warum das? Darum, daß der HERR zwischen dir und dem Weibe deiner Jugend gezeuget hat, die du verachtest, so sie doch deine Gesellin und ein Weib deines Bundes ist.</p>
-    <p class="base base-o">Και λέγετε, Διά τι; Διότι ο Κύριος εστάθη μάρτυς μεταξύ σου και της γυναικός της νεότητός σου, προς την οποίαν συ εφέρθης δολίως· ενώ αυτή είναι η σύζυγός σου και η γυνή της συνθήκης σου.</p>
     <p class="tra">I vi pitate: &quot;Zašto?&quot; Zato što je Jahve bio svjedok između tebe i žene mladosti tvoje kojoj si nevjeran premda ti drugarica bijaše i žena tvoga saveza.</p>
   </div>
 </div>
@@ -526,7 +512,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Nonne unus fecit, et residuum spiritus ejus est ? et quid unus quærit, nisi semen Dei ? custodite ergo spiritum vestrum, et uxorem adolescentiæ tuæ noli despicere.</p>
     <p class="base base-p">Also tat der Einige nicht und war doch eines großen Geistes. Was tat aber der Einige? Er suchte den Samen von Gott (verheifien). Darum so sehet euch vor vor eurem Geiste, und verachte keiner das Weib seiner Jugend!</p>
-    <p class="base base-o">Και δεν έκαμεν ο Θεός ένα; και όμως αυτός είχεν υπεροχήν πνεύματος. Και διά τι τον ένα; διά να ζητήση σπέρμα θείον. Διά τούτο προσέχετε εις το πνεύμά σας, και ας μη φέρηται μηδείς απίστως προς την γυναίκα της νεότητος αυτού.</p>
     <p class="tra">Nije li On načinio jedno jedino biće dahom životnim obdareno? A što to jedino biće traži? Božanski naraštaj! Poštuj dakle život svoj i ne budi nevjeran ženi svoje mladosti.</p>
   </div>
 </div>
@@ -535,7 +520,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Cum odio habueris, dimitte, dicit Dominus Deus Israël : operiet autem iniquitas vestimentum ejus, dicit Dominus exercituum. Custodite spiritum vestrum, et nolite despicere.</p>
     <p class="base base-p">Wer ihr aber gram ist, der lasse sie fahren, spricht der HERR, der Gott Israels, und gebe ihr eine Decke des Frevels von seinem Kleide, spricht der HERR Zebaoth. Darum so sehet euch vor vor eurem Geiste und verachtet sie nicht!</p>
-    <p class="base base-o">Διότι ο Κύριος, ο Θεός του Ισραήλ, λέγει ότι μισεί τον αποβάλλοντα αυτήν και τον καλύπτοντα την βίαν με το ένδυμα αυτού, λέγει ο Κύριος των δυνάμεων· διά τούτο προσέχετε εις το πνεύμά σας και μη φέρεσθε δολίως.</p>
     <p class="tra">Jer ja mrzim otpuštanje žena - govori Jahve, Bog Izraelov - i onog koji nevjerom haljine svoje kalja - govori Jahve nad Vojskama! Poštujte dakle život svoj, ne budite nevjerni!</p>
   </div>
 </div>
@@ -544,7 +528,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Laborare fecistis Dominum in sermonibus vestris, et dixistis : In quo eum fecimus laborare ? In eo quod dicitis : Omnis qui facit malum bonus est in conspectu Domini, et tales ei placent : aut certe ubi est Deus judicii ?</p>
     <p class="base base-p">Ihrmachetden HERRN unwillig durch eure Reden. So sprechet ihr: Womit machen wir ihn unwillig? Damit, dafi ihr sprechet: Wer Boses tut, der gefallt dem HERRN, und er hat Lust zu demselbigen; Oder: Wo ist der Gott, der da strafe?</p>
-    <p class="base base-o">Κατεβαρύνατε τον Κύριον με τους λόγους σας· και λέγετε, με τι κατεβαρύναμεν αυτόν; Με το να λέγητε, πας όστις πράττει κακόν είναι ευάρεστος ενώπιον του Κυρίου, και αυτός ευδοκεί εις αυτούς. Που είναι ο Θεός της κρίσεως;</p>
     <p class="tra">Dosađujete Jahvi svojim riječima, a pitate: &quot;U čemu mu dosađujemo?&quot; Time što govorite: &quot;Svi koji zlo čine dobro su viđeni u očima Jahvinim i takvi su mu mili!&quot; ili: &quot;Gdje je Bog pravde?&quot;</p>
   </div>
 </div>
@@ -553,14 +536,14 @@ body[data-conf="orthodox"] .base-o { display:block; }
 <section class="chap" id="c3">
   <div class="chhead">
     <span class="chrom">III</span>
-    <span class="chlbl">Caput 3</span>
+    <span class="chlbl chlbl-c">Caput III</span>
+    <span class="chlbl chlbl-p">Das 3. Capitel</span>
   </div>
 <div class="vb first" id="v3-1">
   <span class="vn">1</span>
   <div class="vt">
     <p class="base base-c">Ecce ego mitto angelum meum, et præparabit viam ante faciem meam : et statim veniet ad templum suum Dominator quem vos quæritis, et angelus testamenti quem vos vultis. Ecce venit, dicit Dominus exercituum.</p>
     <p class="base base-p">Siehe, ich will meinen Engel senden, der vor mir her den Weg bereiten soli. Und bald wird kommen zu seinem Tempel der HERR, den ihrsuchet, und der Engel des Bundes, des ihr begehret. Siehe, er kommt! spricht der HERR Zebaoth.</p>
-    <p class="base base-o">Ιδού, εγώ αποστέλλω τον άγγελόν μου και θέλει κατασκευάσει την οδόν έμπροσθέν μου· και ο Κύριος, τον οποίον σεις ζητείτε, εξαίφνης θέλει ελθεί εις τον ναόν αυτού, ναι, ο άγγελος της διαθήκης, τον οποίον σεις θέλετε· ιδού, έρχεται, λέγει ο Κύριος των δυνάμεων.</p>
     <p class="tra">Evo šaljem glasnika da put preda mnom pripravi. I doći će iznenada u Hram svoj Gospod koga vi tražite i anđeo Saveza koga žudite. Evo ga, dolazi već - govori Jahve nad Vojskama.</p>
   </div>
 </div>
@@ -569,7 +552,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et quis poterit cogitare diem adventus ejus, et quis stabit ad videndum eum ? ipse enim quasi ignis conflans, et quasi herba fullonum :</p>
     <p class="base base-p">Wer wird aber den Tag seiner Zukunft erleiden mogen, und wer wird bestehen, wenn erwird erscheinen? Denn er ist wie das Feuer eines Goldschmieds und wie die Seife der Wascher.</p>
-    <p class="base base-o">Αλλά τις δύναται να υπομείνη την ημέραν της ελεύσεως αυτού; και τις δύναται να σταθή εις την παρουσίαν αυτού; διότι αυτός είναι ως πυρ χωνευτού και ως σμίγμα γναφέων.</p>
     <p class="tra">Ali tko će podnijeti dan njegova dolaska i tko će opstati kad se on pojavi? Jer on je kao oganj ljevačev i kao lužina bjeliočeva.</p>
   </div>
 </div>
@@ -578,7 +560,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">et sedebit conflans, et emundans argentum : et purgabit filios Levi, et colabit eos quasi aurum et quasi argentum, et erunt Domino offerentes sacrificia in justitia.</p>
     <p class="base base-p">Erwird sitzen und schmelzen und das Silber reinigen; erwird die Kinder Levi reinigen und lautern wie Gold und Silber. Dann werden sie dem HERRN Speisopfer bringen in Gerechtigkeit,</p>
-    <p class="base base-o">Και θέλει καθήσει ως ο χωνεύων και καθαρίζων το αργύριον, και θέλει καθαρίσει τους υιούς του Λευΐ και θέλει στραγγίσει αυτούς ως το χρυσίον και το αργύριον, και θέλουσι προσφέρει εις τον Κύριον προσφοράν εν δικαιοσύνη.</p>
     <p class="tra">I zasjest će kao onaj što topi srebro i pročišćava. Očistit će sinove Levijeve i pročistit će ih kao zlato i srebro, da prinose Jahvi žrtvu u pravednosti.</p>
   </div>
 </div>
@@ -587,7 +568,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et placebit Domino sacrificium Juda et Jerusalem, sicut dies sæculi, et sicut anni antiqui.</p>
     <p class="base base-p">und wird dem HERRN wohlgefallen das Speisopfer Judas und Jerusalems, wie vorhin und vor langen Jahren.</p>
-    <p class="base base-o">Τότε η προσφορά του Ιούδα και της Ιερουσαλήμ θέλει είσθαι αρεστή εις τον Κύριον καθώς εν ταις ημέραις ταις αρχαίαις και καθώς εν τοις προλαβούσιν έτεσι.</p>
     <p class="tra">Tad će biti draga Jahvi žrtva Judina i jeruzalemska kao u drevne dane i kao prvih godina.</p>
   </div>
 </div>
@@ -596,7 +576,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et accedam ad vos in judicio, et ero testis velox maleficis, et adulteris, et perjuris, et qui calumniantur mercedem mercenarii, viduas et pupillos, et opprimunt peregrinum, nec timuerunt me, dicit Dominus exercituum.</p>
     <p class="base base-p">Und ich will zu euch kommen und euch strafen und ein schnelier Zeuge sein wider die Zauberer, Ehebrecher und Meineidigen und wider die, so Gewalt und Unrecht tun den Tagelohnern, Witwen und Waisen und den Fremdling drucken und mich nicht fürchten, spricht der HERR Zebaoth.</p>
-    <p class="base base-o">Και θέλω πλησιάσει προς εσάς διά κρίσιν· και θέλω είσθαι μάρτυς σπεύδων εναντίον των μάγων και εναντίον των μοιχευόντων και εναντίον των επιόρκων και εναντίον των αποστερούντων τον μισθόν του μισθωτού, των καταδυναστευόντων την χήραν και τον ορφανόν, και των αδικούντων τον ξένον και των μη φοβουμένων με, λέγει ο Κύριος των δυνάμεων.</p>
     <p class="tra">Doći ću k vama na sud i bit ću spreman svjedok protiv vračeva i preljubnika, protiv onih koji se lažno kunu, protiv onih koji zakidaju plaću radniku, udovici i siroti, protiv onih koji gaze pravo stranaca i mene se ne boje - govori Jahve nad Vojskama.</p>
   </div>
 </div>
@@ -605,7 +584,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Ego enim Dominus, et non mutor : et vos filii Jacob, non estis consumpti.</p>
     <p class="base base-p">Denn ich bin der HERR, der nicht lüget. Und es soil mit euch Kindern Jakobs nicht gar aus sein.</p>
-    <p class="base base-o">Διότι εγώ είμαι ο Κύριος· δεν αλλοιούμαι· διά τούτο σεις, οι υιοί του Ιακώβ, δεν απωλέσθητε.</p>
     <p class="tra">Jer ja, Jahve, ne mijenjam se, a vi se, sinovi Jakovljevi, mijenjate bez prestanka!</p>
   </div>
 </div>
@@ -614,7 +592,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">A diebus enim patrum vestrorum recessistis a legitimis meis, et non custodistis : revertimini ad me, et revertar ad vos, dicit Dominus exercituum. Et dixistis : In quo revertemur ?</p>
     <p class="base base-p">Ihr seid von eurer Vater Zeit an immerdar abgewichen von meinen Geboten und habt sie nicht gehalten: So bekehret euch nun zu mir, so will ich mich zu euch auch kehren, spricht der HERR Zebaoth. So sprechet ihr: Worin sollen wir uns bekehren?</p>
-    <p class="base base-o">Εκ των ημερών των πατέρων σας απεχωρίσθητε από των διαταγμάτων μου και δεν εφυλάξατε αυτά. Επιστρέψατε προς εμέ και θέλω επιστρέψει προς εσάς, λέγει ο Κύριος των δυνάμεων· πλην είπετε, Τίνι τρόπω θέλομεν επιστρέψει;</p>
     <p class="tra">Od vremena svojih otaca odstupate od mojih uredaba i ne čuvate ih. Vratite se meni, a ja ću se vratiti vama - govori Jahve nad Vojskama. Pitate: &quot;Kako da se vratimo?&quot;</p>
   </div>
 </div>
@@ -623,7 +600,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Si affliget homo Deum, quia vos configitis me ? Et dixistis : In quo configimus te ? In decimis et in primitiis.</p>
     <p class="base base-p">Ist's recht, dafi ein Mensch Gott tauschet, wie ihr mich tauschet? So sprechet ihr: Womit tauschen wir dich? Am Zehnten und Hebopfer.</p>
-    <p class="base base-o">Μήπως θέλει κλέπτει ο άνθρωπος τον Θεόν; σεις όμως με εκλέπτετε· και λέγετε, Εις τι σε εκλέψαμεν; εις τα δέκατα και εις τας προσφοράς.</p>
     <p class="tra">Smije li čovjek prikraćivati Boga? A vi mene prikraćujete. I pitate: &quot;U čemu te prikratismo?&quot; U desetini i u prinosu.</p>
   </div>
 </div>
@@ -632,7 +608,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et in penuria vos maledicti estis, et me vos configitis gens tota.</p>
     <p class="base base-p">Darum seid ihr auch verflucht, daß euch alles unterden Handen zerrinnet; denn ihr tauschet mich allesamt.</p>
-    <p class="base base-o">Σεις είσθε κατηραμένοι με κατάραν· διότι σεις με εκλέψατε, ναι, σεις, όλον το έθνος.</p>
     <p class="tra">Udareni ste prokletstvom jer me prikraćujete vi, sav narod!</p>
   </div>
 </div>
@@ -641,7 +616,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Inferte omnem decimam in horreum, et sit cibus in domo mea : et probate me super hoc, dicit Dominus : si non aperuero vobis cataractas cæli, et effudero vobis benedictionem usque ad abundantiam :</p>
     <p class="base base-p">Bringet aber die Zehnten ganz in mein Kornhaus, auf dafi in meinem Hause Speise sei; und prufet mich hierin, spricht der HERR Zebaoth, ob ich euch nicht des Himmels Fenster auftun werde und Segen herabschutten die Fülle.</p>
-    <p class="base base-o">Φέρετε πάντα τα δέκατα εις την αποθήκην, διά να ήναι τροφή εις τον οίκόν μου· και δοκιμάσατέ με τώρα εις τούτο, λέγει ο Κύριος των δυνάμεων, εάν δεν σας ανοίξω τους καταρράκτας του ουρανού και εκχέω την ευλογίαν εις εσάς, ώστε να μη αρκή τόπος δι' αυτήν.</p>
     <p class="tra">Donesite čitavu desetinu u riznicu da u mojoj kući bude hrane. Tada me iskušajte - govori Jahve nad Vojskama - neću li vam otvoriti ustave nebeske i neću li izliti na vas punom mjerom blagoslov,</p>
   </div>
 </div>
@@ -650,7 +624,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">et increpabo pro vobis devorantem, et non corrumpet fructum terræ vestræ, nec erit sterilis vinea in agro, dicit Dominus exercituum.</p>
     <p class="base base-p">Und ich will fur euch den Fresser schelten, daß er euch die Frucht auf dem Felde nicht verderben soil, und der Weinstock im Acker euch nicht unfruchtbar sei, spricht der HERR Zebaoth,</p>
-    <p class="base base-o">Και θέλω επιτιμήσει υπέρ υμών τον καταφθείροντα, και δεν θέλει φθείρει τους καρπούς της γης σας· ουδέ η άμπελός σας θέλει απορρίψει προ καιρού τον καρπόν αυτής εν τω αγρώ, λέγει ο Κύριος των δυνάμεων.</p>
     <p class="tra">neću li zbog vas zaprijetit skakavcu da vam više ne kvari usjeva i da vam ne bude nerodna loza u polju - govori Jahve nad Vojskama.</p>
   </div>
 </div>
@@ -659,7 +632,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et beatos vos dicent omnes gentes : eritis enim vos terra desiderabilis, dicit Dominus exercituum.</p>
     <p class="base base-p">daß euch alle Heiden sollen selig preisen; denn ihr sollt ein wertes Land sein, spricht der HERR Zebaoth.</p>
-    <p class="base base-o">Και θέλουσι σας μακαρίζει πάντα τα έθνη· διότι σεις θέλετε είσθαι γη επιθυμητή, λέγει ο Κύριος των δυνάμεων.</p>
     <p class="tra">Svi će vas narodi tad držati sretnima, jer ćete biti zemlja blaženstva - govori Jahve nad Vojskama.</p>
   </div>
 </div>
@@ -668,7 +640,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Invaluerunt super me verba vestra, dicit Dominus.</p>
     <p class="base base-p">Ihr redet hart wider mich, spricht der HERR. So sprechet ihr: Was reden wir wider dich?</p>
-    <p class="base base-o">Οι λόγοι σας ήσαν σκληροί εναντίον μου, λέγει ο Κύριος· και είπετε, Τι ελαλήσαμεν εναντίον σου;</p>
     <p class="tra">Teške su besjede vaše protiv mene - govori Jahve.</p>
   </div>
 </div>
@@ -677,7 +648,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et dixistis : Quid locuti sumus contra te ? Dixistis : Vanus est qui servit Deo : et quod emolumentum quia custodivimus præcepta ejus, et quia ambulavimus tristes coram Domino exercituum ?</p>
     <p class="base base-p">Damit, daß ihr saget: Es ist umsonst, da(3&amp;gt; man Gott dienet, und: Was nutzt es, daß wir sein Gebot halten und hart Leben vor dem HERRN Zebaoth führen?</p>
-    <p class="base base-o">Σεις είπετε, Μάταιον είναι να δουλεύη τις τον Θεόν· και, Τις η ωφέλεια ότι εφυλάξαμεν τα διατάγματα αυτού και ότι περιεπατήσαμεν πενθούντες ενώπιον του Κυρίου των δυνάμεων;</p>
     <p class="tra">Vi ipak pitate: &quot;Što smo između sebe govorili protiv tebe?&quot; Govorili ste: &quot;Zaludu je Bogu služiti i kakva je korist što njegove čuvamo propise i žalosni hodimo pred Jahvom nad Vojskama.</p>
   </div>
 </div>
@@ -686,7 +656,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Ergo nunc beatos dicimus arrogantes : siquidem ædificati sunt facientes impietatem, et tentaverunt Deum, et salvi facti sunt.</p>
     <p class="base base-p">Darum preisen wir die Verachter, denn die Gottlosen nehmen zu; sie versuchen Gott, und gehet ihnen alles wohl hinaus.</p>
-    <p class="base base-o">Και τώρα ημείς μακαρίζομεν τους υπερηφάνους· ναι, οι εργαζόμενοι την ανομίαν υψώθησαν, ναι, οι πειράζοντες τον Θεόν, και αυτοί εσώθησαν.</p>
     <p class="tra">Odsad ćemo sretnim zvati oholice: napreduju oni koji zlo čine, i premda Boga iskušavaju, izvuku se!&quot;</p>
   </div>
 </div>
@@ -695,7 +664,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Tunc locuti sunt timentes Dominum, unusquisque cum proximo suo : et attendit Dominus, et audivit, et scriptus est liber monumenti coram eo timentibus Dominum, et cogitantibus nomen ejus.</p>
     <p class="base base-p">Aber die Gottesfurchtigen trosten sich untereinander also: Der HERR merket es und horet es, und ist vor ihm ein Denkzettel, geschrieben fur die, so den HERRN furchten und an seinen Namen gedenken.</p>
-    <p class="base base-o">Τότε οι φοβούμενοι τον Κύριον ελάλουν προς αλλήλους· και ο Κύριος προσείχε και ήκουε και εγράφη βιβλίον ενθυμήσεως ενώπιον αυτού περί των φοβουμένων τον Κύριον και των ευλαβουμένων το όνομα αυτού·</p>
     <p class="tra">Ali kad se razgovaraju oni koji se Boga boje, Jahve pazi, sluša ih, i to se pred njim piše u knjigu spomenicu u korist onih koji se boje Jahve i štuju Ime njegovo.</p>
   </div>
 </div>
@@ -704,7 +672,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et erunt mihi, ait Dominus exercituum, in die qua ego facio, in peculium : et parcam eis, sicut parcit vir filio suo servienti sibi.</p>
     <p class="base base-p">Sie sollen, spricht der HERR Zebaoth, des Tages, den ich machen will, mein Eigentum sein; und ich will ihrer schonen, wie ein Mann seines Sohns schonet, der ihm dienet.</p>
-    <p class="base base-o">και θέλουσιν είσθαι εμού, λέγει ο Κύριος των δυνάμεων, εν τη ημέρα εκείνη, όταν εγώ ετοιμάσω τα πολύτιμά μου· και θέλω σπλαγχνισθή αυτούς, καθώς σπλαγχνίζεται άνθρωπος τον υιόν αυτού, όστις δουλεύει αυτόν.</p>
     <p class="tra">Moji će biti, moja stečevina - govori Jahve nad Vojskama. U Dan koji spremam bit ću im milostiv kao što je milostiv otac sinu koji mu služi.</p>
   </div>
 </div>
@@ -713,7 +680,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et convertemini, et videbitis quid sit inter justum et impium, et inter servientem Deo et non servientem ei.</p>
     <p class="base base-p">Und ihr sollt dagegen wiederum sehen, was fur ein Unterschied sei zwischen dem Gerechten und Gottlosen und zwischen dem, der Gott dienet, und dem, der ihm nicht dienet.</p>
-    <p class="base base-o">Τότε θέλετε επιστρέψει και διακρίνει μεταξύ δικαίου και ασεβούς, μεταξύ του δουλεύοντος τον Θεόν και του μη δουλεύοντος αυτόν.</p>
     <p class="tra">I tada ćete opet razlikovati pravednika od grešnika, onoga koji služi Bogu od onoga koji mu ne služi.</p>
   </div>
 </div>
@@ -722,14 +688,14 @@ body[data-conf="orthodox"] .base-o { display:block; }
 <section class="chap" id="c4">
   <div class="chhead">
     <span class="chrom">IV</span>
-    <span class="chlbl">Caput 4</span>
+    <span class="chlbl chlbl-c">Caput IV</span>
+    <span class="chlbl chlbl-p">Das 4. Capitel</span>
   </div>
 <div class="vb first" id="v4-1">
   <span class="vn">1</span>
   <div class="vt">
     <p class="base base-c">Ecce enim dies veniet succensa quasi caminus : et erunt omnes superbi et omnes facientes impietatem stipula : et inflammabit eos dies veniens, dicit Dominus exercituum, quæ non derelinquet eis radicem et germen.</p>
     <p class="base base-p"></p>
-    <p class="base base-o">Διότι, ιδού, έρχεται ημέρα, ήτις θέλει καίει ως κλίβανος· και πάντες οι υπερήφανοι και πάντες οι πράττοντες ασέβειαν θέλουσιν είσθαι άχυρον· και η ημέρα η ερχομένη θέλει κατακαύσει αυτούς, λέγει ο Κύριος των δυνάμεων, ώστε δεν θέλει αφήσει εις αυτούς ρίζαν και κλάδον.</p>
     
   </div>
 </div>
@@ -738,7 +704,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et orietur vobis timentibus nomen meum sol justitiæ, et sanitas in pennis ejus : et egrediemini, et salietis sicut vituli de armento.</p>
     <p class="base base-p"></p>
-    <p class="base base-o">Εις εσάς όμως τους φοβουμένους το όνομά μου θέλει ανατείλει ο ήλιος της δικαιοσύνης με ίασιν εν ταις πτέρυξιν αυτού· και θέλετε εξέλθει, και σκιρτήσει ως μοσχάρια της φάτνης.</p>
     
   </div>
 </div>
@@ -747,7 +712,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et calcabitis impios, cum fuerint cinis sub planta pedum vestrorum, in die qua ego facio, dicit Dominus exercituum.</p>
     <p class="base base-p"></p>
-    <p class="base base-o">Και θέλετε καταπατήσει τους ασεβείς· διότι αυτοί θέλουσιν είσθαι σποδός υπό τα ίχνη των ποδών σας, καθ' ην ημέραν εγώ κάμω τούτο, λέγει ο Κύριος των δυνάμεων.</p>
     
   </div>
 </div>
@@ -756,7 +720,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Mementote legis Moysi servi mei, quam mandavi ei in Horeb ad omnem Israël, præcepta et judicia.</p>
     <p class="base base-p"></p>
-    <p class="base base-o">Ευθυμείσθε τον νόμον του Μωϋσέως του δούλου μου, τον οποίον προσέταξα εις αυτόν εν Χωρήβ διά πάντα τον Ισραήλ, τα διατάγματα και τας κρίσεις.</p>
     
   </div>
 </div>
@@ -765,7 +728,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Ecce ego mittam vobis Eliam prophetam, antequam veniat dies Domini magnus et horribilis.</p>
     <p class="base base-p"></p>
-    <p class="base base-o">Ιδού, εγώ θέλω αποστείλει προς εσάς Ηλίαν τον προφήτην, πριν έλθη η ημέρα του Κυρίου η μεγάλη και επιφανής·</p>
     
   </div>
 </div>
@@ -774,7 +736,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et convertet cor patrum ad filios, et cor filiorum ad patres eorum : ne forte veniam, et percutiam terram anathemate.</p>
     <p class="base base-p"></p>
-    <p class="base base-o">και αυτός θέλει επιστρέψει την καρδίαν των πατέρων προς τα τέκνα και την καρδίαν των τέκνων προς τους πατέρας αυτών, μήποτε έλθω και πατάξω την γην με ανάθεμα.</p>
     
   </div>
 </div>
@@ -783,7 +744,7 @@ body[data-conf="orthodox"] .base-o { display:block; }
 
 <nav class="bnav">
   <a href="038-zec.html">&#8592; Zacharias</a>
-  <a href="../index.html" class="center">↑ &nbsp; Inhaltsverzeichnis</a>
+  <a href="../index.html" class="center">? &nbsp; Inhaltsverzeichnis</a>
   <a href="040-mat.html">Matthaeus &#8594;</a>
 </nav>
 

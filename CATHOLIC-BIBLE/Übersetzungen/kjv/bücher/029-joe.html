@@ -6,7 +6,7 @@
 <title>Ioel &middot; English &middot; Biblia Catholica</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 body{
@@ -17,26 +17,26 @@ body{
   font-size:17px;
 }
 
-/* ──────────────────────────────────────────
+/* ------------------------------------------
    BUCHKOPF
-────────────────────────────────────────── */
+------------------------------------------ */
 .bhead{
   background:
     repeating-linear-gradient( 45deg,transparent,transparent 36px,rgba(200,160,48,.028) 36px,rgba(200,160,48,.028) 37px),
     repeating-linear-gradient(-45deg,transparent,transparent 36px,rgba(200,160,48,.028) 36px,rgba(200,160,48,.028) 37px),
-    linear-gradient(162deg,#2C0810 0%,#4A1020 45%,#5C1828 65%,#4A1020 85%,#2C0810 100%);
+    linear-gradient(162deg,#1A0407 0%,#2C0810 45%,#4A1020 65%,#2C0810 85%,#1A0407 100%);
   padding:36px 28px 28px;
   text-align:center;
   border-bottom:4px solid #B8962E;
   position:relative;overflow:hidden;
 }
-/* Innerer Rahmen — äußerer Ring */
+/* Innerer Rahmen - äußerer Ring */
 .bhead::before{
   content:'';position:absolute;inset:14px;
   border:1px solid rgba(200,160,48,.22);
   pointer-events:none;
 }
-/* Innerer Rahmen — innerer Ring */
+/* Innerer Rahmen - innerer Ring */
 .bhead::after{
   content:'';position:absolute;inset:22px;
   border:1px solid rgba(200,160,48,.08);
@@ -52,12 +52,16 @@ body{
   position:relative;
 }
 .blatin{
-  font-family:'Cinzel Decorative',serif;
+  display:none;
+  font-family:'UnifrakturMaguntia',cursive;
   font-size:clamp(1.9rem,7vw,3.4rem);
   color:#EDD882;
   text-shadow:0 3px 20px rgba(0,0,0,.55);
-  letter-spacing:.06em;position:relative;
+  letter-spacing:.04em;position:relative;
 }
+body:not([data-conf]) .blatin-c,
+body[data-conf="catholic"] .blatin-c{display:block;}
+body[data-conf="protestant"] .blatin-p{display:block;}
 .btrans{
   font-family:'Cinzel',serif;
   font-size:.88rem;
@@ -70,9 +74,9 @@ body{
   letter-spacing:.08em;position:relative;
 }
 
-/* ──────────────────────────────────────────
+/* ------------------------------------------
    KAPITELINHALT
-────────────────────────────────────────── */
+------------------------------------------ */
 .content{
   max-width:960px;
   margin:36px auto 36px;
@@ -86,7 +90,7 @@ body{
   border-right:4px solid #B8962E;
   border-top:2px solid rgba(184,150,46,.4);
   border-bottom:2px solid rgba(184,150,46,.4);
-  position:relative;
+  position:relative;overflow:clip;
 }
 .content::before{
   content:'';
@@ -130,12 +134,15 @@ body{
 .chlbl{
   font-family:'Cinzel',serif;font-size:.58rem;
   color:rgba(184,150,46,.42);letter-spacing:.32em;
-  display:block;margin-top:8px;
+  display:none;margin-top:8px;
 }
+body:not([data-conf]) .chlbl-c
+body[data-conf="catholic"] .chlbl-c{display:block;}
+body[data-conf="protestant"] .chlbl-p{display:block;}
 
-/* ──────────────────────────────────────────
+/* ------------------------------------------
    VERSE
-────────────────────────────────────────── */
+------------------------------------------ */
 .vb{
   display:flex;
   padding:20px 6px;
@@ -163,7 +170,7 @@ body{
   padding:0 20px 0 4px;
 }
 
-/* BASIS-TEXT — wechselt je nach Konfession */
+/* BASIS-TEXT - wechselt je nach Konfession */
 .base{
   font-family:'EB Garamond',serif;
   font-size:1.2rem;
@@ -176,7 +183,6 @@ body{
 body:not([data-conf]) .base-c,
 body[data-conf="catholic"] .base-c { display:block; }
 body[data-conf="protestant"] .base-p { display:block; }
-body[data-conf="orthodox"] .base-o { display:block; }
 /* Leere Basis-Paragraphen ausblenden */
 .base:empty { display:none !important; }
 
@@ -192,8 +198,9 @@ body[data-conf="orthodox"] .base-o { display:block; }
   border-left:2px solid rgba(90,110,170,.2);
 }
 
-/* Drop-Cap: erster Vers eines Kapitels */
-.vb.first .base::first-letter{
+/* Drop-Cap: erster Vers eines Kapitels — nur Latein und Luther, nicht Griechisch */
+.vb.first .base-c::first-letter,
+.vb.first .base-p::first-letter{
   font-family:'Cinzel Decorative',serif;
   font-size:4em;
   float:left;
@@ -204,9 +211,9 @@ body[data-conf="orthodox"] .base-o { display:block; }
   text-shadow:1px 2px 6px rgba(0,0,0,.12);
 }
 
-/* ──────────────────────────────────────────
+/* ------------------------------------------
    BUCH-NAVIGATION (unten)
-────────────────────────────────────────── */
+------------------------------------------ */
 .bnav{
   display:flex;justify-content:space-between;align-items:center;
   background:#2C0810;border-top:3px solid #B8962E;
@@ -245,29 +252,34 @@ body[data-conf="orthodox"] .base-o { display:block; }
   .content{padding:16px 18px 60px;margin:0;border-left:none;border-right:none;border-radius:0;}
   .chrom{font-size:1.8rem;}
 }
+/* KREUZ-GRAVUR */
+.b-wm{position:sticky;top:calc(50vh - 37.5vmin);width:50vmin;height:75vmin;margin:0 auto -75vmin;display:block;pointer-events:none;z-index:0;user-select:none;}
+.b-wm svg{width:100%;height:auto;display:block;}
+.b-wm path{fill:none;stroke:rgba(184,150,46,.06);stroke-width:1.5;stroke-linecap:square;}
 </style>
 </head>
 <body>
-
 <header class="bhead">
   <div class="btestament">VETUS TESTAMENTUM</div>
-  <div class="blatin">IOEL</div>
+  <div class="blatin blatin-c">IOEL</div>
+  <div class="blatin blatin-p">JOEL</div>
   <div class="btrans">Joel &nbsp;&middot;&nbsp; <em>English</em></div>
   <div class="bmeta">3 Capita &nbsp;&middot;&nbsp; 73 Versus</div>
 </header>
 
 <main class="content">
+<div class="b-wm"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 14"><path d="M5,0V14M0,4H10"/></svg></div>
 <section class="chap" id="c1">
   <div class="chhead">
     <span class="chrom">I</span>
-    <span class="chlbl">Caput 1</span>
+    <span class="chlbl chlbl-c">Caput I</span>
+    <span class="chlbl chlbl-p">Das 1. Capitel</span>
   </div>
 <div class="vb first" id="v1-1">
   <span class="vn">1</span>
   <div class="vt">
     <p class="base base-c">Verbum Domini, quod factum est ad Joël, filium Phatuel.</p>
     <p class="base base-p">Dies ist das Wort des HERRN, das geschehen ist zu Joel, dem Sohn Pethuels:</p>
-    <p class="base base-o">Ο λόγος του Κυρίου ο γενόμενος προς Ιωήλ τον υιόν του Φαθουήλ.</p>
     <p class="tra">The word of the Lord that came to Joel the son of Pethuel.</p>
   </div>
 </div>
@@ -276,7 +288,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Audite hoc, senes,  et auribus percipite, omnes habitatores terræ :  si factum est istud in diebus vestris,  aut in diebus patrum vestrorum ?</p>
     <p class="base base-p">Horet dies, ihr Altesten, und merket auf, alle Einwohner im Lande, ob ein solches geschehen sei bei euren Zeiten Oder bei eurer Vater Zeiten!</p>
-    <p class="base base-o">Ακούσατε τούτο, οι πρεσβύτεροι, και δότε ακρόασιν, πάντες οι κατοικούντες την γήν· έγεινε τούτο εν ταις ημέραις υμών ή εν ταις ημέραις των πατέρων υμών;</p>
     <p class="tra">Hear this, ye old men, and give ear, all ye inhabitants of the land. Hath this been in your days, or even in the days of your fathers?</p>
   </div>
 </div>
@@ -285,7 +296,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Super hoc filiis vestris narrate,  et filii vestri filiis suis,  et filii eorum generationi alteræ.</p>
     <p class="base base-p">Saget euren Kindern davon und lalit es eure Kinder ihren Kindern sagen und dieselbigen Kinder ihren andern Nachkommen,</p>
-    <p class="base base-o">Διηγήθητε προς τα τέκνα σας περί τούτου και τα τέκνα σας προς τα τέκνα αυτών και τα τέκνα αυτών προς άλλην γενεάν.</p>
     <p class="tra">Tell ye your children of it, and let your children tell their children, and their children another generation.</p>
   </div>
 </div>
@@ -294,7 +304,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Residuum erucæ comedit locusta,  et residuum locustæ comedit bruchus,  et residuum bruchi comedit rubigo.</p>
     <p class="base base-p">namlich: Was die Raupen lassen, das fressen die Heuschrecken; und was die Heuschrecken lassen, das fressen die Kafer; und was die Kafer lassen, das fril M das Geschmeili.</p>
-    <p class="base base-o">ό,τι αφήκεν η κάμπη, κατέφαγεν η ακρίς· και ό,τι αφήκεν η ακρίς, κατέφαγεν ο βρούχος· και ό,τι αφήκεν ο βρούχος, κατέφαγεν η ερυσίβη.</p>
     <p class="tra">That which the palmerworm hath left hath the locust eaten; and that which the locust hath left hath the cankerworm eaten; and that which the cankerworm hath left hath the caterpiller eaten.</p>
   </div>
 </div>
@@ -303,7 +312,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Expergiscimini, ebrii,  et flete et ululate, omnes qui bibitis vinum in dulcedine,  quoniam periit ab ore vestro.</p>
     <p class="base base-p">Wachetauf, ihr Trunkenen, und weinet und heulet, alle Weinsaufer, urn den Most; denn er ist euch voreurem Maul weggenommen.</p>
-    <p class="base base-o">Ανανήψατε, μέθυσοι, και κλαύσατε, και ολολύξατε, πάντες οι οινοπόται, διά τον νέον οίνον· διότι αφηρέθη από του στόματός σας.</p>
     <p class="tra">Awake, ye drunkards, and weep; and howl, all ye drinkers of wine, because of the new wine; for it is cut off from your mouth.</p>
   </div>
 </div>
@@ -312,7 +320,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Gens enim ascendit super terram meam,  fortis et innumerabilis :  dentes ejus ut dentes leonis,  et molares ejus ut catuli leonis.</p>
     <p class="base base-p">Denn es zeucht herauf in mein Land ein machtig Volk, und des ohne Zahl; das hat Zahne wie Lowen und Backenzahne wie Lowinnen.</p>
-    <p class="base base-o">Επειδή έθνος ανέβη επί την γην μου, ισχυρόν και αναρίθμητον, του οποίου οι οδόντες είναι οδόντες λέοντος, και έχει μυλόδοντας σκύμνου.</p>
     <p class="tra">For a nation is come up upon my land, strong, and without number, whose teeth are the teeth of a lion, and he hath the cheek teeth of a great lion.</p>
   </div>
 </div>
@@ -321,7 +328,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Posuit vineam meam in desertum,  et ficum meam decorticavit ;  nudans spoliavit eam, et projecit :  albi facti sunt rami ejus.</p>
     <p class="base base-p">Dasselbige verwustet meinen Weinberg und streift meinen Feigenbaum, schalet ihn und verwirft ihn, daß seine Zweige weili dastehen.</p>
-    <p class="base base-o">Έθεσε την άμπελόν μου εις αφανισμόν και τας συκάς μου εις θραύσιν· όλως εξελέπισεν αυτήν και απέρριψε· τα κλήματα αυτής έμειναν λευκά.</p>
     <p class="tra">He hath laid my vine waste, and barked my fig tree: he hath made it clean bare, and cast it away; the branches thereof are made white.</p>
   </div>
 </div>
@@ -330,7 +336,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Plange quasi virgo accincta sacco super virum pubertatis suæ.</p>
     <p class="base base-p">Heule wie eine Jungfrau, die einen Sack anlegt urn ihren Brautigam!</p>
-    <p class="base base-o">Θρήνησον ως νύμφη περιεζωσμένη σάκκον διά τον άνδρα της νεότητος αυτής.</p>
     <p class="tra">Lament like a virgin girded with sackcloth for the husband of her youth.</p>
   </div>
 </div>
@@ -339,7 +344,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Periit sacrificium et libatio de domo Domini ;  luxerunt sacerdotes, ministri Domini.</p>
     <p class="base base-p">Denn das Speisopfer und Trankopfer ist vom Hause des HERRN weg, und die Priester, des HERRN Diener, trauern.</p>
-    <p class="base base-o">Η προσφορά και η σπονδή αφηρέθη από του οίκου του Κυρίου· πενθούσιν οι ιερείς, οι λειτουργοί του Κυρίου.</p>
     <p class="tra">The meat offering and the drink offering is cut off from the house of the Lord; the priests, the Lord’s ministers, mourn.</p>
   </div>
 </div>
@@ -348,7 +352,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Depopulata est regio,  luxit humus,  quoniam devastatum est triticum,  confusum est vinum,  elanguit oleum.</p>
     <p class="base base-p">Das Feld ist verwustet, und der Acker stehet jammerlich, das Getreide ist verdorben, der Wein stehet jammerlich und das 01 klaglich.</p>
-    <p class="base base-o">Ηρημώθη η πεδιάς, πενθεί η γή· διότι ηφανίσθη ο σίτος, εξηράνθη ο νέος οίνος, εξέλιπε το έλαιον.</p>
     <p class="tra">The field is wasted, the land mourneth; for the corn is wasted: the new wine is dried up, the oil languisheth.</p>
   </div>
 </div>
@@ -357,7 +360,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Confusi sunt agricolæ,  ululaverunt vinitores  super frumento et hordeo,  quia periit messis agri.</p>
     <p class="base base-p">Die Ackerleute sehen jammerlich, und die Weingartner heuien urn den Weizen und urn die Gerste, dafi aus der Ernte auf dem Felde nichts werden kann.</p>
-    <p class="base base-o">Αισχύνθητε, γεωργοί· ολολύξατε, αμπελουργοί, διά τον σίτον και διά την κριθήν· διότι ο θερισμός του αγρού απωλέσθη.</p>
     <p class="tra">Be ye ashamed, O ye husbandmen; howl, O ye vinedressers, for the wheat and for the barley; because the harvest of the field is perished.</p>
   </div>
 </div>
@@ -366,7 +368,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Vinea confusa est,  et ficus elanguit ;  malogranatum, et palma, et malum,  et omnia ligna agri aruerunt,  quia confusum est gaudium a filiis hominum.</p>
     <p class="base base-p">So stehet der Weinstock auch jammerlich und der Feigenbaum klaglich; dazu die Granatbaume, Palmbaume, Apfelbaume und alle Baume auf dem Felde sind verdorret; denn die Freude der Menschen istzum Jammer worden.</p>
-    <p class="base base-o">Η άμπελος εξηράνθη και η συκή εξέλιπεν· η ροϊδιά και ο φοίνιξ και η μηλέα, πάντα τα δένδρα του αγρού εξηράνθησαν, ώστε εξέλιπεν η χαρά από των υιών των ανθρώπων.</p>
     <p class="tra">The vine is dried up, and the fig tree languisheth; the pomegranate tree, the palm tree also, and the apple tree, even all the trees of the field, are withered: because joy is withered away from the sons of men.</p>
   </div>
 </div>
@@ -375,7 +376,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Accingite vos, et plangite, sacerdotes :  ululate, ministri altaris ;  ingredimini, cubate in sacco, ministri Dei mei,  quoniam interiit de domo Dei vestri sacrificium et libatio.</p>
     <p class="base base-p">Begurtet euch und klaget, ihr Priester; heulet, ihr Diener des Altars; gehet hinein und lieget in Sacken, ihr Diener meines Gottes! Denn es ist beide, Speisopfer und Trankopfer, vom Hause eures Gottes weg.</p>
-    <p class="base base-o">Περιζώσθητε και θρηνείτε, ιερείς· ολολύζετε, λειτουργοί του θυσιαστηρίου· έλθετε, διανυκτερεύσατε εν σάκκω, λειτουργοί του Θεού μου· διότι η προσφορά και η σπονδή επαύθη από του οίκου του Θεού σας.</p>
     <p class="tra">Gird yourselves, and lament, ye priests: howl, ye ministers of the altar: come, lie all night in sackcloth, ye ministers of my God: for the meat offering and the drink offering is withholden from the house of your God.</p>
   </div>
 </div>
@@ -384,7 +384,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Sanctificate jejunium, vocate cœtum,  congregate senes, omnes habitatores terræ  in domum Dei vestri,  et clamate ad Dominum :</p>
     <p class="base base-p">Heiligetein Fasten; rufetdie Gemeine zusammen; versammelt die Altesten und alle Einwohner des Landes zum Hause des HERRN, eures Gottes, und schreiet zum HERRN!</p>
-    <p class="base base-o">Αγιάσατε νηστείαν, κηρύξατε σύναξιν επίσημον, συνάξατε τους πρεσβυτέρους, πάντας τους κατοίκους του τόπου, εις τον οίκον Κυρίου του Θεού σας· και βοήσατε προς τον Κύριον,</p>
     <p class="tra">Sanctify ye a fast, call a solemn assembly, gather the elders and all the inhabitants of the land into the house of the Lord your God, and cry unto the Lord,</p>
   </div>
 </div>
@@ -393,7 +392,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">A, a, a, diei !  quia prope est dies Domini,  et quasi vastitas a potente veniet.</p>
     <p class="base base-p">O wehe des Tages! Denn der Tag des HERRN ist nahe und kommt wie ein Verderben vom Allmachtigen.</p>
-    <p class="base base-o">Οίμοι διά την ημέραν εκείνην· διότι η ημέρα του Κυρίου επλησίασε και θέλει ελθεί ως όλεθρος από του Παντοδυνάμου.</p>
     <p class="tra">Alas for the day! for the day of the Lord is at hand, and as a destruction from the Almighty shall it come.</p>
   </div>
 </div>
@@ -402,7 +400,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Numquid non coram oculis vestris alimenta perierunt  de domo Dei nostri, lætitia et exsultatio ?</p>
     <p class="base base-p">Da wird die Speise vor unsern Augen weggenommen werden und vom Hause unsers Gottes Freude und Wonne.</p>
-    <p class="base base-o">Δεν αφηρέθησαν αι τροφαί απ' έμπροσθεν των οφθαλμών ημών, η ευφροσύνη και η χαρά από του οίκου του Θεού ημών;</p>
     <p class="tra">Is not the meat cut off before our eyes, yea, joy and gladness from the house of our God?</p>
   </div>
 </div>
@@ -411,7 +408,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Computruerunt jumenta in stercore suo,  demolita sunt horrea,  dissipatæ sunt apothecæ,  quoniam confusum est triticum.</p>
     <p class="base base-p">Der Same ist unter der Erde verfaulet, die Kornhauser stehen wüst, die Scheunen zerfallen; denn das Getreide ist verdorben.</p>
-    <p class="base base-o">Οι σπόροι φθείρονται υπό τους βώλους αυτών, αι σιτοθήκαι ηρημώθησαν, αι αποθήκαι εχαλάσθησαν· διότι ο σίτος εξηράνθη.</p>
     <p class="tra">The seed is rotten under their clods, the garners are laid desolate, the barns are broken down; for the corn is withered.</p>
   </div>
 </div>
@@ -420,7 +416,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Quid ingemuit animal,  mugierunt greges armenti ?  quia non est pascua eis ;  sed et greges pecorum disperierunt.</p>
     <p class="base base-p">0 wie seufzet das Vieh! Die Rinder sehen klaglich, denn sie haben keine Weide, und die Schafe verschmachten.</p>
-    <p class="base base-o">Πως στενάζουσι τα κτήνη· αδημονούσιν αι αγέλαι των βοών, διότι δεν έχουσι βοσκήν· ναι, τα ποίμνια των προβάτων ηφανίσθησαν.</p>
     <p class="tra">How do the beasts groan! the herds of cattle are perplexed, because they have no pasture; yea, the flocks of sheep are made desolate.</p>
   </div>
 </div>
@@ -429,7 +424,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Ad te, Domine, clamabo,  quia ignis comedit speciosa deserti,  et flamma succendit omnia ligna regionis.</p>
     <p class="base base-p">HERR, dich rufe ich an; denn das Feuer hat die Auen in der Wüste verbrannt, und die Flamme hat alle Baume auf dem Acker angezündet.</p>
-    <p class="base base-o">Κύριε, προς σε θέλω βοήσει· διότι το πυρ κατηνάλωσε τας βοσκάς της ερήμου και η φλόξ κατέκαυσε πάντα τα δένδρα του αγρού.</p>
     <p class="tra">O Lord, to thee will I cry: for the fire hath devoured the pastures of the wilderness, and the flame hath burned all the trees of the field.</p>
   </div>
 </div>
@@ -438,7 +432,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Sed et bestiæ agri, quasi area sitiens imbrem, suspexerunt ad te,  quoniam exsiccati sunt fontes aquarum,  et ignis devoravit speciosa deserti.</p>
     <p class="base base-p">Es schreien auch die wilden Tiere zu dir; denn die Wasserbache sind ausgetrocknet, und das Feuer hat die Auen in der Wüste verbrannt.</p>
-    <p class="base base-o">Τα κτήνη έτι της πεδιάδος χάσκουσι προς σέ· διότι εξηράνθησαν οι ρύακες των υδάτων και πυρ κατέφαγε τας βοσκάς της ερήμου.</p>
     <p class="tra">The beasts of the field cry also unto thee: for the rivers of waters are dried up, and the fire hath devoured the pastures of the wilderness.</p>
   </div>
 </div>
@@ -447,14 +440,14 @@ body[data-conf="orthodox"] .base-o { display:block; }
 <section class="chap" id="c2">
   <div class="chhead">
     <span class="chrom">II</span>
-    <span class="chlbl">Caput 2</span>
+    <span class="chlbl chlbl-c">Caput II</span>
+    <span class="chlbl chlbl-p">Das 2. Capitel</span>
   </div>
 <div class="vb first" id="v2-1">
   <span class="vn">1</span>
   <div class="vt">
     <p class="base base-c">Canite tuba in Sion,  ululate in monte sancto meo,  conturbentur omnes habitatores terræ :  quia venit dies Domini, quia prope est.</p>
     <p class="base base-p">Blaset mit der Posaune zu Zion, rufet auf meinem heiligen Berge; erzittert, alle Einwohner im Lande! Denn der Tag des HERRN kommt und ist nahe.</p>
-    <p class="base base-o">Σαλπίσατε σάλπιγγα εν Σιών, και αλαλάξατε εν τω όρει τω αγίω μου· ας τρομάξωσι πάντες οι κατοικούντες την γήν· διότι έρχεται η ημέρα του Κυρίου, διότι είναι εγγύς·</p>
     <p class="tra">Blow ye the trumpet in Zion, and sound an alarm in my holy mountain: let all the inhabitants of the land tremble: for the day of the Lord cometh, for it is nigh at hand;</p>
   </div>
 </div>
@@ -463,7 +456,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Dies tenebrarum et caliginis,  dies nubis et turbinis ;  quasi mane expansum super montes  populus multus et fortis :  similis ei non fuit a principio,  et post eum non erit  usque in annos generationis et generationis.</p>
     <p class="base base-p">Ein finstrer Tag, ein dunkler Tag, ein wolkiger Tag, ein nebliger Tag, gleichwie sich die Morgenrote ausbreitet uber die Berge, namlich ein graft und machtig Volk desgleichen vorhin nicht gewesen ist und hinfort nicht sein wird zu ewigen Zeiten fur und fur.</p>
-    <p class="base base-o">ημέρα σκότους και γνόφου, ημέρα νεφέλης και ομίχλης· ως αυγή εξαπλούται επί τα όρη λαός πολύς και ισχυρός· όμοιος αυτού δεν εστάθη απ' αιώνος ουδέ μετ' αυτόν θέλει σταθή πλέον ποτέ εις γενεάς γενεών.</p>
     <p class="tra">A day of darkness and of gloominess, a day of clouds and of thick darkness, as the morning spread upon the mountains: a great people and a strong; there hath not been ever the like, neither shall be any more after it, even to the years of many generations.</p>
   </div>
 </div>
@@ -472,7 +464,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Ante faciem ejus ignis vorans,  et post eum exurens flamma.  Quasi hortus voluptatis terra coram eo,  et post eum solitudo deserti,  neque est qui effugiat eum.</p>
     <p class="base base-p">Vor ihm her gehet ein verzehrend Feuer und nach ihm eine brennende Flamme. Das Land ist vor ihm wie ein Lustgarten, aber nach ihm wie eine wüste Einode; und niemand wird ihm entgehen.</p>
-    <p class="base base-o">Πυρ κατατρώγει έμπροσθεν αυτού και φλόξ κατακαίει όπισθεν αυτού· η γη είναι ως ο παράδεισος της Εδέμ έμπροσθεν αυτού, και όπισθεν αυτού πεδιάς ηφανισμένη· και βεβαίως δεν θέλει εκφύγει απ' αυτού ουδέν.</p>
     <p class="tra">A fire devoureth before them; and behind them a flame burneth: the land is as the garden of Eden before them, and behind them a desolate wilderness; yea, and nothing shall escape them.</p>
   </div>
 </div>
@@ -481,7 +472,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Quasi aspectus equorum, aspectus eorum ;  et quasi equites, sic current.</p>
     <p class="base base-p">Sie sind gestaltet wie Rosse und rennen wie die Reiter.</p>
-    <p class="base base-o">Η θέα αυτών είναι ως θέα ίππων, και ως ιππείς, ούτω θέλουσι τρέχει.</p>
     <p class="tra">The appearance of them is as the appearance of horses; and as horsemen, so shall they run.</p>
   </div>
 </div>
@@ -490,7 +480,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Sicut sonitus quadrigarum super capita montium exilient,  sicut sonitus flammæ ignis devorantis stipulam,  velut populus fortis præparatus ad prælium.</p>
     <p class="base base-p">Sie sprengen daher oben auf den Bergen, wie die Wagen rasseln, und wie eine Flamme lodert im Stroh, wie ein machtig Volk, das zum Strait gerüstet ist.</p>
-    <p class="base base-o">Ως κρότος αμαξών θέλουσι πηδά επί τας κορυφάς των ορέων, ως ήχος φλογός πυρός, ήτις κατατρώγει την καλάμην, ως ισχυρός λαός παρατεταγμένος εις μάχην.</p>
     <p class="tra">Like the noise of chariots on the tops of mountains shall they leap, like the noise of a flame of fire that devoureth the stubble, as a strong people set in battle array.</p>
   </div>
 </div>
@@ -499,7 +488,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">A facie ejus cruciabuntur populi ;  omnes vultus redigentur in ollam.</p>
     <p class="base base-p">Die Volker werden sich vor ihm entsetzen; aller Angesichte sind so bleich wie die Topfe.</p>
-    <p class="base base-o">Ενώπιον αυτού οι λαοί θέλουσι κατατρομάξει· πάντα τα πρόσωπα θέλουσιν αποσβολωθή.</p>
     <p class="tra">Before their face the people shall be much pained: all faces shall gather blackness.</p>
   </div>
 </div>
@@ -508,7 +496,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Sicut fortes current ;  quasi viri bellatores ascendent murum :  viri in viis suis gradientur,  et non declinabunt a semitis suis.</p>
     <p class="base base-p">Sie werden laufen wie die Riesen und die Mauern ersteigen wie die Krieger; ein jeglicher wird stracks vor sich daherziehen und sich nicht saumen.</p>
-    <p class="base base-o">Θέλουσι τρέξει ως μαχηταί, ως άνδρες πολεμισταί θέλουσιν αναβή το τείχος, και θέλουσιν υπάγει έκαστος εις την οδόν αυτού και δεν θέλουσι χαλάσει τας τάξεις αυτών.</p>
     <p class="tra">They shall run like mighty men; they shall climb the wall like men of war; and they shall march every one on his ways, and they shall not break their ranks:</p>
   </div>
 </div>
@@ -517,7 +504,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Unusquisque fratrem suum non coarctabit,  singuli in calle suo ambulabunt ;  sed et per fenestras cadent, et non demolientur.</p>
     <p class="base base-p">Keinerwird den andern irren, sondern ein jeglicher wird in seiner Ordnung daherfahren; und werden durch die Waffen brechen und nicht verwundet werden.</p>
-    <p class="base base-o">Και δεν θέλουσι σπρώξει ο εις τον άλλον· θέλουσι περιπατεί έκαστος εις την οδόν αυτού, και πίπτοντες επί τα βέλη δεν θέλουσι πληγωθή.</p>
     <p class="tra">Neither shall one thrust another; they shall walk every one in his path: and when they fall upon the sword, they shall not be wounded.</p>
   </div>
 </div>
@@ -526,7 +512,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Urbem ingredientur, in muro current,  domos conscendent, per fenestras intrabunt quasi fur.</p>
     <p class="base base-p">Sie werden in der Stadt umherreiten, auf der Mauer laufen und in die Hauser steigen und wie ein Dieb durch die Fenster hineinkommen.</p>
-    <p class="base base-o">Θέλουσι περιτρέχει εν τη πόλει, θέλουσι δράμει επί το τείχος, θέλουσιν αναβαίνει επί τας οικίας, θέλουσιν εμβαίνει διά των θυρίδων ως κλέπτης.</p>
     <p class="tra">They shall run to and fro in the city; they shall run upon the wall, they shall climb up upon the houses; they shall enter in at the windows like a thief.</p>
   </div>
 </div>
@@ -535,7 +520,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">A facie ejus contremuit terra,  moti sunt cæli,  sol et luna obtenebrati sunt,  et stellæ retraxerunt splendorem suum.</p>
     <p class="base base-p">Vor ihm erzittert das Land und bebet der Himmel; Sonne und Mond werden finster, und die Sterne verhalten ihren Schein.</p>
-    <p class="base base-o">Η γη θέλει σεισθή έμπροσθεν αυτών, οι ουρανοί θέλουσι τρέμει, ο ήλιος και η σελήνη θέλουσι συσκοτάσει, και τα άστρα θέλουσι σύρει οπίσω το φέγγος αυτών.</p>
     <p class="tra">The earth shall quake before them; the heavens shall tremble: the sun and the moon shall be dark, and the stars shall withdraw their shining:</p>
   </div>
 </div>
@@ -544,7 +528,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et Dominus dedit vocem suam ante faciem exercitus sui,  quia multa sunt nimis castra ejus,  quia fortia et facientia verbum ejus :  magnus enim dies Domini, et terribilis valde,  et quis sustinebit eum ?</p>
     <p class="base base-p">Denn der HERR wird seinen Donner vor seinem Heer lassen hergeben; denn sein Heer ist sehr graft und machtig, welches seinen Befehl wird ausrichten; denn der T ag des HERRN ist graft und sehr erschrecklich; wer kann ihn leiden?</p>
-    <p class="base base-o">Και ο Κύριος θέλει εκπέμψει την φωνήν αυτού έμπροσθεν του στρατεύματος αυτού· διότι το στρατόπεδον αυτού είναι μέγα σφόδρα, διότι ο εκτελών τον λόγον αυτού είναι ισχυρός, διότι η ημέρα του Κυρίου είναι μεγάλη και τρομερά σφόδρα και τις δύναται να υποφέρη αυτήν;</p>
     <p class="tra">And the Lord shall utter his voice before his army: for his camp is very great: for he is strong that executeth his word: for the day of the Lord is great and very terrible; and who can abide it?</p>
   </div>
 </div>
@@ -553,7 +536,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Nunc ergo, dicit Dominus,  convertimini ad me in toto corde vestro,  in jejunio, et in fletu, et in planctu.</p>
     <p class="base base-p">So spricht nun der HERR: Bekehret euch zu mir von ganzem Herzen mit Fasten, mit Weinen, mit Klagen!</p>
-    <p class="base base-o">Και τώρα διά τούτο, λέγει Κύριος, επιστρέψατε προς εμέ εξ όλης της καρδίας υμών και εν νηστεία και εν κλαυθμώ και εν πένθει.</p>
     <p class="tra">Therefore also now, saith the Lord, turn ye even to me with all your heart, and with fasting, and with weeping, and with mourning:</p>
   </div>
 </div>
@@ -562,7 +544,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et scindite corda vestra, et non vestimenta vestra ;  et convertimini ad Dominum Deum vestrum,  quia benignus et misericors est,  patiens et multæ misericordiæ,  et præstabilis super malitia.</p>
     <p class="base base-p">Zerreiftet eure Herzen und nicht eure Kleider und bekehret euch zu dem HERRN, eurem Gotti Denn er ist gnadig, barmherzig, geduldig und von grafter Güte und reuet ihn bald der Strafe.</p>
-    <p class="base base-o">Και διαρρήξατε την καρδίαν σας και μη τα ιμάτιά σας και επιστρέψατε προς Κύριον τον Θεόν σας· διότι είναι ελεήμων και οικτίρμων, μακρόθυμος και πολυέλεος και μεταμελούμενος διά το κακόν.</p>
     <p class="tra">And rend your heart, and not your garments, and turn unto the Lord your God: for he is gracious and merciful, slow to anger, and of great kindness, and repenteth him of the evil.</p>
   </div>
 </div>
@@ -571,7 +552,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Quis scit si convertatur, et ignoscat,  et relinquat post se benedictionem, sacrificium et libamen Domino Deo vestro ?</p>
     <p class="base base-p">Werweift, es mag ihn wiederum gereuen und einen Segen hinter sich lassen, zu opfern Speisopfer und Trankopferdem HERRN, eurem Gott.</p>
-    <p class="base base-o">Τις οίδεν, αν θέλη επιστρέψει και μεταμεληθή και αφήσει ευλογίαν κατόπιν αυτού, προσφοράν και σπονδήν εις Κύριον τον Θεόν υμών;</p>
     <p class="tra">Who knoweth if he will return and repent, and leave a blessing behind him; even a meat offering and a drink offering unto the Lord your God?</p>
   </div>
 </div>
@@ -580,7 +560,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Canite tuba in Sion,  sanctificate jejunium, vocate cœtum :</p>
     <p class="base base-p">Blaset mit Posaunen zu Zion, heiliget ein Fasten, rufet die Gemeine zusammen!</p>
-    <p class="base base-o">Σαλπίσατε σάλπιγγα εν Σιών, αγιάσατε νηστείαν, κηρύξατε σύναξιν επίσημον.</p>
     <p class="tra">Blow the trumpet in Zion, sanctify a fast, call a solemn assembly:</p>
   </div>
 </div>
@@ -589,7 +568,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">congregate populum, sanctificate ecclesiam,  coadunate senes, congregate parvulos, et sugentes ubera ;  egrediatur sponsus de cubili suo,  et sponsa de thalamo suo.</p>
     <p class="base base-p">Versammelt das Volk, heiliget die Gemeine, sammelt die Altesten, bringet zuhauf die jungen Kinder und die Sauglinge! Der Brautigam gehe aus seiner Kammer und die Braut aus ihrem Gemach!</p>
-    <p class="base base-o">Συναθροίσατε τον λαόν, αγιάσατε την σύναξιν, συνάξατε τους πρεσβυτέρους, συναθροίσατε τα νήπια και τα θηλάζοντα μαστούς· ας εξέλθη ο νυμφίος εκ του κοιτώνος αυτού και η νύμφη εκ του θαλάμου αυτής.</p>
     <p class="tra">Gather the people, sanctify the congregation, assemble the elders, gather the children, and those that suck the breasts: let the bridegroom go forth of his chamber, and the bride out of her closet.</p>
   </div>
 </div>
@@ -598,7 +576,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Inter vestibulum et altare plorabunt sacerdotes, ministri Domini,  et dicent : Parce, Domine, parce populo tuo ;  et ne des hæreditatem tuam in opprobrium,  ut dominentur eis nationes.  Quare dicunt in populis : Ubi est Deus eorum ?</p>
     <p class="base base-p">Laft die Priester, des HERRN Diener, weinen zwischen der Halle und Altar und sagen: HERR, schone deines Volks und laft dein Erbteil nicht zuschanden werden, daß Heiden uber sie herrschen! Warum willst du lassen unter den Volkern sagen: Wo ist nun ihr Gott?</p>
-    <p class="base base-o">Ας κλαύσωσιν οι ιερείς, οι λειτουργοί του Κυρίου, μεταξύ της στοάς και του θυσιαστηρίου, και ας είπωσι, Φείσαι, Κύριε, του λαού σου και μη δώσης την κληρονομίαν σου εις όνειδος, ώστε να κυριεύσωσιν αυτούς τα έθνη· διά τι να είπωσι μεταξύ των λαών, Που είναι ο Θεός αυτών;</p>
     <p class="tra">Let the priests, the ministers of the Lord, weep between the porch and the altar, and let them say, Spare thy people, O Lord, and give not thine heritage to reproach, that the heathen should rule over them: wherefore should they say among the people, Where is their God?</p>
   </div>
 </div>
@@ -607,7 +584,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Zelatus est Dominus terram suam,  et pepercit populo suo.</p>
     <p class="base base-p">So wird denn der HERR urn sein Land eifern und seines Volks verschonen.</p>
-    <p class="base base-o">Και ο Κύριος θέλει ζηλοτυπήσει διά την γην αυτού και θέλει φεισθή του λαού αυτού.</p>
     <p class="tra">Then will the Lord be jealous for his land, and pity his people.</p>
   </div>
 </div>
@@ -616,7 +592,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et respondit Dominus, et dixit populo suo :  Ecce ego mittam vobis frumentum, et vinum, et oleum,  et replebimini eis ;  et non dabo vos ultra opprobrium in gentibus.</p>
     <p class="base base-p">Und der HERR wird antworten und sagen zu seinem Volk: Siehe, ich will euch Getreide, Most und 01 die Fülle schicken, daß ihr genug daran haben sollt, und will euch nicht mehr lassen unter den Heiden zuschanden werden.</p>
-    <p class="base base-o">Ναι, ο Κύριος θέλει αποκριθή και ειπεί προς τον λαόν αυτού, Ιδού, εγώ θέλω εξαποστείλει προς υμάς τον σίτον και τον οίνον και το έλαιον και θέλετε εμπλησθή απ' αυτών, και δεν θέλω σας κάμει πλέον όνειδος μεταξύ των εθνών.</p>
     <p class="tra">Yea, the Lord will answer and say unto his people, Behold, I will send you corn, and wine, and oil, and ye shall be satisfied therewith: and I will no more make you a reproach among the heathen:</p>
   </div>
 </div>
@@ -625,7 +600,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et eum qui ab aquilone est procul faciam a vobis,  et expellam eum in terram inviam et desertam :  faciem ejus contra mare orientale,  et extremum ejus ad mare novissimum :  et ascendet fœtor ejus,  et ascendet putredo ejus,  quia superbe egit.</p>
     <p class="base base-p">Und will den von Mitternacht feme von euch treiben und ihn in ein dürr und wüst Land verstoften, namlich sein Angesicht hin zum Meer gegen Morgen und sein Ende hin zum auftersten Meer. Ersoll verfaulen und stinken; denn er hat grofte Dinge getan.</p>
-    <p class="base base-o">Αλλά θέλω απομακρύνει από σας τον εκ του βορρά πολέμιον, και θέλω εξώσει αυτόν εις γην άνυδρον και έρημον, με το πρόσωπον αυτού προς την ανατολικήν θάλασσαν, το δε όπισθεν αυτού μέρος προς την θάλασσαν την δυτικήν, και η δυσωδία αυτού θέλει αναβή και η κακή οσμή αυτού θέλει υψωθή, διότι έπραξε μεγάλα.</p>
     <p class="tra">But I will remove far off from you the northern army, and will drive him into a land barren and desolate, with his face toward the east sea, and his hinder part toward the utmost sea, and his stink shall come up, and his ill savour shall come up, because he hath done great things.</p>
   </div>
 </div>
@@ -634,7 +608,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Noli timere, terra :  exsulta, et lætare,  quoniam magnificavit Dominus ut faceret.</p>
     <p class="base base-p">Furchte dich nicht, liebes Land, sondern sei frohlich und getrost; denn der HERR kann auch grofte Dinge tun.</p>
-    <p class="base base-o">Μη φοβού, γή· χαίρε και ευφραίνου· διότι ο Κύριος θέλει κάμει μεγαλεία.</p>
     <p class="tra">Fear not, O land; be glad and rejoice: for the Lord will do great things.</p>
   </div>
 </div>
@@ -643,7 +616,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Nolite timere, animalia regionis,  quia germinaverunt speciosa deserti ;  quia lignum attulit fructum suum,  ficus et vinea dederunt virtutem suam.</p>
     <p class="base base-p">Furchtet euch nicht, ihr Tiere auf dem Felde; denn die Wohnungen in der Wüste sollen grünen und die Baume ihre Früchte bringen, und die Feigenbaume und Weinstocke sollen wohl tragen.</p>
-    <p class="base base-o">Μη τρομάζετε, κτήνη της πεδιάδος· διότι αι βοσκαί της ερήμου βλαστάνουσι, διότι το δένδρον φέρει τον καρπόν αυτού, η συκή και η άμπελος εκδίδουσι την δύναμιν αυτών.</p>
     <p class="tra">Be not afraid, ye beasts of the field: for the pastures of the wilderness do spring, for the tree beareth her fruit, the fig tree and the vine do yield their strength.</p>
   </div>
 </div>
@@ -652,7 +624,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et, filii Sion, exsultate,  et lætamini in Domino Deo vestro,  quia dedit vobis doctorem justitiæ,  et descendere faciet ad vos imbrem matutinum et serotinum,  sicut in principio.</p>
     <p class="base base-p">Und ihr, Kinder Zions, freuet euch und seid frohlich im HERRN, eurem Gott, der euch Lehrer zur Gerechtigkeit gibt und euch herabsendet Frühregen und Spatregen, wie vorhin,</p>
-    <p class="base base-o">Και, τα τέκνα της Σιών, χαίρετε και ευφραίνεσθε εις Κύριον τον Θεόν σας· διότι έδωκεν εις εσάς την πρώϊμον βροχήν εγκαίρως και θέλει βρέξει εις εσάς βροχήν πρώϊμον και όψιμον ως πρότερον.</p>
     <p class="tra">Be glad then, ye children of Zion, and rejoice in the Lord your God: for he hath given you the former rain moderately, and he will cause to come down for you the rain, the former rain, and the latter rain in the first month.</p>
   </div>
 </div>
@@ -661,7 +632,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et implebuntur areæ frumento,  et redundabunt torcularia vino et oleo.</p>
     <p class="base base-p">daß die Tennen voll Korns und die Keltern Uberfluft von Most und 01 haben sollen.</p>
-    <p class="base base-o">Και τα αλώνια θέλουσι γεμισθή από σίτου και οι ληνοί θέλουσιν υπερεκχειλίσει από οίνου και ελαίου.</p>
     <p class="tra">And the floors shall be full of wheat, and the fats shall overflow with wine and oil.</p>
   </div>
 </div>
@@ -670,7 +640,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et reddam vobis annos, quos comedit locusta,  bruchus, et rubigo, et eruca :  fortitudo mea magna quam misi in vos.</p>
     <p class="base base-p">Und ich will euch die Jahre erstatten, welche die Heuschrecken, Kafer, Geschmeift und Raupen, die mein groftes Heer waren, so ich unter euch schickte, gefressen haben,</p>
-    <p class="base base-o">Και θέλω αναπληρώσει εις εσάς τα έτη, τα οποία κατέφαγεν η ακρίς, ο βρούχος και η ερυσίβη και η κάμπη, το στράτευμά μου το μέγα, το οποίον εξαπέστειλα εναντίον σας.</p>
     <p class="tra">And I will restore to you the years that the locust hath eaten, the cankerworm, and the caterpiller, and the palmerworm, my great army which I sent among you.</p>
   </div>
 </div>
@@ -679,7 +648,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et comedetis vescentes, et saturabimini ;  et laudabitis nomen Domini Dei vestri,  qui fecit mirabilia vobiscum ;  et non confundetur populus meus in sempiternum.</p>
     <p class="base base-p">daß ihr zu essen genug haben sollet und den Namen des HERRN, eures Gottes, preisen, der Wunder unter euch getan hat; und mein Volk soil nicht mehr zuschanden werden.</p>
-    <p class="base base-o">Και θέλετε φάγει αφθόνως και χορτασθή και αινέσει το όνομα Κυρίου του Θεού σας· όστις έκαμε θαυμάσια με σάς· και ο λαός μου δεν θέλει καταισχυνθή εις τον αιώνα.</p>
     <p class="tra">And ye shall eat in plenty, and be satisfied, and praise the name of the Lord your God, that hath dealt wondrously with you: and my people shall never be ashamed.</p>
   </div>
 </div>
@@ -688,7 +656,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et scietis quia in medio Israël ego sum,  et ego Dominus Deus vester, et non est amplius ;  et non confundetur populus meus in æternum.</p>
     <p class="base base-p">Und ihr sollt es erfahren, daß ich mitten unter Israel sei und daß ich, der HERR, euer Gott sei, und keiner mehr; und mein Volk soil nicht mehr zuschanden werden.</p>
-    <p class="base base-o">Και θέλετε γνωρίσει ότι εγώ είμαι εν μέσω του Ισραήλ και εγώ είμαι Κύριος ο Θεός σας και δεν είναι άλλος ουδείς· και ο λαός μου δεν θέλει καταισχυνθή εις τον αιώνα.</p>
     <p class="tra">And ye shall know that I am in the midst of Israel, and that I am the Lord your God, and none else: and my people shall never be ashamed.</p>
   </div>
 </div>
@@ -697,7 +664,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et erit post hæc :  effundam spiritum meum super omnem carnem,  et prophetabunt filii vestri et filiæ vestræ :  senes vestri somnia somniabunt,  et juvenes vestri visiones videbunt.</p>
     <p class="base base-p"></p>
-    <p class="base base-o">Και μετά ταύτα θέλω εκχέει το πνεύμά μου επί πάσαν σάρκα· και θέλουσι προφητεύσει οι υιοί σας και αι θυγατέρες σας· οι πρεσβύτεροί σας θέλουσιν ενυπνιασθή ενύπνια, οι νεανίσκοι σας θέλουσιν ιδεί οράσεις.</p>
     <p class="tra">And it shall come to pass afterward, that I will pour out my spirit upon all flesh; and your sons and your daughters shall prophesy, your old men shall dream dreams, your young men shall see visions:</p>
   </div>
 </div>
@@ -706,7 +672,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Sed et super servos meos et ancillas  in diebus illis effundam spiritum meum.</p>
     <p class="base base-p"></p>
-    <p class="base base-o">Και έτι επί τους δούλους μου και επί τας δούλας μου εν ταις ημέραις εκείναις θέλω εκχέει το πνεύμά μου.</p>
     <p class="tra">And also upon the servants and upon the handmaids in those days will I pour out my spirit.</p>
   </div>
 </div>
@@ -715,7 +680,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et dabo prodigia in cælo et in terra,  sanguinem, et ignem, et vaporem fumi.</p>
     <p class="base base-p"></p>
-    <p class="base base-o">Και θέλω δείξει τέρατα εν τοις ουρανοίς και επί της γης, αίμα και πυρ και ατμίδα καπνού.</p>
     <p class="tra">And I will shew wonders in the heavens and in the earth, blood, and fire, and pillars of smoke.</p>
   </div>
 </div>
@@ -724,7 +688,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Sol convertetur in tenebras,  et luna in sanguinem,  antequam veniat dies Domini magnus et horribilis.</p>
     <p class="base base-p"></p>
-    <p class="base base-o">Ο ήλιος θέλει μεταστραφή εις σκότος και η σελήνη εις αίμα, πριν έλθη η ημέρα του Κυρίου η μεγάλη και επιφανής.</p>
     <p class="tra">The sun shall be turned into darkness, and the moon into blood, before the great and the terrible day of the Lord come.</p>
   </div>
 </div>
@@ -733,7 +696,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et erit : omnis qui invocaverit nomen Domini, salvus erit :  quia in monte Sion et in Jerusalem  erit salvatio, sicut dixit Dominus,  et in residuis quos Dominus vocaverit.</p>
     <p class="base base-p"></p>
-    <p class="base base-o">Και πας όστις επικαλεσθή το όνομα του Κυρίου, θέλει σωθή· διότι εν τω όρει Σιών και εν Ιερουσαλήμ θέλει είσθαι σωτηρία, καθώς είπεν ο Κύριος, και εις τους υπολοίπους τους οποίους ο Κύριος θέλει προσκαλέσει.</p>
     <p class="tra">And it shall come to pass, that whosoever shall call on the name of the Lord shall be delivered: for in mount Zion and in Jerusalem shall be deliverance, as the Lord hath said, and in the remnant whom the Lord shall call.</p>
   </div>
 </div>
@@ -742,14 +704,14 @@ body[data-conf="orthodox"] .base-o { display:block; }
 <section class="chap" id="c3">
   <div class="chhead">
     <span class="chrom">III</span>
-    <span class="chlbl">Caput 3</span>
+    <span class="chlbl chlbl-c">Caput III</span>
+    <span class="chlbl chlbl-p">Das 3. Capitel</span>
   </div>
 <div class="vb first" id="v3-1">
   <span class="vn">1</span>
   <div class="vt">
     <p class="base base-c">Quia ecce in diebus illis, et in tempore illo,  cum convertero captivitatem Juda et Jerusalem,</p>
     <p class="base base-p">Und nach diesem will ich meinen Geist ausgieften uber alles Fleisch, und eure Sohne und Tochter sollen weissagen, eure Altesten sollen Traume haben, und eure Jünglinge sollen Gesichte sehen.</p>
-    <p class="base base-o">Διότι, ιδού, εν ταις ημέραις εκείναις και εν τω καιρώ εκείνω, όταν επιστρέψω τους αιχμαλώτους του Ιούδα και της Ιερουσαλήμ,</p>
     <p class="tra">For, behold, in those days, and in that time, when I shall bring again the captivity of Judah and Jerusalem,</p>
   </div>
 </div>
@@ -758,7 +720,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">congregabo omnes gentes,  et deducam eas in vallem Josaphat ;  et disceptabo cum eis ibi super populo meo,  et hæreditate mea Israël,  quos disperserunt in nationibus,  et terram meam diviserunt.</p>
     <p class="base base-p">Auch will ich zur selbigen Zeit beide, uber Knechte und Magde, meinen Geist ausgieften</p>
-    <p class="base base-o">θέλω συνάξει έτι πάντα τα έθνη και θέλω καταβιβάσει αυτά εις την κοιλάδα του Ιωσαφάτ, και θέλω κριθή μετ' αυτών εκεί υπέρ του λαού μου και της κληρονομίας μου Ισραήλ, τον οποίον διέσπειραν μεταξύ των εθνών και διεμοιράσθησαν την γην μου·</p>
     <p class="tra">I will also gather all nations, and will bring them down into the valley of Jehoshaphat, and will plead with them there for my people and for my heritage Israel, whom they have scattered among the nations, and parted my land.</p>
   </div>
 </div>
@@ -767,7 +728,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et super populum meum miserunt sortem ;  et posuerunt puerum in prostibulo,  et puellam vendiderunt pro vino ut biberent.</p>
     <p class="base base-p">und will Wunderzeichen geben im Himmel und auf Erden, namlich Blut, Feuer und Rauchdampf.</p>
-    <p class="base base-o">και έρριψαν κλήρους διά τον λαόν μου· και έδωκαν παιδίον διά πόρνην και επώλουν κοράσιον διά οίνον και έπινον.</p>
     <p class="tra">And they have cast lots for my people; and have given a boy for an harlot, and sold a girl for wine, that they might drink.</p>
   </div>
 </div>
@@ -776,7 +736,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Verum quid mihi et vobis, Tyrus et Sidon,  et omnis terminus Palæstinorum ?  numquid ultionem vos reddetis mihi ?  et si ulciscimini vos contra me,  cito velociter reddam vicissitudinem vobis super caput vestrum.</p>
     <p class="base base-p">Die Sonne soli in Finsternis und der Mond in Blut verwandelt werden, ehe denn der grofte und schreckliche Tag des HERRN kommt.</p>
-    <p class="base base-o">Και έτι τι έχετε σεις να κάμητε μετ' εμού, Τύρε και Σιδών και πάντα τα όρια της Παλαιστίνης; θέλετε μοι ανταποδώσει ανταπόδομα; εάν σεις ανταποδώσητε εις εμέ, χωρίς αργοπορίας ταχέως θέλω επιστρέψει το ανταπόδομά σας επί την κεφαλήν σας.</p>
     <p class="tra">Yea, and what have ye to do with me, O Tyre, and Zidon, and all the coasts of Palestine? will ye render me a recompence? and if ye recompense me, swiftly and speedily will I return your recompence upon your own head;</p>
   </div>
 </div>
@@ -785,7 +744,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Argentum enim meum et aurum tulistis,  et desiderabilia mea et pulcherrima intulistis in delubra vestra.</p>
     <p class="base base-p">Und soil geschehen, werden Namen des HERRN anrufen wird, der soil errettet werden. Denn auf dem Berge Zion und zu Jerusalem wird eine Errettung sein, wie der HERR verheiften hat, auch bei den andern ubrigen, die der HERR berufen wird.</p>
-    <p class="base base-o">Διότι ελάβετε το αργύριόν μου και το χρυσίον μου, και τα εκλεκτά μου αγαθά εφέρετε εις τους ναούς σας.</p>
     <p class="tra">Because ye have taken my silver and my gold, and have carried into your temples my goodly pleasant things:</p>
   </div>
 </div>
@@ -794,7 +752,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et filios Juda et filios Jerusalem vendidistis filiis Græcorum,  ut longe faceretis eos de finibus suis.</p>
     <p class="base base-p"></p>
-    <p class="base base-o">Τους δε υιούς Ιούδα και τους υιούς Ιερουσαλήμ επωλήσατε εις τους υιούς των Ελλήνων, διά να απομακρύνητε αυτούς από των ορίων αυτών.</p>
     <p class="tra">The children also of Judah and the children of Jerusalem have ye sold unto the Grecians, that ye might remove them far from their border.</p>
   </div>
 </div>
@@ -803,7 +760,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Ecce ego suscitabo eos de loco in quo vendidistis eos,  et convertam retributionem vestram in caput vestrum.</p>
     <p class="base base-p"></p>
-    <p class="base base-o">Ιδού, εγώ θέλω εγείρει αυτούς από του τόπου όπου επωλήσατε αυτούς, και θέλω επιστρέψει το ανταπόδομά σας επί την κεφαλήν σας.</p>
     <p class="tra">Behold, I will raise them out of the place whither ye have sold them, and will return your recompence upon your own head:</p>
   </div>
 </div>
@@ -812,7 +768,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et vendam filios vestros et filias vestras in manibus filiorum Juda,  et venundabunt eos Sabæis, genti longinquæ,  quia Dominus locutus est.</p>
     <p class="base base-p"></p>
-    <p class="base base-o">Και θέλω πωλήσει τους υιούς σας και τας θυγατέρας σας εις την χείρα των υιών Ιούδα, και θέλουσι πωλήσει αυτούς εις τους Σαβαίους, εις έθνος μακράν απέχον· διότι ο Κύριος ελάλησε.</p>
     <p class="tra">And I will sell your sons and your daughters into the hand of the children of Judah, and they shall sell them to the Sabeans, to a people far off: for the Lord hath spoken it.</p>
   </div>
 </div>
@@ -821,7 +776,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Clamate hoc in gentibus,  sanctificate bellum,  suscitate robustos :  accedant, ascendant omnes viri bellatores.</p>
     <p class="base base-p"></p>
-    <p class="base base-o">Κηρύξατε τούτο εν τοις έθνεσιν, αγιάσατε πόλεμον, διεγείρατε τους μαχητάς, ας πλησιάσωσιν, ας αναβαίνωσι πάντες οι άνδρες του πολέμου·</p>
     <p class="tra">Proclaim ye this among the Gentiles; Prepare war, wake up the mighty men, let all the men of war draw near; let them come up:</p>
   </div>
 </div>
@@ -830,7 +784,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Concidite aratra vestra in gladios,  et ligones vestros in lanceas.  Infirmus dicat : Quia fortis ego sum.</p>
     <p class="base base-p"></p>
-    <p class="base base-o">σφυρηλατήσατε τα υνία σας εις ρομφαίας και τα δρέπανά σας εις λόγχας· ο αδύνατος ας λέγη, Εγώ είμαι δυνατός·</p>
     <p class="tra">Beat your plowshares into swords, and your pruninghooks into spears: let the weak say, I am strong.</p>
   </div>
 </div>
@@ -839,7 +792,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Erumpite, et venite, omnes gentes de circuitu,  et congregamini ;  ibi occumbere faciet Dominus robustos tuos.</p>
     <p class="base base-p"></p>
-    <p class="base base-o">Συναθροίσθητε και έλθετε κυκλόθεν, πάντα τα έθνη, και συνάχθητε ομού· εκεί θέλει καταστρέψει ο Κύριος τους ισχυρούς σου.</p>
     <p class="tra">Assemble yourselves, and come, all ye heathen, and gather yourselves together round about: thither cause thy mighty ones to come down, O Lord.</p>
   </div>
 </div>
@@ -848,7 +800,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Consurgant, et ascendant gentes in vallem Josaphat,  quia ibi sedebo ut judicem omnes gentes in circuitu.</p>
     <p class="base base-p"></p>
-    <p class="base base-o">Ας εγερθώσι και ας αναβώσι τα έθνη εις την κοιλάδα του Ιωσαφάτ· διότι εκεί θέλω καθήσει διά να κρίνω πάντα τα έθνη τα κυκλόθεν.</p>
     <p class="tra">Let the heathen be wakened, and come up to the valley of Jehoshaphat: for there will I sit to judge all the heathen round about.</p>
   </div>
 </div>
@@ -857,7 +808,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Mittite falces, quoniam maturavit messis ;  venite, et descendite,  quia plenum est torcular, exuberant torcularia :  quia multiplicata est malitia eorum.</p>
     <p class="base base-p"></p>
-    <p class="base base-o">Βάλετε δρέπανον, διότι ο θερισμός είναι ώριμος· έλθετε, κατάβητε· διότι ο ληνός είναι πλήρης, τα υπολήνια υπερεκχειλίζουσιν· επειδή η κακία αυτών είναι μεγάλη.</p>
     <p class="tra">Put ye in the sickle, for the harvest is ripe: come, get you down; for the press is full, the fats overflow; for their wickedness is great.</p>
   </div>
 </div>
@@ -866,7 +816,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Populi, populi, in valle concisionis,  quia juxta est dies Domini in valle concisionis.</p>
     <p class="base base-p"></p>
-    <p class="base base-o">Πλήθη, πλήθη εις την κοιλάδα της δίκης· διότι εγγύς είναι η ημέρα του Κυρίου εις την κοιλάδα της δίκης.</p>
     <p class="tra">Multitudes, multitudes in the valley of decision: for the day of the Lord is near in the valley of decision.</p>
   </div>
 </div>
@@ -875,7 +824,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Sol et luna obtenebrati sunt,  et stellæ retraxerunt splendorem suum.</p>
     <p class="base base-p"></p>
-    <p class="base base-o">Ο ήλιος και σελήνη θέλουσι συσκοτάσει και οι αστέρες θέλουσι σύρει οπίσω το φέγγος αυτών.</p>
     <p class="tra">The sun and the moon shall be darkened, and the stars shall withdraw their shining.</p>
   </div>
 </div>
@@ -884,7 +832,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et Dominus de Sion rugiet,  et de Jerusalem dabit vocem suam,  et movebuntur cæli et terra ;  et Dominus spes populi sui,  et fortitudo filiorum Israël.</p>
     <p class="base base-p"></p>
-    <p class="base base-o">Ο δε Κύριος θέλει βρυχήσει εκ Σιών και εκπέμψει την φωνήν αυτού εξ Ιερουσαλήμ· και οι ουρανοί και η γη θέλουσι σεισθή· αλλ' ο Κύριος θέλει είσθαι το καταφύγιον του λαού αυτού και η ισχύς των υιών Ισραήλ.</p>
     <p class="tra">The Lord also shall roar out of Zion, and utter his voice from Jerusalem; and the heavens and the earth shall shake: but the Lord will be the hope of his people, and the strength of the children of Israel.</p>
   </div>
 </div>
@@ -893,7 +840,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et scietis quia ego Dominus Deus vester,  habitans in Sion monte sancto meo ;  et erit Jerusalem sancta,  et alieni non transibunt per eam amplius.</p>
     <p class="base base-p"></p>
-    <p class="base base-o">Ούτω θέλετε γνωρίσει ότι εγώ είμαι Κύριος ο Θεός σας, ο κατοικών εν Σιών, τω όρει τω αγίω μου· τότε η Ιερουσαλήμ θέλει είσθαι αγία και αλλογενείς δεν θέλουσι διέλθει δι' αυτής πλέον.</p>
     <p class="tra">So shall ye know that I am the Lord your God dwelling in Zion, my holy mountain: then shall Jerusalem be holy, and there shall no strangers pass through her any more.</p>
   </div>
 </div>
@@ -902,7 +848,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et erit in die illa : stillabunt montes dulcedinem,  et colles fluent lacte,  et per omnes rivos Juda ibunt aquæ ;  et fons de domo Domini egredietur,  et irrigabit torrentem spinarum.</p>
     <p class="base base-p"></p>
-    <p class="base base-o">Και εν τη ημέρα εκείνη τα όρη θέλουσι σταλάξει γλεύκος και οι λόφοι θέλουσι ρέει γάλα και πάντες οι ρύακες του Ιούδα θέλουσι ρέει ύδατα και πηγή θέλει εξέλθει εκ του οίκου του Κυρίου και θέλει ποτίζει την φάραγγα του Σιττείμ.</p>
     <p class="tra">And it shall come to pass in that day, that the mountains shall drop down new wine, and the hills shall flow with milk, and all the rivers of Judah shall flow with waters, and a fountain shall come forth of the house of the Lord, and shall water the valley of Shittim.</p>
   </div>
 </div>
@@ -911,7 +856,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Ægyptus in desolationem erit,  et Idumæa in desertum perditionis,  pro eo quod inique egerint in filios Juda,  et effuderint sanguinem innocentem in terra sua.</p>
     <p class="base base-p"></p>
-    <p class="base base-o">Η Αίγυπτος θέλει είσθαι ηρημωμένη και ο Εδώμ θέλει είσθαι έρημος άβατος διά τας εις τους υιούς Ιούδα αδικίας, διότι έχυσαν αίμα αθώον εν τη γη αυτών.</p>
     <p class="tra">Egypt shall be a desolation, and Edom shall be a desolate wilderness, for the violence against the children of Judah, because they have shed innocent blood in their land.</p>
   </div>
 </div>
@@ -920,7 +864,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et Judæa in æternum habitabitur,  et Jerusalem in generationem et generationem.</p>
     <p class="base base-p"></p>
-    <p class="base base-o">Η δε Ιουδαία θέλει κατοικείσθαι εις τον αιώνα και η Ιερουσαλήμ εις γενεάς γενεών.</p>
     <p class="tra">But Judah shall dwell for ever, and Jerusalem from generation to generation.</p>
   </div>
 </div>
@@ -929,7 +872,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et mundabo sanguinem eorum, quem non mundaveram ;  et Dominus commorabitur in Sion.</p>
     <p class="base base-p"></p>
-    <p class="base base-o">Και θέλω καθαρίσει το αίμα αυτών, το οποίον δεν εκαθάρισα· διότι ο Κύριος κατοικεί εν Σιών.</p>
     <p class="tra">For I will cleanse their blood that I have not cleansed: for the Lord dwelleth in Zion.</p>
   </div>
 </div>
@@ -938,7 +880,7 @@ body[data-conf="orthodox"] .base-o { display:block; }
 
 <nav class="bnav">
   <a href="028-hos.html">&#8592; Osee</a>
-  <a href="../index.html" class="center">↑ &nbsp; Inhaltsverzeichnis</a>
+  <a href="../index.html" class="center">? &nbsp; Inhaltsverzeichnis</a>
   <a href="030-amo.html">Amos &#8594;</a>
 </nav>
 

@@ -6,7 +6,7 @@
 <title>II Petri &middot; Polski &middot; Biblia Catholica</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 body{
@@ -17,26 +17,26 @@ body{
   font-size:17px;
 }
 
-/* ──────────────────────────────────────────
+/* ------------------------------------------
    BUCHKOPF
-────────────────────────────────────────── */
+------------------------------------------ */
 .bhead{
   background:
     repeating-linear-gradient( 45deg,transparent,transparent 36px,rgba(200,160,48,.028) 36px,rgba(200,160,48,.028) 37px),
     repeating-linear-gradient(-45deg,transparent,transparent 36px,rgba(200,160,48,.028) 36px,rgba(200,160,48,.028) 37px),
-    linear-gradient(162deg,#2C0810 0%,#4A1020 45%,#5C1828 65%,#4A1020 85%,#2C0810 100%);
+    linear-gradient(162deg,#1A0407 0%,#2C0810 45%,#4A1020 65%,#2C0810 85%,#1A0407 100%);
   padding:36px 28px 28px;
   text-align:center;
   border-bottom:4px solid #B8962E;
   position:relative;overflow:hidden;
 }
-/* Innerer Rahmen — äußerer Ring */
+/* Innerer Rahmen - äußerer Ring */
 .bhead::before{
   content:'';position:absolute;inset:14px;
   border:1px solid rgba(200,160,48,.22);
   pointer-events:none;
 }
-/* Innerer Rahmen — innerer Ring */
+/* Innerer Rahmen - innerer Ring */
 .bhead::after{
   content:'';position:absolute;inset:22px;
   border:1px solid rgba(200,160,48,.08);
@@ -52,12 +52,16 @@ body{
   position:relative;
 }
 .blatin{
-  font-family:'Cinzel Decorative',serif;
+  display:none;
+  font-family:'UnifrakturMaguntia',cursive;
   font-size:clamp(1.9rem,7vw,3.4rem);
   color:#EDD882;
   text-shadow:0 3px 20px rgba(0,0,0,.55);
-  letter-spacing:.06em;position:relative;
+  letter-spacing:.04em;position:relative;
 }
+body:not([data-conf]) .blatin-c,
+body[data-conf="catholic"] .blatin-c{display:block;}
+body[data-conf="protestant"] .blatin-p{display:block;}
 .btrans{
   font-family:'Cinzel',serif;
   font-size:.88rem;
@@ -70,9 +74,9 @@ body{
   letter-spacing:.08em;position:relative;
 }
 
-/* ──────────────────────────────────────────
+/* ------------------------------------------
    KAPITELINHALT
-────────────────────────────────────────── */
+------------------------------------------ */
 .content{
   max-width:960px;
   margin:36px auto 36px;
@@ -86,7 +90,7 @@ body{
   border-right:4px solid #B8962E;
   border-top:2px solid rgba(184,150,46,.4);
   border-bottom:2px solid rgba(184,150,46,.4);
-  position:relative;
+  position:relative;overflow:clip;
 }
 .content::before{
   content:'';
@@ -130,12 +134,15 @@ body{
 .chlbl{
   font-family:'Cinzel',serif;font-size:.58rem;
   color:rgba(184,150,46,.42);letter-spacing:.32em;
-  display:block;margin-top:8px;
+  display:none;margin-top:8px;
 }
+body:not([data-conf]) .chlbl-c
+body[data-conf="catholic"] .chlbl-c{display:block;}
+body[data-conf="protestant"] .chlbl-p{display:block;}
 
-/* ──────────────────────────────────────────
+/* ------------------------------------------
    VERSE
-────────────────────────────────────────── */
+------------------------------------------ */
 .vb{
   display:flex;
   padding:20px 6px;
@@ -163,7 +170,7 @@ body{
   padding:0 20px 0 4px;
 }
 
-/* BASIS-TEXT — wechselt je nach Konfession */
+/* BASIS-TEXT - wechselt je nach Konfession */
 .base{
   font-family:'EB Garamond',serif;
   font-size:1.2rem;
@@ -176,7 +183,6 @@ body{
 body:not([data-conf]) .base-c,
 body[data-conf="catholic"] .base-c { display:block; }
 body[data-conf="protestant"] .base-p { display:block; }
-body[data-conf="orthodox"] .base-o { display:block; }
 /* Leere Basis-Paragraphen ausblenden */
 .base:empty { display:none !important; }
 
@@ -192,8 +198,9 @@ body[data-conf="orthodox"] .base-o { display:block; }
   border-left:2px solid rgba(90,110,170,.2);
 }
 
-/* Drop-Cap: erster Vers eines Kapitels */
-.vb.first .base::first-letter{
+/* Drop-Cap: erster Vers eines Kapitels — nur Latein und Luther, nicht Griechisch */
+.vb.first .base-c::first-letter,
+.vb.first .base-p::first-letter{
   font-family:'Cinzel Decorative',serif;
   font-size:4em;
   float:left;
@@ -204,9 +211,9 @@ body[data-conf="orthodox"] .base-o { display:block; }
   text-shadow:1px 2px 6px rgba(0,0,0,.12);
 }
 
-/* ──────────────────────────────────────────
+/* ------------------------------------------
    BUCH-NAVIGATION (unten)
-────────────────────────────────────────── */
+------------------------------------------ */
 .bnav{
   display:flex;justify-content:space-between;align-items:center;
   background:#2C0810;border-top:3px solid #B8962E;
@@ -245,29 +252,34 @@ body[data-conf="orthodox"] .base-o { display:block; }
   .content{padding:16px 18px 60px;margin:0;border-left:none;border-right:none;border-radius:0;}
   .chrom{font-size:1.8rem;}
 }
+/* KREUZ-GRAVUR */
+.b-wm{position:sticky;top:calc(50vh - 37.5vmin);width:50vmin;height:75vmin;margin:0 auto -75vmin;display:block;pointer-events:none;z-index:0;user-select:none;}
+.b-wm svg{width:100%;height:auto;display:block;}
+.b-wm path{fill:none;stroke:rgba(184,150,46,.06);stroke-width:1.5;stroke-linecap:square;}
 </style>
 </head>
 <body>
-
 <header class="bhead">
   <div class="btestament">NOVUM TESTAMENTUM</div>
-  <div class="blatin">II PETRI</div>
+  <div class="blatin blatin-c">II PETRI</div>
+  <div class="blatin blatin-p">2 PIOTRA</div>
   <div class="btrans">2 Piotra &nbsp;&middot;&nbsp; <em>Polski</em></div>
   <div class="bmeta">3 Capita &nbsp;&middot;&nbsp; 61 Versus</div>
 </header>
 
 <main class="content">
+<div class="b-wm"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 14"><path d="M5,0V14M0,4H10"/></svg></div>
 <section class="chap" id="c1">
   <div class="chhead">
     <span class="chrom">I</span>
-    <span class="chlbl">Caput 1</span>
+    <span class="chlbl chlbl-c">Caput I</span>
+    <span class="chlbl chlbl-p">Das 1. Capitel</span>
   </div>
 <div class="vb first" id="v1-1">
   <span class="vn">1</span>
   <div class="vt">
     <p class="base base-c">Simon Petrus, servus et apostolus Jesu Christi, iis qui coæqualem nobiscum sortiti sunt fidem in justitia Dei nostri, et Salvatoris Jesu Christi.</p>
     <p class="base base-p">Simon Petrus, ein Knecht und Apostel Jesu Christi: Denen, die mit uns eben denselbigen teuren Glauben überkommen haben in der Gerechtigkeit, die unser Gott gibt und der Heiland Jesus Christus.</p>
-    <p class="base base-o"></p>
     <p class="tra">Szymon Piotr, sługa i Apostoł Jezusa Chrystusa, tym, którzy równie z nami kosztownej wiary dostali przez sprawiedliwość Boga naszego i zbawiciela naszego, Jezusa Chrystusa.</p>
   </div>
 </div>
@@ -276,7 +288,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Gratia vobis, et pax adimpleatur in cognitione Dei, et Christi Jesu Domini nostri :</p>
     <p class="base base-p">Gott gebe euch viel Gnade und Frieden durch die Erkenntnis Gottes und Jesu Christi, unsers Herrn!</p>
-    <p class="base base-o"></p>
     <p class="tra">Łaska i pokój niech się wam rozmnoży przez poznanie Boga i Jezusa, Pana naszego.</p>
   </div>
 </div>
@@ -285,7 +296,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Quomodo omnia nobis divinæ virtutis suæ, quæ ad vitam et pietatem donata sunt, per cognitionem ejus, qui vocavit nos propria gloria, et virtute,</p>
     <p class="base base-p">Nachdem allerlei seiner gottlichen Kraft (was zum Leben und gottlichen Wandel dienet) uns geschenket ist durch die Erkenntnis des, der uns berufen hat durch seine Herrlichkeit und Tugend,</p>
-    <p class="base base-o"></p>
     <p class="tra">Jako nam jego Boska moc wszystko, co do żywota i do pobożności należy, darowała przez poznanie tego, który nas powołał przez sławę i przez cnotę;</p>
   </div>
 </div>
@@ -294,7 +304,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">per quem maxima, et pretiosa nobis promissa donavit : ut per hæc efficiamini divinæ consortes naturæ : fugientes ejus, quæ in mundo est, concupiscentiæ corruptionem.</p>
     <p class="base base-p">durch welche uns die teuren und allergroßten Verheiliungen geschenket sind, namlich dafi ihr durch dasselbige teilhaftig werdet der gottlichen Natur, so ihr fliehet die vergangliche Lust der Welt:</p>
-    <p class="base base-o"></p>
     <p class="tra">Przez co bardzo wielkie i kosztowne obietnice nam są darowane, abyście się przez nie stali uczestnikami Boskiego przyrodzenia, uszedłszy skażenia tego, które jest na świecie w pożądliwościach.</p>
   </div>
 </div>
@@ -303,7 +312,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Vos autem curam omnem subinferentes, ministrate in fide vestra virtutem, in virtute autem scientiam,</p>
     <p class="base base-p">so wendet alien euren Fleiß daran und reichet dar in eurem Glauben Tugend und in der Tugend Bescheidenheit</p>
-    <p class="base base-o"></p>
     <p class="tra">Ku temu tedy samemu wszelkiej pilności przykładając, przydajcie do wiary waszej cnotę, a do cnoty umiejętność;</p>
   </div>
 </div>
@@ -312,7 +320,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">in scientia autem abstinentiam, in abstinentia autem patientiam, in patientia autem pietatem,</p>
     <p class="base base-p">und in der Bescheidenheit Maßigkeit und in der Mafügkeit Geduld und in der Geduld Gottseligkeit</p>
-    <p class="base base-o"></p>
     <p class="tra">A do umiejętności powściągliwość, a do powściągliwości cierpliwość, a do cierpliwości pobożność;</p>
   </div>
 </div>
@@ -321,7 +328,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">in pietate autem amorem fraternitatis, in amore autem fraternitatis caritatem.</p>
     <p class="base base-p">und in der Gottseligkeit bruderliche Liebe und in der bruderlichen Liebe gemeine Liebe.</p>
-    <p class="base base-o"></p>
     <p class="tra">A do pobożności braterską miłość, a do miłości braterskiej łaskę.</p>
   </div>
 </div>
@@ -330,7 +336,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Hæc enim si vobiscum adsint, et superent, non vacuos nec sine fructu vos constituent in Domini nostri Jesu Christi cognitione.</p>
     <p class="base base-p">Denn wo solches reichlich bei euch ist, wird's euch nicht faul noch unfruchtbar sein lassen in der Erkenntis unsers Herrn Jesu Christi.</p>
-    <p class="base base-o"></p>
     <p class="tra">Albowiem gdy to będzie przy was, a obficie będzie, nie próżnymi, ani niepożytecznymi wystawi was w znajomości Pana naszego, Jezusa Chrystusa.</p>
   </div>
 </div>
@@ -339,7 +344,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Cui enim non præsto sunt hæc, cæcus est, et manu tentans, oblivionem accipiens purgationis veterum suorum delictorum.</p>
     <p class="base base-p">Welcher aber solches nicht hat, der ist blind und tappet mit der Hand und vergifit der Reinigung seiner vorigen Sunden.</p>
-    <p class="base base-o"></p>
     <p class="tra">Bo przy kim tych rzeczy nie masz, ślepy jest; a tego, co jest daleko, nie widzi, zapomniawszy na oczyszczenie od dawnych grzechów swoich.</p>
   </div>
 </div>
@@ -348,7 +352,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Quapropter fratres, magis satagite ut per bona opera certam vestram vocationem, et electionem faciatis : hæc enim facientes, non peccabitis aliquando.</p>
     <p class="base base-p">Darum, liebe Bruder, tutdesto mehr Fleifi, eure Berufung und Erwahlung festzumachen. Denn wo ihr solches tut, werdet ihr nicht straucheln.</p>
-    <p class="base base-o"></p>
     <p class="tra">Przetoż, bracia! raczej się starajcie, abyście powołanie i wybranie wasze mocne czynili; albowiem to czyniąc, nigdy się nie potkniecie.</p>
   </div>
 </div>
@@ -357,7 +360,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Sic enim abundanter ministrabitur vobis introitus in æternum regnum Domini nostri et Salvatoris Jesu Christi.</p>
     <p class="base base-p">Und alsowird euch reichlich dargereicht werden der Eingang zu dem ewigen Reich unsers Herrn und Heilandes Jesu Christi.</p>
-    <p class="base base-o"></p>
     <p class="tra">Tak bowiem hojnie wam dane będzie wejście do wiecznego królestwa Pana naszego i Zbawiciela, Jezusa Chrystusa.</p>
   </div>
 </div>
@@ -366,7 +368,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Propter quod incipiam vos semper commonere de his : et quidem scientes et confirmatos vos in præsenti veritate.</p>
     <p class="base base-p">Darum will ich's nicht lassen, euch allezeit solches zu erinnern, wiewohl ihr's wisset und gestarkt seid in der gegenwartigen Wahrheit.</p>
-    <p class="base base-o"></p>
     <p class="tra">Przetoż nie zaniedbam was zawsze upominać o tych rzeczach, chociażeście umiejętni i utwierdzeni w teraźniejszej prawdzie.</p>
   </div>
 </div>
@@ -375,7 +376,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Justum autem arbitror quamdiu sum in hoc tabernaculo, suscitare vos in commonitione :</p>
     <p class="base base-p">Denn ich achte es billig sein, solange ich in dieser Hütte bin, euch zu erwecken und zu erinnern.</p>
-    <p class="base base-o"></p>
     <p class="tra">Boć to mam za słuszną rzecz, pókim jest w tym przybytku, abym was pobudzał przez napominanie,</p>
   </div>
 </div>
@@ -384,7 +384,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">certus quod velox est depositio tabernaculi mei secundum quod et Dominus noster Jesus Christus significavit mihi.</p>
     <p class="base base-p">Denn ich weifi, daß ich meine Hütte bald ablegen muli, wie mir denn auch unser Herr Jesus Christus eroffnet hat.</p>
-    <p class="base base-o"></p>
     <p class="tra">Wiedząc, iż prędkie jest złożenie przybytku mojego, jako mi i Pan nasz, Jezus Chrystus objawił.</p>
   </div>
 </div>
@@ -393,7 +392,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Dabo autem operam et frequenter habere vos post obitum meum, ut horum memoriam faciatis.</p>
     <p class="base base-p">Ich will aber Fleili tun, daß ihr allenthalben habet nach meinem Abschied, solches im Gedachtnis zu halten.</p>
-    <p class="base base-o"></p>
     <p class="tra">A starać się będę o to ze wszelakiej miary, abyście wy i po zejściu mojem te rzeczy sobie przypominali.</p>
   </div>
 </div>
@@ -402,7 +400,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Non enim doctas fabulas secuti notam fecimus vobis Domini nostri Jesu Christi virtutem et præsentiam : sed speculatores facti illius magnitudinis.</p>
     <p class="base base-p">Denn wir haben nicht den klugen Fabein gefolget, da wir euch kundgetan haben die Kraft und Zukunft unsers Herrn Jesu Christi, sondern wir haben seine Herrlichkeit selber gesehen,</p>
-    <p class="base base-o"></p>
     <p class="tra">Albowiem nie baśni jakich misternie wymyślonych naśladując, uczyniliśmy wam znajomą Pana naszego, Jezusa Chrystusa moc i przyjście, ale jako ci, którzyśmy oczami naszemi widzieli wielmożność jego.</p>
   </div>
 </div>
@@ -411,7 +408,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Accipiens enim a Deo Patre honorem et gloriam, voce delapsa ad eum hujuscemodi a magnifica gloria : Hic est Filius meus dilectus, in quo mihi complacui, ipsum audite.</p>
     <p class="base base-p">da er empfing von Gott dem Vater Ehre und Preis durch eine Stimme, die zu ihm geschah von der grolien Herrlichkeit dermaüen: Dies ist mein lieber Sohn, an dem ich Wohlgefallen habe.</p>
-    <p class="base base-o"></p>
     <p class="tra">Wziął bowiem od Boga Ojca cześć i chwałę, gdy mu był przyniesiony głos taki od wielmożnej chwały: ten jest on Syn mój miły, w którym mi się upodobało.</p>
   </div>
 </div>
@@ -420,7 +416,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et hanc vocem nos audivimus de cælo allatam, cum essemus cum ipso in monte sancto.</p>
     <p class="base base-p">Und diese Stimme haben wir gehoret vom Himmel gebracht, da wir mit ihm waren auf dem heiligen Berge.</p>
-    <p class="base base-o"></p>
     <p class="tra">A głos ten myśmy słyszeli z nieba przyniesiony, będąc z nim na onej górze świętej.</p>
   </div>
 </div>
@@ -429,7 +424,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et habemus firmiorem propheticum sermonem : cui benefacitis attendentes quasi lucernæ lucenti in caliginoso loco donec dies elucescat, et lucifer oriatur in cordibus vestris :</p>
     <p class="base base-p">Wir haben ein festes prophetisches Wort, und ihr tut wohl, daß ihr darauf achtet als auf ein Licht, das da scheinet in einem dunkeln Ort, bis der Tag anbreche, und der Morgenstern aufgehe in euren Herzen.</p>
-    <p class="base base-o"></p>
     <p class="tra">I mamy mocniejszą mowę prorocką, której pilnując jako świecy w ciemnem miejscu świecącej, dobrze czynicie, ażby dzień oświtnął, i jutrzenka weszła w sercach waszych.</p>
   </div>
 </div>
@@ -438,7 +432,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">hoc primum intelligentes quod omnis prophetia Scripturæ propria interpretatione non fit.</p>
     <p class="base base-p">Und das sollt ihr fur das erste wissen, dafi keine Weissagung in der Schrift geschieht aus eigener Auslegung;</p>
-    <p class="base base-o"></p>
     <p class="tra">To najpierw wiedząc, iż żadne proroctwo Pisma nie jest własnego wykładu.</p>
   </div>
 </div>
@@ -447,7 +440,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Non enim voluntate humana allata est aliquando prophetia : sed Spiritu Sancto inspirati, locuti sunt sancti Dei homines.</p>
     <p class="base base-p">denn es ist noch nie keine Weissagung aus menschlichem Willen hervorgebracht; sondern die heiligen Menschen Gottes haben geredet, getrieben von dem Heiligen Geist.</p>
-    <p class="base base-o"></p>
     <p class="tra">Albowiem nie z woli ludzkiej przyniesione jest niekiedy proroctwo, ale od Ducha Świętego pędzeni będąc mówili święci Boży ludzie.</p>
   </div>
 </div>
@@ -456,14 +448,14 @@ body[data-conf="orthodox"] .base-o { display:block; }
 <section class="chap" id="c2">
   <div class="chhead">
     <span class="chrom">II</span>
-    <span class="chlbl">Caput 2</span>
+    <span class="chlbl chlbl-c">Caput II</span>
+    <span class="chlbl chlbl-p">Das 2. Capitel</span>
   </div>
 <div class="vb first" id="v2-1">
   <span class="vn">1</span>
   <div class="vt">
     <p class="base base-c">Fuerunt vero et pseudoprophetæ in populo, sicut et in vobis erunt magistri mendaces, qui introducent sectas perditionis : et eum qui emit eos, Dominum negant, superducentes sibi celerem perditionem.</p>
     <p class="base base-p">Es waren aber auch falsche Propheten unter dem Volk, wie auch unter euch sein werden falsche Lehrer, die neben einfuhren werden verderbliche Sekten und verleugnen den Herrn, dersie erkauft hat, und werden uber sich selbst führen eine schnelle Verdammnis.</p>
-    <p class="base base-o"></p>
     <p class="tra">Byli też i fałszywi prorocy między ludem, jako i między wami będą fałszywi nauczyciele, którzy z sobą wprowadzą kacerstwa zatracenia i Pana, który ich kupił, zaprzą się, sami na się przywodząc prędkie zginienie.</p>
   </div>
 </div>
@@ -472,7 +464,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et multi sequentur eorum luxurias, per quos via veritatis blasphemabitur :</p>
     <p class="base base-p">Und viele werden nachfolgen ihrem Verderben; durch welche wird der Weg der Wahrheit verlastert werden.</p>
-    <p class="base base-o"></p>
     <p class="tra">A wiele ich naśladować będą zginienia ich, przez których droga prawdy będzie bluźniona.</p>
   </div>
 </div>
@@ -481,7 +472,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">et in avaritia fictis verbis de vobis negotiabuntur : quibus judicium jam olim non cessat : et perditio eorum non dormitat.</p>
     <p class="base base-p">Und durch Geiz mit erdichteten Worten werden sie an euch hantieren; von welchen das Urteil von lange her nicht saumig ist, und ihre Verdammnis schlaft nicht.</p>
-    <p class="base base-o"></p>
     <p class="tra">I przez łakomstwo zmyślonemi słowami kupczyć będą, którym sąd z dawna nie omieszkuje i zatracenie ich nie drzemie.</p>
   </div>
 </div>
@@ -490,7 +480,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Si enim Deus angelis peccantibus non pepercit, sed rudentibus inferni detractos in tartarum tradidit cruciandos, in judicium reservari.</p>
     <p class="base base-p">Denn so Gott der Engel, die gesundiget haben, nicht verschonet hat, sondern hat sie mit Ketten der Finsternis zur Holle verstoi Len und ubergeben, dafi sie zum Gerichte behalten werden;</p>
-    <p class="base base-o"></p>
     <p class="tra">Albowiem jeźli Bóg Aniołom, którzy byli zgrzeszyli, nie przepuścił, ale strąciwszy ich do piekła, podał łańcuchom ciemności, aby byli zachowani na sąd:</p>
   </div>
 </div>
@@ -499,7 +488,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et originali mundo non pepercit, sed octavum Noë justitiæ præconem custodivit, diluvium mundo impiorum inducens.</p>
     <p class="base base-p">und hat nicht verschonet der vorigen Welt, sondern bewahrete Noah, den Prediger der Gerechtigkeit, selbachte und fuhrete die Sintflut uber die Welt der Gottlosen;</p>
-    <p class="base base-o"></p>
     <p class="tra">Także i pierwszemu światu nie przepuścił, ale Noego samoósmego, kaznodzieję sprawiedliwości, zachował, przywiódłszy potop na świat niepobożnych;</p>
   </div>
 </div>
@@ -508,7 +496,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et civitates Sodomorum et Gomorrhæorum in cinerem redigens, eversione damnavit : exemplum eorum, qui impie acturi sunt, ponens :</p>
     <p class="base base-p">und hat die Stadte Sodom und Gomorra zu Asche gemacht, umgekehret und verdammt, damit ein Exempel gesetzt den Gottlosen, die hernach kommen wurden;</p>
-    <p class="base base-o"></p>
     <p class="tra">I miasta Sodomczyków i Gomorry w popiół obróciwszy podwróceniem potępił, wystawiwszy je na przykład tym, którzy by niepobożnie żyli;</p>
   </div>
 </div>
@@ -517,7 +504,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">et justum Lot oppressum a nefandorum injuria, ac luxuriosa conversatione eripuit :</p>
     <p class="base base-p">und hat erloset den gerechten Lot, welchem die schandlichen Leute alles Leid taten mit ihrem unzüchtigen Wandel;</p>
-    <p class="base base-o"></p>
     <p class="tra">A sprawiedliwego Lota, onych niezbożników rozpustnem obcowaniem strapionego, wyrwał.</p>
   </div>
 </div>
@@ -526,7 +512,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">aspectu enim, et auditu justus erat : habitans apud eos, qui de die in diem animam justam iniquis operibus cruciabant.</p>
     <p class="base base-p">denn dieweil er gerecht war und unter ihnen wohnete, daß er's sehen und horen mulite, qualten sie die gerechte Seele von Tag zu Tage mit ihren ungerechten Werken.</p>
-    <p class="base base-o"></p>
     <p class="tra">Albowiem widzeniem i słyszeniem on sprawiedliwy mieszkając między nimi, dzień po dniu duszę sprawiedliwą uczynkami ich niezbożnymi trapił.</p>
   </div>
 </div>
@@ -535,7 +520,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Novit Dominus pios de tentatione eripere : iniquos vero in diem judicii reservare cruciandos.</p>
     <p class="base base-p">Der Herr weü J die Gottseligen aus der Versuchung zu erlosen, die Ungerechten aber zu behalten zum Tage des Gerichtes, zu peinigen;</p>
-    <p class="base base-o"></p>
     <p class="tra">Umie Pan pobożnych z pokuszenia wyrywać, a niesprawiedliwych na dzień sądu ku karaniu chować;</p>
   </div>
 </div>
@@ -544,7 +528,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Magis autem eos, qui post carnem in concupiscentia immunditiæ ambulant, dominationemque contemnunt, audaces, sibi placentes, sectas non metuunt introducere blasphemantes :</p>
     <p class="base base-p">allermeist aber die, so da wandeln nach dem Fleisch in der unreinen Lust und die Herrschaft verachten, turstig, eigensinnig, nicht erzittern, die Majestaten zu lastern,</p>
-    <p class="base base-o"></p>
     <p class="tra">A najwięcej tych, którzy za ciałem w pożądliwości plugastwa chodzą, a zwierzchnością pogardzają, śmieli i sobie się podobający, nie wzdrygają się bluźnić przełożeństw.</p>
   </div>
 </div>
@@ -553,7 +536,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">ubi angeli fortitudine, et virtute cum sint majores, non portant adversum se execrabile judicium.</p>
     <p class="base base-p">so doch die Engel, die groliere Starke und Macht haben, nicht ertragen das lasterliche Gericht wider sich vom Herrn.</p>
-    <p class="base base-o"></p>
     <p class="tra">Chociaż Aniołowie będąc większymi siłą i mocą, nie przynoszą przeciwko nim przed Pana bluźnierczego sądu.</p>
   </div>
 </div>
@@ -562,7 +544,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Hi vero velut irrationabilia pecora, naturaliter in captionem, et in perniciem in his quæ ignorant blasphemantes in corruptione sua peribunt,</p>
     <p class="base base-p">Aber sie sind wie die unvemünftigen Tiere, die von Natur dazu geboren sind, dafi sie gefangen und geschlachtet werden, lastern, da sie nichts von wissen, und werden in ihrem verderblichen Wesen umkommen</p>
-    <p class="base base-o"></p>
     <p class="tra">Ale ci, jako bydło bezrozumne, które za przyrodzeniem idzie, sprawione na ułowienie i skazę, bluźniąc to, czego nie wiedzą, w tej skazie swojej zaginą.</p>
   </div>
 </div>
@@ -571,7 +552,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">percipientes mercedem injustitiæ, voluptatem existimantes diei delicias : coinquinationes, et maculæ deliciis affluentes, in conviviis suis luxuriantes vobiscum,</p>
     <p class="base base-p">und den Lohn der Ungerechtigkeit davonbringen. Sie achten fur Wollust das zeitliche Wohlleben; sie sind Schande und Laster, prangen von euren Almosen, prassen mit dem Euren,</p>
-    <p class="base base-o"></p>
     <p class="tra">I odniosą zapłatę niesprawiedliwości jako ci, którzy mają za rozkosz każdodzienne lubości, będąc plugastwem i zmazą, rozkosz mają w zdradach swoich z wami bankietując:</p>
   </div>
 </div>
@@ -580,7 +560,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">oculos habentes plenos adulterii, et incessabilis delicti. Pellicientes animas instabiles, cor exercitatum avaritia habentes, maledictionis filii :</p>
     <p class="base base-p">haben Augen voll Ehebruchs, lassen sich die Sünde nichtwehren, locken an sich die leichtfertigen Seelen, haben ein Herz, durchtrieben mit Geiz, verfluchte Leute,</p>
-    <p class="base base-o"></p>
     <p class="tra">Oczy mają pełne cudzołóstwa i bez przestania grzeszące, przyłudzając dusze niestateczne, mając serce wyćwiczone w łakomstwie, synowie przeklęstwa,</p>
   </div>
 </div>
@@ -589,7 +568,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">derelinquentes rectam viam erraverunt, secuti viam Balaam ex Bosor, qui mercedem iniquitatis amavit :</p>
     <p class="base base-p">verlassen den richtigen Weg und gehen irre und folgen nach dem Wege Bileams, des Sohns Bosors, welchem geliebete der Lohn der Ungerechtigkeit,</p>
-    <p class="base base-o"></p>
     <p class="tra">Którzy opuściwszy prostą drogę, zbłądzili, naśladując drogi Balaama, syna Bosorowego, który zapłatę niesprawiedliwości umiłował;</p>
   </div>
 </div>
@@ -598,7 +576,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">correptionem vero habuit suæ vesaniæ : subjugale mutum animal, hominis voce loquens, prohibuit prophetæ insipientiam.</p>
     <p class="base base-p">hatte aber eine Strafe seiner Ubertretung, namlich das stumme lastbare Tier redete mit Menschenstimme und wehrete des Propheten Torheit.</p>
-    <p class="base base-o"></p>
     <p class="tra">Ale miał karanie za swój występek, ponieważ jarzmu niema oślica poddana, człowieczym głosem przemówiwszy, zahamowała szaleństwo proroka.</p>
   </div>
 </div>
@@ -607,7 +584,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Hi sunt fontes sine aqua, et nebulæ turbinibus exagitatæ, quibus caligo tenebrarum reservatur.</p>
     <p class="base base-p">Das sind Brunnen ohne Wasser und Wolken, vom Windwirbel umgetrieben; welchen behalten ist eine dunkle Finsternis in Ewigkeit.</p>
-    <p class="base base-o"></p>
     <p class="tra">Ci są studniami bez wody, obłoki od wichru pędzone, którym chmura ciemności na wieki jest zachowana.</p>
   </div>
 </div>
@@ -616,7 +592,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Superba enim vanitatis loquentes, pelliciunt in desideriis carnis luxuriæ eos, qui paululum effugiunt, qui in errore conversantur :</p>
     <p class="base base-p">Denn sie reden stolze Worte, da nichts hinter ist, und reizen durch Unzucht zur fleischlichen Lust diejenigen, die recht entronnen waren und nun im Irrtum wandeln,</p>
-    <p class="base base-o"></p>
     <p class="tra">Albowiem nadętą próżność mówiąc, przyłudzają przez pożądliwość ciała i rozpusty tych, którzy byli prawdziwie uciekli od obcujących w błędzie,</p>
   </div>
 </div>
@@ -625,7 +600,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">libertatem illis promittentes, cum ipsi servi sint corruptionem : a quo enim quis superatus est, hujus et servus est.</p>
     <p class="base base-p">und verheißen ihnen Freiheit, so sie selbst Knechte des Verderbens sind. Denn von welchem jemand überwunden ist, des Knecht ist er worden.</p>
-    <p class="base base-o"></p>
     <p class="tra">Wolność im obiecując, a sami będąc niewolnikami skazy. Albowiem kto jest od kogo przezwyciężony, temu też jest zniewolony.</p>
   </div>
 </div>
@@ -634,7 +608,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Si enim refugientes coinquinationes mundi in cognitione Domini nostri, et Salvatoris Jesu Christi, his rursus implicati superantur : facta sunt eis posteriora deteriora prioribus.</p>
     <p class="base base-p">Denn so sie entflohen sind dem Unflat der Welt durch die Erkenntnis des Herrn und Heilandes Jesu Christi, werden aber wiederum in denselbigen geflochten und überwunden, ist mit ihnen das Letzte arger worden denn das Erste.</p>
-    <p class="base base-o"></p>
     <p class="tra">Bo ponieważ oni uszli plugastw świata przez poznanie Pana i zbawiciela, Jezusa Chrystusa, a znowu się zaś niemi uwikławszy, zwyciężeni bywają; stały się ich ostateczne rzeczy gorsze niż pierwsze.</p>
   </div>
 </div>
@@ -643,7 +616,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Melius enim erat illis non cognoscere viam justitiæ, quam post agnitionem, retrorsum converti ab eo, quod illis traditum est, sancto mandato.</p>
     <p class="base base-p">Denn es ware ihnen besser, daß sie den Weg der Gerechtigkeit nicht erkannt batten, denn daß sie ihn erkennen und sich kehren von dem heiligen Gebot, das ihnen gegeben ist.</p>
-    <p class="base base-o"></p>
     <p class="tra">Bo by im było lepiej, nie uznać drogi sprawiedliwości, niżeli poznawszy ją, odwrócić się od podanego im rozkazania świętego.</p>
   </div>
 </div>
@@ -652,7 +624,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Contigit enim eis illud veri proverbii : Canis reversus ad suum vomitum : et, Sus lota in volutabro luti.</p>
     <p class="base base-p">Es ist ihnen widerfahren das wahre Sprichwort: Der Hund frisset wieder, was er gespeiet hat, und: Die Sau walzet sich nach der Schwemme wieder im Kot.</p>
-    <p class="base base-o"></p>
     <p class="tra">Aleć się im przydało według onej prawdziwej przypowieści: Pies wrócił się do zwracania swego, a świnia umyta do walania się w błocie.</p>
   </div>
 </div>
@@ -661,14 +632,14 @@ body[data-conf="orthodox"] .base-o { display:block; }
 <section class="chap" id="c3">
   <div class="chhead">
     <span class="chrom">III</span>
-    <span class="chlbl">Caput 3</span>
+    <span class="chlbl chlbl-c">Caput III</span>
+    <span class="chlbl chlbl-p">Das 3. Capitel</span>
   </div>
 <div class="vb first" id="v3-1">
   <span class="vn">1</span>
   <div class="vt">
     <p class="base base-c">Hanc ecce vobis, carissimi, secundam scribo epistolam, in quibus vestram excito in commonitione sinceram mentem :</p>
     <p class="base base-p">Dies ist die andere Epistel, die ich euch schreibe, ihr Lieben, in welcher ich erwecke und erinnere euren lautem Sinn,</p>
-    <p class="base base-o"></p>
     <p class="tra">Najmilsi! już ten drugi list do was piszę, którym wzbudzam przez napominanie uprzejmą myśl waszę,</p>
   </div>
 </div>
@@ -677,7 +648,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">ut memores sitis eorum, quæ prædixi, verborum, a sanctis prophetis et apostolorum vestrorum, præceptorum Domini et Salvatoris.</p>
     <p class="base base-p">daß ihr gedenket an die Worte, die euch zuvor gesagt sind von den heiligen Propheten, und an unser Gebot, die wir sind Apostel des Herrn und Heilandes.</p>
-    <p class="base base-o"></p>
     <p class="tra">Abyście pamiętali na słowa przepowiedziane od świętych proroków, i na przykazanie nasze, którzyśmy Apostołami Pana i Zbawiciela:</p>
   </div>
 </div>
@@ -686,7 +656,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Hoc primum scientes, quod venient in novissimis diebus in deceptione illusores, juxta proprias concupiscentias ambulantes,</p>
     <p class="base base-p">Und wisset das aufs erste, daß in den letzten Tagen kommen werden Spotter, die nach ihren eigenen Lusten wandeln</p>
-    <p class="base base-o"></p>
     <p class="tra">To najpierwej wiedząc, że przyjdą w ostateczne dni naśmiewcy, według własnych swoich pożądliwości chodzący,</p>
   </div>
 </div>
@@ -695,7 +664,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">dicentes : Ubi est promissio, aut adventus ejus ? ex quo enim patres dormierunt, omnia sic perseverant ab initio creaturæ.</p>
     <p class="base base-p">und sagen: Wo ist die Verheißung seiner Zukunft? Denn nachdem die Vater entschlafen sind, bleibt es alles, wie es von Anfang der Kreatur gewesen ist.</p>
-    <p class="base base-o"></p>
     <p class="tra">I mówiący: Gdzież jest obietnica przyjścia jego? Bo jako ojcowie zasnęli, wszystko tak trwa od początku stworzenia.</p>
   </div>
 </div>
@@ -704,7 +672,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Latet enim eos hoc volentes, quod cæli erant prius, et terra de aqua, et per aquam consistens Dei verbo :</p>
     <p class="base base-p">Aber mutwillens wollen sie nicht wissen, daß der Himmel vorzeiten auch war, dazu die Erde aus Wasser und im Wasser bestanden durch Gottes Wort.</p>
-    <p class="base base-o"></p>
     <p class="tra">Tego zaiste umyślnie wiedzieć nie chcą, że się niebiosa dawno stały i ziemia z wody i w wodzie stanęła przez słowo Boże,</p>
   </div>
 </div>
@@ -713,7 +680,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">per quæ, ille tunc mundus aqua inundatus, periit.</p>
     <p class="base base-p">Dennoch ward zu der Zeit die Welt durch dieselbigen mit der Sintflut verderbet.</p>
-    <p class="base base-o"></p>
     <p class="tra">Dlaczego on pierwszy świat wodą będąc zatopiony, zginął.</p>
   </div>
 </div>
@@ -722,7 +688,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Cæli autem, qui nunc sunt, et terra eodem verbo repositi sunt, igni reservati in diem judicii, et perditionis impiorum hominum.</p>
     <p class="base base-p">Also auch der Himmel jetzt und die Erde werden durch sein Wort gesparet, daß sie zum Feuer behalten werden am Tage des Gerichts und Verdammnis der gottlosen Menschen.</p>
-    <p class="base base-o"></p>
     <p class="tra">Lecz te niebiosa, które teraz są i ziemia temże słowem odłożone są i zachowane ogniowi na dzień sądu i zatracenia niepobożnych ludzi.</p>
   </div>
 </div>
@@ -731,7 +696,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Unum vero hoc non lateat vos, carissimi, quia unus dies apud Dominum sicut mille anni, et mille anni sicut dies unus.</p>
     <p class="base base-p">Eines aber sei euch unverhalten, ihr Lieben, daß ein Tag vor dem Herrn ist wie tausend Jahre und tausend Jahre wie ein Tag.</p>
-    <p class="base base-o"></p>
     <p class="tra">Ale ta jedna rzecz niech wam nie będzie tajna, najmilsi! iż jeden dzień u Pana jest jako tysiąc lat, a tysiąc lat, jako jeden dzień.</p>
   </div>
 </div>
@@ -740,7 +704,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Non tardat Dominus promissionem suam, sicut quidam existimant : sed patienter agit propter vos, nolens aliquos perire, sed omnes ad pœnitentiam reverti.</p>
     <p class="base base-p">Der Herr verzieht nicht die Verheißung, wie es etliche fur einen Verzug achten, sondern er hat Geduld mit uns und will nicht, daß jemand verloren werde, sondern daß sich jedermann zur Buße kehre.</p>
-    <p class="base base-o"></p>
     <p class="tra">Nie omieszkiwać Pan z obietnicą, (jako to niektórzy mają za omieszkanie), ale używa cierpliwości przeciwko nam, nie chcąc, aby którzy zginęli, ale żeby się wszyscy do pokuty udali.</p>
   </div>
 </div>
@@ -749,7 +712,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Adveniet autem dies Domini ut fur : in quo cæli magno impetu transient, elementa vero calore solventur, terra autem et quæ in ipsa sunt opera, exurentur.</p>
     <p class="base base-p">Es wird aber des Herrn Tag kommen als ein Dieb in der Nacht, in welchem die Himmel zergehen werden mit großem Krachen, die Elemente aber werden vor Hitze schmelzen, und die Erde und die Werke, die drinnen sind, werden verbrennen.</p>
-    <p class="base base-o"></p>
     <p class="tra">A on dzień Pański przyjdzie jako złodziej w nocy, w który niebiosa z wielkim trzaskiem przeminą, a żywioły rozpalone ogniem stopnieją, a ziemia i rzeczy, które są na niej, spalone będą.</p>
   </div>
 </div>
@@ -758,7 +720,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Cum igitur hæc omnia dissolvenda sunt, quales oportet vos esse in sanctis conversationibus, et pietatibus,</p>
     <p class="base base-p">So nun das alles soil zergehen, wie sollt ihr denn geschickt sein mit heiligem Wandel und gottseligem Wesen,</p>
-    <p class="base base-o"></p>
     <p class="tra">Ponieważ się tedy to wszystko ma rozpłynąć, jakimiż wy macie być w świętych obcowaniach i pobożnościach?</p>
   </div>
 </div>
@@ -767,7 +728,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">exspectantes, et properantes in adventum diei Domini, per quem cæli ardentes solventur, et elementa ignis ardore tabescent ?</p>
     <p class="base base-p">daß ihr wartet und eiletzu der Zukunft des Tages des Herrn, in welchem die Himmel vom Feuer zergehen, und die Elemente vor Hitze zerschmelzen werden.</p>
-    <p class="base base-o"></p>
     <p class="tra">Którzy oczekujecie i spieszycie się na przyjście dnia Bożego, w który niebiosa gorejące rozpuszczą się i żywioły pałające stopnieją.</p>
   </div>
 </div>
@@ -776,7 +736,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Novos vero cælos, et novam terram secundum promissa ipsius exspectamus, in quibus justitia habitat.</p>
     <p class="base base-p">Wir warten aber eines neuen Himmels und einer neuen Erde nach seiner Verheißung, in welchen Gerechtigkeit wohnet.</p>
-    <p class="base base-o"></p>
     <p class="tra">Lecz nowych niebios i nowej ziemi według obietnicy jego oczekujemy, w których sprawiedliwość mieszka.</p>
   </div>
 </div>
@@ -785,7 +744,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Propter quod, carissimi, hæc exspectantes, satagite immaculati, et inviolati ei inveniri in pace :</p>
     <p class="base base-p">Darum, meine Lieben, dieweil ihr darauf warten sollet, so tut Fleiß, daß ihr vor ihm unbefleckt und unstraflich im Frieden erfunden werdet.]</p>
-    <p class="base base-o"></p>
     <p class="tra">Przetoż najmilsi! tego oczekując, starajcie się, abyście bez zmazy i bez nagany od niego znalezieni byli w pokoju;</p>
   </div>
 </div>
@@ -794,7 +752,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">et Domini nostri longanimitatem, salutem arbitremini : sicut et carissimus frater noster Paulus secundum datam sibi sapientiam scripsit vobis,</p>
     <p class="base base-p">Und die Geduld unsers Herrn achtet fur eure Seligkeit, als auch unser lieber Bruder Paulus nach der Weisheit, die ihm gegeben ist, euch geschrieben hat.</p>
-    <p class="base base-o"></p>
     <p class="tra">A nieskwapliwość Pana naszego miejcie za zbawienie wasze, jako wam i miły brat nasz Paweł według danej sobie mądrości pisał,</p>
   </div>
 </div>
@@ -803,7 +760,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">sicut et omnibus epistolis, loquens in eis de his in quibus sunt quædam difficilia intellectu, quæ indocti et instabiles depravant, sicut et ceteras Scripturas, ad suam ipsorum perditionem.</p>
     <p class="base base-p">Wie er auch in alien Briefen davon redet, in welchen sind etliche Dinge schwer zu verstehen, welche verwirren die Ungelehrigen und Leichtfertigen wie auch die andern Schriften zu ihrer eigenen Verdammnis.</p>
-    <p class="base base-o"></p>
     <p class="tra">Jako i we wszystkich listach swoich mówiąc o tych rzeczach, między któremi są niektóre rzeczy trudne ku wyrozumieniu, które nieumiejętni i niestateczni wykręcają jako i inne pisma, ku swemu własnemu zatraceniu.</p>
   </div>
 </div>
@@ -812,7 +768,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Vos igitur fratres, præscientes custodite, ne insipientium errore traducti excidatis a propria firmitate :</p>
     <p class="base base-p">Ihr aber, meine Lieben, weil ihr das zuvor wisset, so verwahret euch, daß ihr nicht durch Irrtum der ruchlosen Leute samt ihnen verfuhret werdet und entfallet aus eurer eigenen Festung.</p>
-    <p class="base base-o"></p>
     <p class="tra">Wy tedy, najmilsi! wiedząc to przedtem; strzeżcie się, abyście błędem tych niezbożników nie byli zwiedzeni i nie wypadli z waszej stateczności;</p>
   </div>
 </div>
@@ -821,7 +776,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">crescite vero in gratia, et in cognitione Domini nostri, et Salvatoris Jesu Christi. Ipsi gloria et nunc, et in diem æternitatis. Amen.</p>
     <p class="base base-p">Wachset aber in der Gnade und Erkenntnis unsers Herrn und Heilandes Jesu Christi. Demselbigen sei Ehre nun und zu ewigen Zeiten! Amen. Der erste Brief des Johannes</p>
-    <p class="base base-o"></p>
     <p class="tra">Ale rośćcie w łasce i w znajomości Pana naszego i Zbawiciela, Jezusa Chrystusa, któremu niech będzie chwała i teraz, i na czasy wieczne. Amen.</p>
   </div>
 </div>
@@ -830,7 +784,7 @@ body[data-conf="orthodox"] .base-o { display:block; }
 
 <nav class="bnav">
   <a href="060-1pe.html">&#8592; I Petri</a>
-  <a href="../index.html" class="center">↑ &nbsp; Inhaltsverzeichnis</a>
+  <a href="../index.html" class="center">? &nbsp; Inhaltsverzeichnis</a>
   <a href="062-1jo.html">I Ioannis &#8594;</a>
 </nav>
 

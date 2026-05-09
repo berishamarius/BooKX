@@ -6,7 +6,7 @@
 <title>Zacharias &middot; Filipino &middot; Biblia Catholica</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 body{
@@ -17,26 +17,26 @@ body{
   font-size:17px;
 }
 
-/* ──────────────────────────────────────────
+/* ------------------------------------------
    BUCHKOPF
-────────────────────────────────────────── */
+------------------------------------------ */
 .bhead{
   background:
     repeating-linear-gradient( 45deg,transparent,transparent 36px,rgba(200,160,48,.028) 36px,rgba(200,160,48,.028) 37px),
     repeating-linear-gradient(-45deg,transparent,transparent 36px,rgba(200,160,48,.028) 36px,rgba(200,160,48,.028) 37px),
-    linear-gradient(162deg,#2C0810 0%,#4A1020 45%,#5C1828 65%,#4A1020 85%,#2C0810 100%);
+    linear-gradient(162deg,#1A0407 0%,#2C0810 45%,#4A1020 65%,#2C0810 85%,#1A0407 100%);
   padding:36px 28px 28px;
   text-align:center;
   border-bottom:4px solid #B8962E;
   position:relative;overflow:hidden;
 }
-/* Innerer Rahmen — äußerer Ring */
+/* Innerer Rahmen - äußerer Ring */
 .bhead::before{
   content:'';position:absolute;inset:14px;
   border:1px solid rgba(200,160,48,.22);
   pointer-events:none;
 }
-/* Innerer Rahmen — innerer Ring */
+/* Innerer Rahmen - innerer Ring */
 .bhead::after{
   content:'';position:absolute;inset:22px;
   border:1px solid rgba(200,160,48,.08);
@@ -52,12 +52,16 @@ body{
   position:relative;
 }
 .blatin{
-  font-family:'Cinzel Decorative',serif;
+  display:none;
+  font-family:'UnifrakturMaguntia',cursive;
   font-size:clamp(1.9rem,7vw,3.4rem);
   color:#EDD882;
   text-shadow:0 3px 20px rgba(0,0,0,.55);
-  letter-spacing:.06em;position:relative;
+  letter-spacing:.04em;position:relative;
 }
+body:not([data-conf]) .blatin-c,
+body[data-conf="catholic"] .blatin-c{display:block;}
+body[data-conf="protestant"] .blatin-p{display:block;}
 .btrans{
   font-family:'Cinzel',serif;
   font-size:.88rem;
@@ -70,9 +74,9 @@ body{
   letter-spacing:.08em;position:relative;
 }
 
-/* ──────────────────────────────────────────
+/* ------------------------------------------
    KAPITELINHALT
-────────────────────────────────────────── */
+------------------------------------------ */
 .content{
   max-width:960px;
   margin:36px auto 36px;
@@ -86,7 +90,7 @@ body{
   border-right:4px solid #B8962E;
   border-top:2px solid rgba(184,150,46,.4);
   border-bottom:2px solid rgba(184,150,46,.4);
-  position:relative;
+  position:relative;overflow:clip;
 }
 .content::before{
   content:'';
@@ -130,12 +134,15 @@ body{
 .chlbl{
   font-family:'Cinzel',serif;font-size:.58rem;
   color:rgba(184,150,46,.42);letter-spacing:.32em;
-  display:block;margin-top:8px;
+  display:none;margin-top:8px;
 }
+body:not([data-conf]) .chlbl-c
+body[data-conf="catholic"] .chlbl-c{display:block;}
+body[data-conf="protestant"] .chlbl-p{display:block;}
 
-/* ──────────────────────────────────────────
+/* ------------------------------------------
    VERSE
-────────────────────────────────────────── */
+------------------------------------------ */
 .vb{
   display:flex;
   padding:20px 6px;
@@ -163,7 +170,7 @@ body{
   padding:0 20px 0 4px;
 }
 
-/* BASIS-TEXT — wechselt je nach Konfession */
+/* BASIS-TEXT - wechselt je nach Konfession */
 .base{
   font-family:'EB Garamond',serif;
   font-size:1.2rem;
@@ -176,7 +183,6 @@ body{
 body:not([data-conf]) .base-c,
 body[data-conf="catholic"] .base-c { display:block; }
 body[data-conf="protestant"] .base-p { display:block; }
-body[data-conf="orthodox"] .base-o { display:block; }
 /* Leere Basis-Paragraphen ausblenden */
 .base:empty { display:none !important; }
 
@@ -192,8 +198,9 @@ body[data-conf="orthodox"] .base-o { display:block; }
   border-left:2px solid rgba(90,110,170,.2);
 }
 
-/* Drop-Cap: erster Vers eines Kapitels */
-.vb.first .base::first-letter{
+/* Drop-Cap: erster Vers eines Kapitels — nur Latein und Luther, nicht Griechisch */
+.vb.first .base-c::first-letter,
+.vb.first .base-p::first-letter{
   font-family:'Cinzel Decorative',serif;
   font-size:4em;
   float:left;
@@ -204,9 +211,9 @@ body[data-conf="orthodox"] .base-o { display:block; }
   text-shadow:1px 2px 6px rgba(0,0,0,.12);
 }
 
-/* ──────────────────────────────────────────
+/* ------------------------------------------
    BUCH-NAVIGATION (unten)
-────────────────────────────────────────── */
+------------------------------------------ */
 .bnav{
   display:flex;justify-content:space-between;align-items:center;
   background:#2C0810;border-top:3px solid #B8962E;
@@ -245,29 +252,34 @@ body[data-conf="orthodox"] .base-o { display:block; }
   .content{padding:16px 18px 60px;margin:0;border-left:none;border-right:none;border-radius:0;}
   .chrom{font-size:1.8rem;}
 }
+/* KREUZ-GRAVUR */
+.b-wm{position:sticky;top:calc(50vh - 37.5vmin);width:50vmin;height:75vmin;margin:0 auto -75vmin;display:block;pointer-events:none;z-index:0;user-select:none;}
+.b-wm svg{width:100%;height:auto;display:block;}
+.b-wm path{fill:none;stroke:rgba(184,150,46,.06);stroke-width:1.5;stroke-linecap:square;}
 </style>
 </head>
 <body>
-
 <header class="bhead">
   <div class="btestament">VETUS TESTAMENTUM</div>
-  <div class="blatin">ZACHARIAS</div>
+  <div class="blatin blatin-c">ZACHARIAS</div>
+  <div class="blatin blatin-p">ZACARIAS</div>
   <div class="btrans">Zacarias &nbsp;&middot;&nbsp; <em>Filipino</em></div>
   <div class="bmeta">14 Capita &nbsp;&middot;&nbsp; 211 Versus</div>
 </header>
 
 <main class="content">
+<div class="b-wm"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 14"><path d="M5,0V14M0,4H10"/></svg></div>
 <section class="chap" id="c1">
   <div class="chhead">
     <span class="chrom">I</span>
-    <span class="chlbl">Caput 1</span>
+    <span class="chlbl chlbl-c">Caput I</span>
+    <span class="chlbl chlbl-p">Das 1. Capitel</span>
   </div>
 <div class="vb first" id="v1-1">
   <span class="vn">1</span>
   <div class="vt">
     <p class="base base-c">In mense octavo, in anno secundo Darii regis, factum est verbum Domini ad Zachariam filium Barachiæ filii Addo prophetam, dicens :</p>
     <p class="base base-p">Im achten Monden des andern Jahrs des Konigs Darius geschah dies Wort des HERRN zu Sacharja dem Sohn Berechjas, des Sohns Iddos, dem Propheten, und sprach:</p>
-    <p class="base base-o">Εν τω ογδόω μηνί, τω δευτέρω έτει του Δαρείου, έγεινε λόγος Κυρίου προς Ζαχαρίαν, τον υιόν του Βαραχίου υιού του Ιδδώ, τον προφήτην, λέγων,</p>
     <p class="tra">Nang ikawalong buwan, nang ikalawang taon ni Dario, dumating ang salita ng Panginoon kay Zacarias na anak ni Berechias, na anak ni Iddo, na propeta, na nagsasabi,</p>
   </div>
 </div>
@@ -276,7 +288,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Iratus est Dominus super patres vestros iracundia.</p>
     <p class="base base-p">Der HERR ist zornig gewesen uber eure Vater.</p>
-    <p class="base base-o">Ο Κύριος ωργίσθη μεγάλως επί τους πατέρας σας.</p>
     <p class="tra">Ang Panginoo'y totoong naghinanakit sa inyong mga magulang.</p>
   </div>
 </div>
@@ -285,7 +296,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et dices ad eos :   Hæc dicit Dominus exercituum :  Convertimini ad me, ait Dominus exercituum,  et convertar ad vos, dicit Dominus exercituum.</p>
     <p class="base base-p">Und sprich zu ihnen: So spricht der HERR Zebaoth: Kehret euch zu mir, spricht der HERR Zebaoth, so will ich mich zu euch kehren, spricht der HERR Zebaoth.</p>
-    <p class="base base-o">Διά τούτο ειπέ προς αυτούς, Ούτω λέγει ο Κύριος των δυνάμεων· Επιστρέψατε προς εμέ, λέγει ο Κύριος των δυνάμεων, και θέλω επιστρέψει προς εσάς, λέγει ο Κύριος των δυνάμεων.</p>
     <p class="tra">Kaya't sabihin mo sa kanila, Ganito ang sabi ng Panginoon ng mga hukbo. Manumbalik kayo sa akin, sabi ng Panginoon ng mga hukbo, at ako'y manunumbalik sa inyo, sabi ng Panginoon ng mga hukbo.</p>
   </div>
 </div>
@@ -294,7 +304,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Ne sitis sicut patres vestri,  ad quos clamabant prophetæ priores, dicentes :  Hæc dicit Dominus exercituum :  Convertimini de viis vestris malis,  et de cogitationibus vestris pessimis :  et non audierunt, neque attenderunt ad me,  dicit Dominus.</p>
     <p class="base base-p">Seid nicht wie eure Vater, welchen die vorigen Propheten predigten und sprachen: So spricht der HERR Zebaoth: Kehret euch von euren bosen Wegen und von eurem bosen Tun! Aber sie gehorchten nicht und achteten nicht auf mich, spricht der HERR.</p>
-    <p class="base base-o">Μη γίνεσθε ως οι πατέρες σας, προς τους οποίους οι πρότεροι προφήται έκραξαν λέγοντες, Ούτω λέγει ο Κύριος των δυνάμεων. Επιστρέψατε τώρα από των οδών υμών των πονηρών και των πράξεων υμών των πονηρών· και δεν υπήκουσαν και δεν έδωκαν προσοχήν εις εμέ, λέγει Κύριος.</p>
     <p class="tra">Huwag kayong maging gaya ng inyong mga magulang, na siyang mga pinagsabihan ng mga unang propeta, na nangagsabi, Ganito ang sabi ng Panginoon ng mga hukbo, Manumbalik kayo ngayon na mula sa inyong mga masamang lakad, at sa inyong mga masamang gawain: nguni't hindi nila dininig, o pinakinggan man ako, sabi ng Panginoon.</p>
   </div>
 </div>
@@ -303,7 +312,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Patres vestri, ubi sunt ?  et prophetæ numquid in sempiternum vivent ?</p>
     <p class="base base-p">Wo sind nun eure Vater und die Propheten? Leben sie auch noch?</p>
-    <p class="base base-o">Οι πατέρες σας που είναι, και οι προφήται μήπως θέλουσι ζήσει εις τον αιώνα;</p>
     <p class="tra">Ang inyong mga magulang, saan nangandoon sila? at ang mga propeta, nangabubuhay baga sila ng magpakailan man?</p>
   </div>
 </div>
@@ -312,7 +320,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Verumtamen verba mea, et legitima mea,  quæ mandavi servis meis prophetis,  numquid non comprehenderunt patres vestros,  et conversi sunt, et dixerunt :  Sicut cogitavit Dominus exercituum facere nobis  secundum vias nostras, et secundum adinventiones nostras,  fecit nobis ?</p>
     <p class="base base-p">Ist's nicht also, daß meine Worte und meine Rechte, die ich durch meine Knechte, die Propheten, gebot, haben eure Vater getroffen, dafi sie sich haben müssen kehren und sagen: Gleichwie der HERR Zebaoth vorhatte, uns zu tun, danach wir gingen und taten, also hat er uns auch getan?</p>
-    <p class="base base-o">Αλλ' οι λόγοι μου και τα διατάγματά μου, τα οποία προσέταξα εις τους δούλους μου τους προφήτας, δεν έφθασαν εις τους πατέρας σας; και αυτοί εστράφησαν και είπον, Καθώς ο Κύριος των δυνάμεων εβουλεύθη να κάμη εις ημάς, κατά τας οδούς ημών και κατά τας πράξεις ημών, ούτως έκαμεν εις ημάς.</p>
     <p class="tra">Nguni't ang aking mga salita at ang aking mga palatuntunan, na aking iniutos sa aking mga lingkod na mga propeta, hindi baga nagsiabot sa inyong mga magulang? at sila'y nanumbalik at nangagsabi, Kung paano ang inisip na gawin ng Panginoon ng mga hukbo sa amin, ayon sa aming mga lakad, at ayon sa aming mga gawa, gayon ang ginawa niya sa amin.</p>
   </div>
 </div>
@@ -321,7 +328,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">In die vigesima et quarta undecimi mensis Sabath, in anno secundo Darii, factum est verbum Domini ad Zachariam filium Barachiæ filii Addo prophetam, dicens :</p>
     <p class="base base-p">Im vierundzwanzigsten Tage des elften Monden, welcher ist der Mond Sebat, im andern Jahr (des Konigs) Darius, geschah das Wort des HERRN zu Sacharja, dem Sohn Berechjas, des Sohns Iddos, dem Propheten, und sprach:</p>
-    <p class="base base-o">Εν τη εικοστή τετάρτη ημέρα του ενδεκάτου μηνός, όστις είναι ο μην Σαβάτ, εν τω δευτέρω έτει του Δαρείου, έγεινε λόγος Κυρίου προς Ζαχαρίαν τον υιόν του Βαραχίου υιού του Ιδδώ τον προφήτην, λέγων,</p>
     <p class="tra">Nang ikadalawang pu't apat na araw ng ikalabing isang buwan, na siyang buwan ng Sebath, nang ikalawang taon ni Dario, dumating ang salita ng Panginoon kay Zacarias, na anak ni Berechias, na anak ni Iddo, na propeta, na nagsasabi,</p>
   </div>
 </div>
@@ -330,7 +336,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Vidi per noctem, et ecce vir ascendens super equum rufum, et ipse stabat inter myrteta, quæ erant in profundo, et post eum equi rufi, varii, et albi.</p>
     <p class="base base-p">Ich sah bei der Nacht, und siehe, ein Mann saü auf einem roten Pferde und er hielt unter den Myrten in der Aue; und hinter ihm waren rote, braune und weifte Pferde.</p>
-    <p class="base base-o">Είδον την νύκτα και ιδού, άνθρωπος ιππεύων εφ' ίππου κοκκίνου και ούτος ίστατο μεταξύ των μυρσινών, αίτινες ήσαν εν κοιλώματι· και όπισθεν αυτού, ίπποι κόκκινοι, ποικίλοι και λευκοί.</p>
     <p class="tra">Aking nakita sa gabi, at, narito, ang isang lalaking nakasakay sa isang mapulang kabayo, at siya'y tumayo sa mga puno ng mirto, na nasa pinakamababa; at sa likuran niya'y may mga kabayong mapula, alazan, at maputi.</p>
   </div>
 </div>
@@ -339,7 +344,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et dixi : Quid sunt isti, domine mi ? Et dixit ad me angelus qui loquebatur in me : Ego ostendam tibi quid sint hæc.</p>
     <p class="base base-p">Und ich sprach: Mein Herr, wer sind diese? Und der Engel, der mit mir redete, sprach zu mir: Ich will dir zeigen, wer diese sind.</p>
-    <p class="base base-o">Και είπα, Κύριέ μου, τι είναι ούτοι; Και είπε προς εμέ ο άγγελος ο λαλών μετ' εμού, Εγώ θέλω σοι δείξει τι είναι ταύτα.</p>
     <p class="tra">Nang magkagayo'y sinabi, Oh Panginoon ko, ano ang mga ito? At ang anghel na nakikipagusap sa akin ay nagsabi sa akin, Aking ipakikita sa iyo kung ano-ano ang mga ito.</p>
   </div>
 </div>
@@ -348,7 +352,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et respondit vir qui stabat inter myrteta, et dixit : Isti sunt quos misit Dominus ut perambulent terram.</p>
     <p class="base base-p">Und der Mann, der unter den Myrten hielt, antwortete und sprach: Diese sind, die der HERR ausgesandt hat, das Land durchzuziehen.</p>
-    <p class="base base-o">Και ο άνθρωπος ο ιστάμενος μεταξύ των μυρσινών απεκρίθη και είπεν, Ούτοι είναι εκείνοι, τους οποίους ο Κύριος εξαπέστειλε να περιοδεύσωσι την γην.</p>
     <p class="tra">At ang lalake na nakatayo sa mga puno ng mirto ay sumagot at nagsabi, Ang mga ito yaong mga sinugo ng Panginoon na magsilibot sa lupa.</p>
   </div>
 </div>
@@ -357,7 +360,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et responderunt angelo Domini, qui stabat inter myrteta, et dixerunt : Perambulavimus terram, et ecce omnis terra habitatur, et quiescit.</p>
     <p class="base base-p">Sie aber antworteten dem Engel des HERRN, der unter den Myrten hielt, und sprachen: Wir sind durchs Land gezogen; und siehe, alle Lander sitzen stille.</p>
-    <p class="base base-o">Και απεκρίθησαν προς τον άγγελον του Κυρίου τον ιστάμενον μεταξύ των μυρσινών και είπον, Ημείς περιωδεύσαμεν την γην και ιδού, πάσα η γη κάθηται και ησυχάζει.</p>
     <p class="tra">At sila'y nagsisagot sa anghel ng Panginoon na nakatayo sa mga puno ng mirto, at nagsabi, Aming nilibot ang lupa, at, narito, ang buong lupa ay tahimik, at tiwasay.</p>
   </div>
 </div>
@@ -366,7 +368,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et respondit angelus Domini, et dixit : Domine exercituum, usquequo tu non misereberis Jerusalem, et urbium Juda, quibus iratus es ? iste jam septuagesimus annus est.</p>
     <p class="base base-p">Da antwortete der Engel des HERRN und sprach: HERR Zebaoth, wie lange willst du denn dich nicht erbarmen uber Jerusalem und uber die Stadte Judas, uber welche du zornig bist gewesen diese siebenzig Jahre?</p>
-    <p class="base base-o">Και ο άγγελος του Κυρίου απεκρίθη και είπε, Κύριε των δυνάμεων, έως πότε δεν θέλεις σπλαγχνισθή συ την Ιερουσαλήμ και τας πόλεις του Ιούδα κατά των οποίων ηγανάκτησας τα εβδομήκοντα ταύτα έτη;</p>
     <p class="tra">Nang magkagayo'y ang anghel ng Panginoon ay sumagot at nagsabi, Oh Panginoon ng mga hukbo, hanggang kailan mawawalan ka ng habag sa Jerusalem at sa mga bayan ng Juda, laban sa iyong mga kinagalitan nitong pitong pung taon?</p>
   </div>
 </div>
@@ -375,7 +376,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et respondit Dominus angelo qui loquebatur in me verba bona, verba consolatoria.</p>
     <p class="base base-p">Und der HERR antwortete dem Engel, der mit mir redete, freundliche Worte und trostliche Worte.</p>
-    <p class="base base-o">Και ο Κύριος απεκρίθη προς τον άγγελον τον λαλούντα μετ' εμού λόγους καλούς λόγους παρηγορητικούς.</p>
     <p class="tra">At ang Panginoo'y sumagot sa anghel na nakikipagusap sa akin ng mga mabuting salita, ng mga salitang pangaliw.</p>
   </div>
 </div>
@@ -384,7 +384,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et dixit ad me angelus qui loquebatur in me : Clama, dicens :   Hæc dicit Dominus exercituum :  Zelatus sum Jerusalem et Sion zelo magno,</p>
     <p class="base base-p">Und der Engel, der mit mir redete, sprach zu mir: Predige und sprich: So spricht der HERR Zebaoth: Ich habe sehr geeifert uber Jerusalem und Zion;</p>
-    <p class="base base-o">Και είπε προς εμέ ο άγγελος ο λαλών μετ' εμού, Φώνησον, λέγων, Ούτω λέγει ο Κύριος των δυνάμεων· Είμαι ζηλότυπος διά την Ιερουσαλήμ και διά την Σιών εν ζηλοτυπία μεγάλη·</p>
     <p class="tra">Sa gayo'y ang anghel na nakikipagusap sa akin ay nagsabi sa akin. Ikaw ay humiyaw, na iyong sabihin, Ganito ang sabi ng Panginoon ng mga hukbo: Ako'y naninibugho sa Jerusalem at sa Sion ng malaking paninibugho.</p>
   </div>
 </div>
@@ -393,7 +392,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">et ira magna ego irascor super gentes opulentas,  quia ego iratus sum parum,  ipsi vero adjuverunt in malum.</p>
     <p class="base base-p">aber ich bin sehr zornig uber die stolzen Heiden; denn ich war nur ein wenig zornig, sie aber helfen zum Verderben.</p>
-    <p class="base base-o">και είμαι σφόδρα ωργισμένος κατά των εθνών των αμεριμνούντων· διότι ενώ εγώ ωργίσθην ολίγον, αυτά επεβοήθησαν το κακόν.</p>
     <p class="tra">At ako'y totoong naghihinanakit sa mga bansa na mga tiwasay; sapagka't ako'y naghinanakit ng kaunti, at sila'y nagsitulong ng pagbubungad ng kadalamhatian.</p>
   </div>
 </div>
@@ -402,7 +400,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Propterea hæc dicit Dominus :  Revertar ad Jerusalem in misericordiis,  et domus mea ædificabitur in ea, ait Dominus exercituum,  et perpendiculum extendetur super Jerusalem.</p>
     <p class="base base-p">Darum so spricht der HERR: Ich will mich wieder zu Jerusalem kehren mit Barmherzigkeit, und mein Haus soli drinnen gebauet werden, spricht der HERR Zebaoth; dazu soil die Zimmerschnur in Jerusalem gezogen werden.</p>
-    <p class="base base-o">Διά τούτο ούτω λέγει Κύριος· Εγώ επέστρεψα εις την Ιερουσαλήμ εν οικτιρμοίς· ο οίκός μου θέλει ανοικοδομηθή εν αυτή, λέγει ο Κύριος των δυνάμεων, και σχοινίον θέλει εκτανθή επί την Ιερουσαλήμ.</p>
     <p class="tra">Kaya't ganito ang sabi ng Panginoon, Ako'y nagbalik sa Jerusalem na may taglay na mga pagkahabag; ang aking bahay ay matatayo roon, sabi ng Panginoon ng mga hukbo, at isang pising panukat ay mauunat sa ibabaw ng Jerusalem.</p>
   </div>
 </div>
@@ -411,7 +408,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Adhuc clama, dicens :  Hæc dicit Dominus exercituum :  Adhuc affluent civitates meæ bonis,  et consolabitur adhuc Dominus Sion, et eliget adhuc Jerusalem.</p>
     <p class="base base-p">Und predige weiter und sprich: So spricht der HERR Zebaoth: Es soli meinen Stadten wieder wohlgehen, und der HERR wird Zion wieder trosten und wird Jerusalem wieder erwahlen.</p>
-    <p class="base base-o">Φώνησον έτι λέγων, Ούτω λέγει ο Κύριος των δυνάμεων· Αι πόλεις μου ότι θέλουσι πλημμυρήσει από αγαθών και ο Κύριος θέλει παρηγορήσει έτι την Σιών και θέλει εκλέξει πάλιν την Ιερουσαλήμ.</p>
     <p class="tra">Humiyaw ka pa uli, na iyong sabihin, Ganito ang sabi ng Panginoon ng mga hukbo, Ang aking mga bayan ay sasagana dahil sa pagkasulong; at aaliwin pa ng Panginoon ang Sion, at pipiliin pa ang Jerusalem.</p>
   </div>
 </div>
@@ -420,7 +416,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et levavi oculos meos, et vidi, et ecce quatuor cornua.</p>
     <p class="base base-p"></p>
-    <p class="base base-o">Και ύψωσα τους οφθαλμούς μου και είδον και ιδού, τέσσαρα κέρατα·</p>
     <p class="tra">At aking itinanaw ang aking mga mata, at aking nakita, at, narito, ang apat na sungay.</p>
   </div>
 </div>
@@ -429,7 +424,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et dixi ad angelum qui loquebatur in me : Quid sunt hæc ? Et dixit ad me : Hæc sunt cornua quæ ventilaverunt Judam, et Israël, et Jerusalem.</p>
     <p class="base base-p"></p>
-    <p class="base base-o">και είπα προς τον άγγελον τον λαλούντα μετ' εμού, Τι είναι ταύτα; Ο δε απεκρίθη προς εμέ, Ταύτα είναι τα κέρατα, τα οποία διεσκόρπισαν τον Ιούδαν, τον Ισραήλ και την Ιερουσαλήμ.</p>
     <p class="tra">At aking sinabi sa anghel na nakikipagusap sa akin, Ano ang mga ito? At siya'y sumagot sa akin, Ito ang mga sungay sa nagpangalat sa Juda, sa Israel, at sa Jerusalem.</p>
   </div>
 </div>
@@ -438,7 +432,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et ostendit mihi Dominus quatuor fabros.</p>
     <p class="base base-p"></p>
-    <p class="base base-o">Και ο Κύριος έδειξεν εις εμέ τέσσαρας τέκτονας·</p>
     <p class="tra">At ipinakita sa akin ng Panginoon ang apat na panday.</p>
   </div>
 </div>
@@ -447,7 +440,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et dixi : Quid isti veniunt facere ? Qui ait, dicens : Hæc sunt cornua quæ ventilaverunt Judam per singulos viros, et nemo eorum levavit caput suum : et venerunt isti deterrere ea, ut dejiciant cornua gentium, quæ levaverunt cornu super terram Juda ut dispergerent eam.</p>
     <p class="base base-p"></p>
-    <p class="base base-o">και είπα, Τι έρχονται ούτοι να κάμωσι; Και απεκρίθη λέγων, ταύτα είναι τα κέρατα τα οποία διεσκόρπισαν τον Ιούδαν, ώστε ουδείς εσήκωσε την κεφαλήν αυτού· και ούτοι ήλθον διά να φοβίσωσιν αυτά, διά να εκτινάξωσι τα κέρατα των εθνών, τα οποία εσήκωσαν το κέρας εναντίον της γης του Ιούδα διά να διασκορπίσωσιν αυτήν.</p>
     <p class="tra">Nang magkagayo'y sinabi ko, Ano ang ipinaritong gawin ng mga ito? At siya'y nagsalita na nagsabi, Ito ang mga sungay na nagpangalat sa Juda, na anopa't walang lalake na nagtaas ng kaniyang ulo; nguni't ang mga ito'y naparito upang takutin sila, upang ihulog ang mga sungay ng mga bansa, na nagtaas ng kanilang mga sungay laban sa lupain ng Juda upang pangalatin.</p>
   </div>
 </div>
@@ -456,14 +448,14 @@ body[data-conf="orthodox"] .base-o { display:block; }
 <section class="chap" id="c2">
   <div class="chhead">
     <span class="chrom">II</span>
-    <span class="chlbl">Caput 2</span>
+    <span class="chlbl chlbl-c">Caput II</span>
+    <span class="chlbl chlbl-p">Das 2. Capitel</span>
   </div>
 <div class="vb first" id="v2-1">
   <span class="vn">1</span>
   <div class="vt">
     <p class="base base-c">Et levavi oculos meos, et vidi, et ecce vir, et in manu ejus funiculus mensorum.</p>
     <p class="base base-p">Und ich hub meine Augen auf und sah, und siehe, da waren vier Horner.</p>
-    <p class="base base-o">Και ύψωσα τους οφθαλμούς μου και είδον και ιδού, ανήρ και σχοινίον μετρικόν εν τη χειρί αυτού·</p>
     <p class="tra">At aking itinanaw ang aking mga mata, at aking nakita at, narito, ang isang lalake na may panukat na pisi sa kaniyang kamay.</p>
   </div>
 </div>
@@ -472,7 +464,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et dixi : Quo tu vadis ? Et dixit ad me : Ut metiar Jerusalem, et videam quanta sit latitudo ejus, et quanta longitudo ejus.</p>
     <p class="base base-p">Und ich sprach zum Engel, der mit mir redete: Wer sind diese? Er sprach zu mir: Es sind die Horner, die Juda samt dem Israel und Jerusalem zerstreuet haben.</p>
-    <p class="base base-o">και είπα, Που υπάγεις συ; Ο δε είπε προς εμέ, να μετρήσω την Ιερουσαλήμ, διά να ίδω ποίον το πλάτος αυτής και ποίον το μήκος αυτής.</p>
     <p class="tra">Nang magkagayo'y sinabi ko, Saan ka paroroon? At sinabi niya sa akin, Upang sukatin ang Jerusalem, upang tingnan kung gaano ang luwang, at kung gaano ang haba.</p>
   </div>
 </div>
@@ -481,7 +472,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et ecce angelus qui loquebatur in me egrediebatur, et angelus alius egrediebatur in occursum ejus :</p>
     <p class="base base-p">Und der HERR zeigte mirviel Schmiede.</p>
-    <p class="base base-o">Και ιδού, ο άγγελος ο λαλών μετ' εμού εξήλθε, και έτερος άγγελος εξήλθεν εις συνάντησιν αυτού</p>
     <p class="tra">At, narito, ang anghel na nakikipagusap sa akin ay umalis, at ibang anghel ay lumabas na sumalubong sa kaniya,</p>
   </div>
 </div>
@@ -490,7 +480,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">et dixit ad eum : Curre, loquere ad puerum istum, dicens : Absque muro habitabitur Jerusalem, præ multitudine hominum et jumentorum in medio ejus.</p>
     <p class="base base-p">Da sprach ich: Was wollen die machen? Er sprach: Die Horner, die Juda so zerstreuet haben, daß niemand sein Haupt hat mogen aufheben, dieselbigen abzuschrecken, sind diese kommen, daß sie die Horner der Heiden abstolien, welche das Horn haben uber das Land Juda gehoben, dasselbige zu zerstreuen.</p>
-    <p class="base base-o">και είπε προς αυτόν, Δράμε, λάλησον προς τον νεανίαν τούτον, λέγων, Η Ιερουσαλήμ θέλει κατοικηθή ατειχίστως εξ αιτίας του πλήθους των εν αυτή ανθρώπων και κτηνών·</p>
     <p class="tra">At sinabi sa kaniya, Tumakbo ka, iyong salitain sa binatang ito, na sabihin, Ang Jerusalem ay tatahanan na parang mga nayon na walang mga kuta, dahil sa karamihan ng mga tao at hayop doon.</p>
   </div>
 </div>
@@ -499,7 +488,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et ego ero ei, ait Dominus, murus ignis in circuitu, et in gloria ero in medio ejus.</p>
     <p class="base base-p">Und ich hub meine Augen auf und sah, und siehe, ein Mann hatte eine Melischnur in der Hand.</p>
-    <p class="base base-o">διότι εγώ, λέγει Κύριος, θέλω είσθαι εις αυτήν τείχος πυρός κύκλω και θέλω είσθαι προς δόξαν εν μέσω αυτής.</p>
     <p class="tra">Sapagka't ako, sabi ng Panginoon, ay magiging sa kaniya'y isang kutang apoy sa palibot, at ako'y magiging kaluwalhatian sa gitna niya.</p>
   </div>
 </div>
@@ -508,7 +496,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">O, o, fugite de terra aquilonis, dicit Dominus,  quoniam in quatuor ventos cæli dispersi vos, dicit Dominus.</p>
     <p class="base base-p">Und ich sprach: Wo gehest du hin? Er aber sprach zu mir: Daü ich Jerusalem messe und sehe, wie lang und weit sie sein solle.</p>
-    <p class="base base-o">Ω, ώ· φεύγετε από της γης του βορρά, λέγει Κύριος· διότι σας διεσκόρπισα προς τους τέσσαρας ανέμους του ουρανού, λέγει Κύριος.</p>
     <p class="tra">Oy, oy, magsitakas kayo mula sa lupain ng hilagaan, sabi ng Panginoon; sapagka't kayo'y aking pinangalat na parang apat na hangin sa himpapawid, sabi ng Panginoon.</p>
   </div>
 </div>
@@ -517,7 +504,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">O Sion ! fuge, quæ habitas apud filiam Babylonis :</p>
     <p class="base base-p">Und siehe, der Engel, der mit mir redete, ging heraus. Und ein anderer Engel ging heraus ihm entgegen</p>
-    <p class="base base-o">Ω, διασώθητι, Σιών, η κατοικούσα μετά της θυγατρός της Βαβυλώνος.</p>
     <p class="tra">Oy Sion, tumanan ka, ikaw na tumatahan na kasama ng anak na babae ng Babilonia.</p>
   </div>
 </div>
@@ -526,7 +512,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">quia hæc dicit Dominus exercituum :  Post gloriam misit me ad gentes quæ spoliaverunt vos :  qui enim tetigerit vos, tangit pupillam oculi mei :</p>
     <p class="base base-p">und sprach zu ihm: Lauf hin und sage diesem Knaben und sprich: Jerusalem wird bewohnet werden ohne Mauern vor grolier Menge der Menschen und Viehes, so drinnen sein wird.</p>
-    <p class="base base-o">Διότι ούτω λέγει ο Κύριος των δυνάμεων· Μετά την δόξαν με απέστειλε προς τα έθνη, τα οποία σας ελεηλάτησαν· διότι όστις εγγίζει εσάς, εγγίζει την κόρην του οφθαλμού αυτού.</p>
     <p class="tra">Sapagka't ganito ang sabi ng Panginoon ng mga hukbo: Dahil sa kaluwalhatian ay sinugo niya ako sa mga bansa na nanamsam sa inyo; sapagka't ang humihipo sa inyo, ay humihipo sa itim ng kaniyang mata.</p>
   </div>
 </div>
@@ -535,7 +520,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">quia ecce ego levo manum meam super eos,  et erunt prædæ his qui serviebant sibi :  et cognoscetis quia Dominus exercituum misit me.</p>
     <p class="base base-p">und ich will, spricht der HERR, eine feurige Mauer umher sein und will drinnen sein und will mich herrlich drinnen erzeigen.</p>
-    <p class="base base-o">Διότι, ιδού, εγώ θέλω σείσει την χείρα μου επ' αυτά και θέλουσιν είσθαι λάφυρον εις τους δουλεύοντας αυτά· και θέλετε γνωρίσει ότι ο Κύριος των δυνάμεων με απέστειλε.</p>
     <p class="tra">Sapagka't narito, aking ikukumpas ang aking kamay sa kanila, at sila'y magiging samsam niyaong nangaglilingkod sa kanila; at inyong malalaman na ang Panginoon ng mga hukbo ang nagsugo sa akin.</p>
   </div>
 </div>
@@ -544,7 +528,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Lauda et lætare, filia Sion, quia ecce ego venio,  et habitabo in medio tui, ait Dominus.</p>
     <p class="base base-p">Hui! hui! Fliehet aus dem Mitternachtlande! spricht der HERR; denn ich hab euch in die vier Winde unter dem Himmel zerstreuet, spricht der HERR.</p>
-    <p class="base base-o">Τέρπου και ευφραίνου, θύγατερ Σιών· διότι ιδού, εγώ έρχομαι και θέλω κατοικήσει εν μέσω σου, λέγει Κύριος.</p>
     <p class="tra">Ikaw ay umawit at magalak, Oh anak na babae ng Sion; sapagka't narito, ako'y naparirito, at ako'y tatahan sa gitna mo, sabi ng Panginoon.</p>
   </div>
 </div>
@@ -553,7 +536,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et applicabuntur gentes multæ ad Dominum in die illa,  et erunt mihi in populum,  et habitabo in medio tui :  et scies quia Dominus exercituum misit me ad te.</p>
     <p class="base base-p">Hui, Zion, die du wohnest bei der Tochter Babel, entrinne!</p>
-    <p class="base base-o">Και έθνη πολλά θέλουσιν ενωθή μετά του Κυρίου εν τη ημέρα εκείνη και θέλουσιν είσθαι λαός μου, και θέλω κατοικήσει εν μέσω σου, και θέλει, γνωρίσει ότι ο Κύριος των δυνάμεων με εξαπέστειλε προς σε.</p>
     <p class="tra">At maraming bansa ay magpipisan sa Panginoon sa araw na yaon, at magiging aking bayan; at ako'y tatahan sa gitna mo, at iyong malalaman na ang Panginoon ng mga hukbo ay siyang nagsugo sa akin sa iyo.</p>
   </div>
 </div>
@@ -562,7 +544,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et possidebit Dominus Judam partem suam in terra sanctificata,  et eliget adhuc Jerusalem.</p>
     <p class="base base-p">Denn so spricht der HERR Zebaoth: Er hat mich gesandt nach der Ehre zu den Heiden, die euch beraubet haben; ihre Macht hat ein Ende. Wer euch antastet, der tastet seinen Augapfel an.</p>
-    <p class="base base-o">Και ο Κύριος θέλει κατακληρονομήσει τον Ιούδαν διά μερίδα αυτού εν τη γη τη αγία και θέλει εκλέξει πάλιν την Ιερουσαλήμ.</p>
     <p class="tra">At mamanahin ng Panginoon ang Juda na pinaka bahagi niya sa banal na lupain at pipiliin pa ang Jerusalem.</p>
   </div>
 </div>
@@ -571,7 +552,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Sileat omnis caro a facie Domini,  quia consurrexit de habitaculo sancto suo.</p>
     <p class="base base-p">Denn siehe, ich will meine Hand fiber sie weben, dafi sie sollen ein Raub werden denen, die ihnen gedienet haben, daß ihr sollt erfahren, daß mich der HERR Zebaoth gesandt hat.</p>
-    <p class="base base-o">Σιώπα, πάσα σαρξ, ενώπιον του Κυρίου· διότι εξηγέρθη από της κατοικίας της αγιότητος αυτού.</p>
     <p class="tra">Tumahimik ang lahat na tao, sa harap ng Panginoon; sapagka't siya'y gumising na sa kaniyang banal na tahanan.</p>
   </div>
 </div>
@@ -580,14 +560,14 @@ body[data-conf="orthodox"] .base-o { display:block; }
 <section class="chap" id="c3">
   <div class="chhead">
     <span class="chrom">III</span>
-    <span class="chlbl">Caput 3</span>
+    <span class="chlbl chlbl-c">Caput III</span>
+    <span class="chlbl chlbl-p">Das 3. Capitel</span>
   </div>
 <div class="vb first" id="v3-1">
   <span class="vn">1</span>
   <div class="vt">
     <p class="base base-c">Et ostendit mihi Dominus Jesum sacerdotem magnum, stantem coram angelo Domini : et Satan stabat a dextris ejus ut adversaretur ei.</p>
     <p class="base base-p">Und mirward gezeiget der Hohepriester Josua, stehend vor dem Engel des HERRN; und der Satan stund zu seiner Rechten, dad er ihm widerstunde.</p>
-    <p class="base base-o">Και μοι έδειξε τον Ιησούν, τον ιερέα τον μέγαν, ιστάμενον έμπροσθεν του αγγέλου του Κυρίου, και ο διάβολος ίστατο εκ δεξιών αυτού διά να αντισταθή εις αυτόν.</p>
     <p class="tra">At ipinakita niya sa akin si Josue na pangulong saserdote na nakatayo sa harap ng anghel ng Panginoon, at si Satanas na nakatayo sa kaniyang kanan upang maging kaniyang kaaway.</p>
   </div>
 </div>
@@ -596,7 +576,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et dixit Dominus ad Satan : Increpet Dominus in te, Satan ! et increpet Dominus in te, qui elegit Jerusalem ! numquid non iste torris est erutus de igne ?</p>
     <p class="base base-p">Und der HERR sprach zu dem Satan: Der HERR schelte dich, du Satan; ja, der HERR schelte dich, der Jerusalem erwahlet hat! 1st dieser nicht ein Brand, der aus dem Feuer errettet ist?</p>
-    <p class="base base-o">Και είπε Κύριος προς τον διάβολον, Θέλει σε επιτιμήσει ο Κύριος, διάβολε· ναι, θέλει σε επιτιμήσει ο Κύριος, όστις εξέλεξε την Ιερουσαλήμ· δεν είναι ούτος δαυλός απεσπασμένος από πυρός;</p>
     <p class="tra">At sinabi ng Panginoon kay Satanas, Sawayin ka nawa ng Panginoon, Oh Satanas; oo, ang Panginoon na pumili ng Jerusalem ay sumaway nawa sa iyo: di baga ito'y isang dupong na naagaw sa apoy?</p>
   </div>
 </div>
@@ -605,7 +584,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et Jesus erat indutus vestibus sordidis, et stabat ante faciem angeli.</p>
     <p class="base base-p">Und Josua hatte unreine Kleider an und stund vor dem Engel,</p>
-    <p class="base base-o">Ο δε Ιησούς ήτο ενδεδυμένος ιμάτια ρυπαρά και ίστατο ενώπιον του αγγέλου.</p>
     <p class="tra">Si Josue nga ay nabibihisan ng maruming kasuutan, at nakatayo sa harap ng anghel.</p>
   </div>
 </div>
@@ -614,7 +592,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Qui respondit, et ait ad eos qui stabant coram se, dicens : Auferte vestimenta sordida ab eo. Et dixit ad eum : Ecce abstuli a te iniquitatem tuam, et indui te mutatoriis.</p>
     <p class="base base-p">welcher antwortete und sprach zu denen, die vor ihm stunden: Tut die unreinen Kleider von ihm! Und er sprach zu ihm: Siehe, ich habe deine Sunde von dir genommen und habe dich mit Feierkleidern angezogen.</p>
-    <p class="base base-o">Και απεκρίθη και είπε προς τους ισταμένους ενώπιον αυτού, λέγων, Αφαιρέσατε τα ιμάτια τα ρυπαρά απ' αυτού· και προς αυτόν είπεν, Ιδού, αφήρεσα από σου την ανομίαν σου και θέλω σε ενδύσει ιμάτια λαμπρά·</p>
     <p class="tra">At siya'y sumagot at nagsalita sa mga yaon na nangakatayo sa harap niya, na nagsabi, Hubarin ninyo ang mga maruming suot sa kaniya. At sa kaniya'y kaniyang sinabi, Narito, aking pinaram ang iyong kasamaan, at aking susuutan ka ng mainam na kasuutan.</p>
   </div>
 </div>
@@ -623,7 +600,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et dixit : Ponite cidarim mundam super caput ejus. Et posuerunt cidarim mundam super caput ejus, et induerunt eum vestibus : et angelus Domini stabat.</p>
     <p class="base base-p">Und er sprach: Setzet einen reinen Hut auf sein Haupt! Und sie setzten einen reinen Hut auf sein Haupt und zogen ihm Kleider an, und der Engel des HERRN stund da.</p>
-    <p class="base base-o">και είπα, Ας επιθέσωσι μίτραν καθαράν επί την κεφαλήν αυτού. Και επέθεσαν την μίτραν την καθαράν επί την κεφαλήν αυτού και ενέδυσαν αυτόν ιμάτια· ο δε άγγελος του Κυρίου παρίστατο.</p>
     <p class="tra">At aking sinabi, Suutan siya nila ng isang magandang mitra sa kaniyang ulo. Sa gayo'y sinuutan siya ng magandang mitra sa kaniyang ulo, at sinuutan siya ng mga kasuutan; at ang anghel ng Panginoon ay nakatayo sa siping.</p>
   </div>
 </div>
@@ -632,7 +608,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et contestabatur angelus Domini Jesum, dicens :</p>
     <p class="base base-p">Und der Engel des HERRN bezeugete Josua und sprach:</p>
-    <p class="base base-o">Και διεμαρτυρήθη ο άγγελος του Κυρίου προς τον Ιησούν, λέγων,</p>
     <p class="tra">At ang anghel ng Panginoon ay tumutol kay Josue, na nagsabi,</p>
   </div>
 </div>
@@ -641,7 +616,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Hæc dicit Dominus exercituum :  Si in viis meis ambulaveris,  et custodiam meam custodieris,  tu quoque judicabis domum meam,  et custodies atria mea,  et dabo tibi ambulantes de his qui nunc hic assistunt.</p>
     <p class="base base-p">So spricht der HERR Zebaoth: Wirst du in meinen Wegen wandeln und meiner Hut warten, so sollst du regieren mein Haus und meine Hofe bewahren; und ich will dir geben von diesen, die hie stehen, daß sie dich geleiten sollen.</p>
-    <p class="base base-o">Ούτω λέγει ο Κύριος των δυνάμεων· Εάν περιπατήσης εν ταις οδοίς μου και εάν φυλάξης τας εντολάς μου, τότε συ θέλεις κρίνει έτι τον οίκόν μου και θέλεις φυλάττει έτι τας αυλάς μου και θέλω σοι δώσει να περιπατής μεταξύ των ενταύθα ισταμένων.</p>
     <p class="tra">Ganito ang sabi ng Panginoon ng mga hukbo, Kung ikaw ay lalakad sa aking mga daan, at kung iyong iingatan ang aking bilin, iyo nga ring hahatulan ang aking bayan, at iyo ring iingatan ang aking mga looban, at bibigyan kita ng kalalagyan sa gitna ng mga ito na nangakaharap.</p>
   </div>
 </div>
@@ -650,7 +624,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Audi, Jesu sacerdos magne,  tu et amici tui, qui habitant coram te,  quia viri portendentes sunt :  ecce enim ego adducam servum meum Orientem.</p>
     <p class="base base-p">Hore zu, Josua, du Hoherpriester, du und deine Freunde, die vor dir wohnen; denn sie sind eitel Wunder. Denn siehe, ich will meinen Knecht Zemah kommen lassen.</p>
-    <p class="base base-o">Άκουε τώρα, Ιησού ο ιερεύς ο μέγας, συ και οι εταίροί σου οι καθήμενοι ενώπιόν σου, επειδή αυτοί είναι άνθρωποι θαυμάσιοι· διότι ιδού εγώ θέλω φέρει έξω τον δούλον μου τον Βλαστόν.</p>
     <p class="tra">Dinggin mo ngayon, Oh Josue, na pangulong saserdote, dinggin mo, at ng iyong mga kasama na nangakaupo sa harap mo; sapagka't sila'y mga taong pinaka tanda: sapagka't narito, aking ilalabas ang aking lingkod na Sanga.</p>
   </div>
 </div>
@@ -659,7 +632,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Quia ecce lapis quem dedi coram Jesu :  super lapidem unum septem oculi sunt :  ecce ego cælabo sculpturam ejus, ait Dominus exercituum,  et auferam iniquitatem terræ illius in die una.</p>
     <p class="base base-p">Denn siehe, auf dem einigen Stein, den ich vor Josua gelegt habe, sollen sieben Augen sein. Aber siehe, ich will ihn aushauen, spricht der HERR Zebaoth, und will die Sunde desselbigen Landes wegnehmen auf einen Tag.</p>
-    <p class="base base-o">Διότι ιδού, ο λίθος, τον οποίον έθεσα έμπροσθεν του Ιησού, επί τον ένα τούτον λίθον είναι επτά οφθαλμοί· ιδού, εγώ θέλω εγχαράξει το εγχάραγμα αυτού, λέγει ο Κύριος των δυνάμεων, και θέλω εξαλείψει την ανομίαν της γης εκείνης εν μιά ημέρα.</p>
     <p class="tra">Sapagka't, narito, ang bato na aking inilagay sa harap ni Josue; sa ibabaw ng isang bato ay may pitong mata: narito, aking iuukit ang ukit niyaon, sabi ng Panginoon ng mga hukbo, at aking aalisin ang kasamaan ng lupaing yaon sa isang araw.</p>
   </div>
 </div>
@@ -668,7 +640,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">In die illa, dicit Dominus exercituum,  vocabit vir amicum suum subter vitem et subter ficum.</p>
     <p class="base base-p">Zu derselbigen Zeit, spricht der HERR Zebaoth, wird einer den andern laden unter den Weinstock und unter den Feigenbaum.</p>
-    <p class="base base-o">Εν τη ημέρα εκείνη, λέγει ο Κύριος των δυνάμεων, θέλετε προσκαλέσει έκαστος τον πλησίον αυτού υπό την άμπελον αυτού και υπό την συκήν αυτού.</p>
     <p class="tra">Sa araw na yaon, sabi ng Panginoon ng mga hukbo, tatawagin ng bawa't isa sa inyo ang kaniyang kapuwa sa lilim ng puno ng ubas, at sa lilim ng puno ng igos.</p>
   </div>
 </div>
@@ -677,14 +648,14 @@ body[data-conf="orthodox"] .base-o { display:block; }
 <section class="chap" id="c4">
   <div class="chhead">
     <span class="chrom">IV</span>
-    <span class="chlbl">Caput 4</span>
+    <span class="chlbl chlbl-c">Caput IV</span>
+    <span class="chlbl chlbl-p">Das 4. Capitel</span>
   </div>
 <div class="vb first" id="v4-1">
   <span class="vn">1</span>
   <div class="vt">
     <p class="base base-c">Et reversus est angelus qui loquebatur in me, et suscitavit me quasi virum qui suscitatur de somno suo.</p>
     <p class="base base-p">Und der Engel, der mit mir redete, kam wieder und weckte mich auf, wie einer vom Schlaf erwecket wird,</p>
-    <p class="base base-o">Και επέστρεψεν ο άγγελος ο λαλών μετ' εμού και με εξήγειρεν ως άνθρωπον εξεγειρόμενον από του ύπνου αυτού,</p>
     <p class="tra">At ang anghel na nakipagusap sa akin ay bumalik, at ginising ako, na gaya ng tao na nagigising sa kaniyang pagkakatulog.</p>
   </div>
 </div>
@@ -693,7 +664,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et dixit ad me : Quid tu vides ? Et dixi : Vidi, et ecce candelabrum aureum totum, et lampas ejus super caput ipsius, et septem lucernæ ejus super illud, et septem infusoria lucernis quæ erant super caput ejus.</p>
     <p class="base base-p">und sprach zu mir: Was siehest du? Ich aber sprach: Ich sehe; und siehe, da stund ein Leuchter ganz gulden mit einer Schale oben darauf, daran sieben Lampen waren und je sieben Kellen an einer Lampe,</p>
-    <p class="base base-o">και είπε προς εμέ, Τι βλέπεις συ; Και είπα, Εθεώρησα και ιδού, λυχνία όλη χρυσή και δοχείον επί της κορυφής αυτής, και οι επτά λύχνοι αυτής επ' αυτής και επτά σωλήνες εις τους λύχνους τους επί της κορυφής αυτής,</p>
     <p class="tra">At sinabi niya sa akin, Ano ang iyong nakikita? At aking sinabi, Ako'y tumingin, at, narito, isang kandelero na taganas na ginto, na may taza sa ibabaw niyaon, at ang pitong ilawan niyaon sa ibabaw; may pitong tubo sa bawa't isa sa mga ilawan na nasa ibabaw niyaon;</p>
   </div>
 </div>
@@ -702,7 +672,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et duæ olivæ super illud : una a dextris lampadis, et una a sinistris ejus.</p>
     <p class="base base-p">und zween Olbaume dabei, einen zur Rechten der Schale, den andern zur Linken.</p>
-    <p class="base base-o">και δύο ελαίαι επάνωθεν αυτής, μία εκ δεξιών του δοχείου και μία εξ αριστερών αυτής.</p>
     <p class="tra">At may dalawang puno ng olibo sa siping niyaon, isa sa dakong kanan ng taza, at ang isa'y sa dakong kaliwa niyaon.</p>
   </div>
 </div>
@@ -711,7 +680,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et respondi, et aio ad angelum qui loquebatur in me, dicens : Quid sunt hæc, domine mi ?</p>
     <p class="base base-p">Und ich antwortete und sprach zu dem Engel, der mit mir redete: Mein Herr, was ist das?</p>
-    <p class="base base-o">Και απεκρίθην και είπα προς τον άγγελον τον λαλούντα μετ' εμού, λέγων, Τι είναι ταύτα, κύριέ μου;</p>
     <p class="tra">At ako'y sumagot at nagsalita sa anghel na nakikipagusap sa akin, na aking sinabi, Anong mga bagay ito, panginoon ko?</p>
   </div>
 </div>
@@ -720,7 +688,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et respondit angelus qui loquebatur in me, et dixit ad me : Numquid nescis quid sunt hæc ? Et dixi : Non, domine mi.</p>
     <p class="base base-p">Und der Engel, der mit mir redete, antwortete und sprach zu mir: Weifit du nicht, was das ist? Ich aber sprach: Nein, mein Herr.</p>
-    <p class="base base-o">Και απεκρίθη ο άγγελος ο λαλών μετ' εμού και είπε προς εμέ, Δεν γνωρίζεις τι είναι ταύτα; Και είπα, Ουχί, κύριέ μου.</p>
     <p class="tra">Nang magkagayo'y ang anghel na nakikipagusap sa akin ay sumagot na nagsabi sa akin, Hindi mo baga nalalaman kung ano ang mga ito? At aking sinabi, Hindi, panginoon ko.</p>
   </div>
 </div>
@@ -729,7 +696,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et respondit, et ait ad me, dicens : Hoc est verbum Domini ad Zorobabel, dicens : Non in exercitu, nec in robore, sed in spiritu meo, dicit Dominus exercituum.</p>
     <p class="base base-p">Und er antwortete und sprach zu mir: Das ist das Wort des HERRN von Serubabel: Es soil nicht durch Heer Oder Kraft, sondern durch meinen Geist geschehen, spricht der HERR Zebaoth.</p>
-    <p class="base base-o">Και απεκρίθη και είπε προς εμέ, λέγων, Ούτος είναι ο λόγος του Κυρίου προς τον Ζοροβάβελ, λέγων, Ουχί διά δυνάμεως ουδέ διά ισχύος αλλά διά του Πνεύματός μου, λέγει ο Κύριος των δυνάμεων.</p>
     <p class="tra">Nang magkagayo'y siya'y sumagot at nagsalita sa akin, na nagsasabi, Ito ang salita ng Panginoon kay Zorobabel, na sinasabi, Hindi sa pamamagitan ng kalakasan, ni ng kapangyarihan, kundi sa pamamagitan ng aking Espiritu, sabi ng Panginoon ng mga hukbo.</p>
   </div>
 </div>
@@ -738,7 +704,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Quis tu, mons magne, coram Zorobabel ? In planum : et educet lapidem primarium, et exæquabit gratiam gratiæ ejus.</p>
     <p class="base base-p">Wer bist du, du grofier Berg, der doch vor Serubabel eine Ebene sein muft? Und er soli aufführen den ersten Stein, dafi man rufen wird: Gluck zu, Gluck zu!</p>
-    <p class="base base-o">Τις είσαι συ, το όρος το μέγα, έμπροσθεν του Ζοροβάβελ; πεδιάς· και θέλει εκφέρει τον ακρογωνιαίον λίθον εν αλαλαγμώ, Χάρις, χάρις εις αυτόν</p>
     <p class="tra">Sino ka, Oh malaking bundok? sa harap ni Zorobabel ay magiging kapatagan ka; at kaniyang ilalabas ang pangulong bato na may hiyawan, Biyaya, biyaya sa kaniya.</p>
   </div>
 </div>
@@ -747,7 +712,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et factum est verbum Domini ad me, dicens :</p>
     <p class="base base-p">Und es geschah zu mir das Wort des HERRN und sprach:</p>
-    <p class="base base-o">Και έγεινε λόγος Κυρίου προς εμέ, λέγων,</p>
     <p class="tra">Bukod dito'y ang salita ng Panginoon ay dumating sa akin, na nagsasabi,</p>
   </div>
 </div>
@@ -756,7 +720,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Manus Zorobabel fundaverunt domum istam, et manus ejus perficient eam : et scietis quia Dominus exercituum misit me ad vos.</p>
     <p class="base base-p">Die Hande Serubabels haben dies Haus gegrundet, seine Hande sollen's auch vollenden, daß ihr erfahret, daß mich der HERR zu euch gesandt hat.</p>
-    <p class="base base-o">Αι χείρες του Ζοροβάβελ έθεσαν το θεμέλιον του οίκου τούτου και αι χείρες αυτού θέλουσι τελειώσει αυτόν· και θέλεις γνωρίσει ότι ο Κύριος των δυνάμεων με απέστειλε προς εσάς.</p>
     <p class="tra">Ang mga kamay ni Zorobabel ay siyang naglagay ng mga tatagang-baon ng bahay na ito; ang kaniyang mga kamay ay siya ring tatapos; at iyong malalaman na ang Panginoon ng mga hukbo ay siyang nagsugo sa akin sa inyo.</p>
   </div>
 </div>
@@ -765,7 +728,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Quis enim despexit dies parvos ? Et lætabuntur, et videbunt lapidem stanneum in manu Zorobabel. Septem isti oculi sunt Domini, qui discurrunt in universam terram.</p>
     <p class="base base-p">Denn wer ist, der diese geringen Tage verachte, darin man doch sich wird freuen und sehen das zinnerne Mali in Serubabels Hand, mit den Sieben, welche sind des HERRN Augen, die das ganze Land durchziehen?</p>
-    <p class="base base-o">Διότι τις κατεφρόνησε την ημέραν των μικρών πραγμάτων; θέλουσι βεβαίως χαρή και θέλουσιν ιδεί τον κασσιτέρινον λίθον εν τη χειρί του Ζοροβάβελ οι επτά εκείνοι οφθαλμοί του Κυρίου, οι περιτρέχοντες διά πάσης της γης.</p>
     <p class="tra">Sapagka't sinong nagsihamak sa araw ng maliliit na bagay? sapagka't ang pitong ito ay mangagagalak, at makikita nila ang pabatong tingga sa kamay ni Zorobabel; ang mga ito'y mga mata ng Panginoon, na nangagpaparoo't parito sa buong lupa.</p>
   </div>
 </div>
@@ -774,7 +736,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et respondi, et dixi ad eum : Quid sunt duæ olivæ istæ, ad dexteram candelabri, et ad sinistram ejus ?</p>
     <p class="base base-p">Und ich antwortete und sprach zu ihm: Was sind die zween Olbaume zur Rechten und zur Linken des Leuchters?</p>
-    <p class="base base-o">Τότε απεκρίθην και είπα προς αυτόν, Τι είναι αι δύο αύται ελαίαι επί τα δεξιά της λυχνίας και επί τα αριστερά αυτής;</p>
     <p class="tra">Nang magkagayo'y sumagot ako, at nagsabi sa kaniya, Ano itong dalawang puno ng olibo sa dakong kanan kandelero, at sa dakong kaliwa?</p>
   </div>
 </div>
@@ -783,7 +744,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et respondi secundo, et dixi ad eum : Quid sunt duæ spicæ olivarum quæ sunt juxta duo rostra aurea in quibus sunt suffusoria ex auro ?</p>
     <p class="base base-p">Und ich antwortete zum andernmal und sprach zu ihm: Was sind die zween Zweige der Olbaume, welche stehen bei den zwo guldenen Schneuzen des guldenen Leuchters, damit man abbricht oben von dem guldenen Leuchter?</p>
-    <p class="base base-o">Και απεκρίθην εκ δευτέρου και είπα προς αυτόν, Τι είναι οι δύο κλάδοι των ελαιών, οίτινες διά των δύο χρυσών σωλήνων εκκενόνουσιν εξ εαυτών το έλαιον εις την χρυσήν λυχνίαν;</p>
     <p class="tra">At ako'y sumagot na ikalawa, at nagsabi sa kaniya: Ano ang dalawang sangang olibong ito na nasa siping ng dalawang gintong padaluyan, na dinadaluyan ng langis na ginintuan?</p>
   </div>
 </div>
@@ -792,7 +752,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et ait ad me, dicens : Numquid nescis quid sunt hæc ? Et dixi : Non, domine mi.</p>
     <p class="base base-p">Und er sprach zu mir: Weiftt du nicht, was die sind? Ich aber sprach: Nein, mein Herr.</p>
-    <p class="base base-o">Και είπε προς εμέ λέγων, Δεν γνωρίζεις τι είναι ταύτα; Και είπα, Ουχί, κύριέ μου.</p>
     <p class="tra">At siya'y sumagot sa akin, at nagsabi, Hindi mo baga nalalaman kung ano ang mga ito? At aking sinabi, Hindi, panginoon ko.</p>
   </div>
 </div>
@@ -801,7 +760,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et dixit : Isti sunt duo filii olei, qui assistunt Dominatori universæ terræ.</p>
     <p class="base base-p">Und er sprach: Es sind diezwei Olkinder, welche stehen bei dem Herrscher des ganzen Landes.</p>
-    <p class="base base-o">Τότε είπεν, Ούτοι είναι οι δύο κεχρισμένοι, οι παριστάμενοι πλησίον του Κυρίου πάσης της γης.</p>
     <p class="tra">Nang magkagayo'y sinabi niya, Ito ang dalawang anak na pinahiran ng langis, na nakatayo sa siping ng Panginoon ng buong lupa.</p>
   </div>
 </div>
@@ -810,14 +768,14 @@ body[data-conf="orthodox"] .base-o { display:block; }
 <section class="chap" id="c5">
   <div class="chhead">
     <span class="chrom">V</span>
-    <span class="chlbl">Caput 5</span>
+    <span class="chlbl chlbl-c">Caput V</span>
+    <span class="chlbl chlbl-p">Das 5. Capitel</span>
   </div>
 <div class="vb first" id="v5-1">
   <span class="vn">1</span>
   <div class="vt">
     <p class="base base-c">Et conversus sum, et levavi oculos meos, et vidi, et ecce volumen volans.</p>
     <p class="base base-p">Und ich hub meine Augen abermal auf und sah, und siehe, es war ein fliegender Brief.</p>
-    <p class="base base-o">Και πάλιν ύψωσα τους οφθαλμούς μου και είδον και ιδού, τόμος πετώμενος.</p>
     <p class="tra">Nang magkagayo'y itinanaw ko uli ang aking mga mata, at aking nakita, at, narito, isang lumilipad na balumbon.</p>
   </div>
 </div>
@@ -826,7 +784,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et dixit ad me : Quid tu vides ? Et dixi : Ego video volumen volans : longitudo ejus viginti cubitorum, et latitudo ejus decem cubitorum.</p>
     <p class="base base-p">Und er sprach zu mir: Was siehest du? Ich aber sprach: Ich sehe einen fliegenden Brief, der ist zwanzig Ellen lang und zehn Ellen breit.</p>
-    <p class="base base-o">Και είπε προς εμέ, Τι βλέπεις συ; Και απεκρίθην, Βλέπω τόμον πετώμενον, το μήκος αυτού είκοσι πηχών και το πλάτος αυτού δέκα πηχών.</p>
     <p class="tra">At sinabi niya sa akin, Ano ang iyong nakikita? At ako'y sumagot, Aking nakikita'y isang lumilipad na balumbon; ang haba niyaon ay dalawang pung siko, at ang luwang niyaon ay sangpung siko.</p>
   </div>
 </div>
@@ -835,7 +792,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et dixit ad me : Hæc est maledictio quæ egreditur super faciem omnis terræ : quia omnis fur, sicut ibi scriptum est, judicabitur, et omnis jurans ex hoc similiter judicabitur.</p>
     <p class="base base-p">Und er sprach zu mir: Das ist der Fluch, welcher ausgehet uber das ganze Land; denn alle Diebe werden nach diesem Briefe fromm gesprochen, und alle Meineidigen werden nach diesem Briefe fromm gesprochen.</p>
-    <p class="base base-o">Και είπε προς εμέ, Αύτη είναι η κατάρα η εξερχομένη επί το πρόσωπον πάσης της γής· διότι πας όστις κλέπτει θέλει εξολοθρευθή, ως γράφεται εν αυτώ εντεύθεν· και πας όστις ομνύει θέλει εξολοθρευθή, ως γράφεται εν αυτώ εκείθεν.</p>
     <p class="tra">Nang magkagayo'y sinabi niya sa akin, Ito ang sumpa na lumalabas sa ibabaw ng buong lupain: sapagka't ang bawa't nagnanakaw ay mahihiwalay sa isang dako ayon doon; at bawa't manunumpa ay mahihiwalay sa kabilang dako ayon doon.</p>
   </div>
 </div>
@@ -844,7 +800,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Educam illud, dicit Dominus exercituum : et veniet ad domum furis, et ad domum jurantis in nomine meo mendaciter : et commorabitur in medio domus ejus, et consumet eam, et ligna ejus, et lapides ejus.</p>
     <p class="base base-p">Aber ich will's hervorbringen, spricht der HERR Zebaoth, daß es, soil kommen uber das Haus des Diebes und uber das Haus derer, die bei meinem Namen falschlich schwdren; und soil bleiben in ihrem Hause und soil's verzehren samt seinem Holz und Steinen.</p>
-    <p class="base base-o">Θέλω εκφέρει αυτήν, λέγει ο Κύριος των δυνάμεων, και θέλει εισέλθει εις τον οίκον του κλέπτου και εις τον οίκον του ομνύοντος εις το όνομά μου ψευδώς· και θέλει διαμείνει εν μέσω του οίκου αυτού, και θέλει εξολοθρεύσει αυτόν και τα ξύλα αυτού και τους λίθους αυτού.</p>
     <p class="tra">Aking ilalabas yaon, sabi ng Panginoon ng mga hukbo, at papasok sa bahay ng magnanakaw, at sa bahay niyaong nanunumpa ng kasinungalingan sa pangalan ko; at tatahan sa gitna ng bahay niya, at pupugnawin sangpu ng mga kahoy niyaon at mga bato niyaon.</p>
   </div>
 </div>
@@ -853,7 +808,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et egressus est angelus qui loquebatur in me, et dixit ad me : Leva oculos tuos, et vide quid est hoc quod egreditur.</p>
     <p class="base base-p">Und der Engel, der mit mir redete, ging heraus und sprach zu mir: Hebe deine Augen auf und siehe, was gehet da heraus?</p>
-    <p class="base base-o">Και ο άγγελος ο λαλών μετ' εμού εξήλθε και είπε προς εμέ, Ύψωσον τώρα τους οφθαλμούς σου και ιδέ τι είναι τούτο το εξερχόμενον.</p>
     <p class="tra">Nang magkagayo'y ang anghel na nakikipagusap sa akin ay lumabas, at nagsabi sa akin, itanaw mo ngayon ang iyong mga mata, at tingnan mo kung ano ito na lumalabas.</p>
   </div>
 </div>
@@ -862,7 +816,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et dixi : Quidnam est ? Et ait : Hæc est amphora egrediens. Et dixit : Hæc est oculus eorum in universa terra.</p>
     <p class="base base-p">Und ich sprach: Was ist's? Er aber sprach: Ein Epha gehet heraus, und sprach: Das ist ihre Gestalt im ganzen Lande.</p>
-    <p class="base base-o">Και είπα, Τι είναι τούτο; Ο δε είπε, τούτο το οποίον εξέρχεται είναι εφά· και είπε, Τούτο είναι η παράστασις αυτών καθ' όλην την γην.</p>
     <p class="tra">At aking sinabi, Ano yaon? At kaniyang sinabi, Ito ang efa na lumalabas. Sinabi niya bukod dito, Ito ang kawangis nila sa buong lupain.</p>
   </div>
 </div>
@@ -871,7 +824,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et ecce talentum plumbi portabatur, et ecce mulier una sedens in medio amphoræ.</p>
     <p class="base base-p">Und siehe, es schwebte ein Zentner Blei; und da war ein Weib, das salt, im Epha.</p>
-    <p class="base base-o">Και ιδού, εσηκόνετο τάλαντον μολύβδου· και ιδού, μία γυνή εκάθητο εν τω μέσω του εφά.</p>
     <p class="tra">(At, narito, itinaas ang isang talentong tingga); at ito'y isang babae na nauupo sa gitna ng efa.</p>
   </div>
 </div>
@@ -880,7 +832,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et dixit : Hæc est impietas. Et projecit eam in medio amphoræ, et misit massam plumbeam in os ejus.</p>
     <p class="base base-p">Er aber sprach: Das ist die gottlose Lehre. Und er warf sie in den Epha und warf den Klumpen Blei oben aufs Loch.</p>
-    <p class="base base-o">Και είπεν, Αύτη είναι η ασέβεια. Και έρριψεν αυτήν εις το μέσον του εφά, και έρριψε το μολύβδινον ζύγιον εις το στόμα αυτού.</p>
     <p class="tra">At kaniyang sinabi, Ito ang kasamaan; at kaniyang inihagis sa loob ng gitna ng efa: at kaniyang inihagis ang panimbang na tingga sa bunganga niyaon.</p>
   </div>
 </div>
@@ -889,7 +840,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et levavi oculos meos, et vidi : et ecce duæ mulieres egredientes : et spiritus in alis earum, et habebant alas quasi alas milvi, et levaverunt amphoram inter terram et cælum.</p>
     <p class="base base-p">Und ich hub meine Augen auf und sah, und siehe, zwei Weiber gingen heraus und hatten Flugel, die der Wind trieb; es waren aber Flugel wie Storchflugel, und die fuhreten den Epha zwischen Erde und Himmel.</p>
-    <p class="base base-o">Τότε ύψωσα τους οφθαλμούς μου και είδον και ιδού, εξήρχοντο δύο γυναίκες και άνεμος ήτο εν ταις πτέρυξιν αυτών, διότι αύται είχον πτέρυγας ως πτέρυγας πελαργού· και εσήκωσαν το εφά αναμέσον της γης και του ουρανού.</p>
     <p class="tra">Nang magkagayo'y itinanaw ko ang aking mga mata, at aking nakita at, narito, lumabas ang dalawang babae, at may dalang hangin sa kanilang mga pakpak; sila nga'y may mga pakpak na gaya ng mga pakpak ng tagak: at kanilang itinaas ang efa sa pagitan ng lupa at ng langit.</p>
   </div>
 </div>
@@ -898,7 +848,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et dixi ad angelum qui loquebatur in me : Quo istæ deferunt amphoram ?</p>
     <p class="base base-p">Und ich sprach zum Engel, der mit mir redete: Wo führen die den Epha hin?</p>
-    <p class="base base-o">Και είπα προς τον άγγελον τον λαλούντα μετ' εμού, Που φέρουσιν αύται το εφά;</p>
     <p class="tra">Nang magkagayo'y sinabi ko sa anghel na nakikipagusap sa akin, Saan dinadala ng mga ito ang efa?</p>
   </div>
 </div>
@@ -907,7 +856,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et dixit ad me : Ut ædificetur ei domus in terra Sennaar, et stabiliatur, et ponatur ibi super basem suam.</p>
     <p class="base base-p">Er aber sprach zu mir: Dali ihm ein Haus gebauet werde im Lande Sinear und bereitet und daselbst gesetzt werde auf seinen Boden.</p>
-    <p class="base base-o">Και είπε προς εμέ, Διά να οικοδομήσωσι δι' αυτό οίκον εν τη γη Σενναάρ· και θέλει στηριχθή και θέλει τεθή εκεί επί την βάσιν αυτού.</p>
     <p class="tra">At sinabi niya sa akin, Upang ipagtayo siya ng bahay sa lupain ng Shinar: at pagka nahanda na, siya'y malalagay roon sa kaniyang sariling dako.</p>
   </div>
 </div>
@@ -916,14 +864,14 @@ body[data-conf="orthodox"] .base-o { display:block; }
 <section class="chap" id="c6">
   <div class="chhead">
     <span class="chrom">VI</span>
-    <span class="chlbl">Caput 6</span>
+    <span class="chlbl chlbl-c">Caput VI</span>
+    <span class="chlbl chlbl-p">Das 6. Capitel</span>
   </div>
 <div class="vb first" id="v6-1">
   <span class="vn">1</span>
   <div class="vt">
     <p class="base base-c">Et conversus sum, et levavi oculos meos, et vidi : et ecce quatuor quadrigæ egredientes de medio duorum montium : et montes, montes ærei.</p>
     <p class="base base-p">Und ich hub meine Augen abermal auf und sah, und siehe, da waren vier Wagen, die gingen zwischen zween Bergen hervor; dieselbigen Berge aber waren ehern.</p>
-    <p class="base base-o">Και πάλιν ύψωσα τους οφθαλμούς μου και είδον και ιδού, τέσσαρες άμαξαι εξήρχοντο εκ του μέσου δύο ορέων και τα όρη ήσαν όρη χάλκινα.</p>
     <p class="tra">At itinanaw ko uli ang aking mga mata, at aking nakita at, narito, lumabas ang apat na karo mula sa pagitan ng dalawang bundok; at ang mga bundok ay mga bundok na tanso.</p>
   </div>
 </div>
@@ -932,7 +880,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">In quadriga prima equi rufi, et in quadriga secunda equi nigri,</p>
     <p class="base base-p">Am ersten Wagen waren rote Rosse; am andern Wagen waren schwarze Rosse;</p>
-    <p class="base base-o">Εν τη αμάξη τη πρώτη ήσαν ίπποι κόκκινοι, και εν τη αμάξη τη δευτέρα ίπποι μέλανες,</p>
     <p class="tra">Sa unang karo ay may mga kabayong mapula; at sa ikalawang karo ay mga kabayong maitim;</p>
   </div>
 </div>
@@ -941,7 +888,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">et in quadriga tertia equi albi, et in quadriga quarta equi varii et fortes.</p>
     <p class="base base-p">am dritten Wagen waren weilie Rosse; am vierten Wagen waren scheckige starke Rosse.</p>
-    <p class="base base-o">και εν τη αμάξη τη τρίτη ίπποι λευκοί, και εν τη αμάξη τη τετάρτη ίπποι ποικίλοι ψαροί.</p>
     <p class="tra">At sa ikatlong karo ay may mga kabayong maputi; at sa ikaapat na karo ay mga kabayong kulay abo.</p>
   </div>
 </div>
@@ -950,7 +896,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et respondi, et dixi ad angelum qui loquebatur in me : Quid sunt hæc, domine mi ?</p>
     <p class="base base-p">Und ich antwortete und sprach zum Engel, der mit mir redete: Mein Herr, wer sind diese?</p>
-    <p class="base base-o">Και απεκρίθην και είπα προς τον άγγελον τον λαλούντα μετ' εμού, Τι είναι ταύτα, κύριέ μου;</p>
     <p class="tra">Nang magkagayo'y ako'y sumagot at sinabi ko sa anghel na nakikipagusap sa akin, Ano ang mga ito, panginoon ko?</p>
   </div>
 </div>
@@ -959,7 +904,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et respondit angelus, et ait ad me : Isti sunt quatuor venti cæli, qui egrediuntur ut stent coram Dominatore omnis terræ.</p>
     <p class="base base-p">Der Engel antwortete und sprach zu mir: Es sind die vier Winde unter dem Himmel, die hervorkommen, daß sie treten vor den Herrscher aller Lande.</p>
-    <p class="base base-o">Και απεκρίθη ο άγγελος και είπε προς εμέ, Ταύτα είναι οι τέσσαρες άνεμοι του ουρανού, οίτινες εξέρχονται εκ της στάσεως αυτών ενώπιον του Κυρίου πάσης της γής·</p>
     <p class="tra">At ang anghel ay sumagot at nagsabi sa akin, Ito ang apat na hangin sa himpapawid, na lumalabas na pinakasugo mula sa harapan ng Panginoon ng buong lupa.</p>
   </div>
 </div>
@@ -968,7 +912,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">In qua erant equi nigri, egrediebantur in terram aquilonis : et albi egressi sunt post eos, et varii egressi sunt ad terram austri.</p>
     <p class="base base-p">An dem die schwarzen Rosse waren, die gingen gegen Mitternacht, und die weilien gingen ihnen nach; aber die scheckigen gingen gegen Mittag.</p>
-    <p class="base base-o">οι ίπποι οι μέλανες οι εν τη μιά εξέρχονται προς την γην του βορρά, και οι λευκοί εξέρχονται κατόπιν αυτών, και οι ποικίλοι εξέρχονται προς την γην του νότου.</p>
     <p class="tra">Ang karo na kinasisingkawan ng mga kabayong maitim ay lumalabas sa dakong lupaing hilagaan; at ang sa mga maputi ay lumabas na kasunod ng mga yaon; at ang mga kulay abo ay nagsilabas sa dakong lupaing timugan.</p>
   </div>
 </div>
@@ -977,7 +920,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Qui autem erant robustissimi, exierunt, et quærebant ire et discurrere per omnem terram. Et dixit : Ite, perambulate terram : et perambulaverunt terram.</p>
     <p class="base base-p">Die Starken gingen und zogen urn, daß sie alle Lande durchzogen. Und er sprach: Gehet hin und ziehet durchs Land! Und sie zogen durchs Land.</p>
-    <p class="base base-o">Και οι ψαροί εξήλθον και εζήτησαν να υπάγωσι διά να περιέλθωσι την γην. Και είπεν, Υπάγετε, περιέλθετε την γην. Και περιήλθον την γην.</p>
     <p class="tra">At ang mga malakas ay nagsilabas, at nangagpumilit na yumaon upang malibot ang lupa: at kaniyang sinabi, Kayo'y magsiyaon at magparoo't parito sa buong lupa. Sa gayo'y sila'y nangagparoo't parito sa buong lupa.</p>
   </div>
 </div>
@@ -986,7 +928,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et vocavit me, et locutus est ad me, dicens : Ecce qui egrediuntur in terram aquilonis, requiescere fecerunt spiritum meum in terra aquilonis.</p>
     <p class="base base-p">Und er rief mich und redete mit mir und sprach: Siehe, die gegen Mitternacht ziehen, machen meinen Geist ruhen im Lande gegen Mitternacht.</p>
-    <p class="base base-o">Και έκραξε προς εμέ και ελάλησε προς εμέ, λέγων, Ιδέ, οι εξερχόμενοι προς την γην του βορρά ανέπαυσαν το πνεύμά μου εν τη γη του βορρά.</p>
     <p class="tra">Nang magkagayo'y hiniyawan niya ako, at nagsalita sa akin, na nagsasabi, Narito, silang nagsiparito sa dakong lupaing hilagaan ay nagpatahimik sa aking diwa sa lupaing hilagaan.</p>
   </div>
 </div>
@@ -995,7 +936,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et factum est verbum Domini ad me, dicens :</p>
     <p class="base base-p">Und des HERRN Wort geschah zu mir und sprach:</p>
-    <p class="base base-o">Και έγεινε λόγος Κυρίου προς εμέ, λέγων,</p>
     <p class="tra">At ang salita ng Panginoon ay dumating sa akin, na nagsasabi,</p>
   </div>
 </div>
@@ -1004,7 +944,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Sume a transmigratione, ab Holdai, et a Tobia, et ab Idaia : et venies tu in die illa, et intrabis domum Josiæ filii Sophoniæ, qui venerunt de Babylone.</p>
     <p class="base base-p">Nimm von den Gefangenen, namlich von Heldai und von Tobia und von Jedaja, und komm du desselbigen Tages und gehe in Josia, des Sohns Zephanjas, Haus, welche von Babel kommen sind.</p>
-    <p class="base base-o">Λάβε εκ των ανδρών της αιχμαλωσίας, εκ του Χελδαΐ, εκ του Τωβία και εκ του Ιεδαΐα, των ελθόντων εκ Βαβυλώνος, και ελθέ την αυτήν εκείνην ημέραν και είσελθε εις τον οίκον του Ιωσίου, υιού του Σοφονίου·</p>
     <p class="tra">Kumuha ka sa nangabihag, kay Heldai, kay Tobias, at kay Jedaia; at yumaon ka sa araw ding yaon, at pumasok ka sa bahay ni Josias na anak ni Sefanias, na nagsibalik mula sa Babilonia;</p>
   </div>
 </div>
@@ -1013,7 +952,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et sumes aurum et argentum, et facies coronas, et pones in capite Jesu filii Josedec, sacerdotis magni :</p>
     <p class="base base-p">Nimm aber Silber und Gold und mache Kronen und setze sie auf das Haupt Josuas, des Hohenpriesters, des Sohns Jozadaks.</p>
-    <p class="base base-o">και λάβε αργύριον και χρυσίον και κάμε στεφάνους και επίθες επί την κεφαλήν του Ιησού, υιού του Ιωσεδέκ, του ιερέως του μεγάλου,</p>
     <p class="tra">Oo, kumuha ka sa kanila ng pilak at ginto, at gawin mong mga putong, at mga iputong mo sa ulo ni Josue na anak ni Josadac, na pangulong saserdote.</p>
   </div>
 </div>
@@ -1022,7 +960,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">et loqueris ad eum, dicens : Hæc ait Dominus exercituum, dicens : Ecce vir, Oriens nomen ejus, et subter eum orietur, et ædificabit templum Domino.</p>
     <p class="base base-p">Und sprich zu ihm: So spricht der HERR Zebaoth: Siehe, es ist ein Mann, der heiftt Zemah; denn unter ihm wird's wachsen; und er wird bauen des HERRN Tempel.</p>
-    <p class="base base-o">και λάλησον προς αυτόν, λέγων, Ούτω λέγει ο Κύριος των δυνάμεων, λέγων, Ιδού, ο ανήρ, του οποίου το όνομα είναι ο Βλαστός· και θέλει βλαστήσει εκ του τόπου αυτού και θέλει οικοδομήσει τον ναόν του Κυρίου.</p>
     <p class="tra">At salitain mo sa kaniya, na sabihin, Ganito ang salita ng Panginoon ng mga hukbo, na nagsasabi, Narito, ang lalake na ang pangala'y Sanga: at siya'y sisibol sa kaniyang dako; at itatayo niya ang templo ng Panginoon;</p>
   </div>
 </div>
@@ -1031,7 +968,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et ipse exstruet templum Domino : et ipse portabit gloriam, et sedebit, et dominabitur super solio suo : et erit sacerdos super solio suo, et consilium pacis erit inter illos duos.</p>
     <p class="base base-p">Ja, den Tempel des HERRN wird er bauen und wird den Schmuck tragen und wird sitzen und herrschen auf seinem Thron, wird auch Priester sein auf seinem Thron; und wird Friede sein zwischen den beiden.</p>
-    <p class="base base-o">Ναι, αυτός θέλει οικοδομήσει τον ναόν του Κυρίου, και αυτός θέλει λάβει την δόξαν και θέλει καθήσει και διοικήσει επί του θρόνου αυτού και θέλει είσθαι ιερεύς επί του θρόνου αυτού, και βουλή ειρήνης θέλει είσθαι μεταξύ των δύο τούτων.</p>
     <p class="tra">Sa makatuwid baga'y kaniyang itatayo ang templo ng Panginoon; at siya'y magtataglay ng kaluwalhatian, at mauupo at magpupuno sa kaniyang luklukan; at siya'y magiging saserdote sa kaniyang luklukan: at ang payo ng kapayapaan ay mapapasa pagitan nila kapuwa.</p>
   </div>
 </div>
@@ -1040,7 +976,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et coronæ erunt Helem, et Tobiæ, et Idaiæ, et Hem filio Sophoniæ, memoriale in templo Domini.</p>
     <p class="base base-p">Und die Kronen sollen dem Helem, Tobia, Jedaja und Hen, dem Sohne Zephanjas, zum Gedachtnis sein im Tempel des HERRN.</p>
-    <p class="base base-o">Και στέφανοι θέλουσιν είσθαι διά τον Ελέμ και διά τον Τωβίαν και διά τον Ιεδαΐαν και διά τον Ειν τον υιόν του Σοφονίου προς μνημόσυνον εν τω ναώ του Κυρίου.</p>
     <p class="tra">At ang mga putong ay magiging pinakaalaala sa templo ng Panginoon kay Helem, at kay Tobias, at kay Jedaia, at kay Hen na anak ni Sefanias.</p>
   </div>
 </div>
@@ -1049,7 +984,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et qui procul sunt, venient, et ædificabunt in templo Domini : et scietis quia Dominus exercituum misit me ad vos. Erit autem hoc, si auditu audieritis vocem Domini Dei vestri.</p>
     <p class="base base-p">Und werden kommen von feme, die am Tempel des HERRN bauen werden. Da werdet ihr erfahren, daß mich der HERR Zebaoth zu euch gesandt hat. Und das soli geschehen, so ihr gehorchen werdet der Stimme des HERRN, eures Gottes.</p>
-    <p class="base base-o">Και οι μακράν θέλουσιν ελθεί και οικοδομήσει εν τω ναώ του Κυρίου· και θέλετε γνωρίσει ότι ο Κύριος των δυνάμεων με απέστειλε προς εσάς· και τούτο θέλει γείνει, εάν υπακούσητε ακριβώς εις την φωνήν Κυρίου του Θεού σας.</p>
     <p class="tra">At silang nangasa malayo ay magsisiparito at mangagtatayo sa loob ng templo ng Panginoon, at inyong malalaman na ang Panginoon ng mga hukbo ay siyang nagsugo sa akin sa inyo. At ito'y mangyayari kung inyong tatalimahing masikap ang tinig ng Panginoon ninyong Dios.</p>
   </div>
 </div>
@@ -1058,14 +992,14 @@ body[data-conf="orthodox"] .base-o { display:block; }
 <section class="chap" id="c7">
   <div class="chhead">
     <span class="chrom">VII</span>
-    <span class="chlbl">Caput 7</span>
+    <span class="chlbl chlbl-c">Caput VII</span>
+    <span class="chlbl chlbl-p">Das 7. Capitel</span>
   </div>
 <div class="vb first" id="v7-1">
   <span class="vn">1</span>
   <div class="vt">
     <p class="base base-c">Et factum est in anno quarto Darii regis, factum est verbum Domini ad Zachariam, in quarta mensis noni, qui est Casleu.</p>
     <p class="base base-p">Und es geschah im vierten Jahr des Konigs Darius, daß des HERRN Wort geschah zu Sacharja, am vierten Tage des neunten Monden, welcher heiftt Chisleu,</p>
-    <p class="base base-o">Και εν τω τετάρτω έτει του βασιλέως Δαρείου έγεινε λόγος Κυρίου προς τον Ζαχαρίαν τη τετάρτη του εννάτου μηνός, του Χισλεύ·</p>
     <p class="tra">At nangyari, nang ikaapat na taon ng haring si Dario, na ang salita ng Panginoon ay dumating kay Zacarias nang ikaapat na araw ng ikasiyam na buwan, sa makatuwid baga'y sa Chislev.</p>
   </div>
 </div>
@@ -1074,7 +1008,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et miserunt ad domum Dei Sarasar et Rogommelech, et viri qui erant cum eo, ad deprecandam faciem Domini :</p>
     <p class="base base-p">da Sarezer und Regem-Melech samt ihren Leuten sandten in das Haus Gottes, zu bitten vor dem HERRN,</p>
-    <p class="base base-o">και εξαπέστειλαν εις τον οίκον του Θεού τον Σαρεσέρ και τον Ρεγέμ-μέλεχ και τους ανθρώπους αυτών, διά να εξιλεώσωσι το πρόσωπον του Κυρίου,</p>
     <p class="tra">Sinugo nga ng mga taga Beth-el si Sareser at si Regem-melech, at ang kanilang mga lalake, upang hilingin ang lingap ng Panginoon,</p>
   </div>
 </div>
@@ -1083,7 +1016,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">ut dicerent sacerdotibus domus Domini exercituum, et prophetis, loquentes : Numquid flendum est mihi in quinto mense, vel sanctificare me debeo, sicut jam feci multis annis ?</p>
     <p class="base base-p">und lieften sagen den Priestern, die da waren urn das Haus des HERRN Zebaoth, und zu den Propheten: Muft ich auch noch weinen im fünften Monden und mich enthalten, wie ich solches getan habe nun etliche Jahre?</p>
-    <p class="base base-o">να λαλήσωσι προς τους ιερείς τους εν τω οίκω του Κυρίου των δυνάμεων και προς τους προφήτας, λέγοντες, Να κλαύσω εν τω μηνί τω πέμπτω αποχωρισθείς, καθώς ήδη έκαμον τοσαύτα έτη;</p>
     <p class="tra">At upang magsalita sa mga saserdote ng bahay ng Panginoon ng mga hukbo, at sa mga propeta, na sabihin, Iiyak baga ako sa ikalimang buwan, na ako'y hihiwalay, gaya ng aking ginawa nitong maraming taon?</p>
   </div>
 </div>
@@ -1092,7 +1024,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et factum est verbum Domini exercituum ad me, dicens :</p>
     <p class="base base-p">Und des HERRN Zebaoth Wort geschah zu mir und sprach:</p>
-    <p class="base base-o">Και έγεινε λόγος του Κυρίου των δυνάμεων προς εμέ, λέγων,</p>
     <p class="tra">Nang magkagayo'y dumating ang salita ng Panginoon ng mga hukbo sa akin, na nagsasabi,</p>
   </div>
 </div>
@@ -1101,7 +1032,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Loquere ad omnem populum terræ, et ad sacerdotes, dicens : Cum jejunaretis, et plangeretis in quinto et septimo per hos septuaginta annos, numquid jejunium jejunastis mihi ?</p>
     <p class="base base-p">Sage allem Volk im Lande und den Priestern und sprich: Da ihrfastetet und Leid truget im funften und siebenten Monden diese siebenzig Jahre lang, habt ihr mir so gefastet?</p>
-    <p class="base base-o">Λάλησον προς πάντα τον λαόν της γης και προς τους ιερείς, λέγων, και επενθείτε εν τω πέμπτω και εν τω εβδόμω μηνί τα εβδομήκοντα εκείνα έτη, ενηστεύετε τωόντι δι' εμέ; δι' εμέ;</p>
     <p class="tra">Salitain mo sa lahat ng tao ng lupain at sa mga saserdote, na iyong sabihin, Nang kayo'y magayuno, at tumangis ng ikalima at ikapitong buwan, nito ngang pitong pung taon, kayo baga'y nagayunong lubos sa akin, para sa akin?</p>
   </div>
 </div>
@@ -1110,7 +1040,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">et cum comedistis et bibistis, numquid non vobis comedistis et vobismetipsis bibistis ?</p>
     <p class="base base-p">Oder da ihr aftet und tranket, habt ihr nicht fur euch selbst gegessen und getrunken?</p>
-    <p class="base base-o">Και ότε ετρώγετε και ότε επίνετε, δεν ετρώγετε και επίνετε δι' εαυτούς;</p>
     <p class="tra">At pagka kayo'y nagsisikain, at pagka kayo'y nagsisiinom, di baga kayo'y nagsisikain sa ganang inyong sarili at nagsisiinom, sa ganang inyong sarili?</p>
   </div>
 </div>
@@ -1119,7 +1048,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">numquid non sunt verba quæ locutus est Dominus in manu prophetarum priorum, cum adhuc Jerusalem habitaretur ut esset opulenta, ipsa et urbes in circuitu ejus, et ad austrum, et in campestribus habitaretur ?</p>
     <p class="base base-p">Ist's nicht das, welches der HERR predigen lieft durch die vorigen Propheten, da Jerusalem bewohnet war und hatte die Fuile samt ihren Stadten umher, und Leute wohneten beide gegen Mittag und in Grunden?</p>
-    <p class="base base-o">δεν είναι ούτοι οι λόγοι, τους οποίους ο Κύριος ελάλησε διά των προτέρων προφητών, ότε η Ιερουσαλήμ ήτο κατωκημένη και εν ευημερία και αι πόλεις αυτής κύκλω εν αυτή, ότε κατωκείτο το μεσημβρινόν και η πεδινή;</p>
     <p class="tra">Di baga ninyo dapat dinggin ang mga salita na isinigaw ng Panginoon sa pamamagitan ng mga unang propeta, nang ang Jerusalem ay tinatahanan at nasa kaginhawahan, at ang mga bayan niyaon na nangasa palibot niya, at ang Timugan, at ang mababang lupain ay tinatahanan?</p>
   </div>
 </div>
@@ -1128,7 +1056,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et factum est verbum Domini ad Zachariam, dicens :</p>
     <p class="base base-p">Und des HERRN Wort geschah zu Sacharja und sprach:</p>
-    <p class="base base-o">Και έγεινε λόγος Κυρίου προς τον Ζαχαρίαν, λέγων,</p>
     <p class="tra">At ang salita ng Panginoon ay dumating kay Zacarias na nagsasabi,</p>
   </div>
 </div>
@@ -1137,7 +1064,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Hæc ait Dominus exercituum, dicens : Judicium verum judicate, et misericordiam et miserationes facite, unusquisque cum fratre suo.</p>
     <p class="base base-p">So spricht der HERR Zebaoth: Richtet recht, und ein jeglicher beweise an seinem Bruder Güte und Barmherzigkeit;</p>
-    <p class="base base-o">Ούτω λέγει ο Κύριος των δυνάμεων, λέγων, Κρίνετε κρίσιν αληθείας και κάμνετε έλεος και οικτιρμόν, έκαστος προς τον αδελφόν αυτού,</p>
     <p class="tra">Ganito ang sinalita ng Panginoon ng mga hukbo, na nagsasabi, Mangaglapat kayo ng tunay na kahatulan, at magpakita ng kaawaan at ng kahabagan ang bawa't isa sa kaniyang kapatid,</p>
   </div>
 </div>
@@ -1146,7 +1072,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et viduam, et pupillum, et advenam, et pauperem nolite calumniari : et malum vir fratri suo non cogitet in corde suo.</p>
     <p class="base base-p">und tut nicht Unrecht den Witwen, Waisen, Fremdlingen und Armen; und denke keiner wider seinen Bruder etwas Arges in seinem Herzen.</p>
-    <p class="base base-o">και μη καταδυναστεύετε την χήραν και τον ορφανόν, τον ξένον και τον πένητα, και μηδείς από σας ας μη βουλεύηται κακόν κατά του αδελφού αυτού εν τη καρδία αυτού.</p>
     <p class="tra">At huwag ninyong pighatiin ang babaing bao, ni ang ulila man, ang taga ibang lupa, ni ang dukha man; at sinoman sa inyo ay huwag magisip ng kasamaan sa inyong puso laban sa kaniyang kapatid.</p>
   </div>
 </div>
@@ -1155,7 +1080,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et noluerunt attendere, et averterunt scapulam recedentem, et aures suas aggravaverunt ne audirent.</p>
     <p class="base base-p">Aber sie wollten nicht aufmerken und kehreten mir den Rücken zu und verstockten ihre Ohren, daß sie nicht horeten,</p>
-    <p class="base base-o">Αλλ' ηρνήθησαν να προσέξωσι και έστρεψαν νώτα απειθή και εβάρυναν τα ώτα αυτών διά να μη ακούσωσι.</p>
     <p class="tra">Nguni't kanilang tinanggihang dinggin, at kanilang iniurong ang balikat, at nagtakip ng pakinig, upang huwag nilang marinig.</p>
   </div>
 </div>
@@ -1164,7 +1088,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et cor suum posuerunt ut adamantem, ne audirent legem, et verba quæ misit Dominus exercituum in spiritu suo per manum prophetarum priorum : et facta est indignatio magna a Domino exercituum.</p>
     <p class="base base-p">und stelleten ihre Herzen wie einen Demant, daß sie nicht horeten das Gesetz und Worte, welche der HERR Zebaoth sandte in seinem Geiste durch die vorigen Propheten, daher so grofter Zorn vom HERRN Zebaoth kommen ist.</p>
-    <p class="base base-o">Ναι, αυτοί έκαμον τας καρδίας αυτών αδάμαντα, ώστε να μη ακούσωσι τον νόμον και τους λόγους, τους οποίους ο Κύριος των δυνάμεων εξαπέστειλεν εν τω πνεύματι αυτού διά των προτέρων προφητών· διά τούτο ήλθεν οργή μεγάλη παρά του Κυρίου των δυνάμεων.</p>
     <p class="tra">Oo, kanilang ginawa na parang batong diamante ang kanilang puso upang huwag magsidinig ng kautusan, at ng mga salita na ipinasugo ng Panginoon ng mga hukbo sa pamamagitan ng kaniyang Espiritu, ng mga unang propeta: kaya't dumating ang malaking poot na mula sa Panginoon ng mga hukbo.</p>
   </div>
 </div>
@@ -1173,7 +1096,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et factum est sicut locutus est, et non audierunt : sic clamabunt et non exaudiam, dicit Dominus exercituum.</p>
     <p class="base base-p">Und ist also ergangen: Gleichwie geprediget ward, und sie nicht horeten, so wollt ich auch nicht horen, da sie riefen, spricht der HERR Zebaoth.</p>
-    <p class="base base-o">Όθεν καθώς αυτός έκραξε και αυτοί δεν εισήκουον, ούτως αυτοί έκραξαν και εγώ δεν εισήκουον, λέγει ο Κύριος των δυνάμεων·</p>
     <p class="tra">At nangyari, na kung paanong siya'y sumigaw, at hindi nila dininig, ay gayon sila sisigaw, at hindi ko didinggin, sabi ng Panginoon ng mga hukbo;</p>
   </div>
 </div>
@@ -1182,7 +1104,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et dispersi eos per omnia regna quæ nesciunt : et terra desolata est ab eis, eo quod non esset transiens et revertens : et posuerunt terram desiderabilem in desertum.</p>
     <p class="base base-p">Also hab ich sie zerstreuet unter alle Heiden, die sie nicht kennen, und ist das Land hinter ihnen wust geblieben, daß niemand drinnen wandelt noch wohnet, und ist das edle Land zur Wustung gemacht.</p>
-    <p class="base base-o">αλλά διεσκόρπισα αυτούς ως δι' ανεμοστροβίλου εις πάντα τα έθνη, τα οποία δεν εγνώριζον. Και ο τόπος ηρημώθη κατόπιν αυτών, ώστε δεν υπήρχεν ο διαβαίνων ουδέ ο επιστρέφων· και έθεσαν την γην την επιθυμητήν εις ερήμωσιν.</p>
     <p class="tra">Kundi aking pangangalatin sila sa pamamagitan ng ipoipo sa gitna ng lahat na bansa na hindi nila nakilala. Ganito nasira ang lupain pagkatapos nila, na anopa't walang tao na nagdadaan o nagbabalik: sapagka't kanilang inihandusay na sira ang kaayaayang lupain.</p>
   </div>
 </div>
@@ -1191,14 +1112,14 @@ body[data-conf="orthodox"] .base-o { display:block; }
 <section class="chap" id="c8">
   <div class="chhead">
     <span class="chrom">VIII</span>
-    <span class="chlbl">Caput 8</span>
+    <span class="chlbl chlbl-c">Caput VIII</span>
+    <span class="chlbl chlbl-p">Das 8. Capitel</span>
   </div>
 <div class="vb first" id="v8-1">
   <span class="vn">1</span>
   <div class="vt">
     <p class="base base-c">Et factum est verbum Domini exercituum, dicens :</p>
     <p class="base base-p">Und des HERRN Wort geschah zu mir und sprach:</p>
-    <p class="base base-o">Και έγεινε λόγος του Κυρίου των δυνάμεων, λέγων,</p>
     <p class="tra">At ang salita ng Panginoon ng mga hukbo ay dumating sa akin, na nagsasabi,</p>
   </div>
 </div>
@@ -1207,7 +1128,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Hæc dicit Dominus exercituum : Zelatus sum Sion zelo magno, et indignatione magna zelatus sum eam.</p>
     <p class="base base-p">So spricht der HERR Zebaoth: Ich habe uber Zion fast sehr geeifert und habe in groliem Zorn uber sie geeifert.</p>
-    <p class="base base-o">Ούτω λέγει ο Κύριος των δυνάμεων· είμαι ζηλότυπος διά την Σιών εν ζηλοτυπία μεγάλη και είμαι ζηλότυπος δι' αυτήν εν οργή μεγάλη.</p>
     <p class="tra">Ganito ang sabi ng Panginoon ng mga hukbo, Ako'y may paninibugho sa Sion ng malaking paninibugho, at ako'y may paninibugho sa kaniya ng malaking poot.</p>
   </div>
 </div>
@@ -1216,7 +1136,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Hæc dicit Dominus exercituum : Reversus sum ad Sion, et habitabo in medio Jerusalem : et vocabitur Jerusalem civitas veritatis, et mons Domini exercituum mons sanctificatus.</p>
     <p class="base base-p">So spricht der HERR: Ich kehre mich wieder zu Zion und will zu Jerusalem wohnen, daß Jerusalem soil eine Stadt der Wahrheit heilien und der Berg des HERRN Zebaoth ein Berg der Heiligkeit.</p>
-    <p class="base base-o">Ούτω λέγει Κύριος· Επέστρεψα εις την Σιών και θέλω κατοικήσει εν μέσω της Ιερουσαλήμ· και η Ιερουσαλήμ θέλει ονομασθή πόλις αληθείας, και το όρος του Κυρίου των δυνάμεων όρος άγιον.</p>
     <p class="tra">Ganito ang sabi ng Panginoon, Ako'y nagbalik sa Sion, at tatahan ako sa gitna ng Jerusalem: at ang Jerusalem ay tatawagin, Bayan ng katotohanan; at ang bundok ng Panginoon ng mga hukbo, Ang banal na bundok.</p>
   </div>
 </div>
@@ -1225,7 +1144,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Hæc dicit Dominus exercituum : Adhuc habitabunt senes et anus in plateis Jerusalem, et viri baculus in manu ejus præ multitudine dierum.</p>
     <p class="base base-p">So spricht der HERR Zebaoth: Es sollen noch furder wohnen in den Gassen zu Jerusalem alte Manner und Weiber, und die an Stecken gehen vor groliem Alter.</p>
-    <p class="base base-o">Ούτω λέγει ο Κύριος των δυνάμεων· Έτι θέλουσι καθήσει πρεσβύτεροι και πρεσβύτεραι εν ταις πλατείαις της Ιερουσαλήμ, και έκαστος με την ράβδον αυτού εν τη χειρί αυτού από του πλήθους των ημερών.</p>
     <p class="tra">Ganito ang sabi ng Panginoon ng mga hukbo, Tatahanan pa ng mga matandang lalake at babae ang mga lansangan ng Jerusalem, bawa't tao na may kaniyang tungkod sa kaniyang kamay dahil sa totoong katandaan.</p>
   </div>
 </div>
@@ -1234,7 +1152,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et plateæ civitatis complebuntur infantibus et puellis, ludentibus in plateis ejus.</p>
     <p class="base base-p">Und der Stadt Gassen sollen sein voll Knablein und Magdlein, die auf ihren Gassen spielen.</p>
-    <p class="base base-o">Και αι πλατείαι της πόλεως θέλουσιν είσθαι πλήρεις παιδίων και κορασίων παιζόντων εν ταις πλατείαις αυτής.</p>
     <p class="tra">At ang mga lansangan ng bayan ay mapupuno ng mga batang lalake at babae na naglalaro sa mga lansangan niyaon.</p>
   </div>
 </div>
@@ -1243,7 +1160,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Hæc dicit Dominus exercituum : Si videbitur difficile in oculis reliquiarum populi hujus in diebus illis, numquid in oculis meis difficile erit ? dicit Dominus exercituum.</p>
     <p class="base base-p">So spricht der HERR Zebaoth: Dunket sie solches unmoglich sein vor den Augen dieses ubrigen Volks zu dieser Zeit? Sollt es darum auch unmoglich sein vor meinen Augen? spricht der HERR Zebaoth.</p>
-    <p class="base base-o">Ούτω λέγει ο Κύριος των δυνάμεων· Εάν φανή θαυμαστόν εις τους οφθαλμούς του υπολοίπου του λαού τούτου εν ταις ημέραις εκείναις, μήπως θέλει φανή θαυμαστόν και εις τους οφθαλμούς μου; λέγει ο Κύριος των δυνάμεων.</p>
     <p class="tra">Ganito ang sabi ng Panginoon ng mga hukbo, Kung maging kagilagilalas sa mga mata ng nalabi sa bayang ito sa mga araw na yaon, magiging kagilagilalas din naman baga sa aking mga mata? sabi ng Panginoon ng mga hukbo.</p>
   </div>
 </div>
@@ -1252,7 +1168,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Hæc dicit Dominus exercituum : Ecce ego salvabo populum meum de terra orientis et de terra occasus solis.</p>
     <p class="base base-p">So spricht der HERR Zebaoth: Siehe, ich will mein Volk erlosen vom Lande gegen Aufgang und vom Lande gegen Niedergang der Sonne</p>
-    <p class="base base-o">Ούτω λέγει ο Κύριος των δυνάμεων· Ιδού, εγώ θέλω σώσει τον λαόν μου από της γης της ανατολής και από της γης της δύσεως του ηλίου,</p>
     <p class="tra">Ganito ang sabi ng Panginoon ng mga hukbo, Narito, aking ililigtas ang aking bayan sa lupaing silanganan at sa lupaing kalunuran;</p>
   </div>
 </div>
@@ -1261,7 +1176,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et adducam eos, et habitabunt in medio Jerusalem : et erunt mihi in populum, et ego ero eis in Deum, in veritate et in justitia.</p>
     <p class="base base-p">und will sie herzubringen, daß sie zu Jerusalem wohnen; und sie sollen mein Volk sein, und ich will ihr Gott sein in Wahrheit und Gerechtigkeit.</p>
-    <p class="base base-o">και θέλω φέρει αυτούς και θέλουσι κατοικήσει εν μέσω της Ιερουσαλήμ· και θέλουσιν είσθαι λαός μου και εγώ θέλω είσθαι Θεός αυτών εν αληθεία και δικαιοσύνη.</p>
     <p class="tra">At aking dadalhin sila, at sila'y magsisitahan sa gitna ng Jerusalem; at sila'y magiging aking bayan, at ako'y magiging kanilang Dios, sa katotohanan at sa katuwiran.</p>
   </div>
 </div>
@@ -1270,7 +1184,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Hæc dicit Dominus exercituum : Confortentur manus vestræ, qui auditis in his diebus sermones istos per os prophetarum, in die qua fundata est domus Domini exercituum, ut templum ædificaretur.</p>
     <p class="base base-p">So spricht der HERR Zebaoth: Starket eure Hande die ihr horet diese Worte zu dieser Zeit durch der Propheten Mund, des Tages, da der Grund gelegt ist an des HERRN Zebaoth Hause, dafi der Tempel gebauet wurde.</p>
-    <p class="base base-o">Ούτω λέγει ο Κύριος των δυνάμεων· Ενισχύσατε τας χείρας σας, σεις οι ακούοντες εν ταις ημέραις ταύταις τους λόγους τούτους διά στόματος των προφητών, οίτινες ήσαν εν τη ημέρα καθ' ην εθεμελιώθη ο οίκος του Κυρίου των δυνάμεων, διά να οικοδομηθή ο ναός.</p>
     <p class="tra">Ganito ang sabi ng Panginoon ng mga hukbo, Inyong palakasin ang inyong mga kamay, ninyong nangakakarinig sa mga araw na ito ng mga salitang ito sa bibig ng mga propeta, mula nang araw na ilagay ang tatagang-baon sa bahay ng Panginoon ng mga hukbo, sa templo, upang matayo.</p>
   </div>
 </div>
@@ -1279,7 +1192,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Siquidem ante dies illos merces hominum non erat, nec merces jumentorum erat : neque introëunti, neque exeunti erat pax præ tribulatione : et dimisi omnes homines, unumquemque contra proximum suum.</p>
     <p class="base base-p">Denn vor diesen Tagen war der Menschen Arbeit vergebens, und der Tiere Arbeit war nichts, und war kein Friede vor Trubsal denen, die aus- und einzogen, sondern ich lieli alle Menschen gehen, einen jeglichen wider seinen Nachsten.</p>
-    <p class="base base-o">Διότι προ των ημερών εκείνων δεν ήτο μισθός διά τον άνθρωπον ουδέ μισθός διά το κτήνος ουδέ ειρήνη εις τον εξερχόμενον ή εισερχόμενον εξ αιτίας της θλίψεως, διότι εξαπέστειλα πάντας τους ανθρώπους έκαστον κατά του πλησίον αυτού.</p>
     <p class="tra">Sapagka't bago dumating ang mga araw na yaon ay walang upa sa tao, ni anomang upa sa hayop; at wala ring anomang kapayapaan doon sa lumalabas o pumapasok dahil sa kaaway: sapagka't aking inilagay ang lahat na tao na bawa't isa'y laban sa kaniyang kapuwa.</p>
   </div>
 </div>
@@ -1288,7 +1200,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Nunc autem non juxta dies priores ego faciam reliquiis populi hujus, dicit Dominus exercituum,</p>
     <p class="base base-p">Aber nun will ich nicht, wie in den vorigen Tagen, mit den ubrigen dieses Volks fahren, spricht der HERR Zebaoth,</p>
-    <p class="base base-o">Αλλά τώρα, εγώ δεν θέλω φέρεσθαι προς το υπόλοιπον του λαού τούτου καθώς εν ταις αρχαίαις ημέραις, λέγει ο Κύριος των δυνάμεων.</p>
     <p class="tra">Nguni't ngayo'y sa nalabi sa bayang ito ay hindi ako magiging gaya ng mga unang araw, sabi ng Panginoon ng mga hukbo.</p>
   </div>
 </div>
@@ -1297,7 +1208,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">sed semen pacis erit : vinea dabit fructum suum, et terra dabit germen suum, et cæli dabunt rorem suum : et possidere faciam reliquias populi hujus universa hæc.</p>
     <p class="base base-p">sondern sie sollen Samen des Friedens sein. Der Weinstock soil seine Frucht geben und das Land sein Gewachs geben, und der Himmel soil seinen Tau geben; und ich will die ubrigen dieses Volks solches alles besitzen lassen.</p>
-    <p class="base base-o">Διότι ο σπόρος θέλει είσθαι της ειρήνης· η άμπελος θέλει δώσει τον καρπόν αυτής και η γη θέλει δώσει τα γεννήματα αυτής και οι ουρανοί θέλουσι δώσει την δρόσον αυτών, και θέλω κληροδοτήσει εις το υπόλοιπον του λαού τούτου πάντα ταύτα.</p>
     <p class="tra">Sapagka't magkakaroon ng binhi ng kapayapaan; ang puno ng ubas ay magbubunga, at ang lupa'y mapapakinabangan, at ibibigay ng langit ang kaniyang hamog; at aking ipamamana sa nalabi sa bayang ito ang lahat na bagay na ito.</p>
   </div>
 </div>
@@ -1306,7 +1216,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et erit : sicut eratis maledictio in gentibus, domus Juda et domus Israël, sic salvabo vos, et eritis benedictio. Nolite timere ; confortentur manus vestræ.</p>
     <p class="base base-p">Und soli geschehen, wie ihr vom Hause Juda und vom Hause Israel seid ein Fluch gewesen unter den Heiden, so will ich euch erlosen, daß ihr sollt ein Segen sein. Furchtet euch nur nicht und starket eure Handel</p>
-    <p class="base base-o">Και καθώς ήσθε κατάρα μεταξύ των εθνών, οίκος Ιούδα και οίκος Ισραήλ, ούτω θέλω σας διασώσει και θέλετε είσθαι ευλογία· μη φοβείσθε· ας ενισχύωνται αι χείρές σας.</p>
     <p class="tra">At mangyayari, na kung paanong kayo'y naging isang sumpa sa gitna ng mga bansa, Oh sangbahayan ni Juda, at sangbahayan ni Israel, gayon ko kayo ililigtas, at kayo'y magiging isang kapalaran. Huwag kayong mangatakot, kundi inyong palakasin ang inyong mga kamay.</p>
   </div>
 </div>
@@ -1315,7 +1224,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Quia hæc dicit Dominus exercituum : Sicut cogitavi ut affligerem vos, cum ad iracundiam provocassent patres vestri me, dicit Dominus,</p>
     <p class="base base-p">So spricht der HERR Zebaoth: Gleichwie ich gedachte euch zu plagen, da mich eure Vater erzürneten, spricht der HERR Zebaoth, und reuete mich nicht,</p>
-    <p class="base base-o">Διότι ούτω λέγει ο Κύριος των δυνάμεων· Καθ' ον τρόπον εστοχάσθην να σας τιμωρήσω, ότε οι πατέρες σας με παρώργισαν, λέγει ο Κύριος των δυνάμεων, και δεν μετενόησα,</p>
     <p class="tra">Sapagka't ganito ang sabi ng Panginoon ng mga hukbo, Kung paanong inisip kong gawan kayo ng masama, nang mungkahiin ako ng inyong mga magulang sa poot, sabi ng Panginoon ng mga hukbo, at hindi ako nagsisi;</p>
   </div>
 </div>
@@ -1324,7 +1232,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">et non sum misertus : sic conversus cogitavi, in diebus istis, ut benefaciam domui Juda et Jerusalem. Nolite timere.</p>
     <p class="base base-p">also gedenke ich nun wiederum in diesen Tagen wohlzutun Jerusalem und dem Hause Juda. Furchtet euch nur nichts!</p>
-    <p class="base base-o">ούτω πάλιν εβουλεύθην εν ταις ημέραις ταύταις να αγαθοποιήσω την Ιερουσαλήμ και τον οίκον του Ιούδα· μη φοβείσθε.</p>
     <p class="tra">Gayon ko uli inisip sa mga araw na ito na gawan ng mabuti ang Jerusalem at ang sangbahayan ni Juda: huwag kayong mangatakot.</p>
   </div>
 </div>
@@ -1333,7 +1240,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Hæc sunt ergo verba quæ facietis : loquimini veritatem unusquisque cum proximo suo : veritatem et judicium pacis judicate in portis vestris.</p>
     <p class="base base-p">Das ist's aber, das ihr tun sollt: Rede einer mit dem andern Wahrheit und richtet recht und schaffet Frieden in euren Toren;</p>
-    <p class="base base-o">Ούτοι είναι οι λόγοι, τους οποίους θέλετε κάμει· λαλείτε έκαστος την αλήθειαν προς τον πλησίον αυτού· αλήθειαν και κρίσιν ειρήνης κρίνετε εν ταις πύλαις σας.</p>
     <p class="tra">Ito ang mga bagay na inyong gagawin, Magsalita ang bawa't isa sa inyo ng katotohanan sa kaniyang kapuwa; humatol kayo ng katotohanan at kapayapaan sa inyong mga pintuang-bayan;</p>
   </div>
 </div>
@@ -1342,7 +1248,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et unusquisque malum contra amicum suum ne cogitetis in cordibus vestris, et juramentum mendax ne diligatis : omnia enim hæc sunt quæ odi, dicit Dominus.</p>
     <p class="base base-p">und denke keiner kein Arges in seinem Herzen wider seinen Nachsten und liebet nicht falsche Eide; denn solches alles hasse ich, spricht der HERR.</p>
-    <p class="base base-o">Και μη βουλεύεσθε κακόν εν ταις καρδίαις σας έκαστος κατά του πλησίον αυτού και όρκον ψευδή μη αγαπάτε· διότι πάντα ταύτα είναι εκείνα, τα οποία μισώ, λέγει Κύριος.</p>
     <p class="tra">At huwag magisip ang sinoman sa inyo ng kasamaan sa inyong puso laban sa kaniyang kapuwa; at huwag ninyong ibigin ang sinungaling na sumpa: sapagka't ang lahat ng ito ay mga bagay na aking kinapopootan, sabi ng Panginoon.</p>
   </div>
 </div>
@@ -1351,7 +1256,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et factum est verbum Domini exercituum ad me, dicens :</p>
     <p class="base base-p">Und es geschah des HERRN Zebaoth Wort zu mir und sprach:</p>
-    <p class="base base-o">Και έγεινε λόγος του Κυρίου των δυνάμεων προς εμέ, λέγων,</p>
     <p class="tra">At ang salita ng Panginoon ng mga hukbo ay dumating sa akin, na nagsasabi,</p>
   </div>
 </div>
@@ -1360,7 +1264,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Hæc dicit Dominus exercituum : Jejunium quarti, et jejunium quinti, et jejunium septimi, et jejunium decimi erit domui Juda in gaudium et lætitiam et in solemnitates præclaras. Veritatem tantum et pacem diligite.</p>
     <p class="base base-p">So spricht der HERR Zebaoth: Die Fasten des vierten, funften, siebenten und zehnten Monden sollen dem Hause Juda zur Freude und Wonne und zu frohlichen Jahrfesten werden. Allein liebet Wahrheit und Frieden!</p>
-    <p class="base base-o">Ούτω λέγει ο Κύριος των δυνάμεων· Η νηστεία του τετάρτου μηνός και η νηστεία του πέμπτου και η νηστεία του εβδόμου και η νηστεία του δεκάτου θέλουσιν είσθαι εις τον οίκον Ιούδα εν χαρά και εν ευφροσύνη και εν ευθύμοις εορταίς· όθεν αγαπάτε την αλήθειαν και την ειρήνην.</p>
     <p class="tra">Ganito ang sabi ng Panginoon ng mga hukbo, Ang ayuno sa ikaapat na buwan, at ang ayuno sa ikalima, at ang ayuno sa ikapito, at ang ayuno sa ikasangpu, ay magiging sa sangbahayan, ni Juda'y kagalakan at kaligayahan, at mga masayang kapistahan; kaya't inyong ibigin ang katotohanan at kapayapaan.</p>
   </div>
 </div>
@@ -1369,7 +1272,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Hæc dicit Dominus exercituum, usquequo veniant populi et habitent in civitatibus multis :</p>
     <p class="base base-p">So spricht der HERR Zebaoth: Weiter werden noch kommen viel Volker und vieler Stadte Burger,</p>
-    <p class="base base-o">Ούτω λέγει ο Κύριος των δυνάμεων· Έτι θέλουσιν ελθεί λαοί και οι κατοικούντες πόλεις πολλάς·</p>
     <p class="tra">Ganito ang sabi ng Panginoon ng mga hukbo, Mangyayari pa, na darating ang mga bansa, at ang nagsisitahan sa maraming bayan;</p>
   </div>
 </div>
@@ -1378,7 +1280,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">et vadant habitatores, unus ad alterum, dicentes : Eamus, et deprecemur faciem Domini, et quæramus Dominum exercituum : vadam etiam ego.</p>
     <p class="base base-p">und werden die Burger von einer Stadt gehen zur andern und sagen: Lafit uns gehen, zu bitten vor dem HERRN und zu suchen den HERRN Zebaoth; wir wollen auch mit euch gehen.</p>
-    <p class="base base-o">και οι κάτοικοι της μιας θέλουσιν υπάγει εις την άλλην, λέγοντες, Ας υπάγωμεν σπεύδοντες διά να εξιλεώσωμεν το πρόσωπον του Κυρίου και να εκζητήσωμεν τον Κύριον των δυνάμεων· θέλω υπάγει και εγώ.</p>
     <p class="tra">At ang nagsisitahan sa isang bayan ay paroroon sa isa, na magsasabi, Magsiparoon tayong madali, na ating hilingin ang lingap ng Panginoon, at hanapin ang Panginoon ng mga hukbo; ako man ay paroroon.</p>
   </div>
 </div>
@@ -1387,7 +1288,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et venient populi multi, et gentes robustæ, ad quærendum Dominum exercituum in Jerusalem, et deprecandam faciem Domini.</p>
     <p class="base base-p">Also werden viel Volker und die Heiden mit Haufen kommen, zu suchen den HERRN Zebaoth zu Jerusalem, zu bitten vor dem HERRN.</p>
-    <p class="base base-o">Και λαοί πολλοί και έθνη ισχυρά θέλουσιν ελθεί διά να εκζητήσωσι τον Κύριον των δυνάμεων εν Ιερουσαλήμ και να εξιλεώσωσι το πρόσωπον του Κυρίου.</p>
     <p class="tra">Oo, maraming bansa at mga matibay na bansa ay magsisiparoon upang hanapin ang Panginoon ng mga hukbo sa Jerusalem, at hilingin ang lingap ng Panginoon.</p>
   </div>
 </div>
@@ -1396,7 +1296,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Hæc dicit Dominus exercituum : In diebus illis, in quibus apprehendent decem homines ex omnibus linguis gentium, et apprehendent fimbriam viri Judæi, dicentes : Ibimus vobiscum : audivimus enim quoniam Deus vobiscum est.</p>
     <p class="base base-p">So spricht der HERR Zebaoth: Zu der Zeit werden zehn Manner aus allerlei Sprachen der Heiden einen judischen Mann bei dem Zipfel ergreifen und sagen: Wir wollen mit euch gehen; denn wir horen, daß Gott mit euch ist.</p>
-    <p class="base base-o">Ούτω λέγει ο Κύριος των δυνάμεων· Εν ταις ημέραις εκείναις δέκα άνδρες εκ πασών των γλωσσών των εθνών θέλουσι πιάσει σφιγκτά, ναι, θέλουσι πιάσει σφιγκτά το κράσπεδον ενός Ιουδαίου, λέγοντες· θέλομεν υπάγει με σάς· διότι ηκούσαμεν ότι ο Θεός είναι με σας.</p>
     <p class="tra">Ganito ang sabi ng Panginoon ng mga hukbo, Sa mga araw na yao'y mangyayari, na sangpung lalake sa lahat ng wika sa mga bansa ay magtatanganan, sila nga'y magsisitangan sa laylayan niya na Judio, na mangagsasabi, Kami ay magsisiyaong kasama mo, sapagka't aming narinig na ang Dios ay kasama mo.</p>
   </div>
 </div>
@@ -1405,14 +1304,14 @@ body[data-conf="orthodox"] .base-o { display:block; }
 <section class="chap" id="c9">
   <div class="chhead">
     <span class="chrom">IX</span>
-    <span class="chlbl">Caput 9</span>
+    <span class="chlbl chlbl-c">Caput IX</span>
+    <span class="chlbl chlbl-p">Das 9. Capitel</span>
   </div>
 <div class="vb first" id="v9-1">
   <span class="vn">1</span>
   <div class="vt">
     <p class="base base-c">Onus verbi Domini in terra Hadrach  et Damasci requiei ejus,  quia Domini est oculus hominis et omnium tribuum Israël.</p>
     <p class="base base-p">Dies ist die Last, davon der HERR redet uber das Land Hadrach und uber Damaskus, auf welches es sich verlasset (denn der HERR schauet auf die Menschen und auf alle Stamme Israels),</p>
-    <p class="base base-o">Το φορτίον του λόγου του Κυρίου κατά της γης Αδράχ και της Δαμασκού, της αναπαύσεως αυτού· διότι του Κυρίου είναι το να εφορά τους ανθρώπους και πάσας τας φυλάς του Ισραήλ·</p>
     <p class="tra">Ang hula na salita ng Panginoon laban sa lupain ng Hadrach, at Damasco ang magiging pahingahang dako niyaon, (sapagka't ang mata ng tao at ang lahat ng mga lipi ng Israel ay nasa Panginoon);</p>
   </div>
 </div>
@@ -1421,7 +1320,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Emath quoque in terminis ejus, et Tyrus, et Sidon :  assumpserunt quippe sibi sapientiam valde.</p>
     <p class="base base-p">dazu auch uber Hamath, die mit ihrgrenzet, uber Tyrus und Zidon auch, die fast weise sind.</p>
-    <p class="base base-o">ότι και κατά της Αιμάθ, ήτις είναι όμορος αυτής, κατά της Τύρου και Σιδώνος, αν και ήναι σοφαί σφόδρα.</p>
     <p class="tra">At gayon din sa Hamath, na kahangganan nito; sa Tiro at Sidon, sapagka't sila'y totoong pantas.</p>
   </div>
 </div>
@@ -1430,7 +1328,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et ædificavit Tyrus munitionem suam,  et coacervavit argentum quasi humum,  et aurum ut lutum platearum.</p>
     <p class="base base-p">Denn Tyrus bauet feste und sammelt Silber wie Sand und Gold wie Kot auf der Gasse.</p>
-    <p class="base base-o">Και η Τύρος ωκοδόμησεν εις εαυτήν οχύρωμα και επεσώρευσεν αργύριον ως χώμα και χρυσίον ως πηλόν των οδών.</p>
     <p class="tra">At ang Tiro ay nagtayo ng katibayan, at nagbunton ng pilak na parang alabok, at ng mainam na ginto na parang putik sa mga lansangan.</p>
   </div>
 </div>
@@ -1439,7 +1336,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Ecce Dominus possidebit eam :  et percutiet in mari fortitudinem ejus,  et hæc igni devorabitur.</p>
     <p class="base base-p">Aber siehe, der Herr wird sie verderben und wird ihre Macht, die sie auf dem Meer hat, schlagen, daß sie wird sein, als die mit Feuer verbrannt ist.</p>
-    <p class="base base-o">Ιδού, ο Κύριος θέλει σκυλεύσει αυτήν και θέλει πατάξει εν τη θαλάσση την δύναμιν αυτής, και αυτή θέλει καταναλωθή εν πυρί.</p>
     <p class="tra">Narito, aalisan siya ng Panginoon, at kaniyang sisirain sa dagat ang kapangyarihan niya; at siya'y lalamunin ng apoy.</p>
   </div>
 </div>
@@ -1448,7 +1344,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Videbit Ascalon, et timebit,  et Gaza, et dolebit nimis,  et Accaron, quoniam confusa est spes ejus :  et peribit rex de Gaza,  et Ascalon non habitabitur.</p>
     <p class="base base-p">Wenn das Asklon sehen wird, wird sie erschrecken, und Gasa wird sehr angst werden; dazu Ekron wird betrubt werden, wenn sie solches siehet. Denn es wird aus sein mit dem Kdnige zu Gasa, und zu Asklon wird man nicht wohnen.</p>
-    <p class="base base-o">Θέλει ιδεί η Ασκάλων και φοβηθή, και η Γάζα και θέλει λυπηθή σφόδρα, και η Ακκαρών, διότι η προσδοκία αυτής θέλει ματαιωθή· και θέλει απολεσθή ο βασιλεύς εκ της Γάζης και η Ασκάλων δεν θέλει κατοικείσθαι.</p>
     <p class="tra">Makikita ng Ascalon, at matatakot; ng Gaza rin, at mamamanglaw na mainam, at ng Ecron, sapagka't ang kaniyang pagasa ay mapapahiya; at ang hari ay mamamatay sa Gaza, at ang Ascalon ay hindi tatahanan.</p>
   </div>
 </div>
@@ -1457,7 +1352,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et sedebit separator in Azoto,  et disperdam superbiam Philisthinorum.</p>
     <p class="base base-p">Zu Asdod werden Fremde wohnen, und ich will der Philister Pracht ausrotten:</p>
-    <p class="base base-o">Και αλλογενής θέλει καθήσει εν τη Αζώτω, και θέλω καθαιρέσει την υπερηφανίαν των Φιλισταίων.</p>
     <p class="tra">At isang anak sa ligaw ay tatahan sa Asdod, at aking puputulin ang kapalaluan ng mga Filisteo.</p>
   </div>
 </div>
@@ -1466,7 +1360,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et auferam sanguinem ejus de ore ejus,  et abominationes ejus de medio dentium ejus :  et relinquetur etiam ipse Deo nostro,  et erit quasi dux in Juda,  et Accaron quasi Jebusæus.</p>
     <p class="base base-p">Und ich will ihr Blut von ihrem Munde tun und ihre Greuel von ihren Zahnen, daß sie auch sollen unserm Gott uberbleiben, daß sie werden wie Fursten in Juda und Ekron wie die Jebusiter.</p>
-    <p class="base base-o">Και θέλω αφαιρέσει το αίμα αυτών από του στόματος αυτών και τα βδελύγματα αυτών από του μέσου των οδόντων αυτών· και ο εναπολειφθείς θέλει είσθαι και αυτός διά τον Θεόν ημών, και θέλει είσθαι ως χιλίαρχος εις τον Ιούδαν· και Ακκαρών θέλει είσθαι ως ο Ιεβουσαίος.</p>
     <p class="tra">At aking aalisin ang kaniyang dugo sa kaniyang bibig, at ang kaniyang mga kasuklamsuklam sa pagitan ng kaniyang mga ngipin; at siya nama'y maiiwan para sa ating Dios: at siya'y magiging gaya ng pangulo sa Juda, at ang Ecron ay gaya ng Jebuseo.</p>
   </div>
 </div>
@@ -1475,7 +1368,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et circumdabo domum meam  ex his qui militant mihi euntes et revertentes :  et non transibit super eos ultra exactor,  quia nunc vidi in oculis meis.</p>
     <p class="base base-p">Und ich will selbst urn mein Haus das Lager sein, daß nicht dürfe Stehens und Hinundwiedergehens, dad nicht mehr über sie fahre der Treiber; denn ich hab es nun angesehen mit meinen Augen.</p>
-    <p class="base base-o">Και θέλω στρατοπεδεύσει κύκλω του οίκου μου εναντίον στρατεύματος, εναντίον διαβαίνοντος και εναντίον επιστρέφοντος· και καταδυναστεύων δεν θέλει περάσει πλέον επ' αυτούς· διότι τώρα είδον με τους οφθαλμούς μου.</p>
     <p class="tra">At ako'y magtitirik ng kampamento sa palibot ng aking bahay laban sa hukbo, na walang makadadaan ni makababalik; at walang mamimighati na daraan pa sa mga yaon: sapagka't ngayo'y tumingin ako ng aking mga mata.</p>
   </div>
 </div>
@@ -1484,7 +1376,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Exsulta satis, filia Sion ;  jubila, filia Jerusalem :  ecce rex tuus veniet tibi justus, et salvator :  ipse pauper, et ascendens super asinam  et super pullum filium asinæ.</p>
     <p class="base base-p">Aber du, Tochter Zion, freue dich sehr, und du, Tochter Jerusalem, jauchze! Siehe, dein Konig kommt zu dir, ein Gerechter und ein Heifer, arm, und reitet auf einem Esel und auf einem jungen Fullen der Eselin!</p>
-    <p class="base base-o">Χαίρε σφόδρα, θύγατερ Σιών· αλάλαζε, θύγατερ Ιερουσαλήμ· ιδού, ο βασιλεύς σου έρχεται προς σέ· αυτός είναι δίκαιος και σώζων· πραΰς και καθήμενος επί όνου και επί πώλου υιού υποζυγίου.</p>
     <p class="tra">Magalak kang mainam, Oh anak na babae ng Sion; humiyaw ka, Oh anak na babae ng Jerusalem: narito, ang iyong hari ay naparirito sa iyo; siya'y ganap at may pagliligtas; mapagmababa, at nakasakay sa isang asno, sa isang batang asno na anak ng asnong babae.</p>
   </div>
 </div>
@@ -1493,7 +1384,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et disperdam quadrigam ex Ephraim,  et equum de Jerusalem,  et dissipabitur arcus belli :  et loquetur pacem gentibus,  et potestas ejus a mari usque ad mare,  et a fluminibus usque ad fines terræ.</p>
     <p class="base base-p">Denn ich will die Wagen abtun von Ephraim und die Rosse von Jerusalem, und der Streitbogen soli zerbrochen werden. Denn erwird Frieden lehren unter den Heiden, und seine Herrschaft wird sein von einem Meer bis ans andere und vom Wasser bis an der Welt Ende.</p>
-    <p class="base base-o">Και θέλω εξολοθρεύσει την άμαξαν από του Εφραΐμ και τον ίππον από της Ιερουσαλήμ και θέλει εξολοθρευθή το τόξον το πολεμικόν, και αυτός θέλει λαλήσει ειρήνην προς τα έθνη, και η εξουσία αυτού θέλει είσθαι από θαλάσσης έως θαλάσσης και από ποταμού έως των περάτων της γης.</p>
     <p class="tra">At aking ihihiwalay ang karo mula sa Ephraim, at ang kabayo'y mula sa Jerusalem; at ang mga busog na pangbaka ay mapuputol; at siya'y magsasalita ng kapayapaan sa mga bansa: at ang kaniyang kapangyarihan ay magiging sa dagat at dagat, at mula sa ilog hanggang sa mga wakas ng lupa.</p>
   </div>
 </div>
@@ -1502,7 +1392,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Tu quoque in sanguine testamenti tui  emisisti vinctos tuos de lacu in quo non est aqua.</p>
     <p class="base base-p">Du lassest auch durchs Blut deines Bundes aus deine Gefangenen aus der Grube, da kein Wasser innen ist.</p>
-    <p class="base base-o">Και περί σου, διά το αίμα της διαθήκης σου εγώ εξήγαγον τους δεσμίους σου εκ λάκκου ανύδρου.</p>
     <p class="tra">Tungkol sa iyo naman, dahil sa dugo ng iyong tipan ay aking pinalabas ang iyong mga bilanggo sa hukay na walang tubig.</p>
   </div>
 </div>
@@ -1511,7 +1400,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Convertimini ad munitionem, vincti spei :  hodie quoque annuntians duplicia reddam tibi.</p>
     <p class="base base-p">So kehreteuch nun zur Festung, ihr, die ihrauf Hoffnung gefangen liegt; denn auch heute will ich verkundigen und dir zwiefaltiges vergelten.</p>
-    <p class="base base-o">Επιστρέψατε εις το οχύρωμα, δέσμιοι της ελπίδος· έτι και σήμερον κηρύττω ότι θέλω ανταποδώσει διπλά εις σε.</p>
     <p class="tra">Mangagbalik kayo sa katibayan, kayong mga bilanggo na may pag-asa, ngayo'y aking inihahayag na aking igagawad sa inyo na makalawa.</p>
   </div>
 </div>
@@ -1520,7 +1408,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Quoniam extendi mihi Judam quasi arcum :  implevi Ephraim :  et suscitabo filios tuos, Sion,  super filios tuos, Græcia :  et ponam te quasi gladium fortium.</p>
     <p class="base base-p">Denn ich habe mir Juda gespannet zum Bogen und Ephraim gerustet und will deine Kinder, Zion, erwecken über deine Kinder, Griechenland; und will dich stelien als ein Schwert der Riesen.</p>
-    <p class="base base-o">Διότι ενέτεινα τον Ιούδαν δι' εμαυτόν ως τόξον· ισχυρώς ενέτεινα τον Εφραΐμ και εξήγειρα τα τέκνα σου, Σιών, κατά των τέκνων σου, Ελλάς· και σε έκαμον ως ρομφαίαν μαχητού.</p>
     <p class="tra">Sapagka't aking binaluktot ang Juda para sa akin, aking inakmaan ang Ephraim ng busog; at aking gigisingin ang iyong mga anak, Oh Sion, laban sa iyong mga anak, Oh Grecia, at gagawin kitang parang tabak ng makapangyarihang lalake.</p>
   </div>
 </div>
@@ -1529,7 +1416,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et Dominus Deus super eos videbitur,  et exibit ut fulgur jaculum ejus :  et Dominus Deus in tuba canet,  et vadet in turbine austri.</p>
     <p class="base base-p">Und der HERR wird über ihnen erscheinen, und seine Pfeile werden ausfahren wie der Blitz. Und der Herr HERR wird die Posaune blasen und wird einhertreten als die Wetter vom Mittage.</p>
-    <p class="base base-o">Και ο Κύριος θέλει φανή επ' αυτούς και το βέλος αυτού θέλει εξέλθει ως αστραπή· και Κύριος ο Θεός θέλει σαλπίσει εν σάλπιγγι και θέλει κινηθή με ανεμοστροβίλους του νότου.</p>
     <p class="tra">At ang Panginoo'y makikita sa itaas nila; at lalabas ang kaniyang pana na parang kidlat; at ang Panginoong Dios ay hihihip ng pakakak, at yayaon na kasama ng mga ipoipo sa timugan.</p>
   </div>
 </div>
@@ -1538,7 +1424,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Dominus exercituum proteget eos :  et devorabunt, et subjicient lapidibus fundæ :  et bibentes inebriabuntur quasi a vino,  et replebuntur ut phialæ,  et quasi cornua altaris.</p>
     <p class="base base-p">Der HERR Zebaoth wird sie schützen, dafi sie fressen und unter sich bringen mit Schleudersteinen, daß sie trinken und rumoren als vom Wein und voll werden als das Becken und wie die Ecken des Altars.</p>
-    <p class="base base-o">Ο Κύριος των δυνάμεων θέλει υπερασπίζεσθαι αυτούς και θέλουσι καταναλώσει τους εναντίους και καταβάλει με λίθους σφενδόνης και θέλουσι πίει και θορυβήσει ως από οίνου· και θέλουσιν εμπλησθή ως φιάλη και ως αι γωνίαι του θυσιαστηρίου.</p>
     <p class="tra">Ipagsasanggalang sila ng Panginoon ng mga hukbo; at sila'y mangananakmal, at kanilang yayapakan ang mga batong panghilagpos; at sila'y magsisiinom, at mangagiingay na gaya ng sa alak; at sila'y mangapupunong parang mga taza, parang mga sulok ng dambana.</p>
   </div>
 </div>
@@ -1547,7 +1432,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et salvabit eos Dominus Deus eorum in die illa,  ut gregem populi sui,  quia lapides sancti elevabuntur super terram ejus.</p>
     <p class="base base-p">Und der HERR, ihr Gott, wird ihnen zu der Zeit helfen wie einer Herde seines Volks; denn es werden in seinem Lande heilige Steine aufgerichtet werden.</p>
-    <p class="base base-o">Και Κύριος ο Θεός αυτών θέλει σώσει αυτούς εν τη ημέρα εκείνη, ως το ποίμνιον του λαού αυτού, επειδή ως λίθοι διαδήματος θέλουσιν υψωθή επί την γην αυτού.</p>
     <p class="tra">At ililigtas sila ng Panginoon nilang Dios sa araw na yaon na gaya ng kawan ng kaniyang bayan; sapagka't magiging gaya ng mga bato ng isang putong na nataas sa mataas sa kaniyang lupain.</p>
   </div>
 </div>
@@ -1556,7 +1440,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Quid enim bonum ejus est,  et quid pulchrum ejus,  nisi frumentum electorum,  et vinum germinans virgines ?</p>
     <p class="base base-p">Denn was haben sie Gutes vor andern und was haben sie Schones vor andern? Korn, das Jünglinge, und Most, der Jungfrauen zeuget.</p>
-    <p class="base base-o">Διότι πόση είναι η αγαθότης αυτού και πόση η ώραιότης αυτού· ο σίτος θέλει κάμει ευθύμους τους νεανίσκους και το γλεύκος τας παρθένους.</p>
     <p class="tra">Sapagka't pagkalaki ng kaniyang kabutihan, at pagkalaki ng kaniyang kagandahan! pagiginhawahin ng trigo ang mga binata, at ng bagong alak ang mga dalaga;</p>
   </div>
 </div>
@@ -1565,14 +1448,14 @@ body[data-conf="orthodox"] .base-o { display:block; }
 <section class="chap" id="c10">
   <div class="chhead">
     <span class="chrom">X</span>
-    <span class="chlbl">Caput 10</span>
+    <span class="chlbl chlbl-c">Caput X</span>
+    <span class="chlbl chlbl-p">Das 10. Capitel</span>
   </div>
 <div class="vb first" id="v10-1">
   <span class="vn">1</span>
   <div class="vt">
     <p class="base base-c">Petite a Domino pluviam in tempore serotino,  et Dominus faciet nives :  et pluviam imbris dabit eis,  singulis herbam in agro.</p>
     <p class="base base-p">So bittet nun vom HERRN Spatregen, so wird der HERR Gewolke machen und euch Regen genug geben zu allem Gewachs auf dem Felde.</p>
-    <p class="base base-o">Ζητείτε παρά του Κυρίου υετόν εν τω καιρώ της οψίμου βροχής· και ο Κύριος θέλει κάμει αστραπάς και θέλει δώσει εις αυτούς βροχάς όμβρου, εις έκαστον βοτάνην εν τω αγρώ.</p>
     <p class="tra">Hingin ninyo sa Panginoon ang ulan sa kapanahunan ng huling ulan, sa Panginoon na nagpapakidlat; at kaniyang bibigyan sila ng ulan, at ang bawa't isa'y ng damo sa parang.</p>
   </div>
 </div>
@@ -1581,7 +1464,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Quia simulacra locuta sunt inutile,  et divini viderunt mendacium :  et somniatores locuti sunt frustra,  vane consolabantur :  idcirco abducti sunt quasi grex :  affligentur, quia non est eis pastor.</p>
     <p class="base base-p">Denn die Gotzen reden eitel Mühe, und die Wahrsager sehen eitel Luge und reden vergebliche Traume, und ihr T rosten istnichts; darum gehen sie in der Irre wie eine Herde und sind verschmachtet, weil kein Hide da ist.</p>
-    <p class="base base-o">Διότι τα είδωλα ελάλησαν ματαιότητα και οι μάντεις είδον οράσεις ψευδείς και ελάλησαν ενύπνια μάταια· παρηγόρουν ματαίως· διά τούτο μετετοπίσθησαν ως ποίμνιον· εταράχθησαν, διότι δεν υπήρχε ποιμήν.</p>
     <p class="tra">Sapagka't ang mga teraf ay nagsalita ng walang kabuluhan, at ang mga manghuhula ay nangakakita ng isang kabulaanan; at sila'y nangagsaysay ng mga kabulaanang panaginip, sila'y nagsisialiw ng walang kabuluhan: kaya't sila'y nagsisiyaon ng kanilang lakad na parang mga tupa, sila'y nadadalamhati, sapagka't walang pastor.</p>
   </div>
 </div>
@@ -1590,7 +1472,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Super pastores iratus est furor meus,  et super hircos visitabo :  quia visitavit Dominus exercituum gregem suum, domum Juda,  et posuit eos quasi equum gloriæ suæ in bello.</p>
     <p class="base base-p">Mein Zorn ist ergrimmet über die Hirten, und ich will die Bocke heimsuchen; denn der HERR Zebaoth wird seine Herde heimsuchen, namlich das Haus Juda, und wird sie zurichten wie ein geschmückt Roß zum Streit.</p>
-    <p class="base base-o">Ο θυμός μου εξήφθη κατά των ποιμένων και θέλω τιμωρήσει τους τράγους· διότι ο Κύριος των δυνάμεων επεσκέφθη το ποίμνιον αυτού, τον οίκον Ιούδα, και έκαμεν αυτούς ως ίππον αυτού ένδοξον εν μάχη.</p>
     <p class="tra">Ang aking galit ay nagalab laban sa mga pastor, at aking parurusahan ang mga lalaking kambing; sapagka't dinalaw ng Panginoon ng mga hukbo ang kaniyang kawan na sangbahayan ni Juda, at kaniyang gagawin silang parang magilas na kabayo sa pagbabaka.</p>
   </div>
 </div>
@@ -1599,7 +1480,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Ex ipso angulus, ex ipso paxillus,  ex ipso arcus prælii,  ex ipso egredietur omnis exactor simul.</p>
     <p class="base base-p">Die Ecken, Nagel, Streitbogen und Treiber sollen aile von ihnen wegkommen</p>
-    <p class="base base-o">Απ' αυτού εξήλθεν η γωνία, απ' αυτού ο πάσσαλος, απ' αυτού το πολεμικόν τόξον, απ' αυτού πας ηγεμών ομού.</p>
     <p class="tra">Sa kaniya lalabas ang batong panulok, sa kaniya ang pako, sa kaniya ang busog na pangbaka, sa kaniya ang bawa't pinuno na magkakasama.</p>
   </div>
 </div>
@@ -1608,7 +1488,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et erunt quasi fortes conculcantes lutum viarum in prælio,  et bellabunt, quia Dominus cum eis :  et confundentur ascensores equorum.</p>
     <p class="base base-p">und sollen dennoch sein wie die Riesen, die den Kot auf der Gasse treten im Streit, und sollen streiten; denn der HERR wird mit ihnen sein, dalt&amp;gt; die Reiter zuschanden werden.</p>
-    <p class="base base-o">Και θέλουσιν είσθαι ως ισχυροί, καταπατούντες τους πολεμίους εν τω πηλώ των οδών, εν τη μάχη· και θέλουσι πολεμήσει, διότι ο Κύριος είναι μετ' αυτών, και οι αναβάται των ίππων θέλουσι καταισχυνθή.</p>
     <p class="tra">At sila'y magiging parang mga makapangyarihang lalake, na yayapakan nila ang kanilang mga kaaway sa putik sa mga lansangan sa pagbabaka; at sila'y magsisilaban, sapagka't ang Panginoon ay sumasakanila; at ang mga mangangabayo ay mangatutulig.</p>
   </div>
 </div>
@@ -1617,7 +1496,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et confortabo domum Juda,  et domum Joseph salvabo :  et convertam eos, quia miserebor eorum :  et erunt sicut fuerunt quando non projeceram eos :  ego enim Dominus Deus eorum, et exaudiam eos.</p>
     <p class="base base-p">Und ich will das Haus Juda starken und das Haus Joseph erretten und will sie wieder einsetzen, denn ich erbarme mich ihrer; und sollen sein, wie sie waren, da ich sie nicht verstoßen hatte. Denn ich, der HERR, ihr Gott, will sie erhoren.</p>
-    <p class="base base-o">Και θέλω ενισχύσει τον οίκον Ιούδα και τον οίκον Ιωσήφ θέλω σώσει, και θέλω επαναφέρει αυτούς, διότι ηλέησα αυτούς· και θέλουσιν είσθαι ως εάν δεν είχον αποβάλει αυτούς· διότι εγώ είμαι Κύριος ο Θεός αυτών και θέλω εισακούσει αυτών.</p>
     <p class="tra">At aking palalakasin ang sangbahayan ni Juda, at aking ililigtas ang sangbahayan ni Jose, at aking ibabalik sila uli; sapagka't ako'y naawa sa kanila; at sila'y magiging parang hindi ko itinakuwil: sapagka't ako ang Panginoon nilang Dios, at aking didinggin sila.</p>
   </div>
 </div>
@@ -1626,7 +1504,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et erunt quasi fortes Ephraim,  et lætabitur cor eorum quasi a vino :  et filii eorum videbunt, et lætabuntur,  et exsultabit cor eorum in Domino.</p>
     <p class="base base-p">Und Ephraim soil sein wie ein Riese, und ihr Herz soil frohlich werden wie vom Wein; dazu ihre Kinder sollen's sehen und sich freuen, daß ihr Herz am HERRN frohlich sei.</p>
-    <p class="base base-o">Και οι Εφραϊμίται θέλουσιν είσθαι ως ισχυρός και η καρδία αυτών θέλει χαρή ως από οίνου· και τα τέκνα αυτών θέλουσιν ιδεί και χαρή· η καρδία αυτών θέλει ευφρανθή εις τον Κύριον.</p>
     <p class="tra">At ang mga sa Ephraim ay magiging parang makapangyarihang lalake, at ang kanilang puso ay mangagagalak na gaya ng sa alak; oo, ito'y makikita ng kanilang mga anak, at mangagagalak: ang kanilang puso ay masasayahan sa Panginoon.</p>
   </div>
 </div>
@@ -1635,7 +1512,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Sibilabo eis, et congregabo illos,  quia redemi eos :  et multiplicabo eos sicut ante fuerant multiplicati.</p>
     <p class="base base-p">Ich will zu ihnen blasen und sie sammeln, denn ich will sie erlosen; und sollen sich mehren, wie sie sich zuvor gemehret haben.</p>
-    <p class="base base-o">Θέλω συρίξει εις αυτούς και θέλω συνάξει αυτούς· διότι εγώ ελύτρωσα αυτούς· και θέλουσι πληθυνθή καθώς ποτέ επληθύνθησαν.</p>
     <p class="tra">Aking susutsutan sila, at sila'y pipisanin; sapagka't aking tinubos sila; at sila'y magsisidami ng gaya ng kanilang dinami.</p>
   </div>
 </div>
@@ -1644,7 +1520,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et seminabo eos in populis,  et de longe recordabuntur mei :  et vivent cum filiis suis, et revertentur.</p>
     <p class="base base-p">Und ich will sie unter die Volker saen, dafi sie mein gedenken in fernen Landen; und sollen mit ihren Kindern leben und wiederkommen.</p>
-    <p class="base base-o">Και θέλω σπείρει αυτούς μεταξύ των λαών· και θέλουσι με ενθυμηθή εν απομεμακρυσμένοις τόποις· και θέλουσι ζήσει μετά των τέκνων αυτών και θέλουσιν επιστρέψει.</p>
     <p class="tra">At aking pangangalatin sila sa gitna ng mga bansa; at aalalahanin nila ako sa mga malayong lupain; at sila'y nagsisitahang kasama ng kanilang mga anak, at magsisipagbalik.</p>
   </div>
 </div>
@@ -1653,7 +1528,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et reducam eos de terra Ægypti,  et de Assyriis congregabo eos,  et ad terram Galaad et Libani adducam eos,  et non invenietur eis locus :</p>
     <p class="base base-p">Denn ich will sie wiederbringen aus Agyptenland und will sie sammeln aus Assyrien und will sie ins Land Gilead und Libanon bringen, dafi man nicht Raum fur sie finden wird.</p>
-    <p class="base base-o">Και θέλω επαναφέρει αυτούς εκ γης Αιγύπτου και συνάξει αυτούς εκ της Ασσυρίας· και θέλω φέρει αυτούς εις την γην Γαλαάδ και εις τον Λίβανον, και δεν θέλει εξαρκέσει εις αυτούς.</p>
     <p class="tra">Aking dadalhin uli sila mula sa lupain ng Egipto, at pipisanin sila mula sa Asiria; at aking dadalhin sila sa lupain ng Galaad at Libano; at walang dakong masusumpungan para sa kanila.</p>
   </div>
 </div>
@@ -1662,7 +1536,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">et transibit in maris freto,  et percutiet in mari fluctus,  et confundentur omnia profunda fluminis :  et humiliabitur superbia Assur,  et sceptrum Ægypti recedet.</p>
     <p class="base base-p">Und erwird durchs Meer der Angst gehen und die Wellen im Meer schlagen, dafi aile Tiefen des Wassers vertrocknen werden. Da soil denn geniedriget werden die Pracht zu Assyrien, und das Zepter in Agypten soil aufhoren.</p>
-    <p class="base base-o">Και θέλει περάσει διά της θαλάσσης εν θλίψει και θέλει πατάξει τα κύματα εν τη θαλάσση και πάντα τα βάθη του ποταμού θέλουσι ξηρανθή, και η υπερηφανία της Ασσυρίας θέλει καταβληθή και το σκήπτρον της Αιγύπτου θέλει αφαιρεθή.</p>
     <p class="tra">At siya'y magdadaan ng dagat ng kadalamhatian, at hahawiin ang mga alon sa dagat, at ang lahat ng kalaliman sa Nilo ay matutuyo; at ang kapalaluan ng Asiria ay mababagsak, at ang cetro ng Egipto ay mawawala.</p>
   </div>
 </div>
@@ -1671,7 +1544,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Confortabo eos in Domino,  et in nomine ejus ambulabunt, dicit Dominus.</p>
     <p class="base base-p">Ich will sie starken in dem HERRN, daß sie sollen wandeln in seinem Namen, spricht der HERR.</p>
-    <p class="base base-o">Και θέλω ενισχύσει αυτούς εις τον Κύριον, και θέλουσι περιπατεί εν τω ονόματι αυτού, λέγει Κύριος.</p>
     <p class="tra">At aking palalakasin sila sa Panginoon; at sila'y magsisilakad na paitaas at paibaba sa kaniyang pangalan, sabi ng Panginoon.</p>
   </div>
 </div>
@@ -1680,14 +1552,14 @@ body[data-conf="orthodox"] .base-o { display:block; }
 <section class="chap" id="c11">
   <div class="chhead">
     <span class="chrom">XI</span>
-    <span class="chlbl">Caput 11</span>
+    <span class="chlbl chlbl-c">Caput XI</span>
+    <span class="chlbl chlbl-p">Das 11. Capitel</span>
   </div>
 <div class="vb first" id="v11-1">
   <span class="vn">1</span>
   <div class="vt">
     <p class="base base-c">Aperi, Libane, portas tuas,  et comedat ignis cedros tuas.</p>
     <p class="base base-p">Tue deine Tur auf, Libanon, dafi das Feuer deine Zedern verzehre!</p>
-    <p class="base base-o">Άνοιξον, Λίβανε, τας θύρας σου και ας καταφάγη πυρ τας κέδρους σου.</p>
     <p class="tra">Ibukas mo ang iyong mga pinto, Oh Libano, upang supukin ng apoy ang iyong mga cedro.</p>
   </div>
 </div>
@@ -1696,7 +1568,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Ulula, abies, quia cecidit cedrus,  quoniam magnifici vastati sunt :  ululate, quercus Basan,  quoniam succisus est saltus munitus.</p>
     <p class="base base-p">Heulet, ihr Tannen; denn die Zedern sind gefallen, und das herrliche Gebau ist verstoret. Heulet, ihr Eichen Basans; denn der feste Wald ist umgehauen.</p>
-    <p class="base base-o">Ολόλυξον, ελάτη, διότι έπεσεν κέδρος· διότι οι μεγιστάνες ηφανίσθησαν· ολολύξατε, δρυς της Βασάν, διότι το δάσος το απρόσιτον κατεκόπη.</p>
     <p class="tra">Manambitan ka, Oh puno ng abeto, sapagka't ang cedro ay nabuwal, sapagka't ang mga mabuti ay nabuwal; magsipanambitan kayo, Oh mga encina sa Basan, sapagka't ang matibay na gubat ay nasira.</p>
   </div>
 </div>
@@ -1705,7 +1576,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Vox ululatus pastorum,  quia vastata est magnificentia eorum :  vox rugitus leonum,  quoniam vastata est superbia Jordanis.</p>
     <p class="base base-p">Man horet die Hirten heulen, denn ihr herrlich Gebau ist verstoret; man horet die jungen Lowen brüllen, denn die Pracht des Jordans ist verstoret.</p>
-    <p class="base base-o">Φωνή ακούεται ποιμένων θρηνούντων, διότι η δόξα αυτών ηφανίσθη· φωνή βρυχωμένων σκύμνων, διότι το φρύαγμα του Ιορδάνου εταπεινώθη.</p>
     <p class="tra">Ang isang hugong ng panambitan ng mga pastor! sapagka't ang kanilang kaluwalhatian ay nasira; ang isang hugong ng ungal ng mga batang leon! sapagka't ang kapalaluan ng Jordan ay nasira.</p>
   </div>
 </div>
@@ -1714,7 +1584,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Hæc dicit Dominus Deus meus : Pasce pecora occisionis,</p>
     <p class="base base-p">So spricht der HERR, mein Gott: Hüte der Schlachtschafe!</p>
-    <p class="base base-o">Ούτω λέγει Κύριος ο Θεός μου· Ποίμαινε το ποίμνιον της σφαγής,</p>
     <p class="tra">Ganito ang sabi ng Panginoon kong Dios, Pakanin mo ang kawan na papatayin;</p>
   </div>
 </div>
@@ -1723,7 +1592,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">quæ qui possederant occidebant, et non dolebant, et vendebant ea, dicentes : Benedictus Dominus ! divites facti sumus : et pastores eorum non parcebant eis.</p>
     <p class="base base-p">Denn ihre Herren schlachten sie und halten's fur keine Sünde, verkaufen sie und sprechen: Gelobet sei der HERR, ich bin nun reich; und ihre Hirten schonen ihrer nicht.</p>
-    <p class="base base-o">το οποίον οι αγοράσαντες αυτό σφάζουσιν ατιμωρήτως· οι δε πωλούντες αυτό λέγουσιν, Ευλογητός ο Κύριος, διότι επλούτησα, και αυτοί οι ποιμένες αυτού δεν φείδονται αυτού.</p>
     <p class="tra">Na mga pinapatay ng mga mayari, at hindi mga inaaring maysala; at silang nangagbibili ng mga yaon ay nangagsasabi, Purihin ang Panginoon, sapagka't akoy mayaman; at ang kanilang sariling mga pastor ay hindi nangaawa sa mga yaon.</p>
   </div>
 </div>
@@ -1732,7 +1600,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et ego non parcam ultra super habitantes terram, dicit Dominus : ecce ego tradam homines, unumquemque in manu proximi sui, et in manu regis sui : et concident terram, et non eruam de manu eorum.</p>
     <p class="base base-p">Darum will ich auch nicht mehr schonen der Einwohner im Lande, spricht der HERR. Und siehe, ich will die Leute lassen einen jeglichen in der Hand des andern und in der Hand seines Konigs, dafi sie das Land zerschlagen, und will sie nicht erretten von ihrer Hand.</p>
-    <p class="base base-o">Διά τούτο δεν θέλω φεισθή πλέον των κατοίκων του τόπου, λέγει Κύριος, αλλ' ιδού, εγώ θέλω παραδώσει τους ανθρώπους έκαστον εις την χείρα του πλησίον αυτού και εις την χείρα του βασιλέως αυτού, και θέλουσι κατακόψει την γην και δεν θέλω ελευθερώσει αυτούς εκ της χειρός αυτών.</p>
     <p class="tra">Sapagka't hindi na ako maaawa sa nagsisitahan sa lupain, sabi ng Panginoon; kundi, narito, aking ibibigay ang bawa't isa ng mga tao sa kamay ng kaniyang kapuwa, at sa kamay ng kaniyang hari; at kanilang ipapahamak ang lupain, at mula sa kanilang kamay ay di ko ililigtas sila.</p>
   </div>
 </div>
@@ -1741,7 +1608,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et pascam pecus occisionis propter hoc, o pauperes gregis ! et assumpsi mihi duas virgas : unam vocavi Decorem, et alteram vocavi Funiculum : et pavi gregem.</p>
     <p class="base base-p">Und ich hutete der Schlachtschafe urn der elenden Schafe willen und nahm zu mir zween Stabe: einen hieü ich Sanft, den andern hiefi ich Weh; und hutete der Schafe.</p>
-    <p class="base base-o">Και εποίμανα το ποίμνιον της σφαγής, το όντως τεταλαιπωρημένον ποίμνιον. Και έλαβον εις εμαυτόν δύο ράβδους, την μίαν εκάλεσα Κάλλος και την άλλην εκάλεσα Δεσμούς, και εποίμανα το ποίμνιον.</p>
     <p class="tra">Sa gayo'y aking pinapanginain ang kawan na papatayin, katotohanang kaawaawang kawan. At nagdala ako ng dalawang tungkod; ang isa'y tinawag kong Maganda, at ang isa'y tinawag kong mga Panali; at aking pinapanginain ang kawan.</p>
   </div>
 </div>
@@ -1750,7 +1616,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et succidi tres pastores in mense uno, et contracta est anima mea in eis, siquidem et anima eorum variavit in me.</p>
     <p class="base base-p">Und ich vertilgete drei Hirten in einem Monden; denn ich mochte ihrer nicht, so wollten sie mein auch nicht.</p>
-    <p class="base base-o">Και εξωλόθρευσα τρεις ποιμένας εν ενί μηνί· και η ψυχή μου εβαρύνθη αυτούς και η ψυχή δε αυτών απεστράφη εμέ.</p>
     <p class="tra">At aking inihiwalay ang tatlong pastor sa isang buwan; sapagka't ang aking kaluluwa ay nagsawa sa kanila, at sila'y nayamot sa akin.</p>
   </div>
 </div>
@@ -1759,7 +1624,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et dixi : Non pascam vos : quod moritur, moriatur, et quod succiditur, succidatur : et reliqui devorent unusquisque carnem proximi sui.</p>
     <p class="base base-p">Und ich sprach: Ich will euer nicht huten. Was da stirbt, das sterbe; was verschmachtet, das verschmachte; und die Ubrigen fresse ein jegliches des andern Fleisch!</p>
-    <p class="base base-o">Τότε είπα, Δεν θέλω σας ποιμαίνει· το αποθνήσκον ας αποθνήσκη και το απολωλός ας απόλλυται και τα εναπολειπόμενα ας τρώγωσιν έκαστον την σάρκα του πλησίον αυτού.</p>
     <p class="tra">Nang magkagayo'y sinabi ko, Hindi ko na papanginginainin kayo: ang namamatay, ay mamatay; at ang nahihiwalay, ay mahiwalay; at ang mangaiwan ay mangagkainan ng laman ng isa't isa.</p>
   </div>
 </div>
@@ -1768,7 +1632,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et tuli virgam meam quæ vocabatur Decus, et abscidi eam, ut irritum facerem fœdus meum quod percussi cum omnibus populis.</p>
     <p class="base base-p">Und ich nahm meinen Stab Sanft und zerbrach ihn, daß ich aufhube meinen Bund, den ich mit alien Volkern gemacht hatte.</p>
-    <p class="base base-o">Και έλαβον την ράβδον μου, το Κάλλος, και κατέκοψα αυτήν, διά να ακυρώσω την διαθήκην μου, την οποίαν έκαμον προς πάντας τους λαούς τούτους,</p>
     <p class="tra">At hinawakan ko ang aking tungkod na Maganda, at aking binali, upang aking sirain ang aking tipan na aking ipinakipagtipan sa lahat ng mga bayan.</p>
   </div>
 </div>
@@ -1777,7 +1640,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et in irritum deductum est in die illa : et cognoverunt sic pauperes gregis, qui custodiunt mihi, quia verbum Domini est.</p>
     <p class="base base-p">Und erward aufgehoben des Tages. Und die elenden Schafe, die auf mich hielten, merkten dabei, daß es des HERRN Wort ware.</p>
-    <p class="base base-o">και ηκυρώθη εν τη ημέρα εκείνη· και ούτω το ποίμνιον το τεταλαιπωρημένον, το οποίον απέβλεπεν εις εμέ, εγνώρισεν ότι ούτος ήτο ο λόγος του Κυρίου.</p>
     <p class="tra">At nasira nang araw na yaon; at ganito nakilala ng kaawaawa sa kawan na nagmamasid sa akin na yao'y salita ng Panginoon.</p>
   </div>
 </div>
@@ -1786,7 +1648,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et dixi ad eos : Si bonum est in oculis vestris, afferte mercedem meam : et si non, quiescite. Et appenderunt mercedem meam triginta argenteos.</p>
     <p class="base base-p">Und ich sprach zu ihnen: Gefallt es euch, so bringet her, wieviel ich gelte; wo nicht, so laftt es anstehen. Und sie wogen dar, wieviel ich gait: dreiftig Silberlinge.</p>
-    <p class="base base-o">Και είπα προς αυτούς, Εάν σας φαίνηται καλόν, δότε μοι τον μισθόν μου· ει δε μη, αρνήθητε αυτόν. Και έστησαν τον μισθόν μου τριάκοντα αργύρια.</p>
     <p class="tra">At sinabi ko sa kanila; Kung inaakala ninyong mabuti, bigyan ninyo ako ng aking kaupahan; at kung hindi, inyong pabayaan. Sa gayo'y kanilang tinimbangan ang kaupahan ko ng tatlong pung putol na pilak.</p>
   </div>
 </div>
@@ -1795,7 +1656,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et dixit Dominus ad me : Projice illud ad statuarium, decorum pretium quo appretiatus sum ab eis. Et tuli triginta argenteos, et projeci illos in domum Domini, ad statuarium.</p>
     <p class="base base-p">Und der HERR sprach zu mir: Wirfs hin, daß es dem Topfer gegeben werde! Ei, eine treffliche Summa, der ich wert geachtet bin von ihnen! Und ich nahm die dreiftig Silberlinge und warf sie ins Haus des HERRN, daß dem Topfer gegeben wurde.</p>
-    <p class="base base-o">Και είπε Κύριος προς εμέ, Ρίψον αυτά εις τον κεραμέα, την έντιμον τιμήν, με την οποίαν ετιμήθην υπ' αυτών. Και έλαβον τα τριάκοντα αργύρια και έρριψα αυτά εν τω οίκω του Κυρίου εις τον κεραμέα.</p>
     <p class="tra">At sinabi ng Panginoon sa akin, Ihagis mo sa magpapalyok, ang mainam na halaga na aking inihalaga sa kanila. At aking kinuha ang tatlong pung putol na pilak, at inihagis ko sa magpapalyok sa bahay ng Panginoon.</p>
   </div>
 </div>
@@ -1804,7 +1664,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et præcidi virgam meam secundam, quæ appellabatur Funiculus, ut dissolverem germanitatem inter Judam et Israël.</p>
     <p class="base base-p">Und ich zerbrach meinen andern Stab Weh, daß ich aufhube die Bruderschaft zwischen Juda und Israel.</p>
-    <p class="base base-o">Και κατέκοψα την άλλην μου ράβδον, τους Δεσμούς, διά να ακυρώσω την αδελφότητα μεταξύ Ιούδα και Ισραήλ.</p>
     <p class="tra">Nang magkagayo'y binali ko ang aking isang tungkod, sa makatuwid baga'y ang mga Panali, upang aking masira ang pagkakapatiran ng Juda at ng Israel.</p>
   </div>
 </div>
@@ -1813,7 +1672,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et dixit Dominus ad me : Adhuc sume tibi vasa pastoris stulti.</p>
     <p class="base base-p">Und der HERR sprach zu mir: Nimm abermal zu dir Gerate eines torichten Hirten.</p>
-    <p class="base base-o">Και είπε Κύριος προς εμέ, Λάβε εις σεαυτόν έτι τα εργαλεία ποιμένος ασυνέτου.</p>
     <p class="tra">At sinabi sa akin ng Panginoon. Magdala ka pa uli ng mga kasangkapan ng isang mangmang na pastor.</p>
   </div>
 </div>
@@ -1822,7 +1680,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Quia ecce ego suscitabo pastorem in terra, qui derelicta non visitabit, dispersum non quæret, et contritum non sanabit, et id quod stat non enutriet, et carnes pinguium comedet, et ungulas eorum dissolvet.</p>
     <p class="base base-p">Denn siehe, ich werde Hirten im Lande aufwecken, die das Verschmachtete nicht besuchen und das Zerschlagene nicht suchen und das Zerbrochene nicht heilen und das Gesunde nicht versorgen werden; aber das Fleisch der Fetten werden sie fressen und ihre Klauen zerreiften.</p>
-    <p class="base base-o">Διότι ιδού, εγώ θέλω αναστήσει ποιμένα επί την γην, όστις δεν θέλει επισκέπτεσθαι τα απολωλότα, δεν θέλει ζητεί το διεσκορπισμένον και δεν θέλει ιατρεύει το συντετριμμένον ουδέ θέλει ποιμαίνει το υγιές· αλλά θέλει τρώγει την σάρκα του παχέος και κατακόπτει τους όνυχας αυτών.</p>
     <p class="tra">Sapagka't, narito, ako'y magtitindig ng isang pastor sa lupain, na hindi dadalawin yaong nangahihiwalay, ni hahanapin man yaong nangaliligaw, ni pagagalingin man yaong mga pilay; ni papanginginainin man yaong mga magaling kundi kaniyang kakanin ang laman ng mataba at lulurayin ang kanilang mga kuko.</p>
   </div>
 </div>
@@ -1831,7 +1688,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">O pastor, et idolum derelinquens gregem : gladius super brachium ejus, et super oculum dextrum ejus : brachium ejus ariditate siccabitur, et oculus dexter ejus tenebrescens obscurabitur.</p>
     <p class="base base-p">0 Gotzenhirten, die die Herde lassen! Das Schwert komme auf ihren Arm und auf ihr rechtes Auge! Ihr Arm müsse verdorren und ihr rechtes Auge dunkel werden!</p>
-    <p class="base base-o">Ουαί εις τον μάταιον ποιμένα, τον εγκαταλείποντα το ποίμνιον· ρομφαία θέλει ελθεί επί τον βραχίονα αυτού και επί τον δεξιόν οφθαλμόν αυτού· ο βραχίων αυτού θέλει ολοτελώς ξηρανθή και ο δεξιός οφθαλμός αυτού ολοκλήρως αμαυρωθή.</p>
     <p class="tra">Sa aba ng walang kabuluhang pastor na nagpapabaya ng kawan! ang tabak ay sasapit sa kaniyang kamay, at sa kaniyang kanang mata: ang kaniyang kamay ay matutuyong mainam, at ang kaniyang kanang mata ay lalabong lubos.</p>
   </div>
 </div>
@@ -1840,14 +1696,14 @@ body[data-conf="orthodox"] .base-o { display:block; }
 <section class="chap" id="c12">
   <div class="chhead">
     <span class="chrom">XII</span>
-    <span class="chlbl">Caput 12</span>
+    <span class="chlbl chlbl-c">Caput XII</span>
+    <span class="chlbl chlbl-p">Das 12. Capitel</span>
   </div>
 <div class="vb first" id="v12-1">
   <span class="vn">1</span>
   <div class="vt">
     <p class="base base-c">Onus verbi Domini super Israël.   Dicit Dominus extendens cælum, et fundans terram,  et fingens spiritum hominis in eo :</p>
     <p class="base base-p">Dies ist die Last des Worts vom HERRN uber Israel, spricht der HERR, der den Himmel ausbreitete und die Erde grundete und den Odem des Menschen in ihm machte.</p>
-    <p class="base base-o">Το φορτίον του λόγου του Κυρίου περί του Ισραήλ. Ούτω λέγει Κύριος, ο εκτείνων τους ουρανούς και θεμελιών την γην και μορφόνων το πνεύμα του ανθρώπου εντός αυτού·</p>
     <p class="tra">Ang hula na salita ng Panginoon tungkol sa Israel. Ganito ang sabi ng Panginoon, na naguunat ng langit, at naglalagay ng mga patibayan ng lupa, at naglalang ng diwa sa loob ng tao:</p>
   </div>
 </div>
@@ -1856,7 +1712,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Ecce ego ponam Jerusalem superliminare crapulæ  omnibus populis in circuitu :  sed et Juda erit in obsidione contra Jerusalem.</p>
     <p class="base base-p">Siehe, ich will Jerusalem zum Taumelbecher zurichten alien Volkern, die umher sind; denn es wird auch Juda gelten, wenn Jerusalem belagert wird.</p>
-    <p class="base base-o">Ιδού, εγώ καθιστώ την Ιερουσαλήμ ποτήριον ζάλης εις πάντας τους λαούς κύκλω, και επί τον Ιούδαν έτι θέλει είσθαι τούτο εν τη πολιορκία τη κατά της Ιερουσαλήμ.</p>
     <p class="tra">Narito, aking gagawin ang Jerusalem na isang tazang panglito sa lahat ng bayan sa palibot, at sa Juda man ay magiging gayon sa pagkubkob laban sa Jerusalem.</p>
   </div>
 </div>
@@ -1865,7 +1720,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et erit : in die illa ponam Jerusalem lapidem oneris cunctis populis :  omnes qui levabunt eam concisione lacerabuntur,  et colligentur adversus eam omnia regna terræ.</p>
     <p class="base base-p">Dennoch zur selbigen Zeit will ich Jerusalem machen zum Laststein alien Volkern. Alle, die denselbigen wegheben wollen, sollen sich daran zerschneiden; denn es werden sich alle Heiden auf Erden wider sie versammeln.</p>
-    <p class="base base-o">Και εν τη ημέρα εκείνη θέλω καταστήσει την Ιερουσαλήμ προς πάντας τους λαούς λίθον καταβαρύνοντα· πάντες όσοι επιφορτισθώσιν αυτόν θέλουσι κατασυντριφθή, όταν πάντα τα έθνη της γης συναχθώσιν εναντίον αυτής.</p>
     <p class="tra">At mangyayari sa araw na yaon, na aking gagawin ang Jerusalem na isang batong mabigat sa lahat ng bayan; lahat ng magsipasan sa kaniya ay mangasusugatang mainam; at ang lahat na bansa sa lupa ay magpipisan laban sa kaniya.</p>
   </div>
 </div>
@@ -1874,7 +1728,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">In die illa, dicit Dominus,  percutiam omnem equum in stuporem,  et ascensorem ejus in amentiam :  et super domum Juda aperiam oculos meos,  et omnem equum populorum percutiam cæcitate.</p>
     <p class="base base-p">Zu der Zeit, spricht der HERR, will ich alle Rosse scheu und ihren Reitern bange machen; aber uber Jerusalem will ich meine Augen often haben und alle Rosse der Volker mit Blindheit plagen.</p>
-    <p class="base base-o">Εν τη ημέρα εκείνη, λέγει Κύριος, θέλω πατάξει πάντα ίππον εν εκστάσει και τον αναβάτην αυτού εν παραφροσύνη, και θέλω ανοίξει τους οφθαλμούς μου επί τον οίκον Ιούδα και θέλω πατάξει εν αποτυφλώσει πάντα ίππον των λαών.</p>
     <p class="tra">Sa araw na yaon, sabi ng Panginoon, aking tutuligin ang bawa't kabayo, at ang kaniyang sakay ng pagkaulol; at aking ididilat ang aking mga mata sa sangbahayan ni Juda, at aking bubulagin ang bawa't kabayo ng mga bayan.</p>
   </div>
 </div>
@@ -1883,7 +1736,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et dicent duces Juda in corde suo :  Confortentur mihi habitatores Jerusalem  in Domino exercituum, Deo eorum !</p>
     <p class="base base-p">Und die Fursten in Juda werden sagen in ihrem Herzen: Es seien mir nur die Burger zu Jerusalem getrost in dem HERRN Zebaoth, ihrem Gott!</p>
-    <p class="base base-o">Και οι άρχοντες του Ιούδα θέλουσιν ειπεί εν τη καρδία αυτών, Στήριγμα είναι εις εμέ οι κάτοικοι της Ιερουσαλήμ διά του Κυρίου των δυνάμεων του Θεού αυτών.</p>
     <p class="tra">At ang mga pinakapuno sa Juda ay mangagsasabi sa sarili, Ang mga nananahan sa Jerusalem ay aking kalakasan sa Panginoon ng mga hukbo na kanilang Dios.</p>
   </div>
 </div>
@@ -1892,7 +1744,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">In die illa ponam duces Juda  sicut caminum ignis in lignis,  et sicut facem ignis in fœno :  et devorabunt ad dexteram et ad sinistram omnes populos in circuitu,  et habitabitur Jerusalem rursus in loco suo in Jerusalem.</p>
     <p class="base base-p">Zu der Zeit will ich die Fursten Judas machen zum feurigen Ofen im Holz und zur Fackel im Stroh, daß sie verzehren, beide, zur Rechten und zur Linken, alie Volker urn und urn. Und Jerusalem soil auch furder bleiben an ihrem Ortzu Jerusalem.</p>
-    <p class="base base-o">Εν τη ημέρα εκείνη θέλω καταστήσει τους άρχοντας του Ιούδα ως εστίαν πυρός εις ξύλα και ως λαμπάδα πυρός εις χειρόβολον, και θέλουσι καταφάγει πάντας τους λαούς κύκλω, εκ δεξιών και εξ αριστερών· και η Ιερουσαλήμ θέλει κατοικηθή πάλιν εν τω τόπω αυτής, εν Ιερουσαλήμ.</p>
     <p class="tra">Sa araw na yao'y gagawin kong parang kawali ng apoy sa panggatong ang mga pinakapuno sa Juda at parang sulo na apoy sa gitna ng mga bigkis; at kanilang sasakmalin ang buong bayan sa palibot, sa kanan at sa kaliwa; at ang Jerusalem ay tatahan pa uli sa kaniyang sariling dako, sa makatuwid bagay sa Jerusalem.</p>
   </div>
 </div>
@@ -1901,7 +1752,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et salvabit Dominus tabernacula Juda, sicut in principio,  ut non magnifice glorietur domus David,  et gloria habitantium Jerusalem contra Judam.</p>
     <p class="base base-p">Und der HERR wird die Hütten Judas erretten wie vorzeiten, auf daß sich nicht hoch rühme das Haus David noch die Burger zu Jerusalem wider Juda.</p>
-    <p class="base base-o">Και ο Κύριος θέλει σώσει πρώτον τας σκηνάς του Ιούδα, διά να μη μεγαλύνηται η δόξα του οίκου του Δαβίδ και η δόξα των κατοίκων της Ιερουσαλήμ κατά του Ιούδα.</p>
     <p class="tra">Ililigtas naman na una ng Panginoon ang mga tolda ng Juda, upang ang kaluwalhatian ng sangbahayan ni David at ang kaluwalhatian ng mga mananahan sa Jerusalem ay huwag magmalaki sa Juda.</p>
   </div>
 </div>
@@ -1910,7 +1760,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">In die illa proteget Dominus habitatores Jerusalem :  et erit qui offenderit ex eis in die illa quasi David,  et domus David quasi Dei,  sicut angelus Domini in conspectu eorum.</p>
     <p class="base base-p">Zu der Zeit wird der HERR beschirmen die Burger zu Jerusalem; und wird geschehen, daß, welcher schwach sein wird unter ihnen zu der Zeit, wird sein wie David; und das Haus David wird sein wie Gottes Haus, wie des HERRN Engel vor ihnen.</p>
-    <p class="base base-o">Εν τη ημέρα εκείνη ο Κύριος θέλει υπερασπισθή τους κατοίκους της Ιερουσαλήμ· και ο αδύνατος μεταξύ αυτών εν τη ημέρα εκείνη θέλει είσθαι ως ο Δαβίδ και ο οίκος του Δαβίδ ως Θεός, ως άγγελος Κυρίου, ενώπιον αυτών.</p>
     <p class="tra">Sa araw na yaon ay ipagsasanggalang ng Panginoon ang mga mananahan sa Jerusalem, at siyang mahina sa kanila sa araw na yaon ay magiging gaya ni David; at ang sangbahayan ni David ay magiging parang Dios, parang anghel ng Panginoon sa harap nila.</p>
   </div>
 </div>
@@ -1919,7 +1768,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et erit in die illa :  quæram conterere omnes gentes quæ veniunt contra Jerusalem.</p>
     <p class="base base-p">Und zu der Zeit werde ich gedenken zu vertilgen alle Heiden, die wider Jerusalem gezogen sind.</p>
-    <p class="base base-o">Και εν τη ημέρα εκείνη θέλω ζητήσει να εξολοθρεύσω πάντα τα έθνη τα ερχόμενα κατά της Ιερουσαλήμ.</p>
     <p class="tra">At mangyayari sa araw na yaon, na aking pagsisikapang gibain ang lahat na bansa na naparoroon laban sa Jerusalem.</p>
   </div>
 </div>
@@ -1928,7 +1776,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et effundam super domum David  et super habitatores Jerusalem  spiritum gratiæ et precum :  et aspicient ad me quem confixerunt,  et plangent eum planctu quasi super unigenitum,  et dolebunt super eum,  ut doleri solet in morte primogeniti.</p>
     <p class="base base-p">Aber uber das Haus David und fiber die Burger zu Jerusalem will ich ausgieften den Geist der Gnade und des Gebets; denn sie werden mich ansehen, welchen jene zerstochen haben, und werden ihn klagen, wie man klaget ein einiges Kind, und werden sich urn ihn betruben, wie man sich betrubet urn ein erstes Kind.</p>
-    <p class="base base-o">Και θέλω εκχέει επί τον οίκον Δαβίδ και επί τους κατοίκους της Ιερουσαλήμ πνεύμα χάριτος και ικεσιών· και θέλουσιν επιβλέψει προς εμέ, τον οποίον εξεκέντησαν, και θέλουσι πενθήσει δι' αυτόν ως πενθεί τις διά τον μονογενή αυτού, και θέλουσι λυπηθή δι' αυτόν, ως ο λυπούμενος διά τον πρωτότοκον αυτού.</p>
     <p class="tra">At aking bubuhusan ang sangbahayan ni David, at ang mga mananahan sa Jerusalem, ng espiritu ng biyaya at ng daing; at sila'y magsisitingin sa akin na kanilang pinalagpasan: at kanilang tatangisan siya, na gaya ng pagtangis sa bugtong na anak, at magiging kapanglawan sa kaniya, na parang kapanglawan sa kaniyang panganay.</p>
   </div>
 </div>
@@ -1937,7 +1784,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">In die illa, magnus erit planctus in Jerusalem,  sicut planctus Adadremmon in campo Mageddon.</p>
     <p class="base base-p">Zu der Zeit wird grofte Klage sein zu Jerusalem, wie die war bei Hadad-Rimon im Felde Megiddo.</p>
-    <p class="base base-o">Εν τη ημέρα εκείνη θέλει είσθαι πένθος μέγα εν Ιερουσαλήμ ως το πένθος της Αδαδριμμών εν τη πεδιάδι Μεγιδδών.</p>
     <p class="tra">Sa araw na yaon ay magkakaroon ng malaking pagtangis sa Jerusalem, na gaya ng pagtangis kay Adad-rimon sa libis ng Megiddo.</p>
   </div>
 </div>
@@ -1946,7 +1792,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et planget terra : familiæ et familiæ seorsum :  familiæ domus David seorsum, et mulieres eorum seorsum :</p>
     <p class="base base-p">Und das Land wird klagen, ein jeglich Geschlecht besonders: das Geschlecht des Hauses David besonders und ihre Weiber besonders, das Geschlecht des Hauses Nathan besonders und ihre Weiber besonders,</p>
-    <p class="base base-o">Και θέλει πενθήσει η γη, πάσα οικογένεια καθ' εαυτήν· η οικογένεια του οίκου Δαβίδ καθ' εαυτήν και αι γυναίκες αυτών καθ' εαυτάς, η οικογένεια του οίκου Νάθαν καθ' εαυτήν και αι γυναίκες αυτών καθ' εαυτάς,</p>
     <p class="tra">At ang lupain ay tatangis, bawa't angkan ay bukod; ang angkan ng sangbahayan ni David ay bukod, at ang kanilang mga asawa ay bukod; ang angkan ng sangbahayan ni Nathan ay bukod, at ang kanilang mga asawa ay bukod;</p>
   </div>
 </div>
@@ -1955,7 +1800,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">familiæ domus Nathan seorsum, et mulieres eorum seorsum :  familiæ domus Levi seorsum, et mulieres eorum seorsum :  familiæ Semei seorsum, et mulieres eorum seorsum :</p>
     <p class="base base-p">das Geschlecht des Hauses Levi besonders und ihre Weiber besonders, das Geschlecht Simei besonders und ihre Weiber besonders;</p>
-    <p class="base base-o">η οικογένεια του οίκου Λευΐ καθ' εαυτήν και αι γυναίκες αυτών καθ' εαυτάς, η οικογένεια Σιμεΐ καθ' εαυτήν και αι γυναίκες αυτών καθ' εαυτάς,</p>
     <p class="tra">Ang angkan ng sangbahayan ni Levi ay bukod, at ang kanilang mga asawa ay bukod; ang angkan ni Simei ay bukod, at ang kanilang mga asawa ay bukod;</p>
   </div>
 </div>
@@ -1964,7 +1808,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">omnes familiæ reliquæ,  familiæ et familiæ seorsum, et mulieres eorum seorsum.</p>
     <p class="base base-p">also alle ubrigen Geschlechter, ein jegliches besonders und ihre Weiber auch besonders.</p>
-    <p class="base base-o">πάσαι αι εναπολειφθείσαι οικογένειαι, εκάστη οικογένεια καθ' εαυτήν και αι γυναίκες αυτών καθ' εαυτάς.</p>
     <p class="tra">Ang lahat na angkang nalabi, bawa't angkan ay bukod, at ang kanilang mga asawa ay bukod.</p>
   </div>
 </div>
@@ -1973,14 +1816,14 @@ body[data-conf="orthodox"] .base-o { display:block; }
 <section class="chap" id="c13">
   <div class="chhead">
     <span class="chrom">XIII</span>
-    <span class="chlbl">Caput 13</span>
+    <span class="chlbl chlbl-c">Caput XIII</span>
+    <span class="chlbl chlbl-p">Das 13. Capitel</span>
   </div>
 <div class="vb first" id="v13-1">
   <span class="vn">1</span>
   <div class="vt">
     <p class="base base-c">In die illa erit fons patens domui David et habitantibus Jerusalem,  in ablutionem peccatoris et menstruatæ.</p>
     <p class="base base-p">Zu der Zeit wird das Haus David und die Burger zu Jerusalem einen freien offenen Born haben wider die Sünde und Unreinigkeit.</p>
-    <p class="base base-o">Εν τη ημέρα εκείνη θέλει είσθαι πηγή ανεωγμένη εις τον οίκον Δαβίδ και εις τους κατοίκους της Ιερουσαλήμ διά την αμαρτίαν και διά την ακαθαρσίαν.</p>
     <p class="tra">Sa araw na yaon ay mabubuksan ang isang bukal sa sangbahayan ni David at sa mga mananahan sa Jerusalem, sa kasalanan, at sa karumihan.</p>
   </div>
 </div>
@@ -1989,7 +1832,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et erit in die illa, dicit Dominus exercituum :  disperdam nomina idolorum de terra,  et non memorabuntur ultra :  et pseudoprophetas, et spiritum immundum auferam de terra.</p>
     <p class="base base-p">Zu der Zeit, spricht der HERR Zebaoth, will ich der Gotzen Namen ausrotten aus dem Lande, daß man ihrer nicht mehr gedenken soil; dazu will ich auch die Propheten und unreinen Geisteraus dem Lande treiben,</p>
-    <p class="base base-o">Και εν τη ημέρα εκείνη, λέγει ο Κύριος των δυνάμεων, θέλω εξολοθρεύσει τα ονόματα των ειδώλων από της γης και δεν θέλει πλέον είσθαι ενθύμησις αυτών, και έτι θέλω αφαιρέσει τους προφήτας και το πνεύμα το ακάθαρτον από της γης.</p>
     <p class="tra">At mangyayari sa araw na yaon, sabi ng Panginoon ng mga hukbo, na aking ihihiwalay sa lupain ang mga pangalan ng mga diosdiosan, at sila'y hindi na mangaaalaala pa; at aking palalayasin naman ang mga propeta at ang karumaldumal na espiritu sa lupain.</p>
   </div>
 </div>
@@ -1998,7 +1840,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et erit : cum prophetaverit quispiam ultra,  dicent ei pater ejus et mater ejus, qui genuerunt eum :  Non vives, quia mendacium locutus es in nomine Domini :  et configent eum pater ejus et mater ejus, genitores ejus,  cum prophetaverit.</p>
     <p class="base base-p">daß also gehen soil: wenn jemand weiter weissaget, sollen sein Vater und Mutter, die ihn gezeuget haben, zu ihm sagen: Du sollst nicht leben, denn du redestfalsch im Namen des HERRN; und werden also Vater und Mutter, die ihn gezeuget haben, ihn zerstechen, wenn er weissaget.</p>
-    <p class="base base-o">Και εάν τις προφητεύη έτι, τότε ο πατήρ αυτού και η μήτηρ αυτού οι γεννήσαντες αυτόν θέλουσιν ειπεί προς αυτόν, δεν θέλεις ζήσει· διότι ψεύδη λαλείς εν τω ονόματι του Κυρίου. Και ο πατήρ αυτού και η μήτηρ αυτού οι γεννήσαντες αυτόν θέλουσι διατραυματίσει αυτόν, όταν προφητεύη.</p>
     <p class="tra">At mangyayari, na pagka ang sinoman ay manghuhula, sasabihin nga sa kaniya ng kaniyang ama at ng kaniyang ina na nanganak sa kaniya, Ikaw ay hindi mabubuhay; sapagka't ikaw ay nagsasalita ng kabulaanan sa pangalan ng Panginoon; at palalagpasan siya ng kaniyang ama at ng kaniyang ina na nanganak sa kaniya samantalang siya'y nanghuhula.</p>
   </div>
 </div>
@@ -2007,7 +1848,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et erit : in die illa confundentur prophetæ,  unusquisque ex visione sua cum prophetaverit :  nec operientur pallio saccino, ut mentiantur :</p>
     <p class="base base-p">Denn es soli zu der Zeit geschehen, daß die Propheten mit Schanden bestehen mit ihren Gesichten, wenn sie davon weissagen; und sollen nicht mehr einen rauchen Mantel anziehen, damit sie betrügen,</p>
-    <p class="base base-o">Και εν τη ημέρα εκείνη οι προφήται θέλουσι καταισχυνθή, έκαστος εκ της οράσεως αυτού, όταν προφητεύη, και δεν θέλουσιν ενδύεσθαι ένδυμα τρίχινον διά να απατώσι.</p>
     <p class="tra">At mangyayari sa araw na yaon na ang mga propeta ay mangahihiya bawa't isa dahil sa kaniyang pangitain, pagka siya'y nanghuhula; hindi man sila mangagsusuot ng kasuutang balahibo, upang mangdaya:</p>
   </div>
 </div>
@@ -2016,7 +1856,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">sed dicet : Non sum propheta :  homo agricola ego sum,  quoniam Adam exemplum meum ab adolescentia mea.</p>
     <p class="base base-p">sondern wird müssen sagen: Ich bin kein Prophet, sondern ein Ackermann, denn ich habe Menschen gedienet von meiner Jugend auf.</p>
-    <p class="base base-o">Και θέλει ειπεί, Εγώ δεν είμαι προφήτης· είμαι άνθρωπος γεωργός· διότι άνθρωπος με εμίσθωσεν εκ νεότητός μου.</p>
     <p class="tra">Kundi kaniyang sasabihin, Ako'y hindi propeta, ako'y mangbubukid sa lupa; sapagka't ako'y pinapaging alipin mula sa aking pagkabinata.</p>
   </div>
 </div>
@@ -2025,7 +1864,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et dicetur ei : Quid sunt plagæ istæ in medio manuum tuarum ?  Et dicet : His plagatus sum in domo eorum qui diligebant me.</p>
     <p class="base base-p">So man aber sagen wird zu ihm: Was sind das fur Wunden in deinen Handen? wird er sagen: So bin ich geschlagen im Hause derer, die mich lieben.</p>
-    <p class="base base-o">Και εάν τις είπη προς αυτόν, Τι είναι αι πληγαί αύται εν μέσω των χειρών σου; θέλει αποκριθή, Εκείναι, τας οποίας επληγώθην εν τω οίκω των φίλων μου.</p>
     <p class="tra">At sasabihin ng isa sa kaniya, Ano ang mga sugat na ito sa pagitan ng iyong mga bisig? Kung magkagayo'y siya'y sasagot, Iyan ang mga naging sugat ko sa bahay ng aking mga kaibigan.</p>
   </div>
 </div>
@@ -2034,7 +1872,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Framea, suscitare super pastorem meum, et super virum cohærentem mihi, dicit Dominus exercituum : percute pastorem, et dispergentur oves : et convertam manum meam ad parvulos.</p>
     <p class="base base-p">Schwert, mache dich auf uber meinen Hirten und uber den Mann, der mir der nachste ist! spricht der HERR Zebaoth. Schlage den Hirten, so wird die Herde sich zerstreuen, so will ich meine Hand kehren zu den Kleinen.</p>
-    <p class="base base-o">Ρομφαία, εξύπνησον κατά του ποιμένος μου και κατά του ανδρός του συνεταίρου μου, λέγει ο Κύριος των δυνάμεων· πάταξον τον ποιμένα και τα πρόβατα θέλουσι διασκορπισθή· θέλω όμως στρέψει την χείρα μου επί τους μικρούς.</p>
     <p class="tra">Gumising ka, Oh tabak, laban sa pastor ko, at laban sa lalake na aking kasama, sabi ng Panginoon ng mga hukbo: saktan mo ang pastor at ang mga tupa ay mangangalat; at aking ipipihit ang aking kamay laban sa mga maliit.</p>
   </div>
 </div>
@@ -2043,7 +1880,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et erunt in omni terra, dicit Dominus : partes duæ in ea dispergentur, et deficient : et tertia pars relinquetur in ea.</p>
     <p class="base base-p">Und soil geschehen, in welchem Lande, spricht der HERR, zwei Teile sind; die sollen ausgerottet werden und untergehen, und das dritte Teil soil drinnen überbleiben.</p>
-    <p class="base base-o">Και εν πάση τη γη, λέγει Κύριος, δύο μέρη θέλουσιν εξολοθρευθή εν αυτή και εκλείψει, το δε τρίτον θέλει εναπολειφθή εν αυτή.</p>
     <p class="tra">At mangyayari, na sa buong lupain, sabi ng Panginoon, dalawang bahagi ay mahihiwalay at mamamatay; nguni't ang ikatlo ay maiiwan.</p>
   </div>
 </div>
@@ -2052,7 +1888,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et ducam tertiam partem per ignem, et uram eos sicut uritur argentum, et probabo eos sicut probatur aurum. Ipse vocabit nomen meum, et ego exaudiam eum. Dicam : Populus meus es : et ipse dicet : Dominus Deus meus.</p>
     <p class="base base-p">Und will dasselbige dritte Teil durchs Feuer führen und lautern, wie man Silber lautert, und fegen, wie man Gold feget. Die werden dann meinen Namen anrufen, und ich will sie erhoren. Ich will sagen: Es ist mein Volk; und sie werden sagen: HERR, mein Gott!</p>
-    <p class="base base-o">Και θέλω περάσει το τρίτον διά πυρός· και θέλω καθαρίσει αυτούς ως καθαρίζεται το αργύριον, και θέλω δοκιμάσει αυτούς ως δοκιμάζεται το χρυσίον· αυτοί θέλουσιν επικαλεσθή το όνομά μου κα εγώ θέλω εισακούσει αυτούς· θέλω ειπεί, ούτος είναι λαός μου· και αυτοί θέλουσιν ειπεί, Ο Κύριος είναι ο Θεός μου.</p>
     <p class="tra">At aking dadalhin ang ikatlong bahagi sa apoy, at sila'y dadalisayin ko na parang pilak na dalisay, at sila'y susubukin ko na parang pagsubok sa ginto. Sila'y magsisitawag sa aking pangalan, at akin silang didinggin: aking sasabihin, Siya'y bayan ko; at kanilang sasabihin, Ang Panginoon ay aking Dios.</p>
   </div>
 </div>
@@ -2061,14 +1896,14 @@ body[data-conf="orthodox"] .base-o { display:block; }
 <section class="chap" id="c14">
   <div class="chhead">
     <span class="chrom">XIV</span>
-    <span class="chlbl">Caput 14</span>
+    <span class="chlbl chlbl-c">Caput XIV</span>
+    <span class="chlbl chlbl-p">Das 14. Capitel</span>
   </div>
 <div class="vb first" id="v14-1">
   <span class="vn">1</span>
   <div class="vt">
     <p class="base base-c">Ecce venient dies Domini, et dividentur spolia tua in medio tui.</p>
     <p class="base base-p">Siehe, es kommt dem HERRN die Zeit, daß man deinen Raub austeilen wird in dir.</p>
-    <p class="base base-o">Ιδού, η ημέρα του Κυρίου έρχεται και το λάφυρόν σου θέλει διαμερισθή εν τω μέσω σου.</p>
     <p class="tra">Narito ang araw ng Panginoon ay dumarating, na ang iyong samsam ay babahagihin sa gitna mo.</p>
   </div>
 </div>
@@ -2077,7 +1912,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et congregabo omnes gentes ad Jerusalem in prælium : et capietur civitas, et vastabuntur domus, et mulieres violabuntur : et egredietur media pars civitatis in captivitatem, et reliquum populi non auferetur ex urbe.</p>
     <p class="base base-p">Denn ich werde allerlei Heiden wider Jerusalem sammeln zum Streit. Und die Stadt wird gewonnen, die Hauser geplundert und die Weibergeschandet werden; und die Halfte der Stadt wird gefangen weggeführt werden, und das übrige Volk wird nicht aus der Stadt ausgerottet werden.</p>
-    <p class="base base-o">Και θέλω συνάξει πάντα τα έθνη κατά της Ιερουσαλήμ εις μάχην· και θέλει αλωθή η πόλις και αι οικίαι θέλουσι λεηλατηθή και αι γυναίκες θέλουσι βιασθή, και το ήμισυ της πόλεως θέλει εξέλθει εις αιχμαλωσίαν, το δε υπόλοιπον του λαού δεν θέλει εξολοθρευθή εκ της πόλεως.</p>
     <p class="tra">Sapagka't aking pipisanin ang lahat na bansa laban sa Jerusalem sa pagbabaka; at ang bayan ay masasakop, at ang mga bahay ay lolooban, at ang mga babae ay dadahasin; at ang kalahati ng bayan ay yayaon sa pagkabihag, at ang nalabi sa bayan ay hindi mahihiwalay sa bayan.</p>
   </div>
 </div>
@@ -2086,7 +1920,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et egredietur Dominus, et præliabitur contra gentes illas, sicut præliatus est in die certaminis.</p>
     <p class="base base-p">Aber der HERR wird ausziehen und streiten wider dieselbigen Heiden, gleichwie erzu streiten pflegt zur Zeit des Streits.</p>
-    <p class="base base-o">Και ο Κύριος θέλει εξέλθει και θέλει πολεμήσει κατά των εθνών εκείνων, ως ότε επολέμησεν εν τη ημέρα της μάχης.</p>
     <p class="tra">Kung magkagayo'y lalabas ang Panginoon, at makikipaglaban sa mga bansang yaon, gaya nang siya'y makipaglaban sa araw ng pagbabaka.</p>
   </div>
 </div>
@@ -2095,7 +1928,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et stabunt pedes ejus in die illa super montem Olivarum, qui est contra Jerusalem ad orientem : et scindetur mons Olivarum ex media parte sui ad orientem et ad occidentem, prærupto grandi valde : et separabitur medium montis ad aquilonem, et medium ejus ad meridiem.</p>
     <p class="base base-p">Und seine Fülie werden stehen zu der Zeit auf dem Olberge, der vor Jerusalem liegt gegen Morgen. Und der Olberg wird sich mitten entzweispalten vom Aufgang bis zum Niedergang, sehrweit voneinander, daß sich eine Halfte des Berges gegen Mitternacht und die andere gegen Mittag geben wird.</p>
-    <p class="base base-o">Και οι πόδες αυτού θέλουσι σταθή κατά την ημέραν εκείνην επί του όρους των ελαιών, του απέναντι της Ιερουσαλήμ εξ ανατολών· και το όρος των ελαιών θέλει σχισθή κατά το μέσον αυτού προς ανατολάς και προς δυσμάς και θέλει γείνει κοιλάς μεγάλη σφόδρα· και το ήμισυ του όρους θέλει συρθή προς βορράν και το ήμισυ αυτού προς νότον.</p>
     <p class="tra">At ang kaniyang mga paa ay magsisitayo sa araw na yaon sa bundok ng mga Olivo, na nasa tapat ng Jerusalem sa dakong silanganan; at ang bundok ng mga Olivo ay mahahati sa gitna niya, sa dakong silanganan at sa dakong kalunuran, at magiging totoong malaking libis; at ang kalahati ng bundok ay malilipat sa dakong hilagaan, at ang kalahati ay sa dakong timugan.</p>
   </div>
 </div>
@@ -2104,7 +1936,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et fugietis ad vallem montium eorum, quoniam conjungetur vallis montium usque ad proximum : et fugietis sicut fugistis a facie terræmotus in diebus Oziæ regis Juda : et veniet Dominus Deus meus, omnesque sancti cum eo.</p>
     <p class="base base-p">Und ihrwerdet fliehen vorsolchem Tal zwischen meinen Bergen, denn das Tal zwischen den Bergen wird nahe hinanreichen an Azal; und werdet fliehen, wie ihr vorzeiten flohet vor dem Erdbeben zur Zeit Usias, des Konigs Judas. Da wird denn kommen der HERR, mein Gott, und alle Heiligen mitdir.</p>
-    <p class="base base-o">Και θέλετε καταφύγει εις την κοιλάδα των ορέων μου· διότι η κοιλάς των ορέων θέλει φθάνει έως εις Ασάλ· και θέλετε φύγει, καθώς εφύγετε απ' έμπροσθεν του σεισμού εν ταις ημέραις Οζίου του βασιλέως του Ιούδα· και Κύριος ο Θεός μου θέλει ελθεί και μετά σου πάντες οι άγιοι.</p>
     <p class="tra">At kayo'y magsisitakas sa libis ng aking mga bundok; sapagka't ang libis ng mga bundok ay magsisiabot hanggang sa Azel; oo, kayo'y magsisitakas gaya nang kayo'y tumakas mula sa lindol nang mga kaarawan ni Uzzias na hari sa Juda; at ang Panginoon kong Dios ay darating, at ang lahat na banal na kasama niya.</p>
   </div>
 </div>
@@ -2113,7 +1944,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et erit in die illa : non erit lux, sed frigus et gelu.</p>
     <p class="base base-p">Zu der Zeit wird kein Licht sein, sondern Kalte und Frost.</p>
-    <p class="base base-o">Και εν εκείνη τη ημέρα το φως δεν θέλει είσθαι λαμπρόν ουδέ συνεσκοτασμένον·</p>
     <p class="tra">At mangyayari sa araw na yaon, na hindi magkakaroon ng liwanag; at ang mga nagniningning ay uurong.</p>
   </div>
 </div>
@@ -2122,7 +1952,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et erit dies una quæ nota est Domino, non dies neque nox : et in tempore vesperi erit lux.</p>
     <p class="base base-p">Und wird ein Tag sein, der dem HERRN bekannt ist, weder Tag noch Nacht. Und urn den Abend wird's licht sein.</p>
-    <p class="base base-o">αλλά θέλει είσθαι μία ημέρα, ήτις είναι γνωστή εις τον Κύριον, ούτε ημέρα ούτε νύξ· και προς την εσπέραν θέλει είσθαι φως.</p>
     <p class="tra">Nguni't magiging isang araw na kilala sa Panginoon; hindi araw, at hindi gabi; nguni't mangyayari, na sa gabi ay magliliwanag.</p>
   </div>
 </div>
@@ -2131,7 +1960,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et erit in die illa : exibunt aquæ vivæ de Jerusalem : medium earum ad mare orientale, et medium earum ad mare novissimum : in æstate et in hieme erunt.</p>
     <p class="base base-p">Zu der Zeit werden frische Wasser aus Jerusalem flielien, die Halfte gegen das Meer gegen Morgen und die andere Halfte gegen das aulierste Meer; und wird wahren beide, des Sommers und Winters.</p>
-    <p class="base base-o">Και εν τη ημέρα εκείνη ύδατα ζώντα θέλουσιν εξέλθει εξ Ιερουσαλήμ, το ήμισυ αυτών προς την θάλασσαν την ανατολικήν και το ήμισυ αυτών προς την θάλασσαν την δυτικήν· εν θέρει και εν χειμώνι θέλει είσθαι ούτω.</p>
     <p class="tra">At mangyayari sa araw na yaon, na ang buhay na tubig ay magsisibalong mula sa Jerusalem; kalahati niyao'y sa dakong dagat silanganan, at kalahati niyao'y sa dakong dagat kalunuran: sa taginit at sa tagginaw mangyayari.</p>
   </div>
 </div>
@@ -2140,7 +1968,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et erit Dominus rex super omnem terram : in die illa erit Dominus unus, et erit nomen ejus unum.</p>
     <p class="base base-p">Und der HERR wird Konig sein uber alle Lande. Zu der Zeit wird der HERR nur einer sein und sein Name nur einer.</p>
-    <p class="base base-o">Και ο Κύριος θέλει είσθαι βασιλεύς εφ' όλην την γήν· εν τη ημέρα εκείνη θέλει είσθαι Κύριος εις και το όνομα αυτού εν.</p>
     <p class="tra">At ang Panginoo'y magiging Hari sa buong lupa: sa araw na yao'y magiging ang Panginoon ay isa, at ang kaniyang pangalan ay isa.</p>
   </div>
 </div>
@@ -2149,7 +1976,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et revertetur omnis terra usque ad desertum, de colle Remmon ad austrum Jerusalem : et exaltabitur, et habitabit in loco suo, a porta Benjamin usque ad locum portæ prioris, et usque ad portam angulorum, et a turre Hananeel usque ad torcularia regis.</p>
     <p class="base base-p">Und man wird gehen im ganzen Lande urn, wie auf einem Gefilde, von Gibea nach Rimon zu, gegen Mittag zu Jerusalem. Denn sie wird erhoben und bewohnet werden an ihrem Ort, vom Tor Benjamin bis an den Ort des ersten Tors, bis an das Ecktor, und vom Turm Hananeel bis an des Konigs Kelter.</p>
-    <p class="base base-o">Πας ο τόπος θέλει μεταβληθή εις πεδιάδα, από Γαβαά έως Ριμμών, κατά νότον της Ιερουσαλήμ· και αύτη θέλει υψωθή και κατοικηθή εν τω τόπω αυτής, από της πύλης του Βενιαμίν έως του τόπου της πρώτης πύλης, έως της πύλης των γωνιών και του πύργου Ανανεήλ, μέχρι των ληνών του βασιλέως.</p>
     <p class="tra">Ang buong lupain ay magiging gaya ng Araba, mula sa Geba hanggang sa Rimmon na timugan ng Jerusalem; at siya'y matataas, at tatahan sa kaniyang dako, mula sa pintuang-bayan ng Benjamin hangang sa dako ng unang pintuang-bayan, hanggang sa sulok na pintuang-bayan, at mula sa moog ng Hananel hanggang sa pisaan ng ubas ng hari.</p>
   </div>
 </div>
@@ -2158,7 +1984,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et habitabunt in ea, et anathema non erit amplius, sed sedebit Jerusalem secura.</p>
     <p class="base base-p">Und man wird drinnen wohnen, und wird kein Bann mehr sein; denn Jerusalem wird ganz sicher wohnen.</p>
-    <p class="base base-o">Και θέλουσι κατοικήσει εν αυτή, και δεν θέλει είσθαι πλέον αφανισμός· και η Ιερουσαλήμ θέλει κάθησθαι εν ασφαλεία.</p>
     <p class="tra">At ang mga tao'y magsisitahan doon, at hindi na magkakaroon pa ng sumpa; kundi ang Jerusalem ay tatahang tiwasay.</p>
   </div>
 </div>
@@ -2167,7 +1992,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et hæc erit plaga qua percutiet Dominus omnes gentes quæ pugnaverunt adversus Jerusalem : tabescet caro uniuscujusque stantis super pedes suos : et oculi ejus contabescent in foraminibus suis, et lingua eorum contabescet in ore suo.</p>
     <p class="base base-p">Und das wird die Plage sein, damit der HERR plagen wird alle Volker, so wider Jerusalem gestritten haben: Ihr Fleisch wird verwesen, also daß sie noch auf ihren Fulien stehen, und ihre Augen in den Lochern verwesen und ihre Zunge im Maul verwesen.</p>
-    <p class="base base-o">Και αύτη θέλει είσθαι η πληγή, με την οποίαν ο Κύριος θέλει πληγώσει πάντας τους λαούς τους στρατεύσαντας κατά της Ιερουσαλήμ· η σαρξ αυτών θέλει τήκεσθαι ενώ ίστανται επί τους πόδας αυτών, και οι οφθαλμοί αυτών θέλουσι διαλυθή εν ταις οπαίς αυτών, και η γλώσσα αυτών θέλει διαλυθή εν τω στόματι αυτών.</p>
     <p class="tra">At ito ang salot na ipananalot ng Panginoon sa lahat na bayan na nakipagdigma laban sa Jerusalem: ang kanilang laman ay matutunaw samantalang sila'y nangakatayo ng kanilang mga paa, at ang kanilang mga mata'y mangatutunaw sa kanilang ukit, at ang kanilang dila ay matutunaw sa kanilang bibig.</p>
   </div>
 </div>
@@ -2176,7 +2000,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">In die illa erit tumultus Domini magnus in eis : et apprehendet vir manum proximi sui, et conseretur manus ejus super manum proximi sui.</p>
     <p class="base base-p">Zu der Zeit wird der HERR ein groli Getümmel unter ihnen anrichten, daß einer wird den andern bei der Hand fassen und seine Hand auf des andern Hand legen.</p>
-    <p class="base base-o">Και εν τη ημέρα εκείνη ταραχή του Κυρίου μεγάλη θέλει είσθαι μεταξύ αυτών, και θέλουσι πιάνει έκαστος την χείρα του πλησίον αυτού και η χειρ αυτού θέλει εγείρεσθαι κατά της χειρός του πλησίον αυτού.</p>
     <p class="tra">At mangyayari sa araw na yaon, na magkakaroon ng isang malaking kaingay sa gitna nila na mula sa Panginoon; at hahawak ang bawa't isa sa kanila sa kamay ng kaniyang kapuwa, at ang kamay niya'y mabubuhat laban sa kamay ng kaniyang kapuwa.</p>
   </div>
 </div>
@@ -2185,7 +2008,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Sed et Judas pugnabit adversus Jerusalem : et congregabuntur divitiæ omnium gentium in circuitu, aurum, et argentum, et vestes multæ satis.</p>
     <p class="base base-p">Denn auch Juda wird wider Jerusalem streiten, daß versammelt werden die Guter aller Heiden, die umher sind: Gold, Silber, Kleider uber die Malie viel.</p>
-    <p class="base base-o">Και ο Ιούδας έτι θέλει πολεμήσει εν Ιερουσαλήμ· και ο πλούτος πάντων των εθνών κύκλω θέλει συναχθή, χρυσίον και αργύριον και ιμάτια, εις πλήθος μέγα.</p>
     <p class="tra">At ang Juda naman ay makikipaglaban sa Jerusalem; at ang kayamanan ng lahat na bansa sa palibot ay mapipisan, ginto, at pilak, at kasuutan, na totoong sagana.</p>
   </div>
 </div>
@@ -2194,7 +2016,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et sic erit ruina equi, et muli, et cameli, et asini, et omnium jumentorum quæ fuerint in castris illis, sicut ruina hæc.</p>
     <p class="base base-p">Und da wird denn diese Plage gehen uber Rosse, Mauler, Kamele, Esel und allerlei Tiere, die in demselben Heer sind, wie jene geplagt sind.</p>
-    <p class="base base-o">Και η πληγή του ίππου, του ημιόνου, της καμήλου και του όνου και πάντων των κτηνών, τα οποία θέλουσιν είσθαι εν τοις στρατοπέδοις εκείνοις, τοιαύτη θέλει είσθαι ως η πληγή αύτη.</p>
     <p class="tra">At magiging gayon ang salot sa kabayo, sa mula, sa kamelyo, at sa asno, at sa lahat ng hayop na naroroon, sa mga kampamentong yaon, na gaya ng salot na ito.</p>
   </div>
 </div>
@@ -2203,7 +2024,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et omnes qui reliqui fuerint de universis gentibus quæ venerunt contra Jerusalem, ascendent ab anno in annum ut adorent regem, Dominum exercituum, et celebrent festivitatem tabernaculorum.</p>
     <p class="base base-p">Und alle ubrigen unter alien Heiden, die wider Jerusalem zogen, werden jahrlich heraufkommen, anzubeten den Konig, den HERRN Zebaoth, und zu halten das Laubhuttenfest.</p>
-    <p class="base base-o">Και πας όστις υπολειφθή εκ πάντων των εθνών, των ελθόντων κατά της Ιερουσαλήμ, θέλει αναβαίνει κατ' έτος διά να προσκυνή τον Βασιλέα· τον Κύριον των δυνάμεων, και να εορτάζη την εορτήν της σκηνοπηγίας.</p>
     <p class="tra">At mangyayari, na bawa't maiwan, sa lahat na bansa na naparoon laban sa Jerusalem ay aahon taon-taon upang sumamba sa Hari, sa Panginoon ng mga hukbo, at upang ipangilin ang mga kapistahan ng mga balag.</p>
   </div>
 </div>
@@ -2212,7 +2032,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et erit : qui non ascenderit de familiis terræ ad Jerusalem ut adoret regem, Dominum exercituum, non erit super eos imber.</p>
     <p class="base base-p">Welches Geschlecht aber auf Erden nicht heraufkommen wird gen Jerusalem, anzubeten den Konig, den HERRN Zebaoth, uber die wird's nicht regnen.</p>
-    <p class="base base-o">Και όσοι εκ των οικογενειών της γης δεν αναβώσιν εις Ιερουσαλήμ, διά να προσκυνήσωσι τον Βασιλέα, τον Κύριον των δυνάμεων, εις αυτούς δεν θέλει είσθαι βροχή.</p>
     <p class="tra">At mangyayari, na ang sinoman sa mga angkan sa lupa na hindi umahon sa Jerusalem upang sumamba sa Hari, sa Panginoon ng mga hukbo, sila'y mawawalan ng ulan.</p>
   </div>
 </div>
@@ -2221,7 +2040,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Quod etsi familia Ægypti non ascenderit et non venerit, nec super eos erit : sed erit ruina, qua percutiet Dominus omnes gentes quæ non ascenderint ad celebrandam festivitatem tabernaculorum.</p>
     <p class="base base-p">Und wo das Geschlecht der Agypter nicht heraufzoge und kame, so wird's uber sie auch nicht regnen. Das wird die Plage sein, damit der HERR plagen wird alle Heiden, die nicht heraufkommen, zu halten das Laubhuttenfest.</p>
-    <p class="base base-o">Και εάν η οικογένεια της Αιγύπτου δεν αναβή και δεν έλθη, επί τους οποίους δεν είναι βροχή, εις αυτούς θέλει είσθαι η πληγή, ην ο Κύριος θέλει πληγώσει τα έθνη τα μη αναβαίνοντα διά να εορτάσωσι την εορτήν της σκηνοπηγίας.</p>
     <p class="tra">At kung ang angkan ng Egipto ay hindi umahon at hindi pumaroon, mawawalan din ng ulan sila, magkakaroon ng salot, na ipinanalot ng Panginoon sa mga bansa na hindi magsisiahon upang ipagdiwang ang kapistahan ng mga balag.</p>
   </div>
 </div>
@@ -2230,7 +2048,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Hoc erit peccatum Ægypti, et hoc peccatum omnium gentium quæ non ascenderint ad celebrandam festivitatem tabernaculorum.</p>
     <p class="base base-p">Denn das wird eine Sünde sein der Agypter und ailer Heiden, die nicht heraufkommen, zu halten das Laubhuttenfest.</p>
-    <p class="base base-o">Αύτη θέλει είσθαι η ποινή της Αιγύπτου και η ποινή πάντων των εθνών των μη θελόντων να αναβώσι διά να εορτάσωσι την εορτήν της σκηνοπηγίας.</p>
     <p class="tra">Ito ang magiging kaparusahan sa Egipto, at kaparusahan sa lahat na bansa na hindi magsisiahon upang ipagdiwang ang kapistahan ng mga balag.</p>
   </div>
 </div>
@@ -2239,7 +2056,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">In die illa, erit quod super frenum equi est, sanctum Domino : et erunt lebetes in domo Domini quasi phialæ coram altari.</p>
     <p class="base base-p">Zu der Zeit wird die Rustung der Rosse dem HERRN heilig sein; und werden die Kessel im Hause des HERRN gleich sein wie die Becken vor dem Altar.</p>
-    <p class="base base-o">Εν τη ημέρα εκείνη θέλει είσθαι επί τους κώδωνας των ίππων, ΑΓΙΑΣΜΟΣ ΕΙΣ ΤΟΝ ΚΥΡΙΟΝ· και οι λέβητες εν τω οίκω του Κυρίου θέλουσιν είσθαι ως αι φιάλαι έμπροσθεν του θυσιαστηρίου.</p>
     <p class="tra">Sa araw na yaon ay magkakaroon sa mga kampanilya ng mga kabayo, KABANALAN SA PANGINOON; at ang mga palyok sa bahay ng Panginoon ay magiging gaya ng mga taza sa harap ng dambana.</p>
   </div>
 </div>
@@ -2248,7 +2064,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et erit omnis lebes in Jerusalem et in Juda sanctificatus Domino exercituum : et venient omnes immolantes, et sument ex eis, et coquent in eis : et non erit mercator ultra in domo Domini exercituum in die illo.</p>
     <p class="base base-p">Denn es werden alle Kessel, beide, in Jerusalem und Juda, dem HERRN Zebaoth heilig sein, also daß alle, die da opfern wollen, werden kommen und dieselbigen nehmen und drinnen kochen. Und wird kein Kanaaniter mehr sein im Hause des HERRN Zebaoth zu der Zeit.</p>
-    <p class="base base-o">Και πας λέβης εν Ιερουσαλήμ και εν Ιούδα θέλει είσθαι αγιασμός εις τον Κύριον των δυνάμεων· και πάντες οι θυσιάζοντες θέλουσιν ελθεί και λάβει εξ αυτών και εψήσει εν αυτοίς· και εν τη ημέρα εκείνη δεν θέλει είσθαι πλέον Χαναναίος εν τω οίκω του Κυρίου των δυνάμεων.</p>
     <p class="tra">Oo, bawa't palyok sa Jerusalem at sa Juda ay aariing banal sa Panginoon ng mga hukbo; at silang lahat na nangaghahain ay magsisiparoon at magsisikuha niyaon, at magpapakulo roon: at sa araw na yaon ay hindi na magkakaroon pa ng Cananeo sa bahay ng Panginoon ng mga hukbo.</p>
   </div>
 </div>
@@ -2257,7 +2072,7 @@ body[data-conf="orthodox"] .base-o { display:block; }
 
 <nav class="bnav">
   <a href="037-hag.html">&#8592; Aggaeus</a>
-  <a href="../index.html" class="center">↑ &nbsp; Inhaltsverzeichnis</a>
+  <a href="../index.html" class="center">? &nbsp; Inhaltsverzeichnis</a>
   <a href="039-mal.html">Malachias &#8594;</a>
 </nav>
 

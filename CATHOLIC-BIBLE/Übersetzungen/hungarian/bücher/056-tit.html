@@ -6,7 +6,7 @@
 <title>Ad Titum &middot; Magyar &middot; Biblia Catholica</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 body{
@@ -17,26 +17,26 @@ body{
   font-size:17px;
 }
 
-/* ──────────────────────────────────────────
+/* ------------------------------------------
    BUCHKOPF
-────────────────────────────────────────── */
+------------------------------------------ */
 .bhead{
   background:
     repeating-linear-gradient( 45deg,transparent,transparent 36px,rgba(200,160,48,.028) 36px,rgba(200,160,48,.028) 37px),
     repeating-linear-gradient(-45deg,transparent,transparent 36px,rgba(200,160,48,.028) 36px,rgba(200,160,48,.028) 37px),
-    linear-gradient(162deg,#2C0810 0%,#4A1020 45%,#5C1828 65%,#4A1020 85%,#2C0810 100%);
+    linear-gradient(162deg,#1A0407 0%,#2C0810 45%,#4A1020 65%,#2C0810 85%,#1A0407 100%);
   padding:36px 28px 28px;
   text-align:center;
   border-bottom:4px solid #B8962E;
   position:relative;overflow:hidden;
 }
-/* Innerer Rahmen — äußerer Ring */
+/* Innerer Rahmen - äußerer Ring */
 .bhead::before{
   content:'';position:absolute;inset:14px;
   border:1px solid rgba(200,160,48,.22);
   pointer-events:none;
 }
-/* Innerer Rahmen — innerer Ring */
+/* Innerer Rahmen - innerer Ring */
 .bhead::after{
   content:'';position:absolute;inset:22px;
   border:1px solid rgba(200,160,48,.08);
@@ -52,12 +52,16 @@ body{
   position:relative;
 }
 .blatin{
-  font-family:'Cinzel Decorative',serif;
+  display:none;
+  font-family:'UnifrakturMaguntia',cursive;
   font-size:clamp(1.9rem,7vw,3.4rem);
   color:#EDD882;
   text-shadow:0 3px 20px rgba(0,0,0,.55);
-  letter-spacing:.06em;position:relative;
+  letter-spacing:.04em;position:relative;
 }
+body:not([data-conf]) .blatin-c,
+body[data-conf="catholic"] .blatin-c{display:block;}
+body[data-conf="protestant"] .blatin-p{display:block;}
 .btrans{
   font-family:'Cinzel',serif;
   font-size:.88rem;
@@ -70,9 +74,9 @@ body{
   letter-spacing:.08em;position:relative;
 }
 
-/* ──────────────────────────────────────────
+/* ------------------------------------------
    KAPITELINHALT
-────────────────────────────────────────── */
+------------------------------------------ */
 .content{
   max-width:960px;
   margin:36px auto 36px;
@@ -86,7 +90,7 @@ body{
   border-right:4px solid #B8962E;
   border-top:2px solid rgba(184,150,46,.4);
   border-bottom:2px solid rgba(184,150,46,.4);
-  position:relative;
+  position:relative;overflow:clip;
 }
 .content::before{
   content:'';
@@ -130,12 +134,15 @@ body{
 .chlbl{
   font-family:'Cinzel',serif;font-size:.58rem;
   color:rgba(184,150,46,.42);letter-spacing:.32em;
-  display:block;margin-top:8px;
+  display:none;margin-top:8px;
 }
+body:not([data-conf]) .chlbl-c
+body[data-conf="catholic"] .chlbl-c{display:block;}
+body[data-conf="protestant"] .chlbl-p{display:block;}
 
-/* ──────────────────────────────────────────
+/* ------------------------------------------
    VERSE
-────────────────────────────────────────── */
+------------------------------------------ */
 .vb{
   display:flex;
   padding:20px 6px;
@@ -163,7 +170,7 @@ body{
   padding:0 20px 0 4px;
 }
 
-/* BASIS-TEXT — wechselt je nach Konfession */
+/* BASIS-TEXT - wechselt je nach Konfession */
 .base{
   font-family:'EB Garamond',serif;
   font-size:1.2rem;
@@ -176,7 +183,6 @@ body{
 body:not([data-conf]) .base-c,
 body[data-conf="catholic"] .base-c { display:block; }
 body[data-conf="protestant"] .base-p { display:block; }
-body[data-conf="orthodox"] .base-o { display:block; }
 /* Leere Basis-Paragraphen ausblenden */
 .base:empty { display:none !important; }
 
@@ -192,8 +198,9 @@ body[data-conf="orthodox"] .base-o { display:block; }
   border-left:2px solid rgba(90,110,170,.2);
 }
 
-/* Drop-Cap: erster Vers eines Kapitels */
-.vb.first .base::first-letter{
+/* Drop-Cap: erster Vers eines Kapitels — nur Latein und Luther, nicht Griechisch */
+.vb.first .base-c::first-letter,
+.vb.first .base-p::first-letter{
   font-family:'Cinzel Decorative',serif;
   font-size:4em;
   float:left;
@@ -204,9 +211,9 @@ body[data-conf="orthodox"] .base-o { display:block; }
   text-shadow:1px 2px 6px rgba(0,0,0,.12);
 }
 
-/* ──────────────────────────────────────────
+/* ------------------------------------------
    BUCH-NAVIGATION (unten)
-────────────────────────────────────────── */
+------------------------------------------ */
 .bnav{
   display:flex;justify-content:space-between;align-items:center;
   background:#2C0810;border-top:3px solid #B8962E;
@@ -245,29 +252,34 @@ body[data-conf="orthodox"] .base-o { display:block; }
   .content{padding:16px 18px 60px;margin:0;border-left:none;border-right:none;border-radius:0;}
   .chrom{font-size:1.8rem;}
 }
+/* KREUZ-GRAVUR */
+.b-wm{position:sticky;top:calc(50vh - 37.5vmin);width:50vmin;height:75vmin;margin:0 auto -75vmin;display:block;pointer-events:none;z-index:0;user-select:none;}
+.b-wm svg{width:100%;height:auto;display:block;}
+.b-wm path{fill:none;stroke:rgba(184,150,46,.06);stroke-width:1.5;stroke-linecap:square;}
 </style>
 </head>
 <body>
-
 <header class="bhead">
   <div class="btestament">NOVUM TESTAMENTUM</div>
-  <div class="blatin">AD TITUM</div>
+  <div class="blatin blatin-c">AD TITUM</div>
+  <div class="blatin blatin-p">TITUSZHOZ</div>
   <div class="btrans">Tituszhoz &nbsp;&middot;&nbsp; <em>Magyar</em></div>
   <div class="bmeta">3 Capita &nbsp;&middot;&nbsp; 46 Versus</div>
 </header>
 
 <main class="content">
+<div class="b-wm"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 14"><path d="M5,0V14M0,4H10"/></svg></div>
 <section class="chap" id="c1">
   <div class="chhead">
     <span class="chrom">I</span>
-    <span class="chlbl">Caput 1</span>
+    <span class="chlbl chlbl-c">Caput I</span>
+    <span class="chlbl chlbl-p">Das 1. Capitel</span>
   </div>
 <div class="vb first" id="v1-1">
   <span class="vn">1</span>
   <div class="vt">
     <p class="base base-c">Paulus servus Dei, Apostolus autem Jesu Christi secundum fidem electorum Dei, et agnitionem veritatis, quæ secundum pietatem est</p>
     <p class="base base-p">Paulus, ein Knecht Gottes, aber ein Apostel Jesu Christi nach dem Glauben der Auserwahlten Gottes und der Erkenntnis der Wahrheit zur Gottseligkeit,</p>
-    <p class="base base-o"></p>
     <p class="tra">Pál, Istennek szolgája, Jézus Krisztusnak pedig apostola, az Isten választottainak hite és a kegyesség szerint való igazságnak megismerése szerint,</p>
   </div>
 </div>
@@ -276,7 +288,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">in spem vitæ æternæ, quam promisit qui non mentitur, Deus, ante tempora sæcularia :</p>
     <p class="base base-p">auf Hoffnung des ewigen Lebens, welches verheiften hat, der nicht luget, Gott, vor den Zeiten der Welt,</p>
-    <p class="base base-o"></p>
     <p class="tra">Az örök élet reménységére, melyet megígért az igazmondó Isten örök időknek előtte,</p>
   </div>
 </div>
@@ -285,7 +296,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">manifestavit autem temporibus suis verbum suum in prædicatione, quæ credita est mihi secundum præceptum Salvatoris nostri Dei :</p>
     <p class="base base-p">hat aber offenbaret zu seiner Zeit sein Wort durch die Predigt, die mir vertrauet ist nach dem Befehl Gottes, unsers Heilandes:</p>
-    <p class="base base-o"></p>
     <p class="tra">Megjelentette pedig a maga idejében az ő beszédét a prédikálás által, a mely reám bízatott a mi megtartó Istenünknek parancsolata szerint; Titusnak, a közös hit szerint való igaz fiamnak:</p>
   </div>
 </div>
@@ -294,7 +304,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Tito dilecto filio secundum communem fidem, gratia, et pax a Deo Patre, et Christo Jesu Salvatore nostro.</p>
     <p class="base base-p">Titus, meinem rechtschaffenen Sohn, nach unser beider Glauben: Gnade, Barmherzigkeit, Friede von Gott dem Vater und dem Herrn Jesu Christo, unserm Heilande.</p>
-    <p class="base base-o"></p>
     <p class="tra">Kegyelem, irgalmasság és békesség az Atya Istentől és az Úr Jézus Krisztustól, a mi Megtartónktól.</p>
   </div>
 </div>
@@ -303,7 +312,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Hujus rei gratia reliqui te Cretæ, ut ea quæ desunt, corrigas, et constituas per civitates presbyteros, sicut et ego disposui tibi,</p>
     <p class="base base-p">Derhalben lieft ich dich in Kreta, dafi du solltest vollends anrichten, da ich's gelassen habe und besetzen die Stadte hin und her mit Altesten, wie ich dir befohlen habe;</p>
-    <p class="base base-o"></p>
     <p class="tra">A végett hagytalak téged Krétában, hogy a hátramaradt dolgokat hozd rendbe, és rendelj városonként presbitereket, a miképen én néked meghagytam;</p>
   </div>
 </div>
@@ -312,7 +320,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">si quis sine crimine est, unius uxoris vir, filios habens fideles, non in accusatione luxuriæ, aut non subditos.</p>
     <p class="base base-p">wo einer ist untadelig, eines Weibes Mann, der glaubige Kinder habe, nicht beruchtiget, daß sie Schwelger und ungehorsam sind.</p>
-    <p class="base base-o"></p>
     <p class="tra">Ha van feddhetetlen, egy feleségű férfiú, a kinek hívő, nem kicsapongással vádolt avagy engedetlen gyermekei vannak.</p>
   </div>
 </div>
@@ -321,7 +328,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Oportet enim episcopum sine crimine esse, sicut Dei dispensatorem : non superbum, non iracundum, non vinolentum, non percussorem, non turpis lucri cupidum :</p>
     <p class="base base-p">Denn ein Bischof soil untadelig sein, als ein Haushalter Gottes, nicht eigensinnig, nicht zornig, nicht ein Weinsaufer, nicht pochen, nicht unehrliche Hantierung treiben,</p>
-    <p class="base base-o"></p>
     <p class="tra">Mert szükséges, hogy a püspök feddhetetlen legyen, mint Isten sáfára; nem akaratos, nem haragos, nem részeges, nem verekedő, nem rút nyerészkedő;</p>
   </div>
 </div>
@@ -330,7 +336,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">sed hospitalem, benignum, sobrium, justum, sanctum, continentem,</p>
     <p class="base base-p">sondern gastfrei, gutig, zuchtig, gerecht, heilig, keusch</p>
-    <p class="base base-o"></p>
     <p class="tra">Hanem vendégszerető, jónak kedvelője, mértékletes, igaz, tiszta, maga tűrtető;</p>
   </div>
 </div>
@@ -339,7 +344,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">amplectentem eum, qui secundum doctrinam est, fidelem sermonem : ut potens sit exhortari in doctrina sana, et eos qui contradicunt, arguere.</p>
     <p class="base base-p">und halte ob dem Wort, das gewift ist und lehren kann, auf daß er machtig sei, zu ermahnen durch die heilsame Lehre und zu strafen die Widersprecher.</p>
-    <p class="base base-o"></p>
     <p class="tra">A ki a tudomány szerint való igaz beszédhez tartja magát, hogy inthessen az egészséges tudománnyal és meggyőzhesse az ellenkezőket.</p>
   </div>
 </div>
@@ -348,7 +352,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Sunt enim multi etiam inobedientes, vaniloqui, et seductores : maxime qui de circumcisione sunt :</p>
     <p class="base base-p">Denn es sind viele freche und unnutze Schwatzer und Verführer, sonderlich die aus der Beschneidung,</p>
-    <p class="base base-o"></p>
     <p class="tra">Mert van sok engedetlen, hiába való beszédű és csaló, kiváltképen a körülmetélkedésből valók,</p>
   </div>
 </div>
@@ -357,7 +360,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">quos oportet redargui : qui universas domos subvertunt, docentes quæ non oportet, turpis lucri gratia.</p>
     <p class="base base-p">welchen man muft das Maul stopfen, die da ganze Hauser verkehren und lehren, was nicht taugt, urn schandliches Gewinns willen.</p>
-    <p class="base base-o"></p>
     <p class="tra">A kiknek be kell dugni a szájokat; a kik egész házakat feldúlnak, tanítván rút nyereség okáért, a miket nem kellene.</p>
   </div>
 </div>
@@ -366,7 +368,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Dixit quidam ex illis, proprius ipsorum propheta : Cretenses semper mendaces, malæ bestiæ, ventres pigri.</p>
     <p class="base base-p">Es hat einer aus ihnen gesagt, ihreigener Prophet: Die Kreter sind immer Lugner, bose Tiere und faule Bauche.</p>
-    <p class="base base-o"></p>
     <p class="tra">Azt mondta valaki közülök, az ő saját prófétájok: A krétaiak mindig hazugok, gonosz vadak, rest hasak.</p>
   </div>
 </div>
@@ -375,7 +376,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Testimonium hoc verum est. Quam ob causam increpa illos dure, ut sani sint in fide,</p>
     <p class="base base-p">Dies Zeugnis ist wahr. Urn der Sache willen strafe sie scharf, auf daß sie gesund seien im Glauben</p>
-    <p class="base base-o"></p>
     <p class="tra">E bizonyság igaz: annakokáért fedd őket kímélés nélkül, hogy a hitben épek legyenek,</p>
   </div>
 </div>
@@ -384,7 +384,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">non intendentes judaicis fabulis, et mandatis hominum, aversantium se a veritate.</p>
     <p class="base base-p">und nicht achten auf die judischen Fabeln und Menschengebote, welche sich von der Wahrheit abwenden.</p>
-    <p class="base base-o"></p>
     <p class="tra">Nem ügyelvén zsidó mesékre, és az igazságot megvető emberek parancsolataira.</p>
   </div>
 </div>
@@ -393,7 +392,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Omnia munda mundis : coinquinatis autem et infidelibus, nihil est mundum, sed inquinatæ sunt eorum et mens et conscientia.</p>
     <p class="base base-p">Den Reinen ist alles rein; den Unreinen aber und Unglaubigen ist nichts rein, sondern unrein ist beides, ihr Sinn und Gewissen.</p>
-    <p class="base base-o"></p>
     <p class="tra">Minden tiszta a tisztáknak: de a megfertőztetetteknek és hitetleneknek semmi sem tiszta; hanem megfertőztetett azoknak mind elméjök, mind lelkiismeretök.</p>
   </div>
 </div>
@@ -402,7 +400,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Confitentur se nosse Deum, factis autem negant : cum sint abominati, et incredibiles, et ad omne opus bonum reprobi.</p>
     <p class="base base-p">Sie sagen, sie erkennen Gott; aber mit den Werken verleugnen sie es, sintemal sie sind, an welchen Gott Greuel hat, und gehorchen nicht und sind zu allem guten Werk untuchtig.</p>
-    <p class="base base-o"></p>
     <p class="tra">Vallják, hogy Istent ismerik, de cselekedeteikkel tagadják, mivelhogy útálatosak és hitetlenek és minden jó cselekedetre méltatlanok.</p>
   </div>
 </div>
@@ -411,14 +408,14 @@ body[data-conf="orthodox"] .base-o { display:block; }
 <section class="chap" id="c2">
   <div class="chhead">
     <span class="chrom">II</span>
-    <span class="chlbl">Caput 2</span>
+    <span class="chlbl chlbl-c">Caput II</span>
+    <span class="chlbl chlbl-p">Das 2. Capitel</span>
   </div>
 <div class="vb first" id="v2-1">
   <span class="vn">1</span>
   <div class="vt">
     <p class="base base-c">Tu autem loquere quæ decent sanam doctrinam :</p>
     <p class="base base-p">Du aber rede, wie sich's ziemet nach der heüsamen Lehre:</p>
-    <p class="base base-o"></p>
     <p class="tra">Te pedig azokat szóljad, a mik az egészséges tudományhoz illenek.</p>
   </div>
 </div>
@@ -427,7 +424,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">senes ut sobrii sint, pudici, prudentes, sani in fide, in dilectione, in patientia :</p>
     <p class="base base-p">den Alten, daß sie nuchtern seien, ehrbar, zuchtig, gesund im Glauben, in der Liebe, in der Geduld;</p>
-    <p class="base base-o"></p>
     <p class="tra">Hogy a vén emberek józanok legyenek, tisztességesek, mértékletesek; a hitben, szeretetben, tűrésben épek.</p>
   </div>
 </div>
@@ -436,7 +432,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">anus similiter in habitu sancto, non criminatrices, non multo vino servientes, bene docentes :</p>
     <p class="base base-p">den alten Weibern desselbigengleichen, daß sie sich stellen, wie den Heiligen ziemet, nicht Lasterinnen seien, nicht Weinsauferinnen, gute Lehrerinnen,</p>
-    <p class="base base-o"></p>
     <p class="tra">Hasonlóképen a vén asszonyok szentekhez illő magaviseletűek legyenek, nem patvarkodók, sem sok borivás rabjai, jóra oktatók;</p>
   </div>
 </div>
@@ -445,7 +440,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">ut prudentiam doceant adolescentulas, ut viros suos ament, filios suos diligant,</p>
     <p class="base base-p">daß sie die jungen Weiber lehren zuchtig sein, ihre Manner lieben, Kinder lieben,</p>
-    <p class="base base-o"></p>
     <p class="tra">Hogy megokosítsák az ifjú asszonyokat, hogy férjöket és magzataikat szeressék,</p>
   </div>
 </div>
@@ -454,7 +448,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">prudentes, castas, sobrias, domus curam habentes, benignas, subditas viris suis, ut non blasphemetur verbum Dei.</p>
     <p class="base base-p">sittig sein, keusch, hauslich, gutig, ihren Mannern untertan, auf daß nicht das Wort Gottes verlastert werde.</p>
-    <p class="base base-o"></p>
     <p class="tra">Legyenek mértékletesek, tiszták, háziasak, jók, férjöknek engedelmesek, hogy az Isten beszéde ne káromoltassék.</p>
   </div>
 </div>
@@ -463,7 +456,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Juvenes similiter hortare ut sobrii sint.</p>
     <p class="base base-p">Desselbigengleichen die jungen Manner ermahne, daß sie zuchtig seien.</p>
-    <p class="base base-o"></p>
     <p class="tra">Az ifjakat hasonlóképen intsed, hogy legyenek mértékletesek:</p>
   </div>
 </div>
@@ -472,7 +464,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">In omnibus teipsum præbe exemplum bonorum operum, in doctrina, in integritate, in gravitate,</p>
     <p class="base base-p">Allenthalben aber stelle dich selbst zum Vorbilde guter Werke mit unverfalschter Lehre, mit Ehrbarkeit,</p>
-    <p class="base base-o"></p>
     <p class="tra">Mindenben tenmagadat adván példaképül a jó cselekedetekben; a tudományban romlatlanságot, méltóságot mutatván,</p>
   </div>
 </div>
@@ -481,7 +472,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">verbum sanum, irreprehensibile : ut is qui ex adverso est, vereatur, nihil habens malum dicere de nobis.</p>
     <p class="base base-p">mit heilsamem und untadeligem Wort, auf daß der Widerwartige sich schame und nichts habe, daß er von uns moge Boses sagen.</p>
-    <p class="base base-o"></p>
     <p class="tra">Egészséges, feddhetetlen beszédet; hogy az ellenfél megszégyenüljön, semmi gonoszt sem tudván rólatok mondani.</p>
   </div>
 </div>
@@ -490,7 +480,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Servos dominis suis subditos esse, in omnibus placentes, non contradicentes,</p>
     <p class="base base-p">Den Knechten daß sie ihren Herren untertanig seien, in alien Dingen zu Gefallen tun, nicht widerbellen,</p>
-    <p class="base base-o"></p>
     <p class="tra">A szolgákat intsed, hogy az ő uraiknak engedelmeskedjenek, mindenben kedvöket keressék, ne ellenkezzenek,</p>
   </div>
 </div>
@@ -499,7 +488,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">non fraudantes, sed in omnibus fidem bonam ostendentes : ut doctrinam Salvatoris nostri Dei ornent in omnibus.</p>
     <p class="base base-p">nicht veruntreuen, sondern alle gute Treue erzeigen, auf daß sie die Lehre Gottes, unsers Heilandes, zieren in alien Stricken.</p>
-    <p class="base base-o"></p>
     <p class="tra">Ne tolvajkodjanak, hanem teljes jó hűséget tanusítsanak; hogy a mi megtartó Istenünknek tudományát ékesítsék mindenben.</p>
   </div>
 </div>
@@ -508,7 +496,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Apparuit enim gratia Dei Salvatoris nostri omnibus hominibus,</p>
     <p class="base base-p">Denn es ist erschienen die heilsame Gnade Gottes alien Menschen</p>
-    <p class="base base-o"></p>
     <p class="tra">Mert megjelent az Isten idvezítő kegyelme minden embernek,</p>
   </div>
 </div>
@@ -517,7 +504,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">erudiens nos, ut abnegantes impietatem, et sæcularia desideria, sobrie, et juste, et pie vivamus in hoc sæculo,</p>
     <p class="base base-p">und zuchtiget uns, daß wir sollen verleugnen das ungottliche Wesen und die weltlichen Luste und zuchtig, gerecht und gottselig leben in dieser Welt</p>
-    <p class="base base-o"></p>
     <p class="tra">A mely arra tanít minket, hogy megtagadván a hitetlenséget és a világi kivánságokat, mértékletesen, igazán és szentül éljünk a jelenvaló világon:</p>
   </div>
 </div>
@@ -526,7 +512,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">exspectantes beatam spem, et adventum gloriæ magni Dei, et Salvatoris nostri Jesu Christi :</p>
     <p class="base base-p">und warten auf die selige Hoffnung und Erscheinung der Herrlichkeit des groften Gottes und unsers Heilandes Jesu Christi,</p>
-    <p class="base base-o"></p>
     <p class="tra">Várván ama boldog reménységet és a nagy Istennek és megtartó Jézus Krisztusunknak dicsősége megjelenését;</p>
   </div>
 </div>
@@ -535,7 +520,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">qui dedit semetipsum pro nobis, ut nos redimeret ab omni iniquitate, et mundaret sibi populum acceptabilem, sectatorem bonorum operum.</p>
     <p class="base base-p">der sich selbst fur uns gegeben bat, auf daß er uns erlosete von aller Ungerechtigkeit und reinigte sich selbst ein Volk zum Eigentum, das fleiftig ware zu guten Werken.</p>
-    <p class="base base-o"></p>
     <p class="tra">A ki önmagát adta mi érettünk, hogy megváltson minket minden hamisságtól, és tisztítson önmagának kiváltképen való népet, jó cselekedetekre igyekezőt.</p>
   </div>
 </div>
@@ -544,7 +528,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Hæc loquere, et exhortare, et argue cum omni imperio. Nemo te contemnat.</p>
     <p class="base base-p">Solches rede und ermahne und strafe mit ganzem Ernst. Laft dich niemand verachten!</p>
-    <p class="base base-o"></p>
     <p class="tra">Ezeket szóljad, és ints és feddj teljes méltósággal; senki téged meg ne vessen.</p>
   </div>
 </div>
@@ -553,14 +536,14 @@ body[data-conf="orthodox"] .base-o { display:block; }
 <section class="chap" id="c3">
   <div class="chhead">
     <span class="chrom">III</span>
-    <span class="chlbl">Caput 3</span>
+    <span class="chlbl chlbl-c">Caput III</span>
+    <span class="chlbl chlbl-p">Das 3. Capitel</span>
   </div>
 <div class="vb first" id="v3-1">
   <span class="vn">1</span>
   <div class="vt">
     <p class="base base-c">Admone illos principibus, et potestatibus subditos esse, dicto obedire, ad omne opus bonum paratos esse :</p>
     <p class="base base-p">Erinnere sie, daß sie den Fursten und der Obrigkeit untertan und gehorsam seien, zu allem guten Werk bereit seien,</p>
-    <p class="base base-o"></p>
     <p class="tra">Emlékeztessed őket, hogy a fejedelemségeknek és hatalmasságoknak engedelmeskedjenek, hódoljanak, minden jó cselekedetre készek legyenek,</p>
   </div>
 </div>
@@ -569,7 +552,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">neminem blasphemare, non litigiosos esse, sed modestos, omnem ostendentes mansuetudinem ad omnes homines.</p>
     <p class="base base-p">niemand lastern, nicht hadern, gelinde seien, alle Sanftmutigkeit beweisen gegen alle Menschen.</p>
-    <p class="base base-o"></p>
     <p class="tra">Senkit ne szidalmazzanak, ne veszekedjenek, gyöngédek legyenek, teljes szelídséget tanusítván minden ember iránt.</p>
   </div>
 </div>
@@ -578,7 +560,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Eramus enim aliquando et nos insipientes, increduli, errantes, servientes desideriis, et voluptatibus variis, in malitia et invidia agentes, odibiles, odientes invicem.</p>
     <p class="base base-p">Denn wir waren auch weiland unweise, ungehorsam, irrig, dienend den Lusten und mancherlei Wollusten und wandelten in Bosheit und Neid und hasseten uns untereinander.</p>
-    <p class="base base-o"></p>
     <p class="tra">Mert régenten mi is esztelenek, engedetlenek, tévelygők, különböző kívánságoknak és gyönyöröknek szolgái, gonoszságban és irígységben élők, gyűlölségesek, egymást gyűlölők valánk.</p>
   </div>
 </div>
@@ -587,7 +568,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Cum autem benignitas et humanitas apparuit Salvatoris nostri Dei,</p>
     <p class="base base-p">Da aber erschien die Freundlichkeit und Leutseligkeit Gottes, unsers Heilandes,</p>
-    <p class="base base-o"></p>
     <p class="tra">De mikor a mi megtartó Istenünknek jóvolta és az emberekhez való szeretete megjelent,</p>
   </div>
 </div>
@@ -596,7 +576,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">non ex operibus justitiæ, quæ fecimus nos, sed secundum suam misericordiam salvos nos fecit per lavacrum regenerationis et renovationis Spiritus Sancti,</p>
     <p class="base base-p">nicht urn der Werke willen der Gerechtigkeit, die wir getan hatten, sondern nach seiner Barmherzigkeit machte er uns selig durch das Bad der Wiedergeburt und Erneuerung des Heiligen Geistes,</p>
-    <p class="base base-o"></p>
     <p class="tra">Nem az igazságnak cselekedeteiből, a melyeket mi cselekedtünk, hanem az ő irgalmasságából tartott meg minket az újjászületésnek fürdője és a Szent Lélek megújítása által,</p>
   </div>
 </div>
@@ -605,7 +584,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">quem effudit in nos abunde per Jesum Christum Salvatorem nostrum :</p>
     <p class="base base-p">welchen er.ausgegossen hat uber uns reichlich durch Jesum Christum, unsern Heiland,</p>
-    <p class="base base-o"></p>
     <p class="tra">Melyet kitöltött reánk bőséggel a mi megtartó Jézus Krisztusunk által;</p>
   </div>
 </div>
@@ -614,7 +592,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">ut justificati gratia ipsius, hæredes simus secundum spem vitæ æternæ.</p>
     <p class="base base-p">auf dafi wir durch desselbigen Gnade gerecht und Erben seien des ewigen Lebens nach der Hoffnung.</p>
-    <p class="base base-o"></p>
     <p class="tra">Hogy az ő kegyelméből megigazulván, örökösök legyünk az örök élet reménysége szerint.</p>
   </div>
 </div>
@@ -623,7 +600,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Fidelis sermo est : et de his volo te confirmare : ut curent bonis operibus præesse qui credunt Deo. Hæc sunt bona, et utilia hominibus.</p>
     <p class="base base-p">Das ist je gewifilich wahr. Solches will ich, dafi du test lehrest, auf daß die, so an Gott glaubig sind worden, in einem Stand guter Werke funden werden. Solches ist gut und nütze den Menschen.</p>
-    <p class="base base-o"></p>
     <p class="tra">Igaz ez a beszéd, és akarom, hogy ezeket erősítsed, hogy igyekezzenek jó cselekedetekkel előljárni azok, a kik Istenben hívőkké lettek. Ezek jók és hasznosak az embereknek;</p>
   </div>
 </div>
@@ -632,7 +608,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Stultas autem quæstiones, et genealogias, et contentiones, et pugnas legis devita : sunt enim inutiles, et vanæ.</p>
     <p class="base base-p">Der torichten Fragen aber, der Geschlechtsregister, des Zankes und Streites uber dem Gesetz entschlage dich; denn sie sind unnütz und eitel.</p>
-    <p class="base base-o"></p>
     <p class="tra">A balgatag vitatkozásokat azonban és a nemzetségekről való tudakozásokat, és a civakodást és a törvény felől való harczokat kerüld; mert haszontalanok és hiábavalók.</p>
   </div>
 </div>
@@ -641,7 +616,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Hæreticum hominem post unam et secundam correptionem devita :</p>
     <p class="base base-p">Einen ketzerischen Menschen meide, wenn er einmal und abermal ermahnet ist,</p>
-    <p class="base base-o"></p>
     <p class="tra">Az eretnek embert egy vagy két intés után kerüld;</p>
   </div>
 </div>
@@ -650,7 +624,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">sciens quia subversus est, qui ejusmodi est, et delinquit, cum sit proprio judicio condemnatus.</p>
     <p class="base base-p">und wisse, daß ein solcher verkehrt ist und sundiget, als der sich selbst verurteilet hat.</p>
-    <p class="base base-o"></p>
     <p class="tra">Tudván, hogy az ilyen romlott, és vétkezik, önmaga is kárhoztatván magát.</p>
   </div>
 </div>
@@ -659,7 +632,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Cum misero ad te Artemam, aut Tychicum, festina ad me venire Nicopolim : ibi enim statui hiemare.</p>
     <p class="base base-p">Wenn ich zu dir senden werde Artemas Oder Tychikus, so komm eilend zu mirgen Nikopolis; denn daselbst habe ich beschlossen, den Winter zu bleiben.</p>
-    <p class="base base-o"></p>
     <p class="tra">Mikor Ártemást vagy Tikhikust hozzád küldöm, siess hozzám jőni Nikápolyba; mert elhatároztam, hogy ott töltöm a telet.</p>
   </div>
 </div>
@@ -668,7 +640,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Zenam legisperitum et Apollo sollicite præmitte, ut nihil illis desit.</p>
     <p class="base base-p">Zenas, den Schriftgelehrten, und Apollos fertige ab mit Fleift, auf daß ihnen nichts gebreche.</p>
-    <p class="base base-o"></p>
     <p class="tra">A törvénytudó Zénást és Apollóst gondosan indítsd útnak, hogy semmiben se legyen fogyatkozásuk.</p>
   </div>
 </div>
@@ -677,7 +648,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Discant autem et nostri bonis operibus præesse ad usus necessarios : ut non sint infructuosi.</p>
     <p class="base base-p">Laft aber auch die Unsern lernen, daß sie im Stand guter Werke sich finden lassen, wo man ihrer bedarf, auf daß sie nicht unfruchtbar seien:</p>
-    <p class="base base-o"></p>
     <p class="tra">Tanulják meg pedig a mieink is, hogy jó cselekedetekkel járjanak elől a szükséges hasznokra, hogy ne legyenek gyümölcstelenek.</p>
   </div>
 </div>
@@ -686,7 +656,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Salutant te qui mecum sunt omnes : saluta eos qui nos amant in fide. Gratia Dei cum omnibus vobis. Amen.</p>
     <p class="base base-p">Es gruften dich alle, die mit mirsind. Grufte alle, die uns lieben im Glauben. Die Gnade sei mit euch alien! Amen.</p>
-    <p class="base base-o"></p>
     <p class="tra">Köszöntenek téged a velem levők mindnyájan. Köszöntsd azokat, a kik szeretnek minket hitben. Kegyelem mindnyájatokkal! Ámen.</p>
   </div>
 </div>
@@ -695,7 +664,7 @@ body[data-conf="orthodox"] .base-o { display:block; }
 
 <nav class="bnav">
   <a href="055-2ti.html">&#8592; II Ad Timotheum</a>
-  <a href="../index.html" class="center">↑ &nbsp; Inhaltsverzeichnis</a>
+  <a href="../index.html" class="center">? &nbsp; Inhaltsverzeichnis</a>
   <a href="057-phm.html">Ad Philemonem &#8594;</a>
 </nav>
 

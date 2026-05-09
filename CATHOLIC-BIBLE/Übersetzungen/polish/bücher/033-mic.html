@@ -6,7 +6,7 @@
 <title>Micheas &middot; Polski &middot; Biblia Catholica</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 body{
@@ -17,26 +17,26 @@ body{
   font-size:17px;
 }
 
-/* ──────────────────────────────────────────
+/* ------------------------------------------
    BUCHKOPF
-────────────────────────────────────────── */
+------------------------------------------ */
 .bhead{
   background:
     repeating-linear-gradient( 45deg,transparent,transparent 36px,rgba(200,160,48,.028) 36px,rgba(200,160,48,.028) 37px),
     repeating-linear-gradient(-45deg,transparent,transparent 36px,rgba(200,160,48,.028) 36px,rgba(200,160,48,.028) 37px),
-    linear-gradient(162deg,#2C0810 0%,#4A1020 45%,#5C1828 65%,#4A1020 85%,#2C0810 100%);
+    linear-gradient(162deg,#1A0407 0%,#2C0810 45%,#4A1020 65%,#2C0810 85%,#1A0407 100%);
   padding:36px 28px 28px;
   text-align:center;
   border-bottom:4px solid #B8962E;
   position:relative;overflow:hidden;
 }
-/* Innerer Rahmen — äußerer Ring */
+/* Innerer Rahmen - äußerer Ring */
 .bhead::before{
   content:'';position:absolute;inset:14px;
   border:1px solid rgba(200,160,48,.22);
   pointer-events:none;
 }
-/* Innerer Rahmen — innerer Ring */
+/* Innerer Rahmen - innerer Ring */
 .bhead::after{
   content:'';position:absolute;inset:22px;
   border:1px solid rgba(200,160,48,.08);
@@ -52,12 +52,16 @@ body{
   position:relative;
 }
 .blatin{
-  font-family:'Cinzel Decorative',serif;
+  display:none;
+  font-family:'UnifrakturMaguntia',cursive;
   font-size:clamp(1.9rem,7vw,3.4rem);
   color:#EDD882;
   text-shadow:0 3px 20px rgba(0,0,0,.55);
-  letter-spacing:.06em;position:relative;
+  letter-spacing:.04em;position:relative;
 }
+body:not([data-conf]) .blatin-c,
+body[data-conf="catholic"] .blatin-c{display:block;}
+body[data-conf="protestant"] .blatin-p{display:block;}
 .btrans{
   font-family:'Cinzel',serif;
   font-size:.88rem;
@@ -70,9 +74,9 @@ body{
   letter-spacing:.08em;position:relative;
 }
 
-/* ──────────────────────────────────────────
+/* ------------------------------------------
    KAPITELINHALT
-────────────────────────────────────────── */
+------------------------------------------ */
 .content{
   max-width:960px;
   margin:36px auto 36px;
@@ -86,7 +90,7 @@ body{
   border-right:4px solid #B8962E;
   border-top:2px solid rgba(184,150,46,.4);
   border-bottom:2px solid rgba(184,150,46,.4);
-  position:relative;
+  position:relative;overflow:clip;
 }
 .content::before{
   content:'';
@@ -130,12 +134,15 @@ body{
 .chlbl{
   font-family:'Cinzel',serif;font-size:.58rem;
   color:rgba(184,150,46,.42);letter-spacing:.32em;
-  display:block;margin-top:8px;
+  display:none;margin-top:8px;
 }
+body:not([data-conf]) .chlbl-c
+body[data-conf="catholic"] .chlbl-c{display:block;}
+body[data-conf="protestant"] .chlbl-p{display:block;}
 
-/* ──────────────────────────────────────────
+/* ------------------------------------------
    VERSE
-────────────────────────────────────────── */
+------------------------------------------ */
 .vb{
   display:flex;
   padding:20px 6px;
@@ -163,7 +170,7 @@ body{
   padding:0 20px 0 4px;
 }
 
-/* BASIS-TEXT — wechselt je nach Konfession */
+/* BASIS-TEXT - wechselt je nach Konfession */
 .base{
   font-family:'EB Garamond',serif;
   font-size:1.2rem;
@@ -176,7 +183,6 @@ body{
 body:not([data-conf]) .base-c,
 body[data-conf="catholic"] .base-c { display:block; }
 body[data-conf="protestant"] .base-p { display:block; }
-body[data-conf="orthodox"] .base-o { display:block; }
 /* Leere Basis-Paragraphen ausblenden */
 .base:empty { display:none !important; }
 
@@ -192,8 +198,9 @@ body[data-conf="orthodox"] .base-o { display:block; }
   border-left:2px solid rgba(90,110,170,.2);
 }
 
-/* Drop-Cap: erster Vers eines Kapitels */
-.vb.first .base::first-letter{
+/* Drop-Cap: erster Vers eines Kapitels — nur Latein und Luther, nicht Griechisch */
+.vb.first .base-c::first-letter,
+.vb.first .base-p::first-letter{
   font-family:'Cinzel Decorative',serif;
   font-size:4em;
   float:left;
@@ -204,9 +211,9 @@ body[data-conf="orthodox"] .base-o { display:block; }
   text-shadow:1px 2px 6px rgba(0,0,0,.12);
 }
 
-/* ──────────────────────────────────────────
+/* ------------------------------------------
    BUCH-NAVIGATION (unten)
-────────────────────────────────────────── */
+------------------------------------------ */
 .bnav{
   display:flex;justify-content:space-between;align-items:center;
   background:#2C0810;border-top:3px solid #B8962E;
@@ -245,29 +252,34 @@ body[data-conf="orthodox"] .base-o { display:block; }
   .content{padding:16px 18px 60px;margin:0;border-left:none;border-right:none;border-radius:0;}
   .chrom{font-size:1.8rem;}
 }
+/* KREUZ-GRAVUR */
+.b-wm{position:sticky;top:calc(50vh - 37.5vmin);width:50vmin;height:75vmin;margin:0 auto -75vmin;display:block;pointer-events:none;z-index:0;user-select:none;}
+.b-wm svg{width:100%;height:auto;display:block;}
+.b-wm path{fill:none;stroke:rgba(184,150,46,.06);stroke-width:1.5;stroke-linecap:square;}
 </style>
 </head>
 <body>
-
 <header class="bhead">
   <div class="btestament">VETUS TESTAMENTUM</div>
-  <div class="blatin">MICHEAS</div>
+  <div class="blatin blatin-c">MICHEAS</div>
+  <div class="blatin blatin-p">MICHEASZA</div>
   <div class="btrans">Micheasza &nbsp;&middot;&nbsp; <em>Polski</em></div>
   <div class="bmeta">7 Capita &nbsp;&middot;&nbsp; 104 Versus</div>
 </header>
 
 <main class="content">
+<div class="b-wm"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 14"><path d="M5,0V14M0,4H10"/></svg></div>
 <section class="chap" id="c1">
   <div class="chhead">
     <span class="chrom">I</span>
-    <span class="chlbl">Caput 1</span>
+    <span class="chlbl chlbl-c">Caput I</span>
+    <span class="chlbl chlbl-p">Das 1. Capitel</span>
   </div>
 <div class="vb first" id="v1-1">
   <span class="vn">1</span>
   <div class="vt">
     <p class="base base-c">Verbum Domini, quod factum est ad Michæam Morasthiten, in diebus Joathan, Achaz, et Ezechiæ, regum Juda, quod vidit super Samariam et Jerusalem.</p>
     <p class="base base-p">Dies ist das Wort des HERRN, welches geschah zu Micha von Maresa zur Zeit Jothams, Ahas, Jehiskias, der Kdnige Judas, das er gesehen hat uber Samaria, und Jerusalem.</p>
-    <p class="base base-o">Ο λόγος του Κυρίου ο γενόμενος προς Μιχαίαν τον Μωρασθίτην εν ταις ημέραις Ιωάθαμ, Άχαζ και Εζεκίου, βασιλέων του Ιούδα, τον οποίον είδε περί Σαμαρείας και Ιερουσαλήμ.</p>
     <p class="tra">Słowo Pańskie, które się stało do Micheasza Morastytczyka za dni Joatama, Achaza, i Ezechyjasza, królów Judzkich, które w widzeniu słyszał o Samaryi i o Jeruzalemie.</p>
   </div>
 </div>
@@ -276,7 +288,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Audite, populi omnes,  et attendat terra, et plenitudo ejus :  et sit Dominus Deus vobis in testem,  Dominus de templo sancto suo.</p>
     <p class="base base-p">Horet, alle Volker, merke auf, Land, und alles, was drinnen ist! Denn Gott der HERR hat mit euch zu reden, ja, der HERR aus seinem heiligen Tempel!</p>
-    <p class="base base-o">Ακούσατε, πάντες οι λαοί· πρόσεχε, γη, και το πλήρωμα αυτής, και ας ήναι Κύριος ο Θεός μάρτυς εις εσάς, ο Κύριος εκ του ναού του αγίου αυτού.</p>
     <p class="tra">Słuchajcie wszystkie narody! niech słucha ziemia, i wszystko, co na niej jest, a niech będzie panujący Pan przeciwko wam świadkiem, panujący z kościoła świętobliwości swojej.</p>
   </div>
 </div>
@@ -285,7 +296,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Quia ecce Dominus egredietur de loco suo,  et descendet, et calcabit super excelsa terræ.</p>
     <p class="base base-p">Denn siehe, der HERR wird ausgehen aus seinem Ort und herabfahren und treten auf die Hohen im Lande,</p>
-    <p class="base base-o">Διότι ιδού, ο Κύριος εξέρχεται εκ του τόπου αυτού και θέλει καταβή και πατήσει επί τα ύψη της γης.</p>
     <p class="tra">Bo oto Pan wyjdzie z miejsca swojego, a zstąpiwszy deptać będzie po wysokościach ziemi;</p>
   </div>
 </div>
@@ -294,7 +304,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et consumentur montes subtus eum,  et valles scindentur sicut cera a facie ignis,  et sicut aquæ quæ decurrunt in præceps.</p>
     <p class="base base-p">daß die Berge unter ihm schmelzen und die Taler reiften werden, gleichwie Wachs vor dem Feuer verschmilzet, wie die Wasser, so unterwarts flieften.</p>
-    <p class="base base-o">Και τα όρη θέλουσιν αναλύσει υποκάτω αυτού και αι κοιλάδες θέλουσι διασχισθή ως κηρός από προσώπου πυρός και ως ύδατα καταφερόμενα εις κατήφορον.</p>
     <p class="tra">I rozpłyną się góry pod nim, a doliny popadają się, tak jako wosk od ognia, i jako wody, które spadają na dół.</p>
   </div>
 </div>
@@ -303,7 +312,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">In scelere Jacob omne istud,  et in peccatis domus Israël.  Quod scelus Jacob ? nonne Samaria ?  et quæ excelsa Judæ ? nonne Jerusalem ?</p>
     <p class="base base-p">Das alles um der Ubertretung willen Jakobs und um derßünde willen des Hauses Israel. Welches ist aber die Ubertretung Jakobs? Ist's nicht Samaria? Welches sind aber die Hohen Judas? Ist's nicht Jerusalem?</p>
-    <p class="base base-o">Διά την ασέβειαν του Ιακώβ είναι άπαν τούτο και διά τας αμαρτίας του οίκου Ισραήλ. Τις είναι η ασέβεια του Ιακώβ; ουχί η Σαμάρεια; και τίνες οι υψηλοί τόποι του Ιούδα; ουχί η Ιερουσαλήμ;</p>
     <p class="tra">To wszystko się stanie dla przestępstwa Jakóbowego, i dla grzechów domu Izraelskiego. Któż jest przyczyną przestępstwa Jakóbowego? izali nie Samaryja? i któż wyżyn Judzkich? izali nie Jeruzalem?</p>
   </div>
 </div>
@@ -312,7 +320,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et ponam Samariam quasi acervum lapidum in agro,  cum plantatur vinea ;  et detraham in vallem lapides ejus,  et fundamenta ejus revelabo.</p>
     <p class="base base-p">Und ich will Samaria zum Steinhaufen im Felde machen, die man um die Weinberge legt; und will ihre Steine ins Tal schleifen und zugrunde einbrechen.</p>
-    <p class="base base-o">Διά τούτο θέλω καταστήσει την Σαμάρειαν εις σωρούς λίθων αγρού, όπου φυτεύεται αμπελών, και θέλω κατακυλίσει τους λίθους αυτής εις την κοιλάδα και ανακαλύψει τα θεμέλια αυτής.</p>
     <p class="tra">Przetoż obrócę Samaryję w gromadę gruzu, jako bywa na polu około winnic, i powrzucam w dolinę kamienie jej, a grunty jej odkryję.</p>
   </div>
 </div>
@@ -321,7 +328,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et omnia sculptilia ejus concidentur,  et omnes mercedes ejus comburentur igne,  et omnia idola ejus ponam in perditionem,  quia de mercedibus meretricis congregata sunt,  et usque ad mercedem meretricis revertentur.</p>
     <p class="base base-p">Alle ihre Gotzen sollen zerbrochen und all ihr Hurenlohn soil mit Feuer verbrannt werden, und will alle ihre Bilder verwusten; denn sie sind von Hurenlohn versammelt und sollen auch wieder Hurenlohn werden.</p>
-    <p class="base base-o">Και πάντα τα γλυπτά αυτής θέλουσι κατακοπή, και πάντα τα μισθώματα αυτής θέλουσι κατακαή εν πυρί, και πάντα τα είδωλα αυτής θέλω εξαφανίσει· διότι από μισθού πορνείας συνήγαγεν αυτά και εις μισθόν πορνείας θέλουσιν επιστρέψει.</p>
     <p class="tra">I wszystkie obrazy jej ryte będą potłuczone, i wszystkie jej dary ogniem spalone, i wszystkie jej bałwany obrócę w pustynię; bo to z zapłaty nierządnicy zgromadziła, przetoż się to zaś na zapłatę nierządnicy obróci.</p>
   </div>
 </div>
@@ -330,7 +336,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Super hoc plangam, et ululabo ;  vadam spoliatus, et nudus ;  faciam planctum velut draconum,  et luctum quasi struthionum :</p>
     <p class="base base-p">Darüber muft ich klagen und heulen; ich muft beraubt und bloft dahergehen; ich muft klagen wie die Drachen und trauern wie die Strauften.</p>
-    <p class="base base-o">Διά τούτο θέλω θρηνήσει και ολολύξει, θέλω υπάγει εκδεδυμένος και γυμνός, θέλω κάμει θρήνον ως θώων και πένθος ως στρουθοκαμήλων.</p>
     <p class="tra">Nad tem kwilić i narzekać będę, chodząc zewleczony i nagi; uczynię lament jako smoki i narzekanie jako młode strusięta;</p>
   </div>
 </div>
@@ -339,7 +344,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">quia desperata est plaga ejus,  quia venit usque ad Judam ;  tetigit portam populi mei usque ad Jerusalem.</p>
     <p class="base base-p">Denn ihrer Plage ist kein Rat, die bis nach Juda kommen und bis an meines Volks Tore gen Jerusalem hinanreichen wird.</p>
-    <p class="base base-o">Διότι η πληγή αυτής είναι ανίατος, διότι ήλθεν έως του Ιούδα, έφθασεν έως της πύλης του λαού μου, έως της Ιερουσαλήμ.</p>
     <p class="tra">Przeto, że nieuleczone są rany jej, gdyż doszły aż do Judy, a dosięgły do bramy ludu mego aż do Jeruzalemu.</p>
   </div>
 </div>
@@ -348,7 +352,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">In Geth nolite annuntiare ;  lacrimis ne ploretis ;  in domo pulveris pulvere vos conspergite.</p>
     <p class="base base-p">Verkundiget esja nicht zu Gath, laftteuch nicht horen weinen, sondern gehet in die Trauerkammer und sitzet in die Asche!</p>
-    <p class="base base-o">Μη αναγγείλητε τούτο εις Γαθ, μη πενθήσητε πένθος· εν Βηθ-αφρά κυλίσθητι εις την κόνιν.</p>
     <p class="tra">W Giet tego nie opowiadajcie, ani kwiląc płaczcie; walaj się w prochu w domu Orfa;</p>
   </div>
 </div>
@@ -357,7 +360,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et transite vobis, habitatio pulchra, confusa ignominia :  non est egressa quæ habitat in exitu :  planctum domus vicina accipiet ex vobis, quæ stetit sibimet.</p>
     <p class="base base-p">Du schone Stadt muftt dahin mit alien Schanden. Die Einwohnerin Zaenans wird nicht ausziehen um des Leides willen des nachsten Hauses. Er wird's von euch nehmen, wenn er da sich lagern wird.</p>
-    <p class="base base-o">Διάβηθι, η κάτοικος της Σαφίρ, έχουσα γυμνήν την αισχύνην σου· η κάτοικος της Σαανάν ας μη εξέλθη· το πένθος της Βαιθ-εζήλ θέλει λάβει από σας την αρχήν αυτού.</p>
     <p class="tra">Przejdziesz ty, która mieszkasz na miejscu pięknem, obnażoną mając hańbę; nie wnijdzie ta, która mieszka na miejscu w bydło obfitem; płacz będzie w miejscach okolicznych, które od was mają żywność swoję.</p>
   </div>
 </div>
@@ -366,7 +368,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Quia infirmata est in bonum,  quæ habitat in amaritudinibus ;  quia descendit malum a Domino in portam Jerusalem.</p>
     <p class="base base-p">Die betrübte Stadt vermag sich nicht zutrosten; denn es wird das Ungluck vom HERRN kommen, auch bis an das Tor Jerusalems.</p>
-    <p class="base base-o">Διότι η κάτοικος της Μαρώθ ελυπήθη διά τα αγαθά αυτής, επειδή κατέβη κακόν από του Κυρίου εις την πύλην της Ιερουσαλήμ.</p>
     <p class="tra">Będzie bowiem bolesna dla dobrych rzeczy ta, która mieszka na miejscach przykrych, przeto, że zstąpi złe od Pana aż do bramy Jeruzalemskiej.</p>
   </div>
 </div>
@@ -375,7 +376,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Tumultus quadrigæ stuporis habitanti Lachis :  principium peccati est filiæ Sion,  quia in te inventa sunt scelera Israël.</p>
     <p class="base base-p">Du Stadt Lachis, spanne Lauferan und fahre davon; denn du bist der Tochter Zion der Anfang zur Sünde, und in dir sind funden die Ubertretungen Israels.</p>
-    <p class="base base-o">Κάτοικε της Λαχείς, ζεύξον την άμαξαν εις τον ταχύν ίππον· συ, η αρχή της αμαρτίας εις την θυγατέρα της Σιών· διότι αι ασέβειαι του Ισραήλ εν σοι ευρέθησαν.</p>
     <p class="tra">Zaprzęż w wóz prędkie konie, obywatelko Lachys! któraś powodem grzechu córki Syońskiej, gdyż w tobie znalezione są przestępstwa Izraelskie.</p>
   </div>
 </div>
@@ -384,7 +384,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Propterea dabit emissarios super hæreditatem Geth,  domus mendacii in deceptionem regibus Israël.</p>
     <p class="base base-p">Du wirst müssen Gefangene geben so wohl als Gath. Der Stadt Achsib wird's mit den Konigen Israels fehlen.</p>
-    <p class="base base-o">Διά τούτο θέλεις δώσει έγγραφον ελευθερώσεως εις την Μορέσεθ-γάθ· οι οίκοι του Αχζίβ θέλουσι ματαιώσει τας ελπίδας των βασιλέων του Ισραήλ.</p>
     <p class="tra">Przetoż poślę upominki swe do Moreset w Giet; domy Achzyb na oszukanie będą królom Izraelskim.</p>
   </div>
 </div>
@@ -393,7 +392,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Adhuc hæredem adducam tibi quæ habitas in Maresa ;  usque ad Odollam veniet gloria Israël.</p>
     <p class="base base-p">Ich will dir Maresa, den rechten Erben bringen; und die Herrlichkeit Israels soil kommen bis gen Adullam.</p>
-    <p class="base base-o">Θέλω έτι φέρει κληρονόμον εις σε, κάτοικε της Μαρησά· θέλει ελθεί έως Οδολλάμ, της δόξης του Ισραήλ.</p>
     <p class="tra">Jeszczeć dziedzice przywiodę, o obywatelko Maresy! przyjdzie aż do Odollam, i aż do chwały Izraelskiej.</p>
   </div>
 </div>
@@ -402,7 +400,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Decalvare, et tondere super filios deliciarum tuarum ;  dilata calvitium tuum sicut aquila,  quoniam captivi ducti sunt ex te.</p>
     <p class="base base-p">Laft die Haare abscheren und gehe kahl über deine zarten Kinder! Mache dich gar kahl wie ein Adler; denn sie sind von dir gefangen weggefuhret.</p>
-    <p class="base base-o">Φαλακρώθητι και κείρον την κεφαλήν σου διά τα τέκνα σου τα τρυφερά· πλάτυνον την φαλακρότητά σου ως αετός, διότι ηχμαλωτίσθησαν από σου.</p>
     <p class="tra">Obłyś się i ostrzyż się dla synów rozkoszy twoich; rozszerz łysinę twoję jako orzeł, bo się prowadzą od ciebie.</p>
   </div>
 </div>
@@ -411,14 +408,14 @@ body[data-conf="orthodox"] .base-o { display:block; }
 <section class="chap" id="c2">
   <div class="chhead">
     <span class="chrom">II</span>
-    <span class="chlbl">Caput 2</span>
+    <span class="chlbl chlbl-c">Caput II</span>
+    <span class="chlbl chlbl-p">Das 2. Capitel</span>
   </div>
 <div class="vb first" id="v2-1">
   <span class="vn">1</span>
   <div class="vt">
     <p class="base base-c">Væ qui cogitatis inutile,  et operamini malum in cubilibus vestris !  In luce matutina faciunt illud,  quoniam contra Deum est manus eorum.</p>
     <p class="base base-p">Wehe denen, die Schaden zu tun trachten und gehen mit bosen Tucken um auf ihrem Lager, dafi sie es frith, wenn es licht wird, vollbringen, weil sie die Macht haben!</p>
-    <p class="base base-o">Ουαί εις τους διαλογιζομένους ανομίαν και μηχανευομένους κακόν εν ταις κλίναις αυτών· μόλις φέγγει η αυγή και πράττουσιν αυτό, διότι είναι εν τη δυνάμει της χειρός αυτών.</p>
     <p class="tra">Biada tym, którzy wymyślają nieprawość, i knują złe na łożach swoich, a na świtaniu rano do skutku je przywodzą, gdyż to jest w mocy rąk ich.</p>
   </div>
 </div>
@@ -427,7 +424,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et concupierunt agros, et violenter tulerunt :  et rapuerunt domos,  et calumniabantur virum, et domum ejus :  virum, et hæreditatem ejus.</p>
     <p class="base base-p">Sie reilien zu sich Acker und nehmen Hauser, welche sie gelustet. Also treiben sie Gewalt mit eines jeden Hause und mit eines jeden Erbe.</p>
-    <p class="base base-o">Και επιθυμούσιν αγρούς και λαμβάνουσι διά της βίας, και οίκους και αρπάζουσιν αυτούς· ούτω διαρπάζουσιν άνθρωπον και τον οίκον αυτού, ναι, άνθρωπον και την κληρονομίαν αυτού.</p>
     <p class="tra">Pożądają pól, i wydzierają; także i domów, i odejmują; a tak przewodzą gwałt nad mężem i domem jego, nad każdym mężem i nad dziedzictwem jego.</p>
   </div>
 </div>
@@ -436,7 +432,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Idcirco hæc dicit Dominus :  Ecce ego cogito super familiam istam malum,  unde non auferetis colla vestra,  et non ambulabitis superbi :  quoniam tempus pessimum est.</p>
     <p class="base base-p">Darum spricht der HERR also: Siehe, ich gedenke uber dies Geschlecht Boses, aus dem ihr euren Hals nicht ziehen und nicht so stolz dahergehen sollet; denn es soil eine bose Zeit sein.</p>
-    <p class="base base-o">διά τούτο ούτω λέγει Κύριος· Ιδού, εναντίον του γένους τούτου εγώ βουλεύομαι κακόν, εκ του οποίου δεν θέλετε ελευθερώσει τους τραχήλους σας ουδέ θέλετε περιπατεί υπερηφάνως, διότι ο καιρός ούτος είναι κακός.</p>
     <p class="tra">Dlatego tak mówi Pan: Oto Ja złe myślę przeciwko rodzajowi temu, z którego nie wyjmiecie szyj waszych, ani będziecie chodzić pysznie; bo czas zły będzie.</p>
   </div>
 </div>
@@ -445,7 +440,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">In die illa sumetur super vos parabola,  et cantabitur canticum cum suavitate, dicentium :  Depopulatione vastati sumus ;  pars populi mei commutata est :  quomodo recedet a me, cum revertatur,  qui regiones nostras dividat ?</p>
     <p class="base base-p">Zur selbigen Zeit wird man einen Spruch von euch machen und klagen: Es ist aus, wird man sagen; wir sind verstoret. Meines Volkes Land kriegt einen fremden Herrn. Wann wird er uns die Acker wieder zuteilen, die eruns genommen hat?</p>
-    <p class="base base-o">Εν τη ημέρα εκείνη θέλει ληφθή παροιμία εναντίον σας, και θέλει θρηνήσει ο θρηνών με θρήνον και ειπεί, Διόλου ηφανίσθημεν· ηλλοίωσε την μερίδα του λαού μου· πως απεμάκρυνεν αυτήν απ' εμού· αντί να αποδώση, διεμέρισε τους αγρούς ημών.</p>
     <p class="tra">W on dzień urośnie o was przypowieść, i narzekać będą nad wami płaczem żałośnym, mówiąc: Spustoszeniśmy do szczętu, Pan odmienił dział ludu mojego; o jakoć mi go odjął! jakoć wziąwszy pole nasze rozdzielił!</p>
   </div>
 </div>
@@ -454,7 +448,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Propter hoc non erit tibi mittens funiculum sortis in cœtu Domini.</p>
     <p class="base base-p">Jawohl, ihr werdet kein Teil behalten in der Gemeine des HERRN.</p>
-    <p class="base base-o">Διά τούτο συ δεν θέλεις έχει τινά βάλλοντα σχοινίον διά κλήρον, εν τη συνάξει του Κυρίου.</p>
     <p class="tra">Dlatego nie będziesz miał, ktoby rzucił sznurem na los w zgromadzeniu Pańskiem.</p>
   </div>
 </div>
@@ -463,7 +456,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Ne loquamini loquentes ;  non stillabit super istos, non comprehendet confusio.</p>
     <p class="base base-p">Sie sagen, man solle nicht traufen; denn solche Traufe trifft uns nicht; wirwerden nicht so zuschanden werden.</p>
-    <p class="base base-o">Μη προφητεύετε, οι προφητεύοντες· δεν θέλουσι προφητεύσει εις αυτούς· η αισχύνη αυτών δεν θέλει απομακρυνθή.</p>
     <p class="tra">Mówią: Nie prorokujcie, niech nam inni prorokują; bo nie prorokują tak jako ci; żaden z nich nie przestaje mów zelżywych.</p>
   </div>
 </div>
@@ -472,7 +464,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Dicit domus Jacob :  Numquid abbreviatus est spiritus Domini,  aut tales sunt cogitationes ejus ?  nonne verba mea bona sunt cum eo qui recte graditur ?</p>
     <p class="base base-p">Das Haus Jakob trostet sich also: Meinest du, des HERRN Geist sei verkurzt? Sollte er solches tun wollen? Es istwahr, meine Reden sind freundlich den Frommen.</p>
-    <p class="base base-o">Ω συ, ο καλούμενος οίκος Ιακώβ, εσμικρύνθη το πνεύμα του Κυρίου; είναι τοιαύτα τα επιτηδεύματα αυτού; οι λόγοι μου δεν κάμνουσι καλόν εις τον ορθώς περιπατούντα;</p>
     <p class="tra">O ty ludu, który słyniesz domem Jakóbowym! izali ukrócony ma być duch Pański? Izali takowe są sprawy jego? Azaż słowa moje nie są dobre temu, który chodzi w uprzejmości?</p>
   </div>
 </div>
@@ -481,7 +472,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">et e contrario populus meus in adversarium consurrexit.  Desuper tunica pallium sustulistis :  et eos qui transibant simpliciter convertistis in bellum.</p>
     <p class="base base-p">Aber mein Volk hat sich aufgemacht wie ein Feind; denn sie rauben beide, Rock und Mantel, denen, so sicher dahergehen, gleichwie die, so aus dem Kriege kommen.</p>
-    <p class="base base-o">Και πρότερον ο λαός μου επανέστη ως εχθρός· το επένδυμα μετά του χιτώνος αρπάζετε από των διαβαινόντων αφόβως, των επιστρεφόντων από του πολέμου.</p>
     <p class="tra">Wczoraj był ludem moim, a dziś jako nieprzyjaciel powstaje; mając odzienie, zdzieracie płaszcz z tych, którzy chodzą bezpiecznie, którzy się wracają z wojny;</p>
   </div>
 </div>
@@ -490,7 +480,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Mulieres populi mei ejecistis de domo deliciarum suarum ;  a parvulis earum tulistis laudem meam in perpetuum.</p>
     <p class="base base-p">Ihr treibet die Weiber meines Volks aus ihren lieben Hausern und nehmet stets von ihren jungen Kindern meinen Schmuck.</p>
-    <p class="base base-o">Τας γυναίκας του λαού μου εξώσατε από των τερπνών αυτών οίκων· από των τέκνων αυτών αφηρέσατε την δόξαν μου διαπαντός.</p>
     <p class="tra">Żony ludu mego wyganiacie z domu rozkoszy ich, od dziatek ich ustawicznie odejmujecie sławę moję.</p>
   </div>
 </div>
@@ -499,7 +488,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Surgite, et ite, quia non habetis hic requiem :  propter immunditiam ejus corrumpetur putredine pessima.</p>
     <p class="base base-p">Darum machet euch auf; ihr müsset davon; ihr sollt hie nicht bleiben! Um ihrer Unreinigkeit willen müssen sie unsanft zerstoret werden.</p>
-    <p class="base base-o">Σηκώθητε και αναχωρήσατε, διότι αύτη δεν είναι η ανάπαυσίς σας· επειδή εμιάνθη, θέλει σας αφανίσει, μάλιστα εν σκληρώ αφανισμώ.</p>
     <p class="tra">Wstańcie, a odejdźcie, bo tu nie masz odpocznienia; pogubi was dla nieczystości, a to pogubieniem srogiem.</p>
   </div>
 </div>
@@ -508,7 +496,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Utinam non essem vir habens spiritum,  et mendacium potius loquerer !  Stillabo tibi in vinum et in ebrietatem ;  et erit super quem stillatur populus iste.</p>
     <p class="base base-p">Wenn ich ein Irrgeist ware und ein Lügenprediger und predigte, wie sie saufen und schwelgen sollten, das ware ein Prediger fur dies Volk.</p>
-    <p class="base base-o">Εάν τις περιπατή κατά το πνεύμα αυτού και λαλή ψεύδη, λέγων, Θέλω προφητεύσει εις σε περί οίνου και σίκερα, ούτος βεβαίως θέλει είσθαι ο προφήτης του λαού τούτου.</p>
     <p class="tra">Gdy się kto za proroka udaje, a kłamstwo opowiadając mówi: Będęć prorokował o winie albo o napoju mocnym: takowyć bywa miłym prorokiem ludu tego.</p>
   </div>
 </div>
@@ -517,7 +504,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Congregatione congregabo, Jacob, totum te ;  in unum conducam reliquias Israël :  pariter ponam illum quasi gregem in ovili,  quasi pecus in medio caularum :  tumultuabuntur a multitudine hominum.</p>
     <p class="base base-p">Ich will aber dich, Jakob, versammeln ganz und die ubrigen in Israel zuhauf bringen; ich will sie wie eine Herde miteinander in einen festen Stall tun und wie eine Herde in seine Hürden, dafi es von Menschen tonen soli.</p>
-    <p class="base base-o">Θέλω βεβαίως σε συνάξει όλον Ιακώβ· θέλω βεβαίως συλλέξει το υπόλοιπον του Ισραήλ· θέλω θέσει αυτούς ομού ως πρόβατα της Βοσόρρας, ως ποίμνιον εν μέσω της μάνδρας αυτών· μέγαν θόρυβον θέλουσι κάμει εκ του πλήθους των ανθρώπων.</p>
     <p class="tra">Zgromadzając cale cię zgromadzę, Jakóbie! zgromadzając zgromadzę ostatki Izraela, a spędzę je w gromadę jako owce Bocra, jako trzodę w pośród obory jego, i wyjdzie huk od ludu.</p>
   </div>
 </div>
@@ -526,7 +512,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Ascendet enim pandens iter ante eos :  divident, et transibunt portam,  et ingredientur per eam :  et transibit rex eorum coram eis,  et Dominus in capite eorum.</p>
     <p class="base base-p">Es wird ein Durchbrecher vor ihnen herauffahren; sie werden durchbrechen und zum Tor aus- und einziehen; und ihr Konig wird vor ihnen hergehen, und der HERR vornean.</p>
-    <p class="base base-o">Ο διαρρηγνύων ανέβη έμπροσθεν αυτών· διέρρηξαν και διέβησαν διά της πύλης και εξήλθον δι' αυτής· και ο βασιλεύς αυτών θέλει διαβή έμπροσθεν αυτών και ο Κύριος επί κεφαλής αυτών.</p>
     <p class="tra">Zstąpi ten, który przełamywać będzie przed nimi; przełamie, a przejdą bramą, i wnijdą przez nią; nawet i król ich pójdzie przed nimi, a Pan na czele ich.</p>
   </div>
 </div>
@@ -535,14 +520,14 @@ body[data-conf="orthodox"] .base-o { display:block; }
 <section class="chap" id="c3">
   <div class="chhead">
     <span class="chrom">III</span>
-    <span class="chlbl">Caput 3</span>
+    <span class="chlbl chlbl-c">Caput III</span>
+    <span class="chlbl chlbl-p">Das 3. Capitel</span>
   </div>
 <div class="vb first" id="v3-1">
   <span class="vn">1</span>
   <div class="vt">
     <p class="base base-c">Et dixi : Audite, princeps Jacob,  et duces domus Israël :  numquid non vestrum est scire judicium,</p>
     <p class="base base-p">Und ich sprach: Horet doch, ihr Haupter im Hause Jakob und ihr Fursten im Hause Israel! Ihr solltet es billig sein, die das Recht wu fiten.</p>
-    <p class="base base-o">Και είπα, Ακούσατε τώρα, αρχηγοί του Ιακώβ και άρχοντες του οίκου Ισραήλ· δεν ανήκει εις εσάς να γνωρίζητε την κρίσιν;</p>
     <p class="tra">Przetoż mówię: Słuchajcie przedniejsi w Jakóbie, i wodzowie domu Izraelskiego! izali wy nie macie być powiadomi sądu?</p>
   </div>
 </div>
@@ -551,7 +536,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">qui odio habetis bonum, et diligitis malum ;  qui violenter tollitis pelles eorum desuper eis,  et carnem eorum desuper ossibus eorum ;</p>
     <p class="base base-p">Aber ihr hasset das Gute und liebet das Arge; ihr schindet ihnen die Haut ab und das Fleisch von ihren Beinen</p>
-    <p class="base base-o">Οι μισούντες το καλόν και αγαπώντες το κακόν, οι αποσπώντες το δέρμα αυτών επάνωθεν αυτών και την σάρκα αυτών από των οστών αυτών,</p>
     <p class="tra">Ale oni nienawidzą dobrego, a miłują złe; odzierają lud z skóry ich, i mięso ich z kości ich;</p>
   </div>
 </div>
@@ -560,7 +544,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">qui comederunt carnem populi mei,  et pellem eorum desuper excoriaverunt,  et ossa eorum confregerunt,  et conciderunt sicut in lebete,  et quasi carnem in medio ollæ ?</p>
     <p class="base base-p">und fresset das Fleisch meines Volks; und wenn ihr ihnen die Haut abgezogen habt, zerbrecht ihr ihnen auch die Beine und zerleget es wie in einen Topf und wie Fleisch in einen Kessel.</p>
-    <p class="base base-o">οι κατατρώγοντες έτι την σάρκα του λαού μου και εκδείροντες το δέρμα αυτών επάνωθεν αυτών και συντρίβοντες τα οστά αυτών και κατακόπτοντες αυτά ως διά χύτραν και ως κρέας εν μέσω λέβητος.</p>
     <p class="tra">A jedzą mięso ludu mojego, a skórę ich z nich zdzierają,i kości ich łamią, i rąbią je jako do garnca, a jako mięso do kotła.</p>
   </div>
 </div>
@@ -569,7 +552,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Tunc clamabunt ad Dominum, et non exaudiet eos,  et abscondet faciem suam ab eis in tempore illo,  sicut nequiter egerunt in adinventionibus suis.</p>
     <p class="base base-p">Darum wenn ihr nun zum HERRN schreien werdet, wird er euch nicht erhoren, sondern wird sein Angesicht vor euch verbergen zur selbigen Zeit, wie ihr mit eurem bosen Wesen verdienet habt.</p>
-    <p class="base base-o">Τότε θέλουσι βοήσει προς τον Κύριον, πλην δεν θέλει εισακούσει αυτούς· θέλει μάλιστα κρύψει το πρόσωπον αυτού απ' αυτών εν τω καιρώ εκείνω, διότι εφέρθησαν κακώς εις τας πράξεις αυτών.</p>
     <p class="tra">Tedy do Pana wołać będą, a nie wysłucha ich, owszem, zakryje oblicze swoje przed nimi czasu onego, tak jako oni wykonywali złe przedsięwzięcia swoje.</p>
   </div>
 </div>
@@ -578,7 +560,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Hæc dicit Dominus super prophetas,  qui seducunt populum meum :  qui mordent dentibus suis,  et prædicant pacem ;  et si quis non dederit in ore eorum quippiam,  sanctificant super eum prælium.</p>
     <p class="base base-p">So spricht der HERR wider die Propheten, so mein Volk verfuhren: Sie predigen, es solle wohlgehen, wo man ihnen zu fressen gebe; wo man ihnen aber nichts ins Maul gibt, da predigen sie, es müsse ein Krieg kommen.</p>
-    <p class="base base-o">Ούτω λέγει Κύριος περί των προφητών, οίτινες πλανώσι τον λαόν μου, οίτινες δαγκάνοντες διά των οδόντων αυτών φωνάζουσιν, Ειρήνη· και εάν τις δεν βάλλη τι εις το στόμα αυτών, κηρύττουσιν εναντίον αυτού πόλεμον.</p>
     <p class="tra">Tak mówi Pan o tych prorokach, którzy w błąd zawodzą lud mój, a kąsając zębami swemi opowiadają pokój, a przeciwko temu, któryby im nic do gęby nie dał, wojnę podnoszą.</p>
   </div>
 </div>
@@ -587,7 +568,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Propterea nox vobis pro visione erit,  et tenebræ vobis pro divinatione ;  et occumbet sol super prophetas,  et obtenebrabitur super eos dies.</p>
     <p class="base base-p">Darum soli euer Gesicht zur Nacht und euer Wahrsagen zur Finsternis werden. Die Sonne soil uber den Propheten untergehen und der Tag über ihnen finster werden.</p>
-    <p class="base base-o">Διά τούτο νυξ θέλει είσθαι εις εσάς αντί οράσεως και σκότος εις εσάς αντί μαντείας· και ο ήλιος θέλει δύσει επί τους προφήτας και η ημέρα θέλει συσκοτάσει επ' αυτούς.</p>
     <p class="tra">Dlatego się wam widzenie obróci w noc, a wieszczba wasza w ciemność; bo tym prorokom słońce zajdzie, a dzień im się zaćmi.</p>
   </div>
 </div>
@@ -596,7 +576,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et confundentur qui vident visiones,  et confundentur divini ;  et operient omnes vultos suos,  quia non est responsum Dei.</p>
     <p class="base base-p">Und die Schauer sollen zuschanden und die Wahrsager zu Spott werden, und müssen ihr Maul alle verhullen, weil da kein Gotteswort sein wird.</p>
-    <p class="base base-o">Τότε θέλουσι καταισχυνθή οι βλέποντες και θέλουσιν εντραπή οι μάντεις· και θέλουσι σκεπάσει τα χείλη αυτών πάντες ούτοι, διότι δεν είναι απόκρισις Θεού.</p>
     <p class="tra">I będą się wstydzili oni widzący, a wieszczkowie się zapłoną, a ci wszyscy zakryją zwierzchnią wargę swoję, przeto, że nie będzie żadnej odpowiedzi Bożej.</p>
   </div>
 </div>
@@ -605,7 +584,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Verumtamen ego repletus sum fortitudine spiritus Domini,  judicio, et virtute,  ut annuntiem Jacob scelus suum,  et Israël peccatum suum.</p>
     <p class="base base-p">Ich aber bin voll Kraft und Geistes des HERRN, voll Rechts und Starke, dafi ich Jakob sein Ubertreten und Israel seine Sunde anzeigen darf.</p>
-    <p class="base base-o">Αλλ' εγώ βεβαίως είμαι πλήρης δυνάμεως διά του πνεύματος του Κυρίου και κρίσεως και ισχύος, διά να απαγγείλω εις τον Ιακώβ την παράβασιν αυτού και εις τον Ισραήλ την αμαρτίαν αυτού.</p>
     <p class="tra">Alem ja napełniony siłą ducha Pańskiego i sądem i mocą, abym oznajmił Jakóbowi przestępstwa jego, a Izraelowi grzech jego.</p>
   </div>
 </div>
@@ -614,7 +592,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Audite hoc, principes domus Jacob,  et judices domus Israël,  qui abominamini judicium,  et omnia recta pervertitis :</p>
     <p class="base base-p">So horet doch dies, ihr Haupter im Hause Jakob und ihr Fursten im Hause Israel, die ihr das Recht verschmahet und alles, was aufrichtig ist, verkehret,</p>
-    <p class="base base-o">Ακούσατε λοιπόν τούτο, αρχηγοί του οίκου Ιακώβ και άρχοντες του οίκου Ισραήλ, οι βδελυττόμενοι την κρίσιν και διαστρέφοντες πάσαν ευθύτητα,</p>
     <p class="tra">Słuchajcież już tego przedniejsi w domu Jakóbowym, i wodzowie domu Izraelskiego, którzy macie sąd w obrzydliwości, a co jest sprawiedliwego, podwracacie.</p>
   </div>
 </div>
@@ -623,7 +600,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">qui ædificatis Sion in sanguinibus,  et Jerusalem in iniquitate.</p>
     <p class="base base-p">die ihr Zion mit Blut bauet und Jerusalem mit Unrecht.</p>
-    <p class="base base-o">οι οικοδομούντες την Σιών εν αίματι και την Ιερουσαλήμ εν ανομία.</p>
     <p class="tra">Każdy buduje Syon krwią, a Jeruzalem nieprawością.</p>
   </div>
 </div>
@@ -632,7 +608,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Principes ejus in muneribus judicabant,  et sacerdotes ejus in mercede docebant,  et prophetæ ejus in pecunia divinabant :  et super Dominum requiescebant, dicentes :  Numquid non Dominus in medio nostrum ?  non venient super nos mala.</p>
     <p class="base base-p">Ihre Haupter richten um Geschenke, ihre Priester lehren um Lohn, und ihre Propheten wahrsagen um Geld, verlassen sich auf den HERRN und sprechen: Ist nicht der HERR unter uns? Es kann kein Unglück fiber uns kommen.</p>
-    <p class="base base-o">Οι άρχοντες αυτής κρίνουσι με δώρα και οι ιερείς αυτής διδάσκουσιν επί μισθώ και οι προφήται αυτής μαντεύουσιν επί αργυρίω και επαναπαύονται επί τον Κύριον, λέγοντες, Δεν είναι ο Κύριος εν μέσω ημών; κακόν δεν θέλει ελθεί εφ' ημάς.</p>
     <p class="tra">Przedniejsi jego sądzą według darów, a kapłani jego za zapłatę uczą, a prorocy jego za pieniądze prorokują; a przecie na Panu polegają, mówiąc: Izali nie jest Pan w pośrodku nas? Nie przyjdzieć na nas nic złego.</p>
   </div>
 </div>
@@ -641,7 +616,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Propter hoc, causa vestri, Sion quasi ager arabitur,  et Jerusalem quasi acervus lapidum erit,  et mons templi in excelsa silvarum.</p>
     <p class="base base-p">Darum wird Zion um euretwillen wie ein Feld zerpflüget und Jerusalem zum Steinhaufen und der Berg des Tempels zu einer wilden Hohe werden.</p>
-    <p class="base base-o">Διά τούτο η Σιών εξ αιτίας σας θέλει αροτριασθή ως αγρός, και η Ιερουσαλήμ θέλει γείνει σωροί λίθων, και το όρος του οίκου ως υψηλοί τόποι δρυμού.</p>
     <p class="tra">Przetoż Syon dla was jako pole poorany będzie, a Jeruzalem w gromady gruzu obrócone będzie, a góra domu Bożego w wysokie lasy.</p>
   </div>
 </div>
@@ -650,14 +624,14 @@ body[data-conf="orthodox"] .base-o { display:block; }
 <section class="chap" id="c4">
   <div class="chhead">
     <span class="chrom">IV</span>
-    <span class="chlbl">Caput 4</span>
+    <span class="chlbl chlbl-c">Caput IV</span>
+    <span class="chlbl chlbl-p">Das 4. Capitel</span>
   </div>
 <div class="vb first" id="v4-1">
   <span class="vn">1</span>
   <div class="vt">
     <p class="base base-c">Et erit : in novissimo dierum  erit mons domus Domini præparatus in vertice montium,  et sublimis super colles :  et fluent ad eum populi,</p>
     <p class="base base-p">In den letzten Tagen aber wird der Berg, darauf des HERRN Haus stehet, gewiß sein, hoher denn alle Berge, und über die Hügel erhaben sein.</p>
-    <p class="base base-o">Και εν ταις εσχάταις ημέραις το όρος του οίκου του Κυρίου θέλει στηριχθή επί της κορυφής των ορέων και υψωθή υπεράνω των βουνών, και λαοί θέλουσι συρρέει εις αυτό.</p>
     <p class="tra">Ale się stanie w ostateczne dni, że utwierdzona będzie góra domu Pańskiego na wierzchu gór, i wywyższona nad pagórki, a narody się do niej zbiegać będą.</p>
   </div>
 </div>
@@ -666,7 +640,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">et properabunt gentes multæ, et dicent :  Venite, ascendamus ad montem Domini,  et ad domum Dei Jacob :  et docebit nos de viis suis,  et ibimus in semitis ejus,  quia de Sion egredietur lex,  et verbum Domini de Jerusalem.</p>
     <p class="base base-p">Und die Volker werden herzulaufen, und viel Heiden werden gehen und sagen: Kommt, laßt uns hinauf zum Berge des HERRN gehen und zum Hause des Gottes Jakobs, dafi er uns lehre seine Wege, und wir auf seiner Stralie wandeln! Denn aus Zion wird das Gesetz ausgehen und des HERRN Wort aus Jerusalem.</p>
-    <p class="base base-o">Και έθνη πολλά θέλουσιν υπάγει και ειπεί, Έλθετε και ας αναβώμεν εις το όρος του Κυρίου και εις τον οίκον του Θεού του Ιακώβ· και θέλει διδάξει ημάς τας οδούς αυτού, και θέλομεν περιπατήσει εν ταις τρίβοις αυτού· διότι εκ Σιών θέλει εξέλθει νόμος και λόγος Κυρίου εξ Ιερουσαλήμ.</p>
     <p class="tra">I pójdzie wiele narodów, mówiąc: Pójdźcie, a wstąpmy na górę Pańską, to jest do domu Boga Jakóbowego, a będzie nas nauczał dróg swoich, i będziemy chodzili ścieszkami jego; bo zakon z Syonu wyjdzie, a słowo Pańskie z Jeruzalemu.</p>
   </div>
 </div>
@@ -675,7 +648,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et judicabit inter populos multos,  et corripiet gentes fortes usque in longinquum :  et concident gladios suos in vomeres,  et hastas suas in ligones :  non sumet gens adversus gentem gladium,  et non discent ultra belligerare.</p>
     <p class="base base-p">Er wird unter großen Volkern richten und viel Heiden strafen in fernen Landen. Sie werden ihre Schwerter zu Pflugscharen und ihre Spieße zu Sicheln machen. Es wird kein Volk wider das andere ein Schwert aufheben und werden nicht mehr kriegen lernen.</p>
-    <p class="base base-o">Και θέλει κρίνει αναμέσον λαών πολλών και θέλει ελέγξει έθνη ισχυρά, έως εις μακράν· και θέλουσι σφυρηλατήσει τας μαχαίρας αυτών διά υνία και τας λόγχας αυτών διά δρέπανα· δεν θέλει σηκώσει μάχαιραν έθνος εναντίον έθνους ουδέ θέλουσι μάθει πλέον τον πόλεμον.</p>
     <p class="tra">Onci sądzić będzie między wieloma narodami, a karać będzie narody mocne na długie czasy; i przekują miecze swe na lemiesze, a oszczepy swe na kosy: nie podniesie miecza naród przeciwko narodowi, ani się więcej ćwiczyć będą do boju</p>
   </div>
 </div>
@@ -684,7 +656,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et sedebit vir subtus vitem suam et subtus ficum suam,  et non erit qui deterreat,  quia os Domini exercituum locutum est.</p>
     <p class="base base-p">Ein jeglicher wird unter seinem Weinstock und Feigenbaum wohnen ohne Scheu; denn der Mund des HERRN Zebaoth hat's geredet.</p>
-    <p class="base base-o">Και θέλουσι κάθησθαι έκαστος υπό την άμπελον αυτού και υπό την συκήν αυτού, και δεν θέλει υπάρχει ο εκφοβών· διότι το στόμα του Κυρίου των δυνάμεων ελάλησε.</p>
     <p class="tra">Ale każdy będzie siedział pod winną macicą swoją, i pod figowem drzewem swojem, a nie będzie nikt, coby ich przestraszył; bo to usta Pana zastępów mówiły.</p>
   </div>
 </div>
@@ -693,7 +664,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Quia omnes populi ambulabunt  unusquisque in nomine dei sui ;  nos autem ambulabimus  in nomine Domini Dei nostri,  in æternum et ultra.</p>
     <p class="base base-p">Denn ein jeglich Volk wird wandeln im Namen seines Gottes; aber wir werden wandeln im Namen des HERRN, unsers Gottes, immer und ewiglich.</p>
-    <p class="base base-o">Διότι πάντες οι λαοί θέλουσι περιπατεί έκαστος εν τω ονόματι του θεού αυτού· ημείς δε θέλομεν περιπατεί εν τω ονόματι Κυρίου του Θεού ημών εις τον αιώνα και εις τον αιώνα.</p>
     <p class="tra">Bo wszystkie narody chodzić będą, każdy w imieniu boga swego; ale my chodzić będziemy w imieniu Pana, Boga naszego, na wieki wieków.</p>
   </div>
 </div>
@@ -702,7 +672,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">In die illa, dicit Dominus,  congregabo claudicantem,  et eam quam ejeceram colligam,  et quam afflixeram :</p>
     <p class="base base-p">Zur selbigen Zeit, spricht der HERR, will ich die Lahme versammeln und die Verstoßene zuhauf bringen, und die ich geplaget habe.</p>
-    <p class="base base-o">Εν τη ημέρα εκείνη, λέγει Κύριος, θέλω συνάξει την χωλαίνουσαν και θέλω εισδεχθή την εξωσμένην και εκείνην, την οποίαν έθλιψα.</p>
     <p class="tra">Dnia onego, mówi Pan, zgromadzę chromą i wygnaną zbiorę, i onę, którejm był źle uczynił:</p>
   </div>
 </div>
@@ -711,7 +680,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">et ponam claudicantem in reliquias,  et eam quæ laboraverat, in gentem robustam :  et regnabit Dominus super eos in monte Sion,  ex hoc nunc et usque in æternum.</p>
     <p class="base base-p">Und will die Lahme machen, dafi sie Erben haben soil, und die Verstoßene zum großen Volk machen; und der HERR wird Konig uber sie sein auf dem Berge Zion von nun an bis in Ewigkeit.</p>
-    <p class="base base-o">Και θέλω κάμει την χωλαίνουσαν υπόλοιπον και την αποβεβλημένην έθνος ισχυρόν, και ο Κύριος θέλει βασιλεύει επ' αυτούς εν τω όρει Σιών, από του νυν και έως του αιώνος.</p>
     <p class="tra">A dam tej chromej potomstwo, a precz wygnanej naród możny; i będzie Pan królował nad nimi na górze Syon odtąd aż na wieki.</p>
   </div>
 </div>
@@ -720,7 +688,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et tu, turris gregis nebulosa filiæ Sion,  usque ad te veniet,  et veniet potestas prima,  regnum filiæ Jerusalem.</p>
     <p class="base base-p">Und du Turm Eder, eine Feste der Tochter Zion, es wird deine guldene Rose kommen, die vorige Herrschaft, das Konigreich der Tochter Jerusalem.</p>
-    <p class="base base-o">Και συ, πύργε του ποιμνίου, οχύρωμα της θυγατρός Σιών, εις σε θέλει ελθεί η πρώτη εξουσία· ναι, θέλει ελθεί το βασίλειον εις την θυγατέρα της Ιερουσαλήμ.</p>
     <p class="tra">A ty, wieżo trzody, baszto córki Syońskiej! wiedz, że aż do ciebie przyjdzie; przyjdzie mówię, pierwsze państwo, i królestwo córki Jeruzalemskiej.</p>
   </div>
 </div>
@@ -729,7 +696,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Nunc quare mœrore contraheris ?  numquid rex non est tibi,  aut consiliarius tuus periit,  quia comprehendit te dolor sicut parturientem ?</p>
     <p class="base base-p">Warum hangst du dich denn jetzt an andere Freunde? 1st der Konig nicht bei dir, und sind deine Ratgeber alle hinweg, daß dich also das Weh ankommen ist wie eine in Kindesnoten?</p>
-    <p class="base base-o">Διά τι τώρα κραυγάζεις δυνατά; δεν είναι βασιλεύς εν σοι; ηφανίσθη ο σύμβουλός σου, ώστε σε κατέλαβον ωδίνες ως τικτούσης;</p>
     <p class="tra">Czemuż teraz tak bardzo krzyczysz? Izali króla niemasz w tobie? Izali radca twój zginął, że cię zjął ból, jako rodzącą?</p>
   </div>
 </div>
@@ -738,7 +704,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Dole et satage, filia Sion, quasi parturiens,  quia nunc egredieris de civitate,  et habitabis in regione,  et venies usque ad Babylonem :  ibi liberaberis,  ibi redimet te Dominus de manu inimicorum tuorum.</p>
     <p class="base base-p">Lieber, leide doch solch Weh und krachze, du Tochter Zion, wie eine in Kindesnoten! Denn du mufit zwar zur Stadt hinaus und auf dem Felde wohnen und gen Babel kommen; aber doch wirst du von dannen wieder errettet werden. Daselbst wird dich der HERR erlosen von deinen Feinden.</p>
-    <p class="base base-o">Κοιλοπόνει και αγωνίζου, θυγάτηρ Σιών, ως η τίκτουσα, διότι τώρα θέλεις εξέλθει εκ της πόλεως και θέλεις κατοικήσει εν αγρώ και θέλεις υπάγει έως της Βαβυλώνος· εκεί θέλεις ελευθερωθή, εκεί θέλει σε εξαγοράσει ο Κύριος εκ της χειρός των εχθρών σου.</p>
     <p class="tra">Bolej a stękaj, córko Syońska? jako rodząca; bo już wyjdziesz z miasta, i będziesz mieszkała w polu, a przyjdziesz aż do Babilonu; tam będziesz wybawiona, tam cię Pan odkupi z rąk nieprzyjaciół twoich.</p>
   </div>
 </div>
@@ -747,7 +712,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et nunc congregatæ sunt super te gentes multæ, quæ dicunt :  Lapidetur, et aspiciat in Sion oculus noster.</p>
     <p class="base base-p">Denn es werden schier sich viel Heiden wider dich rotten und sprechen: Sie ist verbannet; wirwollen unsere Lust an Zion sehen.</p>
-    <p class="base base-o">Τώρα δε συνήχθησαν εναντίον σου έθνη πολλά λέγοντα, Ας μιανθή και ας επιβλέπη ο οφθαλμός ημών επί την Σιών.</p>
     <p class="tra">A choć się teraz zebrało przeciwko tobie wiele narodów, które mówią: Niech będzie splugawiony Syon, a niech na to patrzy oko nasze,</p>
   </div>
 </div>
@@ -756,7 +720,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Ipsi autem non cognoverunt cogitationes Domini,  et non intellexerunt consilium ejus,  quia congregavit eos quasi fœnum areæ.</p>
     <p class="base base-p">Aber sie wissen des HERRN Gedanken nicht und merken seinen Ratschlag nicht, daß er sie zuhauf gebracht hat wie Garben auf der Tenne.</p>
-    <p class="base base-o">Αλλ' αυτοί δεν γνωρίζουσι τους λογισμούς του Κυρίου ουδέ εννοούσι την βουλήν αυτού, ότι συνήγαγεν αυτούς ως δράγματα αλωνίου.</p>
     <p class="tra">Wszakże one nie znają myśli Pańskich, ani rozumieją rady jego, iż je zgromadza jako snopy na bojewisko.</p>
   </div>
 </div>
@@ -765,7 +728,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Surge, et tritura, filia Sion,  quia cornu tuum ponam ferreum,  et ungulas tuas ponam æreas ;  et comminues populos multos,  et interficies Domino rapinas eorum,  et fortitudinem eorum Domino universæ terræ.</p>
     <p class="base base-p">Darum mache dich auf und dresche, du Tochter Zion! Denn ich will direiserne Horner und eherne Klauen machen, und sollst viel Volker zerschmeilien; so will ich ihr Gut dem HERRN verbannen und ihre Habe dem Herrscher der ganzen Welt.</p>
-    <p class="base base-o">Σηκώθητι και αλώνιζε, θυγάτηρ Σιών, διότι θέλω κάμει το κέρας σου σιδηρούν και τας οπλάς σου θέλω κάμει χαλκάς, και θέλεις κατασυντρίψει λαούς πολλούς· και θέλω αφιερώσει τα διαρπάγματα αυτών εις τον Κύριον και την περιουσίαν αυτών εις τον Κύριον πάσης της γης.</p>
     <p class="tra">Wstańże, a młóć, córko Syońska! bo róg twój uczynię żelazny, a kopyta twoje uczynię miedziane, i pokruszysz wiele narodów; i poświęcę Panu korzyści ich, a majętności ich Panu wszystkiej ziemi.</p>
   </div>
 </div>
@@ -774,14 +736,14 @@ body[data-conf="orthodox"] .base-o { display:block; }
 <section class="chap" id="c5">
   <div class="chhead">
     <span class="chrom">V</span>
-    <span class="chlbl">Caput 5</span>
+    <span class="chlbl chlbl-c">Caput V</span>
+    <span class="chlbl chlbl-p">Das 5. Capitel</span>
   </div>
 <div class="vb first" id="v5-1">
   <span class="vn">1</span>
   <div class="vt">
     <p class="base base-c">Nunc vastaberis, filia latronis.  Obsidionem posuerunt super nos :  in virga percutient maxillam judicis Israël.</p>
     <p class="base base-p">Und du, Bethlehem Ephrata, die du klein bist unter den Tausenden in Juda, aus dir soil mir der kommen, der in Israel HERR sei, welches Ausgang von Anfang und von Ewigkeit her gewesen ist.</p>
-    <p class="base base-o">Συναθροίσθητι τώρα εις τάγματα, θυγάτηρ ταγμάτων· έθεσε πολιορκίαν εναντίον ημών· θέλουσι πατάξει τον κριτήν του Ισραήλ εν ράβδω κατά της σιαγόνος.</p>
     <p class="tra">Zbierzże się teraz w hufy, o walecznico! oblęż nas; niech laską biją w lice sędziego Izraelskiego.</p>
   </div>
 </div>
@@ -790,7 +752,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et tu, Bethlehem Ephrata,  parvulus es in millibus Juda ;  ex te mihi egredietur qui sit dominator in Israël,  et egressus ejus ab initio,  a diebus æternitatis.</p>
     <p class="base base-p">Indes lalit er sie plagen bis auf die Zeit, daß die, so gebaren soil, geboren habe. Da werden dann die ubrigen seiner Bruder wiederkommen zu den Kindern Israel.</p>
-    <p class="base base-o">Και συ, Βηθλεέμ Εφραθά, η μικρά ώστε να ήσαι μεταξύ των χιλιάδων του Ιούδα, εκ σου θέλει εξέλθει εις εμέ ανήρ διά να ήναι ηγούμενος εν τω Ισραήλ· του οποίου αι έξοδοι είναι απ' αρχής, από ημερών αιώνος.</p>
     <p class="tra">Ale ty, Betlehemie Efrata! acześ najmniejszy między tysiącami Judzkimi, z ciebie mi jednak wyjdzie ten, który będzie panującym w Izraelu, a wyjścia jego są z dawna, ode dni wiecznych.</p>
   </div>
 </div>
@@ -799,7 +760,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Propter hoc dabit eos usque ad tempus in quo parturiens pariet,  et reliquiæ fratrum ejus convertentur ad filios Israël.</p>
     <p class="base base-p">Er aber wird auftreten und weiden in Kraft des HERRN und im Siege des Namens seines Gottes. Und sie werden wohnen; denn er wird zur selbigen Zeit herrlich werden; soweit die Welt ist.</p>
-    <p class="base base-o">Διά τούτο θέλει αφήσει αυτούς, έως του καιρού καθ' ον η τίκτουσα θέλει γεννήσει· τότε το υπόλοιπον των αδελφών αυτού θέλει επιστρέψει εις τους υιούς Ισραήλ.</p>
     <p class="tra">Przetoż choć ich wyda w rozproszenie aż do czasu, któregoby rodząca porodziła, wszakże ostatek braci jego nawrócą się z synami Izraelskimi.</p>
   </div>
 </div>
@@ -808,7 +768,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et stabit, et pascet in fortitudine Domini,  in sublimitate nominis Domini Dei sui :  et convertentur,  quia nunc magnificabitur usque ad terminos terræ.</p>
     <p class="base base-p">Dazu werden wir auch Frieden haben vor dem Assur, der jetzt in unser Land gefallen ist und unsere Hauser zertreten hat. Denn es werden sieben Hirten und acht Fursten uber ihn erwecket werden,</p>
-    <p class="base base-o">Και θέλει σταθή και ποιμάνει εν τη ισχύϊ του Κυρίου, εν τη μεγαλειότητι του ονόματος Κυρίου του Θεού αυτού· και θέλουσι κατοικήσει· διότι τώρα θέλει μεγαλυνθή έως των άκρων της γης.</p>
     <p class="tra">I stanie się a paść ich będzie w sile Pańskiej, i w sławie imienia Pana, Boga swego; i będą mieszkać, bo już wielmożnym będzie aż do granic ziemi.</p>
   </div>
 </div>
@@ -817,7 +776,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et erit iste pax :  cum venerit Assyrius in terram nostram,  et quando calcaverit domibus nostris,  et suscitabimus super eum septem pastores  et octo primates homines ;</p>
     <p class="base base-p">die das Land Assur verderben mit dem Schwert und das Land Nimrods mit ihren blolien Waffen. Also werden wir von Assur gerettet werden, der in unser Land gefallen ist und unsere Grenze zertreten hat.</p>
-    <p class="base base-o">Και ούτος θέλει είσθαι ειρήνη. Όταν ο Ασσύριος έλθη εις την γην ημών και όταν πατήση εις τα παλάτια ημών, τότε θέλομεν επεγείρει κατ' αυτού επτά ποιμένας και οκτώ άρχοντας ανθρώπων·</p>
     <p class="tra">I będzie taki pokój, że gdy Assyryjczyk wtargnie w ziemię naszę, i gdy podepcze pałace nasze, tedy wystawimy przeciw niemu siedmiu pasterzy, i ośmiu książąt z ludu.</p>
   </div>
 </div>
@@ -826,7 +784,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">et pascent terram Assur in gladio,  et terram Nemrod in lanceis ejus,  et liberabit ab Assur cum venerit in terram nostram,  et cum calcaverit in finibus nostris.</p>
     <p class="base base-p">Es werden auch die Ubrigen aus Jakob unter vielen Volkern sein wie ein Tau vom HERRN und wie die Tropflein aufs Gras, das auf niemand harret noch auf Menschen wartet.</p>
-    <p class="base base-o">και θέλουσι ποιμάνει την γην της Ασσυρίας εν ρομφαία και την γην του Νεβρώδ εν ταις εισόδοις αυτού· και θέλει ελευθερώσει ημάς εκ του Ασσυρίου, όταν έλθη εις την γην ημών και όταν πατήση εν τοις ορίοις ημών.</p>
     <p class="tra">Ci wypasą ziemię Assyryjską mieczem, i ziemię Nimrodową w granicach ich; a tak wyrwie nas Assyryjczykowi, gdy przyciągnie do ziemi naszej, i gdy będzie deptał granicę nasze.</p>
   </div>
 </div>
@@ -835,7 +792,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et erunt reliquiæ Jacob in medio populorum multorum  quasi ros a Domino,  et quasi stillæ super herbam,  quæ non exspectat virum,  et non præstolatur filios hominum.</p>
     <p class="base base-p">Ja, die Ubrigen aus Jakob werden unter den Heiden bei vielen Volkern sein wie ein Lowe unter den Tieren im Walde, wie ein junger Lowe unter einer Herde Schafe, welchem niemand wehren kann, wenn er dadurchgehet, zertritt und zerreifiet.</p>
-    <p class="base base-o">Και το υπόλοιπον του Ιακώβ θέλει είσθαι εν μέσω λαών πολλών ως δρόσος από Κυρίου, ως ρανίδες επί χόρτου, όστις δεν προσμένει παρά ανθρώπου ουδέ ελπίζει επί υιούς ανθρώπων.</p>
     <p class="tra">Przetoż ostatki Jakóbowe w pośrodku wielu narodów będą jako rosa od Pana, jako ciche deszcze skrapiające trawę, których się nie spodziewa od człowieka, ani ich czeka od synów ludzkich.</p>
   </div>
 </div>
@@ -844,7 +800,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et erunt reliquiæ Jacob in gentibus,  in medio populorum multorum,  quasi leo in jumentis silvarum,  et quasi catulus leonis in gregibus pecorum,  qui cum transierit, et conculcaverit, et ceperit,  non est qui eruat.</p>
     <p class="base base-p">Denn deine Hand wird siegen wider alle deine Widerwartigen, daß alle deine Feinde müssen ausgerottet werden.</p>
-    <p class="base base-o">Και το υπόλοιπον του Ιακώβ θέλει είσθαι μεταξύ εθνών, εν μέσω λαών πολλών, ως λέων μεταξύ κτηνών του δρυμού, ως σκύμνος μεταξύ ποιμνίων προβάτων, όστις διαβαίνων καταπατεί και διασπαράττει και δεν υπάρχει ο ελευθερών.</p>
     <p class="tra">Będą też ostatki Jakóbowe między poganami w pośrodku wielu narodów jako lew między zwierzętami leśnemi, a jako szczenię lwie między trzodą owiec, które gdy idzie, a depcze i łapie, niemasz nikogo, ktoby wydarł.</p>
   </div>
 </div>
@@ -853,7 +808,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Exaltabitur manus tua super hostes tuos,  et omnes inimici tui interibunt.</p>
     <p class="base base-p">Zur selbigen Zeit, spricht der HERR, will ich deine Rosse von dir tun und deine Wagen umbringen;</p>
-    <p class="base base-o">Η χειρ σου θέλει υψωθή επί τους εναντίους σου, και πάντες οι εχθροί σου θέλουσιν εκκοπή.</p>
     <p class="tra">Wywyższy się ręka twoja nad nieprzyjaciołmi twoimi, a wszyscy przeciwnicy twoi wykorzenieni będą.</p>
   </div>
 </div>
@@ -862,7 +816,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et erit in die illa, dicit Dominus :  auferam equos tuos de medio tui,  et disperdam quadrigas tuas.</p>
     <p class="base base-p">und will die Stadte deines Landes ausrotten und alle deine Festen zerbrechen;</p>
-    <p class="base base-o">Και εν τη ημέρα εκείνη, λέγει Κύριος, θέλω εξολοθρεύσει τους ίππους σου εκ μέσου σου, και θέλω απολέσει τας αμάξας σου.</p>
     <p class="tra">I stanie się dnia onego, mówi Pan, że wytracę konie twoje z pośrodku ciebie, a wozy twoje popsuję,</p>
   </div>
 </div>
@@ -871,7 +824,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et perdam civitates terræ tuæ,  et destruam omnes munitiones tuas :  et auferam maleficia de manu tua,  et divinationes non erunt in te :</p>
     <p class="base base-p">und will die Zauberer bei dir ausrotten, daß keine Zeichendeuter bei dir bleiben sollen.</p>
-    <p class="base base-o">Και θέλω εξολοθρεύσει τας πόλεις της γης σου, και κατεδαφίσει πάντα τα οχυρώματά σου.</p>
     <p class="tra">I wygubię miasta ziemi twojej, a poburzę wszystkie twierdze twoje.</p>
   </div>
 </div>
@@ -880,7 +832,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">et perire faciam sculptilia tua et statuas tuas de medio tui,  et non adorabis ultra opera manuum tuarum :</p>
     <p class="base base-p">Ich will deine Bilder und Gotzen von dir ausrotten, daß du nicht mehr sollst anbeten deiner Hande Werk,</p>
-    <p class="base base-o">Και θέλω εξολοθρεύσει τας μαγείας από της χειρός σου, και δεν θέλεις έχει πλέον μάντεις.</p>
     <p class="tra">Wygubię też gusła z ciebie, a wieszczków nie będzie w tobie.</p>
   </div>
 </div>
@@ -889,7 +840,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">et evellam lucos tuos de medio tui,  et conteram civitates tuas.</p>
     <p class="base base-p">und will deine Haine zerbrechen und deine Stadte vertilgen.</p>
-    <p class="base base-o">Και θέλω εξολοθρεύσει τα γλυπτά σου και τα είδωλά σου εκ μέσου σου, και δεν θέλεις λατρεύσει πλέον το έργον των χειρών σου.</p>
     <p class="tra">Wygubię też ryte bałwany twoje i obrazy twoje z pośrodku ciebie, a nie będziesz się więcej kłaniał robocie rąk twoich.</p>
   </div>
 </div>
@@ -898,7 +848,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et faciam, in furore et in indignatione, ultionem  in omnibus gentibus quæ non audierunt.</p>
     <p class="base base-p">Und ich will Rache üben mit Grimm und Zorn an alien Heiden, so nicht gehorchen wollen.</p>
-    <p class="base base-o">Και θέλω ανασπάσει τα άλση σου εκ μέσου σου, και θέλω αφανίσει τας πόλεις σου.</p>
     <p class="tra">Wykorzenię i gaje twoje z pośrodku ciebie, a wygładzę nieprzyjaciół twoich.</p>
   </div>
 </div>
@@ -907,14 +856,14 @@ body[data-conf="orthodox"] .base-o { display:block; }
 <section class="chap" id="c6">
   <div class="chhead">
     <span class="chrom">VI</span>
-    <span class="chlbl">Caput 6</span>
+    <span class="chlbl chlbl-c">Caput VI</span>
+    <span class="chlbl chlbl-p">Das 6. Capitel</span>
   </div>
 <div class="vb first" id="v6-1">
   <span class="vn">1</span>
   <div class="vt">
     <p class="base base-c">Audite quæ Dominus loquitur :  Surge, contende judicio adversum montes,  et audiant colles vocem tuam.</p>
     <p class="base base-p">Horet doch, was der HERR sagt: Mache dich auf und schilt die Berge und lali die Hugel deine Stimme horen!</p>
-    <p class="base base-o">Ακούσατε τώρα ό,τι λέγει ο Κύριος Σηκώθητι, διαδικάσθητι έμπροσθεν των ορέων, και ας ακούσωσιν οι βουνοί την φωνήν σου.</p>
     <p class="tra">Słuchajcie, proszę, co mówi Pan: Wstań, rozpieraj się z temi górami, a niech słuchają pagórki głosu twego.</p>
   </div>
 </div>
@@ -923,7 +872,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Audiant montes judicium Domini,  et fortia fundamenta terræ ;  quia judicium Domini cum populo suo,  et cum Israël dijudicabitur.</p>
     <p class="base base-p">Horet, ihr Berge, wie der HERR strafen will, samt den starken Grundfesten der Erde! Denn der HERR will sein Volk schelten und will Israel strafen.</p>
-    <p class="base base-o">Ακούσατε, όρη, την κρίσιν του Κυρίου, και σεις, τα ισχυρά θεμέλια της γης διότι ο Κύριος έχει κρίσιν μετά του λαού αυτού και θέλει διαδικασθή μετά του Ισραήλ.</p>
     <p class="tra">Słuchajcie góry sporu Pańskiego, i najmocniejsze grunty ziemi; bo Pan ma spór z ludem swoim, a z Jeruzalemem prawo wiedzie.</p>
   </div>
 </div>
@@ -932,7 +880,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Popule meus, quid feci tibi ?  aut quid molestus fui tibi ? Responde mihi.</p>
     <p class="base base-p">Was hab ich dir getan, mein Volk, und womit habe ich dich beleidiget? Das sage mir!</p>
-    <p class="base base-o">Λαέ μου, τι σοι έκαμα; και εις τι σε παρηνώχλησα; μαρτύρησον κατ' εμού.</p>
     <p class="tra">Ludu mój! cóżem ci uczynił, a w czemem ci się uprzykrzył? Odłóż świadectwo przeciwko mnie.</p>
   </div>
 </div>
@@ -941,7 +888,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Quia eduxi te de terra Ægypti,  et de domo servientium liberavi te,  et misi ante faciem tuam Moysen, et Aaron, et Mariam.</p>
     <p class="base base-p">Hab ich dich doch aus Agyptenland gefuhret und aus dem Diensthause erloset und vor dir hergesandt Mose, Aaron und Mirjam.</p>
-    <p class="base base-o">Διότι σε ανεβίβασα εκ γης Αιγύπτου και σε ελύτρωσα εξ οίκου δουλείας και εξαπέστειλα έμπροσθέν σου τον Μωϋσήν, τον Ααρών και την Μαριάμ.</p>
     <p class="tra">Wszakiem cię wywiódł z ziemi Egipskiej, a z domu niewolników odkupiłem cię, i posłałem przed obliczem twojem Mojżesza, Aarona i Maryję.</p>
   </div>
 </div>
@@ -950,7 +896,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Popule meus, memento, quæso,  quid cogitaverit Balach, rex Moab,  et quid responderit ei Balaam, filius Beor,  de Setim usque ad Galgalam,  ut cognosceres justitias Domini.</p>
     <p class="base base-p">Mein Volk, denke doch daran, was Balak, der Konig in Moab, vorhatte, und was ihm Bileam, der Sohn Beors, antwortete, von Sittim an bis gen Gilgal; daran ihrja merken solltet, wie der HERR euch alles Gute getan hat.</p>
-    <p class="base base-o">Λαέ μου, ενθυμήθητι τώρα τι εβουλεύθη Βαλάκ ο βασιλεύς του Μωάβ και τι απεκρίθη προς αυτόν Βαλαάμ ο του Βεώρ από Σιττείμ έως Γαλγάλων, διά να γνωρίσητε την δικαιοσύνην του Κυρίου.</p>
     <p class="tra">Ludu mój! Wspomnij teraz, co za radę uczynił Balak, król Moabski, a co mu odpowiedział Balaam, syn Beorowy; wspomnij też, coć się działo od Syttym aż do Galgal, abyś poznał sprawiedliwości Pańskie.</p>
   </div>
 </div>
@@ -959,7 +904,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Quid dignum offeram Domino ?  curvabo genu Deo excelso ?  Numquid offeram ei holocautomata et vitulos anniculos ?</p>
     <p class="base base-p">Womit soil ich den HERRN versohnen? Mit Bucken vor dem hohen Gott? Soil ich mit Brandopfern und jahrigen Kalbern ihn versohnen?</p>
-    <p class="base base-o">Με τι θέλω ελθεί ενώπιον του Κυρίου, να προσκυνήσω ενώπιον του υψίστου Θεού; θέλω ελθεί ενώπιον αυτού με ολοκαυτώματα, με μόσχους ενιαυσίους;</p>
     <p class="tra">Ale mówisz: Z czemże się stawię przed Panem, a pokłonię się Bogu najwyższemu? Izali się przedeń stawię z ofiarami całopalonemi, z cielcami rocznemi?</p>
   </div>
 </div>
@@ -968,7 +912,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">numquid placari potest Dominus in millibus arietum,  aut in multis millibus hircorum pinguium ?  numquid dabo primogenitum meum pro scelere meo,  fructum ventris mei pro peccato animæ meæ ?</p>
     <p class="base base-p">Meinest du, der HERR habe Gefallen an viel tausend Widdern Oder am 01, wenn es gleich unzahlige Strome voll waren? Oder soil ich meinen ersten Sohn fur meine Ubertretung geben Oder meines Leibes Frucht fur die Sünde meiner Seele?</p>
-    <p class="base base-o">Θέλει ευαρεστηθή ο Κύριος εις χιλιάδας κριών ή εις μυριάδας ποταμών ελαίου; θέλω δώσει τον πρωτότοκόν μου διά την παράβασίν μου, τον καρπόν της κοιλίας μου διά την αμαρτίαν της ψυχής μου;</p>
     <p class="tra">Izali się Pan kocha w tysiącach baranów, i w tysiącu tysięcy strumieni oliwy? Izali dam pierworodnego swego za przestępstwo moje? albo owoc żywota mego za grzech duszy mojej?</p>
   </div>
 </div>
@@ -977,7 +920,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Indicabo tibi, o homo, quid sit bonum,  et quid Dominus requirat a te :  utique facere judicium,  et diligere misericordiam,  et sollicitum ambulare cum Deo tuo.</p>
     <p class="base base-p">Es ist dir gesagt, Mensch, was gut ist, und was der HERR von dir fordert, namlich Gottes Wort halten und Liebe üben und demutig sein vordeinem Gott.</p>
-    <p class="base base-o">Αυτός σοι έδειξεν, άνθρωπε, τι το καλόν και τι ζητεί ο Κύριος παρά σου, ειμή να πράττης το δίκαιον και να αγαπάς έλεος και να περιπατής ταπεινώς μετά του Θεού σου;</p>
     <p class="tra">Oznajmił ci człowiecze, co jest dobrego, i czegoż Pan chce po tobie; tylko abyś czynił sąd, a miłował miłosierdzie i pokornie chodził z Bogiem twoim.</p>
   </div>
 </div>
@@ -986,7 +928,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Vox Domini ad civitatem clamat,  et salus erit timentibus nomen tuum :  audite, tribus, et quis approbabit illud ?</p>
     <p class="base base-p">Es wird des HERRN Stimme über die Stadt rufen; aber wer deinen Namen furchtet, dem wird's gelingen. Horet, ihr Stamme, was geprediget wird!</p>
-    <p class="base base-o">Η φωνή του Κυρίου κράζει προς την πόλιν, και η σοφία θέλει φοβείσθαι το όνομά σου· ακούσατε την ράβδον και τις διώρισεν αυτήν.</p>
     <p class="tra">Głos Pański na miasto woła: (ale roztropny sam się ogląda na imię twoje, o Boże!) Słuchajcież o rózdze, i kto ją postanowił.</p>
   </div>
 </div>
@@ -995,7 +936,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Adhuc ignis in domo impii thesauri iniquitatis,  et mensura minor iræ plena.</p>
     <p class="base base-p">Noch bleibet unrecht Gut in des Gottlosen Hause und derfeindselige, geringe Epha.</p>
-    <p class="base base-o">Υπάρχουσιν έτι οι θησαυροί της ασεβείας εν τω οίκω του ασεβούς και το ελλιπές μέτρον το βδελυκτόν;</p>
     <p class="tra">Izali jeszcze są w domu niezbożnego skarby niesprawiedliwe, i miara niesprawiedliwa i obrzydła?</p>
   </div>
 </div>
@@ -1004,7 +944,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Numquid justificabo stateram impiam,  et saccelli pondera dolosa ?</p>
     <p class="base base-p">Oder sollt ich die unrechte Waage und falsch Gewicht im Sackel billigen,</p>
-    <p class="base base-o">να δικαιώσω αυτούς με τας ασεβείς πλάστιγγας και με το σακκίον των δολίων ζυγίων;</p>
     <p class="tra">Izali mam usprawiedliwić szale niesprawiedliwe, i w worku gwichty fałszywe?</p>
   </div>
 </div>
@@ -1013,7 +952,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">In quibus divites ejus repleti sunt iniquitate,  et habitantes in ea loquebantur mendacium,  et lingua eorum fraudulenta in ore eorum.</p>
     <p class="base base-p">durch welche ihre Reichen viel Unrechts tun? Und ihre Einwohner gehen mit Lugen um und haben falsche Zungen in ihrem Halse.</p>
-    <p class="base base-o">Διότι οι πλούσιοι αυτής είναι πλήρεις αδικίας, και οι κάτοικοι αυτής ελάλησαν ψεύδη, και η γλώσσα αυτών είναι απατηλή εν τω στόματι αυτών.</p>
     <p class="tra">Bogacze jego pełni są zdzierstwa, a obywatele jego mówią kłamstwa, i język ich kłamliwy jest w ustach ich;</p>
   </div>
 </div>
@@ -1022,7 +960,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et ego ergo cœpi percutere te perditione super peccatis tuis.</p>
     <p class="base base-p">Darum will ich dich auch anfahen zu plagen und dich um deiner Sunde willen wüst machen.</p>
-    <p class="base base-o">Και εγώ λοιπόν πατάξας θέλω σε αδυνατίσει, θέλω σε ερημώσει εξ αιτίας των αμαρτιών σου.</p>
     <p class="tra">Przetoż i Ja cię też nawiedzę chorobą, uderzę cię, i zniszczę cię dla grzechów twoich.</p>
   </div>
 </div>
@@ -1031,7 +968,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Tu comedes, et non saturaberis,  et humiliatio tua in medio tui :  et apprehendes, et non salvabis,  et quos salvaveris, in gladium dabo.</p>
     <p class="base base-p">Du sollst nicht genug zu essen haben und sollst verschmachten. Und was du erhaschest, soil doch nicht davonkommen; und was davonkommt, will ich doch dem Schwert überantworten.</p>
-    <p class="base base-o">Συ θέλεις τρώγει και δεν θέλεις χορτάζεσθαι, και η πείνά σου θέλει είσθαι εν μέσω σου και θέλεις φύγει αλλά δεν θέλεις διασώσει, και ό,τι διέσωσας, θέλω παραδώσει εις την ρομφαίαν.</p>
     <p class="tra">Jeść będziesz, a nie nasycisz się, i poniżenie twoje będzie w pośrodku ciebie: pochwycisz ale nie wyniesiesz; a co wyniesiesz, na miecz podam.</p>
   </div>
 </div>
@@ -1040,7 +976,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Tu seminabis, et non metes :  tu calcabis olivam, et non ungeris oleo ;  et mustum, et non bibes vinum.</p>
     <p class="base base-p">Du sollst saen und nicht ernten; du sollst 01 keltern und dich mit demselben nicht salben, und Most keltern und nicht Wein trinken.</p>
-    <p class="base base-o">Συ θέλεις σπείρει και δεν θέλεις θερίσει συ θέλεις πιέσει ελαίας και δεν θέλεις αλειφθή με έλαιον, και γλεύκος και δεν θέλεις πίει οίνον.</p>
     <p class="tra">Ty będziesz siał, ale nie będziesz żął; ty będziesz tłoczył oliwki, ale nie będziesz się oliwą mazał, i moszcz, ale nie będziesz pił wina.</p>
   </div>
 </div>
@@ -1049,7 +984,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et custodisti præcepta Amri,  et omne opus domus Achab,  et ambulasti in voluntatibus eorum :  ut darem te in perditionem,  et habitantes in ea in sibilum,  et opprobrium populi mei portabitis.</p>
     <p class="base base-p">Denn man halt die Weise Amris und alle Werke des Hauses Ahab und folgt ihrem Rat. Darum will ich dich zur Wuste machen und ihre Einwohner, daß man sie anpfeifen soil; und sollt meines Volks Schmach tragen.</p>
-    <p class="base base-o">Διότι εφυλάχθησαν τα διατάγματα του Αμρί και πάντα τα έργα του οίκου του Αχαάβ και επορεύθητε εν ταις βουλαίς αυτών διά να σε παραδώσω εις αφανισμόν και τους κατοίκους αυτής εις συριγμόν και θέλετε βαστάσει το όνειδος του λαού μου.</p>
     <p class="tra">Bo to miasto pilnie przestrzega ustaw Amrego, i wszelakiej sprawy domu Achabowego,i sprawujecie się radami ich, tak abym cię wydał na spustoszenie, i obywateli jego na pośmiech; przetoż hańbę ludu mego nosić będziecie.</p>
   </div>
 </div>
@@ -1058,14 +992,14 @@ body[data-conf="orthodox"] .base-o { display:block; }
 <section class="chap" id="c7">
   <div class="chhead">
     <span class="chrom">VII</span>
-    <span class="chlbl">Caput 7</span>
+    <span class="chlbl chlbl-c">Caput VII</span>
+    <span class="chlbl chlbl-p">Das 7. Capitel</span>
   </div>
 <div class="vb first" id="v7-1">
   <span class="vn">1</span>
   <div class="vt">
     <p class="base base-c">Væ mihi, quia factus sum sicut qui colligit in autumno racemos vindemiæ !  non est botrus ad comedendum,  præcoquas ficus desideravit anima mea.</p>
     <p class="base base-p">Ach, es gehet mir wie einem, der im Weinberge nachlieset, da man keine Trauben findet zu essen, und wollte doch gerne der besten Fruchte haben.</p>
-    <p class="base base-o">Ουαί εις εμέ, διότι είμαι ως επικαρπολογία θέρους, ως επιφυλλίς τρυγητού δεν υπάρχει βότρυς διά να φάγη τις η ψυχή μου επεθύμησε τας απαρχάς των καρπών.</p>
     <p class="tra">Biada mnie! żem jako ostatki po sprzątanieniu owoców letnich, jako pozostałe grona po zbieraniu wina; niemasz grona ku zjedzeniu, pierwocin z owocu pragnie dusza moja.</p>
   </div>
 </div>
@@ -1074,7 +1008,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Periit sanctus de terra,  et rectus in hominibus non est :  omnes in sanguine insidiantur ;  vir fratrem suum ad mortem venatur.</p>
     <p class="base base-p">Die frommen Leute sind weg in diesem Lande; und die Gerechten sind nicht mehr unter den Leuten. Sie lauern alle aufs Blut; ein jeglicherjagt den andern, daß er ihn verderbe,</p>
-    <p class="base base-o">Ο όσιος απωλέσθη εκ της γης και ο ευθύς δεν υπάρχει μεταξύ των ανθρώπων πάντες ενεδρεύουσι διά αίμα κυνηγούσιν έκαστος τον αδελφόν αυτού.</p>
     <p class="tra">Pobożny z ziemi zginął, a szczerego niemasz między ludźmi; wszyscy zgoła o wylaniu krwi myślą, każdy łowi siecią brata swego.</p>
   </div>
 </div>
@@ -1083,7 +1016,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Malum manuum suarum dicunt bonum :  princeps postulat, et judex in reddendo est ;  et magnus locutus est desiderium animæ suæ,  et conturbaverunt eam.</p>
     <p class="base base-p">und meinen, sie tun wohl daran, wenn sie Boses tun. Was der Furst will, das spricht der Richter, daß er ihm wieder einen Dienst tun soil. Die Gewaltigen raten nach ihrem Mutwillen, Schaden zu tun, und drehen es, wie sie wollen.</p>
-    <p class="base base-o">Εις το να κακοποιώσιν ετοιμάζουσι τας χείρας αυτών ο άρχων απαιτεί και ο κριτής κρίνει επί μισθώ· και ο μεγάλος προφέρει την πονηράν αυτού επιθυμίαν, την οποίαν συμπεριστρεφόμενοι εκπληρούσιν.</p>
     <p class="tra">Co złego robią rękoma, chcą, aby to za dobre uszło; książę podatków żąda, a sędzia z datku sądzi, a kto możny jest, ten mówi przewrotność duszy swojej, i w gromadę ją plotą.</p>
   </div>
 </div>
@@ -1092,7 +1024,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Qui optimus in eis est, quasi paliurus,  et qui rectus, quasi spina de sepe.  Dies speculationis tuæ, visitatio tua venit :  nunc erit vastitas eorum.</p>
     <p class="base base-p">Der Beste unter ihnen ist wie ein Dorn und der Redlichste wie eine Hecke. Aber wenn der Tag deiner Prediger kommen wird, wenn du heimgesucht sollst werden, da werden sie dann nicht wissen, wo aus.</p>
-    <p class="base base-o">Ο καλήτερος αυτών είναι ως άκανθα· ο ευθύς οξύτερος φραγμού ακανθώδους· η ημέρα των φυλάκων σου, η επίσκεψίς σου έφθασε· τώρα θέλει είσθαι η αμηχανία αυτών.</p>
     <p class="tra">Najlepszy z nich jest jako oset, najszczerszy przechodzi ciernie; dzień stróżów twoich i nawiedzenia twego przychodzi; już nastanie powikłanie ich.</p>
   </div>
 </div>
@@ -1101,7 +1032,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Nolite credere amico,  et nolite confidere in duce :  ab ea quæ dormit in sinu tuo custodi claustra oris tui.</p>
     <p class="base base-p">Niemand glaube seinem Nachsten, niemand verlasse sich auf Fursten! Bewahre die Tür deines Mundes vor der, die in deinen Armen schlaft!</p>
-    <p class="base base-o">Μη εμπιστεύεσθε εις φίλον, μη θαρρείτε εις οικείον· φύλαττε τας θύρας του στόματός σου από της συγκαθευδούσης εν τω κόλπω σου·</p>
     <p class="tra">Nie wierzcie przyjacielowi, ani ufajcie wodzowi; przed tą, która leży na łonie twojem, strzeż drzwi ust swoich.</p>
   </div>
 </div>
@@ -1110,7 +1040,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Quia filius contumeliam facit patri,  et filia consurgit adversus matrem suam :  nurus adversus socrum suam,  et inimici hominis domestici ejus.</p>
     <p class="base base-p">Denn der Sohn verachtet den Vater, die Tochter setzt sich wider die Mutter, die Schnur ist wider die Schwieger; und des Menschen Feinde sind sein eigen Hausgesinde.</p>
-    <p class="base base-o">διότι ο υιός περιφρονεί τον πατέρα, η θυγάτηρ επανίσταται κατά της μητρός αυτής, η νύμφη κατά της πενθεράς αυτής· οι εχθροί του ανθρώπου είναι οι άνθρωποι της εαυτού οικίας.</p>
     <p class="tra">Bo syn lekce waży ojca, a córka powstaje przeciwko matce swej, synowa przeciwko świekrze swej, a nieprzyjaciele każdego są domownicy jego.</p>
   </div>
 </div>
@@ -1119,7 +1048,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Ego autem ad Dominum aspiciam ;  exspectabo Deum, salvatorem meum :  audiet me Deus meus.</p>
     <p class="base base-p">Ich aber will auf den HERRN schauen und des Gottes meines Heils erwarten; mein Gott wird mich horen.</p>
-    <p class="base base-o">Εγώ δε θέλω επιβλέψει επί Κύριον· θέλω προσμείνει τον Θεόν της σωτηρίας μου· ο Θεός μου θέλει μου εισακούσει.</p>
     <p class="tra">Przetoż ja na Pana patrzyć będę, oczekiwać będę Boga zbawienia mego; Bóg mój wysłucha mię.</p>
   </div>
 </div>
@@ -1128,7 +1056,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Ne læteris, inimica mea, super me, quia cecidi :  consurgam cum sedero in tenebris :  Dominus lux mea est.</p>
     <p class="base base-p">Freue dich nicht, meine Feindin, daß ich daniederliege! Ich werde wieder aufkommen. Und so ich im Finstern sitze, so ist doch der HERR mein Licht.</p>
-    <p class="base base-o">Μη ευφραίνου εις εμέ, η εχθρά μου· αν και έπεσα, θέλω σηκωθή· αν και εκάθησα εν σκότει, ο Κύριος θέλει είσθαι φως εις εμέ.</p>
     <p class="tra">Nie wesel się ze mnie, nieprzyjaciółko moja! jeźlim upadła, powstanę; jeźli siedzę w ciemnościach, Pan jest światłością moją.</p>
   </div>
 </div>
@@ -1137,7 +1064,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Iram Domini portabo,  quoniam peccavi ei,  donec causam meam judicet,  et faciat judicium meum.  Educet me in lucem :  videbo justitiam ejus.</p>
     <p class="base base-p">Ich will des HERRN Zorn tragen, denn ich habe wider ihn gesundiget, bis er meine Sache ausfuhre und mir Recht schaffe. Er wird mich ans Licht bringen, daß ich meine Lust an seiner Gnade sehe.</p>
-    <p class="base base-o">Θέλω υποφέρει την οργήν του Κυρίου, διότι ημάρτησα εις αυτόν, εωσού διαδικάση την δίκην μου και κάμη την κρίσιν μου· θέλει με εξάξει εις το φως, θέλω ιδεί την δικαιοσύνην αυτού.</p>
     <p class="tra">Gniew Pański poniosę: bom przeciwko niemu zgrzeszył, aż się wżdy zastawi o sprawę moję, a wykona sąd mój: wywiedzie mię na światło, ujrzę sprawiedliwość jego.</p>
   </div>
 </div>
@@ -1146,7 +1072,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et aspiciet inimica mea,  et operietur confusione,  quæ dicit ad me : Ubi est Dominus Deus tuus ?  Oculi mei videbunt in eam :  nunc erit in conculcationem ut lutum platearum.</p>
     <p class="base base-p">Meine Feindin wird's sehen müssen und mit aller Schande bestehen, die jetzt zu mir sagt: Wo ist der HERR, dein Gott? Meine Augen werden's sehen, daß sie dann wie ein Kot auf der Gasse zertreten wird.</p>
-    <p class="base base-o">Και θέλει ιδεί η εχθρά μου, και αισχύνη θέλει περικαλύψει αυτήν, ήτις λέγει προς εμέ, Που είναι Κύριος ο Θεός σου; οι οφθαλμοί μου θέλουσιν ιδεί αυτήν· τώρα θέλει είσθαι εις καταπάτημα ως ο πηλός των οδών.</p>
     <p class="tra">Ujrzy to nieprzyjaciółka moja, a wstyd okryje tę, która do mnie mówi: Gdzież jest Pan, Bóg twój? Oczy moje na nią patrzyć będą, gdy jako błoto na ulicach podeptana będzie.</p>
   </div>
 </div>
@@ -1155,7 +1080,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Dies, ut ædificentur maceriæ tuæ ;  in die illa longe fiet lex.</p>
     <p class="base base-p">Zu der Zeit werden deine Mauern gebauet werden und Gottes Wort weit auskommen.</p>
-    <p class="base base-o">Καθ' ην ημέραν τα τείχη σου μέλλουσι να κτισθώσι, την ημέραν εκείνην θέλει διαδοθή εις μακράν το πρόσταγμα.</p>
     <p class="tra">Dnia onego, którego pobudowane będą parkany twoje, dnia onego, mówię, daleko się wyrok rozejdzie.</p>
   </div>
 </div>
@@ -1164,7 +1088,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">In die illa et usque ad te veniet de Assur,  et usque ad civitates munitas,  et a civitatibus munitis usque ad flumen,  et ad mare de mari,  et ad montem de monte.</p>
     <p class="base base-p">Und zur selbigen Zeit werden sie von Assur und von festen Stadten zu dir kommen, von den festen Stadten bis an das Wasser, von einem Meer zum andern, von einem Gebirge zum andern.</p>
-    <p class="base base-o">Την ημέραν εκείνην θέλουσιν ελθεί έως εις σε από της Ασσυρίας και των πόλεων της Αιγύπτου και από της Αιγύπτου έως του ποταμού και από θαλάσσης έως θαλάσσης και από όρους έως όρους.</p>
     <p class="tra">Onegoż dnia przychodzić będą do ciebie i z Assyryi aż do miast obronnych, i od miast obronnych aż do rzeki, i od morza aż do morza, i od góry aż do góry.</p>
   </div>
 </div>
@@ -1173,7 +1096,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Et terra erit in desolationem propter habitatores suos,  et propter fructum cogitationum eorum.</p>
     <p class="base base-p">Denn das Land wird wüst sein seiner Einwohner halben, um der Frucht willen ihrer Werke.</p>
-    <p class="base base-o">Και η γη θέλει ερημωθή εξ αιτίας των κατοικούντων αυτήν, διά τον καρπόν των πράξεων αυτών.</p>
     <p class="tra">Wszakże ta ziemia spustoszona będzie dla obywateli swoich, dla owocu wynalazków ich.</p>
   </div>
 </div>
@@ -1182,7 +1104,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Pasce populum tuum in virga tua,  gregem hæreditatis tuæ, habitantes solos, in saltu, in medio Carmeli.  Pascentur Basan et Galaad juxta dies antiquos.</p>
     <p class="base base-p">Du aberweide dein Volk mit deinem Stabe, die Herde deines Erbteils, die da wohnen beide, im Walde alleine und auf dem Felde; lati sie zu Basan und Gilead weiden wie vor alters!</p>
-    <p class="base base-o">Ποίμαινε τον λαόν σου εν τη ράβδω σου, το ποίμνιον της κληρονομίας σου, το οποίον κατοικεί μεμονωμένον εν τω δάσει, εν μέσω του Καρμήλου· ας νέμωνται την Βασάν και την Γαλαάδ καθώς εν ταις αρχαίαις ημέραις.</p>
     <p class="tra">Paśże lud twój laską twoją, trzodę dziedzictwa twego, która osobno mieszka w lesie i w pośród pola; niech wypasą Basan i Galaad jako za dni starodawnych.</p>
   </div>
 </div>
@@ -1191,7 +1112,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Secundum dies egressionis tuæ de terra Ægypti,  ostendam ei mirabilia.</p>
     <p class="base base-p">Ich will sie Wunder sehen lassen, gleichwie zu der Zeit, da sie aus Agyptenland zogen,</p>
-    <p class="base base-o">Καθώς εν ταις ημέραις της εξόδου σου εκ γης Αιγύπτου θέλω δείξει εις αυτόν θαυμάσια.</p>
     <p class="tra">Ukażę mu dziwne rzeczy, jako za dni, którycheś wyszedł z ziemi Egipskiej.</p>
   </div>
 </div>
@@ -1200,7 +1120,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Videbunt gentes,  et confundentur super omni fortitudine sua.  Ponent manum super os,  aures eorum surdæ erunt.</p>
     <p class="base base-p">daß die Heiden sehen, und alle ihre Gewaltigen sich schamen sollen und die Hand auf ihren Mund legen und ihre Ohren zuhalten.</p>
-    <p class="base base-o">Τα έθνη θέλουσιν ιδεί και θέλουσι καταισχυνθή διά πάσαν την ισχύν αυτών· θέλουσιν επιθέσει την χείρα επί το στόμα, τα ώτα αυτών θέλουσι κωφωθή.</p>
     <p class="tra">Co widząc narody zawstydzą się nad wszystką mocą swoją, włożą rękę na usta, a uszy ich ogłuszeją</p>
   </div>
 </div>
@@ -1209,7 +1128,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Lingent pulverem sicut serpentes ;  velut reptilia terræ perturbabuntur in ædibus suis.  Dominum Deum nostrum formidabunt,  et timebunt te.</p>
     <p class="base base-p">Sie sollen Staub lecken wie die Schlangen und wie das Gewürm auf Erden erzittern in ihren Lochern. Sie werden sich furchten vor dem HERRN, unserm Gott, und vor dir sich entsetzen.</p>
-    <p class="base base-o">Θέλουσι γλείφει το χώμα ως όφεις, ως τα ερπετά της γης θέλουσι σύρεσθαι από των τρυπών αυτών· θέλουσιν εκπλαγή εις Κύριον τον Θεόν ημών και θέλουσι φοβηθή από σου.</p>
     <p class="tra">Proch jako wąż lizać będą, jako gadziny ziemskie ruszą się z lochów swoich, do Pana, Boga naszego, z strachem pobieżą, i bać się ciebie będą.</p>
   </div>
 </div>
@@ -1218,7 +1136,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Quis, Deus, similis tui,  qui aufers iniquitatem,  et transis peccatum reliquiarum hæreditatis tuæ ?  Non immittet ultra furorem suum,  quoniam volens misericordiam est.</p>
     <p class="base base-p">Wo ist solch ein Gott, wie du bist? der die Sunde vergibt und erlasset die Missetat den Ubrigen seines Erbteils; der seinen Zorn nicht ewiglich behalt; denn er ist barmherzig.</p>
-    <p class="base base-o">Τις Θεός όμοιός σου, συγχωρών ανομίαν και παραβλέπων την παράβασιν του υπολοίπου της κληρονομίας αυτού; δεν φυλάττει την οργήν αυτού διαπαντός, διότι αυτός αρέσκεται εις το έλεος.</p>
     <p class="tra">Któryż Bóg jest podobny tobie? Któryby nieprawość odpuszczał, i mijał przestępstwa ostatków dziedzictwa swego, któryby nie zatrzymywał na wieki gniewu swego, przeto, że się kocha w miłosierdziu.</p>
   </div>
 </div>
@@ -1227,7 +1144,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Revertetur, et miserebitur nostri ;  deponet iniquitates nostras,  et projiciet in profundum maris omnia peccata nostra.</p>
     <p class="base base-p">Erwird sich unser wieder erbarmen, unsere Missetat dampfen und alle unsere Sünden in die Tiefe des Meers werfen.</p>
-    <p class="base base-o">Θέλει επιστρέψει, θέλει ευσπλαγχνισθή ημάς, θέλει καταστρέψει τας ανομίας ημών· και θέλεις ρίψει πάσας τας αμαρτίας αυτών εις τα βάθη της θαλάσσης.</p>
     <p class="tra">Nawróci się, a zmiłuje się nad nami; zatłumi nieprawości nasze i wrzuci w głębokość morską wszystkie grzechy nasze.</p>
   </div>
 </div>
@@ -1236,7 +1152,6 @@ body[data-conf="orthodox"] .base-o { display:block; }
   <div class="vt">
     <p class="base base-c">Dabis veritatem Jacob,  misericordiam Abraham,  quæ jurasti patribus nostris a diebus antiquis.</p>
     <p class="base base-p">Du wirst dem Jakob die Treue und Abraham die Gnade halten, wie du unsern Vatern vorlangst geschworen hast.</p>
-    <p class="base base-o">Θέλεις εκτελέσει αλήθειαν εις τον Ιακώβ, έλεος εις τον Αβραάμ, καθώς ώμοσας εις τους πατέρας ημών από των αρχαίων ημερών.</p>
     <p class="tra">Pokażesz się Jakóbowi prawdomównym, a miłosiernym Abrahamowi, jakoś przysiągł ojcom naszym ode dni dawnych.</p>
   </div>
 </div>
@@ -1245,7 +1160,7 @@ body[data-conf="orthodox"] .base-o { display:block; }
 
 <nav class="bnav">
   <a href="032-jon.html">&#8592; Ionas</a>
-  <a href="../index.html" class="center">↑ &nbsp; Inhaltsverzeichnis</a>
+  <a href="../index.html" class="center">? &nbsp; Inhaltsverzeichnis</a>
   <a href="034-nah.html">Nahum &#8594;</a>
 </nav>
 
