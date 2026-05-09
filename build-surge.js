@@ -18,9 +18,9 @@ const BOOKS = [
     dist       : 'dist-meliha',
     domain     : 'melihas-koran.surge.sh',
     title      : "Meliha's Koran",
-    images     : ['Cover geschenke.png', 'Back Geschenke.png', 'Suren Geschenke.png', 'Geschenke Hintergrund.png'],
+    images     : ['Cover geschenke.png', 'Back Geschenke.png', 'Suren Geschenke.png', 'Geschenke Hintergrund.png', 'Koran Geschenke Icon.png'],
     themeColor : '#F5EDD8',
-    coverIcon  : 'Cover geschenke.png',
+    coverIcon  : 'Koran Geschenke Icon.png',
   },
   {
     key        : 'karim',
@@ -29,9 +29,9 @@ const BOOKS = [
     dist       : 'dist-karim',
     domain     : 'karims-koran.surge.sh',
     title      : "Karim's Koran",
-    images     : ['Cover geschenke.png', 'Back Geschenke.png', 'Suren Geschenke.png', 'Geschenke Hintergrund.png'],
+    images     : ['Cover geschenke.png', 'Back Geschenke.png', 'Suren Geschenke.png', 'Geschenke Hintergrund.png', 'Koran Geschenke Icon.png'],
     themeColor : '#F5EDD8',
-    coverIcon  : 'Cover geschenke.png',
+    coverIcon  : 'Koran Geschenke Icon.png',
   },
   {
     key        : 'alquran',
@@ -40,9 +40,9 @@ const BOOKS = [
     dist       : 'dist-alquran',
     domain     : 'alquran-de.surge.sh',
     title      : 'AL-QURAN \u00b7 \u0627\u0644\u0642\u0631\u0622\u0646 \u0627\u0644\u0643\u0631\u064a\u0645',
-    images     : ['Cover.png', 'Back.png', 'Suren.png', 'Hintergrund.png'],
+    images     : ['Cover.png', 'Back.png', 'Suren.png', 'Hintergrund.png', 'Koran Icon.png'],
     themeColor : '#1e3d22',
-    coverIcon  : 'Cover.png',
+    coverIcon  : 'Koran Icon.png',
   },
   {
     key        : 'diebibel',
@@ -51,11 +51,11 @@ const BOOKS = [
     dist       : 'dist-diebibel',
     domain     : 'diebibel-de.surge.sh',
     title      : 'Die Heilige Bibel',
-    images     : ['Die Heilige Bibel - Rot.png', 'Bibel-Rueckseite-Katholisch.png'],
+    images     : ['Die Heilige Bibel - Rot.png', 'Bibel-Rueckseite-Katholisch.png', 'Die Heilige Bibel rot Icon.png'],
     themeColor : '#2a0810',
     rootDepth  : 1,
     favicon    : BIBLE_FAVICON_TAG,
-    coverIcon  : 'Die Heilige Bibel - Rot.png',
+    coverIcon  : 'Die Heilige Bibel rot Icon.png',
   },
   {
     key        : 'micheles',
@@ -64,11 +64,11 @@ const BOOKS = [
     dist       : 'dist-micheles',
     domain     : 'micheles-bibel-kx.surge.sh',
     title      : "Michele's Bibel",
-    images     : ['Die Heilige Bibel - Weiss - Michele.png', 'Bibel-Rueckseite-Michele.png'],
+    images     : ['Die Heilige Bibel - Weiss - Michele.png', 'Bibel-Rueckseite-Michele.png', 'Die Heilige Bibel Michele Icon.png'],
     themeColor : '#e8e0d0',
     rootDepth  : 1,
     favicon    : BIBLE_FAVICON_TAG,
-    coverIcon  : 'Die Heilige Bibel - Weiss - Michele.png',
+    coverIcon  : 'Die Heilige Bibel Michele Icon.png',
   },
 ];
 
@@ -114,7 +114,7 @@ function processHtml(content, distDepth, book) {
     const iconTag  = book.favicon || FAVICON_TAG;
     const prefix   = '../'.repeat(distDepth);
     const touchTag = book.coverIcon
-      ? `<link rel="apple-touch-icon" href="${prefix}${book.coverIcon.replace(/ /g, '%20')}">`
+      ? `<link rel="apple-touch-icon" sizes="180x180" href="${prefix}${book.coverIcon.replace(/ /g, '%20')}">`
       : '';
     content = content.replace(
       '</head>',
@@ -176,17 +176,35 @@ for (const book of ACTIVE) {
 
   // 4. index.html → Redirect zu cover.html
   const redirectTarget = book.coverPath || 'cover.html';
+  const touchIconTag = book.coverIcon
+    ? `<link rel="apple-touch-icon" sizes="180x180" href="${book.coverIcon.replace(/ /g, '%20')}">` : '';
   const indexHtml = '<!DOCTYPE html><html lang="de"><head>\n'
     + '<meta charset="UTF-8">\n'
     + '<meta name="viewport" content="width=device-width,initial-scale=1">\n'
     + '<meta http-equiv="refresh" content="0;url=' + redirectTarget + '">\n'
     + '<title>' + book.title + '</title>\n'
     + (book.favicon || FAVICON_TAG) + '\n'
+    + (touchIconTag ? touchIconTag + '\n' : '')
+    + '<link rel="manifest" href="manifest.json">\n'
     + '<meta name="theme-color" content="' + book.themeColor + '">\n'
     + '</head><body></body></html>';
   fs.writeFileSync(path.join(book.dist, 'index.html'), indexHtml, 'utf8');
   fs.writeFileSync(path.join(book.dist, '200.html'), indexHtml, 'utf8');
-  console.log('   \u2713 index.html + 200.html \u2192 ' + redirectTarget);
+  // manifest.json for Android home screen icon
+  const iconFile = book.coverIcon ? book.coverIcon.replace(/ /g, '%20') : '';
+  const manifest = JSON.stringify({
+    name: book.title,
+    short_name: book.title,
+    start_url: '/',
+    display: 'standalone',
+    background_color: book.themeColor,
+    theme_color: book.themeColor,
+    icons: iconFile ? [
+      { src: iconFile, sizes: '512x512', type: 'image/png', purpose: 'any maskable' }
+    ] : []
+  }, null, 2);
+  fs.writeFileSync(path.join(book.dist, 'manifest.json'), manifest, 'utf8');
+  console.log('   \u2713 index.html + 200.html + manifest.json \u2192 ' + redirectTarget);
 }
 
 // ─── Surge Deploy ─────────────────────────────────────────────────────────────
