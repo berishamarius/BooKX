@@ -7,7 +7,7 @@ export default function middleware(req) {
       const decoded = atob(encoded);
       const colon = decoded.indexOf(':');
       if (colon !== -1 && decoded.slice(colon + 1) === 'MiniMimi') {
-        return new Response(null, { status: 200 });
+        return; // pass through to static file
       }
     } catch (_) {}
   }
