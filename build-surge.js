@@ -21,6 +21,7 @@ const BOOKS = [
     images     : ['Cover geschenke.png', 'Back Geschenke.png', 'Suren Geschenke.png', 'Geschenke Hintergrund.png', 'Koran Geschenke Icon.png'],
     themeColor : '#F5EDD8',
     coverIcon  : 'Koran Geschenke Icon.png',
+    password   : 'SmolMeli',
   },
   {
     key        : 'karim',
@@ -32,6 +33,7 @@ const BOOKS = [
     images     : ['Cover geschenke.png', 'Back Geschenke.png', 'Suren Geschenke.png', 'Geschenke Hintergrund.png', 'Koran Geschenke Icon.png'],
     themeColor : '#F5EDD8',
     coverIcon  : 'Koran Geschenke Icon.png',
+    password   : 'Karim_njm',
   },
   {
     key        : 'alquran',
@@ -69,6 +71,7 @@ const BOOKS = [
     rootDepth  : 1,
     favicon    : BIBLE_FAVICON_TAG,
     coverIcon  : 'Die Heilige Bibel Michele Icon.png',
+    password   : 'MiniMimi',
   },
 ];
 
@@ -205,6 +208,38 @@ for (const book of ACTIVE) {
   }, null, 2);
   fs.writeFileSync(path.join(book.dist, 'manifest.json'), manifest, 'utf8');
   console.log('   \u2713 index.html + 200.html + manifest.json \u2192 ' + redirectTarget);
+
+  // 5. vercel.json (immer)
+  fs.writeFileSync(path.join(book.dist, 'vercel.json'), '{ "version": 2 }\n', 'utf8');
+
+  // 6. middleware.js (nur für passwortgeschützte Bücher)
+  if (book.password) {
+    const pw = book.password;
+    const middleware = `export const config = { matcher: ['/((?!_vercel).*)'] };
+export default function middleware(req) {
+  const auth = req.headers.get('authorization') || '';
+  const [scheme, encoded] = auth.split(' ');
+  if (scheme === 'Basic' && encoded) {
+    try {
+      const decoded = atob(encoded);
+      const colon = decoded.indexOf(':');
+      if (colon !== -1 && decoded.slice(colon + 1) === '${pw}') {
+        return new Response(null, { status: 200 });
+      }
+    } catch (_) {}
+  }
+  return new Response('Zugang verweigert', {
+    status: 401,
+    headers: {
+      'WWW-Authenticate': 'Basic realm="Privat"',
+      'Content-Type': 'text/plain; charset=utf-8',
+    },
+  });
+}
+`;
+    fs.writeFileSync(path.join(book.dist, 'middleware.js'), middleware, 'utf8');
+    console.log('   \u2713 middleware.js (Passwortschutz: ${pw})');
+  }
 }
 
 // ─── Surge Deploy ─────────────────────────────────────────────────────────────
