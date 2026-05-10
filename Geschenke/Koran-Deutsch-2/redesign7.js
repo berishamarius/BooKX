@@ -122,7 +122,7 @@ const FONT_LINKS = `  <link rel="preconnect" href="https://fonts.googleapis.com"
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Amiri+Quran&family=Scheherazade+New:wght@400;700&family=Noto+Serif:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">`;
 
-const AR_FONT = `'Amiri Quran','Scheherazade New','Arabic Typesetting','Traditional Arabic',serif`;
+const AR_FONT = `'Scheherazade New','Arabic Typesetting','Traditional Arabic',serif`;
 const AR_DECO = `'Arabic Typesetting','Scheherazade New',serif`;
 
 // Copyright-Metatag für alle Seiten (nur in HTML-Quelle, nicht sichtbar)
@@ -278,7 +278,7 @@ html,body{margin:0;padding:0;height:100%;}
 body{background:#000;}
 a.bc{display:block;width:100%;height:100vh;}
 a.bc img{width:100%;height:100%;object-fit:contain;display:block;}
-.nav-b{position:fixed;top:14px;left:18px;font:.6rem sans-serif;color:rgba(192,155,60,.55);text-decoration:none;letter-spacing:.06em;z-index:10;}
+.nav-b{position:fixed;top:14px;left:18px;font:.5rem sans-serif;color:rgba(192,155,60,.55);text-decoration:none;letter-spacing:.06em;z-index:10;}
 .nav-b:hover{color:#c9a84c;}
 </style></head><body>
 <a class="bc" href="intro.html">

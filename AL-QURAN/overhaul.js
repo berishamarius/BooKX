@@ -59,8 +59,8 @@ const T = {
 // stark abweichend von Bubenheim/Elyas.  60+ Substitutionen + Satzumbau.
 de: [
   // Gottesnamen und Attribute
-  [/\bAllahs\b/g,                         'Gottes'],
-  [/\bAllah\b/g,                          'Gott'],
+  [/\bAllahs\b/g,                         'Allahs'],
+  [/\bAllah\b/g,                          'Allah'],
   [/des Erbarmers, des Barmherzigen/g,    'des Allerbarmenden, des ewig Gnädigen'],
   [/dem Erbarmer, dem Barmherzigen/g,     'dem Allerbarmenden, dem ewig Gnädigen'],
   [/\bErbarmer\b/g,                       'der Allerbarmende'],
@@ -120,9 +120,9 @@ de: [
   [/\bGesandter\b/g,                     'Botschafter'],
   [/\bGesandten\b/g,                     'Botschaftern'],
   [/\bGesandte\b/g,                      'Botschafter'],
-  [/\bPropheten\b/g,                     'Gottesgesandten'],
-  [/\bden Propheten\b/g,                 'den Gottesgesandten'],
-  [/\bProphet\b/g,                       'Gottesgesandter'],
+  [/\bPropheten\b/g,                     'Propheten'],
+  [/\bden Propheten\b/g,                 'den Propheten'],
+  [/\bProphet\b/g,                       'Prophet'],
   [/\bdie Schrift\b/g,                   'die Offenbarungsschrift'],
   [/\bder Schrift\b/g,                   'der Offenbarungsschrift'],
   [/\bdas Buch\b/g,                      'die Heilige Schrift'],
@@ -486,6 +486,13 @@ function applyTransform(text, lang) {
   for (const [rx, rep] of T[lang]) {
     s = s.replace(rx, rep);
   }
+  // Für Deutsch explizit Allah/Allahs erzwingen (kein "Gott/Gottes")
+  if (lang === 'de') {
+    s = s
+      .replace(/\bGottes\b/g, 'Allahs')
+      .replace(/\bGott\b/g, 'Allah')
+      .replace(/\bAllkundige\b/g, 'Allkundig');
+  }
   return s.trim();
 }
 
@@ -493,9 +500,16 @@ function applyTransform(text, lang) {
 function apiGet(url) {
   return new Promise((resolve, reject) => {
     https.get(url, { headers: { 'User-Agent': 'KX-Books-Quran-Overhaul/8.0', Accept: 'application/json' } }, res => {
-      let raw = '';
-      res.on('data', c => raw += c);
-      res.on('end', () => { try { resolve(JSON.parse(raw)); } catch (e) { reject(new Error('JSON: ' + e.message)); } });
+      const chunks = [];
+      res.on('data', c => chunks.push(c));
+      res.on('end', () => {
+        try {
+          const raw = Buffer.concat(chunks).toString('utf8');
+          resolve(JSON.parse(raw));
+        } catch (e) {
+          reject(new Error('JSON: ' + e.message));
+        }
+      });
     }).on('error', reject);
   });
 }
@@ -528,11 +542,11 @@ async function main() {
   const chapters = chMeta.chapters;
   console.log(`${chapters.length} Suren ✓`);
 
-  // 2. Arabischer Urtext (Imlaei)
+  // 2. Arabischer Urtext (Uthmani, original)
   process.stdout.write('  │ Arabischer Urtext … ');
-  const arData = await fetchRetry('https://api.quran.com/api/v4/quran/verses/imlaei');
+  const arData = await fetchRetry('https://api.quran.com/api/v4/quran/verses/uthmani');
   const arabicMap = {};
-  for (const v of arData.verses) arabicMap[v.verse_key] = v.text_imlaei;
+  for (const v of arData.verses) arabicMap[v.verse_key] = v.text_uthmani;
   console.log(`${Object.keys(arabicMap).length} Verse ✓\n`);
 
   let totalSurahs = 0, totalVerses = 0;

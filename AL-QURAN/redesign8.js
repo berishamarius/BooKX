@@ -125,7 +125,7 @@ const FONT_LINKS = `  <link rel="preconnect" href="https://fonts.googleapis.com"
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Amiri+Quran&family=Scheherazade+New:wght@400;700&family=Noto+Serif:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">`;
 
-const AR_FONT = `'Amiri Quran','Scheherazade New','Arabic Typesetting','Traditional Arabic',serif`;
+const AR_FONT = `'Scheherazade New','Arabic Typesetting','Traditional Arabic',serif`;
 const AR_DECO = `'Arabic Typesetting','Scheherazade New',serif`;
 
 // Copyright-Metatag für alle Seiten (nur in HTML-Quelle, nicht sichtbar)
@@ -610,13 +610,13 @@ async function main(){
   }
   console.log(`${chapters.length} ✓`);
 
-  process.stdout.write('  Arabischer Text (Imlaei) … ');
+  process.stdout.write('  Arabischer Text (Uthmani) … ');
   let arabicMap = {};
   if (hasCacheAr) {
     arabicMap = JSON.parse(fs.readFileSync(path.join(CACHE_DIR,'_arabic.json'),'utf8'));
   } else {
-    const ar = await fetchRetry('https://api.quran.com/api/v4/quran/verses/imlaei');
-    for(const v of ar.verses) arabicMap[v.verse_key]=v.text_imlaei;
+    const ar = await fetchRetry('https://api.quran.com/api/v4/quran/verses/uthmani');
+    for(const v of ar.verses) arabicMap[v.verse_key]=v.text_uthmani;
   }
   console.log(`${Object.keys(arabicMap).length} Verse ✓\n`);
 

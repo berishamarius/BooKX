@@ -1,4 +1,4 @@
-export const config = { matcher: ['/((?!_vercel).*)'] };
+export const config = { matcher: ['/((?!_vercel|.*\.(?:png|jpg|jpeg|gif|webp|svg|ico|woff2?|ttf|otf|css|js|json|txt)$).*)'] };
 export default function middleware(req) {
   const auth = req.headers.get('authorization') || '';
   const [scheme, encoded] = auth.split(' ');

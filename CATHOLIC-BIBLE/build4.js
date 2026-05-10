@@ -218,7 +218,7 @@ html,body{min-height:100vh;background:#2a0810;display:flex;flex-direction:column
 body::before{content:'';position:fixed;inset:16px;border:1px solid rgba(200,160,48,.3);pointer-events:none;z-index:5;}
 body::after{content:'';position:fixed;inset:28px;border:1px solid rgba(200,160,48,.12);pointer-events:none;z-index:5;}
 .book{width:min(500px,90vw);position:relative;z-index:1;display:block;text-decoration:none;cursor:pointer;}
-.book img{width:100%;height:auto;display:block;box-shadow:0 20px 60px rgba(0,0,0,.7);}
+.book img{width:100%;height:auto;display:block;box-shadow:none;}
 .corner{position:fixed;width:56px;height:56px;pointer-events:none;z-index:6;}
 .c-tl{top:14px;left:14px;border-top:2px solid rgba(200,160,48,.55);border-left:2px solid rgba(200,160,48,.55);}
 .c-tr{top:14px;right:14px;border-top:2px solid rgba(200,160,48,.55);border-right:2px solid rgba(200,160,48,.55);}
@@ -266,7 +266,7 @@ body::after{content:'';position:fixed;inset:28px;border:1px solid rgba(200,160,4
 .c-bl{bottom:20px;left:20px;border-bottom:2px solid rgba(200,160,48,.5);border-left:2px solid rgba(200,160,48,.5);}
 .c-br{bottom:20px;right:20px;border-bottom:2px solid rgba(200,160,48,.5);border-right:2px solid rgba(200,160,48,.5);}
 .book{width:min(467px,90vw);position:relative;z-index:1;display:block;text-decoration:none;cursor:pointer;}
-.book img{width:100%;height:auto;display:block;box-shadow:0 20px 60px rgba(0,0,0,.5);}
+.book img{width:100%;height:auto;display:block;box-shadow:none;}
 .overlay{position:absolute;top:0;left:0;right:0;bottom:0;background:none;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8% 28px 5%;text-align:center;}
 .prayer-label{font-family:'Cinzel',serif;font-size:.52rem;letter-spacing:.28em;color:rgba(200,160,48,.75);margin-bottom:8px;}
 .rule{width:70%;height:1px;margin:7px auto;background:linear-gradient(to right,transparent,#C8A030,transparent);}
@@ -335,7 +335,7 @@ html,body{min-height:100vh;background:#2a0810;display:flex;flex-direction:column
 body::before{content:'';position:fixed;inset:16px;border:1px solid rgba(200,160,48,.3);pointer-events:none;z-index:5;}
 body::after{content:'';position:fixed;inset:28px;border:1px solid rgba(200,160,48,.12);pointer-events:none;z-index:5;}
 .book{width:min(500px,90vw);position:relative;z-index:1;display:block;text-decoration:none;cursor:pointer;}
-.book img{width:100%;height:auto;display:block;box-shadow:0 20px 60px rgba(0,0,0,.7);}
+.book img{width:100%;height:auto;display:block;box-shadow:none;}
 .btn-wrap{text-align:center;position:relative;z-index:1;}
 .btn{display:inline-block;padding:13px 56px;color:#EDD882;text-decoration:none;font-family:'Cinzel',serif;font-size:.82rem;font-weight:600;letter-spacing:.28em;border:2px solid rgba(200,160,48,.8);background:#5a0818;transition:all .22s;}
 .btn:hover{background:#7a1028;border-color:#EDD882;}
@@ -492,7 +492,7 @@ body[data-conf="protestant"] .sec-t-p{display:block;}
   background-image:
     radial-gradient(ellipse at top left,rgba(184,150,46,.06) 0%,transparent 55%),
     radial-gradient(ellipse at bottom right,rgba(184,150,46,.05) 0%,transparent 55%);
-  box-shadow:0 8px 80px rgba(0,0,0,.55),0 2px 12px rgba(0,0,0,.35),inset 0 0 0 1px rgba(184,150,46,.18);
+  box-shadow:inset 0 0 0 1px rgba(184,150,46,.18);
   border-left:4px solid #B8962E;
   border-right:4px solid #B8962E;
   border-top:2px solid rgba(184,150,46,.4);
@@ -801,7 +801,7 @@ body[data-conf="protestant"] .blatin-p{display:block;}
   background-image:
     radial-gradient(ellipse at top left,rgba(184,150,46,.06) 0%,transparent 55%),
     radial-gradient(ellipse at bottom right,rgba(184,150,46,.05) 0%,transparent 55%);
-  box-shadow:0 8px 80px rgba(0,0,0,.55),0 2px 12px rgba(0,0,0,.35),inset 0 0 0 1px rgba(184,150,46,.18);
+  box-shadow:inset 0 0 0 1px rgba(184,150,46,.18);
   border-left:4px solid #B8962E;
   border-right:4px solid #B8962E;
   border-top:2px solid rgba(184,150,46,.4);
@@ -1002,7 +1002,7 @@ ${chapBlocks}
 </script>
 </body>
 </html>`;
-}
+  <a href="../cover.html">&#8592; Zur Vorderseite</a>
 
 // -------------------------------------------------------
 //  HAUPTPROGRAMM

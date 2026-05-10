@@ -81,6 +81,23 @@ if (!ACTIVE.length) {
   process.exit(1);
 }
 
+// ─── Bookmark palette per book ────────────────────────────────────────────────
+function getBookmarkPalette(bookKey) {
+  const palettes = {
+    meliha:   { icon: '#d4a574', border: '#9b7d5c', hover: '#e8c8a0', bg: 'rgba(16,10,6,.88)', bgHover: 'rgba(20,12,8,.92)' },
+    karim:    { icon: '#d4a574', border: '#9b7d5c', hover: '#e8c8a0', bg: 'rgba(16,10,6,.88)', bgHover: 'rgba(20,12,8,.92)' },
+    alquran:  { icon: '#d4a574', border: '#9b7d5c', hover: '#e8c8a0', bg: 'rgba(16,10,6,.88)', bgHover: 'rgba(20,12,8,.92)' },
+    diebibel: { icon: '#f1d7c8', border: '#9c4a44', hover: '#ffe7dc', bg: 'rgba(86,24,31,.95)', bgHover: 'rgba(121,33,43,.97)' },
+    micheles: { icon: '#4b341f', border: '#cfb790', hover: '#2f2014', bg: 'rgba(244,229,204,.96)', bgHover: 'rgba(232,214,184,.98)' },
+  };
+  return palettes[bookKey] || palettes.alquran;
+}
+
+function getBookmarkIconCss(bookKey) {
+  const p = getBookmarkPalette(bookKey);
+  return `<style>#bm-icon-btn{position:absolute;top:14px;right:14px;width:52px;height:52px;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;color:${p.icon};background:linear-gradient(155deg,${p.bg},${p.bgHover});border:2px solid ${p.border};border-radius:16px;backdrop-filter:blur(8px);z-index:40;box-shadow:0 12px 24px rgba(0,0,0,.30),inset 0 1px 0 rgba(255,255,255,.16);transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease,color .22s ease;}#bm-icon-btn::before{content:'';position:absolute;inset:5px;border:1px solid rgba(255,255,255,.22);border-radius:11px;pointer-events:none;}#bm-icon-btn::after{content:'Weiterlesen';position:absolute;top:50%;right:calc(100% + 10px);transform:translateY(-50%) translateX(6px);opacity:0;pointer-events:none;white-space:nowrap;font:600 .62rem/1.1 'Noto Serif',serif;letter-spacing:.05em;color:${p.icon};background:${p.bg};border:1px solid ${p.border};padding:6px 8px;border-radius:8px;box-shadow:0 8px 18px rgba(0,0,0,.32);transition:opacity .2s ease,transform .2s ease;}#bm-icon-btn:hover,#bm-icon-btn:focus-visible{transform:translateY(-1px) scale(1.04);border-color:${p.hover};color:${p.hover};box-shadow:0 16px 30px rgba(0,0,0,.34),0 0 0 4px rgba(255,255,255,.10),inset 0 1px 0 rgba(255,255,255,.16);}#bm-icon-btn:hover::after,#bm-icon-btn:focus-visible::after{opacity:1;transform:translateY(-50%) translateX(0);}#bm-icon-btn svg{width:24px;height:24px;display:block;fill:currentColor;filter:drop-shadow(0 0 8px ${p.icon}44);}#bm-icon-btn:focus-visible{outline:none;}@media (max-width:640px){#bm-icon-btn{top:10px;right:10px;width:46px;height:46px;border-radius:14px;}#bm-icon-btn svg{width:21px;height:21px;}#bm-icon-btn::after{display:none;}}</style>`;
+}
+
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 function copyDir(src, dst) {
   fs.mkdirSync(dst, { recursive: true });
@@ -108,11 +125,90 @@ function fixImagePaths(content, distDepth, images) {
   return content;
 }
 
+// ─── Bookmark-JS-Snippets ──────────────────────────────────────────────────────
+function getBookmarkSuraJs(bookKey) {
+  const p = getBookmarkPalette(bookKey);
+  return `
+<script>
+(function(){
+  var BM_KEY = 'KX_bookmark';
+  var toast, toastTimer;
+  function showToast(txt) {
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:${p.bg};color:${p.icon};font-family:sans-serif;font-size:.78rem;letter-spacing:.08em;padding:9px 20px;border-radius:10px;border:1px solid ${p.border};pointer-events:none;z-index:999;transition:opacity .3s,transform .3s;box-shadow:0 12px 24px rgba(0,0,0,.24)';
+      document.body.appendChild(toast);
+    }
+    toast.textContent = txt;
+    toast.style.opacity = '1';
+    toast.style.transform = 'translateX(-50%) translateY(0)';
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ toast.style.opacity = '0'; toast.style.transform = 'translateX(-50%) translateY(6px)'; }, 1800);
+  }
+  document.addEventListener('click', function(e) {
+    var el = e.target;
+    while (el && el !== document.body) {
+      if (el.matches && el.matches('.verse, .vb')) break;
+      el = el.parentElement;
+    }
+    if (!el || el === document.body) return;
+    if (e.target.tagName === 'A') return;
+    var id = el.id;
+    if (!id) return;
+    var data = { url: location.pathname + '#' + id, title: document.title, id: id, ts: Date.now() };
+    try { localStorage.setItem(BM_KEY, JSON.stringify(data)); } catch(_){}
+    showToast('✦ Lesezeichen gesetzt');
+  });
+})();
+</script>
+`;
+}
+
+const BOOKMARK_COVER_JS = `
+<script>
+(function(){
+  var BM_KEY = 'KX_bookmark';
+  try {
+    var raw = localStorage.getItem(BM_KEY);
+    if (!raw) return;
+    var bm = JSON.parse(raw);
+    if (!bm.url) return;
+    var icon = document.createElement('a');
+    icon.href = bm.url;
+    icon.id = 'bm-icon-btn';
+    var title = (bm.title || '').replace(/\\s*·.*$/, '').trim();
+    icon.setAttribute('aria-label', 'Zum Lesezeichen springen');
+    icon.title = title ? ('Weiterlesen: ' + title) : 'Weiterlesen';
+    icon.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12a1 1 0 0 1 1 1v17a.5.5 0 0 1-.8.4L12 17l-6.2 4.4A.5.5 0 0 1 5 21V4a1 1 0 0 1 1-1z"></path></svg>';
+    var coverHost = document.querySelector('a.cv, a.book, .book');
+    if (coverHost) {
+      try {
+        if (getComputedStyle(coverHost).position === 'static') {
+          coverHost.style.position = 'relative';
+        }
+      } catch(_){ }
+      coverHost.appendChild(icon);
+    } else {
+      document.body.appendChild(icon);
+    }
+    icon.addEventListener('click', function(e){ setTimeout(function(){ window.location.href = bm.url; }, 10); });
+  } catch(_){}
+})();
+</script>
+`;
+
 function processHtml(content, distDepth, book) {
   content = fixImagePaths(content, distDepth, book.images);
   if (!content.includes('width=device-width')) {
     content = content.replace('<head>', '<head>\n<meta name="viewport" content="width=device-width,initial-scale=1">');
   }
+  
+  // Inject Scheherazade New and force it onto verse, intro, and index Arabic text.
+  if (!content.includes('force-scheherazade')) {
+    const arabicFontCss = `<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&display=swap" rel="stylesheet"><style id="force-scheherazade">.ar,.verse .ar,.vb .ar,div.ar,span.ar,p.ar,.ra,.bismi-txt,.sh-rub,.sh-name,.sh-meta,.ttl-ar,.orn{font-family:'Scheherazade New','Arabic Typesetting','Traditional Arabic',serif !important;text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}div.ar,span.ar,p.ar{font-weight:700 !important;font-size:1.72em !important;letter-spacing:.03em;line-height:2.28 !important;word-spacing:.1em;}.bismi-txt{font-size:2.15rem !important;line-height:1.9 !important;}.ra{font-size:2.45rem !important;line-height:1.45 !important;}.sh-rub{font-size:2rem !important;}.sh-name{font-size:5rem !important;line-height:1.18 !important;}.sh-meta{font-size:1rem !important;}.ttl-ar{font-size:1.5rem !important;}.tr{font-size:.93rem !important;line-height:1.82 !important;}</style>`;
+    content = content.replace('</head>', arabicFontCss + '\n</head>');
+  }
+  
   if (!content.includes('rel="icon"')) {
     const iconTag  = book.favicon || FAVICON_TAG;
     const prefix   = '../'.repeat(distDepth);
@@ -125,8 +221,22 @@ function processHtml(content, distDepth, book) {
       '<meta name="theme-color" content="' + book.themeColor + '">\n</head>'
     );
   }
+  // Inject bookmark JS into sura/chapter pages
+  if ((content.includes('class="verse"') || content.includes('class="vb"')) && !content.includes('KX_bookmark')) {
+    content = content.replace('</body>', getBookmarkSuraJs(book.key) + '</body>');
+  }
+  // Inject bookmark display into cover pages
+  if (content.includes('class="cv"') || (content.includes('<a class="book"') && !content.includes('back-cover'))) {
+    if (!content.includes('KX_bookmark')) {
+      // inject CSS for a cleaner, ornamental bookmark icon on cover (dynamically colored per book)
+      const bmCss = getBookmarkIconCss(book.key) + '\n';
+      content = content.replace('</head>', bmCss + '</head>');
+      content = content.replace('</body>', BOOKMARK_COVER_JS + '</body>');
+    }
+  }
   return content;
 }
+
 
 // ─── Build ────────────────────────────────────────────────────────────────────
 for (const book of ACTIVE) {
@@ -215,7 +325,7 @@ for (const book of ACTIVE) {
   // 6. middleware.js (nur für passwortgeschützte Bücher)
   if (book.password) {
     const pw = book.password;
-    const middleware = `export const config = { matcher: ['/((?!_vercel).*)'] };
+    const middleware = `export const config = { matcher: ['/((?!_vercel|.*\\.(?:png|jpg|jpeg|gif|webp|svg|ico|woff2?|ttf|otf|css|js|json|txt)$).*)'] };
 export default function middleware(req) {
   const auth = req.headers.get('authorization') || '';
   const [scheme, encoded] = auth.split(' ');

@@ -1,5 +1,5 @@
 ﻿(function () {
-  var BOOK_ID = 'koran_1';
+  var BOOK_ID = 'koran_2';
   var POS_KEY = 'bx_pos_' + BOOK_ID;
   var TOC_KEY = 'bx_toc_' + BOOK_ID;
   var HL_PFX  = 'bx_hl_';

@@ -87,7 +87,7 @@ const DISC_LONG = {
 };
 
 const INTRO_BODY = {
-  de:['Dieses Buch gehört dir. Weil du für mich da warst, ohne es zu müssen.','Es gibt Menschen, die einem das Gefühl geben, nicht allein zu sein. Du bist so jemand. Das vergesse ich nie.','Der Quran ist mehr als ein Buch. Er ist Ruhe, wenn alles laut wird. Kraft, wenn man nicht mehr kann. Licht, wenn man den Weg nicht sieht. Ich wünsche dir, dass du darin genau das findest.','In tiefer Dankbarkeit, für dich.'],
+  de:['Du bist schon eine Weile auf dem Weg. Das Studium hat dich einiges gekostet. Trotzdem machst du weiter.','Das ist nicht selbstverständlich. Nicht jeder bleibt dran, wenn es schwer wird. Du schon.','Der Quran hat Generationen begleitet. In Prüfungsphasen, in Zweifeln, auf Wegen, die kein Lehrbuch kennt. Er ist da, wenn du ihn brauchst. Nicht als Pflicht. Als Anker.','Bismillah. In aufrichtiger Zuversicht, für dich.'],
   en:['The Quran was revealed to the Prophet Muhammad ﷺ over twenty-three years. It is the foundation of Islamic belief and Muslim life.','What follows is a translation of its meanings into English — not a substitute for the Arabic original. Every translation approximates the sense without fully capturing it. The Arabic is the Quran; everything else is approximation.','Read what is here as a signpost. Those who can hear and read the Arabic original walk the direct path.','The design of this edition is a deliberate choice: Arabic text large and foremost, translation small and receding — to remain as close as possible to the original in word and spirit.'],
   tr:["Kur'an, Peygamber Muhammed ﷺ'e yirmi üç yıl boyunca vahyedildi. İslam inancının ve Müslüman hayatının temelidir.","Buradakiler, Kur'an'ın Türkçe anlamsal bir çevirisidir — Arapça orijinalin yerini tutmaz. Her çeviri, anlama yaklaşır; onu tam olarak aktaramaz. Kur'an Arapçadır; geri kalan her şey bir yaklaşımdır.",'Burada okuduklarını bir işaret olarak gör. Arapça orijinali duyup okuyabilen, doğrudan yolda yürür.',"Bu baskının tasarımı bilinçli bir karardır: Arapça metin büyük ve ön planda, çeviri küçük ve geri planda — özgüne söz ve ruhta mümkün olduğunca yakın kalmak için."],
   id:["Al-Qur'an diturunkan kepada Nabi Muhammad ﷺ selama dua puluh tiga tahun. Ia adalah landasan keyakinan Islam dan kehidupan Muslim.","Yang disajikan di sini adalah terjemahan makna dalam Bahasa Indonesia — bukan pengganti teks Arab aslinya. Setiap terjemahan mendekati maknanya tanpa bisa sepenuhnya menangkapnya. Al-Qur'an adalah bahasa Arabnya; yang lain hanyalah pendekatan.",'Bacalah ini sebagai petunjuk arah. Mereka yang dapat mendengar dan membaca teks Arab asli berjalan di jalan yang langsung.','Desain edisi ini adalah pilihan yang disengaja: teks Arab besar dan di depan, terjemahan kecil dan memudar — sedekat mungkin dengan aslinya dalam kata dan jiwa.'],
@@ -122,7 +122,7 @@ const FONT_LINKS = `  <link rel="preconnect" href="https://fonts.googleapis.com"
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Amiri+Quran&family=Scheherazade+New:wght@400;700&family=Noto+Serif:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">`;
 
-const AR_FONT = `'Amiri Quran','Scheherazade New','Arabic Typesetting','Traditional Arabic',serif`;
+const AR_FONT = `'Scheherazade New','Arabic Typesetting','Traditional Arabic',serif`;
 const AR_DECO = `'Arabic Typesetting','Scheherazade New',serif`;
 
 // Copyright-Metatag für alle Seiten (nur in HTML-Quelle, nicht sichtbar)
@@ -278,7 +278,7 @@ html,body{margin:0;padding:0;height:100%;}
 body{background:#000;}
 a.bc{display:block;width:100%;height:100vh;}
 a.bc img{width:100%;height:100%;object-fit:contain;display:block;}
-.nav-b{position:fixed;top:14px;left:18px;font:.6rem sans-serif;color:rgba(192,155,60,.55);text-decoration:none;letter-spacing:.06em;z-index:10;}
+.nav-b{position:fixed;top:14px;left:18px;font:.5rem sans-serif;color:rgba(192,155,60,.55);text-decoration:none;letter-spacing:.06em;z-index:10;}
 .nav-b:hover{color:#c9a84c;}
 </style></head><body>
 <a class="bc" href="intro.html">
@@ -302,7 +302,7 @@ ${FONT_LINKS}
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:#F5F0E3;color:#1A0A02;font-family:'Noto Serif',serif;min-height:100vh;display:flex;flex-direction:column;}
-nav{background:rgba(254,252,245,.97);height:46px;display:flex;align-items:center;padding:0 24px;gap:12px;border-bottom:1px solid rgba(192,155,60,.2);position:sticky;top:0;z-index:200;flex-shrink:0;}
+nav{background:rgba(192,155,60,.08);height:46px;display:flex;align-items:center;padding:0 24px;gap:12px;border-bottom:1px solid rgba(192,155,60,.2);position:sticky;top:0;z-index:200;flex-shrink:0;}
 nav a{color:rgba(192,155,60,.6);text-decoration:none;font:.66rem sans-serif;letter-spacing:.09em;transition:color .2s}
 nav a:hover{color:#c9a84c}
 nav .orn{font-family:${AR_DECO};font-size:1rem;color:rgba(192,155,60,.35)}
@@ -610,3 +610,4 @@ async function main(){
 }
 
 main().catch(e=>{console.error('\n  ✗',e.message);process.exit(1);});
+

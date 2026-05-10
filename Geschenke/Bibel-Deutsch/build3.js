@@ -194,7 +194,7 @@ html,body{min-height:100vh;background:#e8e0d0;display:flex;flex-direction:column
 body::before{content:'';position:fixed;inset:16px;border:1px solid rgba(90,32,0,.3);pointer-events:none;z-index:5;}
 body::after{content:'';position:fixed;inset:28px;border:1px solid rgba(90,32,0,.13);pointer-events:none;z-index:5;}
 .book{width:min(500px,90vw);position:relative;z-index:1;display:block;text-decoration:none;cursor:pointer;}
-.book img{width:100%;height:auto;display:block;box-shadow:0 20px 60px rgba(0,0,0,.25);}
+.book img{width:100%;height:auto;display:block;box-shadow:none;}
 .btn-wrap{text-align:center;position:relative;z-index:1;display:flex;gap:16px;justify-content:center;align-items:center;flex-wrap:wrap;}
 .btn{display:inline-block;padding:13px 56px;color:#f0e8d0;text-decoration:none;font-family:'Cinzel',serif;font-size:.82rem;font-weight:600;letter-spacing:.28em;border:2px solid #5a2000;background:#5a2000;transition:all .22s;}
 .btn:hover{background:#7a3010;border-color:#7a3010;}
@@ -251,7 +251,7 @@ body{background:#e8e0d0;font-family:'EB Garamond',serif;color:#2a0008;}
   margin:48px auto 60px;
   padding:60px 72px 80px;
   background:#f5f0e8;
-  box-shadow:0 4px 40px rgba(0,0,0,.12),inset 0 0 0 1px rgba(140,100,20,.15);
+  box-shadow:inset 0 0 0 1px rgba(140,100,20,.15);
   border-left:3px solid #B8962E;
   border-right:3px solid #B8962E;
   border-top:1px solid rgba(140,100,20,.3);
@@ -353,7 +353,7 @@ body::after{content:'';position:fixed;inset:28px;border:1px solid rgba(90,32,0,.
 .c-bl{bottom:14px;left:14px;border-bottom:2px solid rgba(90,32,0,.4);border-left:2px solid rgba(90,32,0,.4);}
 .c-br{bottom:14px;right:14px;border-bottom:2px solid rgba(90,32,0,.4);border-right:2px solid rgba(90,32,0,.4);}
 .book{width:min(500px,90vw);position:relative;z-index:1;display:block;text-decoration:none;cursor:pointer;}
-.book img{width:100%;height:auto;display:block;box-shadow:0 20px 60px rgba(0,0,0,.25);}
+.book img{width:100%;height:auto;display:block;box-shadow:none;}
 .overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem 2.2rem;text-align:center;}
 .loss{font-family:'EB Garamond',Georgia,serif;font-style:italic;font-size:.98rem;color:#1a0a04;line-height:1.75;margin-bottom:1.1rem;}
 .rule{width:50%;height:1px;margin:0 auto .9rem;background:linear-gradient(to right,transparent,rgba(90,40,0,.4),transparent);}
@@ -629,7 +629,7 @@ body[data-conf="protestant"] .sec-t-p{display:block;}
   background-image:
     radial-gradient(ellipse at top left,rgba(184,150,46,.06) 0%,transparent 55%),
     radial-gradient(ellipse at bottom right,rgba(184,150,46,.05) 0%,transparent 55%);
-  box-shadow:0 8px 80px rgba(0,0,0,.55),0 2px 12px rgba(0,0,0,.35),inset 0 0 0 1px rgba(184,150,46,.18);
+  box-shadow:inset 0 0 0 1px rgba(184,150,46,.18);
   border-left:4px solid #B8962E;
   border-right:4px solid #B8962E;
   border-top:2px solid rgba(184,150,46,.4);
@@ -727,7 +727,7 @@ body[data-conf="protestant"] .toc-item[data-testament="DK"] { display:none; }
 <body>
 
 <nav class="topbar">
-  <a href="../index.html">&#8592; Zur Übersicht</a>
+  <a href="../cover.html">&#8592; Zur Vorderseite</a>
   <a href="../back-cover.html" style="margin-left:auto">Rückseite &#8594;</a>
 </nav>
 
@@ -946,7 +946,7 @@ body[data-conf="protestant"] .blatin-p{display:block;}
   background-image:
     radial-gradient(ellipse at top left,rgba(184,150,46,.06) 0%,transparent 55%),
     radial-gradient(ellipse at bottom right,rgba(184,150,46,.05) 0%,transparent 55%);
-  box-shadow:0 8px 80px rgba(0,0,0,.55),0 2px 12px rgba(0,0,0,.35),inset 0 0 0 1px rgba(184,150,46,.18);
+  box-shadow:inset 0 0 0 1px rgba(184,150,46,.18);
   border-left:4px solid #B8962E;
   border-right:4px solid #B8962E;
   border-top:2px solid rgba(184,150,46,.4);
