@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>III Ioannis · Română · Biblia Catholica</title>
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
+
+:root {
+  --gold:        #C8A96E;
+  --gold-light:  #EDD58A;
+  --gold-dark:   #8B6914;
+  --navy:        #1A1F3A;
+  --navy-mid:    #252B4A;
+  --navy-light:  #2E3560;
+  --parchment:   #F5E9CC;
+  --parchment-d: #EDD9A3;
+  --cream:       #FDF6E3;
+  --latin-color: #6B1E0E;
+  --trans-color: #0F1D2E;
+  --border:      rgba(200,169,110,.35);
+  --font-title:  'Cinzel Decorative', 'Cinzel', Georgia, serif;
+  --font-sub:    'Cinzel', Georgia, serif;
+  --font-body:   'EB Garamond', Georgia, serif;
+}
+
+*,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+html { font-size:16px; scroll-behavior:smooth; }
+body { background:var(--cream); color:var(--trans-color); font-family:var(--font-body); }
+
+/* ── NAV ─────────────────────────────────────────────── */
+.nav-bar {
+  background:var(--navy); padding:10px 28px;
+  display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  border-bottom:2px solid var(--gold);
+  position:sticky; top:0; z-index:100;
+  box-shadow:0 3px 12px rgba(0,0,0,.45);
+}
+.nav-bar a {
+  color:var(--gold); text-decoration:none;
+  font-family:var(--font-sub); font-size:.75rem; letter-spacing:.05em;
+  transition:color .15s;
+}
+.nav-bar a:hover { color:var(--gold-light); }
+.nav-bar .home { font-weight:700; font-size:.82rem; }
+.nav-bar .spacer { flex:1; }
+.nav-bar .pos { color:rgba(200,169,110,.45); font-size:.7rem; font-family:var(--font-sub); }
+
+/* ── BUCHKOPF ────────────────────────────────────────── */
+.book-header {
+  background:linear-gradient(160deg,var(--navy) 0%,var(--navy-mid) 55%,var(--navy-light) 100%);
+  padding:44px 36px 34px; text-align:center;
+  border-bottom:4px solid var(--gold);
+  position:relative; overflow:hidden;
+}
+.book-header::before {
+  content:'';
+  position:absolute; inset:0;
+  background-image:
+    repeating-linear-gradient( 45deg,transparent,transparent 30px,rgba(200,169,110,.038) 30px,rgba(200,169,110,.038) 31px),
+    repeating-linear-gradient(-45deg,transparent,transparent 30px,rgba(200,169,110,.038) 30px,rgba(200,169,110,.038) 31px);
+  pointer-events:none;
+}
+.testament-badge {
+  display:inline-block;
+  border:1px solid rgba(200,169,110,.4); color:rgba(200,169,110,.65);
+  font-family:var(--font-sub); font-size:.62rem; letter-spacing:.25em;
+  padding:4px 14px; border-radius:2px; margin-bottom:14px; position:relative;
+}
+.book-name-latin {
+  font-family:var(--font-title); font-size:3rem; color:var(--gold-light);
+  text-shadow:0 3px 18px rgba(0,0,0,.55); letter-spacing:.08em; position:relative;
+}
+.book-name-trans {
+  font-family:var(--font-sub); font-size:1.1rem; color:var(--gold);
+  margin-top:8px; letter-spacing:.12em; position:relative;
+}
+.book-meta {
+  font-size:.74rem; color:rgba(200,169,110,.5); margin-top:7px;
+  font-family:var(--font-sub); letter-spacing:.07em; position:relative;
+}
+
+/* ── ORNAMENT-TRENNLINIE ─────────────────────────────── */
+.ornament-bar {
+  text-align:center; padding:16px 0 4px;
+  color:var(--gold); font-size:1.1rem; letter-spacing:.7em;
+}
+
+/* ── HAUPT-CONTAINER ─────────────────────────────────── */
+.content { max-width:960px; margin:0 auto; padding:0 24px 80px; }
+
+/* ── KAPITEL-MARKER ──────────────────────────────────── */
+.chapter-marker {
+  display:flex; align-items:center; gap:16px;
+  padding:28px 6px 12px; margin-bottom:4px;
+  border-bottom:2px solid var(--border);
+}
+.ch-roman {
+  font-family:var(--font-title); font-size:2.2rem; color:var(--gold);
+  min-width:56px; text-align:center; flex-shrink:0;
+  text-shadow:0 1px 8px rgba(200,169,110,.3);
+}
+.ch-label {
+  font-family:var(--font-sub); font-size:.72rem; color:rgba(200,169,110,.6);
+  letter-spacing:.22em; text-transform:uppercase;
+}
+
+/* ── VERS-BLOCK ──────────────────────────────────────── */
+.verse-block {
+  display:flex; gap:0; border-bottom:1px solid rgba(200,169,110,.15);
+}
+.verse-block:nth-child(odd)  { background:var(--cream); }
+.verse-block:nth-child(even) { background:var(--parchment); }
+
+.verse-num-col {
+  flex-shrink:0; width:42px; padding:16px 6px 16px 0; text-align:right;
+}
+.verse-num {
+  display:inline-block; width:28px; height:28px; border-radius:50%;
+  background:var(--gold-dark); color:var(--cream);
+  font-family:var(--font-sub); font-size:.64rem; font-weight:700;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 1px 5px rgba(0,0,0,.25);
+}
+
+.verse-texts { flex:1; padding:16px 16px 18px 8px; }
+
+/* ── LATEINISCHER TEXT (oben / primär) ───────────────── */
+.latin {
+  font-family:var(--font-body); font-size:1.12rem; line-height:1.9;
+  color:var(--latin-color); font-weight:500;
+  border-left:3px solid var(--gold); padding-left:12px;
+  margin-bottom:8px;
+}
+
+/* ── ÜBERSETZUNGS-TEXT (unten / sekundär) ────────────── */
+.trans-label {
+  font-family:var(--font-sub); font-size:.6rem; letter-spacing:.17em;
+  text-transform:uppercase; color:var(--gold-dark); margin-bottom:5px; opacity:.78;
+}
+.trans {
+  font-family:var(--font-body); font-size:1.04rem; line-height:1.85;
+  color:var(--trans-color); font-style:italic;
+  padding-left:15px;
+}
+
+/* Erste Vers jedes Kapitels: Drop-Cap */
+.verse-block:first-of-type .latin::first-letter {
+  font-size:4.2em; float:left; line-height:.72;
+  padding-right:.08em; margin-top:.06em;
+  font-family:var(--font-title); color:var(--gold);
+}
+
+/* ── NAVIGATION ZWISCHEN BÜCHERN ─────────────────────── */
+.book-nav {
+  display:flex; justify-content:space-between; align-items:center;
+  background:var(--navy); border-top:3px solid var(--gold);
+  padding:12px 26px; gap:12px;
+}
+.book-nav a {
+  color:var(--gold); text-decoration:none;
+  font-family:var(--font-sub); font-size:.78rem; letter-spacing:.07em;
+  padding:6px 14px; border:1px solid rgba(200,169,110,.3); border-radius:3px;
+  transition:background .18s;
+}
+.book-nav a:hover { background:rgba(200,169,110,.15); }
+.book-nav .center {
+  font-family:var(--font-sub); font-size:.7rem; color:rgba(200,169,110,.55);
+  letter-spacing:.1em; text-align:center;
+}
+
+/* ── FUßZEILE ────────────────────────────────────────── */
+.page-footer {
+  background:var(--navy); border-top:2px solid rgba(200,169,110,.3);
+  padding:18px 28px; text-align:center;
+  color:rgba(200,169,110,.45); font-family:var(--font-sub);
+  font-size:.68rem; letter-spacing:.1em;
+}
+
+/* ── DRUCK ───────────────────────────────────────────── */
+@media print {
+  .nav-bar, .book-nav { display:none; }
+  .verse-block { break-inside:avoid; }
+  .book-header { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+}
+
+/* ── MOBIL ───────────────────────────────────────────── */
+@media (max-width:640px) {
+  .book-name-latin { font-size:2.1rem; }
+  .ch-roman { font-size:1.6rem; }
+  .latin { font-size:.98rem; }
+  .trans { font-size:.93rem; }
+  .content { padding:0 12px 60px; }
+}
+</style>
+</head>
+<body>
+
+  <nav class="nav-bar">
+    <a class="home" href="../../../index.html">✞ BIBLIA CATHOLICA</a>
+    <a href="../index.html">🇷🇴 Română</a>
+    <span class="spacer"></span>
+    <span class="pos">064 / 066</span>
+  </nav>
+
+  <header class="book-header">
+    <div class="testament-badge">NOVUM TESTAMENTUM</div>
+    <div class="book-name-latin">III IOANNIS</div>
+    <div class="book-name-trans">3 John</div>
+    <div class="book-meta">Vulgata Clementina · Cornilescu (1921) · 1 Capita · 15 Versus</div>
+  </header>
+
+  <div class="ornament-bar">❧ ✦ ❧ ✦ ❧</div>
+
+  <main class="content">
+
+  <section class="chapter" id="ch1">
+    <div class="chapter-marker">
+      <span class="ch-roman">I</span>
+      <span class="ch-label">Caput 1</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v1-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Senior Gajo carissimo, quem ego diligo in veritate.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Carissime, de omnibus orationem facio prospere te ingredi, et valere sicut prospere agit anima tua.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Gavisus sum valde venientibus fratribus, et testimonium perhibentibus veritati tuæ, sicut tu in veritate ambulas.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Majorem horum non habeo gratiam, quam ut audiam filios meos in veritate ambulare.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Carissime, fideliter facis quidquid operaris in fratres, et hoc in peregrinos,</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui testimonium reddiderunt caritati tuæ in conspectu ecclesiæ : quos, benefaciens, deduces digne Deo.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Pro nomine enim ejus profecti sunt, nihil accipientes a gentibus.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nos ergo debemus suscipere hujusmodi, ut cooperatores simus veritatis.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Scripsissem forsitan ecclesiæ : sed is qui amat primatum gerere in eis, Diotrephes, non recipit nos :</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">propter hoc si venero, commonebo ejus opera, quæ facit, verbis malignis garriens in nos : et quasi non ei ista sufficiant, neque ipse suscipit fratres : et eos qui suscipiunt, prohibet, et de ecclesia ejicit.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Carissime, noli imitari malum, sed quod bonum est. Qui benefacit, ex Deo est : qui malefacit, non vidit Deum.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Demetrio testimonium redditur ab omnibus, et ab ipsa veritate, sed et nos testimonium perhibemus : et nosti quoniam testimonium nostrum verum est.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Multa habui tibi scribere : sed nolui per atramentum et calamum scribere tibi.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Spero autem protinus te videre, et os ad os loquemur. Pax tibi. Salutant te amici. Saluta amicos nominatim.</div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin"></div>
+        <div class="trans-label">✦ Română</div>
+        <div class="trans">—</div>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <nav class="book-nav">
+    <a href="063-2jo.html">← II Ioannis</a>
+    <span class="center">III Ioannis · Română</span>
+    <a href="065-jud.html">Iudae →</a>
+  </nav>
+
+  <footer class="page-footer">
+    BIBLIA CATHOLICA INTERLINEARIS &nbsp;·&nbsp; Vulgata Clementina &amp; Cornilescu (1921)
+    &nbsp;·&nbsp; Gemeinfreie Texte / Public Domain
+  </footer>
+
+</body>
+</html>

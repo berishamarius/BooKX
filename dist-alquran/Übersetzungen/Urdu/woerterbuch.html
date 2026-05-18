@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="ur" dir="ltr"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Wörterbuch · Urdu · القرآن الكريم</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&family=Noto+Serif:ital,wght@0,300;0,400;1,300&family=Noto+Sans+Arabic:wght@400;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><text y='52' font-size='56' font-family='serif' fill='%238a5800'>&#x06DE;</text></svg>">
+<meta name="theme-color" content="#0f2f1a">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{min-height:100svh;background:linear-gradient(to right,#1d5a34 0,#1d5a34 3px,#2f7047 3px,#2f7047 180px,transparent 180px,transparent calc(100% - 180px),#2f7047 calc(100% - 180px),#2f7047 calc(100% - 3px),#1d5a34 calc(100% - 3px)) 0 0/100% 100% fixed,#0f2f1a;color:#f2eddc;font-family:'Noto Serif',Georgia,serif;}
+.sh{background:#0f2f1a;border-bottom:2px solid rgba(201,168,76,.24);text-align:center;position:relative;z-index:10;flex-shrink:0;padding:0;}
+.sh::before,.sh::after{content:'';display:block;height:10px;width:100%;background:#0f3a26 url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNCIgaGVpZ2h0PSIxNCI+PHBvbHlnb24gcG9pbnRzPSI3LjAwLDAuODQgNy45Niw0LjY3IDExLjM2LDIuNjQgOS4zMyw2LjA0IDEzLjE2LDcuMDAgOS4zMyw3Ljk2IDExLjM2LDExLjM2IDcuOTYsOS4zMyA3LjAwLDEzLjE2IDYuMDQsOS4zMyAyLjY0LDExLjM2IDQuNjcsNy45NiAwLjg0LDcuMDAgNC42Nyw2LjA0IDIuNjQsMi42NCA2LjA0LDQuNjciIGZpbGw9InJnYmEoMjAyLDE2OCw3NiwwLjQ4KSIvPjwvc3ZnPg==") 0 0/14px 14px;}
+.sh::before{border-bottom:1px solid rgba(201,168,76,.2);}
+.sh::after{border-top:1px solid rgba(201,168,76,.2);}
+.sh-in{padding:20px 70px 16px;position:relative;z-index:2;}
+.sh-title-ar{font-family:'Scheherazade New',serif;font-size:2.2rem;color:#d4a574;direction:rtl;display:block;line-height:1.3;}
+.sh-subtitle{font-size:.62rem;letter-spacing:.22em;color:rgba(212,165,116,.5);text-transform:uppercase;display:block;margin-top:6px;}
+.sh-native{font-size:.9rem;color:rgba(212,165,116,.75);display:block;margin-top:4px;}
+.rule{width:80px;height:1px;background:linear-gradient(to right,transparent,rgba(212,165,116,.4),transparent);margin:14px auto 0;}
+/* search */
+.search-wrap{position:sticky;top:0;z-index:20;background:#0c2918;border-bottom:1px solid rgba(201,168,76,.18);padding:10px 20px;}
+.search-inner{max-width:860px;margin:0 auto;position:relative;}
+.search-inp{width:100%;background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.28);border-radius:8px;padding:10px 16px 10px 40px;color:#f2eddc;font-family:'Noto Serif',Georgia,serif;font-size:.9rem;outline:none;transition:border-color .2s;}
+.search-inp:focus{border-color:rgba(201,168,76,.6);}
+.search-inp::placeholder{color:rgba(201,168,76,.35);}
+.search-ico{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:rgba(201,168,76,.4);pointer-events:none;}
+.search-ico svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;}
+/* layout */
+.main{max-width:960px;margin:0 auto;padding:24px 20px 80px;}
+.cat-head{display:flex;align-items:baseline;gap:14px;padding:32px 0 10px;border-bottom:1px solid rgba(201,168,76,.22);margin-bottom:4px;}
+.cat-ar{font-family:'Scheherazade New',serif;font-size:1.4rem;color:#d4a574;direction:rtl;}
+.cat-de{font-size:.62rem;letter-spacing:.16em;color:rgba(201,168,76,.5);text-transform:uppercase;}
+.entries-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;}
+.entry{display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:12px;padding:12px 14px;border-bottom:1px solid rgba(201,168,76,.1);transition:background .15s;}
+.entry:hover{background:rgba(201,168,76,.06);}
+.entry.hidden{display:none;}
+.entry-ar{display:flex;flex-direction:column;gap:3px;}
+.word-ar{font-family:'Scheherazade New',serif;font-size:1.9rem;color:#d4a574;direction:rtl;line-height:1.3;}
+.word-ph{font-size:.72rem;color:rgba(201,168,76,.55);letter-spacing:.04em;font-style:italic;}
+.entry-tr{font-size:.92rem;line-height:1.6;color:rgba(242,237,220,.88);direction:rtl;text-align:right;}
+/* navigation */
+.bot-nav{position:fixed;bottom:0;left:0;right:0;background:#0f2f1a;border-top:1px solid rgba(201,168,76,.18);display:flex;align-items:center;justify-content:center;gap:20px;padding:12px 24px;z-index:30;}
+.bn{padding:8px 22px;color:rgba(212,165,116,.72);text-decoration:none;font-family:'Scheherazade New',serif;font-size:.95rem;border:1px solid rgba(201,168,76,.22);border-radius:6px;transition:color .2s,background .2s,border-color .2s;}
+.bn:hover{color:#e5c791;background:rgba(201,168,76,.08);border-color:rgba(201,168,76,.5);}
+.count{font-size:.7rem;color:rgba(201,168,76,.4);letter-spacing:.1em;}
+@media(max-width:660px){.entry{grid-template-columns:1fr;gap:6px;}.word-ar{font-size:1.5rem;}}
+</style>
+</head><body>
+<div class="sh">
+  <div class="sh-in">
+    <span class="sh-title-ar">معجم القرآن</span>
+    <span class="sh-subtitle">WÖRTERBUCH · KORANISCHES ARABISCH</span>
+    <span class="sh-native">اردو</span>
+    <div class="rule"></div>
+  </div>
+</div>
+<div class="search-wrap">
+  <div class="search-inner">
+    <div class="search-ico"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+    <input class="search-inp" id="q" type="search" placeholder="Arabisch, Umschrift oder اردو …" autocomplete="off">
+  </div>
+</div>
+<main class="main" id="main">
+
+  <div class="cat-head">
+    <span class="cat-ar">أسماء الله الحسنى</span>
+    <span class="cat-de">Die schönsten Namen Gottes</span>
+  </div>
+  <div class="entry">
+    <div class="entry-ar">
+      <span class="word-ar">الله</span>
+      <span class="word-ph">Allāh</span>
+    </div>
+    <div class="entry-tr" lang="ur" dir="rtl">اللہ</div>
+  </div>
+  <div class="entry">
+    <div class="entry-ar">
+      <span class="word-ar">الرَّحْمَن</span>
+      <span class="word-ph">Ar-Raḥmān</span>
+    </div>
+    <div class="entry-tr" lang="ur" dir="rtl">رحمٰن</div>
+  </div>
+  <div class="entry">
+    <div class="entry-ar">
+      <span class="word-ar">الرَّحِيم</span>
+      <span class="word-ph">Ar-Raḥīm</span>
+    </div>
+    <div class="entry-tr" lang="ur" dir="rtl">رحیم</div>
+  </div>
+  <div class="entry">
+    <div class="entry-ar">
+      <span class="word-ar">رَبّ</span>
+      <span class="word-ph">Rabb</span>
+    </div>
+    <div class="entry-tr" lang="ur" dir="rtl">رب</div>
+  </div>
+  <div class="entry">
+    <div class="entry-ar">
+      <span class="word-ar">الْمَلِك</span>
+      <span class="word-ph">Al-Malik</span>
+    </div>
+    <div class="entry-tr" lang="ur" dir="rtl">بادشاہ</div>
+  </div>
+  <div class="entry">
+    <div class="entry-ar">
+      <span class="word-ar">الْعَزِيز</span>
+      <span class="word-ph">Al-ʿAzīz</span>
+    </div>
+    <div class="entry-tr" lang="ur" dir="rtl">عزیز</div>
+  </div>
+  <div class="entry">
+    <div class="entry-ar">
+      <span class="word-ar">الْحَكِيم</span>
+      <span class="word-ph">Al-Ḥakīm</span>
+    </div>
+    <div class="entry-tr" lang="ur" dir="rtl">حکیم</div>
+  </div>
+  <div class="entry">
+    <div class="entry-ar">
+      <span class="word-ar">الْغَفُور</span>
+      <span class="word-ph">Al-Ghafūr</span>
+    </div>
+    <div class="entry-tr" lang="ur" dir="rtl">غفور</div>
+  </div>
+  <div class="entry">
+    <div class="entry-ar">
+      <span class="word-ar">الْقَدِير</span>
+      <span class="word-ph">Al-Qadīr</span>
+    </div>
+    <div class="entry-tr" lang="ur" dir="rtl">قادر</div>
+  </div>
+  <div class="entry">
+    <div class="entry-ar">
+      <span class="word-ar">السَّمِيع</span>
+      <span class="word-ph">As-Samīʿ</span>
+    </div>
+    <div class="entry-tr" lang="ur" dir="rtl">سمیع</div>
+  </div>
+  <div class="entry">
+    <div class="entry-ar">
+      <span class="word-ar">الْبَصِير</span>
+      <span class="word-ph">Al-Baṣīr</span>
+    </div>
+    <div class="entry-tr" lang="ur" dir="rtl">بصیر</div>
+  </div>
+  <div class="entry">
+    <div class="entry-ar">
+      <span class="word-ar">الْعَلِيم</span>
+      <span class="word-ph">Al-ʿAlīm</span>
+    </div>
+    <div class="entry-tr" lang="ur" dir="rtl">علیم</div>
+  </div>
+  <div class="cat-head">
+    <span class="cat-ar">الإيمان والإسلام</span>
+    <span class="cat-de">Glaube & Islam</span>
+  </div>
+  <div class="entry">
+    <div class="entry-ar">
+      <span class="word-ar">إِسْلام</span>
+      <span class="word-ph">Islām</span>
+    </div>
+    <div class="entry-tr" lang="ur" dir="rtl">اسلام</div>
+  </div>
+  <div class="entry">
+    <div class="entry-ar">
+      <span class="word-ar">إِيمَان</span>
+      <span class="word-ph">Īmān</span>
+    </div>
+    <div class="entry-tr" lang="ur" dir="rtl">ایمان</div>
+  </div>
+  <div class="entry">
+    <div class="entry-ar">
+      <span class="word-ar">تَوْحِيد</span>
+      <span class="word-ph">Tawḥīd</span>
+    </div>
+    <div class="entry-tr" lang="ur" dir="rtl">توحید</div>
+  </div>
+  <div class="entry">
+    <div class="entry-ar">
+      <span class="word-ar">شِرْك</span>
+      <span class="word-ph">Shirk</span>
+    </div>
+    <div class="entry-tr" lang="ur" dir="rtl">شرک</div>
+  </div>
+  <div class="entry">
+    <div class="entry-ar">
+      <span class="word-ar">كُفْر</span>
+      <span class="word-ph">Kufr</span>
+    </div>
+    <div class="entry-tr" lang="ur" dir="rtl">کفر</div>
+  </div>
+  <div class="entry">
+    <div class="entry-ar">
+      <span class="word-ar">تَقْوَى</span>
+      <span class="word-ph">Taqwā</span>
+    </div>
+    <div class="entry-tr" lang="ur" dir="rtl">تقوٰی</div>
+  </div>
+  <div class="entry">
+    <div class="entry-ar">
+      <span class="word-ar">نِفَاق</span>
+      <span class="word-ph">Nifāq</span>
+    </div>
+    <div class="entry-tr" lang="ur" dir="rtl">نفاق</div>
+  </div>
+  <div class="cat-head">
+    <span class="cat-ar">العبادات</span>
+    <span class="cat-de">Religiöse Praxis</span>
+  </div>
+  <div class="entry">
+    <div class="entry-ar">
+      <span class="word-ar">صَلَاة</span>
+      <span class="word-ph">Ṣalāh</span>
+    </div>
+    <div class="entry-tr" lang="ur" dir="rtl">نماز</div>
+  </div>
+  <div class="entry">
+    <div class="entry-ar">
+      <span class="word-ar">زَكَاة</span>
+      <span class="word-ph">Zakāh</span>
+    </div>
+    <div class="entry-tr" lang="ur" dir="rtl">زکاۃ</div>
+  </div>
+  <div class="entry">
+    <div class="entry-ar">
+      <span class="word-ar">صَوْم</span>
+      <span class="word-ph">Ṣawm</span>
+    </div>
+    <div class="entry-tr" lang="ur" dir="rtl">روزہ</div>
+  </div>
+  <div class="entry">
+    <div class="entry-ar">
+      <span class="word-ar">حَجّ</span>
+      <span class="word-ph">Ḥajj</span>
+    </div>
+    <div class="entry-tr" lang="ur" dir="rtl">حج</div>
+  </div>
+  <div class="entry">
+    <div class="entry-ar">
+      <span class="word-ar">دُعَاء</span>
+      <span class="word-ph">Duʿāʾ</span>
+    </div>
+    <div class="entry-tr" lang="ur" dir="rtl">دعا</div>
+  </div>
+  <div class="entry">
+    <div class="entry-ar">
+      <span class="word-ar">ذِكْر</span>
+      <span class="word-ph">Dhikr</span>
+    </div>
+    <div class="entry-tr" lang="ur" dir="rtl">ذکر</div>
+  </div>
+  <div class="entry">
+    <div class="entry-ar">
+      <span class="word-ar">تَوْبَة</span>
+      <span class="word-ph">Tawbah</span>
+    </div>
+    <div class="entry-tr" lang="ur" dir="rtl">توبہ</div>
+  </div>
+  <div class="entry">
+    <div class="entry-ar">
+      <span class="word-ar">إِخْلَاص</span>
+      <span class="word-ph">Ikhlāṣ</span>
+    </div>
+    <div class="entry-tr" lang="ur" dir="rtl">اخلاص</div>
+  </div>
+  <div class="entry">
+    <div class="entry-ar">
+      <span class="word-ar">صَبْر</span>
+      <span class="word-ph">Ṣabr</span>
+    </div>
+    <div class="entry-tr" lang="ur" dir="rtl">صبر</div>
+  </div>
+  <div class="entry">
+    <div class="entry-ar">
+      <span class="word-ar">شُكْر</span>
+      <span class="word-ph">Shukr</span>
+    </div>
+    <div class="entry-tr" lang="ur" dir="rtl">شکر</div>
+  </div>
+  <div class="entry">
+    <div class="entry-ar">
+      <span class="word-ar">تَوَكُّل</span>
+      <span class="word-ph">Tawakkul</span>
+    </div>
+    <div class="entry-tr" lang="ur" dir="rtl">توکل</div>
+  </div>
+  <div class="entry">
+    <div class="entry-ar">
+      <span class="word-ar">جِهَاد</span>
+      <span class="word-ph">Jihād</span>
+    </div>
+    <div class="entry-tr" lang="ur" dir="rtl">جہاد</div>
+  </div>
+  <div class="cat-head">
+    <span class="cat-ar">الآخرة</span>
+    <span class="cat-de">Das Jenseits</span>
+  </div>
+  <div class="entry">
+    <div class="entry-ar">
+      <span class="word-ar">الْآخِرَة</span>
+      <span class="word-ph">Al-Ākhirah</span>
+    </div>
+    <div class="entry-tr" lang="ur" dir="rtl">آخرت</div>
+  </div>
+  <div class="entry">
+    <div class="entry-ar">
+      <span class="word-ar">يَوْمُ الْقِيَامَة</span>
+      <span class="word-ph">Yawm al-Qiyāmah</span>
+    </div>
+    <div class="entry-tr" lang="ur" dir="rtl">قیامت کا دن</div>
+  </div>
+  <div class="entry">
+    <div class="entry-ar">
+      <span class="word-ar">الْجَنَّة</span>
+      <span class="word-ph">Al-Jannah</span>
+    </div>
+    <div class="entry-tr" lang="ur" dir="rtl">جنت</div>
+  </div>
+  <div class="entry">
+    <div class="entry-ar">
+      <span class="word-ar">النَّار</span>
+      <span class="word-ph">An-Nār</span>
+    </div>
+    <div class="entry-tr" lang="ur" dir="rtl">جہنم</div>
+  </div>
+  <div class="entry">
+    <div class="entry-ar">
+      <span class="word-ar">الْحِسَاب</span>
+      <span class="word-ph">Al-Ḥisāb</span>
+    </div>
+    <div class="entry-tr" lang="ur" dir="rtl">حساب</div>
+  </div>
+  <div class="entry">
+    <div class="entry-ar">
+      <span class="word-ar">الْمِيزَان</span>
+      <span class="word-ph">Al-Mīzān</span>
+    </div>
+    <div class="entry-tr" lang="ur" dir="rtl">میزان</div>
+  </div>
+  <div class="entry">
+    <div class="entry-ar">
+      <span class="word-ar">الصِّرَاطُ الْمُسْتَقِيم</span>
+      <span class="word-ph">Aṣ-Ṣirāṭ al-Mustaqīm</span>
+    </div>
+    <div class="entry-tr" lang="ur" dir="rtl">صراط مستقیم</div>
+  </div>
+  <div class="entry">
+    <div class="entry-ar">
+      <span class="word-ar">الْبَعْث</span>
+      <span class="word-ph">Al-Baʿth</span>
+    </div>
+    <div class="entry-tr" lang="ur" dir="rtl">بعث</div>
+  </div>
+  <div class="cat-head">
+    <span class="cat-ar">النبوة والوحي</span>
+    <span class="cat-de">Prophetie & Offenbarung</span>
+  </div>
+  <div class="entry">
+    <div class="entry-ar">
+      <span class="word-ar">الْوَحْي</span>
+      <span class="word-ph">Al-Waḥy</span>
+    </div>
+    <div class="entry-tr" lang="ur" dir="rtl">وحی</div>
+  </div>
+  <div class="entry">
+    <div class="entry-ar">
+      <span class="word-ar">نَبِيّ</span>
+      <span class="word-ph">Nabī</span>
+    </div>
+    <div class="entry-tr" lang="ur" dir="rtl">نبی</div>
+  </div>
+  <div class="entry">
+    <div class="entry-ar">
+      <span class="word-ar">رَسُول</span>
+      <span class="word-ph">Rasūl</span>
+    </div>
+    <div class="entry-tr" lang="ur" dir="rtl">رسول</div>
+  </div>
+  <div class="entry">
+    <div class="entry-ar">
+      <span class="word-ar">كِتَاب</span>
+      <span class="word-ph">Kitāb</span>
+    </div>
+    <div class="entry-tr" lang="ur" dir="rtl">کتاب</div>
+  </div>
+  <div class="entry">
+    <div class="entry-ar">
+      <span class="word-ar">الْمَلَائِكَة</span>
+      <span class="word-ph">Al-Malāʾikah</span>
+    </div>
+    <div class="entry-tr" lang="ur" dir="rtl">فرشتے</div>
+  </div>
+  <div class="entry">
+    <div class="entry-ar">
+      <span class="word-ar">الْجِنّ</span>
+      <span class="word-ph">Al-Jinn</span>
+    </div>
+    <div class="entry-tr" lang="ur" dir="rtl">جن</div>
+  </div>
+  <div class="entry">
+    <div class="entry-ar">
+      <span class="word-ar">الشَّيْطَان</span>
+      <span class="word-ph">Ash-Shayṭān</span>
+    </div>
+    <div class="entry-tr" lang="ur" dir="rtl">شیطان</div>
+  </div>
+  <div class="entry">
+    <div class="entry-ar">
+      <span class="word-ar">السُّنَّة</span>
+      <span class="word-ph">As-Sunnah</span>
+    </div>
+    <div class="entry-tr" lang="ur" dir="rtl">سنت</div>
+  </div>
+  <div class="cat-head">
+    <span class="cat-ar">الأخلاق</span>
+    <span class="cat-de">Ethik & Charakter</span>
+  </div>
+  <div class="entry">
+    <div class="entry-ar">
+      <span class="word-ar">عَدْل</span>
+      <span class="word-ph">ʿAdl</span>
+    </div>
+    <div class="entry-tr" lang="ur" dir="rtl">عدل</div>
+  </div>
+  <div class="entry">
+    <div class="entry-ar">
+      <span class="word-ar">رَحْمَة</span>
+      <span class="word-ph">Raḥmah</span>
+    </div>
+    <div class="entry-tr" lang="ur" dir="rtl">رحمت</div>
+  </div>
+  <div class="entry">
+    <div class="entry-ar">
+      <span class="word-ar">أَمَانَة</span>
+      <span class="word-ph">Amānah</span>
+    </div>
+    <div class="entry-tr" lang="ur" dir="rtl">امانت</div>
+  </div>
+  <div class="entry">
+    <div class="entry-ar">
+      <span class="word-ar">صِدْق</span>
+      <span class="word-ph">Ṣidq</span>
+    </div>
+    <div class="entry-tr" lang="ur" dir="rtl">صداقت</div>
+  </div>
+  <div class="entry">
+    <div class="entry-ar">
+      <span class="word-ar">كَرَم</span>
+      <span class="word-ph">Karam</span>
+    </div>
+    <div class="entry-tr" lang="ur" dir="rtl">کرم</div>
+  </div>
+  <div class="entry">
+    <div class="entry-ar">
+      <span class="word-ar">حِكْمَة</span>
+      <span class="word-ph">Ḥikmah</span>
+    </div>
+    <div class="entry-tr" lang="ur" dir="rtl">حکمت</div>
+  </div>
+  <div class="entry">
+    <div class="entry-ar">
+      <span class="word-ar">ظُلْم</span>
+      <span class="word-ph">Ẓulm</span>
+    </div>
+    <div class="entry-tr" lang="ur" dir="rtl">ظلم</div>
+  </div>
+  <div class="cat-head">
+    <span class="cat-ar">الخلق والطبيعة</span>
+    <span class="cat-de">Schöpfung & Natur</span>
+  </div>
+  <div class="entry">
+    <div class="entry-ar">
+      <span class="word-ar">السَّمَاوَات وَالْأَرْض</span>
+      <span class="word-ph">As-Samāwāt wa-l-Arḍ</span>
+    </div>
+    <div class="entry-tr" lang="ur" dir="rtl">آسمان اور زمین</div>
+  </div>
+  <div class="entry">
+    <div class="entry-ar">
+      <span class="word-ar">الْمَاء</span>
+      <span class="word-ph">Al-Māʾ</span>
+    </div>
+    <div class="entry-tr" lang="ur" dir="rtl">پانی</div>
+  </div>
+  <div class="entry">
+    <div class="entry-ar">
+      <span class="word-ar">النُّور</span>
+      <span class="word-ph">An-Nūr</span>
+    </div>
+    <div class="entry-tr" lang="ur" dir="rtl">نور</div>
+  </div>
+  <div class="entry">
+    <div class="entry-ar">
+      <span class="word-ar">الرُّوح</span>
+      <span class="word-ph">Ar-Rūḥ</span>
+    </div>
+    <div class="entry-tr" lang="ur" dir="rtl">روح</div>
+  </div>
+  <div class="entry">
+    <div class="entry-ar">
+      <span class="word-ar">الرِّزْق</span>
+      <span class="word-ph">Ar-Rizq</span>
+    </div>
+    <div class="entry-tr" lang="ur" dir="rtl">رزق</div>
+  </div>
+  <div class="entry">
+    <div class="entry-ar">
+      <span class="word-ar">الْمَوْت</span>
+      <span class="word-ph">Al-Mawt</span>
+    </div>
+    <div class="entry-tr" lang="ur" dir="rtl">موت</div>
+  </div>
+  <div class="entry">
+    <div class="entry-ar">
+      <span class="word-ar">الْحَيَاة</span>
+      <span class="word-ph">Al-Ḥayāh</span>
+    </div>
+    <div class="entry-tr" lang="ur" dir="rtl">زندگی</div>
+  </div>
+  <div class="cat-head">
+    <span class="cat-ar">الأذكار</span>
+    <span class="cat-de">Schlüsselformeln</span>
+  </div>
+  <div class="entry">
+    <div class="entry-ar">
+      <span class="word-ar">بِسْمِ اللهِ الرَّحْمَنِ الرَّحِيم</span>
+      <span class="word-ph">Bismi-llāhi r-Raḥmāni r-Raḥīm</span>
+    </div>
+    <div class="entry-tr" lang="ur" dir="rtl">اللہ کے نام سے جو نہایت مہربان رحم کرنے والا ہے</div>
+  </div>
+  <div class="entry">
+    <div class="entry-ar">
+      <span class="word-ar">الْحَمْدُ لِلّٰه</span>
+      <span class="word-ph">Al-Ḥamdu li-llāh</span>
+    </div>
+    <div class="entry-tr" lang="ur" dir="rtl">تمام تعریف اللہ کے لیے</div>
+  </div>
+  <div class="entry">
+    <div class="entry-ar">
+      <span class="word-ar">سُبْحَانَ الله</span>
+      <span class="word-ph">Subḥāna-llāh</span>
+    </div>
+    <div class="entry-tr" lang="ur" dir="rtl">سبحان اللہ</div>
+  </div>
+  <div class="entry">
+    <div class="entry-ar">
+      <span class="word-ar">اللهُ أَكْبَر</span>
+      <span class="word-ph">Allāhu Akbar</span>
+    </div>
+    <div class="entry-tr" lang="ur" dir="rtl">اللہ سب سے بڑا ہے</div>
+  </div>
+  <div class="entry">
+    <div class="entry-ar">
+      <span class="word-ar">لَا إِلٰهَ إِلَّا اللّٰه</span>
+      <span class="word-ph">Lā ilāha illā-llāh</span>
+    </div>
+    <div class="entry-tr" lang="ur" dir="rtl">اللہ کے سوا کوئی معبود نہیں</div>
+  </div>
+  <div class="entry">
+    <div class="entry-ar">
+      <span class="word-ar">الْهِدَايَة</span>
+      <span class="word-ph">Al-Hidāyah</span>
+    </div>
+    <div class="entry-tr" lang="ur" dir="rtl">ہدایت</div>
+  </div>
+  <div class="entry">
+    <div class="entry-ar">
+      <span class="word-ar">الْمَغْفِرَة</span>
+      <span class="word-ph">Al-Maghfirah</span>
+    </div>
+    <div class="entry-tr" lang="ur" dir="rtl">مغفرت</div>
+  </div>
+  <div class="entry">
+    <div class="entry-ar">
+      <span class="word-ar">الْعِبَادَة</span>
+      <span class="word-ph">Al-ʿIbādah</span>
+    </div>
+    <div class="entry-tr" lang="ur" dir="rtl">عبادت</div>
+  </div>
+</main>
+<nav class="bot-nav">
+  <a class="bn" href="../intro.html">&#8592; Zur Sure-Übersicht</a>
+  <span class="count" id="cnt"></span>
+  <a class="bn" href="../../../../cover.html">Alle Sprachen &#8594;</a>
+</nav>
+<script>
+(function(){
+  var inp = document.getElementById('q');
+  var cnt = document.getElementById('cnt');
+  var entries = document.querySelectorAll('.entry');
+  var catHeads = document.querySelectorAll('.cat-head');
+  function update(){
+    var q = inp.value.trim().toLowerCase();
+    var vis = 0;
+    entries.forEach(function(e){
+      var t = e.textContent.toLowerCase();
+      if(!q || t.includes(q)){ e.classList.remove('hidden'); vis++; }
+      else { e.classList.add('hidden'); }
+    });
+    catHeads.forEach(function(c){
+      var next = c.nextElementSibling;
+      var show = false;
+      while(next && !next.classList.contains('cat-head')){
+        if(!next.classList.contains('hidden')){ show = true; break; }
+        next = next.nextElementSibling;
+      }
+      c.style.display = show || !q ? '' : 'none';
+    });
+    cnt.textContent = q ? vis + ' Ergebnisse' : entries.length + ' Einträge';
+  }
+  inp.addEventListener('input', update);
+  update();
+})();
+</script>
+</body></html>

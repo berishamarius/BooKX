@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Habacuc &middot; Ceï¿½tina &middot; Biblia Catholica</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+body{
+  background:#2C0810;
+  background-image:radial-gradient(ellipse at 50% 20%,#4A1020 0%,#1A0407 100%);
+  font-family:'EB Garamond',serif;
+  color:#1A0E06;
+  font-size:17px;
+}
+
+/* ------------------------------------------
+   BUCHKOPF
+------------------------------------------ */
+.bhead{
+  background:
+    repeating-linear-gradient( 45deg,transparent,transparent 36px,rgba(200,160,48,.028) 36px,rgba(200,160,48,.028) 37px),
+    repeating-linear-gradient(-45deg,transparent,transparent 36px,rgba(200,160,48,.028) 36px,rgba(200,160,48,.028) 37px),
+    linear-gradient(162deg,#1A0407 0%,#2C0810 45%,#4A1020 65%,#2C0810 85%,#1A0407 100%);
+  padding:36px 28px 28px;
+  text-align:center;
+  border-bottom:4px solid #B8962E;
+  position:relative;overflow:hidden;
+}
+/* Innerer Rahmen - äußerer Ring */
+.bhead::before{
+  content:'';position:absolute;inset:14px;
+  border:1px solid rgba(200,160,48,.22);
+  pointer-events:none;
+}
+/* Innerer Rahmen - innerer Ring */
+.bhead::after{
+  content:'';position:absolute;inset:22px;
+  border:1px solid rgba(200,160,48,.08);
+  pointer-events:none;
+}
+.btestament{
+  display:inline-block;
+  border:1px solid rgba(200,160,48,.32);
+  color:rgba(200,160,48,.52);
+  font-family:'Cinzel',serif;font-size:.55rem;
+  letter-spacing:.3em;padding:4px 18px;
+  border-radius:2px;margin-bottom:16px;
+  position:relative;
+}
+.blatin{
+  display:none;
+  font-family:'UnifrakturMaguntia',cursive;
+  font-size:clamp(1.9rem,7vw,3.4rem);
+  color:#EDD882;
+  text-shadow:0 3px 20px rgba(0,0,0,.55);
+  letter-spacing:.04em;position:relative;
+}
+body:not([data-conf]) .blatin-c,
+body[data-conf="catholic"] .blatin-c{display:block;}
+body[data-conf="protestant"] .blatin-p{display:block;}
+.btrans{
+  font-family:'Cinzel',serif;
+  font-size:.88rem;
+  color:#C8A030;margin-top:10px;
+  letter-spacing:.16em;position:relative;
+}
+.bmeta{
+  font-family:'Cinzel',serif;font-size:.62rem;
+  color:rgba(200,160,48,.4);margin-top:6px;
+  letter-spacing:.08em;position:relative;
+}
+
+/* ------------------------------------------
+   KAPITELINHALT
+------------------------------------------ */
+.content{
+  max-width:960px;
+  margin:36px auto 36px;
+  padding:48px 72px 100px;
+  background:#FAF5E8;
+  background-image:
+    radial-gradient(ellipse at top left,rgba(184,150,46,.06) 0%,transparent 55%),
+    radial-gradient(ellipse at bottom right,rgba(184,150,46,.05) 0%,transparent 55%);
+  box-shadow:0 8px 80px rgba(0,0,0,.55),0 2px 12px rgba(0,0,0,.35),inset 0 0 0 1px rgba(184,150,46,.18);
+  border-left:4px solid #B8962E;
+  border-right:4px solid #B8962E;
+  border-top:2px solid rgba(184,150,46,.4);
+  border-bottom:2px solid rgba(184,150,46,.4);
+  position:relative;overflow:clip;
+}
+.content::before{
+  content:'';
+  position:absolute;
+  inset:12px;
+  border:1px solid rgba(184,150,46,.08);
+  pointer-events:none;
+}
+
+.chap{margin-top:0;}
+
+.chhead{
+  text-align:center;
+  padding:40px 0 20px;
+  margin-bottom:16px;
+  position:relative;
+}
+.chhead::before{
+  content:'——— ✦ ✦ ✦ ———';
+  display:block;
+  font-size:.7rem;
+  color:rgba(184,150,46,.45);
+  letter-spacing:.35em;
+  margin-bottom:16px;
+}
+.chhead::after{
+  content:'';
+  display:block;
+  width:200px;
+  height:1px;
+  margin:14px auto 0;
+  background:linear-gradient(to right,transparent,#B8962E,transparent);
+}
+.chrom{
+  font-family:'Cinzel Decorative',serif;
+  font-size:4rem;color:#8B6914;
+  display:block;
+  text-shadow:0 2px 18px rgba(184,150,46,.2);
+  line-height:1;
+}
+.chlbl{
+  font-family:'Cinzel',serif;font-size:.58rem;
+  color:rgba(184,150,46,.42);letter-spacing:.32em;
+  display:none;margin-top:8px;
+}
+body:not([data-conf]) .chlbl-c
+body[data-conf="catholic"] .chlbl-c{display:block;}
+body[data-conf="protestant"] .chlbl-p{display:block;}
+
+/* ------------------------------------------
+   VERSE
+------------------------------------------ */
+.vb{
+  display:flex;
+  padding:20px 6px;
+  border-bottom:1px solid rgba(184,150,46,.12);
+  background:none;
+  border-radius:2px;
+  transition:background .15s;
+}
+.vb:hover{
+  background:rgba(184,150,46,.04);
+}
+
+/* Versnummer */
+.vn{
+  flex-shrink:0;
+  width:38px;
+  padding-top:4px;
+  font-family:'Cinzel',serif;font-size:.56rem;
+  color:rgba(184,150,46,.52);text-align:right;
+  padding-right:12px;line-height:2.4;
+}
+
+.vt{
+  flex:1;
+  padding:0 20px 0 4px;
+}
+
+/* BASIS-TEXT - wechselt je nach Konfession */
+.base{
+  font-family:'EB Garamond',serif;
+  font-size:1.2rem;
+  font-weight:500;
+  line-height:2.1;
+  color:#3D1A08;
+  display:none;
+}
+/* Standardmäßig (kein data-conf): katholisch = Latein */
+body:not([data-conf]) .base-c,
+body[data-conf="catholic"] .base-c { display:block; }
+body[data-conf="protestant"] .base-p { display:block; }
+/* Leere Basis-Paragraphen ausblenden */
+.base:empty { display:none !important; }
+
+/* ÜBERSETZUNG — SEKUNDÄR: kleiner, kursiv, unter dem Latein */
+.tra{
+  font-family:'EB Garamond',serif;
+  font-size:.93rem;
+  font-style:italic;
+  line-height:1.95;
+  color:#1E2848;
+  margin-top:5px;
+  padding-left:14px;
+  border-left:2px solid rgba(90,110,170,.2);
+}
+
+/* Drop-Cap: erster Vers eines Kapitels — nur Latein und Luther, nicht Griechisch */
+.vb.first .base-c::first-letter,
+.vb.first .base-p::first-letter{
+  font-family:'Cinzel Decorative',serif;
+  font-size:4em;
+  float:left;
+  line-height:.7;
+  padding-right:.08em;
+  margin-top:.07em;
+  color:#B8962E;
+  text-shadow:1px 2px 6px rgba(0,0,0,.12);
+}
+
+/* ------------------------------------------
+   BUCH-NAVIGATION (unten)
+------------------------------------------ */
+.bnav{
+  display:flex;justify-content:space-between;align-items:center;
+  background:#2C0810;border-top:3px solid #B8962E;
+  padding:12px 24px;gap:12px;
+}
+.bnav a,.bnav .dim{
+  color:#C8A030;text-decoration:none;
+  font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:.07em;
+  padding:6px 16px;
+  border:1px solid rgba(200,160,48,.28);
+  border-radius:2px;transition:background .18s;
+}
+.bnav a:hover{background:rgba(200,160,48,.12);}
+.bnav .dim{color:rgba(200,160,48,.2);border-color:rgba(200,160,48,.1);}
+.bnav .center{
+  font-family:'Cinzel',serif;font-size:.68rem;
+  color:rgba(200,160,48,.65);text-align:center;
+  letter-spacing:.06em;text-decoration:none;
+  border:1px solid rgba(200,160,48,.28);border-radius:2px;
+  padding:6px 20px;transition:background .18s;
+}
+.bnav .center:hover{background:rgba(200,160,48,.1);}
+
+/* DRUCK */
+@media print{
+  .bnav{display:none;}
+  .bhead{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .vb{break-inside:avoid;}
+}
+
+/* MOBIL */
+@media(max-width:600px){
+  .blatin{font-size:1.8rem;}
+  .base{font-size:1rem;}
+  .tra{font-size:.84rem;}
+  .content{padding:16px 18px 60px;margin:0;border-left:none;border-right:none;border-radius:0;}
+  .chrom{font-size:1.8rem;}
+}
+/* KREUZ-GRAVUR */
+.b-wm{position:sticky;top:calc(50vh - 37.5vmin);width:50vmin;height:75vmin;margin:0 auto -75vmin;display:block;pointer-events:none;z-index:0;user-select:none;}
+.b-wm svg{width:100%;height:auto;display:block;}
+.b-wm path{fill:none;stroke:rgba(184,150,46,.06);stroke-width:1.5;stroke-linecap:square;}
+</style>
+</head>
+<body>
+<header class="bhead">
+  <div class="btestament">VETUS TESTAMENTUM</div>
+  <div class="blatin blatin-c">HABACUC</div>
+  <div class="blatin blatin-p">HABAKUK</div>
+  <div class="btrans">Habakuk &nbsp;&middot;&nbsp; <em>Ceï¿½tina</em></div>
+  <div class="bmeta">3 Capita &nbsp;&middot;&nbsp; 56 Versus</div>
+</header>
+
+<main class="content">
+<div class="b-wm"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 14"><path d="M5,0V14M0,4H10"/></svg></div>
+<section class="chap" id="c1">
+  <div class="chhead">
+    <span class="chrom">I</span>
+    <span class="chlbl chlbl-c">Caput I</span>
+    <span class="chlbl chlbl-p">Das 1. Capitel</span>
+  </div>
+<div class="vb first" id="v1-1">
+  <span class="vn">1</span>
+  <div class="vt">
+    <p class="base base-c">Onus quod vidit Habacuc propheta.</p>
+    <p class="base base-p">Dies ist die Last, welche der Prophet Habakuk gesehen hat.</p>
+    <p class="tra">Břímě, kteréž u vidění viděl Abakuk prorok.</p>
+  </div>
+</div>
+<div class="vb" id="v1-2">
+  <span class="vn">2</span>
+  <div class="vt">
+    <p class="base base-c">Usquequo, Domine, clamabo,  et non exaudies ?  vociferabor ad te, vim patiens,  et non salvabis ?</p>
+    <p class="base base-p">HERR, wie lange soil ich schreien, und du willst nicht horen? Wie lange soil ich zu dir rufen uber Frevel, und du willst nicht helfen?</p>
+    <p class="tra">Až dokud, ó Hospodine, křičeti budu, a nevyslyšíš? Volati budu k tobě pro nátisk, a nespomůžeš?</p>
+  </div>
+</div>
+<div class="vb" id="v1-3">
+  <span class="vn">3</span>
+  <div class="vt">
+    <p class="base base-c">Quare ostendisti mihi iniquitatem et laborem,  videre prædam et injustitiam contra me ?  Et factum est judicium, et contradictio potentior.</p>
+    <p class="base base-p">Warum lassest du mich sehen Muhe und Arbeit? Warum zeigest du mir Raub und Frevel um mich? Es gehet Gewalt uber Recht.</p>
+    <p class="tra">Proč dopouštíš, abych hleděti musil na nepravost, a na bezpráví se dívati, též na zhoubu a na nátisk proti mně? A vždy jest, kdož svár a různici vzbuzuje.</p>
+  </div>
+</div>
+<div class="vb" id="v1-4">
+  <span class="vn">4</span>
+  <div class="vt">
+    <p class="base base-c">Propter hoc lacerata est lex,  et non pervenit usque ad finem judicium ;  quia impius prævalet adversus justum,  propterea egreditur judicium perversum.</p>
+    <p class="base base-p">Darum gehet es gar anders denn recht und kann keine rechte Sache gewinnen; denn der Gottlose ubervorteilt den Gerechten, darum gehen verkehrte Urteile.</p>
+    <p class="tra">Odkudž se děje opuštění zákona, a nedochází nikdá soud. Nebo bezbožný obkličuje spravedlivého, pročež vychází soud převrácený.</p>
+  </div>
+</div>
+<div class="vb" id="v1-5">
+  <span class="vn">5</span>
+  <div class="vt">
+    <p class="base base-c">Aspicite in gentibus, et videte ;  admiramini, et obstupescite :  quia opus factum est in diebus vestris,  quod nemo credet cum narrabitur.</p>
+    <p class="base base-p">Schauet unter den Heiden, sehet und verwundert euch; denn ich will etwas tun zu euren Zeiten, welches ihr nicht glauben werdet, wenn man davon sagen wird.</p>
+    <p class="tra">Pohleďte na národy a popatřte, nýbrž s velikým podivením se užasněte, proto že dělám dílo ve dnech vašich, o němž když vypravováno bude, neuvěříte.</p>
+  </div>
+</div>
+<div class="vb" id="v1-6">
+  <span class="vn">6</span>
+  <div class="vt">
+    <p class="base base-c">Quia ecce ego suscitabo Chaldæos,  gentem amaram et velocem,  ambulantem super latitudinem terræ,  ut possideat tabernacula non sua.</p>
+    <p class="base base-p">Denn siehe, ich will die Chaldaer erwecken, ein bitter und schnell Volk, welches ziehen wird, soweit das Land ist, Wohnungen einzunehmen, die nicht sein sind,</p>
+    <p class="tra">Nebo aj, já vzbudím Kaldejské, národ lítý a rychlý, kterýž zjezdí všecku širokost země, aby dědičně opanoval příbytky jiných,</p>
+  </div>
+</div>
+<div class="vb" id="v1-7">
+  <span class="vn">7</span>
+  <div class="vt">
+    <p class="base base-c">Horribilis et terribilis est :  ex semetipsa judicium et onus ejus egredietur.</p>
+    <p class="base base-p">und wird grausam und schrecklich sein, das da gebeut und zwinget, wie es will.</p>
+    <p class="tra">Strašlivý a hrozný, od něhož soud jeho i vyvýšenost jeho vyjde.</p>
+  </div>
+</div>
+<div class="vb" id="v1-8">
+  <span class="vn">8</span>
+  <div class="vt">
+    <p class="base base-c">Leviores pardis equi ejus,  et velociores lupis vespertinis :  et diffundentur equites ejus :  equites namque ejus de longe venient ;  volabunt quasi aquila festinans ad comedendum.</p>
+    <p class="base base-p">Ihre Rosse sind schneller denn die Parden; so sind sie auch beißiger denn die Wolfe des Abends. Ihre Reiter ziehen mit großen Haufen von feme daher, als flogen sie, wie die Adler eilen zum Aas.</p>
+    <p class="tra">Koni jeho rychlejší budou než rysové, a lítější nad vlky večerní; veliké množství bude jezdců jeho, kteřížto jezdci jeho zdaleka přijedou, a přiletí jako orlice, kteráž chvátá na pastvu.</p>
+  </div>
+</div>
+<div class="vb" id="v1-9">
+  <span class="vn">9</span>
+  <div class="vt">
+    <p class="base base-c">Omnes ad prædam venient,  facies eorum ventus urens ;  et congregabit quasi arenam captivitatem.</p>
+    <p class="base base-p">Sie kommen aliesamt, daß sie Schaden tun; wo sie hin wollen, reilien sie hindurch wie ein Ostwind und werden Gefangene zusammenraffen wie Sand.</p>
+    <p class="tra">Každý z nich k utiskování přijde, obrátíce tváři své k východu, když seberou jako písek zajaté.</p>
+  </div>
+</div>
+<div class="vb" id="v1-10">
+  <span class="vn">10</span>
+  <div class="vt">
+    <p class="base base-c">Et ipse de regibus triumphabit,  et tyranni ridiculi ejus erunt ;  ipse super omnem munitionem ridebit,  et comportabit aggerem, et capiet eam.</p>
+    <p class="base base-p">Sie werden der Konige spotten und der Fursten werden sie lachen. Alle Festungen werden ihnen ein Scherz sein; denn sie werden Schutt machen und sie doch gewinnen.</p>
+    <p class="tra">Tentýž i králům se posmívati bude, a knížata smích jemu budou; tentýž každé pevnosti smáti se bude, a zdělaje náspy, dobude jí.</p>
+  </div>
+</div>
+<div class="vb" id="v1-11">
+  <span class="vn">11</span>
+  <div class="vt">
+    <p class="base base-c">Tunc mutabitur spiritus, et pertransibit, et corruet :  hæc est fortitudo ejus dei sui.</p>
+    <p class="base base-p">Alsdann werden sie einen neuen Mut nehmen, werden fortfahren und sich versundigen; dann muß ihr Sieg ihres Gottes sein.</p>
+    <p class="tra">Tehdy promění se duch jeho, a přestoupí i zaviní, mysle, že ta moc jeho boha jeho jest.</p>
+  </div>
+</div>
+<div class="vb" id="v1-12">
+  <span class="vn">12</span>
+  <div class="vt">
+    <p class="base base-c">Numquid non tu a principio,  Domine, Deus meus, sancte meus,  et non moriemur ?  Domine, in judicium posuisti eum,  et fortem, ut corriperes, fundasti eum.</p>
+    <p class="base base-p">Aberdu, HERR, mein Gott, mein Heiliger, derdu von Ewigkeit her bist, laß uns nicht sterben, sondern laß sie uns, o HERR, nur eine Strafe sein und laß sie, o unser Hort, uns nur zuchtigen!</p>
+    <p class="tra">Hospodine Bože můj, Svatý můj, zdaliž ty nejsi od věčnosti? Myť nezemřeme. Hospodine, k soudu postavil jsi jej, ty, ó skálo, k trestání nastrojil jsi ho.</p>
+  </div>
+</div>
+<div class="vb" id="v1-13">
+  <span class="vn">13</span>
+  <div class="vt">
+    <p class="base base-c">Mundi sunt oculi tui, ne videas malum,  et respicere ad iniquitatem non poteris.  Quare respicis super iniqua agentes,  et taces devorante impio justiorem se ?</p>
+    <p class="base base-p">Deine Augen sind rein, daß du Gbels nicht sehen magst, und dem Jammer kannst du nicht zusehen. Warum siehest du denn zu den Verachtern und schweigest, daß der Gottlose verschlinget den, der frommer denn er ist,</p>
+    <p class="tra">Čistéť jsou tvé oči, tak že na zlé věci hleděti, a na bezpráví se dívati nemůžeš. Pročež přehlídati máš nešlechetníkům a mlčeti, poněvadž bezbožník sehlcuje spravedlivějšího, než sám jest.</p>
+  </div>
+</div>
+<div class="vb" id="v1-14">
+  <span class="vn">14</span>
+  <div class="vt">
+    <p class="base base-c">Et facies homines quasi pisces maris,  et quasi reptile non habens principem.</p>
+    <p class="base base-p">und lasset die Menschen gehen wie Fische im Meer, wie Gewürm, das keinen, Herrn hat?</p>
+    <p class="tra">A zanechávati lidí jako ryb mořských, jako zeměplazu, kterýž nemá pána?</p>
+  </div>
+</div>
+<div class="vb" id="v1-15">
+  <span class="vn">15</span>
+  <div class="vt">
+    <p class="base base-c">Totum in hamo sublevavit,  traxit illud in sagena sua,  et congregavit in rete suum.  Super hoc lætabitur, et exsultabit.</p>
+    <p class="base base-p">Sie ziehen's alles mit dem Hamen und fahen's mit ihrem Netze und sammeln's mit ihrem Gam; des freuen sie sich und sind frohlich.</p>
+    <p class="tra">Všecky napořád udicí vytahuje, zatahuje je sítí svou, a zahrnuje je nevodem svým, protož veselí se a pléše.</p>
+  </div>
+</div>
+<div class="vb" id="v1-16">
+  <span class="vn">16</span>
+  <div class="vt">
+    <p class="base base-c">Propterea immolabit sagenæ suæ,  et sacrificabit reti suo,  quia in ipsis incrassata est pars ejus,  et cibus ejus electus.</p>
+    <p class="base base-p">Darum opfern sie ihrem Netze und rauchern ihrem Gam, weil durch dieselbigen ihr Teil so fett und ihre Speise so vollig worden ist.</p>
+    <p class="tra">Protož síti své obětuje, a kadí nevodu svému; nebo skrze ně ztučněl díl jeho, a strava jeho zlepšena.</p>
+  </div>
+</div>
+<div class="vb" id="v1-17">
+  <span class="vn">17</span>
+  <div class="vt">
+    <p class="base base-c">Propter hoc ergo expandit sagenam suam,  et semper interficere gentes non parcet.</p>
+    <p class="base base-p">Derhalben werfen sie ihr Netz noch immer aus und wollen nicht aufhoren, Leute zu erwurgen.</p>
+    <p class="tra">S tím-liž se vším předce zatahovati má sít svou, a ustavičně národy mordovati bez lítosti?</p>
+  </div>
+</div>
+</section>
+
+<section class="chap" id="c2">
+  <div class="chhead">
+    <span class="chrom">II</span>
+    <span class="chlbl chlbl-c">Caput II</span>
+    <span class="chlbl chlbl-p">Das 2. Capitel</span>
+  </div>
+<div class="vb first" id="v2-1">
+  <span class="vn">1</span>
+  <div class="vt">
+    <p class="base base-c">Super custodiam meam stabo,  et figam gradum super munitionem :  et contemplabor ut videam quid dicatur mihi,  et quid respondeam ad arguentem me.</p>
+    <p class="base base-p">Hie stehe ich auf meiner Hut und trete auf meine Feste und schaue und sehe zu, was mir gesagt werde, und was ich antworten solle dem, der mich schilt.</p>
+    <p class="tra">Na stráži své státi budu, a postavím se na baště, vyhlédaje, abych viděti mohl, co mluviti bude ke mně Bůh, a co bych odpovídati měl po svém trestání.</p>
+  </div>
+</div>
+<div class="vb" id="v2-2">
+  <span class="vn">2</span>
+  <div class="vt">
+    <p class="base base-c">Et respondit mihi Dominus, et dixit :   Scribe visum, et explana eum super tabulas,  ut percurrat qui legerit eum.</p>
+    <p class="base base-p">Der HERR aber antwortet mir und spricht: Schreibe das Gesicht und male es auf eine Tafel, daß es lesen konne, wer voruberlauft (namlich also):</p>
+    <p class="tra">I odpověděl mi Hospodin, a řekl: Napiš vidění, a to zřetelně na dskách, aby je přeběhl čtenář,</p>
+  </div>
+</div>
+<div class="vb" id="v2-3">
+  <span class="vn">3</span>
+  <div class="vt">
+    <p class="base base-c">Quia adhuc visus procul ;  et apparebit in finem, et non mentietur :  si moram fecerit, exspecta illum,  quia veniens veniet, et non tardabit.</p>
+    <p class="base base-p">Die Weissagung wird ja noch erfüllet werden zu seiner Zeit und wird endlich frei an Tag kommen und nicht auften bleiben. Ob sie aber verzeucht, so harre ihrer; sie wird gewiftlich kommen und nicht verziehen.</p>
+    <p class="tra">Proto že ještě do jistého času bude vidění, a směle mluviti bude až do konce, a nesklamáť. Jestliže by pak poprodlilo, posečkej na ně; neboť jistotně dojde, aniž bude meškati.</p>
+  </div>
+</div>
+<div class="vb" id="v2-4">
+  <span class="vn">4</span>
+  <div class="vt">
+    <p class="base base-c">Ecce qui incredulus est, non erit recta anima ejus in semetipso ;  justus autem in fide sua vivet.</p>
+    <p class="base base-p">Siehe, wer halsstarrig ist, der wird keine Ruhe in seinem Herzen haben; denn der Gerechte lebet seines Glaubens.</p>
+    <p class="tra">Aj ten, kdož se zpíná, tohoť duše není upřímá v něm, ale spravedlivý z víry své živ bude.</p>
+  </div>
+</div>
+<div class="vb" id="v2-5">
+  <span class="vn">5</span>
+  <div class="vt">
+    <p class="base base-c">Et quomodo vinum potantem decipit,  sic erit vir superbus, et non decorabitur :  qui dilatavit quasi infernus animam suam,  et ipse quasi mors, et non adimpletur :  et congregabit ad se omnes gentes,  et coacervabit ad se omnes populos.</p>
+    <p class="base base-p">Aber der Wein betrugt den stolzen Mann, daß er nicht bleiben kann, welcher seine Seele aufsperret wie die Holle, und ist gerade wie der Tod, der nicht zu sattigen ist, sondern rafft zu sich alle Heiden und sammelt zu sich alle Volker.</p>
+    <p class="tra">Ovšem pak více opilec, nešlechetnost a pýchu provodě, neostojí v příbytku; kterýž rozšiřuje jako peklo duši svou, jest jako smrt, kteráž se nemůže nasytiti, byť pak shromáždil k sobě všecky národy, a shrnul k sobě všecky lidi.</p>
+  </div>
+</div>
+<div class="vb" id="v2-6">
+  <span class="vn">6</span>
+  <div class="vt">
+    <p class="base base-c">Numquid non omnes isti super eum parabolam sument,  et loquelam ænigmatum ejus, et dicetur :  Væ ei qui multiplicat non sua ?  usquequo et aggravat contra se densum lutum ?</p>
+    <p class="base base-p">Was gilt's aber? Dieselbigen alle werden einen Spruch von ihm machen und eine Sage und Sprichwort und werden sagen: Wehe dem, der sein Gut mehret mit fremdem Gut! Wie lange wird's wahren? und ladet nur viel Schlammes auf sich.</p>
+    <p class="tra">Zdaliž všickni ti proti němu přísloví nevynesou, a světlých slov i pohádek o něm? A neřeknou-liž: Běda tomu, kterýž rozmnožuje věci ne své, (až dokud pak?) a obtěžuje se hustým blátem?</p>
+  </div>
+</div>
+<div class="vb" id="v2-7">
+  <span class="vn">7</span>
+  <div class="vt">
+    <p class="base base-c">Numquid non repente consurgent qui mordeant te,  et suscitabuntur lacerantes te,  et eris in rapinam eis ?</p>
+    <p class="base base-p">O wie plotzlich werden aufwachen, die dich beiften, und erwachen, die dich wegstoften! Und du muftt ihnen zuteil werden.</p>
+    <p class="tra">Zdaliž nepovstanou rychle, kteříž by tě hryzli, a neprocítí, kteříž by tebou smýkali? A budeš u nich v ustavičném potlačení.</p>
+  </div>
+</div>
+<div class="vb" id="v2-8">
+  <span class="vn">8</span>
+  <div class="vt">
+    <p class="base base-c">Quia tu spoliasti gentes multas,  spoliabunt te omnes qui reliqui fuerint de populis,  propter sanguinem hominis,  et iniquitatem terræ, civitatis, et omnium habitantium in ea.</p>
+    <p class="base base-p">Denn du hast viel Heiden geraubt; so werden dich wieder rauben alle ubrigen von den Volkern urn der Menschen Bluts willen und urn des Frevels willen, im Lande und in der Stadt und an alien, die drinnen wohnen, begangen.</p>
+    <p class="tra">Proto že jsi ty zloupil národy mnohé, zloupí tě všickni ostatkové národů, pro krev lidskou, a nátisk země a města, i všech, kteříž přebývají v něm.</p>
+  </div>
+</div>
+<div class="vb" id="v2-9">
+  <span class="vn">9</span>
+  <div class="vt">
+    <p class="base base-c">Væ qui congregat avaritiam malam domui suæ,  ut sit in excelso nidus ejus,  et liberari se putat de manu mali !</p>
+    <p class="base base-p">Wehe dem, der da geizet zum Ungluck seines Hauses, auf daß er sein Nest in die Hohe lege, daß er dem Unfall entrinne!</p>
+    <p class="tra">Běda tomu, kdož lakomě hledá mrzkého zisku domu svému, aby postavil na místě vysokém hnízdo své, a tak znikl nebezpečenství.</p>
+  </div>
+</div>
+<div class="vb" id="v2-10">
+  <span class="vn">10</span>
+  <div class="vt">
+    <p class="base base-c">Cogitasti confusionem domui tuæ ;  concidisti populos multos,  et peccavit anima tua.</p>
+    <p class="base base-p">Aber dein Ratschlag wird zur Schande deines Hauses geraten; denn du hast zu viel Volker zerschlagen und hast mit allem Mutwillen gesundiget.</p>
+    <p class="tra">Uradils se k hanbě domu svému, abys plénil národy mnohé, a zhřešil sobě samému.</p>
+  </div>
+</div>
+<div class="vb" id="v2-11">
+  <span class="vn">11</span>
+  <div class="vt">
+    <p class="base base-c">Quia lapis de pariete clamabit,  et lignum, quod inter juncturas ædificiorum est, respondebit.</p>
+    <p class="base base-p">Denn auch die Steine in der Mauer werden schreien, und die Balken am Gesperre werden ihnen antworten.</p>
+    <p class="tra">Nebo kamení ze zdi křičeti bude, a suk z dřeva posvědčovati bude toho.</p>
+  </div>
+</div>
+<div class="vb" id="v2-12">
+  <span class="vn">12</span>
+  <div class="vt">
+    <p class="base base-c">Væ qui ædificat civitatem in sanguinibus,  et præparat urbem in iniquitate !</p>
+    <p class="base base-p">Wehe dem, der die Stadt mit Blut bauet und zurichtet die Stadt mit Unrecht!</p>
+    <p class="tra">Běda tomu, kterýž staví město krví, a utvrzuje město nepravostí.</p>
+  </div>
+</div>
+<div class="vb" id="v2-13">
+  <span class="vn">13</span>
+  <div class="vt">
+    <p class="base base-c">Numquid non hæc sunt a Domino exercituum ?  laborabunt enim populi in multo igne,  et gentes in vacuum, et deficient.</p>
+    <p class="base base-p">Ist's nicht also, daß vom HERRN Zebaoth geschehen wird? Was dir die Volker gearbeitet haben, muft mit Feuerverbrennen, und daran die Leute müde worden sind, muft verloren sein.</p>
+    <p class="tra">Aj, zdaliž to není od Hospodina zástupů, že, o čemž pracují lidé a národové až do ustání nadarmo, oheň zkazí.</p>
+  </div>
+</div>
+<div class="vb" id="v2-14">
+  <span class="vn">14</span>
+  <div class="vt">
+    <p class="base base-c">Quia replebitur terra, ut cognoscant gloriam Domini,  quasi aquæ operientes mare.</p>
+    <p class="base base-p">Denn die Erde wird voll werden von Erkenntnis der Ehre des HERRN, wie Wasser, das das Meer bedeckt.</p>
+    <p class="tra">Nebo naplněna bude země známostí slávy Hospodinovy, jako vody naplňují moře.</p>
+  </div>
+</div>
+<div class="vb" id="v2-15">
+  <span class="vn">15</span>
+  <div class="vt">
+    <p class="base base-c">Væ qui potum dat amico suo mittens fel suum,  et inebrians ut aspiciat nuditatem ejus !</p>
+    <p class="base base-p">Wehe dir, derdu deinem Nachsten einschenkest und mischest deinen Grimm darunter und trunken machest, daß du seine Scham sehest!</p>
+    <p class="tra">Běda tomu, kterýž napájí bližního svého, přičiněje nádoby své, tak aby jej opojil, a díval se na jeho nahotu.</p>
+  </div>
+</div>
+<div class="vb" id="v2-16">
+  <span class="vn">16</span>
+  <div class="vt">
+    <p class="base base-c">Repletus es ignominia pro gloria ;  bibe tu quoque, et consopire.  Circumdabit te calix dexteræ Domini,  et vomitus ignominiæ super gloriam tuam.</p>
+    <p class="base base-p">Man wird dich auch sattigen mit Schande fur Ehre. So saufe du nun auch, daß du taumelst; denn dich wird umgeben der Kelch in der Rechten des HERRN, und muftt schandlich speien fur deine Herrlichkeit.</p>
+    <p class="tra">Sytíš se potupou, proto že jsi slavný. Píti budeš i ty, a obnažen budeš; obejdeť k tobě kalich pravice Hospodinovy, a vývratek mrzutý na slávu tvou.</p>
+  </div>
+</div>
+<div class="vb" id="v2-17">
+  <span class="vn">17</span>
+  <div class="vt">
+    <p class="base base-c">Quia iniquitas Libani operiet te,  et vastitas animalium deterrebit eos  de sanguinibus hominum,  et iniquitate terræ, et civitatis, et omnium habitantium in ea.</p>
+    <p class="base base-p">Denn der Frevel, am Libanon begangen, wird dich überfallen, und die verstorten Tiere werden dich schrecken urn der Menschen Bluts willen und urn des Frevels willen, im Lande und in der Stadt und an alien, die drinnen wohnen, begangen.</p>
+    <p class="tra">Nebo nátisk Libánu a zhouba zvěři, kteráž ji děsila, přikryje tě, pro krev lidskou, a nátisk země a města, i všech, kteříž přebývají v něm.</p>
+  </div>
+</div>
+<div class="vb" id="v2-18">
+  <span class="vn">18</span>
+  <div class="vt">
+    <p class="base base-c">Quid prodest sculptile, quia sculpsit illud fictor suus,  conflatile, et imaginem falsam ?  quia speravit in figmento fictor ejus, ut faceret simulacra muta.</p>
+    <p class="base base-p">Was wird dann helfen das Bild, das sein Meister gebildet hat, und das falsche gegossene Bild, darauf sich verlaftt sein Meister, daß er stumme Gotzen machte?</p>
+    <p class="tra">Co prospívá rytina, že ji vyryl řemeslník její? Slitina i učitel lži, že doufá učinitel v účinek svůj, dělaje modly němé?</p>
+  </div>
+</div>
+<div class="vb" id="v2-19">
+  <span class="vn">19</span>
+  <div class="vt">
+    <p class="base base-c">Væ qui dicit ligno : Expergiscere ;  Surge, lapidi tacenti !  Numquid ipse docere poterit ?  ecce iste coopertus est auro et argento,  et omnis spiritus non est in visceribus ejus.</p>
+    <p class="base base-p">Wehe dem, der zum Holz spricht: Wache auf! und zum stummen Stein: Stehe auf! Wie sollt es lehren? Siehe, es ist mit Gold und Silber uberzogen, und ist kein Odem in ihm.</p>
+    <p class="tra">Běda tomu, kterýž říká dřevu: Prociť, a kameni němému: Probuď se. On-liž by učiti mohl? Pohleď na něj. Obloženť jest zlatem a stříbrem, ale není v něm žádného ducha.</p>
+  </div>
+</div>
+<div class="vb" id="v2-20">
+  <span class="vn">20</span>
+  <div class="vt">
+    <p class="base base-c">Dominus autem in templo sancto suo :  sileat a facie ejus omnis terra !</p>
+    <p class="base base-p">Aber der HERR ist in seinem heiligen Tempel. Es sei vor ihm stille alle Welt!</p>
+    <p class="tra">Hospodin pak v chrámě svatosti své jest, umlkniž před oblíčejem jeho všecka země.</p>
+  </div>
+</div>
+</section>
+
+<section class="chap" id="c3">
+  <div class="chhead">
+    <span class="chrom">III</span>
+    <span class="chlbl chlbl-c">Caput III</span>
+    <span class="chlbl chlbl-p">Das 3. Capitel</span>
+  </div>
+<div class="vb first" id="v3-1">
+  <span class="vn">1</span>
+  <div class="vt">
+    <p class="base base-c">Oratio Habacuc prophetæ, pro ignorantiis.</p>
+    <p class="base base-p">Dies ist das Gebet des Propheten Habakuk fur die Unschuldigen:</p>
+    <p class="tra">Modlitba Abakuka proroka podlé Šigejonót:</p>
+  </div>
+</div>
+<div class="vb" id="v3-2">
+  <span class="vn">2</span>
+  <div class="vt">
+    <p class="base base-c">Domine, audivi auditionem tuam, et timui.  Domine, opus tuum, in medio annorum vivifica illud ;  in medio annorum notum facies :  cum iratus fueris, misericordiæ recordaberis.</p>
+    <p class="base base-p">HERR, ich habe dein Gerucht gehoret, daß ich mich entsetze. HERR, du machst dein Werk lebendig mitten in den Jahren und lassest es kund werden mitten in den Jahren. Wenn Trubsal da ist, so denkest du der Barmherzigkeit.</p>
+    <p class="tra">Ó Hospodine, uslyšev pohrůžku tvou, ulekl jsem se. Hospodine, dílo své u prostřed let při životu zachovej, u prostřed let známé učiň, v hněvě na milosrdenství se rozpomeň.</p>
+  </div>
+</div>
+<div class="vb" id="v3-3">
+  <span class="vn">3</span>
+  <div class="vt">
+    <p class="base base-c">Deus ab austro veniet,  et Sanctus de monte Pharan :  operuit cælos gloria ejus,  et laudis ejus plena est terra.</p>
+    <p class="base base-p">Gott kam vom Mittage und der Heilige vom Gebirge Paran. Sela. Seines Lobes war der Himmel voll und seiner Ehre war die Erde voll.</p>
+    <p class="tra">Když se Bůh bral od poledne, a Svatý s hory Fáran, Sélah, slávu jeho přikryla nebesa, a země byla plná chvály jeho.</p>
+  </div>
+</div>
+<div class="vb" id="v3-4">
+  <span class="vn">4</span>
+  <div class="vt">
+    <p class="base base-c">Splendor ejus ut lux erit,  cornua in manibus ejus :  ibi abscondita est fortitudo ejus.</p>
+    <p class="base base-p">Sein Glanz war wie Licht; Glanze gingen von seinen Handen; daselbstwar heimlich seine Macht.</p>
+    <p class="tra">Blesk byl jako světlo, rohy po bocích svých měl, a tu skryta byla síla jeho.</p>
+  </div>
+</div>
+<div class="vb" id="v3-5">
+  <span class="vn">5</span>
+  <div class="vt">
+    <p class="base base-c">Ante faciem ejus ibit mors,  et egredietur diabolus ante pedes ejus.</p>
+    <p class="base base-p">Vor ihm her ging Pestilenz, und Plage ging aus, wo er hintrat.</p>
+    <p class="tra">Před tváří jeho šlo morní nakažení, a uhlí řeřavé šlo před nohama jeho.</p>
+  </div>
+</div>
+<div class="vb" id="v3-6">
+  <span class="vn">6</span>
+  <div class="vt">
+    <p class="base base-c">Stetit, et mensus est terram ;  aspexit, et dissolvit gentes,  et contriti sunt montes sæculi :  incurvati sunt colles mundi ab itineribus æternitatis ejus.</p>
+    <p class="base base-p">Er stund und maft das Land; er schauete und zertrennete die Heiden, daß der Welt Berge zerschmettert wurden und sich bucken muftten die Hugel in der Welt, da er ging in der Welt.</p>
+    <p class="tra">Zastavil se, a změřil zemi; pohleděl, a rozptýlil národy. Zrozrážíny jsou hory věčné, sklonili se pahrbkové věční, cesty jeho jsou věčné.</p>
+  </div>
+</div>
+<div class="vb" id="v3-7">
+  <span class="vn">7</span>
+  <div class="vt">
+    <p class="base base-c">Pro iniquitate vidi tentoria Æthiopiæ ;  turbabuntur pelles terræ Madian.</p>
+    <p class="base base-p">Ich sah der Mohren Hütten in Mühe und der Midianiter Gezelte betrubt.</p>
+    <p class="tra">Viděl jsem, že stanové Chusan jsou pouhá marnost, a třásli se kobercové země Madianské.</p>
+  </div>
+</div>
+<div class="vb" id="v3-8">
+  <span class="vn">8</span>
+  <div class="vt">
+    <p class="base base-c">Numquid in fluminibus iratus es, Domine ?  aut in fluminibus furor tuus ?  vel in mari indignatio tua ?  Qui ascendes super equos tuos, et quadrigæ tuæ salvatio.</p>
+    <p class="base base-p">Warestdu nicht zornig, HERR, in der Flut und dein Grimm in den Wassern und dein Zorn im Meer, da du auf deinen Rossen rittest und deine Wagen den Sieg behielten?</p>
+    <p class="tra">Zdaliž se na řeky, ó Hospodine, zdaliž se na řeky rozpálil hněv tvůj? Zdali proti moři rozhněvání tvé, když jsi jel na koních svých a na vozích svých spasitelných?</p>
+  </div>
+</div>
+<div class="vb" id="v3-9">
+  <span class="vn">9</span>
+  <div class="vt">
+    <p class="base base-c">Suscitans suscitabis arcum tuum,  juramenta tribubus quæ locutus es ;  fluvios scindes terræ.</p>
+    <p class="base base-p">Du zogest den Bogen hervor, wie du geschworen hattest den Stammen, Sela, und teiltest die Strome ins Land.</p>
+    <p class="tra">Patrně jest zjeveno lučiště tvé pro přísahy pokolením lidu tvého stalé, Sélah. Řeky země jsi rozdělil,</p>
+  </div>
+</div>
+<div class="vb" id="v3-10">
+  <span class="vn">10</span>
+  <div class="vt">
+    <p class="base base-c">Viderunt te, et doluerunt montes ;  gurges aquarum transiit :  dedit abyssus vocem suam ;  altitudo manus suas levavit.</p>
+    <p class="base base-p">Die Berge sahen dich, und ihnen ward bange; der Wasserstrom fuhr dahin, die Tiefe lieft sich horen, die Hohe hub die Hande auf.</p>
+    <p class="tra">Viděly tě hory, třásly se, povodeň vod ustoupila; vydala propast hlas svůj, hlubina rukou svých pozdvihla.</p>
+  </div>
+</div>
+<div class="vb" id="v3-11">
+  <span class="vn">11</span>
+  <div class="vt">
+    <p class="base base-c">Sol et luna steterunt in habitaculo suo :  in luce sagittarum tuarum ibunt,  in splendore fulgurantis hastæ tuæ.</p>
+    <p class="base base-p">Sonne und Mond stunden still. Deine Pfeile fuhren mit Glanzen dahin und deine Speere mit Blicken des Blitzes.</p>
+    <p class="tra">Slunce a měsíc v obydlí svém zastavil se, při světle střely tvé létaly, při blesku stkvoucí kopí tvé.</p>
+  </div>
+</div>
+<div class="vb" id="v3-12">
+  <span class="vn">12</span>
+  <div class="vt">
+    <p class="base base-c">In fremitu conculcabis terram ;  in furore obstupefacies gentes.</p>
+    <p class="base base-p">Du zertratest das Land im Zorn und zerdroschest die Heiden im Grimm.</p>
+    <p class="tra">V hněvě šlapal jsi zemi, v prchlivosti mlátil jsi pohany.</p>
+  </div>
+</div>
+<div class="vb" id="v3-13">
+  <span class="vn">13</span>
+  <div class="vt">
+    <p class="base base-c">Egressus es in salutem populi tui,  in salutem cum christo tuo :  percussisti caput de domo impii,  denudasti fundamentum ejus usque ad collum.</p>
+    <p class="base base-p">Du zogest aus, deinem Volk zu helfen, zu helfen deinem Gesalbten. Du zerschmissest das Haupt im Hause des Gottlosen und entblolietest die Grundfeste bis an den Hals. Sela.</p>
+    <p class="tra">Vyšel jsi k vysvobození lidu svého, k vysvobození s pomazaným svým; srazil jsi hlavu s domu bezbožníka až do hrdla, obnaživ základ. Sélah.</p>
+  </div>
+</div>
+<div class="vb" id="v3-14">
+  <span class="vn">14</span>
+  <div class="vt">
+    <p class="base base-c">Maledixisti sceptris ejus,  capiti bellatorum ejus,  venientibus ut turbo ad dispergendum me :  exsultatio eorum, sicut ejus qui devorat pauperem in abscondito.</p>
+    <p class="base base-p">Du wolltest fluchen dem Zepter des Haupts samt seinen Flecken, die wie ein Wetter kommen, mich zu zerstreuen, und freuen sich, als fratien sie den Elenden verborgen.</p>
+    <p class="tra">Holemi jeho probodl jsi hlavu vsí jeho, když se bouřili jako vichřice k rozptýlení mému, plésali, jako by sežrati měli chudého v skrytě.</p>
+  </div>
+</div>
+<div class="vb" id="v3-15">
+  <span class="vn">15</span>
+  <div class="vt">
+    <p class="base base-c">Viam fecisti in mari equis tuis,  in luto aquarum multarum.</p>
+    <p class="base base-p">Deine Pferde gehen im Meer, im Schlamm grower Wasser.</p>
+    <p class="tra">Bral jsi se po moři na koních svých, skrze hromadu vod mnohých.</p>
+  </div>
+</div>
+<div class="vb" id="v3-16">
+  <span class="vn">16</span>
+  <div class="vt">
+    <p class="base base-c">Audivi, et conturbatus est venter meus ;  a voce contremuerunt labia mea.  Ingrediatur putredo in ossibus meis,  et subter me scateat :  ut requiescam in die tribulationis,  ut ascendam ad populum accinctum nostrum.</p>
+    <p class="base base-p">Weil ich solches hore, ist mein Bauch betrubt, meine Lippen zittern von dem Geschrei; Eiter gehet in meine Gebeine, ich bin bei mir betrubt. 0 daß ich ruhen mochte zur Zeit der Trubsal, da wir hinaufziehen zum Volk, das uns bestreitet.</p>
+    <p class="tra">Slyšel jsem, a zatřáslo se břicho mé, k hlasu tomu drkotali rtové moji, kosti mé práchnivěly, a všecken jsem se třásl, že se mám upokojiti v den ssoužení, když přitáhne na lid, aby jej válečně hubil.</p>
+  </div>
+</div>
+<div class="vb" id="v3-17">
+  <span class="vn">17</span>
+  <div class="vt">
+    <p class="base base-c">Ficus enim non florebit,  et non erit germen in vineis ;  mentietur opus olivæ,  et arva non afferent cibum :  abscindetur de ovili pecus,  et non erit armentum in præsepibus.</p>
+    <p class="base base-p">Denn der Feigenbaum wird nicht grunen, und wird kein Gewachs sein an den Weinstocken; die Arbeit am Olbaum fehlet und die Acker bringen keine Nahrung, und Schafe werden aus den Hürden gerissen, und werden keine Rinder in den Stallen sein.</p>
+    <p class="tra">Byť pak fík nekvetl, a nebylo úrody na vinicích; byť i ovoce olivy pochybilo, a rolí nepřinesla užitky; a od ovčince odřezován byl brav, a nebylo žádného skotu v chlévích:</p>
+  </div>
+</div>
+<div class="vb" id="v3-18">
+  <span class="vn">18</span>
+  <div class="vt">
+    <p class="base base-c">Ego autem in Domino gaudebo ;  et exsultabo in Deo Jesu meo.</p>
+    <p class="base base-p">Aber ich will mich freuen des HERRN und frohlich sein in Gott, meinem Heil.</p>
+    <p class="tra">Já však v Hospodinu veseliti se budu, plésati budu v Bohu spasení svého.</p>
+  </div>
+</div>
+<div class="vb" id="v3-19">
+  <span class="vn">19</span>
+  <div class="vt">
+    <p class="base base-c">Deus Dominus fortitudo mea,  et ponet pedes meos quasi cervorum :  et super excelsa mea deducet me  victor in psalmis canentem.</p>
+    <p class="base base-p">Denn der HERR Herr ist meine Kraft und wird meine Fufie machen wie Hirschfufie und wird mich in der Hohe führen, dafi ich singe auf meinem Saitenspiel.</p>
+    <p class="tra">Hospodin Panovník jest síla má, kterýž činí nohy mé jako laní, a na vysokých místech mých cestu mi způsobuje. Přednímu zpěváku na můj neginot.</p>
+  </div>
+</div>
+</section>
+</main>
+
+<nav class="bnav">
+  <a href="034-nah.html">&#8592; Nahum</a>
+  <a href="../index.html" class="center">? &nbsp; Inhaltsverzeichnis</a>
+  <a href="036-zep.html">Sophonias &#8594;</a>
+</nav>
+
+<script>
+(function(){
+  var c = localStorage.getItem('biblia_conf') || 'catholic';
+  document.body.dataset.conf = c;
+})();
+</script>
+</body>
+</html>

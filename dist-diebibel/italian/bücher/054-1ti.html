@@ -1,0 +1,1183 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>I Ad Timotheum · Italiano · Biblia Catholica</title>
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
+
+:root {
+  --gold:        #C8A96E;
+  --gold-light:  #EDD58A;
+  --gold-dark:   #8B6914;
+  --navy:        #1A1F3A;
+  --navy-mid:    #252B4A;
+  --navy-light:  #2E3560;
+  --parchment:   #F5E9CC;
+  --parchment-d: #EDD9A3;
+  --cream:       #FDF6E3;
+  --latin-color: #6B1E0E;
+  --trans-color: #0F1D2E;
+  --border:      rgba(200,169,110,.35);
+  --font-title:  'Cinzel Decorative', 'Cinzel', Georgia, serif;
+  --font-sub:    'Cinzel', Georgia, serif;
+  --font-body:   'EB Garamond', Georgia, serif;
+}
+
+*,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+html { font-size:16px; scroll-behavior:smooth; }
+body { background:var(--cream); color:var(--trans-color); font-family:var(--font-body); }
+
+/* ── NAV ─────────────────────────────────────────────── */
+.nav-bar {
+  background:var(--navy); padding:10px 28px;
+  display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  border-bottom:2px solid var(--gold);
+  position:sticky; top:0; z-index:100;
+  box-shadow:0 3px 12px rgba(0,0,0,.45);
+}
+.nav-bar a {
+  color:var(--gold); text-decoration:none;
+  font-family:var(--font-sub); font-size:.75rem; letter-spacing:.05em;
+  transition:color .15s;
+}
+.nav-bar a:hover { color:var(--gold-light); }
+.nav-bar .home { font-weight:700; font-size:.82rem; }
+.nav-bar .spacer { flex:1; }
+.nav-bar .pos { color:rgba(200,169,110,.45); font-size:.7rem; font-family:var(--font-sub); }
+
+/* ── BUCHKOPF ────────────────────────────────────────── */
+.book-header {
+  background:linear-gradient(160deg,var(--navy) 0%,var(--navy-mid) 55%,var(--navy-light) 100%);
+  padding:44px 36px 34px; text-align:center;
+  border-bottom:4px solid var(--gold);
+  position:relative; overflow:hidden;
+}
+.book-header::before {
+  content:'';
+  position:absolute; inset:0;
+  background-image:
+    repeating-linear-gradient( 45deg,transparent,transparent 30px,rgba(200,169,110,.038) 30px,rgba(200,169,110,.038) 31px),
+    repeating-linear-gradient(-45deg,transparent,transparent 30px,rgba(200,169,110,.038) 30px,rgba(200,169,110,.038) 31px);
+  pointer-events:none;
+}
+.testament-badge {
+  display:inline-block;
+  border:1px solid rgba(200,169,110,.4); color:rgba(200,169,110,.65);
+  font-family:var(--font-sub); font-size:.62rem; letter-spacing:.25em;
+  padding:4px 14px; border-radius:2px; margin-bottom:14px; position:relative;
+}
+.book-name-latin {
+  font-family:var(--font-title); font-size:3rem; color:var(--gold-light);
+  text-shadow:0 3px 18px rgba(0,0,0,.55); letter-spacing:.08em; position:relative;
+}
+.book-name-trans {
+  font-family:var(--font-sub); font-size:1.1rem; color:var(--gold);
+  margin-top:8px; letter-spacing:.12em; position:relative;
+}
+.book-meta {
+  font-size:.74rem; color:rgba(200,169,110,.5); margin-top:7px;
+  font-family:var(--font-sub); letter-spacing:.07em; position:relative;
+}
+
+/* ── ORNAMENT-TRENNLINIE ─────────────────────────────── */
+.ornament-bar {
+  text-align:center; padding:16px 0 4px;
+  color:var(--gold); font-size:1.1rem; letter-spacing:.7em;
+}
+
+/* ── HAUPT-CONTAINER ─────────────────────────────────── */
+.content { max-width:960px; margin:0 auto; padding:0 24px 80px; }
+
+/* ── KAPITEL-MARKER ──────────────────────────────────── */
+.chapter-marker {
+  display:flex; align-items:center; gap:16px;
+  padding:28px 6px 12px; margin-bottom:4px;
+  border-bottom:2px solid var(--border);
+}
+.ch-roman {
+  font-family:var(--font-title); font-size:2.2rem; color:var(--gold);
+  min-width:56px; text-align:center; flex-shrink:0;
+  text-shadow:0 1px 8px rgba(200,169,110,.3);
+}
+.ch-label {
+  font-family:var(--font-sub); font-size:.72rem; color:rgba(200,169,110,.6);
+  letter-spacing:.22em; text-transform:uppercase;
+}
+
+/* ── VERS-BLOCK ──────────────────────────────────────── */
+.verse-block {
+  display:flex; gap:0; border-bottom:1px solid rgba(200,169,110,.15);
+}
+.verse-block:nth-child(odd)  { background:var(--cream); }
+.verse-block:nth-child(even) { background:var(--parchment); }
+
+.verse-num-col {
+  flex-shrink:0; width:42px; padding:16px 6px 16px 0; text-align:right;
+}
+.verse-num {
+  display:inline-block; width:28px; height:28px; border-radius:50%;
+  background:var(--gold-dark); color:var(--cream);
+  font-family:var(--font-sub); font-size:.64rem; font-weight:700;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 1px 5px rgba(0,0,0,.25);
+}
+
+.verse-texts { flex:1; padding:16px 16px 18px 8px; }
+
+/* ── LATEINISCHER TEXT (oben / primär) ───────────────── */
+.latin {
+  font-family:var(--font-body); font-size:1.12rem; line-height:1.9;
+  color:var(--latin-color); font-weight:500;
+  border-left:3px solid var(--gold); padding-left:12px;
+  margin-bottom:8px;
+}
+
+/* ── ÜBERSETZUNGS-TEXT (unten / sekundär) ────────────── */
+.trans-label {
+  font-family:var(--font-sub); font-size:.6rem; letter-spacing:.17em;
+  text-transform:uppercase; color:var(--gold-dark); margin-bottom:5px; opacity:.78;
+}
+.trans {
+  font-family:var(--font-body); font-size:1.04rem; line-height:1.85;
+  color:var(--trans-color); font-style:italic;
+  padding-left:15px;
+}
+
+/* Erste Vers jedes Kapitels: Drop-Cap */
+.verse-block:first-of-type .latin::first-letter {
+  font-size:4.2em; float:left; line-height:.72;
+  padding-right:.08em; margin-top:.06em;
+  font-family:var(--font-title); color:var(--gold);
+}
+
+/* ── NAVIGATION ZWISCHEN BÜCHERN ─────────────────────── */
+.book-nav {
+  display:flex; justify-content:space-between; align-items:center;
+  background:var(--navy); border-top:3px solid var(--gold);
+  padding:12px 26px; gap:12px;
+}
+.book-nav a {
+  color:var(--gold); text-decoration:none;
+  font-family:var(--font-sub); font-size:.78rem; letter-spacing:.07em;
+  padding:6px 14px; border:1px solid rgba(200,169,110,.3); border-radius:3px;
+  transition:background .18s;
+}
+.book-nav a:hover { background:rgba(200,169,110,.15); }
+.book-nav .center {
+  font-family:var(--font-sub); font-size:.7rem; color:rgba(200,169,110,.55);
+  letter-spacing:.1em; text-align:center;
+}
+
+/* ── FUßZEILE ────────────────────────────────────────── */
+.page-footer {
+  background:var(--navy); border-top:2px solid rgba(200,169,110,.3);
+  padding:18px 28px; text-align:center;
+  color:rgba(200,169,110,.45); font-family:var(--font-sub);
+  font-size:.68rem; letter-spacing:.1em;
+}
+
+/* ── DRUCK ───────────────────────────────────────────── */
+@media print {
+  .nav-bar, .book-nav { display:none; }
+  .verse-block { break-inside:avoid; }
+  .book-header { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+}
+
+/* ── MOBIL ───────────────────────────────────────────── */
+@media (max-width:640px) {
+  .book-name-latin { font-size:2.1rem; }
+  .ch-roman { font-size:1.6rem; }
+  .latin { font-size:.98rem; }
+  .trans { font-size:.93rem; }
+  .content { padding:0 12px 60px; }
+}
+</style>
+</head>
+<body>
+
+  <nav class="nav-bar">
+    <a class="home" href="../../../index.html">✞ BIBLIA CATHOLICA</a>
+    <a href="../index.html">🇮🇹 Italiano</a>
+    <span class="spacer"></span>
+    <span class="pos">054 / 066</span>
+  </nav>
+
+  <header class="book-header">
+    <div class="testament-badge">NOVUM TESTAMENTUM</div>
+    <div class="book-name-latin">I AD TIMOTHEUM</div>
+    <div class="book-name-trans">1 Timothy</div>
+    <div class="book-meta">Vulgata Clementina · Giovanni Diodati (1649) · 6 Capita · 113 Versus</div>
+  </header>
+
+  <div class="ornament-bar">❧ ✦ ❧ ✦ ❧</div>
+
+  <main class="content">
+
+  <section class="chapter" id="ch1">
+    <div class="chapter-marker">
+      <span class="ch-roman">I</span>
+      <span class="ch-label">Caput 1</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v1-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Paulus Apostolus Jesu Christi secundum imperium Dei Salvatoris nostri, et Christi Jesu spei nostræ,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">PAOLO, apostolo di Gesù Cristo, per comandamento di Dio, nostro Salvatore; e del Signor Gesù Cristo, nostra speranza;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Timotheo dilecto filio in fide. Gratia, misericordia, et pax a Deo Patre, et Christo Jesu Domino nostro.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">a Timoteo, mio vero figliuolo in fede; grazia, misericordia, e pace, da Dio nostro padre, e da Cristo Gesù, nostro Signore.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sicut rogavi te ut remaneres Ephesi cum irem in Macedoniam, ut denuntiares quibusdam ne aliter docerent,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">SICCOME io ti esortai di rimanere in Efeso, quando io andava in Macedonia, fa’ che tu dinunzi ad alcuni che non insegnino dottrina diversa.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">neque intenderent fabulis, et genealogiis interminatis : quæ quæstiones præstant magis quam ædificationem Dei, quæ est in fide.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">E che non attendano a favole, ed a genealogie senza fine; le quali producono piuttosto quistioni, che edificazion di Dio, che è in fede.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Finis autem præcepti est caritas de corde puro, et conscientia bona, et fide non ficta.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Or il fine del comandamento è carità, di cuor puro, e di buona coscienza, e di fede non finta.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">A quibus quidam aberrantes, conversi sunt in vaniloquium,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Dalle quali cose alcuni essendosi sviati, si son rivolti ad un vano parlare;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">volentes esse legis doctores, non intelligentes neque quæ loquuntur, neque de quibus affirmant.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">volendo esser dottori della legge, non intendendo nè le cose che dicono, nè quelle delle quali affermano.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Scimus autem quia bona est lex si quis ea legitime utatur :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Or noi sappiamo che la legge è buona, se alcuno l’usa legittimamente.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">sciens hoc quia lex justo non est posita, sed injustis, et non subditis, impiis, et peccatoribus, sceleratis, et contaminatis, parricidis, et matricidis, homicidis,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Sapendo questo: che la legge non è posta al giusto, ma agl’iniqui, e ribelli, agli empi, e peccatori, agli scellerati, e profani, agli uccisori di padri e madri,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">fornicariis, masculorum concubitoribus, plagiariis, mendacibus, et perjuris, et si quid aliud sanæ doctrinæ adversatur,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">a’ micidiali, a’ fornicatori, a quelli che usano co’ maschi, a’ rubatori d’uomini, a’ falsari, agli spergiuratori; e se vi è alcun’altra cosa contraria alla sana dottrina;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">quæ est secundum Evangelium gloriæ beati Dei, quod creditum est mihi.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">secondo l’evangelo della gloria del beato Iddio, il qual m’è stato fidato.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Gratias ago ei, qui me confortavit, Christo Jesu Domino nostro, quia fidelem me existimavit, ponens in ministerio :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">E rendo grazie a Cristo nostro Signore, il qual mi fortifica, ch’egli mi ha reputato fedele, ponendo al ministerio me,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui prius blasphemus fui, et persecutor, et contumeliosus : sed misericordiam Dei consecutus sum, quia ignorans feci in incredulitate.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">il quale innanzi era bestemmiatore, e persecutore, ed ingiurioso; ma misericordia mi è stata fatta, perciocchè io lo feci ignorantemente, non avendo la fede.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Superabundavit autem gratia Domini nostri cum fide, et dilectione, quæ est in Christo Jesu.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Ma la grazia del Signor nostro è soprabbondata, con fede e carità, che è in Cristo Gesù.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Fidelis sermo, et omni acceptione dignus : quod Christus Jesus venit in hunc mundum peccatores salvos facere, quorum primus ego sum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Certa è questa parola, e degna d’essere accettata per ogni maniera: che Cristo Gesù è venuto nel mondo, per salvare i peccatori, de’ quali io sono il primo.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sed ideo misericordiam consecutus sum : ut in me primo ostenderet Christus Jesus omnem patientiam ad informationem eorum, qui credituri sunt illi, in vitam æternam.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Ma, per questo mi è stata fatta misericordia, acciocchè Gesù Cristo mostrasse in me primieramente tutta la sua clemenza, per essere esempio a coloro che per l’avvenire crederebbero in lui a vita eterna.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Regi autem sæculorum immortali, invisibili, soli Deo honor et gloria in sæcula sæculorum. Amen.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Or al Re de’ secoli, immortale, invisibile, a Dio solo savio, sia onore, e gloria ne’ secoli de’ secoli. Amen.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hoc præceptum commendo tibi, fili Timothee, secundum præcedentes in te prophetias, ut milites in illis bonam militiam,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Io ti raccomando questo comandamento, o figliuol Timoteo: che secondo le profezie che innanzi sono state di te, tu guerreggi, in virtù d’esse, la buona guerra.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">habens fidem, et bonam conscientiam, quam quidam repellentes, circa fidem naufragaverunt :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Avendo fede, e buona coscienza; la quale avendo alcuni gettata via, hanno fatto naufragio intorno alla fede.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">ex quibus est Hymenæus, et Alexander : quos tradidi Satanæ, ut discant non blasphemare.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">De’ quali è Imeneo, ed Alessandro, i quali io ho dati in man di Satana, acciocchè sieno castigati, ed ammaestrati a non bestemmiare.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch2">
+    <div class="chapter-marker">
+      <span class="ch-roman">II</span>
+      <span class="ch-label">Caput 2</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v2-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Obsecro igitur primum omnium fieri obsecrationes, orationes, postulationes, gratiarum actiones, pro omnibus hominibus :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">IO esorto adunque, innanzi ad ogni cosa, che si facciano preghiere, orazioni, richieste, e ringraziamenti per tutti gli uomini.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">pro regibus, et omnibus qui in sublimitate sunt, ut quietam et tranquillam vitam agamus in omni pietate, et castitate :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Pei re, e per tutti quelli che sono in dignità; acciocchè possiam menare una tranquilla e quieta vita, in ogni pietà ed onestà.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">hoc enim bonum est, et acceptum coram Salvatore nostro Deo,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Perciocchè quest’è buono ed accettevole nel cospetto di Dio, nostro Salvatore.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui omnes homines vult salvos fieri, et ad agnitionem veritatis venire.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Il quale vuole che tutti gli uomini sieno salvati, e che vengano alla conoscenza della verità.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Unus enim Deus, unus et mediator Dei et hominum homo Christus Jesus :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Perciocchè v’è un sol Dio, ed anche un sol Mediatore di Dio, e degli uomini: Cristo Gesù uomo.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui dedit redemptionem semetipsum pro omnibus, testimonium temporibus suis :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Il quale ha dato sè stesso per prezzo di riscatto per tutti; secondo la testimonianza riserbata a’ propri tempi.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">in quo positus sum ego prædicator, et Apostolus (veritatem dico, non mentior) doctor gentium in fide, et veritate.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">A che io sono stato costituito banditore, ed apostolo io dico verità in Cristo, non mento, dottor de’ Gentili in fede, e verità.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Volo ergo viros orare in omni loco, levantes puras manus sine ira et disceptatione.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Io voglio adunque che gli uomini facciano orazione in ogni luogo, alzando le mani pure, senza ira e disputazione.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Similiter et mulieres in habitu ornato, cum verecundia et sobrietate ornantes se, et non in tortis crinibus, aut auro, aut margaritis, vel veste pretiosa :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">SIMIGLIANTEMENTE ancora che le donne si adornino d’abito onesto, con verecondia e modestia; non di trecce, o d’oro, o di perle, o di vestimenti preziosi;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">sed quod decet mulieres, promittentes pietatem per opera bona.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">ma come si conviene a donne che fanno professione di servire a Dio per opere buone.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Mulier in silentio discat cum omni subjectione.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">La donna impari con silenzio, in ogni soggezione.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Docere autem mulieri non permitto, neque dominari in virum : sed esse in silentio.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Ma io non permetto alla donna d’insegnare, nè d’usare autorità sopra il marito; ma ordino che stia in silenzio.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Adam enim primus formatus est : deinde Heva :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Perciocchè Adamo fu creato il primo, e poi Eva.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">et Adam non est seductus : mulier autem seducta in prævaricatione fuit.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">E Adamo non fu sedotto; ma la donna, essendo stata sedotta, fu in cagion di trasgressione.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Salvabitur autem per filiorum generationem, si permanserit in fide, et dilectione, et sanctificatione cum sobrietate.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Ma pure sarà salvata, partorendo figliuoli, se saranno perseverate in fede, e carità, e santificazione, con onestà.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch3">
+    <div class="chapter-marker">
+      <span class="ch-roman">III</span>
+      <span class="ch-label">Caput 3</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v3-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Fidelis sermo : si quis episcopatum desiderat, bonum opus desiderat.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">CERTA è questa parola: Se alcuno desidera l’ufficio di vescovo, desidera una buona opera.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Oportet ergo episcopum irreprehensibilem esse, unius uxoris virum, sobrium, prudentem, ornatum, pudicum, hospitalem, doctorem,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Bisogna adunque che il vescovo sia irreprensibile, marito d’una sola moglie, sobrio, vigilante, temperato, onesto, volonteroso albergator de’ forestieri, atto ad insegnare;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">non vinolentum, non percussorem, sed modestum : non litigiosum, non cupidum, sed</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">non dato al vino, non percotitore, non disonestamente cupido del guadagno; ma benigno, non contenzioso, non avaro.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">suæ domui bene præpositum : filios habentem subditos cum omni castitate.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Che governi bene la sua propria famiglia, che tenga i figliuoli in soggezione, con ogni gravità.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si quis autem domui suæ præesse nescit, quomodo ecclesiæ Dei diligentiam habebit ?</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Ma, se alcuno non sa governar la sua propria famiglia, come avrà egli cura della chiesa di Dio?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Non neophytum : ne in superbiam elatus, in judicium incidat diaboli.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Che non sia novizio; acciocchè divenendo gonfio, non cada nel giudicio del diavolo.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Oportet autem illum et testimonium habere bonum ab iis qui foris sunt, ut non in opprobrium incidat, et in laqueum diaboli.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Or conviene che egli abbia ancora buona testimonianza da que’ di fuori, acciocchè non cada in vituperio, e nel laccio del diavolo.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Diaconos similiter pudicos, non bilingues, non multo vino deditos, non turpe lucrum sectantes :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Parimente bisogna che i diaconi sieno gravi, non doppi in parole, non dati a molto vino, non disonestamente cupidi del guadagno.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">habentes mysterium fidei in conscientia pura.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Che ritengano il misterio della fede in pura coscienza.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et hi autem probentur primum : et sic ministrent, nullum crimen habentes.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Or questi ancora sieno prima provati, poi servano, se sono irreprensibili.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Mulieres similiter pudicas, non detrahentes, sobrias, fideles in omnibus.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Simigliantemente sieno le lor mogli gravi, non calunniatrici, sobrie, fedeli in ogni cosa.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Diaconi sint unius uxoris viri, qui filiis suis bene præsint, et suis domibus.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">I diaconi sien mariti d’una sola moglie, governando bene i figliuoli, e le proprie famiglie.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui enim bene ministraverint, gradum bonum sibi acquirent, et multam fiduciam in fide, quæ est in Christo Jesu.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Perciocchè coloro che avranno ben servito si acquistano un buon grado, e gran libertà nella fede, ch’è in Cristo Gesù.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hæc tibi scribo, sperans me ad te venire cito :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Io ti scrivo queste cose, sperando di venir tosto a te.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">si autem tardavero, ut scias quomodo oporteat te in domo Dei conversari, quæ est ecclesia Dei vivi, columna et firmamentum veritatis.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">E se pur tardo, acciocchè tu sappi come si convien conversar nella casa di Dio, che è la chiesa dell’Iddio vivente, colonna e sostegno della verità.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et manifeste magnum est pietatis sacramentum, quod manifestatum est in carne, justificatum est in spiritu, apparuit angelis, prædicatum est gentibus, creditum est in mundo, assumptum est in gloria.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">E senza veruna contradizione, grande è il misterio della pietà: Iddio è stato manifestato in carne, è stato giustificato in Ispirito, è apparito agli angeli, è stato predicato a’ Gentili, è stato creduto nel mondo, è stato elevato in gloria.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch4">
+    <div class="chapter-marker">
+      <span class="ch-roman">IV</span>
+      <span class="ch-label">Caput 4</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v4-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Spiritus autem manifeste dicit, quia in novissimis temporibus discedent quidam a fide, attendentes spiritibus erroris, et doctrinis dæmoniorum,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">OR lo Spirito dice espressamente, che negli ultimi tempi alcuni apostateranno dalla fede, attendendo a spiriti seduttori, e a dottrine diaboliche;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">in hypocrisi loquentium mendacium, et cauteriatam habentium suam conscientiam,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">d’uomini che proporranno cose false per ipocrisia, cauterizzati nella propria coscienza.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">prohibentium nubere, abstinere a cibis, quod Deus creavit ad percipiendum cum gratiarum actione fidelibus, et iis qui cognoverunt veritatem.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Che vieteranno il maritarsi, e comanderanno d’astenersi da’ cibi, che Iddio ha creati, acciocchè i fedeli, e quelli che hanno conosciuta la verità, li usino con rendimento di grazie.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quia omnis creatura Dei bona est, et nihil rejiciendum quod cum gratiarum actione percipitur :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Poichè ogni cosa creata da Dio è buona, e niuna è da riprovare, essendo usata con rendimento di grazie;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">sanctificatur enim per verbum Dei, et orationem.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">perciocchè ella è santificata per la parola di Dio, e per l’orazione.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hæc proponens fratribus, bonus eris minister Christi Jesu enutritus verbis fidei, et bonæ doctrinæ, quam assecutus es.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">RAPPRESENTANDO queste cose a’ fratelli, tu sarai buon ministro di Gesù Cristo, nudrito nelle parole della fede, e della buona dottrina, la qual tu hai ben compresa.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ineptas autem, et aniles fabulas devita : exerce autem teipsum ad pietatem.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Ma schiva le favole profane, e da vecchie; ed esercitati alla pietà.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nam corporalis exercitatio, ad modicum utilis est : pietas autem ad omnia utilis est, promissionem habens vitæ, quæ nunc est, et futuræ.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Perciocchè l’esercizio corporale è utile a poca cosa; ma la pietà è utile ad ogni cosa, avendo la promessa della vita presente, e della futura.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Fidelis sermo, et omni acceptione dignus.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Certa è questa parola, a degna d’essere accettata per ogni maniera.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">In hoc enim laboramus, et maledicimur, quia speramus in Deum vivum, qui est Salvator omnium hominum, maxime fidelium.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Poichè per questo travagliamo, e siamo vituperati; perciocchè abbiamo sperato nell’Iddio vivente, il quale è Salvator di tutti gli uomini, principalmente de’ fedeli.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Præcipe hæc, et doce.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Annunzia queste cose, ed insegnale.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nemo adolescentiam tuam contemnat : sed exemplum esto fidelium in verbo, in conversatione, in caritate, in fide, in castitate.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Niuno sprezzi la tua giovanezza; ma sii esempio de’ fedeli, in parola, in conversazione, in carità, in ispirito, in fede, in castità.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Dum venio, attende lectioni, exhortationi, et doctrinæ.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Attendi alla lettura, all’esortazione, alla dottrina, finchè io venga.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Noli negligere gratiam, quæ in te est, quæ data est tibi per prophetiam, cum impositione manuum presbyterii.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Non trascurare il dono che è in te, il quale ti è stato dato per profezia, con l’imposizion delle mani del collegio degli anziani.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hæc meditare, in his esto : ut profectus tuus manifestus sit omnibus.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Medita queste cose, e datti interamente ad esse; acciocchè il tuo avanzamento sia manifesto fra tutti.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Attende tibi, et doctrinæ : insta in illis. Hoc enim faciens, et teipsum salvum facies, et eos qui te audiunt.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Attendi a te stesso, e alla dottrina; persevera in queste cose; perciocchè, facendo questo, salverai te stesso, e coloro che ti ascoltano.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch5">
+    <div class="chapter-marker">
+      <span class="ch-roman">V</span>
+      <span class="ch-label">Caput 5</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v5-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Seniorem ne increpaveris, sed obsecra ut patrem : juvenes, ut fratres :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">NON isgridar l’uomo attempato, ma esortalo come padre,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">anus, ut matres : juvenculas, ut sorores in omni castitate :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">i giovani come fratelli, le donne attempate come madri, le giovani come sorelle, in ogni castità.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">viduas honora, quæ vere viduæ sunt.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Onora le vedove, che son veramente vedove.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si qua autem vidua filios, aut nepotes habet : discat primum domum suam regere, et mutuam vicem reddere parentibus : hoc enim acceptum est coram Deo.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Ma, se alcuna vedova ha dei figliuoli, o de’ nipoti, imparino essi imprima d’usar pietà inverso que’ di casa loro, e rendere il cambio a’ loro antenati; perciocchè quest’è buono ed accettevole nel cospetto di Dio.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quæ autem vere vidua est, et desolata, speret in Deum, et instet obsecrationibus, et orationibus nocte ac die.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Or quella che è veramente vedova, e lasciata sola, spera in Dio, e persevera in preghiere ed orazioni, notte e giorno.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nam quæ in deliciis est, vivens mortua est.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Ma la voluttuosa, vivendo, è morta.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et hoc præcipe, ut irreprehensibiles sint.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Anche queste cose annunzia, acciocchè sieno irreprensibili.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si quis autem suorum, et maxime domesticorum, curam non habet, fidem negavit, et est infideli deterior.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Che se alcuno non provvede ai suoi, e principalmente a que’ di casa sua, egli ha rinnegata la fede, ed è peggiore che un infedele.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vidua eligatur non minus sexaginta annorum, quæ fuerit unius viri uxor,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Sia la vedova assunta nel numero delle vedove, non di minore età che di sessant’anni, la qual sia stata moglie d’un sol marito.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">in operibus bonis testimonium habens, si filios educavit, si hospitio recepit, si sanctorum pedes lavit, si tribulationem patientibus subministravit, si omne opus bonum subsecuta est.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Che abbia testimonianza d’opere buone: se ha nudriti i suoi figliuoli, se ha albergati i forestieri, se ha lavati i piedi dei santi, se ha sovvenuti gli afflitti, se del continuo è ita dietro ad ogni buona opera.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Adolescentiores autem viduas devita : cum enim luxuriatæ fuerint in Christo, nubere volunt :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Ma rifiuta le vedove più giovani, perciocchè, dopo che hanno lussuriato contro a Cristo, vogliono maritarsi,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">habentes damnationem, quia primam fidem irritam fecerunt ;</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">avendo condannazione, perciocchè hanno rotta la prima fede.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">simul autem et otiosæ discunt circuire domos : non solum otiosæ, sed et verbosæ, et curiosæ, loquentes quæ non oportet.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Ed anche, essendo, oltre a ciò, oziose, imparano ad andare attorno per le case; e non sol sono oziose, ma anche cianciatrici e curiose, parlando di cose che non si convengono.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Volo ergo juniores nubere, filios procreare, matresfamilias esse, nullam occasionem dare adversario maledicti gratia.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Io voglio adunque che le giovani vedove si maritino, faccian figliuoli, sieno madri di famiglia, non dieno all’avversario alcuna occasione di maldicenza.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Jam enim quædam conversæ sunt retro Satanam.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Poichè già alcune si sono sviate dietro a Satana.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si quis fidelis habet viduas, subministret illis, et non gravetur ecclesia : ut iis quæ vere viduæ sunt, sufficiat.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Se alcun uomo, o donna fedele, ha delle vedove, sovvenga loro, e non sia la chiesa gravata, acciocchè possa bastare a sovvenir quelle che son veramente vedove.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui bene præsunt presbyteri, duplici honore digni habeantur : maxime qui laborant in verbo et doctrina.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">GLI anziani, che fanno bene l’ufficio della presidenza, sien reputati degni di doppio onore; principalmente quelli che faticano nella parola e nella dottrina.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Dicit enim Scriptura : Non alligabis os bovi trituranti. Et : Dignus est operarius mercede sua.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Perciocchè la scrittura dice: Non metter la museruola in bocca al bue che trebbia; e: L’operaio è degno del suo premio.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">Adversus presbyterum accusationem noli recipere, nisi sub duobus aut tribus testibus.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Non ricevere accusa contro all’anziano, se non in su due o tre testimoni.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">Peccantes coram omnibus argue : ut et ceteri timorem habeant.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Riprendi, nel cospetto di tutti, quelli che peccano; acciocchè gli altri ancora abbian timore.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">Testor coram Deo et Christo Jesu, et electis angelis, ut hæc custodias sine præjudicio, nihil faciens in alteram partem declinando.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Io ti scongiuro davanti a Dio, e il Signor Gesù Cristo, e gli angeli eletti, che tu osservi queste cose senza pregiudicio, non facendo nulla per parzialità.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-22">
+      <div class="verse-num-col"><div class="verse-num">22</div></div>
+      <div class="verse-texts">
+        <div class="latin">Manus cito nemini imposueris, neque communicaveris peccatis alienis. Teipsum castum custodi.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Non imporre tosto le mani ad alcuno, e non partecipare i peccati altrui; conserva te stesso puro.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-23">
+      <div class="verse-num-col"><div class="verse-num">23</div></div>
+      <div class="verse-texts">
+        <div class="latin">Noli adhuc aquam bibere, sed modico vino utere propter stomachum tuum, et frequentes tuas infirmitates.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Non usar più per l’innanzi acqua sola nel tuo bere, ma usa un poco di vino, per lo tuo stomaco, e per le frequenti tue infermità.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-24">
+      <div class="verse-num-col"><div class="verse-num">24</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quorumdam hominum peccata manifesta sunt, præcedentia ad judicium : quosdam autem et subsequuntur.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">D’alcuni uomini i peccati son manifesti, prima che sian giudicati; ma ve ne sono altri che si vedono solo dopo.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-25">
+      <div class="verse-num-col"><div class="verse-num">25</div></div>
+      <div class="verse-texts">
+        <div class="latin">Similiter et facta bona, manifesta sunt : et quæ aliter se habent, abscondi non possunt.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Le buone opere d’alcuni altresì son manifeste; e quelle che sono altrimenti non possono essere occultate.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch6">
+    <div class="chapter-marker">
+      <span class="ch-roman">VI</span>
+      <span class="ch-label">Caput 6</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v6-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quicumque sunt sub jugo servi, dominos suos omni honore dignos arbitrentur, ne nomen Domini et doctrina blasphemetur.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">TUTTI i servi che son sotto il giogo reputino i lor signori degni d’ogni onore, acciocchè non sia bestemmiato il nome di Dio, e la dottrina.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui autem fideles habent dominos, non contemnant, quia fratres sunt : sed magis serviant, quia fideles sunt et dilecti, qui beneficii participes sunt. Hæc doce, et exhortare.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">E quelli che hanno signori fedeli non li sprezzino, perchè son fratelli; anzi molto più li servano, perciocchè son fedeli e diletti, i quali hanno ricevuto il beneficio. Insegna queste cose, ed esorta ad esse.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si quis aliter docet, et non acquiescit sanis sermonibus Domini nostri Jesu Christi, et ei, quæ secundum pietatem est, doctrinæ :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">SE alcuno insegna diversa dottrina, e non si attiene alle sane parole del Signor nostro Gesù Cristo, ed alla dottrina che è secondo pietà,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">superbus est, nihil sciens, sed languens circa quæstiones, et pugnas verborum : ex quibus oriuntur invidiæ, contentiones, blasphemiæ, suspiciones malæ,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">esso è gonfio, non sapendo nulla, ma languendo intorno a quistioni, e risse di parole, dalle quali nascono invidia, contenzione, maldicenze, mali sospetti;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">conflictationes hominum mente corruptorum, et qui veritate privati sunt, existimantium quæstum esse pietatem.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">vane disputazioni d’uomini corrotti della mente e privi della verità, che stimano la pietà esser guadagno; ritratti da tali.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Est autem quæstus magnus pietas cum sufficientia.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Or veramente la pietà, con contentamento d’animo, è gran guadagno.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nihil enim intulimus in hunc mundum : haud dubium quod nec auferre quid possumus.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Poichè non abbiam portato nulla nel mondo, e chiaro è che altresì non ne possiamo portar nulla fuori;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Habentes autem alimenta, et quibus tegamur, his contenti simus.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">ma, avendo da nudrirci e da coprirci, saremo di ciò contenti.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nam qui volunt divites fieri, incidunt in tentationem, et in laqueum diaboli, et desideria multa inutilia, et nociva, quæ mergunt homines in interitum et perditionem.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Ma coloro che vogliono arricchire cadono in tentazione, ed in laccio, ed in molte concupiscenze insensate e nocive, le quali affondano gli uomini in distruzione e perdizione.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Radix enim omnium malorum est cupiditas : quam quidam appetentes erraverunt a fide, et inseruerunt se doloribus multis.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Perciocchè la radice di tutti i mali è l’avarizia; alla quale alcuni datisi, si sono smarriti dalla fede, e si son fitti in molte doglie.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Tu autem, o homo Dei, hæc fuge : sectare vero justitiam, pietatem, fidem, caritatem, patientiam, mansuetudinem.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Ma tu, o uomo di Dio, fuggi queste cose; e procaccia giustizia, pietà, fede, carità, sofferenza, mansuetudine.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Certa bonum certamen fidei, apprehende vitam æternam, in qua vocatus es, et confessus bonam confessionem coram multis testibus.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Combatti il buon combattimento della fede, afferra la vita eterna, alla quale sei stato chiamato e ne hai fatta la buona confessione davanti a molti testimoni.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Præcipio tibi coram Deo, qui vivificat omnia, et Christo Jesu, qui testimonium reddidit sub Pontio Pilato, bonam confessionem,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Io t’ingiungo nel cospetto di Dio, il qual vivifica tutte le cose, e di Cristo Gesù, che testimoniò davanti a Ponzio Pilato la buona confessione,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">ut serves mandatum sine macula, irreprehensibile usque in adventum Domini nostri Jesu Christi,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">che tu osservi questo comandamento, essendo immacolato ed irreprensibile, fino all’apparizione del Signor nostro Gesù Cristo.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">quem suis temporibus ostendet beatus et solus potens, Rex regum, et Dominus dominantium :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">La quale a’ suoi tempi mostrerà il beato e solo Principe, il Re dei re, e il Signor de’ signori.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui solus habet immortalitatem, et lucem inhabitat inaccessibilem : quem nullus hominum vidit, sed nec videre potest : cui honor, et imperium sempiternum. Amen.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Il qual solo ha immortalità ed abita una luce inaccessibile; il quale niun uomo ha veduto, nè può vedere; al quale sia onore ed imperio eterno. Amen.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Divitibus hujus sæculi præcipe non sublime sapere, neque sperare in incerto divitiarum, sed in Deo vivo (qui præstat nobis omnia abunde ad fruendum)</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Dinunzia a’ ricchi nel presente secolo, che non sieno d’animo altiero, che non pongano la loro speranza nell’incertitudine delle ricchezze; ma nell’Iddio vivente, il qual ci porge doviziosamente ogni cosa, per goderne.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">bene agere, divites fieri in bonis operibus, facile tribuere, communicare,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Che faccian del bene, che sien ricchi in buone opere, pronti a distribuire, comunichevoli;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">thesaurizare sibi fundamentum bonum in futurum, ut apprehendant veram vitam.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">facendosi un tesoro d’un buon fondamento per l’avvenire, acciocchè conseguano la vita eterna.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">O Timothee, depositum custodi, devitans profanas vocum novitates, et oppositiones falsi nominis scientiæ,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">O Timoteo, guarda il deposito, schivando le profane vanità di parole, e le contradizioni della falsamente nominata scienza;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">quam quidam promittentes, circa fidem exciderunt. Gratia tecum. Amen.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">della quale alcuni facendo professione, si sono sviati dalla fede. La grazia sia teco. Amen.</div>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <nav class="book-nav">
+    <a href="053-2th.html">← II Ad Thessalonicenses</a>
+    <span class="center">I Ad Timotheum · Italiano</span>
+    <a href="055-2ti.html">II Ad Timotheum →</a>
+  </nav>
+
+  <footer class="page-footer">
+    BIBLIA CATHOLICA INTERLINEARIS &nbsp;·&nbsp; Vulgata Clementina &amp; Giovanni Diodati (1649)
+    &nbsp;·&nbsp; Gemeinfreie Texte / Public Domain
+  </footer>
+
+</body>
+</html>

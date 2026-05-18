@@ -1,0 +1,2551 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>I Esdras · Italiano · Biblia Catholica</title>
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
+
+:root {
+  --gold:        #C8A96E;
+  --gold-light:  #EDD58A;
+  --gold-dark:   #8B6914;
+  --navy:        #1A1F3A;
+  --navy-mid:    #252B4A;
+  --navy-light:  #2E3560;
+  --parchment:   #F5E9CC;
+  --parchment-d: #EDD9A3;
+  --cream:       #FDF6E3;
+  --latin-color: #6B1E0E;
+  --trans-color: #0F1D2E;
+  --border:      rgba(200,169,110,.35);
+  --font-title:  'Cinzel Decorative', 'Cinzel', Georgia, serif;
+  --font-sub:    'Cinzel', Georgia, serif;
+  --font-body:   'EB Garamond', Georgia, serif;
+}
+
+*,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+html { font-size:16px; scroll-behavior:smooth; }
+body { background:var(--cream); color:var(--trans-color); font-family:var(--font-body); }
+
+/* ── NAV ─────────────────────────────────────────────── */
+.nav-bar {
+  background:var(--navy); padding:10px 28px;
+  display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  border-bottom:2px solid var(--gold);
+  position:sticky; top:0; z-index:100;
+  box-shadow:0 3px 12px rgba(0,0,0,.45);
+}
+.nav-bar a {
+  color:var(--gold); text-decoration:none;
+  font-family:var(--font-sub); font-size:.75rem; letter-spacing:.05em;
+  transition:color .15s;
+}
+.nav-bar a:hover { color:var(--gold-light); }
+.nav-bar .home { font-weight:700; font-size:.82rem; }
+.nav-bar .spacer { flex:1; }
+.nav-bar .pos { color:rgba(200,169,110,.45); font-size:.7rem; font-family:var(--font-sub); }
+
+/* ── BUCHKOPF ────────────────────────────────────────── */
+.book-header {
+  background:linear-gradient(160deg,var(--navy) 0%,var(--navy-mid) 55%,var(--navy-light) 100%);
+  padding:44px 36px 34px; text-align:center;
+  border-bottom:4px solid var(--gold);
+  position:relative; overflow:hidden;
+}
+.book-header::before {
+  content:'';
+  position:absolute; inset:0;
+  background-image:
+    repeating-linear-gradient( 45deg,transparent,transparent 30px,rgba(200,169,110,.038) 30px,rgba(200,169,110,.038) 31px),
+    repeating-linear-gradient(-45deg,transparent,transparent 30px,rgba(200,169,110,.038) 30px,rgba(200,169,110,.038) 31px);
+  pointer-events:none;
+}
+.testament-badge {
+  display:inline-block;
+  border:1px solid rgba(200,169,110,.4); color:rgba(200,169,110,.65);
+  font-family:var(--font-sub); font-size:.62rem; letter-spacing:.25em;
+  padding:4px 14px; border-radius:2px; margin-bottom:14px; position:relative;
+}
+.book-name-latin {
+  font-family:var(--font-title); font-size:3rem; color:var(--gold-light);
+  text-shadow:0 3px 18px rgba(0,0,0,.55); letter-spacing:.08em; position:relative;
+}
+.book-name-trans {
+  font-family:var(--font-sub); font-size:1.1rem; color:var(--gold);
+  margin-top:8px; letter-spacing:.12em; position:relative;
+}
+.book-meta {
+  font-size:.74rem; color:rgba(200,169,110,.5); margin-top:7px;
+  font-family:var(--font-sub); letter-spacing:.07em; position:relative;
+}
+
+/* ── ORNAMENT-TRENNLINIE ─────────────────────────────── */
+.ornament-bar {
+  text-align:center; padding:16px 0 4px;
+  color:var(--gold); font-size:1.1rem; letter-spacing:.7em;
+}
+
+/* ── HAUPT-CONTAINER ─────────────────────────────────── */
+.content { max-width:960px; margin:0 auto; padding:0 24px 80px; }
+
+/* ── KAPITEL-MARKER ──────────────────────────────────── */
+.chapter-marker {
+  display:flex; align-items:center; gap:16px;
+  padding:28px 6px 12px; margin-bottom:4px;
+  border-bottom:2px solid var(--border);
+}
+.ch-roman {
+  font-family:var(--font-title); font-size:2.2rem; color:var(--gold);
+  min-width:56px; text-align:center; flex-shrink:0;
+  text-shadow:0 1px 8px rgba(200,169,110,.3);
+}
+.ch-label {
+  font-family:var(--font-sub); font-size:.72rem; color:rgba(200,169,110,.6);
+  letter-spacing:.22em; text-transform:uppercase;
+}
+
+/* ── VERS-BLOCK ──────────────────────────────────────── */
+.verse-block {
+  display:flex; gap:0; border-bottom:1px solid rgba(200,169,110,.15);
+}
+.verse-block:nth-child(odd)  { background:var(--cream); }
+.verse-block:nth-child(even) { background:var(--parchment); }
+
+.verse-num-col {
+  flex-shrink:0; width:42px; padding:16px 6px 16px 0; text-align:right;
+}
+.verse-num {
+  display:inline-block; width:28px; height:28px; border-radius:50%;
+  background:var(--gold-dark); color:var(--cream);
+  font-family:var(--font-sub); font-size:.64rem; font-weight:700;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 1px 5px rgba(0,0,0,.25);
+}
+
+.verse-texts { flex:1; padding:16px 16px 18px 8px; }
+
+/* ── LATEINISCHER TEXT (oben / primär) ───────────────── */
+.latin {
+  font-family:var(--font-body); font-size:1.12rem; line-height:1.9;
+  color:var(--latin-color); font-weight:500;
+  border-left:3px solid var(--gold); padding-left:12px;
+  margin-bottom:8px;
+}
+
+/* ── ÜBERSETZUNGS-TEXT (unten / sekundär) ────────────── */
+.trans-label {
+  font-family:var(--font-sub); font-size:.6rem; letter-spacing:.17em;
+  text-transform:uppercase; color:var(--gold-dark); margin-bottom:5px; opacity:.78;
+}
+.trans {
+  font-family:var(--font-body); font-size:1.04rem; line-height:1.85;
+  color:var(--trans-color); font-style:italic;
+  padding-left:15px;
+}
+
+/* Erste Vers jedes Kapitels: Drop-Cap */
+.verse-block:first-of-type .latin::first-letter {
+  font-size:4.2em; float:left; line-height:.72;
+  padding-right:.08em; margin-top:.06em;
+  font-family:var(--font-title); color:var(--gold);
+}
+
+/* ── NAVIGATION ZWISCHEN BÜCHERN ─────────────────────── */
+.book-nav {
+  display:flex; justify-content:space-between; align-items:center;
+  background:var(--navy); border-top:3px solid var(--gold);
+  padding:12px 26px; gap:12px;
+}
+.book-nav a {
+  color:var(--gold); text-decoration:none;
+  font-family:var(--font-sub); font-size:.78rem; letter-spacing:.07em;
+  padding:6px 14px; border:1px solid rgba(200,169,110,.3); border-radius:3px;
+  transition:background .18s;
+}
+.book-nav a:hover { background:rgba(200,169,110,.15); }
+.book-nav .center {
+  font-family:var(--font-sub); font-size:.7rem; color:rgba(200,169,110,.55);
+  letter-spacing:.1em; text-align:center;
+}
+
+/* ── FUßZEILE ────────────────────────────────────────── */
+.page-footer {
+  background:var(--navy); border-top:2px solid rgba(200,169,110,.3);
+  padding:18px 28px; text-align:center;
+  color:rgba(200,169,110,.45); font-family:var(--font-sub);
+  font-size:.68rem; letter-spacing:.1em;
+}
+
+/* ── DRUCK ───────────────────────────────────────────── */
+@media print {
+  .nav-bar, .book-nav { display:none; }
+  .verse-block { break-inside:avoid; }
+  .book-header { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+}
+
+/* ── MOBIL ───────────────────────────────────────────── */
+@media (max-width:640px) {
+  .book-name-latin { font-size:2.1rem; }
+  .ch-roman { font-size:1.6rem; }
+  .latin { font-size:.98rem; }
+  .trans { font-size:.93rem; }
+  .content { padding:0 12px 60px; }
+}
+</style>
+</head>
+<body>
+
+  <nav class="nav-bar">
+    <a class="home" href="../../../index.html">✞ BIBLIA CATHOLICA</a>
+    <a href="../index.html">🇮🇹 Italiano</a>
+    <span class="spacer"></span>
+    <span class="pos">015 / 066</span>
+  </nav>
+
+  <header class="book-header">
+    <div class="testament-badge">VETUS TESTAMENTUM</div>
+    <div class="book-name-latin">I ESDRAS</div>
+    <div class="book-name-trans">Ezra</div>
+    <div class="book-meta">Vulgata Clementina · Giovanni Diodati (1649) · 10 Capita · 280 Versus</div>
+  </header>
+
+  <div class="ornament-bar">❧ ✦ ❧ ✦ ❧</div>
+
+  <main class="content">
+
+  <section class="chapter" id="ch1">
+    <div class="chapter-marker">
+      <span class="ch-roman">I</span>
+      <span class="ch-label">Caput 1</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v1-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">In anno primo Cyri regis Persarum, ut compleretur verbum Domini ex ore Jeremiæ, suscitavit Dominus spiritum Cyri regis Persarum : et traduxit vocem in omni regno suo, etiam per scripturam, dicens :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">NELL’anno primo di Ciro, re di Persia acciocchè si adempiesse la parola del Signore, pronunziata per la bocca di Geremia, il Signore eccitò lo spirito di Ciro, re di Persia; ed egli fece andare un bando per tutto il suo regno, eziandio con lettere, dicendo:</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hæc dicit Cyrus rex Persarum : Omnia regna terræ dedit mihi Dominus Deus cæli, et ipse præcepit mihi ut ædificarem ei domum in Jerusalem, quæ est in Judæa.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Così ha detto Ciro, re di Persia: Il Signore Iddio del cielo mi ha dati tutti i regni della terra; egli ancora mi ha imposto di edificargli una Casa in Gerusalemme, che è in Giudea.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quis est in vobis de universo populo ejus ? Sit Deus illius cum ipso. Ascendat in Jerusalem, quæ est in Judæa, et ædificet domum Domini Dei Israël : ipse est Deus qui est in Jerusalem.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Chi di voi è dell’universo suo popolo? l’Iddio suo sia con lui, e ritornisene in Gerusalemme, ch’è in Giudea, ed edifichi la Casa del Signore Iddio d’Israele, ch’è l’Iddio che abita in Gerusalemme.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et omnes reliqui in cunctis locis ubicumque habitant, adjuvent eum viri de loco suo argento et auro, et substantia, et pecoribus, excepto quod voluntarie offerunt templo Dei, quod est in Jerusalem.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">E se vi è alcuno, in qualunque luogo egli dimori, che sia rimasto indietro, sovvengangli le genti del suo luogo, d’oro, e d’argento, e di facoltà, e di bestie da vettura, con qualche volontaria offerta per la Casa di Dio, che abita in Gerusalemme.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et surrexerunt principes patrum de Juda et Benjamin, et sacerdotes, et Levitæ, et omnis cujus Deus suscitavit spiritum, ut ascenderent ad ædificandum templum Domini, quod erat in Jerusalem.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Allora i capi delle famiglie paterne di Giuda e di Beniamino, e i sacerdoti, e i Leviti, insieme con tutti quelli de’ quali Iddio eccitò lo spirito per ritornarsene, per riedificar la Casa del Signore, che è in Gerusalemme, si misero in cammino.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Universique qui erant in circuitu, adjuverunt manus eorum in vasis argenteis et aureis, in substantia et jumentis, in supellectili, exceptis his quæ sponte obtulerant.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">E tutti i lor vicini d’ogn’intorno sovvennero loro di vasellamenti d’argento, d’oro, di facoltà, e di bestie da vettura, e di cose preziose; oltre a tutto quello che fu volontariamente offerto.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Rex quoque Cyrus protulit vasa templi Domini, quæ tulerat Nabuchodonosor de Jerusalem, et posuerat ea in templo dei sui.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Il re Ciro trasse eziandio fuori gli arredi della Casa del Signore, i quali Nebucadnesar avea tratti fuor di Gerusalemme, e posti nella Casa del suo dio;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Protulit autem ea Cyrus rex Persarum per manum Mithridatis filii Gazabar, et annumeravit ea Sassabasar principi Juda.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Ciro, re di Persia, li trasse fuori per le mani di Mitredat, tesoriere, e li consegnò a conto a Sesbassar, principe di Giuda.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et hic est numerus eorum : phialæ aureæ triginta, phialæ argenteæ mille, cultri viginti novem, scyphi aurei triginta,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">E questo era il conto di essi: trenta bacini d’oro, mille bacini di argento, ventinove coltelli,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">scyphi argentei secundi quadringenti decem, vasa alia mille.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">trenta coppe d’oro, e quattrocento dieci coppe d’argento seconde, e mille altri vasellamenti.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Omnia vasa aurea et argentea quinque millia quadringenta : universa tulit Sassabasar cum his qui ascendebant de transmigratione Babylonis in Jerusalem.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Tutti questi vasellamenti, con altri d’oro e d’argento, erano in numero di cinquemila quattrocento. Sesbassar il riportò tutti, nel medesimo tempo che quelli ch’erano in cattività furono ricondotti di Babilonia in Gerusalemme.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch2">
+    <div class="chapter-marker">
+      <span class="ch-roman">II</span>
+      <span class="ch-label">Caput 2</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v2-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hi sunt autem provinciæ filii, qui ascenderunt de captivitate, quam transtulerat Nabuchodonosor rex Babylonis in Babylonem, et reversi sunt in Jerusalem et Judam, unusquisque in civitatem suam.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">OR questi sono gli uomini della provincia, che ritornarono dalla cattività, d’infra la moltitudine che Nebucadnesar, re di Babilonia, avea menata in cattività in Babilonia; e ritornarono in Gerusalemme ed in Giudea, ciascuno alla sua città.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Qui venerunt cum Zorobabel, Josue, Nehemia, Saraia, Rahelaia, Mardochai, Belsan, Mesphar, Beguai, Rehum, Baana. Numerus virorum populi Israël :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">I quali vennero con Zorobabel, Iesua, Neemia, Seraia, Reelaia, Mardocheo, Bilsan, Mispar, Bigvai, Rehum, e Baana. Il numero degli uomini del popolo d’Israele fu questo:</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">filii Pharos duo millia centum septuaginta duo.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">I figliuoli di Paros furono due mila censettantadue;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Filii Sephatia, trecenti septuaginta duo.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">i figliuoli di Sefatia trecensettantadue;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Filii Area, septingenti septuaginta quinque.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">i figliuoli di Ara settecensettantacinque;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Filii Phahath Moab, filiorum Josue : Joab, duo millia octingenti duodecim.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">i figliuoli di Pahat-Moab, divisi ne’ figliuoli di Iesua, e di Ioab, duemila ottocento-dodici;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Filii Ælam, mille ducenti quinquaginta quatuor.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">i figliuoli di Elam mille dugentocinquantaquattro;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Filii Zethua, nongenti quadraginta quinque.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">i figliuoli di Zattu novecenquarantacinque;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Filii Zachai, septingenti sexaginta.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">i figliuoli di Zaccai settecensessanta;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Filii Bani, sexcenti quadraginta duo.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">i figliuoli di Bani seicenquarantadue;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Filii Bebai, sexcenti viginti tres.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">i figliuoli di Bebai seicenventitrè;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Filii Azgad, mille ducenti viginti duo.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">i figliuoli di Azgad mille dugenventidue;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Filii Adonicam, sexcenti sexaginta sex.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">i figliuoli di Adonicam seicensessantasei;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Filii Beguai, duo millia quinquaginta sex.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">i figliuoli di Bigvai duemila cinquantasei;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Filii Adin, quadringenti quinquaginta quatuor.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">i figliuoli di Adin quattrocencinquantaquattro;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Filii Ather, qui erant ex Ezechia, nonaginta octo.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">i figliuoli di Ater, per Ezechia, novantotto;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Filii Besai, trecenti viginti tres.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">i figliuoli di Besai trecenventitrè;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Filii Jora, centum duodecim.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">i figliuoli di Iora centododici;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">Filii Hasum, ducenti viginti tres.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">i figliuoli di Hasum dugenventitrè;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">Filii Gebbar, nonaginta quinque.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">i figliuoli di Ghibbar novantacinque;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">Filii Bethlehem, centum viginti tres.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">i figliuoli di Bet-lehem cenventitrè;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-22">
+      <div class="verse-num-col"><div class="verse-num">22</div></div>
+      <div class="verse-texts">
+        <div class="latin">Viri Netupha, quinquaginta sex.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">gli uomini di Netofa cinquantasei;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-23">
+      <div class="verse-num-col"><div class="verse-num">23</div></div>
+      <div class="verse-texts">
+        <div class="latin">Viri Anathoth, centum viginti octo.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">gli uomini di Anatot cenventotto;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-24">
+      <div class="verse-num-col"><div class="verse-num">24</div></div>
+      <div class="verse-texts">
+        <div class="latin">Filii Azmaveth, quadraginta duo.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">gli uomini di Azmavet quarantadue;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-25">
+      <div class="verse-num-col"><div class="verse-num">25</div></div>
+      <div class="verse-texts">
+        <div class="latin">Filii Cariathiarim, Cephira et Beroth, septingenti quadraginta tres.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">gli uomini di Chiriat-arim, di Chefira, e di Beerot, settecenquarantatrè;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-26">
+      <div class="verse-num-col"><div class="verse-num">26</div></div>
+      <div class="verse-texts">
+        <div class="latin">Filii Rama et Gabaa, sexcenti viginti unus.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">gli uomini di Rama e di Gheba, seicenventuno;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-27">
+      <div class="verse-num-col"><div class="verse-num">27</div></div>
+      <div class="verse-texts">
+        <div class="latin">Viri Machmas, centum viginti duo.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">gli uomini di Micmas cenventidue;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-28">
+      <div class="verse-num-col"><div class="verse-num">28</div></div>
+      <div class="verse-texts">
+        <div class="latin">Viri Bethel et Hai, ducenti viginti tres.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">gli uomini di Betel e di Ai dugenventitrè;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-29">
+      <div class="verse-num-col"><div class="verse-num">29</div></div>
+      <div class="verse-texts">
+        <div class="latin">Filii Nebo, quinquaginta duo.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">i figliuoli di Nebo cinquantadue;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-30">
+      <div class="verse-num-col"><div class="verse-num">30</div></div>
+      <div class="verse-texts">
+        <div class="latin">Filii Megbis, centum quinquaginta sex.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">i figliuoli di Magbis cencinquantasei;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-31">
+      <div class="verse-num-col"><div class="verse-num">31</div></div>
+      <div class="verse-texts">
+        <div class="latin">Filii Ælam alterius, mille ducenti quinquaginta quatuor.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">i figliuoli d’un altro Elam mille dugencinquantaquattro;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-32">
+      <div class="verse-num-col"><div class="verse-num">32</div></div>
+      <div class="verse-texts">
+        <div class="latin">Filii Harim, trecenti viginti.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">i figliuoli di Harim trecenventi;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-33">
+      <div class="verse-num-col"><div class="verse-num">33</div></div>
+      <div class="verse-texts">
+        <div class="latin">Filii Lod Hadid, et Ono, septingenti viginti quinque.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">i figliuoli di Lod, di Hadid, e d’Ono, settecenventicinque;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-34">
+      <div class="verse-num-col"><div class="verse-num">34</div></div>
+      <div class="verse-texts">
+        <div class="latin">Filii Jericho, trecenti quadraginta quinque.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">i figliuoli di Gerico trecenquarantacinque;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-35">
+      <div class="verse-num-col"><div class="verse-num">35</div></div>
+      <div class="verse-texts">
+        <div class="latin">Filii Senaa, tria millia sexcenti triginta.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">i figliuoli di Senaa tremila seicentrenta.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-36">
+      <div class="verse-num-col"><div class="verse-num">36</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sacerdotes : filii Jadaia in domo Josue, nongenti septuaginta tres.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">De’ sacerdoti: i figliuoli di Iedaia, della famiglia di Iesua, novecensettantatrè;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-37">
+      <div class="verse-num-col"><div class="verse-num">37</div></div>
+      <div class="verse-texts">
+        <div class="latin">Filii Emmer, mille quinquaginta duo.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">i figliuoli d’Immer mille cinquantadue;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-38">
+      <div class="verse-num-col"><div class="verse-num">38</div></div>
+      <div class="verse-texts">
+        <div class="latin">Filii Pheshur, mille ducenti quadraginta septem.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">i figliuoli di Pashur mille dugenquarantasette;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-39">
+      <div class="verse-num-col"><div class="verse-num">39</div></div>
+      <div class="verse-texts">
+        <div class="latin">Filii Harim, mille decem et septem.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">i figliuoli di Harim mille diciassette.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-40">
+      <div class="verse-num-col"><div class="verse-num">40</div></div>
+      <div class="verse-texts">
+        <div class="latin">Levitæ : filii Josue et Cedmihel filiorum Odoviæ, septuaginta quatuor.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">De’ Leviti: i figliuoli di Iesua, e di Cadmiel, d’infra i figliuoli di Hodavia, settantaquattro.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-41">
+      <div class="verse-num-col"><div class="verse-num">41</div></div>
+      <div class="verse-texts">
+        <div class="latin">Cantores : filii Asaph, centum viginti octo.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">De’ cantori: i figliuoli di Asaf, cenventotto.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-42">
+      <div class="verse-num-col"><div class="verse-num">42</div></div>
+      <div class="verse-texts">
+        <div class="latin">Filii janitorum : filii Sellum, filii Ater, filii Telmon, filii Accub, filii Hatitha, filii Sobai : universi centum triginta novem.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">De’ figliuoli de’ portinai: i figliuoli di Sallum, i figliuoli di Ater, i figliuoli di Talmon, i figliuoli di Accub, i figliuoli di Hatita, i figliuoli di Sobai; in tutto centrentanove.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-43">
+      <div class="verse-num-col"><div class="verse-num">43</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nathinæi : filii Siha, filii Hasupha, filii Tabbaoth,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">De’ Netinei: i figliuoli di Siha, i figliuoli di Hasufa, i figliuoli di Tabbaot,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-44">
+      <div class="verse-num-col"><div class="verse-num">44</div></div>
+      <div class="verse-texts">
+        <div class="latin">filii Ceros, filii Siaa, filii Phadon,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">i figliuoli di Cheros, i figliuoli di Siaha, i figliuoli di Padon.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-45">
+      <div class="verse-num-col"><div class="verse-num">45</div></div>
+      <div class="verse-texts">
+        <div class="latin">filii Lebana, filii Hagaba, filii Accub,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">I figliuoli di Lebana, i figliuoli di Hagaba, i figliuoli di Accub,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-46">
+      <div class="verse-num-col"><div class="verse-num">46</div></div>
+      <div class="verse-texts">
+        <div class="latin">filii Hagab, filii Semlai, filii Hanan,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">i figliuoli di Hagab, i figliuoli di Samlai, i figliuoli di Hanan,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-47">
+      <div class="verse-num-col"><div class="verse-num">47</div></div>
+      <div class="verse-texts">
+        <div class="latin">filii Gaddel, filii Gaher, filii Raaia,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">i figliuoli di Ghiddel, i figliuoli di Gahar, i figliuoli di Reaia,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-48">
+      <div class="verse-num-col"><div class="verse-num">48</div></div>
+      <div class="verse-texts">
+        <div class="latin">filii Rasin, filii Necoda, filii Gazam,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">i figliuoli di Resin, i figliuoli di Necoda, i figliuoli di Gazam,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-49">
+      <div class="verse-num-col"><div class="verse-num">49</div></div>
+      <div class="verse-texts">
+        <div class="latin">filii Aza, filii Phasea, filii Besee,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">i figliuoli di Uzza, i figliuoli di Pasea, i figliuoli di Besai,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-50">
+      <div class="verse-num-col"><div class="verse-num">50</div></div>
+      <div class="verse-texts">
+        <div class="latin">filii Asena, filii Munim, filii Nephusim,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">i figliuoli di Asna, i figliuoli di Meunim, i figliuoli di Nefusim,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-51">
+      <div class="verse-num-col"><div class="verse-num">51</div></div>
+      <div class="verse-texts">
+        <div class="latin">filii Bacbuc, filii Hacupha, filii Harhur,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">i figliuoli di Bacbuc, i figliuoli di Hacusa, i figliuoli di Harhur,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-52">
+      <div class="verse-num-col"><div class="verse-num">52</div></div>
+      <div class="verse-texts">
+        <div class="latin">filii Besluth, filii Mahida, filii Harsa,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">i figliuoli di Baslut, i figliuoli di Mehida, i figliuoli di Harsa, i figliuoli di Barcos,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-53">
+      <div class="verse-num-col"><div class="verse-num">53</div></div>
+      <div class="verse-texts">
+        <div class="latin">filii Bercos, filii Sisara, filii Thema,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">i figliuoli di Sisera, i figliuoli di Tema,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-54">
+      <div class="verse-num-col"><div class="verse-num">54</div></div>
+      <div class="verse-texts">
+        <div class="latin">filii Nasia, filii Hatipha,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">i figliuoli di Nesia, i figliuoli di Hatifa.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-55">
+      <div class="verse-num-col"><div class="verse-num">55</div></div>
+      <div class="verse-texts">
+        <div class="latin">filii servorum Salomonis, filii Sotai, filii Sophereth, filii Pharuda,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">De’ figliuoli de’ servi di Salomone: i figliuoli di Sotai, i figliuoli di Soferet, i figliuoli di Peruda, i figliuoli di Iaala,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-56">
+      <div class="verse-num-col"><div class="verse-num">56</div></div>
+      <div class="verse-texts">
+        <div class="latin">filii Jala, filii Dercon, filii Geddel,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">i figliuoli di Darcon, i figliuoli di Ghiddel,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-57">
+      <div class="verse-num-col"><div class="verse-num">57</div></div>
+      <div class="verse-texts">
+        <div class="latin">filii Saphatia, filii Hatil, filii Phochereth, qui erant de Asebaim, filii Ami :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">i figliuoli di Sefatia, i figliuoli di Hattil, i figliuoli di Pocheret-hassebaim, i figliuoli di Ami.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-58">
+      <div class="verse-num-col"><div class="verse-num">58</div></div>
+      <div class="verse-texts">
+        <div class="latin">omnes Nathinæi, et filii servorum Salomonis, trecenti nonaginta duo.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Tutti i Netinei, e i figliuoli de’ servi di Salomone furono trecennovantadue.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-59">
+      <div class="verse-num-col"><div class="verse-num">59</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et hi qui ascenderunt de Thelmala, Thelharsa, Cherub, et Adon, et Emer : et non potuerunt indicare domum patrum suorum et semen suum, utrum ex Israël essent.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Or costoro vennero di Telmela, e di Telharsa, cioè: Cherub, Addan, ed Immer, e non poterono dimostrar la casa loro paterna, nè la lor progenie, se erano d’Israele;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-60">
+      <div class="verse-num-col"><div class="verse-num">60</div></div>
+      <div class="verse-texts">
+        <div class="latin">Filii Dalaia, filii Tobia, filii Necoda, sexcenti quinquaginta duo.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">come anche i figliuoli di Delaia, i figliuoli di Tobia, i figliuoli di Necoda, in numero di seicencinquantadue.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-61">
+      <div class="verse-num-col"><div class="verse-num">61</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et de filiis sacerdotum : filii Hobia, filii Accos, filii Berzellai, qui accepit de filiabus Berzellai Galaaditis, uxorem, et vocatus est nomine eorum :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">E de’ figliuoli de’ sacerdoti, i figliuoli di Abaia, i figliuoli di Cos, i figliuoli di Barzillai, il quale prese per moglie una delle figliuole di Barzillai Galaadita, e fu nominato del nome loro.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-62">
+      <div class="verse-num-col"><div class="verse-num">62</div></div>
+      <div class="verse-texts">
+        <div class="latin">hi quæsierunt scripturam genealogiæ suæ, et non invenerunt, et ejecti sunt de sacerdotio.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Costoro cercarono i lor nomi fra i rassegnati nelle genealogie; ma non furono trovati; laonde furono appartati dal sacerdozio, come persone non consacrate.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-63">
+      <div class="verse-num-col"><div class="verse-num">63</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et dixit Athersatha eis ut non comederent de Sancto sanctorum, donec surgeret sacerdos doctus atque perfectus.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Ed Hattirsata disse loro che non mangiassero delle cose santissime, finchè si presentasse un sacerdote con Urim e Tummim.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-64">
+      <div class="verse-num-col"><div class="verse-num">64</div></div>
+      <div class="verse-texts">
+        <div class="latin">Omnis multitudo quasi unus, quadraginta duo millia trecenti sexaginta :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Questa raunanza, tutta insieme, era di quarantaduemila trecensessanta;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-65">
+      <div class="verse-num-col"><div class="verse-num">65</div></div>
+      <div class="verse-texts">
+        <div class="latin">exceptis servis eorum, et ancillis, qui erant septem millia trecenti triginta septem : et in ipsis cantores atque cantatrices ducenti.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">oltre a’ lor servi e serve, in numero di settemila trecentrentasette, fra i quali v’erano dugento cantori e cantatrici.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-66">
+      <div class="verse-num-col"><div class="verse-num">66</div></div>
+      <div class="verse-texts">
+        <div class="latin">Equi eorum septingenti triginta sex, muli eorum, ducenti quadraginta quinque,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">I lor cavalli erano settecentrentasei, i lor muli dugenquarantacinque,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-67">
+      <div class="verse-num-col"><div class="verse-num">67</div></div>
+      <div class="verse-texts">
+        <div class="latin">cameli eorum, quadringenti triginta quinque, asini eorum, sex millia septingenti viginti.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">i lor cammelli quattrocentrentacinque, gli asini seimila settecenventi.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-68">
+      <div class="verse-num-col"><div class="verse-num">68</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et de principibus patrum, cum ingrederentur templum Domini, quod est in Jerusalem, sponte obtulerunt in domum Dei ad exstruendam eam in loco suo.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Ed alcuni d’infra i capi delle famiglie paterne, quando furono giunti alla Casa del Signore, che è in Gerusalemme, fecero una offerta volontaria per la Casa di Dio, per rimetterla in piè.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-69">
+      <div class="verse-num-col"><div class="verse-num">69</div></div>
+      <div class="verse-texts">
+        <div class="latin">Secundum vires suas dederunt impensas operis, auri solidos sexaginta millia et mille, argenti mnas quinque millia, et vestes sacerdotales centum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">E diedero nel tesoro della fabbrica, secondo il lor potere, sessantunmila dramme d’oro, e cinquemila mine d’argento, e cento robe da sacerdoti.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-70">
+      <div class="verse-num-col"><div class="verse-num">70</div></div>
+      <div class="verse-texts">
+        <div class="latin">Habitaverunt ergo sacerdotes, et Levitæ, et de populo, et cantores, et janitores, et Nathinæi, in urbibus suis, universusque Israël in civitatibus suis.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">E i sacerdoti e i Leviti, e que’ del popolo, e i cantori, e i portinai, e i Netinei, abitarono nelle lor città; tutto Israele eziandio abitò nelle sue città.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch3">
+    <div class="chapter-marker">
+      <span class="ch-roman">III</span>
+      <span class="ch-label">Caput 3</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v3-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Jamque venerat mensis septimus, et erant filii Israël in civitatibus suis : congregatus est ergo populus quasi vir unus in Jerusalem.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">ORA, quando fu giunto il settimo mese, i figliuoli d’Israele abitando nelle lor città, il popolo si adunò di pari consentimento in Gerusalemme.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et surrexit Josue filius Josedec, et fratres ejus sacerdotes, et Zorobabel filius Salathiel, et fratres ejus, et ædificaverunt altare Dei Israël ut offerrent in eo holocautomata, sicut scriptum est in lege Moysi viri Dei.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Allora, Iesua, figliuolo di Iosadac, si levò su, co’ sacerdoti, suoi fratelli; e Zorobabel, figliuolo di Sealtiel, co’ suoi fratelli; e riedificarono l’Altare dell’Iddio d’Israele, per offerire sopra esso gli olocausti, come è scritto nella Legge di Mosè, uomo di Dio.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Collocaverunt autem altare Dei super bases suas, deterrentibus eos per circuitum populis terrarum : et obtulerunt super illud holocaustum Domino mane et vespere.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">E rizzarono l’Altare sopra la sua pianta; perchè aveano spavento de’ popoli de’ paesi vicini; ed offersero sopra esso olocausti al Signore: gli olocausti della mattina e della sera.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Feceruntque solemnitatem tabernaculorum, sicut scriptum est, et holocaustum diebus singulis per ordinem secundum præceptum opus diei in die suo.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Celebrarono eziandio la festa de’ tabernacoli, come è scritto; ed offersero olocausti per ciascun giorno in certo numero, secondo che è ordinato giorno per giorno.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et post hæc holocaustum juge, tam in calendis quam in universis solemnitatibus Domini quæ erant consecratæ, et in omnibus in quibus ultro offerebatur munus Domino.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">E dopo questo offersero l’olocausto continuo, e quelli delle calendi, e di tutte le feste solenni del Signore, le quali sono santificate; e quelli di tutti coloro che offerivano alcuna offerta volontaria al Signore.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">A primo die mensis septimi cœperunt offerre holocaustum Domino : porro templum Dei nondum fundatum erat.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Dal primo giorno del settimo mese cominciarono ad offerire olocausti al Signore. Or il Tempio del Signore non era ancora fondato.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Dederunt autem pecunias latomis et cæmentariis : cibum quoque, et potum, et oleum Sidoniis Tyriisque, ut deferrent ligna cedrina de Libano ad mare Joppe, juxta quod præceperat Cyrus rex Persarum eis.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Ed essi diedero danari agli scarpellini, ed a’ legnaiuoli; diedero eziandio vittuaglia, e bevanda, ed olio, a’ Sidonii, e a’ Tirii, per portar legname di cedro dal Libano al mar di Iafo, secondo la concessione che Ciro, re di Persia, avea loro fatta.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Anno autem secundo adventus eorum ad templum Dei in Jerusalem, mense secundo, cœperunt Zorobabel filius Salathiel, et Josue filius Josedec, et reliqui de fratribus eorum sacerdotes, et Levitæ, et omnes qui venerant de captivitate in Jerusalem, et constituerunt Levitas a viginti annis et supra, ut urgerent opus Domini.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">E nell’anno secondo, da che furono giunti alla Casa di Dio in Gerusalemme, nel secondo mese, Zorobabel, figliuolo di Sealtiel, e Iesua, figliuolo di Iosadac, e il rimanente de’ lor fratelli, sacerdoti, e Leviti, e tutti quelli ch’erano venuti dalla cattività in Gerusalemme, cominciarono a rifare il Tempio; e costituirono de’ Leviti dall’età di vent’anni in su, per sollecitare il lavoro della Casa del Signore.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Stetitque Josue et filii ejus et fratres ejus, Cedmihel et filii ejus, et filii Juda, quasi vir unus, ut instarent super eos qui faciebant opus in templo Dei : filii Henadad, et filii eorum, et fratres eorum Levitæ.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Iesua eziandio, ed i suoi figliuoli e fratelli, e Cadmiel, co’ suoi figliuoli, figliuoli di Giuda, di pari consentimento erano presenti, per sollecitar quelli che lavoravano all’opera della Casa di Dio; come ancora i figliuoli di Henadad, ed i lor figliuoli, e fratelli.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Fundato igitur a cæmentariis templo Domini, steterunt sacerdotes in ornatu suo cum tubis, et Levitæ filii Asaph in cymbalis, ut laudarent Deum per manus David regis Israël.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Ora, come gli edificatori fondavano il Tempio del Signore, si fecero star quivi presenti i sacerdoti, vestiti delle lor vesti, con trombe; ed i Leviti, figliuoli di Asaf, con cembali per lodare il Signore, secondo l’ordine di Davide, re d’Israele.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et concinebant in hymnis, et confessione Domino : Quoniam bonus, quoniam in æternum misericordia ejus super Israël. Omnis quoque populus vociferabatur clamore magno in laudando Dominum, eo quod fundatum esset templum Domini.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">E cantavano a vicenda, lodando, e celebrando il Signore, dicendo: Ch’egli è buono, che la sua benignità è in eterno sopra Israele. E tutto il popolo gittava gran grida, lodando il Signore, perchè la Casa del Signore si fondava.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Plurimi etiam de sacerdotibus et Levitis, et principes patrum, et seniores, qui viderant templum prius cum fundatum esset, et hoc templum, in oculis eorum, flebant voce magna : et multi vociferantes in lætitia, elevabant vocem.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Ma molti de’ sacerdoti, e dei Leviti, e de’ capi delle famiglie paterne, ch’erano vecchi, e aveano veduta la primiera Casa in piè, avendo questa Casa davanti agli occhi, piangevano con gran grida, mentre molti altri alzavano la voce con grida d’allegrezza.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nec poterat quisquam agnoscere vocem clamoris lætantium, et vocem fletus populi : commistim enim populus vociferabatur clamore magno, et vox audiebatur procul.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">E il popolo non poteva discernere la voce delle grida di allegrezza dalla voce del pianto nel popolo; perciocchè il popolo gittava gran grida, e la voce ne fu udita fin da lungi.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch4">
+    <div class="chapter-marker">
+      <span class="ch-roman">IV</span>
+      <span class="ch-label">Caput 4</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v4-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Audierunt autem hostes Judæ et Benjamin, quia filii captivitatis ædificarent templum Domino Deo Israël :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">OR i nemici di Giuda e di Beniamino, avendo inteso che quelli ch’erano stati in cattività, riedificavano il Tempio al Signore Iddio d’Israele,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">et accedentes ad Zorobabel, et ad principes patrum, dixerunt eis : Ædificemus vobiscum, quia ita ut vos, quærimus Deum vestrum : ecce nos immolavimus victimas a diebus Asor Haddan regis Assur, qui adduxit nos huc.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">si accostarono a Zorobabel, ed a’ capi delle famiglie paterne, e dissero loro: Lasciate che noi edifichiamo con voi; perciocchè noi desideriamo ricercar l’Iddio vostro, come voi; ed anche noi gli sacrifichiamo dal tempo di Esar-haddon, re degli Assiri, il qual ci ha fatti venir qua.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et dixit eis Zorobabel, et Josue, et reliqui principes patrum Israël : Non est vobis et nobis ut ædificemus domum Deo nostro, sed nos ipsi soli ædificabimus Domino Deo nostro, sicut præcepit nobis Cyrus rex Persarum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Ma Zorobabel, e Iesua, e gli altri capi delle famiglie paterne d’Israele, risposero loro: Ei non vi si conviene di edificar la Casa all’Iddio nostro con noi; ma noi congiuntamente edificheremo la Casa al Signore Iddio d’Israele, siccome Ciro, re di Persia, ci ha comandato.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Factum est igitur ut populus terræ impediret manus populi Judæ, et turbaret eos in ædificando.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Ed il popolo del paese rendeva rimesse le mani del popolo di Giuda, e lo spaventava di fabbricare.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Conduxerunt autem adversus eos consiliatores, ut destruerent consilium eorum omnibus diebus Cyri regis Persarum, et usque ad regnum Darii regis Persarum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Oltre a ciò davano pensione a certi consiglieri contro a’ Giudei, per rompere il lor consiglio; e questo durò tutto il tempo di Ciro, re di Persia, e fino al regno di Dario, re di Persia.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">In regno autem Assueri, in principio regni ejus, scripserunt accusationem adversus habitatores Judæ et Jerusalem.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">E sotto il regno di Assuero, al principio di esso, scrissero un’accusa contro agli abitanti di Giuda e di Gerusalemme.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et in diebus Artaxerxis scripsit Beselam, Mithridates, et Thabeel, et reliqui qui erant in consilio eorum, ad Artaxerxem regem Persarum : epistola autem accusationis scripta erat syriace, et legebatur sermone syro.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">E poi al tempo di Artaserse, Bislam, Mitredat, Tabeel, e gli altri suoi colleghi, scrissero ad Artaserse, re di Persia; e la scrittura e la lingua della lettera era siriaca.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Reum Beelteem, et Samsai scriba, scripserunt epistolam unam de Jerusalem Artaxerxi regi, hujuscemodi :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Rehum, presidente del consiglio, e Simsai, segretario, scrissero una lettera al re Artaserse contro a Gerusalemme, di questo tenore.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Reum Beelteem, et Samsai scriba, et reliqui consiliatores eorum, Dinæi, et Apharsathachæi, Terphalæi, Apharsæi, Erchuæi, Babylonii, Susanechæi, Dievi, et Ælamitæ,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Allora Rehum, presidente del consiglio, e Simsai, segretario, e gli altri lor colleghi, i Dinei, e gli Afarsatchei, i Tarpelei, gli Afarsei, gli Archevei, i Babiloni, i Susanchei, i Dehavei, gli Elamiti,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">et ceteri de gentibus, quas transtulit Asenaphar magnus et gloriosus, et habitare eas fecit in civitatibus Samariæ, et in reliquis regionibus trans flumen in pace</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">e gli altri popoli, che il grande e glorioso Osnappar avea tramutati di stanza, e fatti abitar nella città di Samaria, e gli altri di di là dal fiume, ecc. scrissero al re Artaserse.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">(hoc est exemplar epistolæ, quam miserunt ad eum), Artaxerxi regi, servi tui, viri qui sunt trans fluvium, salutem dicunt.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Questo è il tenor della lettera che gli mandarono. Al re Artaserse: i tuoi servitori, gli uomini di qua dal fiume, ecc.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Notum sit regi quia Judæi, qui ascenderunt a te ad nos, venerunt in Jerusalem civitatem rebellem et pessimam, quam ædificant exstruentes muros ejus, et parietes componentes.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Il re sappia che i Giudei, che son venuti d’appresso a te a noi, son giunti in Gerusalemme; e che riedificano quella città ribella e malvagia; e rifanno interamente le mura, ed hanno già racconci i fondamenti.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nunc igitur notum sit regi, quia si civitas illa ædificata fuerit, et muri ejus instaurati, tributum, et vectigal, et annuos reditus non dabunt, et usque ad reges hæc noxa perveniet.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Ora sappia il re, che se questa città è riedificata, e se le sue mura son rifatte, essi non pagheranno più tributo, nè taglia, nè gabella; e così quella città recherà danno alle entrate reali.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nos autem memores salis, quod in palatio comedimus, et quia læsiones regis videre nefas ducimus, idcirco misimus et nuntiavimus regi,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Ora, conciossiachè noi siamo salariati dal palazzo, e non sia cosa conveniente a noi il vedere che il re sia schernito, perciò abbiamo mandato a fare assapere la cosa al re.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">ut recenseas in libris historiarum patrum tuorum, et invenies scriptum in commentariis : et scies quoniam urbs illa, urbs rebellis est, et nocens regibus et provinciis, et bella concitantur in ea ex diebus antiquis : quam ob rem et civitas ipsa destructa est.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Acciocchè cerchi nel libro delle memorie de’ suoi predecessori; e tu vi troverai, e conoscerai che questa città è una città ribella, e dannosa ai re ed alle provincie; e che già ab antico vi si fanno dentro congiure; per la qual cagione fu distrutta.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nuntiamus nos regi, quoniam si civitas illa ædificata fuerit, et muri ipsius instaurati, possessionem trans fluvium non habebis.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Noi facciamo assapere al re, che, se questa città è riedificata, e le sue mura son rifatte, la parte de’ suoi stati ch’è di qua dal fiume, non sarà più sua.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Verbum misit rex ad Reum Beelteem, et Samsai scribam, et ad reliquos, qui erant in consilio eorum habitatores Samariæ, et ceteris trans fluvium, salutem dicens et pacem.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Il re mandò questa risposta: A Rehum, presidente del consiglio, ed a Simsai, segretario, ed agli altri lor colleghi, abitanti in Samaria; ed a tutti gli altri di di là dal fiume, salute ecc.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Accusatio, quam misistis ad nos, manifeste lecta est coram me,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">La lettera, che voi ci avete mandata, è stata spiegata, e letta in presenza mia.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">et a me præceptum est : et recensuerunt, inveneruntque quoniam civitas illa a diebus antiquis adversum reges rebellat, et seditiones, et prælia concitantur in ea :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">E per mio comandamento, si è cercato, e trovato che cotesta città già ab antico si solleva contro ai re; che vi si fanno ribellioni e congiure;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">nam et reges fortissimi fuerunt in Jerusalem, qui et dominati sunt omni regioni quæ trans fluvium est : tributum quoque et vectigal, et reditus accipiebant.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">e che già vi furono re potenti in Gerusalemme, i quali signoreggiarono in tutto il paese ch’è di là dal fiume; e ch’erano loro pagati tributi, taglie e gabelle.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nunc ergo audite sententiam : prohibeatis viros illos, ut urbs illa non ædificetur donec si forte a me jussum fuerit.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Ora dunque provvedete di far cessare quelle genti, acciocchè cotesta città non si riedifichi, finchè da me sia altrimenti ordinato;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-22">
+      <div class="verse-num-col"><div class="verse-num">22</div></div>
+      <div class="verse-texts">
+        <div class="latin">Videte ne negligenter hoc impleatis, et paulatim crescat malum contra reges.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">e guardatevi di far fallo in questo; perchè si lascerebbe crescere il male in detrimento dei re?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-23">
+      <div class="verse-num-col"><div class="verse-num">23</div></div>
+      <div class="verse-texts">
+        <div class="latin">Itaque exemplum edicti Artaxerxis regis lectum est coram Reum Beelteem, et Samsai scriba, et consiliariis eorum : et abierunt festini in Jerusalem ad Judæos, et prohibuerunt eos in brachio et robore.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Allora, tosto che il tenor delle lettere del re Artaserse fu letto in presenza di Rehum, e di Simsai, segretario, e de’ lor colleghi, essi andarono prestamente in Gerusalemme a’ Giudei, e li fecero cessare a mano armata.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v4-24">
+      <div class="verse-num-col"><div class="verse-num">24</div></div>
+      <div class="verse-texts">
+        <div class="latin">Tunc intermissum est opus domus Domini in Jerusalem, et non fiebat usque ad annum secundum regni Darii regis Persarum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">In quel tempo fu tralasciata l’opera della Casa di Dio, che è in Gerusalemme, e restò così tralasciata fino all’anno secondo del regno di Dario, re di Persia.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch5">
+    <div class="chapter-marker">
+      <span class="ch-roman">V</span>
+      <span class="ch-label">Caput 5</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v5-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Prophetaverunt autem Aggæus propheta, et Zacharias filius Addo, prophetantes ad Judæos qui erant in Judæa et Jerusalem, in nomine Dei Israël.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">ALLORA il profeta Aggeo, e Zaccaria, figliuolo d’Iddo, profeti, ch’erano mandati a’ Giudei ch’erano in Giuda e in Gerusalemme, profetizzarono loro a Nome dell’Iddio d’Israele.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Tunc surrexerunt Zorobabel filius Salathiel, et Josue filius Josedec, et cœperunt ædificare templum Dei in Jerusalem, et cum eis prophetæ Dei adjuvantes eos.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">E Zorobabel, figliuolo di Sealtiel, e Iesua, figliuolo di Iosadac, si levarono, e ricominciarono ad edificar la Casa di Dio, che è in Gerusalemme; e con loro erano i profeti di Dio, i quali li confortavano.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">In ipso autem tempore venit ad eos Thathanai, qui erat dux trans flumen, et Stharbuzanai, et consiliarii eorum : sicque dixerunt eis : Quis dedit vobis consilium ut domum hanc ædificaretis, et muros ejus instauraretis ?</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">In quel tempo venne a loro Tattenai, governatore di qua dal fiume, e Setarboznai, ed i lor colleghi, e dissero loro così: Chi vi ha ordinato di edificar questa Casa, e di rifar queste mura?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ad quod respondimus eis, quæ essent nomina hominum auctorum ædificationis illius.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Allora noi rispondemmo loro sopra ciò, dicendo loro i nomi di quelli ch’edificavano questo edificio.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Oculus autem Dei eorum factus est super senes Judæorum, et non potuerunt inhibere eos. Placuitque ut res ad Darium referretur, et tunc satisfacerent adversus accusationem illam.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Ora, perciocchè l’occhio dell’Iddio loro era sopra gli Anziani de’ Giudei, coloro non li fecero cessare, finchè la cosa pervenne a Dario; e allora riportarono lettere sopra ciò.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Exemplar epistolæ, quam misit Thathanai dux regionis trans flumen, et Stharbuzanai, et consiliatores ejus Arphasachæi, qui erant trans flumen, ad Darium regem.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Tenor delle lettere, le quali Tattenai, governatore di qua dal fiume, e Setarboznai, ed i suoi colleghi Afarsechei, che erano di qual dal fiume, mandarono al re Dario;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sermo, quem miserant ei, sic scriptus erat : Dario regi pax omnis.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">nelle quali gli mandarono il fatto. E così era scritto in esse: Al re Dario ogni salute.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Notum sit regi, isse nos ad Judæam provinciam, ad domum Dei magni, quæ ædificatur lapide impolito, et ligna ponuntur in parietibus : opusque illud diligenter exstruitur, et crescit in manibus eorum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Il re sappia che noi siamo andati nella provincia della Giudea, alla Casa del grande Iddio, la quale si edifica di pietre pulite; e già i legnami son posti in su le pareti; e questa opera si fa in fretta, e si avanza nelle mani di quella gente.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Interrogavimus ergo senes illos, et ita diximus eis : Quis dedit vobis potestatem ut domum hanc ædificaretis, et muros hos instauraretis ?</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Avendo ciò veduto, abbiamo domandato a quegli Anziani, e abbiam loro detto così: Chi vi ha ordinato di edificar questa Casa, e di rifar queste mura?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sed et nomina eorum quæsivimus ab eis, ut nuntiaremus tibi : scripsimusque nomina eorum virorum, qui sunt principes in eis.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Abbiamo loro eziandio domandati i nomi di coloro, per farteli assapere: acciocchè ti scrivessimo i nomi di quelli che sono i principali fra loro.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hujuscemodi autem sermonem responderunt nobis dicentes : Nos sumus servi Dei cæli et terræ, et ædificamus templum, quod erat exstructum ante hos annos multos, quodque rex Israël magnus ædificaverat, et exstruxerat.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Ed essi ci hanno data questa risposta, dicendo: Noi siamo servitori dell’Iddio del cielo e della terra; e riedifichiamo la Casa, la quale era già molti anni innanzi stata edificata; la quale un gran re d’Israele avea già edificata e compiuta.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Postquam autem ad iracundiam provocaverunt patres nostri Deum cæli, tradidit eos in manus Nabuchodonosor regis Babylonis Chaldæi, domum quoque hanc destruxit, et populum ejus transtulit in Babylonem.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Ma dopo che i nostri padri ebbero provocato ad ira l’Iddio del cielo, egli li diede nelle mani di Nebucadnesar, re di Babilonia, Caldeo, il qual distrusse questa Casa, e menò in cattività il popolo di essa in Babilonia.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Anno autem primo Cyri regis Babylonis, Cyrus rex proposuit edictum ut domus Dei hæc ædificaretur.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Ma l’anno primo di Ciro, re di Babilonia, egli ordinò che questa Casa di Dio fosse riedificata.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nam et vasa templi Dei aurea et argentea, quæ Nabuchodonosor tulerat de templo, quod erat in Jerusalem, et asportaverat ea in templum Babylonis, protulit Cyrus rex de templo Babylonis, et data sunt Sassabasar vocabulo, quem et principem constituit,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Ed anche il re Ciro trasse fuor del tempio di Babilonia i vasellamenti d’oro e d’argento della Casa di Dio, i quali Nebucadnesar avea tratti fuor del Tempio, ch’era in Gerusalemme, e portati nel tempio di Babilonia; e quelli furon dati ad uno, nominato Sesbassar, il quale Ciro avea costituito governatore.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">dixitque ei : Hæc vasa tolle, et vade, et pone ea in templo, quod est in Jerusalem, et domus Dei ædificetur in loco suo.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">E Ciro gli disse: Prendi questi vasellamenti, e va’, e li riporta al Tempio, che è in Gerusalemme; e sia la Casa di Dio riedificata nel suo luogo.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Tunc itaque Sassabasar ille venit et posuit fundamenta templi Dei in Jerusalem, et ex eo tempore usque nunc ædificatur, et necdum completum est.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Allora questo Sesbassar venne, e pose i fondamenti della Casa di Dio, che è in Gerusalemme; e da quel tempo infino ad ora ella si edifica, e non è ancora compiuta.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v5-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nunc ergo si videtur regi bonum, recenseat in bibliotheca regis, quæ est in Babylone, utrumnam a Cyro rege jussum fuerit ut ædificaretur domus Dei in Jerusalem, et voluntatem regis super hac re mittat ad nos.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Ora dunque, se piace al re, ricerchisi costì nella casa de’ tesori del re, che è in Babilonia, se egli è vero che da Ciro fosse fatto comandamento che questa Casa di Dio fosse riedificata in Gerusalemme; e mandici il re la sua volontà intorno a ciò.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch6">
+    <div class="chapter-marker">
+      <span class="ch-roman">VI</span>
+      <span class="ch-label">Caput 6</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v6-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Tunc Darius rex præcepit : et recensuerunt in bibliotheca librorum, qui erant repositi in Babylone.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Allora il re Dario ordinò che si ricercasse nell’archivio, nel luogo dove si riponevano i tesori in Babilonia.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et inventum est in Ecbatanis, quod est castrum in Medena provincia, volumen unum : talisque scriptus erat in eo commentarius :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">E fu trovato in Ecbatana, nel palazzo reale, ch’era nella provincia di Media, un libro, nel quale era scritto: Memoria:</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Anno primo Cyri regis, Cyrus rex decrevit ut domus Dei ædificaretur, quæ est in Jerusalem, in loco ubi immolent hostias, et ut ponant fundamenta supportantia altitudinem cubitorum sexaginta, et latitudinem cubitorum sexaginta,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">L’anno primo del re Ciro, il re Ciro ordinò, intorno alla Casa di Dio in Gerusalemme, ch’essa fosse riedificata, per essere un luogo dove si sacrificassero sacrificii; e che i suoi fondamenti fossero saldi e forti; e che la sua altezza fosse di sessanta cubiti, e la sua lunghezza parimente di sessanta cubiti;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">ordines de lapidibus impolitis tres, et sic ordines de lignis novis : sumptus autem de domo regis dabuntur.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">e che vi fossero tre ordini di pietre pulite, e un ordine di travatura nuova; e che la spesa fosse fornita dal palazzo del re.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sed et vasa templi Dei aurea et argentea, quæ Nabuchodonosor tulerat de templo Jerusalem, et attulerat ea in Babylonem, reddantur, et referantur in templum in Jerusalem in locum suum, quæ et posita sunt in templo Dei.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Ed anche che gli arredi d’oro e d’argento della Casa di Dio, i quali Nebucadnesar avea tratti fuor del Tempio di Gerusalemme, e portati in Babilonia, fossero restituiti, e portati nel luogo loro, nel Tempio di Gerusalemme, e fossero posti nella Casa di Dio.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nunc ergo Thathanai dux regionis, quæ est trans flumen, Stharbuzanai, et consiliarii vestri Apharsachæi, qui estis trans flumen, procul recedite ab illis,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Ora tu, Tattenai, governatore di là dal fiume, e tu, Setar-boznai, e voi lor colleghi Afarsechei, che siete di là dal fiume, ritraetevi di là;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">et dimittite fieri templum Dei illud a duce Judæorum, et a senioribus eorum, ut domum Dei illam ædificent in loco suo.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">e lasciate continuar l’opera di cotesta Casa di Dio. Riedifichino il governatore de’ Giudei, e gli Anziani loro, cotesta Casa di Dio nel suo luogo.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sed et a me præceptum est quid oporteat fieri a presbyteris Judæorum illis ut ædificetur domus Dei, scilicet ut de arca regis, id est, de tributis quæ dantur de regione trans flumen, studiose sumptus dentur viris illis, ne impediatur opus.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Ed intorno a ciò che voi avete a fare inverso cotesti Anziani de’ Giudei, per riedificar cotesta Casa di Dio, io ordino, che delle entrate del re, che si traggono da’ tributi di di là dal fiume, le spese sieno prontamente fornite a quelle genti; acciocchè non si facciano restare;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quod si necesse fuerit, et vitulos, et agnos, et hædos in holocaustum Deo cæli, frumentum, sal, vinum, et oleum, secundum ritum sacerdotum, qui sunt in Jerusalem, detur eis per singulos dies, ne sit in aliquo querimonia.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">e che sia loro dato giorno per giorno, senza alcun fallo, ciò che sarà necessario: buoi, e montoni, ed agnelli, per fare olocausti all’Iddio del cielo; e grano, sale, vino, ed olio, secondo che diranno i sacerdoti che sono in Gerusalemme.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et offerant oblationes Deo cæli, orentque pro vita regis, et filiorum ejus.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Acciocchè offeriscano sacrificii di soave adore all’Iddio del cielo; e preghino per la vita del re, e de’ suoi figliuoli.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">A me ergo positum est decretum : ut omnis homo qui hanc mutaverit jussionem, tollatur lignum de domum ipsius, et erigatur, et configatur in eo, domus autem ejus publicetur.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Ed anche da me è fatto un decreto, che, se alcuno fa altrimenti, una trave sia spiccata della sua casa, e sia rizzata, e ch’egli vi sia fatto morir sopra; e che della sua casa sia fatta una latrina, per questa cagione.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Deus autem, qui habitare fecit nomen suum ibi, dissipet omnia regna, et populum qui extenderit manum suam ut repugnet, et dissipet domum Dei illam, quæ est in Jerusalem. Ego Darius statui decretum, quod studiose impleri volo.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">E Dio, che ha stanziato quivi il suo Nome, distrugga ogni re e popolo che metterà la mano per mutar questo, e per disfar di nuovo cotesta Casa di Dio, che è in Gerusalemme. Io Dario ho fatto questo decreto; sia, senza indugio, messo ad esecuzione.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Igitur Thathanai dux regionis trans flumen, et Stharbuzanai, et consiliarii ejus, secundum quod præceperat Darius rex, sic diligenter executi sunt.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Allora Tattenai, governatore di qua dal fiume, e Setar-boznai, ed i lor colleghi, perciocchè il re Dario avea lor mandato un tal comandamento, prontamente l’eseguirono.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Seniores autem Judæorum ædificabant, et prosperabantur juxta prophetiam Aggæi prophetæ, et Zachariæ filii Addo : et ædificaverunt et construxerunt, jubente Deo Israël, et jubente Cyro, et Dario, et Artaxerxe regibus Persarum :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">E gli Anziani de’ Giudei edificarono, ed avanzarono l’opera, secondo la profezia del profeta Aggeo, e di Zaccaria, figliuolo d’Iddo. Essi adunque edificarono, e compierono l’edificio per comandamento dell’Iddio d’Israele, e per ordine di Ciro, di Dario, e di Artaserse, re di Persia.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">et compleverunt domum Dei istam, usque ad diem tertium mensis Adar, qui est annus sextus regni Darii regis.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">E questa Casa fu finita al terzo giorno del mese di Adar, l’anno sesto del regno del re Dario.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Fecerunt autem filii Israël sacerdotes et Levitæ, et reliqui filiorum transmigrationis, dedicationem domus Dei in gaudio.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">E I figliuoli d’Israele, i sacerdoti, i Leviti, e gli altri d’infra quelli ch’erano stati in cattività, celebrarono la dedicazione di questa Casa di Dio con allegrezza.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et obtulerunt in dedicationem domus Dei, vitulos centum, arietes ducentos, agnos quadringentos, hircos caprarum pro peccato totius Israël duodecim, juxta numerum tribuum Israël.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">E, per la dedicazione di questa Casa di Dio, offersero cento giovenchi, dugento montoni, e quattrocento agnelli; e per sacrificio per lo peccato per tutto Israele, dodici becchi, secondo il numero delle tribù d’Israele.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et statuerunt sacerdotes in ordinibus suis, et Levitas in vicibus suis, super opera Dei in Jerusalem, sicut scriptum est in libro Moysi.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">E costituirono i sacerdoti nelle lor mute, e i Leviti ne’ loro spartimenti, per fare il servigio di Dio, che abita in Gerusalemme, secondo che è scritto nel libro di Mosè.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">Fecerunt autem filii Israël transmigrationis Pascha, quartadecima die mensis primi.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Poi quelli ch’erano stati in cattività fecero la Pasqua al quartodecimo giorno del primo mese;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">Purificati enim fuerant sacerdotes et Levitæ quasi unus : omnes mundi ad immolandum Pascha universis filiis transmigrationis, et fratribus suis sacerdotibus, et sibi.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">perciocchè i sacerdoti ed i Leviti si erano purificati di pari consentimento, ed erano tutti netti; e scannarono la Pasqua per tutti quelli ch’erano stati in cattività, e per li sacerdoti, lor fratelli, e per sè stessi.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et comederunt filii Israël, qui reversi fuerant de transmigratione, et omnes qui se separaverant a coinquinatione gentium terræ ad eos, ut quærerent Dominum Deum Israël.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Così i figliuoli d’Israele, ch’erano ritornati dalla cattività, e tutti quelli che si erano ridotti a loro, separandosi dalla contaminazione delle genti del paese, per cercare il Signore Iddio d’Israele, mangiarono la Pasqua.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v6-22">
+      <div class="verse-num-col"><div class="verse-num">22</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et fecerunt solemnitatem azymorum septem diebus in lætitia, quoniam lætificaverat eos Dominus, et converterat cor regis Assur ad eos, ut adjuvaret manus eorum in opere domus Domini Dei Israël.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">E celebrarono la festa degli Azzimi per sette giorni con allegrezza; perciocchè il Signore li avea rallegrati, avendo rivolto verso loro il cuore del re di Assiria, per dar loro aiuto e favore, nell’opera della Casa di Dio, dell’Iddio d’Israele.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch7">
+    <div class="chapter-marker">
+      <span class="ch-roman">VII</span>
+      <span class="ch-label">Caput 7</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v7-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Post hæc autem verba in regno Artaxerxis regis Persarum, Esdras filius Saraiæ, filii Azariæ, filii Helciæ,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">ORA, dopo queste cose, sotto il regno di Artaserse, re di Persia, Esdra, figliuolo di Seraia, figliuolo di Azaria, figliuolo di Hilchia,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">filii Sellum, filii Sadoc, filii Achitob,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">figliuolo di Sallum, figliuolo di Sadoc, figliuolo di Ahitub,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">filii Amariæ, filii Azariæ, filii Maraioth,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">figliuolo di Amaria, figliuolo di Azaria, figliuolo di Meraiot,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">filii Zarahiæ, filii Ozi, filii Bocci,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">figliuolo di Zerahia, figliuolo di Uzzi,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">filii Abisue, filii Phinees, filii Eleazar, filii Aaron sacerdotis ab initio.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">figliuolo di Bucchi, figliuolo di Abisua, figliuolo di Finees, figliuolo di Eleazaro, figliuolo d’Aaronne, sommo sacerdote;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ipse Esdras ascendit de Babylone, et ipse scriba velox in lege Moysi, quam Dominus Deus dedit Israël : et dedit ei rex secundum manum Domini Dei ejus super eum, omnem petitionem ejus.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">esso Esdra ritornò in Babilonia or egli era scriba, esercitato nella Legge di Mosè, la quale il Signore Iddio d’Israele avea data, e il re gli diede tutto ciò ch’egli domandò, secondo che la mano del Signore Iddio suo era sopra lui.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et ascenderunt de filiis Israël, et de filiis sacerdotum, et de filiis Levitarum, et de cantoribus, et de janitoribus, et de Nathinæis, in Jerusalem, anno septimo Artaxerxis regis.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">E con lui ritornarono in Gerusalemme de’ figliuoli d’Israele, e de’ sacerdoti, e dei Leviti, e de’ cantori, e de’ portinai, e dei Netinei; l’anno settimo del re Artaserse.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et venerunt in Jerusalem mense quinto, ipse est annus septimus regis.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Ed egli arrivò in Gerusalemme al quinto mese dell’anno settimo del re.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quia in primo die mensis primi cœpit ascendere de Babylone, et in primo die mensis quinti venit in Jerusalem, juxta manum Dei sui bonam super se.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Perciocchè al primo giorno del primo mese fu fermata la dipartita di Babilonia; e al primo giorno del quinto mese egli arrivò in Gerusalemme, secondo che la mano del Signore era buona sopra lui.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Esdras enim paravit cor suum, ut investigaret legem Domini, et faceret et doceret in Israël præceptum et judicium.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Conciossiachè Esdra avesse disposto il cuor suo, per ricercar la Legge del Signore, e per eseguirla, e per insegnare gli statuti, e le leggi in Israele.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hoc est autem exemplar epistolæ edicti, quod dedit rex Artaxerxes Esdræ sacerdoti, scribæ erudito in sermonibus et præceptis Domini, et cæremoniis ejus in Israël.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Or questo è il tenore delle lettere che il re Artaserse diede ad Esdra sacerdote, e scriba, scriba delle parole de’ comandamenti del Signore, e de’ suoi statuti dati a Israele:</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Artaxerxes rex regum Esdræ sacerdoti scribæ legis Dei cæli doctissimo, salutem.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Artaserse, re dei re, ad Esdra sacerdote, scriba della Legge dell’Iddio del cielo: compiuta salute, ecc.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">A me decretum est, ut cuicumque placuerit in regno meo de populo Israël, et de sacerdotibus ejus, et de Levitis, ire in Jerusalem, tecum vadat.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Da me è stato fatto un decreto, che tutti quelli d’infra il popolo d’Israele, e de’ sacerdoti loro, e de’ Leviti, che nel mio regno si disporranno volontariamente ad andare in Gerusalemme, vadano teco.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">A facie enim regis, et septem consiliatorum ejus, missus es, ut visites Judæam et Jerusalem in lege Dei tui, quæ est in manu tua :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Perciocchè tu sei mandato dal re, e da’ suoi sette consiglieri, per informarti in Giudea ed in Gerusalemme, intorno alla Legge dell’Iddio tuo, che tu hai in mano;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">et ut feras argentum et aurum quod rex, et consiliatores ejus, sponte obtulerunt Deo Israël, cujus in Jerusalem tabernaculum est.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">e per portar l’argento e l’oro che il re e i suoi consiglieri hanno volontariamente offerto all’Iddio d’Israele, la cui abitazione è in Gerusalemme;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et omne argentum et aurum quodcumque inveneris in universa provincia Babylonis, et populus offerre voluerit, et de sacerdotibus quæ sponte obtulerint domui Dei sui, quæ est in Jerusalem,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">e tutto l’argento e l’oro che tu troverai in tutta la provincia di Babilonia, insieme con le offerte volontarie del popolo, e de’ sacerdoti, le quali faranno per la Casa dell’Iddio loro, che è in Gerusalemme.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">libere accipe, et studiose eme de hac pecunia vitulos, arietes, agnos, et sacrificia, et libamina eorum, et offer ea super altare templi Dei vestri, quod est in Jerusalem.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Acciocchè con que’ danari tu comperi prontamente giovenchi, montoni ed agnelli, insieme con le loro offerte di panatica e da spandere; e che tu li offerisca sopra l’Altare della Casa del vostro Dio, che è in Gerusalemme.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sed et si quid tibi et fratribus tuis placuerit de reliquo argento et auro ut faciatis, juxta voluntatem Dei vestri facite.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">E del rimanente dell’oro e dell’argento fatene ciò che parrà a te ed a’ tuoi fratelli, secondo la volontà del vostro Dio.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vasa quoque, quæ dantur tibi in ministerium domus Dei tui, trade in conspectu Dei in Jerusalem.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">E quant’è agli arredi che ti son dati per lo servigio della Casa dell’Iddio tuo, rimettili nel cospetto dell’Iddio di Gerusalemme.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sed et cetera, quibus opus fuerit in domum Dei tui, quantumcumque necesse est ut expendas, dabitur de thesauro, et de fisco regis,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">E le altre cose necessarie per la Casa dell’Iddio tuo, le quali ti accaderà fornire, tu le fornirai della camera del re.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">et a me. Ego Artaxerxes rex, statui atque decrevi omnibus custodibus arcæ publicæ, qui sunt trans flumen, ut quodcumque petierit a vobis Esdras sacerdos, scriba legis Dei cæli, absque mora detis,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Ed io Artaserse, il re, ordino a tutti voi tesorieri che siete di là dal fiume, che tutto quello che il sacerdote Esdra, scriba della Legge dell’Iddio del cielo, vi chiederà, sia incontanente fatto,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-22">
+      <div class="verse-num-col"><div class="verse-num">22</div></div>
+      <div class="verse-texts">
+        <div class="latin">usque ad argenti talenta centum, et usque ad frumenti coros centum, et usque ad vini batos centum, et usque ad batos olei centum, sal vero absque mensura.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">fino a cento talenti d’argento, e fino a cento cori di grano, fino a cento bati di vino, e fino a cento bati d’olio; e del sale senza alcuna prescritta quantità.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-23">
+      <div class="verse-num-col"><div class="verse-num">23</div></div>
+      <div class="verse-texts">
+        <div class="latin">Omne quod ad ritum Dei cæli pertinet, tribuatur diligenter in domo Dei cæli : ne forte irascatur contra regnum regis, et filiorum ejus.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Tutto ciò che è del comandamento dell’Iddio del cielo, intorno alla sua Casa, sia prontamente fatto; perchè vi sarebbe egli indegnazione contro al regno, al re, ed a’ suoi figliuoli?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-24">
+      <div class="verse-num-col"><div class="verse-num">24</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vobis quoque notum facimus de universis sacerdotibus, et Levitis, et cantoribus, et janitoribus, Nathinæis, et ministris domus Dei hujus, ut vectigal, et tributum, et annonas non habeatis potestatem imponendi super eos.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Vi facciamo, oltre a ciò assapere che niuno abbia podestà d’imporre tributo, taglia, o gabella, ad alcun sacerdote, o Levita, o cantore, o portinaio, o Netineo, od altro ministro di cotesta Casa di Dio.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-25">
+      <div class="verse-num-col"><div class="verse-num">25</div></div>
+      <div class="verse-texts">
+        <div class="latin">Tu autem Esdra, secundum sapientiam Dei tui, quæ est in manu tua, constitue judices et præsides, ut judicent omni populo qui est trans flumen, his videlicet qui noverunt legem Dei tui : sed et imperitos docete libere.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">E tu, Esdra, secondo la sapienza dell’Iddio tuo, che tu hai in mano, costituisci rettori, e giudici, i quali rendano ragione a tutto quel popolo che è di là dal fiume, cioè a tutti coloro che hanno conoscenza delle leggi dell’Iddio tuo; e insegnatele a quelli che non le sapranno.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-26">
+      <div class="verse-num-col"><div class="verse-num">26</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et omnis qui non fecerit legem Dei tui, et legem regis, diligenter, judicium erit de eo sive in mortem, sive in exilium, sive in condemnationem substantiæ ejus, vel certe in carcerem.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">E se v’è alcuno che non metta in opera la Legge dell’Iddio tuo, e la legge del re, siane incontanente fatta giustizia, o per morte, o per bando, o per ammenda in danari, o per prigione.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-27">
+      <div class="verse-num-col"><div class="verse-num">27</div></div>
+      <div class="verse-texts">
+        <div class="latin">Benedictus Dominus Deus patrum nostrorum, qui dedit hoc in corde regis ut glorificaret domum Domini quæ est in Jerusalem,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Benedetto sia il Signore Iddio de’ nostri padri, il quale ha messa una tal cosa nel cuor del re, per onorar la Casa del Signore, che è in Gerusalemme;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v7-28">
+      <div class="verse-num-col"><div class="verse-num">28</div></div>
+      <div class="verse-texts">
+        <div class="latin">et in me inclinavit misericordiam suam coram rege et consiliatoribus ejus, et universis principibus regis potentibus : et ego confortatus manu Domini Dei mei, quæ erat in me, congregavi de Israël principes qui ascenderent mecum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">ed ha fatto che io ho trovata benignità appo il re, ed appo i suoi consiglieri, ed appo tutti i suoi potenti principi. Io dunque, essendomi fortificato, secondo che la mano del Signore Iddio mio era sopra me, adunai i capi d’Israele, acciocchè ritornassero meco.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch8">
+    <div class="chapter-marker">
+      <span class="ch-roman">VIII</span>
+      <span class="ch-label">Caput 8</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v8-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hi sunt ergo principes familiarum, et genealogia eorum, qui ascenderunt mecum in regno Artaxerxis regis de Babylone.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">OR questi sono i capi delle famiglie paterne, e questa è la descrizione, per le genealogie, di quelli che ritornarono meco di Babilonia, al tempo del regno del re Artaserse:</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">De filiis Phinees, Gersom. De filiis Ithamar, Daniel. De filiis David, Hattus.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">De’ figliuoli di Finees, Ghersom; de’ figliuoli d’Itamar, Daniele; de’ figliuoli di Davide, Hattus:</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">De filiis Secheniæ, filiis Pharos, Zacharias : et cum eo numerati sunt viri centum quinquaginta.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">de’ figliuoli di Secania, il quale era de’ figliuoli di Paros, Zaccaria; e con lui, facendo la descrizione della genealogia per maschi, cencinquanta persone;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">De filiis Phahath Moab, Elioënai filius Zarehe, et cum eo ducenti viri.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">de’ figliuoli di Pahat-Moab, Elioenai, figliuolo di Zerahia, e con lui dugento maschi;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">De filiis Secheniæ, filius Ezechiel, et cum eo trecenti viri.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">de’ figliuoli di Secania, il figliuolo di Iahaziel, e con lui trecento maschi;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">De filiis Adan, Abed filius Jonathan, et cum eo quinquaginta viri.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">e de’ figliuoli di Adin, Ebed, figliuolo di Gionatan, e con lui cinquanta maschi;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">De filiis Alam, Isaias filius Athaliæ, et cum eo septuaginta viri.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">e de’ figliuoli di Elam, Isaia, figliuolo di Atalia, e con lui settanta maschi;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">De filiis Saphatiæ, Zebedia filius Michaël, et cum eo octoginta viri.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">e de’ figliuoli di Sefatia, Zebadia, figliuolo di Micael, e con lui ottanta maschi;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">De filiis Joab, Obedia filius Jahiel, et cum eo ducenti decem et octo viri.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">de’ figliuoli di Ioab, Obadia, figliuolo di Iehiel, e con lui dugendiciotto maschi;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">De filiis Selomith, filius Josphiæ, et cum eo centum sexaginta viri.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">e de’ figliuoli di Selomit, il figliuolo di Iosifia, e con lui censessanta maschi;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">De filiis Bebai, Zacharias filius Bebai, et cum eo viginti octo viri.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">e de’ figliuoli di Bebai, Zaccaria, figliuolo di Bebai, e con lui ventotto maschi;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">De filiis Azgad, Johanan filius Eccetan, et cum eo centum et decem viri.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">e de’ figliuoli di Azgad, Iohanan, figliuolo di Catan, e con lui cendieci maschi;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">De filiis Adonicam, qui erant novissimi : et hæc nomina eorum : Elipheleth, et Jehiel, et Samaias, et cum eis sexaginta viri.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">e de’ figliuoli di Adonicam, gli ultimi, i cui nomi son questi: Elifelet, Iehiel, e Semaia, e con loro sessanta maschi;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">De filii Begui, Uthai et Zachur, et cum eis septuaginta viri.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">e de’ figliuoli di Bigvai: Utai, e Zabbud, e con loro sessanta maschi.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Congregavi autem eos ad fluvium qui decurrit ad Ahava, et mansimus ibi tribus diebus : quæsivique in populo et in sacerdotibus de filiis Levi, et non inveni ibi.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Ed io li adunai presso del fiume, che corre in Ahava; e quivi stemmo accampati lo spazio di tre giorni. Ed avendo fatta la rassegna del popolo e de’ sacerdoti, non vi trovai alcuno de’ figliuoli di Levi.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Itaque misi Eliezer, et Ariel, et Semeiam, et Elnathan, et Jarib, et alterum Elnathan, et Nathan, et Zachariam, et Mosollam principes : et Jojarib, et Elnathan sapientes.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Perciò, mandai Eliezer, Ariel, Semaia, Elnatan, Iarib, Elnatan, Natan, Zaccaria, e Mesullam, ch’erano capi; e Ioiarib, ed Elnatan, dottori;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et misi eos ad Eddo, qui est primus in Chasphiæ loco, et posui in ore eorum verba, quæ loquerentur ad Eddo, et fratres ejus Nathinæos in loco Chasphiæ, ut adducerent nobis ministros domus Dei nostri.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">e comandai loro che andassero ad Iddo, capo nel luogo detto Casifia; ed ordinai loro quello che aveano a dire ad Iddo ed al suo fratello, Netinei, nel luogo di Casifia, per menarci de’ ministri per la Casa dell’Iddio nostro.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et adduxerunt nobis per manum Dei nostri bonam super nos, virum doctissimum de filiis Moholi filii Levi, filii Israël, et Sarabiam et filios ejus et fratres ejus decem et octo,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Ed essi ci menarono, secondo che la mano dell’Iddio nostro era buona sopra noi, un uomo intendente, de’ figliuoli di Mahali, figliuolo di Levi, figliuolo d’Israele, cioè Serebia, insieme co’ suoi figliuoli, e fratelli, in numero di diciotto persone;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">et Hasabiam, et cum eo Isaiam de filiis Merari, fratresque ejus, et filios ejus viginti :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">ed Hasabia, e con lui, Isaia, d’infra i figliuoli di Merari, co’ suoi fratelli, e i lor figliuoli, in numero di venti persone;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">et de Nathinæis, quos dederat David et principes ad ministeria Levitarum, Nathinæos ducentos viginti : omnes hi suis nominibus vocabantur.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">e de’ Netinei, i quali Davide, ed i capi del popolo aveano costituiti al ministerio de’ Leviti, dugenventi Netinei, che furono tutti nominati per li nomi loro.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et prædicavi ibi jejunium juxta fluvium Ahava, ut affligeremur coram Domino Deo nostro, et peteremus ab eo viam rectam nobis et filiis nostris, universæque substantiæ nostræ.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Ed io bandii quivi il digiuno presso del fiume di Ahava, per umiliarci nel cospetto dell’Iddio nostro, per chiedergli prospero viaggio per noi, per le nostre famiglie, e per tutte le nostre facoltà.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-22">
+      <div class="verse-num-col"><div class="verse-num">22</div></div>
+      <div class="verse-texts">
+        <div class="latin">Erubui enim petere a rege auxilium et equites, qui defenderent nos ab inimico in via : quia dixeramus regi : Manus Dei nostri est super omnes qui quærunt eum in bonitate : et imperium ejus, et fortitudo ejus, et furor, super omnes qui derelinquunt eum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Perciocchè io mi vergognava di chiedere al re gente d’arme, o cavalieri, per difenderci da’ nemici per lo cammino; conciossiachè noi avessimo detto al re: La mano dell’Iddio nostro è in bene sopra tutti quelli che lo cercano; ma la sua potenza, e la sua ira, è contro a tutti quelli che l’abbandonano.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-23">
+      <div class="verse-num-col"><div class="verse-num">23</div></div>
+      <div class="verse-texts">
+        <div class="latin">Jejunavimus autem, et rogavimus Deum nostrum per hoc : et evenit nobis prospere.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Così noi digiunammo, e facemmo richiesta all’Iddio nostro intorno a ciò, ed egli ci esaudì.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-24">
+      <div class="verse-num-col"><div class="verse-num">24</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et separavi de principibus sacerdotum duodecim, Sarabiam, et Hasabiam, et cum eis de fratribus eorum decem :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Allora io misi da parte dodici de’ principali sacerdoti, con Serebia, Hasabia, e dieci de’ lor fratelli.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-25">
+      <div class="verse-num-col"><div class="verse-num">25</div></div>
+      <div class="verse-texts">
+        <div class="latin">appendique eis argentum et aurum, et vasa consecrata domus Dei nostri, quæ obtulerat rex et consiliatores ejus, et principes ejus, universusque Israël eorum qui inventi fuerant :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">E pesai loro l’argento, e l’oro, ed i vasellamenti, ch’era l’offerta ch’era stata fatta per la Casa dell’Iddio nostro, dal re, da’ suoi consiglieri, e da’ suoi principi, e da tutti gli Israeliti che si ritrovarono.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-26">
+      <div class="verse-num-col"><div class="verse-num">26</div></div>
+      <div class="verse-texts">
+        <div class="latin">et appendi in manibus eorum argenti talenta sexcenta quinquaginta, et vasa argentea centum, auri centum talenta :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Io adunque pesai loro in mano seicencinquanta talenti d’argento, e di vasellamenti di argento cento talenti, e cento talenti d’oro;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-27">
+      <div class="verse-num-col"><div class="verse-num">27</div></div>
+      <div class="verse-texts">
+        <div class="latin">et crateres aureos viginti, qui habebant solidos millenos, et vasa æris fulgentis optimi duo, pulchra ut aurum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">e venti coppe d’oro, che pesavano mille dramme; e due vasi d’oricalco fino, preziosi come d’oro.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-28">
+      <div class="verse-num-col"><div class="verse-num">28</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et dixi eis : Vos sancti Domini, et vasa sancta, et argentum et aurum, quod sponte oblatum est Domino Deo patrum nostrorum :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Ed io dissi loro: Voi siete persone sacre al Signore; questi vasellamenti sono anch’essi cosa sacra; e quest’argento, e quest’oro, è una offerta volontaria fatta al Signore Iddio de’ vostri padri.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-29">
+      <div class="verse-num-col"><div class="verse-num">29</div></div>
+      <div class="verse-texts">
+        <div class="latin">vigilate et custodite, donec appendatis coram principibus sacerdotum, et Levitarum, et ducibus familiarum Israël in Jerusalem, in thesaurum domus Domini.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Guardateli vigilantemente, finchè voi li pesiate in presenza de’ principali d’infra i sacerdoti e Leviti; e de’ capi delle famiglie paterne d’Israele, in Gerusalemme, nelle camere della Casa del Signore.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-30">
+      <div class="verse-num-col"><div class="verse-num">30</div></div>
+      <div class="verse-texts">
+        <div class="latin">Susceperunt autem sacerdotes et Levitæ pondus argenti, et auri, et vasorum, ut deferrent Jerusalem in domum Dei nostri.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">I sacerdoti adunque ed i Leviti ricevettero quell’argento, e quell’oro, e quei vasellamenti, a peso, per portar tutto ciò in Gerusalemme, nella Casa dell’Iddio nostro.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-31">
+      <div class="verse-num-col"><div class="verse-num">31</div></div>
+      <div class="verse-texts">
+        <div class="latin">Promovimus ergo a flumine Ahava duodecimo die mensis primi ut pergeremus Jerusalem : et manus Dei nostri fuit super nos, et liberavit nos de manu inimici et insidiatoris in via.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">E noi ci partimmo d’appresso al fiume di Ahava al duodecimo giorno del primo mese, per andare in Gerusalemme; e la mano dell’Iddio nostro fu sopra noi, ed egli ci liberò dalle mani dei nemici e degl’insidiatori, per lo cammino.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-32">
+      <div class="verse-num-col"><div class="verse-num">32</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et venimus Jerusalem, et mansimus ibi tribus diebus.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Ed arrivammo in Gerusalemme; e dopo che fummo quivi stati tre giorni,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-33">
+      <div class="verse-num-col"><div class="verse-num">33</div></div>
+      <div class="verse-texts">
+        <div class="latin">Die autem quarta appensum est argentum, et aurum, et vasa in domo Dei nostri per manum Meremoth filii Uriæ sacerdotis, et cum eo Eleazar filius Phinees, cumque eis Jozabed filius Josue, et Noadaia filius Bennoi Levitæ,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">al quarto giorno fu pesato quell’argento, e quell’oro, e que’ vasellamenti, nella Casa dell’Iddio nostro, nelle mani di Meremot, figliuolo di Uria sacerdote, col quale era Eleazaro, figliuolo di Finees; e con loro erano Iozabad, figliuolo di Iesua, e Noadia, figliuolo di Binnui, Leviti.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-34">
+      <div class="verse-num-col"><div class="verse-num">34</div></div>
+      <div class="verse-texts">
+        <div class="latin">juxta numerum et pondus omnium : descriptumque est omne pondus in tempore illo.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Tutto ciò fu loro dato a conto ed a peso; e il peso di tutto fu scritto in quello stesso tempo.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-35">
+      <div class="verse-num-col"><div class="verse-num">35</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sed et qui venerant de captivitate filii transmigrationis, obtulerunt holocautomata Deo Israël, vitulos duodecim pro omni populo Israël, arietes nonaginta sex, agnos septuaginta septem, hircos pro peccato duodecim : omnia in holocaustum Domino.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">E quelli ch’erano stati in cattività, ed erano ritornati, offersero per olocausto all’Iddio d’Israele, dodici giovenchi per tutto Israele, novantasei montoni, settantasette agnelli, e dodici becchi per lo peccato; tutto ciò fu offerto in olocausto al Signore.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v8-36">
+      <div class="verse-num-col"><div class="verse-num">36</div></div>
+      <div class="verse-texts">
+        <div class="latin">Dederunt autem edicta regis satrapis qui erant de conspectu regis, et ducibus trans flumen, et elevaverunt populum et domum Dei.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Poi diedero i decreti del re a’ satrapi del re, ed a’ governatori di qua dal fiume; ed essi presero a favoreggiare il popolo, e la Casa di Dio.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch9">
+    <div class="chapter-marker">
+      <span class="ch-roman">IX</span>
+      <span class="ch-label">Caput 9</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v9-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Postquam autem hæc completa sunt, accesserunt ad me principes, dicentes : Non est separatus populus Israël, sacerdotes et Levitæ, a populis terrarum et abominationibus eorum : Chananæi videlicet, et Hethæi, et Pherezæi, et Jebusæi, et Ammonitarum, et Moabitarum, et Ægyptiorum, et Amorrhæorum :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">ORA, quando queste cose furono finite, i principali del popolo si accostarono a me, dicendo: Il popolo d’Israele, ed i sacerdoti, ed i Leviti, non si son separati da’ popoli di questi paesi, da’ Cananei, dagli Hittei, da’ Ferizzei, da’ Gebusei, dagli Ammoniti, da’ Moabiti, dagli Egizi, e dagli Amorrei, secondo che si conveniva fare, per le loro abbominazioni.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">tulerunt enim de filiabus eorum sibi et filiis suis, et commiscuerunt semen sanctum cum populis terrarum : manus etiam principum et magistratuum fuit in transgressione hac prima.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Perciocchè hanno prese delle lor figliuole per sè, e per li lor figliuoli; laonde la santa progenie si è mescolata co’ popoli di questi paesi; e i principali del popolo, e i rettori, sono stati i primi a commetter questo misfatto.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Cumque audissem sermonem istum, scidi pallium meum et tunicam, et evelli capillos capitis mei et barbæ, et sedi mœrens.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">E quando io ebbi intesa questa cosa, io stracciai la mia vesta, e il mio mantello, e mi strappai i capelli del capo e della barba, e mi posi a sedere tutto sconsolato.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Convenerunt autem ad me omnes qui timebant verbum Dei Israël, pro transgressione eorum qui de captivitate venerant, et ego sedebam tristis usque ad sacrificium vespertinum :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Allora tutti quelli che tremavano alle parole dell’Iddio d’Israele si adunarono appresso di me, per lo misfatto di coloro ch’erano stati in cattività; ed io me ne stetti così a sedere tutto sconsolato, infino al tempo dell’offerta della sera.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">et in sacrificio vespertino, surrexi de afflictione mea, et scisso pallio et tunica, curvavi genua mea, et expandi manus meas ad Dominum Deum meum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Ed al tempo dell’offerta della sera, io mi levai dalla mia afflizione; ed avendo la mia vesta e il mio mantello stracciato, io m’inginocchiai, e spiegai le palme delle mie mani al Signore Iddio mio, e dissi:</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et dixi : Deus meus, confundor et erubesco levare faciem meam ad te : quoniam iniquitates nostræ multiplicatæ sunt super caput nostrum, et delicta nostra creverunt usque ad cælum,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">O Dio mio, io mi vergogno, e son confuso di alzare, o Dio mio, la faccia a te; perciocchè le nostre iniquità sono fin disopra al nostro capo, e le nostre colpe son così grandi che arrivano fino al cielo.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">a diebus patrum nostrorum : sed et nos ipsi peccavimus graviter usque ad diem hanc, et in iniquitatibus nostris traditi sumus ipsi, et reges nostri, et sacerdotes nostri, in manum regum terrarum, et in gladium, et in captivitatem, et in rapinam, et in confusionem vultus, sicut et die hac.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Dal tempo de’ nostri padri infino ad oggi, noi siamo in gran colpa; e per le nostre iniquità, noi, i nostri re, i nostri sacerdoti, siamo stati dati nelle mani dei re de’ paesi, per esser messi a fil di spada, menati in cattività, predati, e svergognati, come appare al dì d’oggi.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et nunc quasi parum et ad momentum facta est deprecatio nostra apud Dominum Deum nostrum, ut dimitterentur nobis reliquiæ, et daretur nobis paxillus in loco sancto ejus, et illuminaret oculos nostros Deus noster, et daret nobis vitam modicam in servitute nostra :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">E pure ora, di subito quasi in un momento, ci è stata fatta grazie dall’Iddio nostro, per far che ci restasse alcun rimanente, e per darci un chiodo nel suo santo luogo; acciocchè l’Iddio nostro ci rischiarasse gli occhi, e ci desse un poco di ristoro nella nostra servitù.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">quia servi sumus, et in servitute nostra non dereliquit nos Deus noster, sed inclinavit super nos misericordiam coram rege Persarum, ut daret nobis vitam, et sublimaret domum Dei nostri, et exstrueret solitudines ejus, et daret nobis sepem in Juda et Jerusalem.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Conciossiachè noi siamo servi; ma l’Iddio nostro non ci ha abbandonati nella nostra servitù; anzi ha fatto che abbiam trovata benignità appo i re di Persia, per darci qualche ristoro, affin di rimettere in piè la Casa dell’Iddio nostro, e ristorar le sue ruine, e darci un chiuso in Giuda ed in Gerusalemme.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et nunc quid dicemus, Deus noster, post hæc ? Quia dereliquimus mandata tua,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Ma ora, o Dio nostro, che diremo noi dopo queste cose? conciossiachè noi abbiamo lasciati i tuoi comandamenti,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">quæ præcepisti in manu servorum tuorum prophetarum, dicens : Terra, ad quam vos ingredimini ut possideatis eam, terra immunda est juxta immunditiam populorum, ceterarumque terrarum, abominationibus eorum qui repleverunt eam ab ore usque ad os in coinquinatione sua.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">i quali tu desti per mano de’ tuoi servitori profeti, dicendo: Il paese, nel quale voi entrate per possederlo, è un paese immondo per l’immondizia de’ popoli di que’ paese, nelle loro abbominazioni, delle quali l’hanno riempiuto, da un capo all’altro, con le lor contaminazioni.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nunc ergo filias vestras ne detis filiis eorum, et filias eorum ne accipiatis filiis vestris, et non quæratis pacem eorum et prosperitatem eorum usque in æternum : ut confortemini, et comedatis quæ bona sunt terræ, et hæredes habeatis filios vestros usque in sæculum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Ora dunque, non date le vostre figliuole a’ lor figliuoli; e non prendete le lor figliuole per li vostri figliuoli; e non procacciate giammai in perpetuo nè la pace, nè il ben loro; acciocchè siate fortificati, e mangiate i beni del paese, e lasciate quello per eredità a’ vostri figliuoli in perpetuo.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et post omnia quæ venerunt super nos in operibus nostris pessimis, et in delicto nostro magno, quia tu, Deus noster, liberasti nos de iniquitate nostra, et dedisti nobis salutem sicut est hodie,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Ora, dopo tutte le cose che ci son sopraggiunte per le nostre opere malvage, e per le nostre gran colpe benchè, o Dio nostro, tu ti sii rattenuto disotto della nostra iniquità, e ci abbi dato un tal rimanente, quale è questo,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">ut non converteremur, et irrita faceremus mandata tua, neque matrimonia jungeremus cum populis abominationum istarum. Numquid iratus es nobis usque ad consummationem, ne dimitteres nobis reliquias ad salutem ?</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">torneremmo noi a rompere i tuoi comandamenti, e ad imparentarci co’ popoli dati a queste abbominazioni? non ti adireresti tu contro a noi fino all’estremo, talchè non vi sarebbe più nè rimanente, nè scampo alcuno?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v9-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Domine Deus Israël, justus es tu : quoniam derelicti sumus, qui salvaremur sicut die hac. Ecce coram te sumus in delicto nostro : non enim stari potest coram te super hoc.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Signore Iddio d’Israele, tu sei giusto; conciossiachè noi siamo rimasti alcun residuo, come si vede al dì d’oggi; eccoci davanti a te con la nostra colpa; perciocchè altrimenti sarebbe impossibile di durare davanti alla tua faccia per questo.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ch10">
+    <div class="chapter-marker">
+      <span class="ch-roman">X</span>
+      <span class="ch-label">Caput 10</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v10-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sic ergo orante Esdra, et implorante eo et flente, et jacente ante templum Dei, collectus est ad eum de Israël cœtus grandis nimis virorum et mulierum et puerorum, et flevit populus fletu multo.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">ORA, mentre Esdra faceva orazione, e confessione, piangendo, e prostrato davanti alla Casa di Dio, una grandissima moltitudine d’Israele, d’uomini, e di donne, e di fanciulli, si adunò appresso di lui; perciocchè il popolo piangeva d’un gran pianto.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et respondit Sechenias filius Jehiel de filiis Ælam, et dixit Esdræ : Nos prævaricati sumus in Deum nostrum, et duximus uxores alienigenas de populis terræ : et nunc, si est pœnitentia in Israël super hoc,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Allora Secania, figliuolo di Iehiel, dei figliuoli di Elam, parlò ad Esdra, e gli disse: Noi abbiam misfatto contro all’Iddio nostro, avendo menate donne straniere, d’infra i popoli di questo paese; ma ora vi è pure alcuna speranza ad Israele intorno a questo.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">percutiamus fœdus cum Domino Deo nostro, ut projiciamus universas uxores, et eos qui de his nati sunt, juxta voluntatem Domini, et eorum qui timent præceptum Domini Dei nostri : secundum legem fiat.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Ora dunque, patteggiamo con l’Iddio nostro, che noi rimanderemo tutte queste donne, ed i figliuoli nati da esse, secondo il consiglio del Signore, e di coloro che tremano al comandamento dell’Iddio nostro; e siane fatto secondo la Legge.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Surge, tuum est decernere, nosque erimus tecum : confortare, et fac.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Levati; perciocchè quest’affare ti appartiene, e noi saremo teco; prendi animo, e metti la mano all’opera.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Surrexit ergo Esdras, et adjuravit principes sacerdotum et Levitarum, et omnem Israël, ut facerent secundum verbum hoc : et juraverunt.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Allora Esdra si levò, e fece giurare a’ principali de’ sacerdoti, de’ Leviti, e di tutto Israele, che farebbero secondo quelle parole. Ed essi lo giurarono.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et surrexit Esdras ante domum Dei, et abiit ad cubiculum Johanan filii Eliasib, et ingressus est illuc : panem non comedit, et aquam non bibit : lugebat enim transgressionem eorum, qui venerant de captivitate.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Poi Esdra si levò d’innanzi alla Casa di Dio, e andò nella camera di Giohanan, figliuolo di Eliasib; ed essendo entrato dentro, non mangiò pane, nè bevve acqua; perciocchè egli faceva cordoglio per lo misfatto di coloro ch’erano stati in cattività.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et missa est vox in Juda et in Jerusalem omnibus filiis transmigrationis, ut congregarentur in Jerusalem :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Poi fecero andare un bando per Giuda e per Gerusalemme, che tutti quelli ch’erano stati in cattività si adunassero in Gerusalemme;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">et omnis qui non venerit in tribus diebus juxta consilium principum et seniorum, auferetur universa substantia ejus, et ipse abjicietur de cœtu transmigrationis.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">e che chiunque non verrebbe infra tre giorni, secondo il consiglio preso da’ principali e dagli Anziani, tutti i suoi beni sarebbero messi all’interdetto, ed egli sarebbe separato dalla raunanza di coloro ch’erano stati in cattività.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Convenerunt igitur omnes viri Juda et Benjamin in Jerusalem tribus diebus : ipse est mensis nonus, vigesimo die mensis : et sedit omnis populus in platea domus Dei, trementes pro peccato, et pluviis.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Così tutti gli uomini di Giuda e di Beniamino si adunarono in Gerusalemme infra il terzo giorno; e ciò fu il ventesimo giorno del nono mese; e tutto il popolo si fermò nella piazza della Casa di Dio, tremando, per questa cosa, e per le gran pioggie.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et surrexit Esdras sacerdos, et dixit ad eos : Vos transgressi estis, et duxistis uxores alienigenas, ut adderetis super delictum Israël.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Ed il sacerdote Esdra si levò e disse loro: Voi avete misfatto, avendo menate mogli straniere, per accrescer le colpe d’Israele.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et nunc date confessionem Domino Deo patrum vestrorum, et facite placitum ejus, et separamini a populis terræ, et ab uxoribus alienigenis.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Ora dunque fate confessione al Signore Iddio de’ vostri padri, e fate la sua volontà, e separatevi da’ popoli del paese, e dalle donne straniere.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et respondit universa multitudo, dixitque voce magna : Juxta verbum tuum ad nos, sic fiat.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">E tutta la raunanza rispose, e disse ad alta voce: Noi siamo obbligati di fare come tu hai detto.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Verumtamen quia populus multus est, et tempus pluviæ, et non sustinemus stare foris, et opus non est diei unius vel duorum (vehementer quippe peccavimus in sermone isto),</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Ma il popolo è in gran numero, e il tempo è grandemente piovoso, e non è possibile di star fuori; e l’opera non è d’uno, nè di due giorni; perciocchè noi siamo molti che abbiamo misfatto in questo.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">constituantur principes in universa multitudine : et omnes in civitatibus nostris qui duxerunt uxores alienigenas veniant in temporibus statutis, et cum his seniores per civitatem et civitatem, et judices ejus, donec avertatur ira Dei nostri a nobis super peccato hoc.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Ora trovinsi insieme i capi nostri, capi di tutta la raunanza; e con loro sieno gli Anziani, ed i giudici di ciascuna città; e che ogni uomo, d’infra tutti quelli che sono nelle nostre città, che ha menata moglie straniera, venga a’ tempi assegnati; e con loro gli Anziani e i giudici di ciascuna città, finchè abbiamo stornato da noi l’ardore dell’ira dell’Iddio nostro per questa cosa.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Igitur Jonathan filius Azahel, et Jaasia filius Thecue, steterunt super hoc, et Messollam et Sebethai Levites adjuverunt eos :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Or Gionatan, figliuolo di Asael, e Iahazia, figliuolo di Ticva, furono costituiti sopra questo affare; e Mesullam, e Sabbetai, Leviti, aiutarono loro.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">feceruntque sic filii transmigrationis. Et abierunt Esdras sacerdos, et viri principes familiarum, in domos patrum suorum, et omnes per nomina sua, et sederunt in die primo mensis decimi ut quærerent rem.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">E quelli ch’erano stati in cattività fecero così. E il sacerdote Esdra, e i capi delle famiglie paterne, secondo le famiglie loro paterne, tutti nominati per li nomi loro, furono messi da parte; e sedettero al primo giorno del decimo mese, per prender conoscenza del fatto;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et consummati sunt omnes viri, qui duxerant uxores alienigenas, usque ad diem primam mensis primi.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">ed ebbero finito, con tutti quelli che aveano menate mogli straniere, infra il primo giorno del primo mese.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et inventi sunt de filiis sacerdotum qui duxerant uxores alienigenas. De filiis Josue filii Josedec, et fratres ejus, Maasia, et Eliezer, et Jarib, et Godolia.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">E fra i figliuoli de’ sacerdoti, si trovarono questi che aveano menate moglie straniere, cioè, fra i figliuoli di Iesua, figliuolo di Iosadac, e fra i suoi fratelli, Maaseia, ed Eliezer, e Iarib, e Ghedalia;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et dederunt manus suas ut ejicerent uxores suas, et pro delicto suo arietem de ovibus offerrent.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">ed essi diedero la mano, promettendo di mandar via le lor mogli; e, come colpevoli, offerse un montone per la lor colpa;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et de filiis Emmer, Hanani, et Zebedia.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">e de’ figliuoli d’Immer, Hanani, e Zebadia;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et de filiis Harim, Maasia, et Elia, et Semeia, et Jehiel, et Ozias.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">e de’ figliuoli di Harim, Maaseia, ed Elia, e Semaia, e Iehiel, ed Uzzia;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-22">
+      <div class="verse-num-col"><div class="verse-num">22</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et de filiis Pheshur, Elioënai, Maasia, Ismaël, Nathanaël, Jozabed, et Elasa.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">e de’ figliuoli di Pashur, Elioenai, Maaseia, Ismael, Natanael, Iozabad, ed Elasa.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-23">
+      <div class="verse-num-col"><div class="verse-num">23</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et de filiis Levitarum, Jozabed, et Semei, et Celaia, ipse est Calita, Phataia, Juda, et Eliezer.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">E de’ Leviti, Iozabad, Simi, e Chelaia il quale ancora si chiamava Chelita, Petahia, Giuda, ed Eliezer.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-24">
+      <div class="verse-num-col"><div class="verse-num">24</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et de cantoribus, Eliasib. Et de janitoribus, Sellum, et Telem, et Uri.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">E de’ cantori, Eliasib. E de’ portinai, Sallum, e Telem, ed Uri.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-25">
+      <div class="verse-num-col"><div class="verse-num">25</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et ex Israël, de filiis Pharos, Remeia, et Jesia, et Melchia, et Miamin, et Eliezer, et Melchia, et Banea.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">E degl’Israeliti: de’ figliuoli di Paros, Ramia, ed Izzia, e Malchia, e Miamin, ed Eleazaro, e Malchia, e Benaia;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-26">
+      <div class="verse-num-col"><div class="verse-num">26</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et de filiis Ælam, Mathania, Zacharias, et Jehiel, et Abdi, et Jerimoth, et Elia.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">e de’ figliuoli di Elam, Mattania, e Zaccaria, e Iehiel, ed Abdi, e Ieremot, ed Elia;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-27">
+      <div class="verse-num-col"><div class="verse-num">27</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et de filiis Zethua, Elioënai, Eliasib, Mathania, et Jerimuth, et Zabad, et Aziza.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">e de’ figliuoli di Zattu, Elioenai, ed Eliasib, e Mattania, e Ieremot, e Zabad, ed Aziza;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-28">
+      <div class="verse-num-col"><div class="verse-num">28</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et de filiis Bebai, Johanan, Hanania, Zabbai, Athalai.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">e de’ figliuoli di Bebai, Iohanan, Hanania, Zabbai, ed Atlai;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-29">
+      <div class="verse-num-col"><div class="verse-num">29</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et de filiis Bani, Mosollam, et Melluch, et Adaia, Jasub, et Saal, et Ramoth.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">e de’ figliuoli di Bani, Mesullam, e Malluc, ed Adaia, e Iasub, e Seal, e Ramot;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-30">
+      <div class="verse-num-col"><div class="verse-num">30</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et de filiis Phahath Moab, Edna, et Chalal, Banaias, et Maasias, Mathanias, Beseleel, Bennui, et Manasse.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">e de’ figliuoli di Pahat-Moab, Adna, e Chelal, e Benaia, e Maaseia, e Mattania, e Besaleel, e Binnui, e Manasse;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-31">
+      <div class="verse-num-col"><div class="verse-num">31</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et de filiis Herem, Eliezer, Josue, Melchias, Semeias, Simeon,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">e de’ figliuoli di Harim, Eliezer, Issia, Malchia, Semaia, Simeone,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-32">
+      <div class="verse-num-col"><div class="verse-num">32</div></div>
+      <div class="verse-texts">
+        <div class="latin">Benjamin, Maloch, Samarias.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Beniamino, Malluc, Semaria;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-33">
+      <div class="verse-num-col"><div class="verse-num">33</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et de filiis Hasom, Mathanai, Mathatha, Zabad, Eliphelet, Jermai, Manasse, Semei.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">de’ figliuoli di Hasum, Mattenai, Mattatta, Zabad, Elifelet, Ieremai, Manasse, Simi;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-34">
+      <div class="verse-num-col"><div class="verse-num">34</div></div>
+      <div class="verse-texts">
+        <div class="latin">De filiis Bani, Maadi, Amram, et Vel,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">de’ figliuoli di Bani, Maadai, Amram ed Uel,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-35">
+      <div class="verse-num-col"><div class="verse-num">35</div></div>
+      <div class="verse-texts">
+        <div class="latin">Baneas, et Badaias, Cheliau,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Benaia, Bedia, Cheluhu,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-36">
+      <div class="verse-num-col"><div class="verse-num">36</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vania, Marimuth, et Eliasib,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Vania, Meremot, Eliasib,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-37">
+      <div class="verse-num-col"><div class="verse-num">37</div></div>
+      <div class="verse-texts">
+        <div class="latin">Mathanias, Mathanai, et Jasi,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Mattania, Mettenai e Iaasai,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-38">
+      <div class="verse-num-col"><div class="verse-num">38</div></div>
+      <div class="verse-texts">
+        <div class="latin">et Bani, et Bennui, Semei,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Bani, Binnui, Simi,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-39">
+      <div class="verse-num-col"><div class="verse-num">39</div></div>
+      <div class="verse-texts">
+        <div class="latin">et Salmias, et Nathan, et Adaias,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Selemia, Natan, Adaia,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-40">
+      <div class="verse-num-col"><div class="verse-num">40</div></div>
+      <div class="verse-texts">
+        <div class="latin">et Mechnedebai, Sisai, Sarai,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Machnadbai, Sasai, Sarai,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-41">
+      <div class="verse-num-col"><div class="verse-num">41</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ezrel, et Selemiau, Semeria,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Azreel, Selemia, Semaria,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-42">
+      <div class="verse-num-col"><div class="verse-num">42</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sellum, Amaria, Joseph.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Sallum, Amaria, e Giuseppe;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-43">
+      <div class="verse-num-col"><div class="verse-num">43</div></div>
+      <div class="verse-texts">
+        <div class="latin">De filiis Nebo, Jehiel, Mathathias, Zabad, Zabina, Jeddu, et Joël, et Banaia.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">e de’ figliuoli di Nebo, Ieiel, Mattitia, Zabad, Zebina, Iaddau, Ioel, e Benaia.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v10-44">
+      <div class="verse-num-col"><div class="verse-num">44</div></div>
+      <div class="verse-texts">
+        <div class="latin">Omnes hi acceperant uxores alienigenas, et fuerunt ex eis mulieres, quæ pepererant filios.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Tutti costoro aveano prese mogli straniere; ed alcuni di loro avevano delle mogli delle quali avevano generati figliuoli.</div>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <nav class="book-nav">
+    <a href="014-2ch.html">← II Paralipomenon</a>
+    <span class="center">I Esdras · Italiano</span>
+    <a href="016-neh.html">II Esdras →</a>
+  </nav>
+
+  <footer class="page-footer">
+    BIBLIA CATHOLICA INTERLINEARIS &nbsp;·&nbsp; Vulgata Clementina &amp; Giovanni Diodati (1649)
+    &nbsp;·&nbsp; Gemeinfreie Texte / Public Domain
+  </footer>
+
+</body>
+</html>

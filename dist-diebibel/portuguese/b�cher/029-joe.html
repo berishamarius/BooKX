@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ioel &middot; Portugu�s &middot; Biblia Catholica</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+body{
+  background:#2C0810;
+  background-image:radial-gradient(ellipse at 50% 20%,#4A1020 0%,#1A0407 100%);
+  font-family:'EB Garamond',serif;
+  color:#1A0E06;
+  font-size:17px;
+}
+
+/* ------------------------------------------
+   BUCHKOPF
+------------------------------------------ */
+.bhead{
+  background:
+    repeating-linear-gradient( 45deg,transparent,transparent 36px,rgba(200,160,48,.028) 36px,rgba(200,160,48,.028) 37px),
+    repeating-linear-gradient(-45deg,transparent,transparent 36px,rgba(200,160,48,.028) 36px,rgba(200,160,48,.028) 37px),
+    linear-gradient(162deg,#1A0407 0%,#2C0810 45%,#4A1020 65%,#2C0810 85%,#1A0407 100%);
+  padding:36px 28px 28px;
+  text-align:center;
+  border-bottom:4px solid #B8962E;
+  position:relative;overflow:hidden;
+}
+/* Innerer Rahmen � �u�erer Ring */
+.bhead::before{
+  content:'';position:absolute;inset:14px;
+  border:1px solid rgba(200,160,48,.22);
+  pointer-events:none;
+}
+/* Innerer Rahmen � innerer Ring */
+.bhead::after{
+  content:'';position:absolute;inset:22px;
+  border:1px solid rgba(200,160,48,.08);
+  pointer-events:none;
+}
+.btestament{
+  display:inline-block;
+  border:1px solid rgba(200,160,48,.32);
+  color:rgba(200,160,48,.52);
+  font-family:'Cinzel',serif;font-size:.55rem;
+  letter-spacing:.3em;padding:4px 18px;
+  border-radius:2px;margin-bottom:16px;
+  position:relative;
+}
+.blatin{
+  display:none;
+  font-family:'UnifrakturMaguntia',cursive;
+  font-size:clamp(1.9rem,7vw,3.4rem);
+  color:#EDD882;
+  text-shadow:0 3px 20px rgba(0,0,0,.55);
+  letter-spacing:.04em;position:relative;
+}
+body:not([data-conf]) .blatin-c,
+body[data-conf="catholic"] .blatin-c{display:block;}
+body[data-conf="protestant"] .blatin-p{display:block;}
+.btrans{
+  font-family:'Cinzel',serif;
+  font-size:.88rem;
+  color:#C8A030;margin-top:10px;
+  letter-spacing:.16em;position:relative;
+}
+.bmeta{
+  font-family:'Cinzel',serif;font-size:.62rem;
+  color:rgba(200,160,48,.4);margin-top:6px;
+  letter-spacing:.08em;position:relative;
+}
+
+/* ------------------------------------------
+   KAPITELINHALT
+------------------------------------------ */
+.content{
+  max-width:960px;
+  margin:36px auto 36px;
+  padding:48px 72px 100px;
+  background:#FAF5E8;
+  background-image:
+    radial-gradient(ellipse at top left,rgba(184,150,46,.06) 0%,transparent 55%),
+    radial-gradient(ellipse at bottom right,rgba(184,150,46,.05) 0%,transparent 55%);
+  box-shadow:0 8px 80px rgba(0,0,0,.55),0 2px 12px rgba(0,0,0,.35),inset 0 0 0 1px rgba(184,150,46,.18);
+  border-left:4px solid #B8962E;
+  border-right:4px solid #B8962E;
+  border-top:2px solid rgba(184,150,46,.4);
+  border-bottom:2px solid rgba(184,150,46,.4);
+  position:relative;overflow:clip;
+}
+.content::before{
+  content:'';
+  position:absolute;
+  inset:12px;
+  border:1px solid rgba(184,150,46,.08);
+  pointer-events:none;
+}
+
+.chap{margin-top:0;}
+
+.chhead{
+  text-align:center;
+  padding:40px 0 20px;
+  margin-bottom:16px;
+  position:relative;
+}
+.chhead::before{
+  content:'����?�?�?����';
+  display:block;
+  font-size:.7rem;
+  color:rgba(184,150,46,.45);
+  letter-spacing:.35em;
+  margin-bottom:16px;
+}
+.chhead::after{
+  content:'';
+  display:block;
+  width:200px;
+  height:1px;
+  margin:14px auto 0;
+  background:linear-gradient(to right,transparent,#B8962E,transparent);
+}
+.chrom{
+  font-family:'Cinzel Decorative',serif;
+  font-size:4rem;color:#8B6914;
+  display:block;
+  text-shadow:0 2px 18px rgba(184,150,46,.2);
+  line-height:1;
+}
+.chlbl{
+  font-family:'Cinzel',serif;font-size:.58rem;
+  color:rgba(184,150,46,.42);letter-spacing:.32em;
+  display:none;margin-top:8px;
+}
+body:not([data-conf]) .chlbl-c
+body[data-conf="catholic"] .chlbl-c{display:block;}
+body[data-conf="protestant"] .chlbl-p{display:block;}
+
+/* ------------------------------------------
+   VERSE
+------------------------------------------ */
+.vb{
+  display:flex;
+  padding:20px 6px;
+  border-bottom:1px solid rgba(184,150,46,.12);
+  background:none;
+  border-radius:2px;
+  transition:background .15s;
+}
+.vb:hover{
+  background:rgba(184,150,46,.04);
+}
+
+/* Versnummer */
+.vn{
+  flex-shrink:0;
+  width:38px;
+  padding-top:4px;
+  font-family:'Cinzel',serif;font-size:.56rem;
+  color:rgba(184,150,46,.52);text-align:right;
+  padding-right:12px;line-height:2.4;
+}
+
+.vt{
+  flex:1;
+  padding:0 20px 0 4px;
+}
+
+/* BASIS-TEXT � wechselt je nach Konfession */
+.base{
+  font-family:'EB Garamond',serif;
+  font-size:1.2rem;
+  font-weight:500;
+  line-height:2.1;
+  color:#3D1A08;
+  display:none;
+}
+/* Standardm��ig (kein data-conf): katholisch = Latein */
+body:not([data-conf]) .base-c,
+body[data-conf="catholic"] .base-c { display:block; }
+body[data-conf="protestant"] .base-p { display:block; }
+/* Leere Basis-Paragraphen ausblenden */
+.base:empty { display:none !important; }
+
+/* �BERSETZUNG � SEKUND�R: kleiner, kursiv, unter dem Latein */
+.tra{
+  font-family:'EB Garamond',serif;
+  font-size:.93rem;
+  font-style:italic;
+  line-height:1.95;
+  color:#1E2848;
+  margin-top:5px;
+  padding-left:14px;
+  border-left:2px solid rgba(90,110,170,.2);
+}
+
+/* Drop-Cap: erster Vers eines Kapitels � nur Latein und Luther, nicht Griechisch */
+.vb.first .base-c::first-letter,
+.vb.first .base-p::first-letter{
+  font-family:'Cinzel Decorative',serif;
+  font-size:4em;
+  float:left;
+  line-height:.7;
+  padding-right:.08em;
+  margin-top:.07em;
+  color:#B8962E;
+  text-shadow:1px 2px 6px rgba(0,0,0,.12);
+}
+
+/* ------------------------------------------
+   BUCH-NAVIGATION (unten)
+------------------------------------------ */
+.bnav{
+  display:flex;justify-content:space-between;align-items:center;
+  background:#2C0810;border-top:3px solid #B8962E;
+  padding:12px 24px;gap:12px;
+}
+.bnav a,.bnav .dim{
+  color:#C8A030;text-decoration:none;
+  font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:.07em;
+  padding:6px 16px;
+  border:1px solid rgba(200,160,48,.28);
+  border-radius:2px;transition:background .18s;
+}
+.bnav a:hover{background:rgba(200,160,48,.12);}
+.bnav .dim{color:rgba(200,160,48,.2);border-color:rgba(200,160,48,.1);}
+.bnav .center{
+  font-family:'Cinzel',serif;font-size:.68rem;
+  color:rgba(200,160,48,.65);text-align:center;
+  letter-spacing:.06em;text-decoration:none;
+  border:1px solid rgba(200,160,48,.28);border-radius:2px;
+  padding:6px 20px;transition:background .18s;
+}
+.bnav .center:hover{background:rgba(200,160,48,.1);}
+
+/* DRUCK */
+@media print{
+  .bnav{display:none;}
+  .bhead{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .vb{break-inside:avoid;}
+}
+
+/* MOBIL */
+@media(max-width:600px){
+  .blatin{font-size:1.8rem;}
+  .base{font-size:1rem;}
+  .tra{font-size:.84rem;}
+  .content{padding:16px 18px 60px;margin:0;border-left:none;border-right:none;border-radius:0;}
+  .chrom{font-size:1.8rem;}
+}
+/* KREUZ-GRAVUR */
+.b-wm{position:sticky;top:calc(50vh - 37.5vmin);width:50vmin;height:75vmin;margin:0 auto -75vmin;display:block;pointer-events:none;z-index:0;user-select:none;}
+.b-wm svg{width:100%;height:auto;display:block;}
+.b-wm path{fill:none;stroke:rgba(184,150,46,.07);stroke-width:.018;stroke-linecap:butt;}
+</style>
+</head>
+<body>
+<header class="bhead">
+  <div class="btestament">VETUS TESTAMENTUM</div>
+  <div class="blatin blatin-c">IOEL</div>
+  <div class="blatin blatin-p">JOEL</div>
+  <div class="btrans">Joel &nbsp;&middot;&nbsp; <em>Portugu�s</em></div>
+  <div class="bmeta">3 Capita &nbsp;&middot;&nbsp; 73 Versus</div>
+</header>
+
+<main class="content">
+<div class="b-wm"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2 3"><path d="M1,0V3M0,.9H2"/></svg></div>
+<section class="chap" id="c1">
+  <div class="chhead">
+    <span class="chrom">I</span>
+    <span class="chlbl chlbl-c">Caput I</span>
+    <span class="chlbl chlbl-p">Das 1. Capitel</span>
+  </div>
+<div class="vb first" id="v1-1">
+  <span class="vn">1</span>
+  <div class="vt">
+    <p class="base base-c">Verbum Domini, quod factum est ad Joël, filium Phatuel.</p>
+    <p class="base base-p">Dies ist das Wort des HERRN, das geschehen ist zu Joel, dem Sohn Pethuels:</p>
+    <p class="tra">Palavra do SENHOR que veio a Joel, filho de Petuel.</p>
+  </div>
+</div>
+<div class="vb" id="v1-2">
+  <span class="vn">2</span>
+  <div class="vt">
+    <p class="base base-c">Audite hoc, senes,  et auribus percipite, omnes habitatores terræ :  si factum est istud in diebus vestris,  aut in diebus patrum vestrorum ?</p>
+    <p class="base base-p">Horet dies, ihr Altesten, und merket auf, alle Einwohner im Lande, ob ein solches geschehen sei bei euren Zeiten Oder bei eurer Vater Zeiten!</p>
+    <p class="tra">Ouvi isto, anciãos, e escutai, todos os moradores do país.  Por acaso isto aconteceu em vossos dias, ou nos dias de vossos pais?</p>
+  </div>
+</div>
+<div class="vb" id="v1-3">
+  <span class="vn">3</span>
+  <div class="vt">
+    <p class="base base-c">Super hoc filiis vestris narrate,  et filii vestri filiis suis,  et filii eorum generationi alteræ.</p>
+    <p class="base base-p">Saget euren Kindern davon und lalit es eure Kinder ihren Kindern sagen und dieselbigen Kinder ihren andern Nachkommen,</p>
+    <p class="tra">Contai disso a vossos filhos, e vossos filhos a seus filhos, e seus filhos à outra geração.</p>
+  </div>
+</div>
+<div class="vb" id="v1-4">
+  <span class="vn">4</span>
+  <div class="vt">
+    <p class="base base-c">Residuum erucæ comedit locusta,  et residuum locustæ comedit bruchus,  et residuum bruchi comedit rubigo.</p>
+    <p class="base base-p">namlich: Was die Raupen lassen, das fressen die Heuschrecken; und was die Heuschrecken lassen, das fressen die Kafer; und was die Kafer lassen, das fril M das Geschmeili.</p>
+    <p class="tra">O que restou do gafanhoto cortador o gafanhoto comedor comeu; e o que restou do gafanhoto comedor o gafanhoto devorador comeu, e o que restou do gafanhoto devorador o gafanhoto destruidor comeu.</p>
+  </div>
+</div>
+<div class="vb" id="v1-5">
+  <span class="vn">5</span>
+  <div class="vt">
+    <p class="base base-c">Expergiscimini, ebrii,  et flete et ululate, omnes qui bibitis vinum in dulcedine,  quoniam periit ab ore vestro.</p>
+    <p class="base base-p">Wachetauf, ihr Trunkenen, und weinet und heulet, alle Weinsaufer, urn den Most; denn er ist euch voreurem Maul weggenommen.</p>
+    <p class="tra">Despertai, vós bêbados, e chorai; gemei todos vós que bebeis vinho, por causa do suco de uva, porque foi tirado de vossa boca.</p>
+  </div>
+</div>
+<div class="vb" id="v1-6">
+  <span class="vn">6</span>
+  <div class="vt">
+    <p class="base base-c">Gens enim ascendit super terram meam,  fortis et innumerabilis :  dentes ejus ut dentes leonis,  et molares ejus ut catuli leonis.</p>
+    <p class="base base-p">Denn es zeucht herauf in mein Land ein machtig Volk, und des ohne Zahl; das hat Zahne wie Lowen und Backenzahne wie Lowinnen.</p>
+    <p class="tra">Porque uma nação subiu sobre minha terra, poderosa e sem número; seus dentes são dentes de leão, e têm presas de leoa.</p>
+  </div>
+</div>
+<div class="vb" id="v1-7">
+  <span class="vn">7</span>
+  <div class="vt">
+    <p class="base base-c">Posuit vineam meam in desertum,  et ficum meam decorticavit ;  nudans spoliavit eam, et projecit :  albi facti sunt rami ejus.</p>
+    <p class="base base-p">Dasselbige verwustet meinen Weinberg und streift meinen Feigenbaum, schalet ihn und verwirft ihn, daß seine Zweige weili dastehen.</p>
+    <p class="tra">Assolou minha videira, e devastou minha figueira; desnudou-a por completo e a derrubou; seus ramos ficaram brancos.</p>
+  </div>
+</div>
+<div class="vb" id="v1-8">
+  <span class="vn">8</span>
+  <div class="vt">
+    <p class="base base-c">Plange quasi virgo accincta sacco super virum pubertatis suæ.</p>
+    <p class="base base-p">Heule wie eine Jungfrau, die einen Sack anlegt urn ihren Brautigam!</p>
+    <p class="tra">Chora tu como a virgem vestida de saco por causa do marido de sua juventude.</p>
+  </div>
+</div>
+<div class="vb" id="v1-9">
+  <span class="vn">9</span>
+  <div class="vt">
+    <p class="base base-c">Periit sacrificium et libatio de domo Domini ;  luxerunt sacerdotes, ministri Domini.</p>
+    <p class="base base-p">Denn das Speisopfer und Trankopfer ist vom Hause des HERRN weg, und die Priester, des HERRN Diener, trauern.</p>
+    <p class="tra">As ofertas de cereais e de bebidas se acabaram da casa do SENHOR; os sacerdotes, servos do SENHOR, estão de luto.</p>
+  </div>
+</div>
+<div class="vb" id="v1-10">
+  <span class="vn">10</span>
+  <div class="vt">
+    <p class="base base-c">Depopulata est regio,  luxit humus,  quoniam devastatum est triticum,  confusum est vinum,  elanguit oleum.</p>
+    <p class="base base-p">Das Feld ist verwustet, und der Acker stehet jammerlich, das Getreide ist verdorben, der Wein stehet jammerlich und das 01 klaglich.</p>
+    <p class="tra">O campo foi assolado, a terra está de luto; porque o trigo foi destruído, o suco de uva se secou, o azeite está em falta.</p>
+  </div>
+</div>
+<div class="vb" id="v1-11">
+  <span class="vn">11</span>
+  <div class="vt">
+    <p class="base base-c">Confusi sunt agricolæ,  ululaverunt vinitores  super frumento et hordeo,  quia periit messis agri.</p>
+    <p class="base base-p">Die Ackerleute sehen jammerlich, und die Weingartner heuien urn den Weizen und urn die Gerste, dafi aus der Ernte auf dem Felde nichts werden kann.</p>
+    <p class="tra">Envergonhai-vos, trabalhadores; gemei, plantadores de vinhas, pelo trigo e pela a cevada; porque a colheita do campo pereceu.</p>
+  </div>
+</div>
+<div class="vb" id="v1-12">
+  <span class="vn">12</span>
+  <div class="vt">
+    <p class="base base-c">Vinea confusa est,  et ficus elanguit ;  malogranatum, et palma, et malum,  et omnia ligna agri aruerunt,  quia confusum est gaudium a filiis hominum.</p>
+    <p class="base base-p">So stehet der Weinstock auch jammerlich und der Feigenbaum klaglich; dazu die Granatbaume, Palmbaume, Apfelbaume und alle Baume auf dem Felde sind verdorret; denn die Freude der Menschen istzum Jammer worden.</p>
+    <p class="tra">A vide se secou, a figueira definhou, assim como a romeira, a palmeira, e a macieira; todas as árvores do campo se secaram; por isso a alegria se secou entre os filhos dos homens.</p>
+  </div>
+</div>
+<div class="vb" id="v1-13">
+  <span class="vn">13</span>
+  <div class="vt">
+    <p class="base base-c">Accingite vos, et plangite, sacerdotes :  ululate, ministri altaris ;  ingredimini, cubate in sacco, ministri Dei mei,  quoniam interiit de domo Dei vestri sacrificium et libatio.</p>
+    <p class="base base-p">Begurtet euch und klaget, ihr Priester; heulet, ihr Diener des Altars; gehet hinein und lieget in Sacken, ihr Diener meines Gottes! Denn es ist beide, Speisopfer und Trankopfer, vom Hause eures Gottes weg.</p>
+    <p class="tra">Cingi-vos e lamentai, sacerdotes; gemei, ministros do altar; vinde e deitai em sacos, trabalhadores de meu Deus; porque as ofertas de alimentos e de bebidas foram tiradas da casa de vosso Deus.</p>
+  </div>
+</div>
+<div class="vb" id="v1-14">
+  <span class="vn">14</span>
+  <div class="vt">
+    <p class="base base-c">Sanctificate jejunium, vocate cœtum,  congregate senes, omnes habitatores terræ  in domum Dei vestri,  et clamate ad Dominum :</p>
+    <p class="base base-p">Heiligetein Fasten; rufetdie Gemeine zusammen; versammelt die Altesten und alle Einwohner des Landes zum Hause des HERRN, eures Gottes, und schreiet zum HERRN!</p>
+    <p class="tra">Santificai um jejum; convocai uma reunião solene; congregai os anciãos e todos os moradores desta terra na casa do SENHOR vosso Deus, e clamai ao SENHOR.</p>
+  </div>
+</div>
+<div class="vb" id="v1-15">
+  <span class="vn">15</span>
+  <div class="vt">
+    <p class="base base-c">A, a, a, diei !  quia prope est dies Domini,  et quasi vastitas a potente veniet.</p>
+    <p class="base base-p">O wehe des Tages! Denn der Tag des HERRN ist nahe und kommt wie ein Verderben vom Allmachtigen.</p>
+    <p class="tra">Ai daquele dia! Porque perto está o dia do SENHOR, e virá do Todo-Poderoso como destruição.</p>
+  </div>
+</div>
+<div class="vb" id="v1-16">
+  <span class="vn">16</span>
+  <div class="vt">
+    <p class="base base-c">Numquid non coram oculis vestris alimenta perierunt  de domo Dei nostri, lætitia et exsultatio ?</p>
+    <p class="base base-p">Da wird die Speise vor unsern Augen weggenommen werden und vom Hause unsers Gottes Freude und Wonne.</p>
+    <p class="tra">Por acaso não foi tirado o alimento de diante de nossos olhos, a alegria e o prazer da casa de nosso Deus?</p>
+  </div>
+</div>
+<div class="vb" id="v1-17">
+  <span class="vn">17</span>
+  <div class="vt">
+    <p class="base base-c">Computruerunt jumenta in stercore suo,  demolita sunt horrea,  dissipatæ sunt apothecæ,  quoniam confusum est triticum.</p>
+    <p class="base base-p">Der Same ist unter der Erde verfaulet, die Kornhauser stehen wüst, die Scheunen zerfallen; denn das Getreide ist verdorben.</p>
+    <p class="tra">As sementes se apodreceram debaixo de seus torrões, os celeiros foram assolados, os depósitos foram derrubados; porque o trigo se secou.</p>
+  </div>
+</div>
+<div class="vb" id="v1-18">
+  <span class="vn">18</span>
+  <div class="vt">
+    <p class="base base-c">Quid ingemuit animal,  mugierunt greges armenti ?  quia non est pascua eis ;  sed et greges pecorum disperierunt.</p>
+    <p class="base base-p">0 wie seufzet das Vieh! Die Rinder sehen klaglich, denn sie haben keine Weide, und die Schafe verschmachten.</p>
+    <p class="tra">Como geme o gado! As manadas dos vacas estão confusas, porque não têm pasto! Os rebanhos das ovelhas estão desolados.</p>
+  </div>
+</div>
+<div class="vb" id="v1-19">
+  <span class="vn">19</span>
+  <div class="vt">
+    <p class="base base-c">Ad te, Domine, clamabo,  quia ignis comedit speciosa deserti,  et flamma succendit omnia ligna regionis.</p>
+    <p class="base base-p">HERR, dich rufe ich an; denn das Feuer hat die Auen in der Wüste verbrannt, und die Flamme hat alle Baume auf dem Acker angezündet.</p>
+    <p class="tra">A ti, ó SENHOR, eu clamo; porque o fogo consumiu os pastos do deserto, e chama incendiou todas as árvores do campo.</p>
+  </div>
+</div>
+<div class="vb" id="v1-20">
+  <span class="vn">20</span>
+  <div class="vt">
+    <p class="base base-c">Sed et bestiæ agri, quasi area sitiens imbrem, suspexerunt ad te,  quoniam exsiccati sunt fontes aquarum,  et ignis devoravit speciosa deserti.</p>
+    <p class="base base-p">Es schreien auch die wilden Tiere zu dir; denn die Wasserbache sind ausgetrocknet, und das Feuer hat die Auen in der Wüste verbrannt.</p>
+    <p class="tra">Até os animais do campo clamam a ti, porque os rios de águas se secaram, e o fogo consumiu os pastos do deserto.</p>
+  </div>
+</div>
+</section>
+
+<section class="chap" id="c2">
+  <div class="chhead">
+    <span class="chrom">II</span>
+    <span class="chlbl chlbl-c">Caput II</span>
+    <span class="chlbl chlbl-p">Das 2. Capitel</span>
+  </div>
+<div class="vb first" id="v2-1">
+  <span class="vn">1</span>
+  <div class="vt">
+    <p class="base base-c">Canite tuba in Sion,  ululate in monte sancto meo,  conturbentur omnes habitatores terræ :  quia venit dies Domini, quia prope est.</p>
+    <p class="base base-p">Blaset mit der Posaune zu Zion, rufet auf meinem heiligen Berge; erzittert, alle Einwohner im Lande! Denn der Tag des HERRN kommt und ist nahe.</p>
+    <p class="tra">Tocai a trombeta em Sião, e alertai em alta voz no meu santo monte; perturbem-se todos os moradores do país;  porque o dia do SENHOR vem, porque perto está.</p>
+  </div>
+</div>
+<div class="vb" id="v2-2">
+  <span class="vn">2</span>
+  <div class="vt">
+    <p class="base base-c">Dies tenebrarum et caliginis,  dies nubis et turbinis ;  quasi mane expansum super montes  populus multus et fortis :  similis ei non fuit a principio,  et post eum non erit  usque in annos generationis et generationis.</p>
+    <p class="base base-p">Ein finstrer Tag, ein dunkler Tag, ein wolkiger Tag, ein nebliger Tag, gleichwie sich die Morgenrote ausbreitet uber die Berge, namlich ein graft und machtig Volk desgleichen vorhin nicht gewesen ist und hinfort nicht sein wird zu ewigen Zeiten fur und fur.</p>
+    <p class="tra">Dia de trevas e de escuridão, dia de nuvens e densas trevas, como a madrugada espalhada sobre os montes; um povo grande e poderoso, como nunca houve desde a antiguidade, nem depois dele jamais haverá, de geração em geração.</p>
+  </div>
+</div>
+<div class="vb" id="v2-3">
+  <span class="vn">3</span>
+  <div class="vt">
+    <p class="base base-c">Ante faciem ejus ignis vorans,  et post eum exurens flamma.  Quasi hortus voluptatis terra coram eo,  et post eum solitudo deserti,  neque est qui effugiat eum.</p>
+    <p class="base base-p">Vor ihm her gehet ein verzehrend Feuer und nach ihm eine brennende Flamme. Das Land ist vor ihm wie ein Lustgarten, aber nach ihm wie eine wüste Einode; und niemand wird ihm entgehen.</p>
+    <p class="tra">Diante dele o fogo consome, e atrás dele a chama arde; a terra adiante dele é como o jardim do Éden, mas atrás dele como deserto devastado; nada há que dele possa escapar.</p>
+  </div>
+</div>
+<div class="vb" id="v2-4">
+  <span class="vn">4</span>
+  <div class="vt">
+    <p class="base base-c">Quasi aspectus equorum, aspectus eorum ;  et quasi equites, sic current.</p>
+    <p class="base base-p">Sie sind gestaltet wie Rosse und rennen wie die Reiter.</p>
+    <p class="tra">Sua aparência é como a aparência de cavalos, e correrão como cavaleiros.</p>
+  </div>
+</div>
+<div class="vb" id="v2-5">
+  <span class="vn">5</span>
+  <div class="vt">
+    <p class="base base-c">Sicut sonitus quadrigarum super capita montium exilient,  sicut sonitus flammæ ignis devorantis stipulam,  velut populus fortis præparatus ad prælium.</p>
+    <p class="base base-p">Sie sprengen daher oben auf den Bergen, wie die Wagen rasseln, und wie eine Flamme lodert im Stroh, wie ein machtig Volk, das zum Strait gerüstet ist.</p>
+    <p class="tra">Saltarão como estrondo de carruagens sobre as topos dos montes, como som de chama de fogo que consome a palha, como povo poderoso, em posição de combate.</p>
+  </div>
+</div>
+<div class="vb" id="v2-6">
+  <span class="vn">6</span>
+  <div class="vt">
+    <p class="base base-c">A facie ejus cruciabuntur populi ;  omnes vultus redigentur in ollam.</p>
+    <p class="base base-p">Die Volker werden sich vor ihm entsetzen; aller Angesichte sind so bleich wie die Topfe.</p>
+    <p class="tra">Diante dele os povos se angustiarão, todos os rostos se afligirão.</p>
+  </div>
+</div>
+<div class="vb" id="v2-7">
+  <span class="vn">7</span>
+  <div class="vt">
+    <p class="base base-c">Sicut fortes current ;  quasi viri bellatores ascendent murum :  viri in viis suis gradientur,  et non declinabunt a semitis suis.</p>
+    <p class="base base-p">Sie werden laufen wie die Riesen und die Mauern ersteigen wie die Krieger; ein jeglicher wird stracks vor sich daherziehen und sich nicht saumen.</p>
+    <p class="tra">Como guerreiros correrão, como homens de guerra subirão a muralha; e cada um irá em seus caminhos, e não torcerão suas veredas.</p>
+  </div>
+</div>
+<div class="vb" id="v2-8">
+  <span class="vn">8</span>
+  <div class="vt">
+    <p class="base base-c">Unusquisque fratrem suum non coarctabit,  singuli in calle suo ambulabunt ;  sed et per fenestras cadent, et non demolientur.</p>
+    <p class="base base-p">Keinerwird den andern irren, sondern ein jeglicher wird in seiner Ordnung daherfahren; und werden durch die Waffen brechen und nicht verwundet werden.</p>
+    <p class="tra">Nenhum apertará ao outro; irão cada um em seu percurso; irrompem sem desfazerem suas fileiras.</p>
+  </div>
+</div>
+<div class="vb" id="v2-9">
+  <span class="vn">9</span>
+  <div class="vt">
+    <p class="base base-c">Urbem ingredientur, in muro current,  domos conscendent, per fenestras intrabunt quasi fur.</p>
+    <p class="base base-p">Sie werden in der Stadt umherreiten, auf der Mauer laufen und in die Hauser steigen und wie ein Dieb durch die Fenster hineinkommen.</p>
+    <p class="tra">Irão pela cidade, correrão pela muralha, subirão nas casas, entrarão pelas janelas como ladrão.</p>
+  </div>
+</div>
+<div class="vb" id="v2-10">
+  <span class="vn">10</span>
+  <div class="vt">
+    <p class="base base-c">A facie ejus contremuit terra,  moti sunt cæli,  sol et luna obtenebrati sunt,  et stellæ retraxerunt splendorem suum.</p>
+    <p class="base base-p">Vor ihm erzittert das Land und bebet der Himmel; Sonne und Mond werden finster, und die Sterne verhalten ihren Schein.</p>
+    <p class="tra">A terra se abala diante deles, o céu se estremece; o sol e a lua se escurecem, e as estrelas retiram seu brilho.</p>
+  </div>
+</div>
+<div class="vb" id="v2-11">
+  <span class="vn">11</span>
+  <div class="vt">
+    <p class="base base-c">Et Dominus dedit vocem suam ante faciem exercitus sui,  quia multa sunt nimis castra ejus,  quia fortia et facientia verbum ejus :  magnus enim dies Domini, et terribilis valde,  et quis sustinebit eum ?</p>
+    <p class="base base-p">Denn der HERR wird seinen Donner vor seinem Heer lassen hergeben; denn sein Heer ist sehr graft und machtig, welches seinen Befehl wird ausrichten; denn der T ag des HERRN ist graft und sehr erschrecklich; wer kann ihn leiden?</p>
+    <p class="tra">E o SENHOR levanta sua voz diante de seu exército; porque suas tropas são muito grandes; porque forte é aquele que cumpre sua palavra; porque o dia do SENHOR é grande, e muito terrível; quem poderá o suportar?</p>
+  </div>
+</div>
+<div class="vb" id="v2-12">
+  <span class="vn">12</span>
+  <div class="vt">
+    <p class="base base-c">Nunc ergo, dicit Dominus,  convertimini ad me in toto corde vestro,  in jejunio, et in fletu, et in planctu.</p>
+    <p class="base base-p">So spricht nun der HERR: Bekehret euch zu mir von ganzem Herzen mit Fasten, mit Weinen, mit Klagen!</p>
+    <p class="tra">Por isso agora o SENHOR diz: Convertei-vos a mim com todo o vosso coração, com jejum, choro e pranto.</p>
+  </div>
+</div>
+<div class="vb" id="v2-13">
+  <span class="vn">13</span>
+  <div class="vt">
+    <p class="base base-c">Et scindite corda vestra, et non vestimenta vestra ;  et convertimini ad Dominum Deum vestrum,  quia benignus et misericors est,  patiens et multæ misericordiæ,  et præstabilis super malitia.</p>
+    <p class="base base-p">Zerreiftet eure Herzen und nicht eure Kleider und bekehret euch zu dem HERRN, eurem Gotti Denn er ist gnadig, barmherzig, geduldig und von grafter Güte und reuet ihn bald der Strafe.</p>
+    <p class="tra">Rasgai vosso coração, e não vossas vestes.Convertei-vos ao SENHOR vosso Deus, porque ele é piedoso e misericordioso, que demora para se irar, e é grande em bondade, e que se arrepende de castigar.</p>
+  </div>
+</div>
+<div class="vb" id="v2-14">
+  <span class="vn">14</span>
+  <div class="vt">
+    <p class="base base-c">Quis scit si convertatur, et ignoscat,  et relinquat post se benedictionem, sacrificium et libamen Domino Deo vestro ?</p>
+    <p class="base base-p">Werweift, es mag ihn wiederum gereuen und einen Segen hinter sich lassen, zu opfern Speisopfer und Trankopferdem HERRN, eurem Gott.</p>
+    <p class="tra">Quem sabe talvez ele volte atrás e se arrependa, e deixe após si uma bênção, uma oferta de alimento de de bebida ao SENHOR vosso Deus?</p>
+  </div>
+</div>
+<div class="vb" id="v2-15">
+  <span class="vn">15</span>
+  <div class="vt">
+    <p class="base base-c">Canite tuba in Sion,  sanctificate jejunium, vocate cœtum :</p>
+    <p class="base base-p">Blaset mit Posaunen zu Zion, heiliget ein Fasten, rufet die Gemeine zusammen!</p>
+    <p class="tra">Tocai a trombeta em Sião, santificai um jejum, convocai uma reunião solene.</p>
+  </div>
+</div>
+<div class="vb" id="v2-16">
+  <span class="vn">16</span>
+  <div class="vt">
+    <p class="base base-c">congregate populum, sanctificate ecclesiam,  coadunate senes, congregate parvulos, et sugentes ubera ;  egrediatur sponsus de cubili suo,  et sponsa de thalamo suo.</p>
+    <p class="base base-p">Versammelt das Volk, heiliget die Gemeine, sammelt die Altesten, bringet zuhauf die jungen Kinder und die Sauglinge! Der Brautigam gehe aus seiner Kammer und die Braut aus ihrem Gemach!</p>
+    <p class="tra">Reuni o povo, santificai a congregação, juntai os anciãos, reuni as crianças e os que mamam; saia o noivo de seu cômodo, e a noiva de seu quarto.</p>
+  </div>
+</div>
+<div class="vb" id="v2-17">
+  <span class="vn">17</span>
+  <div class="vt">
+    <p class="base base-c">Inter vestibulum et altare plorabunt sacerdotes, ministri Domini,  et dicent : Parce, Domine, parce populo tuo ;  et ne des hæreditatem tuam in opprobrium,  ut dominentur eis nationes.  Quare dicunt in populis : Ubi est Deus eorum ?</p>
+    <p class="base base-p">Laft die Priester, des HERRN Diener, weinen zwischen der Halle und Altar und sagen: HERR, schone deines Volks und laft dein Erbteil nicht zuschanden werden, daß Heiden uber sie herrschen! Warum willst du lassen unter den Volkern sagen: Wo ist nun ihr Gott?</p>
+    <p class="tra">Os sacerdotes, trabalhadores do SENHOR, chorem entre o alpendre e o altar, e digam: Poupa a teu povo, SENHOR, e não entregues tua herança à humilhação, para que as nações a dominem. Por que entre os povos diriam: Onde está o Deus deles?</p>
+  </div>
+</div>
+<div class="vb" id="v2-18">
+  <span class="vn">18</span>
+  <div class="vt">
+    <p class="base base-c">Zelatus est Dominus terram suam,  et pepercit populo suo.</p>
+    <p class="base base-p">So wird denn der HERR urn sein Land eifern und seines Volks verschonen.</p>
+    <p class="tra">Então o SENHOR terá zelo por sua terra, e poupará a seu povo.</p>
+  </div>
+</div>
+<div class="vb" id="v2-19">
+  <span class="vn">19</span>
+  <div class="vt">
+    <p class="base base-c">Et respondit Dominus, et dixit populo suo :  Ecce ego mittam vobis frumentum, et vinum, et oleum,  et replebimini eis ;  et non dabo vos ultra opprobrium in gentibus.</p>
+    <p class="base base-p">Und der HERR wird antworten und sagen zu seinem Volk: Siehe, ich will euch Getreide, Most und 01 die Fülle schicken, daß ihr genug daran haben sollt, und will euch nicht mehr lassen unter den Heiden zuschanden werden.</p>
+    <p class="tra">E o SENHOR responderá e dirá a seu povo: Eis que eu vos envio pão, suco de uva, e azeite, e deles sereis saciados; e nunca mais vos entregarei à humilhação entre as nações.</p>
+  </div>
+</div>
+<div class="vb" id="v2-20">
+  <span class="vn">20</span>
+  <div class="vt">
+    <p class="base base-c">Et eum qui ab aquilone est procul faciam a vobis,  et expellam eum in terram inviam et desertam :  faciem ejus contra mare orientale,  et extremum ejus ad mare novissimum :  et ascendet fœtor ejus,  et ascendet putredo ejus,  quia superbe egit.</p>
+    <p class="base base-p">Und will den von Mitternacht feme von euch treiben und ihn in ein dürr und wüst Land verstoften, namlich sein Angesicht hin zum Meer gegen Morgen und sein Ende hin zum auftersten Meer. Ersoll verfaulen und stinken; denn er hat grofte Dinge getan.</p>
+    <p class="tra">E afastarei de vós o exército do norte, e o lançarei na terra seca e deserta; sua frente será para o mar oriental, e sua retaguarda para o mar ocidental, e exalará seu mau cheiro; subirá sua podridão, porque fez grandes coisas.</p>
+  </div>
+</div>
+<div class="vb" id="v2-21">
+  <span class="vn">21</span>
+  <div class="vt">
+    <p class="base base-c">Noli timere, terra :  exsulta, et lætare,  quoniam magnificavit Dominus ut faceret.</p>
+    <p class="base base-p">Furchte dich nicht, liebes Land, sondern sei frohlich und getrost; denn der HERR kann auch grofte Dinge tun.</p>
+    <p class="tra">Não temas, ó terra; alegra-te e encha-te de alegria, porque o SENHOR tem feito grandes coisas.</p>
+  </div>
+</div>
+<div class="vb" id="v2-22">
+  <span class="vn">22</span>
+  <div class="vt">
+    <p class="base base-c">Nolite timere, animalia regionis,  quia germinaverunt speciosa deserti ;  quia lignum attulit fructum suum,  ficus et vinea dederunt virtutem suam.</p>
+    <p class="base base-p">Furchtet euch nicht, ihr Tiere auf dem Felde; denn die Wohnungen in der Wüste sollen grünen und die Baume ihre Früchte bringen, und die Feigenbaume und Weinstocke sollen wohl tragen.</p>
+    <p class="tra">Não temais, vós animais do campo; porque os pastos do deserto voltarão a ficar verdes, porque as árvores darão seu fruto, a figueira e a videira mostrarão seu vigor.</p>
+  </div>
+</div>
+<div class="vb" id="v2-23">
+  <span class="vn">23</span>
+  <div class="vt">
+    <p class="base base-c">Et, filii Sion, exsultate,  et lætamini in Domino Deo vestro,  quia dedit vobis doctorem justitiæ,  et descendere faciet ad vos imbrem matutinum et serotinum,  sicut in principio.</p>
+    <p class="base base-p">Und ihr, Kinder Zions, freuet euch und seid frohlich im HERRN, eurem Gott, der euch Lehrer zur Gerechtigkeit gibt und euch herabsendet Frühregen und Spatregen, wie vorhin,</p>
+    <p class="tra">E vós, filhos de Sião, alegrai-vos e enchei-vos de alegria no SENHOR vosso Deus; porque ele vos dará a primeira chuva com justiça, e fará descer sobre vós as primeiras e últimas chuvas do ano, assim como era antes.</p>
+  </div>
+</div>
+<div class="vb" id="v2-24">
+  <span class="vn">24</span>
+  <div class="vt">
+    <p class="base base-c">Et implebuntur areæ frumento,  et redundabunt torcularia vino et oleo.</p>
+    <p class="base base-p">daß die Tennen voll Korns und die Keltern Uberfluft von Most und 01 haben sollen.</p>
+    <p class="tra">E as eiras se encherão de trigo, e os lagares transbordarão de suco de uva e azeite.</p>
+  </div>
+</div>
+<div class="vb" id="v2-25">
+  <span class="vn">25</span>
+  <div class="vt">
+    <p class="base base-c">Et reddam vobis annos, quos comedit locusta,  bruchus, et rubigo, et eruca :  fortitudo mea magna quam misi in vos.</p>
+    <p class="base base-p">Und ich will euch die Jahre erstatten, welche die Heuschrecken, Kafer, Geschmeift und Raupen, die mein groftes Heer waren, so ich unter euch schickte, gefressen haben,</p>
+    <p class="tra">Assim vos restituirei dos anos em que comeram o cortador, o comedor, o devorador e o destruidor, o meu grande exército que enviei contra vós.</p>
+  </div>
+</div>
+<div class="vb" id="v2-26">
+  <span class="vn">26</span>
+  <div class="vt">
+    <p class="base base-c">Et comedetis vescentes, et saturabimini ;  et laudabitis nomen Domini Dei vestri,  qui fecit mirabilia vobiscum ;  et non confundetur populus meus in sempiternum.</p>
+    <p class="base base-p">daß ihr zu essen genug haben sollet und den Namen des HERRN, eures Gottes, preisen, der Wunder unter euch getan hat; und mein Volk soil nicht mehr zuschanden werden.</p>
+    <p class="tra">E comereis abundantemente até vos saciar; e louvareis o nome do SENHOR vosso Deus, que fez maravilhas convosco; e nunca mais meu povo será envergonhado.</p>
+  </div>
+</div>
+<div class="vb" id="v2-27">
+  <span class="vn">27</span>
+  <div class="vt">
+    <p class="base base-c">Et scietis quia in medio Israël ego sum,  et ego Dominus Deus vester, et non est amplius ;  et non confundetur populus meus in æternum.</p>
+    <p class="base base-p">Und ihr sollt es erfahren, daß ich mitten unter Israel sei und daß ich, der HERR, euer Gott sei, und keiner mehr; und mein Volk soil nicht mehr zuschanden werden.</p>
+    <p class="tra">E sabereis que eu estou no meio de Israel, e que eu sou o SENHOR vosso Deus, e não há outro; e meu povo nunca mais será envergonhado.</p>
+  </div>
+</div>
+<div class="vb" id="v2-28">
+  <span class="vn">28</span>
+  <div class="vt">
+    <p class="base base-c">Et erit post hæc :  effundam spiritum meum super omnem carnem,  et prophetabunt filii vestri et filiæ vestræ :  senes vestri somnia somniabunt,  et juvenes vestri visiones videbunt.</p>
+    <p class="base base-p"></p>
+    <p class="tra">E será depois que derramarei meu Espírito sobre toda carne;  e vossos filhos e vossas filhas profetizarão; vossos velhos terão sonhos, e vossos jovens terão visões.</p>
+  </div>
+</div>
+<div class="vb" id="v2-29">
+  <span class="vn">29</span>
+  <div class="vt">
+    <p class="base base-c">Sed et super servos meos et ancillas  in diebus illis effundam spiritum meum.</p>
+    <p class="base base-p"></p>
+    <p class="tra">E também sobre os servos e sobre as servas, naqueles dias derramarei o meu Espírito.</p>
+  </div>
+</div>
+<div class="vb" id="v2-30">
+  <span class="vn">30</span>
+  <div class="vt">
+    <p class="base base-c">Et dabo prodigia in cælo et in terra,  sanguinem, et ignem, et vaporem fumi.</p>
+    <p class="base base-p"></p>
+    <p class="tra">E mostrarei maravilhas no céu e na terra; sangue, fogo, e colunas de fumaça.</p>
+  </div>
+</div>
+<div class="vb" id="v2-31">
+  <span class="vn">31</span>
+  <div class="vt">
+    <p class="base base-c">Sol convertetur in tenebras,  et luna in sanguinem,  antequam veniat dies Domini magnus et horribilis.</p>
+    <p class="base base-p"></p>
+    <p class="tra">O sol se tornará em trevas, e a lua em sangue, antes que venha o grande e temível dia do SENHOR.</p>
+  </div>
+</div>
+<div class="vb" id="v2-32">
+  <span class="vn">32</span>
+  <div class="vt">
+    <p class="base base-c">Et erit : omnis qui invocaverit nomen Domini, salvus erit :  quia in monte Sion et in Jerusalem  erit salvatio, sicut dixit Dominus,  et in residuis quos Dominus vocaverit.</p>
+    <p class="base base-p"></p>
+    <p class="tra">E será que todo aquele que invocar o nome do SENHOR será salvo; porque no monte de Sião e em Jerusalém haverá livramento, assim como o SENHOR disse, entre os que restarem, aos quais o SENHOR chamar.</p>
+  </div>
+</div>
+</section>
+
+<section class="chap" id="c3">
+  <div class="chhead">
+    <span class="chrom">III</span>
+    <span class="chlbl chlbl-c">Caput III</span>
+    <span class="chlbl chlbl-p">Das 3. Capitel</span>
+  </div>
+<div class="vb first" id="v3-1">
+  <span class="vn">1</span>
+  <div class="vt">
+    <p class="base base-c">Quia ecce in diebus illis, et in tempore illo,  cum convertero captivitatem Juda et Jerusalem,</p>
+    <p class="base base-p">Und nach diesem will ich meinen Geist ausgieften uber alles Fleisch, und eure Sohne und Tochter sollen weissagen, eure Altesten sollen Traume haben, und eure Jünglinge sollen Gesichte sehen.</p>
+    <p class="tra">Porque eis que naqueles dias e naquele tempo eu restaurarei Judá e Jerusalém de seu infortúnio.</p>
+  </div>
+</div>
+<div class="vb" id="v3-2">
+  <span class="vn">2</span>
+  <div class="vt">
+    <p class="base base-c">congregabo omnes gentes,  et deducam eas in vallem Josaphat ;  et disceptabo cum eis ibi super populo meo,  et hæreditate mea Israël,  quos disperserunt in nationibus,  et terram meam diviserunt.</p>
+    <p class="base base-p">Auch will ich zur selbigen Zeit beide, uber Knechte und Magde, meinen Geist ausgieften</p>
+    <p class="tra">Então ajuntarei todas as nações, e as farei descer ao vale de Josafá; e ali entrarei em juízo com elas por causa do meu povo, e de minha herança Israel, aos quais dispersaram entre as nações, e repartiram minha terra;</p>
+  </div>
+</div>
+<div class="vb" id="v3-3">
+  <span class="vn">3</span>
+  <div class="vt">
+    <p class="base base-c">Et super populum meum miserunt sortem ;  et posuerunt puerum in prostibulo,  et puellam vendiderunt pro vino ut biberent.</p>
+    <p class="base base-p">und will Wunderzeichen geben im Himmel und auf Erden, namlich Blut, Feuer und Rauchdampf.</p>
+    <p class="tra">E lançaram sortes sobre meu povo, e deram os rapazes em troca de prostitutas, e venderam as moças em troca de vinho para beberem.</p>
+  </div>
+</div>
+<div class="vb" id="v3-4">
+  <span class="vn">4</span>
+  <div class="vt">
+    <p class="base base-c">Verum quid mihi et vobis, Tyrus et Sidon,  et omnis terminus Palæstinorum ?  numquid ultionem vos reddetis mihi ?  et si ulciscimini vos contra me,  cito velociter reddam vicissitudinem vobis super caput vestrum.</p>
+    <p class="base base-p">Die Sonne soli in Finsternis und der Mond in Blut verwandelt werden, ehe denn der grofte und schreckliche Tag des HERRN kommt.</p>
+    <p class="tra">Além disso, o que tendes a ver comigo vós, Tiro e Sidom, e todas as regiões da Filístia? Quereis vos vingar de mim? E se quereis vos vingar de mim, apressadamente eu vos retribuirei o pagamento sobre vossa cabeça.</p>
+  </div>
+</div>
+<div class="vb" id="v3-5">
+  <span class="vn">5</span>
+  <div class="vt">
+    <p class="base base-c">Argentum enim meum et aurum tulistis,  et desiderabilia mea et pulcherrima intulistis in delubra vestra.</p>
+    <p class="base base-p">Und soil geschehen, werden Namen des HERRN anrufen wird, der soil errettet werden. Denn auf dem Berge Zion und zu Jerusalem wird eine Errettung sein, wie der HERR verheiften hat, auch bei den andern ubrigen, die der HERR berufen wird.</p>
+    <p class="tra">Pois levastes minha prata e meu ouro, e minhas coisas valiosas e boas pusestes em vossos templos,</p>
+  </div>
+</div>
+<div class="vb" id="v3-6">
+  <span class="vn">6</span>
+  <div class="vt">
+    <p class="base base-c">Et filios Juda et filios Jerusalem vendidistis filiis Græcorum,  ut longe faceretis eos de finibus suis.</p>
+    <p class="base base-p"></p>
+    <p class="tra">E vendestes os filhos de Judá e os filhos de Jerusalém aos filhos dos gregos, para os distanciar de sua pátria.</p>
+  </div>
+</div>
+<div class="vb" id="v3-7">
+  <span class="vn">7</span>
+  <div class="vt">
+    <p class="base base-c">Ecce ego suscitabo eos de loco in quo vendidistis eos,  et convertam retributionem vestram in caput vestrum.</p>
+    <p class="base base-p"></p>
+    <p class="tra">Eis que eu os levantarei do lugar para onde os vendestes, e retribuirei vosso pagamento sobre vossa cabeça.</p>
+  </div>
+</div>
+<div class="vb" id="v3-8">
+  <span class="vn">8</span>
+  <div class="vt">
+    <p class="base base-c">Et vendam filios vestros et filias vestras in manibus filiorum Juda,  et venundabunt eos Sabæis, genti longinquæ,  quia Dominus locutus est.</p>
+    <p class="base base-p"></p>
+    <p class="tra">E venderei vossos filhos e vossas filhas na mão dos filhos de Judá, e eles os venderão aos sabeus, uma nação distante; porque o SENHOR falou.</p>
+  </div>
+</div>
+<div class="vb" id="v3-9">
+  <span class="vn">9</span>
+  <div class="vt">
+    <p class="base base-c">Clamate hoc in gentibus,  sanctificate bellum,  suscitate robustos :  accedant, ascendant omnes viri bellatores.</p>
+    <p class="base base-p"></p>
+    <p class="tra">Proclamai isto entre as nações, convocai uma guerra; despertai aos guerreiros, acheguem-se, venham todos os homens de guerra.</p>
+  </div>
+</div>
+<div class="vb" id="v3-10">
+  <span class="vn">10</span>
+  <div class="vt">
+    <p class="base base-c">Concidite aratra vestra in gladios,  et ligones vestros in lanceas.  Infirmus dicat : Quia fortis ego sum.</p>
+    <p class="base base-p"></p>
+    <p class="tra">Fazei espadas de vossas enxadas, e lanças de vossas foices; diga o fraco: Sou forte.</p>
+  </div>
+</div>
+<div class="vb" id="v3-11">
+  <span class="vn">11</span>
+  <div class="vt">
+    <p class="base base-c">Erumpite, et venite, omnes gentes de circuitu,  et congregamini ;  ibi occumbere faciet Dominus robustos tuos.</p>
+    <p class="base base-p"></p>
+    <p class="tra">Ajuntai-vos e vinde, todas as nações ao redor, e reuni-vos. (Ó SENHOR, faze vir ali os teus fortes!)</p>
+  </div>
+</div>
+<div class="vb" id="v3-12">
+  <span class="vn">12</span>
+  <div class="vt">
+    <p class="base base-c">Consurgant, et ascendant gentes in vallem Josaphat,  quia ibi sedebo ut judicem omnes gentes in circuitu.</p>
+    <p class="base base-p"></p>
+    <p class="tra">Levantem-se as nações, e subam ao vale de Josafá; porque ali eu me sentarei para julgar todas as nações ao redor.</p>
+  </div>
+</div>
+<div class="vb" id="v3-13">
+  <span class="vn">13</span>
+  <div class="vt">
+    <p class="base base-c">Mittite falces, quoniam maturavit messis ;  venite, et descendite,  quia plenum est torcular, exuberant torcularia :  quia multiplicata est malitia eorum.</p>
+    <p class="base base-p"></p>
+    <p class="tra">Lançai a foice, porque a colheita já está madura. Vinde, descei; porque o lagar está cheio, os tanques transbordam; porque a maldade deles é grande.</p>
+  </div>
+</div>
+<div class="vb" id="v3-14">
+  <span class="vn">14</span>
+  <div class="vt">
+    <p class="base base-c">Populi, populi, in valle concisionis,  quia juxta est dies Domini in valle concisionis.</p>
+    <p class="base base-p"></p>
+    <p class="tra">Multidões! Multidões no vale da decisão! Porque perto está o dia do SENHOR no vale da decisão.</p>
+  </div>
+</div>
+<div class="vb" id="v3-15">
+  <span class="vn">15</span>
+  <div class="vt">
+    <p class="base base-c">Sol et luna obtenebrati sunt,  et stellæ retraxerunt splendorem suum.</p>
+    <p class="base base-p"></p>
+    <p class="tra">O sol e a lua se escurecerão, e as estrelas recolherão seu brilho.</p>
+  </div>
+</div>
+<div class="vb" id="v3-16">
+  <span class="vn">16</span>
+  <div class="vt">
+    <p class="base base-c">Et Dominus de Sion rugiet,  et de Jerusalem dabit vocem suam,  et movebuntur cæli et terra ;  et Dominus spes populi sui,  et fortitudo filiorum Israël.</p>
+    <p class="base base-p"></p>
+    <p class="tra">E o SENHOR bramará desde Sião, e dará sua voz desde Jerusalém, e os céus e a terra tremerão; mas o SENHOR será o refúgio de seu povo, e a fortaleza dos filhos de Israel.</p>
+  </div>
+</div>
+<div class="vb" id="v3-17">
+  <span class="vn">17</span>
+  <div class="vt">
+    <p class="base base-c">Et scietis quia ego Dominus Deus vester,  habitans in Sion monte sancto meo ;  et erit Jerusalem sancta,  et alieni non transibunt per eam amplius.</p>
+    <p class="base base-p"></p>
+    <p class="tra">Então sabereis que eu sou o SENHOR vosso Deus, que habito em Sião, o meu santo monte; e Jerusalém será santa, e estrangeiros não mais passarão mais por ela.</p>
+  </div>
+</div>
+<div class="vb" id="v3-18">
+  <span class="vn">18</span>
+  <div class="vt">
+    <p class="base base-c">Et erit in die illa : stillabunt montes dulcedinem,  et colles fluent lacte,  et per omnes rivos Juda ibunt aquæ ;  et fons de domo Domini egredietur,  et irrigabit torrentem spinarum.</p>
+    <p class="base base-p"></p>
+    <p class="tra">E será naquele tempo, que os montes destilarão suco de uva, e os morros fluirão leite, e por todos os ribeiros de Judá correrão águas; e sairá uma fonte da casa do SENHOR, que regará o vale de Sitim.</p>
+  </div>
+</div>
+<div class="vb" id="v3-19">
+  <span class="vn">19</span>
+  <div class="vt">
+    <p class="base base-c">Ægyptus in desolationem erit,  et Idumæa in desertum perditionis,  pro eo quod inique egerint in filios Juda,  et effuderint sanguinem innocentem in terra sua.</p>
+    <p class="base base-p"></p>
+    <p class="tra">O Egito será uma assolação, e Edom se tornará um deserto assolado, por causa da violência que fizeram aos filhos de Judá, em cuja terra derramaram sangue inocente.</p>
+  </div>
+</div>
+<div class="vb" id="v3-20">
+  <span class="vn">20</span>
+  <div class="vt">
+    <p class="base base-c">Et Judæa in æternum habitabitur,  et Jerusalem in generationem et generationem.</p>
+    <p class="base base-p"></p>
+    <p class="tra">Mas Judá permanecerá para sempre, e Jerusalém de geração em geração.</p>
+  </div>
+</div>
+<div class="vb" id="v3-21">
+  <span class="vn">21</span>
+  <div class="vt">
+    <p class="base base-c">Et mundabo sanguinem eorum, quem non mundaveram ;  et Dominus commorabitur in Sion.</p>
+    <p class="base base-p"></p>
+    <p class="tra">E purificarei o sangue  que não tinha purificado; e o SENHOR habitará em Sião.</p>
+  </div>
+</div>
+</section>
+</main>
+
+<nav class="bnav">
+  <a href="028-hos.html">&#8592; Osee</a>
+  <a href="../index.html" class="center">? &nbsp; Inhaltsverzeichnis</a>
+  <a href="030-amo.html">Amos &#8594;</a>
+</nav>
+
+<script>
+(function(){
+  var c = localStorage.getItem('biblia_conf') || 'catholic';
+  document.body.dataset.conf = c;
+})();
+</script>
+</body>
+</html>
