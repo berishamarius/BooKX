@@ -1,38 +1,23 @@
 const fs = require('fs');
+const { execSync } = require('child_process');
 
-const itPath = 'dist-diebibel/italian/b\u00FCcher/001-gen.html';
-const dePath = 'dist-diebibel/german/b\u00FCcher/001-gen.html';
-
-const it = fs.readFileSync(itPath, 'utf8');
-const de = fs.readFileSync(dePath, 'utf8');
-
-const itSt = it.match(/<style>([\s\S]*?)<\/style>/)[1];
+// Check German .tra CSS
+const de = fs.readFileSync('dist-diebibel/german/b\u00FCcher/001-gen.html', 'utf8');
 const deSt = de.match(/<style>([\s\S]*?)<\/style>/)[1];
+const traCSS = deSt.match(/\.tra[\s\S]{0,200}/);
+console.log('German .tra CSS:', traCSS ? traCSS[0].substring(0,200) : 'NOT FOUND');
 
-// Comment balance
-const itOpens = ((itSt.match(/\/\*/g)) || []).length;
-const itCloses = ((itSt.match(/\*\//g)) || []).length;
-console.log('Italian comments balanced:', itOpens === itCloses, '(' + itOpens + '/' + itCloses + ')');
+// Check French .tra CSS
+const fr = fs.readFileSync('dist-diebibel/french/b\u00FCcher/001-gen.html', 'utf8');
+const frSt = fr.match(/<style>([\s\S]*?)<\/style>/)[1];
+const frTraCSS = frSt.match(/\.tra[\s\S]{0,200}/);
+console.log('French .tra CSS:', frTraCSS ? frTraCSS[0].substring(0,200) : 'NOT FOUND');
 
-// Header HTML
-const itHead = it.match(/<header class="bhead">([\s\S]*?)<\/header>/);
-const deHead = de.match(/<header class="bhead">([\s\S]*?)<\/header>/);
-console.log('\nItalian header:');
-console.log(itHead ? itHead[0] : 'NOT FOUND');
-console.log('\nGerman header:');
-console.log(deHead ? deHead[0] : 'NOT FOUND');
+// Check French first verse - show the vb and tra content
+const frVb = fr.match(/<div class="vb[^"]*"[^>]*id="v1-1"[\s\S]{0,600}/);
+console.log('\nFrench v1-1 vb:');
+console.log(frVb ? frVb[0].substring(0,500) : 'NOT FOUND');
 
-// blatin CSS active?
-const blatinIdx = itSt.indexOf('.blatin{');
-const commentBeforeBlatin = itSt.lastIndexOf('/*', blatinIdx);
-const commentCloseBeforeBlatin = itSt.lastIndexOf('*/', blatinIdx);
-console.log('\n.blatin CSS position:', blatinIdx);
-console.log('Last /* before blatin:', commentBeforeBlatin);
-console.log('Last */ before blatin:', commentCloseBeforeBlatin);
-console.log('CSS active (last */ > last /*):', commentCloseBeforeBlatin > commentBeforeBlatin);
-
-// Conf script position
-const confIdx = it.indexOf('biblia_conf');
-const headEnd = it.indexOf('</head>');
-console.log('\nConf script in <head>:', confIdx < headEnd);
-console.log('Conf script pos:', confIdx, ' head ends at:', headEnd);
+// Check blatin-p CSS rule
+const frBlatinCSS = frSt.match(/\.blatin[\s\S]{0,400}/);
+console.log('\nFrench .blatin CSS:', frBlatinCSS ? frBlatinCSS[0].substring(0,300) : 'NOT FOUND');

@@ -871,5 +871,30 @@ body[data-conf="protestant"] .toc-item[data-testament="DK"] { display:none; }
   });
 })();
 </script>
+<script>
+(function(){
+  var bm;
+  try { bm = JSON.parse(localStorage.getItem('KX_bookmark') || 'null'); } catch(_){}
+  if (!bm || !bm.url) return;
+  // Extract book filename from bookmark URL (e.g. /italian/bücher/001-gen.html#v1-1)
+  var m = bm.url.match(/b[uü]cher\/([^#?]+)/i) || bm.url.match(/bücher\/([^#?]+)/i);
+  if (!m) return;
+  var bookFile = m[1];
+  // Find the toc-item linking to this book
+  var items = document.querySelectorAll('a.toc-item');
+  for (var i = 0; i < items.length; i++) {
+    var href = items[i].getAttribute('href') || '';
+    if (href.indexOf(bookFile) >= 0) {
+      items[i].style.cssText += ';background:rgba(200,160,48,.13);box-shadow:0 0 18px rgba(200,160,48,.18),inset 0 0 0 1px rgba(200,160,48,.35);border-radius:3px;';
+      // Add a small bookmark indicator
+      var bki = document.createElement('span');
+      bki.textContent = '✦';
+      bki.style.cssText = 'color:#EDD882;font-size:.7rem;margin-left:8px;opacity:.9;flex-shrink:0;';
+      items[i].insertBefore(bki, items[i].querySelector('.tarr'));
+      break;
+    }
+  }
+})();
+</script>
 </body>
 </html>

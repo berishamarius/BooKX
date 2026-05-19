@@ -1,42 +1,47 @@
-// fix-backcover-image.js
-// Fix: Relative image path -> absolute so it works regardless of URL structure
+/**
+ * fix-backcover-image.js
+ * Copy Bibel-Rueckseite-Katholisch.png into each language subfolder
+ * and update back-cover.html to use same-folder relative path (no leading slash).
+ * Absolute /Bibel-... paths don't work on Vercel per-language deployments.
+ */
+'use strict';
 const fs = require('fs');
 const path = require('path');
 
 const BIBLE_DIR = 'dist-diebibel';
-const langs = fs.readdirSync(BIBLE_DIR).filter(x => {
-  return fs.statSync(path.join(BIBLE_DIR, x)).isDirectory();
-});
+const IMAGE_NAME = 'Bibel-Rueckseite-Katholisch.png';
+const SRC_IMAGE = path.join(BIBLE_DIR, IMAGE_NAME);
 
-// Also fix root back-cover
-const targets = [''].concat(langs);
-let fixed = 0;
+const langs = fs.readdirSync(BIBLE_DIR).filter(x =>
+  fs.statSync(path.join(BIBLE_DIR, x)).isDirectory()
+);
 
-targets.forEach(function(lang) {
-  const file = lang
-    ? path.join(BIBLE_DIR, lang, 'back-cover.html')
-    : path.join(BIBLE_DIR, 'back-cover.html');
+let copied = 0, updated = 0;
 
-  if (!fs.existsSync(file)) return;
+for (const lang of langs) {
+  const langDir = path.join(BIBLE_DIR, lang);
+  const destImage = path.join(langDir, IMAGE_NAME);
+  const bcFile = path.join(langDir, 'back-cover.html');
 
-  let html = fs.readFileSync(file, 'utf8');
-
-  // Replace relative path with absolute path
-  const before = html;
-  html = html.replace(
-    /src="\.\.\/Bibel-Rueckseite-Katholisch\.png"/g,
-    'src="/Bibel-Rueckseite-Katholisch.png"'
-  );
-  html = html.replace(
-    /src="Bibel-Rueckseite-Katholisch\.png"/g,
-    'src="/Bibel-Rueckseite-Katholisch.png"'
-  );
-
-  if (html !== before) {
-    fs.writeFileSync(file, html, 'utf8');
-    fixed++;
-    console.log('  fixed:', lang || 'root');
+  // Copy image into language folder
+  if (!fs.existsSync(destImage)) {
+    fs.copyFileSync(SRC_IMAGE, destImage);
+    copied++;
+    console.log(`  Copied image -> ${lang}/`);
   }
-});
 
-console.log('Done. Fixed:', fixed, 'back-cover files.');
+  // Update back-cover.html: change /Bibel-... or ../Bibel-... to just Bibel-...
+  if (fs.existsSync(bcFile)) {
+    let html = fs.readFileSync(bcFile, 'utf8');
+    const fixed = html
+      .replace(`src="/${IMAGE_NAME}"`, `src="${IMAGE_NAME}"`)
+      .replace(`src="../${IMAGE_NAME}"`, `src="${IMAGE_NAME}"`);
+    if (fixed !== html) {
+      fs.writeFileSync(bcFile, fixed, 'utf8');
+      updated++;
+      console.log(`  Updated src in ${lang}/back-cover.html`);
+    }
+  }
+}
+
+console.log(`\nDone: ${copied} images copied, ${updated} back-cover.html files updated`);
