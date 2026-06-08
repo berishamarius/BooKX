@@ -2,8 +2,10 @@
  * build-woerterbuch.js
  * ─────────────────────────────────────────────────────────────────
  * 1.  Generates woerterbuch.html for all 14 Quran languages
- *     Vocabulary: public-domain classical Arabic lexicography
- *     (Lane's Lexicon 1863 · Al-Mufradat fi Gharib al-Quran, Al-Raghib al-Isfahani)
+ *     Vocabulary: ~130 words directly from the Quran (Al-Mufradat fi Gharib
+ *     al-Quran by Al-Raghib al-Isfahani · Lane's Lexicon 1863 – public domain)
+ *     Category headings are in the target language.
+ *     Mobile-responsive layout (no squished side-frames).
  * 2.  Patches dist-alquran/cover.html  → 2-per-row archive grid
  * 3.  Patches dist-diebibel/cover.html → 2-per-row archive grid
  */

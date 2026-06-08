@@ -36,6 +36,11 @@ const TRANSLATIONS = [
   { name:'Albanisch',   lang:'sq', dir:'ltr', transId:88,  titleNative:'Shqip',            readBtn:'Fillo Leximin',     introTitle:'Parathënie',  indexTitle:'Tabela e Permbajtjes'},
   { name:'Chinesisch',  lang:'zh', dir:'ltr', transId:56,  titleNative:'中文',              readBtn:'开始阅读',           introTitle:'序言',        indexTitle:'目录'                },
   { name:'Uygurisch',   lang:'ug', dir:'rtl', transId:76,  titleNative:'ئۇيغۇرچە',        readBtn:'ئوقۇشنى باشلاش',  introTitle:'مۇقەددىمە',  indexTitle:'مۇندەرىجە'          },
+  { name:'Spanisch',    lang:'es', dir:'ltr', transId:83,  titleNative:'Español',          readBtn:'Comenzar a Leer', introTitle:'Prefacio',    indexTitle:'Tabla de Contenidos'},
+  { name:'Französisch', lang:'fr', dir:'ltr', transId:31,  titleNative:'Français',         readBtn:'Commencer la Lecture', introTitle:'Préface', indexTitle:'Table des Matières'},
+  { name:'Tagalog',     lang:'tl', dir:'ltr', transId:211, titleNative:'Tagalog',          readBtn:'Simulan ang Pagbasa', introTitle:'Pambungad', indexTitle:'Talaan ng Nilalaman'},
+  { name:'Thailändisch', lang:'th', dir:'ltr', transId:51, titleNative:'ไทย',             readBtn:'เริ่มการอ่าน',    introTitle:'คำนำ',       indexTitle:'สารบัญ'             },
+  { name:'Kasachisch',  lang:'kk', dir:'ltr', transId:222, titleNative:'Қазақ',           readBtn:'Оқуды Бастау',   introTitle:'Кіріспе',    indexTitle:'Мазмұны'            },
 ];
 
 const DISC = {
@@ -53,6 +58,11 @@ const DISC = {
   sq:'Përkthim kuptimor — jo fjalë për fjalë i origjinalit.',
   zh:'含义翻译——并非原文的逐字翻译。',
   ug:'مەنا تەرجىمەسى — ئەسلى مەتننىڭ سۆزمۇ-سۆز تەرجىمەسى ئەمەس.',
+  es:'Traducción de significados — no es una traducción palabra por palabra del original.',
+  fr:'Traduction des sens — non une traduction mot pour mot de l\'original.',
+  tl:'Pagsasalin ng kahulugan — hindi salita-para-sa-salitang pagsasalin ng orihinal.',
+  th:'การแปลความหมาย — ไม่ใช่การแปลคำต่อคำของข้อความต้นฉบับ',
+  kk:'Мағынасы аудармасы — түпнұсқаның сөз-сөзбе-сөз аудармасы емес.',
 };
 
 const BISMI_TR = {
@@ -70,6 +80,11 @@ const BISMI_TR = {
   sq:'Me emrin e Allahut, të Gjithëmëshirshmit, Mëshirëplotit.',
   zh:'奉最仁慈、特慈的安拉之名。',
   ug:'مەرھەمەتلىك ۋە شەپقەتلىك اللاھنىڭ ئىسمى بىلەن.',
+  es:'En el nombre de Allah, el Más Misericordioso, el Muy Misericordioso.',
+  fr:'Au nom d\'Allah, le Tout Miséricordieux, le Très Miséricordieux.',
+  tl:'Sa ngalan ng Allah, ang Pinakamahabag, ang Napakabusog sa Awa.',
+  th:'ในนามของอัลลอฮ์ ผู้คุณเมตตามากที่สุด ผู้เมตตายิ่ง',
+  kk:'Ең Мейіргіміндік және Ең Рахымды Құдайдың атымен.',
 };
 
 const DISC_LONG = {
@@ -87,6 +102,11 @@ const DISC_LONG = {
   sq:'Ky është <strong>përkthim i kuptimeve</strong> të Kuranit të Shenjtë në gjuhën shqipe. Përkthimi nuk është Kurani — i vetmi Kuran autentik është teksti origjinal arabisht, i ruajtur i pandryshuar për mbi 1.400 vjet.',
   zh:'这是《古兰经》含义的<strong>中文翻译</strong>。翻译不是古兰经——唯一真实的古兰经是已保存超过1400年未曾改变的阿拉伯文原典。',
   ug:'بۇ مۇقەددەس قۇرئاننىڭ ئۇيغۇرچىگە <strong>مەنا تەرجىمەسى</strong>. تەرجىمە قۇرئان ئەمەس — بىردىنبىر ھەقىقىي قۇرئان 1400 يىلدىن ئارتۇق ئۆزگەرمەي ساقلىنىپ كەلگەن ئەرەبچە ئەسلى مەتن.',
+  es:'Esta es una <strong>traducción de significados</strong> del Santo Corán al español — no un sustituto del original árabe. Toda traducción aproxima el sentido sin capturarlo completamente. El Corán es el árabe; todo lo demás es aproximación.',
+  fr:'Ceci est une <strong>traduction des sens</strong> du Saint Coran en français — non un substitut de l\'original arabe. Toute traduction se rapproche du sens sans le saisir complètement. Le Coran est l\'arabe; tout le reste est approximation.',
+  tl:'Ito ay isang <strong>pagsasalin ng kahulugan</strong> ng Banal na Quran sa Tagalog — hindi isang pagpapalit ng orihinal na Arabe. Bawat pagsasalin ay umabot sa kahulugan nang hindi ito lubos na nararating. Ang Quran ay ang Arabe; ang lahat ay pang-abot lamang.',
+  th:'นี่คือ<strong>การแปลความหมาย</strong>ของอัลกุรอานกับภาษาไทย — ไม่ใช่การแทนที่ข้อความอาหรับต้นฉบับ ทุกการแปลจะเข้าใกล้ความหมายโดยไม่ได้จับภาพอย่างสมบูรณ์ อัลกุรอานคืออาหรับ สิ่งอื่น ๆ ทั้งหมดเป็นการประมาณ',
+  kk:'Бұл Құрәннің орасын қазақ тіліне <strong>аудармасы</strong> — арабтың оригиналының орнын ауыстырмайды. Әр аударма мағынаға жақындайды, бірақ оны толығымен қуып жетпейді. Құран арабты; ғана барлығы жақындау ғана.',
 };
 
 const INTRO_BODY = {
@@ -103,8 +123,11 @@ const INTRO_BODY = {
   bs:["Kur'an je objavljen Poslaniku Muhamedu ﷺ tokom dvadeset i tri godine. On je temelj islamskog vjerovanja i muslimanskog života.","Ono što slijedi je prijevod značenja na bosanski jezik — nije zamjena za arapski original. Svaki prijevod se približava smislu ne obuhvatajući ga potpuno. Kur'an je arapski; sve ostalo je samo pristup.","Čitajte ovo kao putokaz. Ko može čuti i čitati arapski original, taj je na direktnom putu.","Dizajn ovog izdanja je svjestan izbor: arapski tekst velik i naprijed, prijevod mali i u pozadini — da se ostane što bliže originalu u riječi i duhu."],
   sq:["Kurani iu shpall Profetit Muhamed ﷺ gjatë njëzet e tre vjetëve. Ai është themeli i besimit islam dhe i jetës së muslimanëve.","Ajo që vijon është një përkthim kuptimor në gjuhën shqipe — jo zëvendësim për origjinalin arabisht. Çdo përkthim i afrohet kuptimit pa e kapur plotësisht. Kurani është arabishtja; gjithçka tjetër është vetëm afrueshmëri.","Lexojeni këtë si një udhëtregues. Ai që mund të dëgjojë dhe lexojë arabishten origjinale ecën rrugës direkte.","Dizajni i kësaj botimi është një zgjedhje e qëllimshme: teksti arabisht i madh dhe në plan të parë, përkthimi i vogël dhe në sfond — sa më afër origjinalit në fjalë dhe shpirt."],
   zh:['古兰经在二十三年间逐渐降示给先知穆罕默德ﷺ。它是伊斯兰信仰与穆斯林生活的基础。','此处呈现的是古兰经含义的中文翻译——并非阿拉伯文原典的替代。每一种翻译都趋近于其含义，却无法完全承载。古兰经是阿拉伯文；其余一切皆为近似。','请将您在此读到的视为一个路标。能够聆听和阅读阿拉伯文原典的人，走的是直接之路。','这一版的设计是一个有意为之的选择：阿拉伯文大而居前，译文小而退后——在文字与精神上尽可能贴近原典。'],
-  ug:['قۇرئان يىگىرمە ئۈچ يىل ئىچىدە پەيغەمبەر مۇھەممەد ﷺ غا نازىل قىلىنغان. ئۇ ئىسلام دىنىنىڭ ۋە مۇسۇلمانلار تۇرمۇشىنىڭ ئاساسى.','بۇيەردە كۆرسىتىلگەن ئۇيغۇرچىگە قىلىنغان مەنا تەرجىمەسى — ئەرەبچە ئەسلى مەتننىڭ ئورنىنى باسالمايدۇ. ھەر بىر تەرجىمە مەنىگە يېقىنلىشىدۇ، بىراق ئۇنى تولۇق ئۆز ئىچىگە ئالالمايدۇ. قۇرئان ئەرەبچە؛ قالغانلىرى ھەممىسى پەقەت يېقىنلىشىش.','بۇيەردىكىلەرنى بىر يۇلنامە دەپ قارىڭ. ئەرەبچە ئەسلىنى ئاڭلىيالايدىغان ۋە ئوقۇيالايدىغانلار راست يولدا يۈرىدۇ.','بۇ نەشىرنىڭ دىزايىنى ئاتايىلاپ ئوڭشالغان: ئەرەبچە مەتن چوڭ ۋە ئالدىدا، تەرجىمە كىچىك ۋە ئارقىدا — سۆز ۋە رۇھتا ئەسلىگە ئىمكانقەدەر يېقىن تۇرۇش ئۈچۈن.'],
-};
+  ug:['قۇرئان يىگىرمە ئۈچ يىل ئىچىدە پەيغەمبەر مۇھەممەد ﷺ غا نازىل قىلىنغان. ئۇ ئىسلام دىنىنىڭ ۋە مۇسۇلمانلار تۇرمۇشىنىڭ ئاساسى.','بۇيەردە كۆرسىتىلگەن ئۇيغۇرچىگە قىلىنغان مەنا تەرجىمەسى — ئەرەبچە ئەسلى مەتننىڭ ئورنىنى باسالمايدۇ. ھەر بىر تەرجىمە مەنىگە يېقىنلىشىدۇ، بىراق ئۇنى تولۇق ئۆز ئىچىگە ئالالمايدۇ. قۇرئان ئەرەبچە؛ قالغانلىرى ھەممىسى پەقەت يېقىنلىشىش.','بۇيەردىكىلەرنى بىر يۇلنامە دەپ قارىڭ. ئەرەبچە ئەسلىنى ئاڭلىيالايدىغان ۋە ئوقۇيالايدىغانلار راست يولدا يۈرىدۇ.','بۇ نەشىرنىڭ دىزايىنى ئاتايىلاپ ئوڭشالغان: ئەرەبچە مەتن چوڭ ۋە ئالدىدا، تەرجىمە كىچىك ۋە ئارقىدا — سۆز ۋە رۇھتا ئەسلىگە ئىمكانقەدەر يېقىن تۇرۇش ئۈچۈن.'],  es:['El Corán fue revelado al Profeta Muhammad ﷺ durante veintitrés años. Es el fundamento de la fe islámica y la vida musulmana.','Lo que se presenta aquí es una traducción de sus significados al español — no un sustituto del original árabe. Toda traducción se aproxima al sentido sin capturarlo completamente. El Corán es el árabe; todo lo demás es aproximación.','Lea lo que está aquí como una señal. Aquellos que pueden escuchar y leer el original árabe caminan por el camino directo.','El diseño de esta edición es una opción deliberada: texto árabe grande y en primer plano, traducción pequeña y retrocedida — para permanecer lo más cerca posible del original en palabra y espíritu.'],
+  fr:['Le Coran a été révélé au Prophète Muhammad ﷺ sur une période de vingt-trois ans. Il est le fondement de la foi islamique et de la vie musulmane.','Ce qui suit est une traduction de ses sens en français — non un substitut de l\'original arabe. Toute traduction se rapproche du sens sans le saisir complètement. Le Coran est l\'arabe; tout le reste est approximation.','Lisez ce qui est ici comme une indication. Ceux qui peuvent entendre et lire l\'original arabe marchent sur le chemin direct.','Le design de cette édition est un choix délibéré : texte arabe grand et premier plan, traduction petit et retrait — pour rester aussi proche que possible de l\'original en parole et en esprit.'],
+  tl:['Ang Quran ay inihayag sa Propeta Muhammad ﷺ sa loob ng dalawampung-tatlong taon. Ito ang pundasyon ng Islamic na pananampalataya at ng Muslim na buhay.','Ang ipinakikita dito ay isang pagsasalin ng kahulugan sa Tagalog — hindi isang pagpapalit ng orihinal na Arabe. Bawat pagsasalin ay umaabot sa kahulugan nang hindi ito lubos na nakunukuha. Ang Quran ay ang Arabe; ang lahat ay approximation lamang.','Basahin kung ano ang narito bilang isang palatandaan. Ang mga nakakaririnig at nakakabasa ng orihinal na Arabe ay naglalakad sa direktang landas.','Ang disenyo ng edisyong ito ay isang pinag-isipang pagpipilian: malalaking Arabe na teksto at nasa unahan, maliit na pagsasalin at sa likod — upang manatiling kasing-malapit ng posible sa orihinal sa salita at espiritu.'],
+  th:['อัลกุรอานถูก启示ให้แก่ศาสดามูฮัมมัด ﷺ เป็นระยะเวลายี่สิบสามปี มันคือพื้นฐานของศรัทธาอิสลามและชีวิตมุสลิม','สิ่งที่นำเสนอที่นี่คือการแปลความหมายของมันเป็นภาษาไทย — ไม่ใช่ตัวแทนของต้นฉบับภาษาอาหรับ การแปลทุกครั้งจะเข้าใกล้ความหมาย แต่ไม่สามารถจับมันได้อย่างสมบูรณ์ อัลกุรอานคืออาหรับ ทุกอย่างอื่นเป็นเพียงการประมาณ','อ่านสิ่งที่อยู่ที่นี่เป็นเครื่องหมาย ผู้ที่สามารถฟัง และอ่านต้นฉบับภาษาอาหรับ ไปตามเส้นทางโดยตรง','การออกแบบของฉบับพิมพ์นี้เป็นตัวเลือกที่จงใจ: ข้อความภาษาอาหรับขนาดใหญ่และด้านหน้า การแปลเล็กน้อยและถอยหลัง — เพื่ออยู่ใกล้กับต้นฉบับมากที่สุดในคำและจิตใจ'],
+  kk:['Құран пайғамбар Мұхаммедке ﷺ жиырма үш жылда түсіріледі. Бұл ислам сенімінің және мұсылман өміріндің негіздемесі.','Мұнда ұсынылғаны құран мағынасының қазақша аудармасы — араб оригиналының орнын толықтырмайды. Әр аударма мағынаға жақындайды, бірақ оны толығымен ұстай алмайды. Құран араб; ғана барлығы жақындау ғана.','Мұнда ойын сыз та ғозиялағысын. Кім араб оригиналын ести және оқи алатыны түзу жолда жүрейді.','Бұл басылымының дизайны ойластырылған таңдау: араб мәтіні үлкен және алдыңғы жағында, аударма кіші және артында — оригиналға сөз пен рухқа мүмкін қашық болу үшін.'],};
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 function apiGet(url) {

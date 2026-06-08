@@ -32,6 +32,8 @@ const TRANSLATIONS = [
   { name: 'Französisch', id: 31,  flag: '🇫🇷', country: 'Frankreich',   scholar: 'Muhammad Hamidullah' },
   { name: 'Tagalog',     id: 211, flag: '🇵🇭', country: 'Philippinen',  scholar: 'Dar Al-Salam Center' },
   { name: 'Chinesisch',  id: 56,  flag: '🇨🇳', country: 'China',        scholar: 'Ma Jian (Fahd Complex)' },
+  { name: 'Thailändisch', id: 51, flag: '🇹🇭', country: 'Thailand',     scholar: 'King Fahad Quran Complex' },
+  { name: 'Kasachisch',  id: 222, flag: '🇰🇿', country: 'Kasachstan',   scholar: 'Khalifa Altay' },
 ];
 
 function apiGet(url) {

@@ -31,6 +31,9 @@ const TRANSLATIONS = [
   { code: 'tagalog',    lang: 'tl', native: 'Filipino',   display: 'Ang Biblia (1905)',              flag: '????' },
   { code: 'ukrainian',  lang: 'uk', native: '??????????', display: '?????? ??????? (1962)',         flag: '????' },
   { code: 'albanian',   lang: 'sq', native: 'Shqip',      display: 'Bibla (UFSHB)',                 flag: '????' },
+  { code: 'syriac',     lang: 'syr', native: 'ܣܘܪܝܬ',    display: 'Peshitta (Ancient)',            flag: '????', dir: 'rtl' },
+  { code: 'armenian',   lang: 'hy', native: 'Հայերեն',   display: 'Armenian Eastern',             flag: '????', dir: 'ltr' },
+  { code: 'arabic',     lang: 'ar', native: 'العربية',   display: 'Van Dyck (1865)',              flag: '????', dir: 'rtl' },
 ];
 
 // -------------------------------------------------------
@@ -1002,7 +1005,6 @@ ${chapBlocks}
 </script>
 </body>
 </html>`;
-  <a href="../cover.html">&#8592; Zur Vorderseite</a>
 
 // -------------------------------------------------------
 //  HAUPTPROGRAMM

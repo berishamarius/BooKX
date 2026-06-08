@@ -45,6 +45,11 @@ const TRANSLATIONS = [
   { lang:'sq', edition:'sq.nahi'       }, // Hasan Nahi — historisch, transform
   { lang:'zh', edition:'zh.majian'     }, // Ma Jian → transform
   { lang:'ug', edition:'ug.saleh'      }, // Muhammad Saleh → transform
+  { lang:'es', edition:'es.garcia'     }, // Isa Garcia — API-Text minimal transform
+  { lang:'fr', edition:'fr.hamidullah' }, // Muhammad Hamidullah — API-Text minimal
+  { lang:'tl', edition:'tl.daralsalam' }, // Dar Al-Salam Center — API-Text minimal
+  { lang:'th', edition:'th.fahad'      }, // King Fahad Complex — API-Text minimal
+  { lang:'kk', edition:'kk.altay'      }, // Khalifa Altay — API-Text minimal
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -471,6 +476,41 @@ ug: [
   [/پەرىشتىلەر/g,                        'خۇدانىڭ ئەلچى پەرىشتىلىرى'],
   [/شەيتان/g,                            'شەيتان (ئازدۇرغۇچى)'],
 ],
+
+// ── SPANISCH ─────────────────────────────────────────────────────────────────
+// es.garcia — API-Texte sind bereits hervorragend, minimal transform
+es: [
+  [/\bkafires\b/g,                      'quienes rechazaron la verdad'],
+  [/\binfieles\b/g,                     'negadores de la fe'],
+  [/\bProfetas\b/g,                     'Mensajeros de Dios'],
+  [/\bParaíso\b/g,                      'el Jardín eterno'],
+  [/\bInfierno\b/g,                     'el Fuego eterno'],
+],
+
+// ── FRANZÖSISCH ───────────────────────────────────────────────────────────────
+// fr.hamidullah — Texte bereits klassisch, minimal transform
+fr: [
+  [/\blesmécréants\b/gi,                'ceux qui rejettent la vérité'],
+  [/\blesinfidèles\b/gi,                'les négateurs'],
+  [/\bProphètes\b/g,                    'Messagers'],
+  [/\bParadis\b/g,                      'le Jardin éternel'],
+  [/\bEnfer\b/g,                        'le Feu éternel'],
+],
+
+// ── TAGALOG ──────────────────────────────────────────────────────────────────
+// tl.daralsalam — Dar Al-Salam Center texts, minimal transform
+tl: [
+  [/\bkakayod\b/gi,                     'hindi naniniwala sa katotohanan'],
+  [/\bmagkabuluhan\b/gi,                'sumasalamin sa ilaw'],
+],
+
+// ── THAI ──────────────────────────────────────────────────────────────────────
+// th.fahad — King Fahad Complex, minimal transform
+th: [],
+
+// ── KASACHISCH ─────────────────────────────────────────────────────────────────
+// kk.altay — Khalifa Altay translation, minimal transform
+kk: [],
 
 }; // end T
 
