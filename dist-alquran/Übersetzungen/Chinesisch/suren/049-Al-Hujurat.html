@@ -224,6 +224,180 @@ nav .orn{color:rgba(192,155,60,.55);font-family:'Scheherazade New',serif;}
 .bn-ix{font:.56rem sans-serif;color:rgba(192,155,60,.55);letter-spacing:.22em;text-transform:uppercase;}
 @media(max-width:700px){body{background:#1e3d22;}.verses{width:96vw;padding:16px 10px 48px;}.ar{font-size:2.2rem;}.sh-name{font-size:3rem;}}
 </style>
+
+<style id="kx-mobile-fix">
+/* === KX MOBILE RESPONSIVE FIX === */
+@media (max-width: 768px) {
+  /* Index pages */
+  .index-body {
+    margin: 16px auto !important;
+    padding: 24px 16px 40px !important;
+    max-width: 100% !important;
+  }
+  
+  .toc-item {
+    padding: 12px 8px !important;
+    flex-wrap: wrap;
+  }
+  
+  .tlat {
+    font-size: 1rem !important;
+  }
+  
+  .tname {
+    font-size: 0.88rem !important;
+  }
+  
+  .tdots {
+    display: none !important;
+  }
+  
+  .tchap {
+    font-size: 0.65rem !important;
+    margin-left: auto;
+  }
+  
+  /* Book header */
+  .bhead {
+    padding: 24px 16px !important;
+  }
+  
+  .blatin {
+    font-size: 1.6rem !important;
+  }
+  
+  /* Content area */
+  .content {
+    margin: 0 !important;
+    padding: 24px 16px 60px !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-radius: 0 !important;
+  }
+  
+  /* Verses */
+  .vb, .verse {
+    padding: 16px 4px !important;
+  }
+  
+  .vnum {
+    min-width: 32px !important;
+    font-size: 0.7rem !important;
+  }
+  
+  .base {
+    font-size: 1rem !important;
+    line-height: 1.7 !important;
+  }
+  
+  .tra {
+    font-size: 0.84rem !important;
+  }
+  
+  /* Quran specific */
+  .list-rows {
+    width: 96vw !important;
+    padding: 16px 8px 32px !important;
+  }
+  
+  .ra {
+    font-size: 1.5rem !important;
+    min-width: 56px !important;
+  }
+  
+  .rs {
+    font-size: 0.9rem !important;
+  }
+  
+  .rt {
+    font-size: 0.75rem !important;
+  }
+  
+  /* Navigation */
+  .topbar, nav {
+    padding: 8px 12px !important;
+    flex-wrap: wrap;
+  }
+  
+  .topbar a, nav a {
+    font-size: 0.6rem !important;
+    padding: 4px 12px !important;
+  }
+  
+  /* Headers */
+  header {
+    padding: 24px 16px 20px !important;
+  }
+  
+  .htitle {
+    font-size: 1.8rem !important;
+  }
+  
+  /* Confession switcher */
+  .conf-bar {
+    padding: 12px 8px 0 !important;
+    gap: 0 !important;
+  }
+  
+  .conf-btn {
+    padding: 7px 12px !important;
+    font-size: 0.58rem !important;
+  }
+  
+  /* Section headers */
+  .sec-head {
+    padding: 32px 0 8px !important;
+  }
+  
+  .sec-t {
+    font-size: 1.6rem !important;
+  }
+  
+  /* Copy/Share buttons */
+  .verse-tools {
+    gap: 4px !important;
+    font-size: 0.65rem !important;
+  }
+  
+  .verse-copy-btn, .verse-share-btn {
+    padding: 3px 6px !important;
+    font-size: 0.65rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .toc-item {
+    padding: 10px 6px !important;
+  }
+  
+  .tnr {
+    min-width: 40px !important;
+    font-size: 0.65rem !important;
+  }
+  
+  .tlat {
+    font-size: 0.9rem !important;
+  }
+  
+  .tname {
+    font-size: 0.8rem !important;
+    margin-left: 8px !important;
+  }
+  
+  .content {
+    padding: 16px 12px 40px !important;
+  }
+  
+  .blatin {
+    font-size: 1.4rem !important;
+  }
+  
+  .htitle {
+    font-size: 1.5rem !important;
+  }
+}
+</style>
+
 </head><body>
 <div class="sh">
   <div class="sh-g1"></div>
@@ -401,12 +575,13 @@ nav .orn{color:rgba(192,155,60,.55);font-family:'Scheherazade New',serif;}
 window.verseTools = {
   getSuraVerse(el) {
     const suraName = document.querySelector('h1, h2, .sura-title')?.textContent || 'Chapter';
-    const verseNum = el.getAttribute('data-verse-id') || el.closest('[data-verse-id]')?.getAttribute('data-verse-id') || 'X';
+    const verseEl = el.closest('.verse') || el.closest('[data-verse-id]') || el;
+    const verseNum = verseEl.id?.replace('v', '') || verseEl.getAttribute('data-verse-id') || 'X';
     return { suraName, verseNum };
   },
   
   copyVerse(el) {
-    const verseEl = el.closest('[data-verse-id]') || el.closest('.verse') || el.parentElement;
+    const verseEl = el.closest('.verse') || el.closest('[data-verse-id]') || el.parentElement;
     if (!verseEl) return alert('Vers nicht gefunden');
     const text = verseEl.textContent.trim();
     const { suraName, verseNum } = window.verseTools.getSuraVerse(verseEl);
@@ -418,7 +593,7 @@ window.verseTools = {
   },
   
   shareVerse(el) {
-    const verseEl = el.closest('[data-verse-id]') || el.closest('.verse') || el.parentElement;
+    const verseEl = el.closest('.verse') || el.closest('[data-verse-id]') || el.parentElement;
     if (!verseEl) return alert('Vers nicht gefunden');
     const text = verseEl.textContent.trim();
     const { suraName, verseNum } = window.verseTools.getSuraVerse(verseEl);
