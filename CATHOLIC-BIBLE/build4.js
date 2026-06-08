@@ -18,22 +18,21 @@ const OUT_DIR  = path.join(__dirname, 'Übersetzungen');
 const TRANSLATIONS = [
   { code: 'kjv',        lang: 'en', native: 'English',    display: 'King James Version (1611)',      flag: '????' },
   { code: 'german',     lang: 'de', native: 'Deutsch',    display: 'Textbibel (1906)',               flag: '????' },
-  { code: 'french',     lang: 'fr', native: 'Franï¿½ais',   display: 'Crampon (1923)',                 flag: '????' },
-  { code: 'spanish',    lang: 'es', native: 'Espaï¿½ol',    display: 'Reina-Valera (1909)',            flag: '????' },
-  { code: 'portuguese', lang: 'pt', native: 'Portuguï¿½s',  display: 'Bï¿½blia Livre',                  flag: '????' },
+  { code: 'french',     lang: 'fr', native: 'Français',   display: 'Crampon (1923)',                 flag: '????' },
+  { code: 'spanish',    lang: 'es', native: 'Español',    display: 'Reina-Valera (1909)',            flag: '????' },
+  { code: 'portuguese', lang: 'pt', native: 'Português',  display: 'Bíblia Livre',                  flag: '????' },
   { code: 'polish',     lang: 'pl', native: 'Polski',     display: 'Biblia Gdanska (1881)',          flag: '????' },
   { code: 'russian',    lang: 'ru', native: '???????',    display: '??????????? (1876)',             flag: '????' },
-  { code: 'croatian',   lang: 'hr', native: 'Hrvatski',   display: 'Hrvatska Biblija ï¿½arica',       flag: '????' },
+  { code: 'croatian',   lang: 'hr', native: 'Hrvatski',   display: 'Hrvatska Biblija Šarića',       flag: '????' },
   { code: 'dutch',      lang: 'nl', native: 'Nederlands', display: 'Statenvertaling (1637)',         flag: '????' },
-  { code: 'hungarian',  lang: 'hu', native: 'Magyar',     display: 'Kï¿½roli (1908)',                  flag: '????' },
-  { code: 'czech',      lang: 'cs', native: 'Ceï¿½tina',    display: 'Bible Kralickï¿½ (1613)',          flag: '????' },
+  { code: 'hungarian',  lang: 'hu', native: 'Magyar',     display: 'Károli (1908)',                  flag: '????' },
+  { code: 'czech',      lang: 'cs', native: 'Čeština',    display: 'Bible Králické (1613)',          flag: '????' },
   { code: 'swedish',    lang: 'sv', native: 'Svenska',    display: 'Svenska Bibeln (1917)',          flag: '????' },
   { code: 'tagalog',    lang: 'tl', native: 'Filipino',   display: 'Ang Biblia (1905)',              flag: '????' },
   { code: 'ukrainian',  lang: 'uk', native: '??????????', display: '?????? ??????? (1962)',         flag: '????' },
   { code: 'albanian',   lang: 'sq', native: 'Shqip',      display: 'Bibla (UFSHB)',                 flag: '????' },
   { code: 'syriac',     lang: 'syr', native: 'ܣܘܪܝܬ',    display: 'Peshitta (Ancient)',            flag: '????', dir: 'rtl' },
   { code: 'armenian',   lang: 'hy', native: 'Հայերեն',   display: 'Armenian Eastern',             flag: '????', dir: 'ltr' },
-  { code: 'arabic',     lang: 'ar', native: 'العربية',   display: 'Van Dyck (1865)',              flag: '????', dir: 'rtl' },
 ];
 
 // -------------------------------------------------------
@@ -118,7 +117,7 @@ const BOOKS = [
 
 const BIBLE_NAMES = {
   en: 'The Holy Bible',        de: 'Die Heilige Bibel',     fr: 'La Sainte Bible',
-  es: 'La Santa Biblia',       pt: 'A Bï¿½blia Sagrada',      pl: 'Pismo Swiete',
+  es: 'La Santa Biblia',       pt: 'A Bíblia Sagrada',      pl: 'Pismo Swiete',
   ru: '????????? ???????',     hr: 'Sveto Pismo',           nl: 'De Heilige Bijbel',
   hu: 'A Szentï¿½rï¿½s',           cs: 'Pï¿½smo Svatï¿½',           sv: 'Den Heliga Bibeln',
   tl: 'Ang Banal na Bibliya',  uk: '???????? ??????',       sq: 'Bibla e Shenjtï¿½',
@@ -719,6 +718,7 @@ ${verseBlocks}
   const nextLink = next
     ? `<a href="${bookFile(next)}">${next.latin} &#8594;</a>`
     : `<span></span>`;
+  
   return `<!DOCTYPE html>
 <html lang="${trans.lang}">
 <head>
@@ -1005,6 +1005,7 @@ ${chapBlocks}
 </script>
 </body>
 </html>`;
+}
 
 // -------------------------------------------------------
 //  HAUPTPROGRAMM
