@@ -38,8 +38,16 @@ for (const [langName, langCode] of Object.entries(NEW_LANGS)) {
   let html = fs.readFileSync(indexPath, 'utf8');
   const names = SUREN[langCode];
   
+  // Remove meta copyright
+  html = html.replace(/<meta name="copyright"[^>]*>/g, '');
+  
+  // Remove footer completely
+  html = html.replace(/<footer[\s\S]*?<\/footer>/g, '');
+  
   // Remove disclaimer paragraph
   html = html.replace(/<p class="disclaimer"[\s\S]*?<\/p>/g, '');
+  html = html.replace(/<p[^>]*>(?:Sinngemäße|Copyright|Translation|Disclaimer|©)[\s\S]*?<\/p>/gi, '');
+  html = html.replace(/<div[^>]*>(?:Sinngemäße|Copyright|Translation|Disclaimer|©)[\s\S]*?<\/div>/gi, '');
   
   // Fix Surah names in .rs spans
   for (let i = 0; i < names.length; i++) {
@@ -64,10 +72,12 @@ for (const [langName, langCode] of Object.entries(NEW_LANGS)) {
   // Remove meta copyright
   html = html.replace(/<meta name="copyright"[^>]*>/g, '');
   
-  // Remove disclaimer paragraph
-  html = html.replace(/<p[^>]*class="disclaimer"[\s\S]*?<\/p>/g, '');
-  html = html.replace(/<p>Sinngemäße[\s\S]*?<\/p>/g, '');
-  html = html.replace(/<p>Translation[\s\S]*?<\/p>/g, '');
+  // Remove footer completely
+  html = html.replace(/<footer[\s\S]*?<\/footer>/g, '');
+  
+  // Remove any copyright or disclaimer text
+  html = html.replace(/<p[^>]*>(?:Sinngemäße|Copyright|Translation|Disclaimer|©)[\s\S]*?<\/p>/gi, '');
+  html = html.replace(/<div[^>]*>(?:Sinngemäße|Copyright|Translation|Disclaimer|©)[\s\S]*?<\/div>/gi, '');
   
   fs.writeFileSync(introPath, html, 'utf8');
   console.log(`✓ ${langName} intro.html cleaned`);
@@ -84,8 +94,15 @@ for (const [langName, langCode] of Object.entries(NEW_LANGS)) {
   // Remove meta copyright
   html = html.replace(/<meta name="copyright"[^>]*>/g, '');
   
+  // Remove footer completely
+  html = html.replace(/<footer[\s\S]*?<\/footer>/g, '');
+  
   // Remove .pl disclaimer
   html = html.replace(/<div class="pl">[\s\S]*?<\/div>/g, '');
+  
+  // Remove any copyright or disclaimer text
+  html = html.replace(/<p[^>]*>(?:Sinngemäße|Copyright|Translation|Disclaimer|©)[\s\S]*?<\/p>/gi, '');
+  html = html.replace(/<div[^>]*>(?:Sinngemäße|Copyright|Translation|Disclaimer|©)[\s\S]*?<\/div>/gi, '');
   
   fs.writeFileSync(bcPath, html, 'utf8');
   console.log(`✓ ${langName} back-cover.html cleaned`);
