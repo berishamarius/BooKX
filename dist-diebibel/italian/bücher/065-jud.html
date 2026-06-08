@@ -1,459 +1,439 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Iudae · Italiano · Biblia Catholica</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
-<style>
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
-body{
-  background:#2C0810;
-  background-image:radial-gradient(ellipse at 50% 20%,#4A1020 0%,#1A0407 100%);
-  font-family:'EB Garamond',serif;
-  color:#E8C547;
-  font-size:17px;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Iudae · Italiano · Biblia Catholica</title>
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
+
+:root {
+  --gold:        #C8A96E;
+  --gold-light:  #EDD58A;
+  --gold-dark:   #8B6914;
+  --navy:        #1A1F3A;
+  --navy-mid:    #252B4A;
+  --navy-light:  #2E3560;
+  --parchment:   #F5E9CC;
+  --parchment-d: #EDD9A3;
+  --cream:       #FDF6E3;
+  --latin-color: #6B1E0E;
+  --trans-color: #0F1D2E;
+  --border:      rgba(200,169,110,.35);
+  --font-title:  'Cinzel Decorative', 'Cinzel', Georgia, serif;
+  --font-sub:    'Cinzel', Georgia, serif;
+  --font-body:   'EB Garamond', Georgia, serif;
 }
-.bhead{
-  background:#1A0407;
-  padding:36px 28px 28px;
-  text-align:center;
-  border-bottom:4px solid #B8962E;
-  position:relative;overflow:hidden;
+
+*,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+html { font-size:16px; scroll-behavior:smooth; }
+body { background:var(--cream); color:var(--trans-color); font-family:var(--font-body); }
+
+/* ── NAV ─────────────────────────────────────────────── */
+.nav-bar {
+  background:var(--navy); padding:10px 28px;
+  display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  border-bottom:2px solid var(--gold);
+  position:sticky; top:0; z-index:100;
+  box-shadow:0 3px 12px rgba(0,0,0,.45);
 }
-.bhead::before{content:'';position:absolute;inset:14px;border:none;pointer-events:none;}
-.bhead::after{content:'';position:absolute;inset:22px;border:none;pointer-events:none;}
-.btestament{
-  display:inline-block;
-  border:1px solid rgba(200,160,48,.32);
-  color:rgba(200,160,48,.52);
-  font-family:'Cinzel',serif;font-size:.55rem;
-  letter-spacing:.3em;padding:4px 18px;
-  border-radius:2px;margin-bottom:16px;
-  position:relative;
+.nav-bar a {
+  color:var(--gold); text-decoration:none;
+  font-family:var(--font-sub); font-size:.75rem; letter-spacing:.05em;
+  transition:color .15s;
 }
-.blatin{
-  display:none;
-  font-family:'UnifrakturMaguntia',cursive;
-  font-size:clamp(1.9rem,7vw,3.4rem);
-  color:#EDD882;
-  text-shadow:0 3px 20px rgba(0,0,0,.55);
-  letter-spacing:.04em;position:relative;
+.nav-bar a:hover { color:var(--gold-light); }
+.nav-bar .home { font-weight:700; font-size:.82rem; }
+.nav-bar .spacer { flex:1; }
+.nav-bar .pos { color:rgba(200,169,110,.45); font-size:.7rem; font-family:var(--font-sub); }
+
+/* ── BUCHKOPF ────────────────────────────────────────── */
+.book-header {
+  background:linear-gradient(160deg,var(--navy) 0%,var(--navy-mid) 55%,var(--navy-light) 100%);
+  padding:44px 36px 34px; text-align:center;
+  border-bottom:4px solid var(--gold);
+  position:relative; overflow:hidden;
 }
-body:not([data-conf]) .blatin-c,
-body[data-conf="catholic"] .blatin-c{display:block;}
-body[data-conf="protestant"] .blatin-p{display:block;}
-.btrans{
-  font-family:'Cinzel',serif;
-  font-size:.88rem;
-  color:#C8A030;margin-top:10px;
-  letter-spacing:.16em;position:relative;
-}
-.bmeta{
-  font-family:'Cinzel',serif;font-size:.62rem;
-  color:rgba(200,160,48,.4);margin-top:6px;
-  letter-spacing:.08em;position:relative;
-}
-.content{
-  max-width:960px;
-  margin:36px auto 36px;
-  padding:48px 72px 100px;
-  background:#1a0407;
+.book-header::before {
+  content:'';
+  position:absolute; inset:0;
   background-image:
-    radial-gradient(ellipse at top left,rgba(184,150,46,.06) 0%,transparent 55%),
-    radial-gradient(ellipse at bottom right,rgba(184,150,46,.05) 0%,transparent 55%);
-  box-shadow:0 8px 80px rgba(0,0,0,.55),0 2px 12px rgba(0,0,0,.35),inset 0 0 0 1px rgba(184,150,46,.18);
-  border-left:4px solid #B8962E;
-  border-right:4px solid #B8962E;
-  border-top:2px solid rgba(184,150,46,.4);
-  border-bottom:2px solid rgba(184,150,46,.4);
-  position:relative;overflow:clip;
-}
-.content::before{
-  content:'';position:absolute;inset:12px;
-  border:1px solid rgba(184,150,46,.08);
+    repeating-linear-gradient( 45deg,transparent,transparent 30px,rgba(200,169,110,.038) 30px,rgba(200,169,110,.038) 31px),
+    repeating-linear-gradient(-45deg,transparent,transparent 30px,rgba(200,169,110,.038) 30px,rgba(200,169,110,.038) 31px);
   pointer-events:none;
 }
-.chap{margin-top:0;}
-.chhead{
-  text-align:center;padding:40px 0 20px;margin-bottom:16px;position:relative;
+.testament-badge {
+  display:inline-block;
+  border:1px solid rgba(200,169,110,.4); color:rgba(200,169,110,.65);
+  font-family:var(--font-sub); font-size:.62rem; letter-spacing:.25em;
+  padding:4px 14px; border-radius:2px; margin-bottom:14px; position:relative;
 }
-.chhead::before{
-  content:'* * *';display:block;font-size:.7rem;
-  color:rgba(184,150,46,.45);letter-spacing:.35em;margin-bottom:16px;
+.book-name-latin {
+  font-family:var(--font-title); font-size:3rem; color:var(--gold-light);
+  text-shadow:0 3px 18px rgba(0,0,0,.55); letter-spacing:.08em; position:relative;
 }
-.chhead::after{
-  content:'';display:block;width:200px;height:1px;margin:14px auto 0;
-  background:linear-gradient(to right,transparent,#B8962E,transparent);
+.book-name-trans {
+  font-family:var(--font-sub); font-size:1.1rem; color:var(--gold);
+  margin-top:8px; letter-spacing:.12em; position:relative;
 }
-.chrom{
-  font-family:'Cinzel Decorative',serif;font-size:4rem;color:#8B6914;
-  display:block;text-shadow:0 2px 18px rgba(184,150,46,.2);line-height:1;
+.book-meta {
+  font-size:.74rem; color:rgba(200,169,110,.5); margin-top:7px;
+  font-family:var(--font-sub); letter-spacing:.07em; position:relative;
 }
-.chlbl{
-  font-family:'Cinzel',serif;font-size:.58rem;
-  color:rgba(184,150,46,.42);letter-spacing:.32em;
-  display:none;margin-top:8px;
-}
-body:not([data-conf]) .chlbl-c,
-body[data-conf="catholic"] .chlbl-c{display:block;}
-body[data-conf="protestant"] .chlbl-p{display:block;}
-.vb{
-  display:flex;padding:20px 6px;
-  border-bottom:1px solid rgba(184,150,46,.12);
-  background:none;border-radius:2px;transition:background .15s;
-}
-.vb:hover{background:rgba(184,150,46,.04);}
-.vn{
-  flex-shrink:0;width:38px;padding-top:4px;
-  font-family:'Cinzel',serif;font-size:.56rem;
-  color:rgba(184,150,46,.52);text-align:right;
-  padding-right:12px;line-height:2.4;
-}
-.vt{flex:1;padding:0 20px 0 4px;}
-.base{
-  font-family:'EB Garamond',serif;font-size:1.2rem;font-weight:500;
-  line-height:2.1;color:#E8C547;display:none;
-}
-body:not([data-conf]) .base-c,
-body[data-conf="catholic"] .base-c{display:block;}
-body[data-conf="protestant"] .base-p{display:block;}
-.tra{
-  font-family:'EB Garamond',serif;font-style:italic;
-  font-size:.93rem;color:#F5F2EA;line-height:1.82;
-  margin-top:6px;display:block;
-}
-.vb.first .base-c::first-letter,
-.vb.first .base-p::first-letter{
-  font-family:'Cinzel Decorative',serif;font-size:4em;
-  float:left;line-height:.7;padding-right:.08em;margin-top:.07em;
-  color:#B8962E;text-shadow:1px 2px 6px rgba(0,0,0,.12);
-}
-body[data-conf="protestant"] .vb.first .base-p::first-letter{
-  font-family:'UnifrakturMaguntia',cursive;font-size:4em;
-  float:left;line-height:.7;padding-right:.08em;margin-top:.07em;
-  color:#B8962E;text-shadow:1px 2px 6px rgba(0,0,0,.12);
-}
-.bnav{
-  display:flex;justify-content:space-between;align-items:center;
-  background:#2C0810;border-top:3px solid #B8962E;
-  padding:12px 24px;gap:12px;
-}
-.bnav a,.bnav .dim{
-  color:#C8A030;text-decoration:none;
-  font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:.07em;
-  padding:6px 16px;
-  border:1px solid rgba(200,160,48,.28);
-  border-radius:2px;transition:background .18s;
-}
-.bnav a:hover{background:rgba(200,160,48,.12);}
-.bnav .dim{color:rgba(200,160,48,.2);border-color:rgba(200,160,48,.1);}
-.bnav .center{
-  font-family:'Cinzel',serif;font-size:.68rem;
-  color:rgba(200,160,48,.65);text-align:center;
-  letter-spacing:.06em;text-decoration:none;
-  border:1px solid rgba(200,160,48,.28);border-radius:2px;
-  padding:6px 20px;transition:background .18s;
-}
-.bnav .center:hover{background:rgba(200,160,48,.1);}
-body[data-conf="protestant"] .base-p{
-  font-family:'UnifrakturMaguntia',cursive;
-  font-size:1.08rem;letter-spacing:.01em;
-}
-@media print{
-  .bnav{display:none;}
-  .bhead{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-  .vb{break-inside:avoid;}
-}
-@media(max-width:600px){
-  .blatin{font-size:1.8rem;}
-  .base{font-size:1rem;}
-  .tra{font-size:.84rem;}
-  .content{width:100%;max-width:none;padding:14px 12px 44px;margin:0;border-left:none;border-right:none;border-top:none;border-bottom:none;border-radius:0;box-shadow:none;overflow:visible;}
-  .chrom{font-size:1.8rem;}
-  .content::before{display:none;}
-  .vb{padding:16px 2px;}
-  .vn{width:28px;padding-right:8px;}
-}
-.b-wm{position:sticky;top:calc(50vh - 37.5vmin);width:50vmin;height:75vmin;margin:0 auto -75vmin;display:block;pointer-events:none;z-index:0;user-select:none;}
-.b-wm svg{width:100%;height:auto;display:block;}
-.b-wm path{fill:none;stroke:rgba(184,150,46,.06);stroke-width:1.5;stroke-linecap:square;}
 
+/* ── ORNAMENT-TRENNLINIE ─────────────────────────────── */
+.ornament-bar {
+  text-align:center; padding:16px 0 4px;
+  color:var(--gold); font-size:1.1rem; letter-spacing:.7em;
+}
 
-body[data-conf="protestant"] .blatin-p{font-family:'Cinzel',serif!important;font-size:clamp(1.4rem,5vw,2.4rem)!important;letter-spacing:.14em;}
+/* ── HAUPT-CONTAINER ─────────────────────────────────── */
+.content { max-width:960px; margin:0 auto; padding:0 24px 80px; }
+
+/* ── KAPITEL-MARKER ──────────────────────────────────── */
+.chapter-marker {
+  display:flex; align-items:center; gap:16px;
+  padding:28px 6px 12px; margin-bottom:4px;
+  border-bottom:2px solid var(--border);
+}
+.ch-roman {
+  font-family:var(--font-title); font-size:2.2rem; color:var(--gold);
+  min-width:56px; text-align:center; flex-shrink:0;
+  text-shadow:0 1px 8px rgba(200,169,110,.3);
+}
+.ch-label {
+  font-family:var(--font-sub); font-size:.72rem; color:rgba(200,169,110,.6);
+  letter-spacing:.22em; text-transform:uppercase;
+}
+
+/* ── VERS-BLOCK ──────────────────────────────────────── */
+.verse-block {
+  display:flex; gap:0; border-bottom:1px solid rgba(200,169,110,.15);
+}
+.verse-block:nth-child(odd)  { background:var(--cream); }
+.verse-block:nth-child(even) { background:var(--parchment); }
+
+.verse-num-col {
+  flex-shrink:0; width:42px; padding:16px 6px 16px 0; text-align:right;
+}
+.verse-num {
+  display:inline-block; width:28px; height:28px; border-radius:50%;
+  background:var(--gold-dark); color:var(--cream);
+  font-family:var(--font-sub); font-size:.64rem; font-weight:700;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 1px 5px rgba(0,0,0,.25);
+}
+
+.verse-texts { flex:1; padding:16px 16px 18px 8px; }
+
+/* ── LATEINISCHER TEXT (oben / primär) ───────────────── */
+.latin {
+  font-family:var(--font-body); font-size:1.12rem; line-height:1.9;
+  color:var(--latin-color); font-weight:500;
+  border-left:3px solid var(--gold); padding-left:12px;
+  margin-bottom:8px;
+}
+
+/* ── ÜBERSETZUNGS-TEXT (unten / sekundär) ────────────── */
+.trans-label {
+  font-family:var(--font-sub); font-size:.6rem; letter-spacing:.17em;
+  text-transform:uppercase; color:var(--gold-dark); margin-bottom:5px; opacity:.78;
+}
+.trans {
+  font-family:var(--font-body); font-size:1.04rem; line-height:1.85;
+  color:var(--trans-color); font-style:italic;
+  padding-left:15px;
+}
+
+/* Erste Vers jedes Kapitels: Drop-Cap */
+.verse-block:first-of-type .latin::first-letter {
+  font-size:4.2em; float:left; line-height:.72;
+  padding-right:.08em; margin-top:.06em;
+  font-family:var(--font-title); color:var(--gold);
+}
+
+/* ── NAVIGATION ZWISCHEN BÜCHERN ─────────────────────── */
+.book-nav {
+  display:flex; justify-content:space-between; align-items:center;
+  background:var(--navy); border-top:3px solid var(--gold);
+  padding:12px 26px; gap:12px;
+}
+.book-nav a {
+  color:var(--gold); text-decoration:none;
+  font-family:var(--font-sub); font-size:.78rem; letter-spacing:.07em;
+  padding:6px 14px; border:1px solid rgba(200,169,110,.3); border-radius:3px;
+  transition:background .18s;
+}
+.book-nav a:hover { background:rgba(200,169,110,.15); }
+.book-nav .center {
+  font-family:var(--font-sub); font-size:.7rem; color:rgba(200,169,110,.55);
+  letter-spacing:.1em; text-align:center;
+}
+
+/* ── FUßZEILE ────────────────────────────────────────── */
+.page-footer {
+  background:var(--navy); border-top:2px solid rgba(200,169,110,.3);
+  padding:18px 28px; text-align:center;
+  color:rgba(200,169,110,.45); font-family:var(--font-sub);
+  font-size:.68rem; letter-spacing:.1em;
+}
+
+/* ── DRUCK ───────────────────────────────────────────── */
+@media print {
+  .nav-bar, .book-nav { display:none; }
+  .verse-block { break-inside:avoid; }
+  .book-header { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+}
+
+/* ── MOBIL ───────────────────────────────────────────── */
+@media (max-width:640px) {
+  .book-name-latin { font-size:2.1rem; }
+  .ch-roman { font-size:1.6rem; }
+  .latin { font-size:.98rem; }
+  .trans { font-size:.93rem; }
+  .content { padding:0 12px 60px; }
+}
 </style>
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><path d='M32,4V60M12,18H52' stroke='%23C8A030' stroke-width='8' fill='none' stroke-linecap='square'/></svg>">
-<link rel="apple-touch-icon" sizes="180x180" href="../../Die%20Heilige%20Bibel%20rot%20Icon.png">
-<meta name="theme-color" content="#2a0810">
 </head>
 <body>
 
-<header class="bhead">
-  <div class="btestament">NOVUM TESTAMENTUM</div>
-  <div class="blatin blatin-c">IUDAE</div>
-  <div class="blatin blatin-p">GIUDA</div>
-  <div class="btrans">Jude &#160;&#183;&#160; Italiano</div>
-  <div class="bmeta">1 Capita · 25 Versus</div>
-</header>
+  <nav class="nav-bar">
+    <a class="home" href="../../../index.html">✞ BIBLIA CATHOLICA</a>
+    <a href="../index.html">🇮🇹 Italiano</a>
+    <span class="spacer"></span>
+    <span class="pos">065 / 066</span>
+  </nav>
 
-<main class="content">
-<div class="b-wm"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 14"><path d="M5,0V14M0,4H10"/></svg></div>
+  <header class="book-header">
+    <div class="testament-badge">NOVUM TESTAMENTUM</div>
+    <div class="book-name-latin">IUDAE</div>
+    <div class="book-name-trans">Jude</div>
+    <div class="book-meta">Vulgata Clementina · Giovanni Diodati (1649) · 1 Capita · 25 Versus</div>
+  </header>
 
-<section class="chap" id="c1">
-  <div class="chhead">
-    <span class="chrom">I</span>
-    <span class="chlbl chlbl-c">Caput I</span>
-    <span class="chlbl chlbl-p">Caput I</span>
-  </div>
-<div class="vb first" id="v1-1">
-  <span class="vn">1</span>
-  <div class="vt">
-    <p class="base base-c">Judas Jesu Christi servus, frater autem Jacobi, his qui sunt in Deo Patre dilectis, et Christo Jesu conservatis, et vocatis.</p>
-    <p class="base base-p">Judas, ein Knecht Jesu Christi, aber ein Brüder des Jakobus: den Berufenen, die da geheiliget sind in Gott dem Vater und behalten in Jesu Christo.</p>
-    <p class="tra">GIUDA, servitore di Gesù Cristo, e fratello di Giacomo, a’ chiamati, santificati in Dio Padre, e conservati in Cristo Gesù;</p>
-  </div>
-</div>
-<div class="vb" id="v1-2">
-  <span class="vn">2</span>
-  <div class="vt">
-    <p class="base base-c">Misericordia vobis, et pax, et caritas adimpleatur.</p>
-    <p class="base base-p">Gott gebe euch viel Barmherzigkeit und Frieden und Liebe!</p>
-    <p class="tra">misericordia, pace, e carità, vi sia moltiplicata.</p>
-  </div>
-</div>
-<div class="vb" id="v1-3">
-  <span class="vn">3</span>
-  <div class="vt">
-    <p class="base base-c">Carissimi, omnem sollicitudinem faciens scribendi vobis de communi vestra salute, necesse habui scribere vobis : deprecans supercertari semel tradit&Atilde;&#166; sanctis fidei.</p>
-    <p class="base base-p">Ihr Lieben, nachdem ich vorhatte, euch zu schreiben von unser aller Heil, hielt ich's für notig, euch mit Schriften zu ermahnen, daß ihr ob dem Glauben kampfet, der einmal den Heiligen vorgegeben ist.</p>
-    <p class="tra">DILETTI, poichè io pongo ogni studio in iscrivervi della comune salute, mi è stato necessario scrivervi, per esortarvi di proseguire a combattere per la fede che è stata una volta insegnata a’ santi.</p>
-  </div>
-</div>
-<div class="vb" id="v1-4">
-  <span class="vn">4</span>
-  <div class="vt">
-    <p class="base base-c">Subintroierunt enim quidam homines (qui olim pr&Atilde;&#166;scripti sunt in hoc judicium) impii, Dei nostri gratiam transferentes in luxuriam, et solum Dominatorem, et Dominum nostrum Jesum Christum negantes.</p>
-    <p class="base base-p">Denn es sind etliche Menschen nebeneingeschlichen, von denen vorzeiten geschrieben ist, zu solcher Strafe; die sind Gottlose und ziehen die Gnade unsers Gottes auf Mutwillen und verleugnen Gott und unsern Herrn Jesum Christum, den einigen Herrscher.</p>
-    <p class="tra">Perciocchè son sottentrati certi uomini, i quali già innanzi ab antico sono stati scritti a questa condannazione; empi, i quali rivolgono la grazia dell’Iddio nostro a lascivia, e negano il solo Dio e Padrone, il Signor nostro Gesù Cristo.</p>
-  </div>
-</div>
-<div class="vb" id="v1-5">
-  <span class="vn">5</span>
-  <div class="vt">
-    <p class="base base-c">Commonere autem vos volo, scientes semel omnia, quoniam Jesus populum de terra &Atilde;&#134;gypti salvans, secundo eos, qui non crediderunt, perdidit :</p>
-    <p class="base base-p">Ich will euch aber erinnern, daß ihr wisset auf einmal dies, daß der Herr, da er dem Volk aus ÄÄgypten half, zum andernmal brachte er urn, die da nichtglaubten.</p>
-    <p class="tra">Or io voglio ricordar questo a voi, che avete saputo una volta questo: che il Signore, avendo salvato il suo popolo dal paese di Egitto, poi appresso distrusse quelli che non credettero.</p>
-  </div>
-</div>
-<div class="vb" id="v1-6">
-  <span class="vn">6</span>
-  <div class="vt">
-    <p class="base base-c">angelos vero, qui non servaverunt suum principatum, sed dereliquerunt suum domicilium, in judicium magni diei, vinculis &Atilde;&#166;ternis sub caligine reservavit.</p>
-    <p class="base base-p">Auch Engel, die ihr Frstentum nicht behielten, sondern verlielien ihre Behausung, hat er behalten zum Gericht des grolien Tages mit ewigen Banden in Finsternis.</p>
-    <p class="tra">Ed ha messi in guardia sotto caligine, con legami eterni, per il giudicio del gran giorno, gli angeli che non hanno guardata la loro origine, ma hanno lasciata la lor propria stanza.</p>
-  </div>
-</div>
-<div class="vb" id="v1-7">
-  <span class="vn">7</span>
-  <div class="vt">
-    <p class="base base-c">Sicut Sodoma, et Gomorrha, et finitim&Atilde;&#166; civitates simili modo exfornicat&Atilde;&#166;, et abeuntes post carnem alteram, fact&Atilde;&#166; sunt exemplum, ignis &Atilde;&#166;terni p&Aring;&#147;nam sustinentes.</p>
-    <p class="base base-p">Wie auch Sodom und Gomorra und die umliegenden Stadte, die gleicherweise wie diese ausgehuret haben und nach einem andern Fleisch gegangen sind, zum Exempel gesetzt sind und leiden des ewigen Feuers Pein.</p>
-    <p class="tra">Come Sodoma e Gomorra, e le città d’intorno, avendo fornicato nelle medesima maniera che costoro, ed essendo andate dietro ad altra carne, sono state proposte per esempio, portando la pena dell’eterno fuoco.</p>
-  </div>
-</div>
-<div class="vb" id="v1-8">
-  <span class="vn">8</span>
-  <div class="vt">
-    <p class="base base-c">Similiter et hi carnem quidem maculant, dominationem autem spernunt, majestatem autem blasphemant.</p>
-    <p class="base base-p">Desselbigengleichen sind auch diese Traumer, die das Fleisch beflecken, die Herrschaften aber verachten und die Majestaten lastern.</p>
-    <p class="tra">E pur simigliantemente ancora costoro, trasognati, contaminano la carne, e sprezzano le signorie, e dicon male delle dignità.</p>
-  </div>
-</div>
-<div class="vb" id="v1-9">
-  <span class="vn">9</span>
-  <div class="vt">
-    <p class="base base-c">Cum Micha&Atilde;&#171;l Archangelus cum diabolo disputans altercaretur de Moysi corpore, non est ausus judicium inferre blasphemi&Atilde;&#166; : sed dixit : Imperet tibi Dominus.</p>
-    <p class="base base-p">aber, der Erzengel, da er mit dem Teufel zankete und mit ihm redete über den Leichnam Mose's, durfte er das Urteil der Lasterung nicht fallen, sondern sprach: Der Herr strafe dich!</p>
-    <p class="tra">Là dove l’arcangelo Michele, quando, contendendo col diavolo, disputava intorno al corpo di Mosè, non ardì lanciar contro a lui sentenza di maldicenza; anzi disse: Sgriditi il Signore.</p>
-  </div>
-</div>
-<div class="vb" id="v1-10">
-  <span class="vn">10</span>
-  <div class="vt">
-    <p class="base base-c">Hi autem qu&Atilde;&#166;cumque quidem ignorant, blasphemant : qu&Atilde;&#166;cumque autem naturaliter, tamquam muta animalia, norunt, in his corrumpuntur.</p>
-    <p class="base base-p">Diese aber lastern, da sie nichts von wissen; was sie aber naturlich erkennen, darinnen verderben sie wie die unvernunftigen Here.</p>
-    <p class="tra">Ma costoro dicon male di tutte le cose che ignorano; e si corrompono in tutte quelle, le quali, come gli animali senza ragione, naturalmente sanno.</p>
-  </div>
-</div>
-<div class="vb" id="v1-11">
-  <span class="vn">11</span>
-  <div class="vt">
-    <p class="base base-c">V&Atilde;&#166; illis, quia in via Cain abierunt, et errore Balaam mercede effusi sunt, et in contradictione Core perierunt !</p>
-    <p class="base base-p">Wehe ihnen! denn sie gehen den Weg Kains und fallen in den Irrtum des Bileam um Genielies willen und kommen um in dem Aufruhr Korahs.</p>
-    <p class="tra">Guai a loro! perciocchè son camminati per la via di Caino, e si son lasciati trasportare per l’inganno del premio di Balaam, e son periti per la ribellione di Core.</p>
-  </div>
-</div>
-<div class="vb" id="v1-12">
-  <span class="vn">12</span>
-  <div class="vt">
-    <p class="base base-c">Hi sunt in epulis suis macul&Atilde;&#166;, convivantes sine timore, semetipsos pascentes, nubes sine aqua, qu&Atilde;&#166; a ventis circumferentur, arbores autumnales, infructuos&Atilde;&#166;, bis mortu&Atilde;&#166;, eradicat&Atilde;&#166;,</p>
-    <p class="base base-p">Diese Unflater prassen von euren Almosen ohne Scheu, weiden sich selbst; sie sind Wolken ohne Wasser, von dem Winde umgetrieben, kahle, unfruchtbare Baume, zweimal erstorben und ausgewurzelt,</p>
-    <p class="tra">Costoro son macchie ne’ vostri pasti di carità, mentre sono a tavola con voi, pascendo loro stessi senza riverenza; nuvole senz’acqua, sospinte qua e là da’ venti; alberi appassati, sterili, due volte morti, diradicati;</p>
-  </div>
-</div>
-<div class="vb" id="v1-13">
-  <span class="vn">13</span>
-  <div class="vt">
-    <p class="base base-c">fluctus feri maris, despumantes suas confusiones, sidera errantia : quibus procella tenebrarum servata est in &Atilde;&#166;ternum.</p>
-    <p class="base base-p">wilde Wellen des Meeres, die ihre eigene Schande ausschaumen, irrige Sterne, welchen behalten ist das Dunkel der Finsternis in Ewigkeit.</p>
-    <p class="tra">fiere onde del mare, schiumanti le lor brutture; stelle erranti, a cui è riserbata la caligine delle tenebre in eterno.</p>
-  </div>
-</div>
-<div class="vb" id="v1-14">
-  <span class="vn">14</span>
-  <div class="vt">
-    <p class="base base-c">Prophetavit autem et de his septimus ab Adam Enoch, dicens : Ecce venit Dominus in sanctis millibus suis</p>
-    <p class="base base-p">Es hat aber auch von solchen geweissaget Henoch, der Siebente von Adam, und gesprochen: Siehe, der Herr kommt mit viel tausend Heiligen,</p>
-    <p class="tra">Or a tali ancora profetizzò Enoc, settimo da Adamo, dicendo: Ecco, il Signore è venuto con le sue sante migliaia;</p>
-  </div>
-</div>
-<div class="vb" id="v1-15">
-  <span class="vn">15</span>
-  <div class="vt">
-    <p class="base base-c">facere judicium contra omnes, et arguere omnes impios de omnibus operibus impietatis eorum, quibus impie egerunt, et de omnibus duris, qu&Atilde;&#166; locuti sunt contra Deum peccatores impii.</p>
-    <p class="base base-p">Gericht zu halten über alle und zu strafen alle ihre Gottlosen um alle Werke ihres gottlosen Wandels, damit sie gottlos gewesen sind, und um alie das Harte, das die gottlosen Sunder wider ihn geredet haben.</p>
-    <p class="tra">per far giudicio contro a tutti, ed arguire tutti gli empi d’infra loro, di tutte le opere d’empietà, che hanno commesse; e di tutte le cose felle, che hanno proferite contro a lui gli empi peccatori.</p>
-  </div>
-</div>
-<div class="vb" id="v1-16">
-  <span class="vn">16</span>
-  <div class="vt">
-    <p class="base base-c">Hi sunt murmuratores querulosi, secundum desideria sua ambulantes, et os eorum loquitur superba, mirantes personas qu&Atilde;&#166;stus causa.</p>
-    <p class="base base-p">Diese murmeln und klagen immerdar, die nach ihren Lsten wandeln; und ihr Mund redet stolze Worte und achten das Ansehen der Person um Nutzes willen.</p>
-    <p class="tra">Costoro son mormoratori, querimoniosi, camminando secondo le loro concupiscenze; e la lor bocca proferisce cose sopra modo gonfie, ammirando le persone per l’utilità.</p>
-  </div>
-</div>
-<div class="vb" id="v1-17">
-  <span class="vn">17</span>
-  <div class="vt">
-    <p class="base base-c">Vos autem carissimi, memores estote verborum, qu&Atilde;&#166; pr&Atilde;&#166;dicta sunt ab apostolis Domini nostri Jesu Christi,</p>
-    <p class="base base-p">Ihr aber, meine Lieben, erinnert euch der Worte, die zuvor gesagt sind von den Aposteln unsers Herrn Jesu Christi,</p>
-    <p class="tra">Ma voi, diletti, ricordatevi delle parole predette dagli apostoli del Signor nostro Gesù Cristo;</p>
-  </div>
-</div>
-<div class="vb" id="v1-18">
-  <span class="vn">18</span>
-  <div class="vt">
-    <p class="base base-c">qui dicebant vobis, quoniam in novissimo tempore venient illusores, secundum desideria sua ambulantes in impietatibus.</p>
-    <p class="base base-p">da sie euch sagten, daß zu der letzten Zeit werden Spotter sein, die nach ihren eigenen Lsten des gottlosen Wesens wandeln.</p>
-    <p class="tra">come vi dicevano, che nell’ultimo tempo vi sarebbero degli schernitori; i quali camminerebbero secondo le concupiscenze delle loro empietà.</p>
-  </div>
-</div>
-<div class="vb" id="v1-19">
-  <span class="vn">19</span>
-  <div class="vt">
-    <p class="base base-c">Hi sunt, qui segregant semetipsos, animales, Spiritum non habentes.</p>
-    <p class="base base-p">Diese sind, die da Rotten machen, Fleischliche, die da keinen Geist haben.</p>
-    <p class="tra">Costoro son quelli che separano sè stessi, essendo sensuali, non avendo lo Spirito.</p>
-  </div>
-</div>
-<div class="vb" id="v1-20">
-  <span class="vn">20</span>
-  <div class="vt">
-    <p class="base base-c">Vos autem carissimi super&Atilde;&#166;dificantes vosmetipsos sanctissim&Atilde;&#166; vestr&Atilde;&#166; fidei, in Spiritu Sancto orantes,</p>
-    <p class="base base-p">Ihr aber, meine Lieben, erbauet euch auf euren allerheiligsten Glauben durch den Heiligen Geist und betet</p>
-    <p class="tra">Ma voi, diletti, edificando voi stessi sopra la vostra santissima fede, orando per lo Spirito Santo,</p>
-  </div>
-</div>
-<div class="vb" id="v1-21">
-  <span class="vn">21</span>
-  <div class="vt">
-    <p class="base base-c">vosmetipsos in dilectione Dei servate, exspectantes misericordiam Domini nostri Jesu Christi in vitam &Atilde;&#166;ternam.</p>
-    <p class="base base-p">und behaltet euch in der Liebe Gottes und wartet auf die Barmherzigkeit unsers Herrn Jesu Christi zum ewigen Leben.</p>
-    <p class="tra">conservatevi nell’amor di Dio, aspettando la misericordia del Signor nostro Gesù Cristo, a vita eterna.</p>
-  </div>
-</div>
-<div class="vb" id="v1-22">
-  <span class="vn">22</span>
-  <div class="vt">
-    <p class="base base-c">Et hos quidem arguite judicatos :</p>
-    <p class="base base-p">Und haltet diesen Unterschied, daß ihr euch etlicher erbarmet,</p>
-    <p class="tra">Ed abbiate compassione degli uni, usando discrezione;</p>
-  </div>
-</div>
-<div class="vb" id="v1-23">
-  <span class="vn">23</span>
-  <div class="vt">
-    <p class="base base-c">illos vero salvate, de igne rapientes. Aliis autem miseremini in timore : odientes et eam, qu&Atilde;&#166; carnalis est, maculatam tunicam.</p>
-    <p class="base base-p">etliche aber mit Furcht selig machet und rcket sie aus dem Feuer; und hasset den befleckten Rock des Fleisches.</p>
-    <p class="tra">ma salvate gli altri per ispavento, rapendoli dal fuoco; odiando eziandio la vesta macchiata dalla carne.</p>
-  </div>
-</div>
-<div class="vb" id="v1-24">
-  <span class="vn">24</span>
-  <div class="vt">
-    <p class="base base-c">Ei autem qui potens est vos conservare sine peccato et constituere ante conspectum glori&Atilde;&#166; su&Atilde;&#166; immaculatos in exsultatione in adventu Domini nostri Jesu Christi,</p>
-    <p class="base base-p">Dem aber, der euch kann behuten ohne Fehl und stellen vor das Angesicht seiner Herrlichkeit unstraflich mit Freuden;</p>
-    <p class="tra">Or a colui che è potente da conservarvi senza intoppo, e farvi comparir davanti alla gloria sua irreprensibili, con giubilo;</p>
-  </div>
-</div>
-<div class="vb" id="v1-25">
-  <span class="vn">25</span>
-  <div class="vt">
-    <p class="base base-c">soli Deo Salvatori nostro, per Jesum Christum Dominum nostrum, gloria et magnificentia, imperium et potestas ante omne s&Atilde;&#166;culum, et nunc, et in omnia s&Atilde;&#166;cula s&Atilde;&#166;culorum. Amen.</p>
-    <p class="base base-p">dem Gott, der allein weise ist, unserm Heilande, sei Ehre und Majestat und Gewalt und Macht nun und zu aller Ewigkeit! Amen.</p>
-    <p class="tra">a Dio sol savio, Salvator nostro, sia gloria e magnificenza; imperio, e podestà; ed ora e per tutti i secoli. Amen.</p>
-  </div>
-</div>
-</section>
+  <div class="ornament-bar">❧ ✦ ❧ ✦ ❧</div>
 
-</main>
+  <main class="content">
 
-<nav class="bnav">
-  <a href="064-3jo.html">← III Ioannis</a>
-  <a href="../index.html" class="center"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 14" width="13" height="18" style="vertical-align:middle;stroke:currentColor;stroke-width:1.8;fill:none;stroke-linecap:square"><path d="M5,0V14M0,4H10"/></svg> &nbsp; Inhaltsverzeichnis</a>
-  <a href="066-rev.html">Apocalypsis →</a>
-</nav>
+  <section class="chapter" id="ch1">
+    <div class="chapter-marker">
+      <span class="ch-roman">I</span>
+      <span class="ch-label">Caput 1</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v1-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Judas Jesu Christi servus, frater autem Jacobi, his qui sunt in Deo Patre dilectis, et Christo Jesu conservatis, et vocatis.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">GIUDA, servitore di Gesù Cristo, e fratello di Giacomo, a’ chiamati, santificati in Dio Padre, e conservati in Cristo Gesù;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Misericordia vobis, et pax, et caritas adimpleatur.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">misericordia, pace, e carità, vi sia moltiplicata.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Carissimi, omnem sollicitudinem faciens scribendi vobis de communi vestra salute, necesse habui scribere vobis : deprecans supercertari semel traditæ sanctis fidei.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">DILETTI, poichè io pongo ogni studio in iscrivervi della comune salute, mi è stato necessario scrivervi, per esortarvi di proseguire a combattere per la fede che è stata una volta insegnata a’ santi.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Subintroierunt enim quidam homines (qui olim præscripti sunt in hoc judicium) impii, Dei nostri gratiam transferentes in luxuriam, et solum Dominatorem, et Dominum nostrum Jesum Christum negantes.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Perciocchè son sottentrati certi uomini, i quali già innanzi ab antico sono stati scritti a questa condannazione; empi, i quali rivolgono la grazia dell’Iddio nostro a lascivia, e negano il solo Dio e Padrone, il Signor nostro Gesù Cristo.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Commonere autem vos volo, scientes semel omnia, quoniam Jesus populum de terra Ægypti salvans, secundo eos, qui non crediderunt, perdidit :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Or io voglio ricordar questo a voi, che avete saputo una volta questo: che il Signore, avendo salvato il suo popolo dal paese di Egitto, poi appresso distrusse quelli che non credettero.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">angelos vero, qui non servaverunt suum principatum, sed dereliquerunt suum domicilium, in judicium magni diei, vinculis æternis sub caligine reservavit.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Ed ha messi in guardia sotto caligine, con legami eterni, per il giudicio del gran giorno, gli angeli che non hanno guardata la loro origine, ma hanno lasciata la lor propria stanza.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sicut Sodoma, et Gomorrha, et finitimæ civitates simili modo exfornicatæ, et abeuntes post carnem alteram, factæ sunt exemplum, ignis æterni pœnam sustinentes.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Come Sodoma e Gomorra, e le città d’intorno, avendo fornicato nelle medesima maniera che costoro, ed essendo andate dietro ad altra carne, sono state proposte per esempio, portando la pena dell’eterno fuoco.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Similiter et hi carnem quidem maculant, dominationem autem spernunt, majestatem autem blasphemant.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">E pur simigliantemente ancora costoro, trasognati, contaminano la carne, e sprezzano le signorie, e dicon male delle dignità.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Cum Michaël Archangelus cum diabolo disputans altercaretur de Moysi corpore, non est ausus judicium inferre blasphemiæ : sed dixit : Imperet tibi Dominus.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Là dove l’arcangelo Michele, quando, contendendo col diavolo, disputava intorno al corpo di Mosè, non ardì lanciar contro a lui sentenza di maldicenza; anzi disse: Sgriditi il Signore.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hi autem quæcumque quidem ignorant, blasphemant : quæcumque autem naturaliter, tamquam muta animalia, norunt, in his corrumpuntur.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Ma costoro dicon male di tutte le cose che ignorano; e si corrompono in tutte quelle, le quali, come gli animali senza ragione, naturalmente sanno.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Væ illis, quia in via Cain abierunt, et errore Balaam mercede effusi sunt, et in contradictione Core perierunt !</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Guai a loro! perciocchè son camminati per la via di Caino, e si son lasciati trasportare per l’inganno del premio di Balaam, e son periti per la ribellione di Core.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hi sunt in epulis suis maculæ, convivantes sine timore, semetipsos pascentes, nubes sine aqua, quæ a ventis circumferentur, arbores autumnales, infructuosæ, bis mortuæ, eradicatæ,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Costoro son macchie ne’ vostri pasti di carità, mentre sono a tavola con voi, pascendo loro stessi senza riverenza; nuvole senz’acqua, sospinte qua e là da’ venti; alberi appassati, sterili, due volte morti, diradicati;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">fluctus feri maris, despumantes suas confusiones, sidera errantia : quibus procella tenebrarum servata est in æternum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">fiere onde del mare, schiumanti le lor brutture; stelle erranti, a cui è riserbata la caligine delle tenebre in eterno.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Prophetavit autem et de his septimus ab Adam Enoch, dicens : Ecce venit Dominus in sanctis millibus suis</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Or a tali ancora profetizzò Enoc, settimo da Adamo, dicendo: Ecco, il Signore è venuto con le sue sante migliaia;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">facere judicium contra omnes, et arguere omnes impios de omnibus operibus impietatis eorum, quibus impie egerunt, et de omnibus duris, quæ locuti sunt contra Deum peccatores impii.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">per far giudicio contro a tutti, ed arguire tutti gli empi d’infra loro, di tutte le opere d’empietà, che hanno commesse; e di tutte le cose felle, che hanno proferite contro a lui gli empi peccatori.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hi sunt murmuratores querulosi, secundum desideria sua ambulantes, et os eorum loquitur superba, mirantes personas quæstus causa.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Costoro son mormoratori, querimoniosi, camminando secondo le loro concupiscenze; e la lor bocca proferisce cose sopra modo gonfie, ammirando le persone per l’utilità.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vos autem carissimi, memores estote verborum, quæ prædicta sunt ab apostolis Domini nostri Jesu Christi,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Ma voi, diletti, ricordatevi delle parole predette dagli apostoli del Signor nostro Gesù Cristo;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">qui dicebant vobis, quoniam in novissimo tempore venient illusores, secundum desideria sua ambulantes in impietatibus.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">come vi dicevano, che nell’ultimo tempo vi sarebbero degli schernitori; i quali camminerebbero secondo le concupiscenze delle loro empietà.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hi sunt, qui segregant semetipsos, animales, Spiritum non habentes.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Costoro son quelli che separano sè stessi, essendo sensuali, non avendo lo Spirito.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">Vos autem carissimi superædificantes vosmetipsos sanctissimæ vestræ fidei, in Spiritu Sancto orantes,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Ma voi, diletti, edificando voi stessi sopra la vostra santissima fede, orando per lo Spirito Santo,</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">vosmetipsos in dilectione Dei servate, exspectantes misericordiam Domini nostri Jesu Christi in vitam æternam.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">conservatevi nell’amor di Dio, aspettando la misericordia del Signor nostro Gesù Cristo, a vita eterna.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-22">
+      <div class="verse-num-col"><div class="verse-num">22</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et hos quidem arguite judicatos :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Ed abbiate compassione degli uni, usando discrezione;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-23">
+      <div class="verse-num-col"><div class="verse-num">23</div></div>
+      <div class="verse-texts">
+        <div class="latin">illos vero salvate, de igne rapientes. Aliis autem miseremini in timore : odientes et eam, quæ carnalis est, maculatam tunicam.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">ma salvate gli altri per ispavento, rapendoli dal fuoco; odiando eziandio la vesta macchiata dalla carne.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-24">
+      <div class="verse-num-col"><div class="verse-num">24</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ei autem qui potens est vos conservare sine peccato et constituere ante conspectum gloriæ suæ immaculatos in exsultatione in adventu Domini nostri Jesu Christi,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Or a colui che è potente da conservarvi senza intoppo, e farvi comparir davanti alla gloria sua irreprensibili, con giubilo;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-25">
+      <div class="verse-num-col"><div class="verse-num">25</div></div>
+      <div class="verse-texts">
+        <div class="latin">soli Deo Salvatori nostro, per Jesum Christum Dominum nostrum, gloria et magnificentia, imperium et potestas ante omne sæculum, et nunc, et in omnia sæcula sæculorum. Amen.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">a Dio sol savio, Salvator nostro, sia gloria e magnificenza; imperio, e podestà; ed ora e per tutti i secoli. Amen.</div>
+      </div>
+    </div>
+  </section>
+  </main>
 
-<script>
-(function(){
-  var c = localStorage.getItem('biblia_conf') || 'protestant';
-  document.body.dataset.conf = c;
-})();
-</script>
-<script>
-(function(){
-  var BM_KEY = 'KX_bookmark';
-  var toast, toastTimer;
-  function showToast(txt) {
-    if (!toast) {
-      toast = document.createElement('div');
-      toast.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:rgba(86,24,31,.95);color:#f1d7c8;font-family:sans-serif;font-size:.78rem;letter-spacing:.08em;padding:9px 20px;border-radius:10px;border:1px solid #9c4a44;pointer-events:none;z-index:999;transition:opacity .3s,transform .3s;box-shadow:0 12px 24px rgba(0,0,0,.24)';
-      document.body.appendChild(toast);
-    }
-    toast.textContent = txt;
-    toast.style.opacity = '1';
-    toast.style.transform = 'translateX(-50%) translateY(0)';
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(function(){ toast.style.opacity = '0'; toast.style.transform = 'translateX(-50%) translateY(6px)'; }, 1800);
-  }
-  document.addEventListener('click', function(e) {
-    var el = e.target;
-    while (el && el !== document.body) {
-      if (el.matches && el.matches('.verse, .vb')) break;
-      el = el.parentElement;
-    }
-    if (!el || el === document.body) return;
-    if (e.target.tagName === 'A') return;
-    var id = el.id;
-    if (!id) return;
-    var data = { url: location.pathname + '#' + id, title: document.title, id: id, ts: Date.now() };
-    try { localStorage.setItem(BM_KEY, JSON.stringify(data)); } catch(_){}
-    showToast('\u2746 Lesezeichen gesetzt');
-  });
-})();
-</script>
+  <nav class="book-nav">
+    <a href="064-3jo.html">← III Ioannis</a>
+    <span class="center">Iudae · Italiano</span>
+    <a href="066-rev.html">Apocalypsis →</a>
+  </nav>
+
+  <footer class="page-footer">
+    BIBLIA CATHOLICA INTERLINEARIS &nbsp;·&nbsp; Vulgata Clementina &amp; Giovanni Diodati (1649)
+    &nbsp;·&nbsp; Gemeinfreie Texte / Public Domain
+  </footer>
+
 </body>
 </html>

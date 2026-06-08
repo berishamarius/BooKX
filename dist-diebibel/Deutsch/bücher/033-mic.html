@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Micheas &middot; Deutsch &middot; Biblia Catholica</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+body{
+  background:#2C0810;
+  font-family:'EB Garamond',serif;
+  color:#1A0E06;
+  font-size:17px;
+}
+
+/* ------------------------------------------
+   BUCHKOPF
+------------------------------------------ */
+.bhead{
+  background:#2C0810;
+  padding:36px 28px 28px;
+  text-align:center;
+  border-bottom:3px solid #B8962E;
+  position:relative;overflow:hidden;
+}
+/* Innerer Rahmen */
+.bhead::before{
+  content:'';position:absolute;inset:14px;
+  border:1px solid rgba(140,100,20,.2);
+  pointer-events:none;
+}
+.bhead::after{
+  content:'';position:absolute;inset:22px;
+  border:0.5px solid rgba(140,100,20,.08);
+  pointer-events:none;
+}
+.btestament{
+  display:inline-block;
+  border:1px solid rgba(100,60,20,.28);
+  color:rgba(42,0,8,.45);
+  font-family:'Cinzel',serif;font-size:.55rem;
+  letter-spacing:.3em;padding:4px 18px;
+  border-radius:2px;margin-bottom:16px;
+  position:relative;
+}
+.blatin{
+  font-family:'UnifrakturMaguntia',cursive;
+  font-size:clamp(1.9rem,7vw,3.4rem);
+  color:#EDD882;
+  letter-spacing:.02em;position:relative;
+  display:none;
+}
+body:not([data-conf]) .blatin-c,body[data-conf="catholic"] .blatin-c{display:block;}
+body[data-conf="protestant"] .blatin-p{display:block;}
+.btrans{
+  font-family:'Cinzel',serif;
+  font-size:.88rem;
+  color:#C8A030;margin-top:10px;
+  letter-spacing:.16em;position:relative;
+}
+.bmeta{
+  font-family:'Cinzel',serif;font-size:.62rem;
+  color:rgba(42,0,8,.35);margin-top:6px;
+  letter-spacing:.08em;position:relative;
+}
+
+/* ------------------------------------------
+   KAPITELINHALT
+------------------------------------------ */
+.content{
+  max-width:960px;
+  margin:36px auto 36px;
+  padding:48px 72px 100px;
+  background:#FAF5E8;
+  background-image:
+    radial-gradient(ellipse at top left,rgba(184,150,46,.06) 0%,transparent 55%),
+    radial-gradient(ellipse at bottom right,rgba(184,150,46,.05) 0%,transparent 55%);
+  box-shadow:0 8px 80px rgba(0,0,0,.55),0 2px 12px rgba(0,0,0,.35),inset 0 0 0 1px rgba(184,150,46,.18);
+  border-left:4px solid #B8962E;
+  border-right:4px solid #B8962E;
+  border-top:2px solid rgba(184,150,46,.4);
+  border-bottom:2px solid rgba(184,150,46,.4);
+  position:relative;
+}
+.content::before{
+  content:'';
+  position:absolute;
+  inset:12px;
+  border:1px solid rgba(184,150,46,.08);
+  pointer-events:none;
+}
+
+.chap{margin-top:0;}
+
+.chhead{
+  text-align:center;
+  padding:40px 0 20px;
+  margin-bottom:16px;
+  position:relative;
+}
+.chhead::before{
+  content:'——— ✦ ✦ ✦ ———';
+  display:block;
+  font-size:.7rem;
+  color:rgba(184,150,46,.45);
+  letter-spacing:.35em;
+  margin-bottom:16px;
+}
+.chhead::after{
+  content:'';
+  display:block;
+  width:200px;
+  height:1px;
+  margin:14px auto 0;
+  background:linear-gradient(to right,transparent,#B8962E,transparent);
+}
+.chrom{
+  font-family:'Cinzel Decorative',serif;
+  font-size:4rem;color:#8B6914;
+  display:block;
+  text-shadow:0 2px 18px rgba(184,150,46,.2);
+  line-height:1;
+}
+.chlbl{
+  font-family:'Cinzel',serif;font-size:.58rem;
+  color:rgba(184,150,46,.42);letter-spacing:.32em;
+  display:none;margin-top:8px;
+}
+body:not([data-conf]) .chlbl-c,body[data-conf="catholic"] .chlbl-c{display:block;}
+body[data-conf="protestant"] .chlbl-p{display:block;}
+
+/* ------------------------------------------
+   VERSE
+------------------------------------------ */
+.vb{
+  display:flex;
+  padding:20px 6px;
+  border-bottom:1px solid rgba(184,150,46,.12);
+  background:none;
+  border-radius:2px;
+  transition:background .15s;
+}
+.vb:hover{
+  background:rgba(184,150,46,.04);
+}
+
+/* Versnummer */
+.vn{
+  flex-shrink:0;
+  width:38px;
+  padding-top:4px;
+  font-family:'Cinzel',serif;font-size:.56rem;
+  color:rgba(184,150,46,.52);text-align:right;
+  padding-right:12px;line-height:2.4;
+}
+
+.vt{
+  flex:1;
+  padding:0 20px 0 4px;
+}
+
+/* BASIS-TEXT — wechselt je nach Konfession */
+.base{
+  font-family:'EB Garamond',serif;
+  font-size:1.2rem;
+  font-weight:500;
+  line-height:2.1;
+  color:#3D1A08;
+  display:none;
+}
+body:not([data-conf]) .base-c,
+body[data-conf="catholic"] .base-c { display:block; }
+body[data-conf="protestant"] .base-p { display:block; }
+.base:empty { display:none !important; }
+
+/* ÜBERSETZUNG — SEKUNDÄR: kleiner, kursiv, unter dem Latein */
+.tra{
+  font-family:'EB Garamond',serif;
+  font-size:.93rem;
+  font-style:italic;
+  line-height:1.95;
+  color:#1E2848;
+  margin-top:5px;
+  padding-left:14px;
+  border-left:2px solid rgba(90,110,170,.2);
+}
+
+/* Drop-Cap: erster Vers eines Kapitels */
+.vb.first .base-c::first-letter{
+  font-family:'Cinzel Decorative',serif;
+  font-size:4em;
+  float:left;
+  line-height:.7;
+  padding-right:.08em;
+  margin-top:.07em;
+  color:#B8962E;
+  text-shadow:1px 2px 6px rgba(0,0,0,.12);
+}
+body[data-conf="protestant"] .vb.first .base-p::first-letter{
+  font-family:'UnifrakturMaguntia',cursive;
+  font-size:4em;
+  float:left;
+  line-height:.7;
+  padding-right:.08em;
+  margin-top:.07em;
+  color:#B8962E;
+  text-shadow:1px 2px 6px rgba(0,0,0,.12);
+}
+
+/* ------------------------------------------
+   BUCH-NAVIGATION (unten)
+------------------------------------------ */
+.bnav{
+  display:flex;justify-content:space-between;align-items:center;
+  background:#2C0810;border-top:3px solid #B8962E;
+  padding:12px 24px;gap:12px;
+}
+.bnav a,.bnav .dim{
+  color:#C8A030;text-decoration:none;
+  font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:.07em;
+  padding:6px 16px;
+  border:1px solid rgba(100,60,20,.28);
+  border-radius:2px;transition:background .18s;
+}
+.bnav a:hover{background:rgba(100,60,20,.08);}
+.bnav .dim{color:rgba(42,0,8,.2);border-color:rgba(42,0,8,.1);}
+.bnav .center{
+  font-family:'Cinzel',serif;font-size:.68rem;
+  color:rgba(42,0,8,.55);text-align:center;
+  letter-spacing:.06em;text-decoration:none;
+  border:1px solid rgba(100,60,20,.28);border-radius:2px;
+  padding:6px 20px;transition:background .18s;
+}
+.bnav .center:hover{background:rgba(100,60,20,.08);}
+
+/* Protestant: Luther-Text in Altdeutsch */
+body[data-conf="protestant"] .base-p{
+  font-family:'UnifrakturMaguntia',cursive;
+  font-size:1.08rem;
+  letter-spacing:.01em;
+}
+
+/* DRUCK */
+@media print{
+  .bnav{display:none;}
+  .bhead{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .vb{break-inside:avoid;}
+}
+
+/* MOBIL */
+@media(max-width:600px){
+  .blatin{font-size:1.8rem;}
+  .base{font-size:1rem;}
+  .tra{font-size:.84rem;}
+  .content{padding:16px 18px 60px;margin:0;border-left:none;border-right:none;border-radius:0;}
+  .chrom{font-size:1.8rem;}
+}
+/* KREUZ-GRAVUR */
+.b-wm{position:sticky;top:calc(50vh - 37.5vmin);width:50vmin;height:75vmin;margin:0 auto -75vmin;display:block;pointer-events:none;z-index:0;user-select:none;}
+.b-wm svg{width:100%;height:auto;display:block;}
+.b-wm path{fill:none;stroke:rgba(184,150,46,.06);stroke-width:1.5;stroke-linecap:square;}
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&display=swap" rel="stylesheet"><style id="force-scheherazade">.ar,.verse .ar,.vb .ar,div.ar,span.ar,p.ar,.ra,.bismi-txt,.sh-rub,.sh-name,.sh-meta,.ttl-ar,.orn{font-family:'Scheherazade New','Arabic Typesetting','Traditional Arabic',serif !important;text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}div.ar,span.ar,p.ar{font-weight:700 !important;font-size:1.72em !important;letter-spacing:.03em;line-height:2.28 !important;word-spacing:.1em;}.bismi-txt{font-size:2.15rem !important;line-height:1.9 !important;}.ra{font-size:2.45rem !important;line-height:1.45 !important;}.sh-rub{font-size:2rem !important;}.sh-name{font-size:5rem !important;line-height:1.18 !important;}.sh-meta{font-size:1rem !important;}.ttl-ar{font-size:1.5rem !important;}.tr{font-size:.93rem !important;line-height:1.82 !important;}</style>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><path d='M32,4V60M12,18H52' stroke='%23C8A030' stroke-width='8' fill='none' stroke-linecap='square'/></svg>">
+<link rel="apple-touch-icon" sizes="180x180" href="../../Die%20Heilige%20Bibel%20rot%20Icon.png">
+<meta name="theme-color" content="#2C0810">
+</head>
+<body>
+<header class="bhead">
+  <div class="btestament">VETUS TESTAMENTUM</div>
+  <div class="blatin blatin-c">MICHEAS</div>
+  <div class="blatin blatin-p">Micha</div>
+  <div class="btrans">Micha &nbsp;&middot;&nbsp; <em>Deutsch</em></div>
+  <div class="bmeta">7 Capita &nbsp;&middot;&nbsp; 104 Versus</div>
+</header>
+
+<main class="content">
+<div class="b-wm"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 14"><path d="M5,0V14M0,4H10"/></svg></div>
+<section class="chap" id="c1">
+  <div class="chhead">
+    <span class="chrom">I</span>
+    <span class="chlbl chlbl-c">Caput I</span>
+    <span class="chlbl chlbl-p">Das 1. Capitel</span>
+  </div>
+<div class="vb first" id="v1-1">
+  <span class="vn">1</span>
+  <div class="vt">
+    <p class="base base-c">Verbum Domini, quod factum est ad Michæam Morasthiten, in diebus Joathan, Achaz, et Ezechiæ, regum Juda, quod vidit super Samariam et Jerusalem.</p>
+    <p class="base base-p">Dies ist das Wort des HERRN, welches geschah zu Micha von Maresa zur Zeit Jothams, Ahas, Jehiskias, der Kdnige Judas, das er gesehen hat uber Samaria, und Jerusalem.</p>
+    <p class="tra">Das Wort Jahwes, das an Micha aus Moreseth erging, zur Zeit der judäischen Könige Jotham, Ahas und Hiskia, das er über Samaria und Jerusalem empfing.</p>
+  </div>
+</div>
+<div class="vb" id="v1-2">
+  <span class="vn">2</span>
+  <div class="vt">
+    <p class="base base-c">Audite, populi omnes,  et attendat terra, et plenitudo ejus :  et sit Dominus Deus vobis in testem,  Dominus de templo sancto suo.</p>
+    <p class="base base-p">Horet, alle Volker, merke auf, Land, und alles, was drinnen ist! Denn Gott der HERR hat mit euch zu reden, ja, der HERR aus seinem heiligen Tempel!</p>
+    <p class="tra">Hört, ihr Völker alle! Merk' auf, o Erde, und was sie füllt! Und der Herr Jahwe möge Zeuge sein gegen euch, der Herr selbst von seinem heiligen Tempel aus.</p>
+  </div>
+</div>
+<div class="vb" id="v1-3">
+  <span class="vn">3</span>
+  <div class="vt">
+    <p class="base base-c">Quia ecce Dominus egredietur de loco suo,  et descendet, et calcabit super excelsa terræ.</p>
+    <p class="base base-p">Denn siehe, der HERR wird ausgehen aus seinem Ort und herabfahren und treten auf die Hohen im Lande,</p>
+    <p class="tra">Denn fürwahr, Jahwe wird ausziehen von seinem Wohnsitz, wird herabsteigen und über die Höhen der Erde dahinschreiten.</p>
+  </div>
+</div>
+<div class="vb" id="v1-4">
+  <span class="vn">4</span>
+  <div class="vt">
+    <p class="base base-c">Et consumentur montes subtus eum,  et valles scindentur sicut cera a facie ignis,  et sicut aquæ quæ decurrunt in præceps.</p>
+    <p class="base base-p">daß die Berge unter ihm schmelzen und die Taler reiften werden, gleichwie Wachs vor dem Feuer verschmilzet, wie die Wasser, so unterwarts flieften.</p>
+    <p class="tra">Da werden dann die Berge unter ihm schmelzen und die Ebenen sich spalten, wie Wachs vor dem Feuer, wie Wasser, das über einen Abhang hinabstürzt.</p>
+  </div>
+</div>
+<div class="vb" id="v1-5">
+  <span class="vn">5</span>
+  <div class="vt">
+    <p class="base base-c">In scelere Jacob omne istud,  et in peccatis domus Israël.  Quod scelus Jacob ? nonne Samaria ?  et quæ excelsa Judæ ? nonne Jerusalem ?</p>
+    <p class="base base-p">Das alles um der Ubertretung willen Jakobs und um derßünde willen des Hauses Israel. Welches ist aber die Ubertretung Jakobs? Ist's nicht Samaria? Welches sind aber die Hohen Judas? Ist's nicht Jerusalem?</p>
+    <p class="tra">Wegen der Verschuldung Jakobs geschieht das alles und wegen der Einöde des Hauses Israel. Was ist die Verschuldung Jakobs? Nicht der Götzendienst von Samaria? Und was ist die Sünde Judas? Nicht der Götzendienst von Jerusalem?</p>
+  </div>
+</div>
+<div class="vb" id="v1-6">
+  <span class="vn">6</span>
+  <div class="vt">
+    <p class="base base-c">Et ponam Samariam quasi acervum lapidum in agro,  cum plantatur vinea ;  et detraham in vallem lapides ejus,  et fundamenta ejus revelabo.</p>
+    <p class="base base-p">Und ich will Samaria zum Steinhaufen im Felde machen, die man um die Weinberge legt; und will ihre Steine ins Tal schleifen und zugrunde einbrechen.</p>
+    <p class="tra">So will ich denn Samaria zu einem Steinhaufen auf dem Felde machen, zu Pflanzstätten für Weinberge, und will seine Steine ins Thal hinabstürzen und seinen Grund bloßlegen.</p>
+  </div>
+</div>
+<div class="vb" id="v1-7">
+  <span class="vn">7</span>
+  <div class="vt">
+    <p class="base base-c">Et omnia sculptilia ejus concidentur,  et omnes mercedes ejus comburentur igne,  et omnia idola ejus ponam in perditionem,  quia de mercedibus meretricis congregata sunt,  et usque ad mercedem meretricis revertentur.</p>
+    <p class="base base-p">Alle ihre Gotzen sollen zerbrochen und all ihr Hurenlohn soil mit Feuer verbrannt werden, und will alle ihre Bilder verwusten; denn sie sind von Hurenlohn versammelt und sollen auch wieder Hurenlohn werden.</p>
+    <p class="tra">Alle seine Schnitzbilder sollen zerschlagen, alle seine Weihgeschenke sollen verbrannt werden, und alle seine Götzen will ich der Zerstörung überliefern; denn von Hurenlohn hat es sie zusammengebracht und zu Hurenlohn sollen sie wieder werden!</p>
+  </div>
+</div>
+<div class="vb" id="v1-8">
+  <span class="vn">8</span>
+  <div class="vt">
+    <p class="base base-c">Super hoc plangam, et ululabo ;  vadam spoliatus, et nudus ;  faciam planctum velut draconum,  et luctum quasi struthionum :</p>
+    <p class="base base-p">Darüber muft ich klagen und heulen; ich muft beraubt und bloft dahergehen; ich muft klagen wie die Drachen und trauern wie die Strauften.</p>
+    <p class="tra">Darum will ich wehklagen und heulen, barfuß und ohne Obergewand einhergehen, will ein Wehklagen anstellen wie die Schakale und ein Jammern wie die Strauße.</p>
+  </div>
+</div>
+<div class="vb" id="v1-9">
+  <span class="vn">9</span>
+  <div class="vt">
+    <p class="base base-c">quia desperata est plaga ejus,  quia venit usque ad Judam ;  tetigit portam populi mei usque ad Jerusalem.</p>
+    <p class="base base-p">Denn ihrer Plage ist kein Rat, die bis nach Juda kommen und bis an meines Volks Tore gen Jerusalem hinanreichen wird.</p>
+    <p class="tra">Denn unheilbar sind die Schläge, die es treffen; ja, es dringt bis nach Juda, reicht bis an das Thor meines Volks, bis Jerusalem!</p>
+  </div>
+</div>
+<div class="vb" id="v1-10">
+  <span class="vn">10</span>
+  <div class="vt">
+    <p class="base base-c">In Geth nolite annuntiare ;  lacrimis ne ploretis ;  in domo pulveris pulvere vos conspergite.</p>
+    <p class="base base-p">Verkundiget esja nicht zu Gath, laftteuch nicht horen weinen, sondern gehet in die Trauerkammer und sitzet in die Asche!</p>
+    <p class="tra">Meldet es doch in Gath, weinet, weinet doch nicht! In Bethleaphra bestreut euch mit Staub!</p>
+  </div>
+</div>
+<div class="vb" id="v1-11">
+  <span class="vn">11</span>
+  <div class="vt">
+    <p class="base base-c">Et transite vobis, habitatio pulchra, confusa ignominia :  non est egressa quæ habitat in exitu :  planctum domus vicina accipiet ex vobis, quæ stetit sibimet.</p>
+    <p class="base base-p">Du schone Stadt muftt dahin mit alien Schanden. Die Einwohnerin Zaenans wird nicht ausziehen um des Leides willen des nachsten Hauses. Er wird's von euch nehmen, wenn er da sich lagern wird.</p>
+    <p class="tra">Zieht vorüber, Bewohner von Saphir, in schmachvoller Blöße! Die Bewohner von Zaanan wagen sich nicht heraus; die Wehklage von Beth-ha-ezel hindert euch, dort Aufenthalt zu nehmen!</p>
+  </div>
+</div>
+<div class="vb" id="v1-12">
+  <span class="vn">12</span>
+  <div class="vt">
+    <p class="base base-c">Quia infirmata est in bonum,  quæ habitat in amaritudinibus ;  quia descendit malum a Domino in portam Jerusalem.</p>
+    <p class="base base-p">Die betrübte Stadt vermag sich nicht zutrosten; denn es wird das Ungluck vom HERRN kommen, auch bis an das Tor Jerusalems.</p>
+    <p class="tra">Denn es zittern die Bewohner von Maroth um ihr Heil; ja, Unheil fährt von Jahwe sogar auf die Thore Jerusalems herab.</p>
+  </div>
+</div>
+<div class="vb" id="v1-13">
+  <span class="vn">13</span>
+  <div class="vt">
+    <p class="base base-c">Tumultus quadrigæ stuporis habitanti Lachis :  principium peccati est filiæ Sion,  quia in te inventa sunt scelera Israël.</p>
+    <p class="base base-p">Du Stadt Lachis, spanne Lauferan und fahre davon; denn du bist der Tochter Zion der Anfang zur Sünde, und in dir sind funden die Ubertretungen Israels.</p>
+    <p class="tra">Schirrt die Rosse an den Wagen, ihr Bewohner von Lachis! Das war die Hauptsünde der Bewohner Zions; ja, bei euch waren die Übertretungen Israels zu finden!</p>
+  </div>
+</div>
+<div class="vb" id="v1-14">
+  <span class="vn">14</span>
+  <div class="vt">
+    <p class="base base-c">Propterea dabit emissarios super hæreditatem Geth,  domus mendacii in deceptionem regibus Israël.</p>
+    <p class="base base-p">Du wirst müssen Gefangene geben so wohl als Gath. Der Stadt Achsib wird's mit den Konigen Israels fehlen.</p>
+    <p class="tra">Darum mußt du Moreseth Gath den Abschied geben! Die Häuser von Achsib enttäuschen die Könige Israels.</p>
+  </div>
+</div>
+<div class="vb" id="v1-15">
+  <span class="vn">15</span>
+  <div class="vt">
+    <p class="base base-c">Adhuc hæredem adducam tibi quæ habitas in Maresa ;  usque ad Odollam veniet gloria Israël.</p>
+    <p class="base base-p">Ich will dir Maresa, den rechten Erben bringen; und die Herrlichkeit Israels soil kommen bis gen Adullam.</p>
+    <p class="tra">Noch einmal lasse ich, ihr Bewohner von Maresa, den Eroberer über euch kommen; bis Adullam werden die Großen Israels gelangen.</p>
+  </div>
+</div>
+<div class="vb" id="v1-16">
+  <span class="vn">16</span>
+  <div class="vt">
+    <p class="base base-c">Decalvare, et tondere super filios deliciarum tuarum ;  dilata calvitium tuum sicut aquila,  quoniam captivi ducti sunt ex te.</p>
+    <p class="base base-p">Laft die Haare abscheren und gehe kahl über deine zarten Kinder! Mache dich gar kahl wie ein Adler; denn sie sind von dir gefangen weggefuhret.</p>
+    <p class="tra">Schere dir die Haare und den Bart wegen deiner geliebten Kinder, schere dir eine Glatze so breit wie der Geier - denn sie müssen von dir fortwandern!</p>
+  </div>
+</div>
+</section>
+
+<section class="chap" id="c2">
+  <div class="chhead">
+    <span class="chrom">II</span>
+    <span class="chlbl chlbl-c">Caput II</span>
+    <span class="chlbl chlbl-p">Das 2. Capitel</span>
+  </div>
+<div class="vb first" id="v2-1">
+  <span class="vn">1</span>
+  <div class="vt">
+    <p class="base base-c">Væ qui cogitatis inutile,  et operamini malum in cubilibus vestris !  In luce matutina faciunt illud,  quoniam contra Deum est manus eorum.</p>
+    <p class="base base-p">Wehe denen, die Schaden zu tun trachten und gehen mit bosen Tucken um auf ihrem Lager, dafi sie es frith, wenn es licht wird, vollbringen, weil sie die Macht haben!</p>
+    <p class="tra">Wehe denen, die Heilloses planen und Schlimmes ins Werk setzen auf ihren Lagern, um es bei Anbruch des Morgens auszuführen, sobald es in ihrer Macht steht.</p>
+  </div>
+</div>
+<div class="vb" id="v2-2">
+  <span class="vn">2</span>
+  <div class="vt">
+    <p class="base base-c">Et concupierunt agros, et violenter tulerunt :  et rapuerunt domos,  et calumniabantur virum, et domum ejus :  virum, et hæreditatem ejus.</p>
+    <p class="base base-p">Sie reilien zu sich Acker und nehmen Hauser, welche sie gelustet. Also treiben sie Gewalt mit eines jeden Hause und mit eines jeden Erbe.</p>
+    <p class="tra">Begehren sie Felder, so reißen sie sie an sich; oder Häuser, so nehmen sie sie weg. Sie gehen mit Gewalt vor gegen die Person und ihre Habe, gegen den Herrn und sein Besitztum.</p>
+  </div>
+</div>
+<div class="vb" id="v2-3">
+  <span class="vn">3</span>
+  <div class="vt">
+    <p class="base base-c">Idcirco hæc dicit Dominus :  Ecce ego cogito super familiam istam malum,  unde non auferetis colla vestra,  et non ambulabitis superbi :  quoniam tempus pessimum est.</p>
+    <p class="base base-p">Darum spricht der HERR also: Siehe, ich gedenke uber dies Geschlecht Boses, aus dem ihr euren Hals nicht ziehen und nicht so stolz dahergehen sollet; denn es soil eine bose Zeit sein.</p>
+    <p class="tra">Darum spricht Jahwe also: Fürwahr, ich plane Schlimmes wider dies Volk, dem ihr eure Hälse nicht entziehen und unter dem ihr nicht aufrecht einhergehen könnt; denn es wird eine schlimme Zeit sein!</p>
+  </div>
+</div>
+<div class="vb" id="v2-4">
+  <span class="vn">4</span>
+  <div class="vt">
+    <p class="base base-c">In die illa sumetur super vos parabola,  et cantabitur canticum cum suavitate, dicentium :  Depopulatione vastati sumus ;  pars populi mei commutata est :  quomodo recedet a me, cum revertatur,  qui regiones nostras dividat ?</p>
+    <p class="base base-p">Zur selbigen Zeit wird man einen Spruch von euch machen und klagen: Es ist aus, wird man sagen; wir sind verstoret. Meines Volkes Land kriegt einen fremden Herrn. Wann wird er uns die Acker wieder zuteilen, die eruns genommen hat?</p>
+    <p class="tra">An jenem Tage wird man ein Spottlied auf euch anheben und einen Klagegesang anstimmen also: Völlige Verheerung hat uns betroffen; das Eigentum meines Volks wird mit der Meßschnur verteilt! Keiner, der es mir zurückgiebt! An unsere Fänger wird unser Feld verteilt!</p>
+  </div>
+</div>
+<div class="vb" id="v2-5">
+  <span class="vn">5</span>
+  <div class="vt">
+    <p class="base base-c">Propter hoc non erit tibi mittens funiculum sortis in cœtu Domini.</p>
+    <p class="base base-p">Jawohl, ihr werdet kein Teil behalten in der Gemeine des HERRN.</p>
+    <p class="tra">Darum wirst du keinen haben, der die Meßschnur zöge über ein Grundstück in der Gemeinde Jahwes.</p>
+  </div>
+</div>
+<div class="vb" id="v2-6">
+  <span class="vn">6</span>
+  <div class="vt">
+    <p class="base base-c">Ne loquamini loquentes ;  non stillabit super istos, non comprehendet confusio.</p>
+    <p class="base base-p">Sie sagen, man solle nicht traufen; denn solche Traufe trifft uns nicht; wirwerden nicht so zuschanden werden.</p>
+    <p class="tra">“Predige doch nicht!” predigen sie. “Man soll von diesen Dingen nicht predigen! Die Schmähungen hören nicht auf.”</p>
+  </div>
+</div>
+<div class="vb" id="v2-7">
+  <span class="vn">7</span>
+  <div class="vt">
+    <p class="base base-c">Dicit domus Jacob :  Numquid abbreviatus est spiritus Domini,  aut tales sunt cogitationes ejus ?  nonne verba mea bona sunt cum eo qui recte graditur ?</p>
+    <p class="base base-p">Das Haus Jakob trostet sich also: Meinest du, des HERRN Geist sei verkurzt? Sollte er solches tun wollen? Es istwahr, meine Reden sind freundlich den Frommen.</p>
+    <p class="tra">Welches Gerede, Haus Jakobs! Ist Jahwe etwa jähzornig, oder sind derart seine Handlungen? Meinen es seine Worte nicht vielmehr gut mit den Redlichen?</p>
+  </div>
+</div>
+<div class="vb" id="v2-8">
+  <span class="vn">8</span>
+  <div class="vt">
+    <p class="base base-c">et e contrario populus meus in adversarium consurrexit.  Desuper tunica pallium sustulistis :  et eos qui transibant simpliciter convertistis in bellum.</p>
+    <p class="base base-p">Aber mein Volk hat sich aufgemacht wie ein Feind; denn sie rauben beide, Rock und Mantel, denen, so sicher dahergehen, gleichwie die, so aus dem Kriege kommen.</p>
+    <p class="tra">Aber längst schon lehnt sich mein Volk als Feind auf. Vom Obergewande zieht ihr den Mantel weg denen, die arglos vorüberziehen, die dem Streit abgeneigt sind.</p>
+  </div>
+</div>
+<div class="vb" id="v2-9">
+  <span class="vn">9</span>
+  <div class="vt">
+    <p class="base base-c">Mulieres populi mei ejecistis de domo deliciarum suarum ;  a parvulis earum tulistis laudem meam in perpetuum.</p>
+    <p class="base base-p">Ihr treibet die Weiber meines Volks aus ihren lieben Hausern und nehmet stets von ihren jungen Kindern meinen Schmuck.</p>
+    <p class="tra">Die Weiber meines Volks vertreibt ihr aus ihrem behaglichen Hause, beraubt ihre Kinder für immer meines Schmucks.</p>
+  </div>
+</div>
+<div class="vb" id="v2-10">
+  <span class="vn">10</span>
+  <div class="vt">
+    <p class="base base-c">Surgite, et ite, quia non habetis hic requiem :  propter immunditiam ejus corrumpetur putredine pessima.</p>
+    <p class="base base-p">Darum machet euch auf; ihr müsset davon; ihr sollt hie nicht bleiben! Um ihrer Unreinigkeit willen müssen sie unsanft zerstoret werden.</p>
+    <p class="tra">Auf und fort mit euch! Denn hier ist eures Bleibens nicht mehr, wegen der Verunreinigung, die Verderben bringt und zwar heilloses Verderben.</p>
+  </div>
+</div>
+<div class="vb" id="v2-11">
+  <span class="vn">11</span>
+  <div class="vt">
+    <p class="base base-c">Utinam non essem vir habens spiritum,  et mendacium potius loquerer !  Stillabo tibi in vinum et in ebrietatem ;  et erit super quem stillatur populus iste.</p>
+    <p class="base base-p">Wenn ich ein Irrgeist ware und ein Lügenprediger und predigte, wie sie saufen und schwelgen sollten, das ware ein Prediger fur dies Volk.</p>
+    <p class="tra">Wenn jemand, der mit Wind und Trug umgeht, dir vorlöge: Ich will dir von Wein und von Rauschtrank wahrsagen - das wäre ein Wahrsager für dieses Volk!</p>
+  </div>
+</div>
+<div class="vb" id="v2-12">
+  <span class="vn">12</span>
+  <div class="vt">
+    <p class="base base-c">Congregatione congregabo, Jacob, totum te ;  in unum conducam reliquias Israël :  pariter ponam illum quasi gregem in ovili,  quasi pecus in medio caularum :  tumultuabuntur a multitudine hominum.</p>
+    <p class="base base-p">Ich will aber dich, Jakob, versammeln ganz und die ubrigen in Israel zuhauf bringen; ich will sie wie eine Herde miteinander in einen festen Stall tun und wie eine Herde in seine Hürden, dafi es von Menschen tonen soli.</p>
+    <p class="tra">Sammeln, ja sammeln will ich, Jakob, alle die Deinen! Versammeln, ja versammeln will ich, was von Israel übrig ist! Ich will sie vereinigen wie Schafe im Pferch, wie eine Herde auf der Trift, und es soll eine tosende Menschenmenge werden!</p>
+  </div>
+</div>
+<div class="vb" id="v2-13">
+  <span class="vn">13</span>
+  <div class="vt">
+    <p class="base base-c">Ascendet enim pandens iter ante eos :  divident, et transibunt portam,  et ingredientur per eam :  et transibit rex eorum coram eis,  et Dominus in capite eorum.</p>
+    <p class="base base-p">Es wird ein Durchbrecher vor ihnen herauffahren; sie werden durchbrechen und zum Tor aus- und einziehen; und ihr Konig wird vor ihnen hergehen, und der HERR vornean.</p>
+    <p class="tra">Vor ihnen her rückt der Durchbrecher an; sie durchbrechen und durchschreiten, sie ziehen zum Thore hinaus! Vor ihnen her schreitet ihr König hindurch, und Jahwe ist an ihrer Spitze.</p>
+  </div>
+</div>
+</section>
+
+<section class="chap" id="c3">
+  <div class="chhead">
+    <span class="chrom">III</span>
+    <span class="chlbl chlbl-c">Caput III</span>
+    <span class="chlbl chlbl-p">Das 3. Capitel</span>
+  </div>
+<div class="vb first" id="v3-1">
+  <span class="vn">1</span>
+  <div class="vt">
+    <p class="base base-c">Et dixi : Audite, princeps Jacob,  et duces domus Israël :  numquid non vestrum est scire judicium,</p>
+    <p class="base base-p">Und ich sprach: Horet doch, ihr Haupter im Hause Jakob und ihr Fursten im Hause Israel! Ihr solltet es billig sein, die das Recht wu fiten.</p>
+    <p class="tra">Und ich sprach: Hört doch, ihr Häupter Jakobs und ihr Gebieter des Hauses Israel! Ist's nicht an euch, das heilige Recht zu kennen?</p>
+  </div>
+</div>
+<div class="vb" id="v3-2">
+  <span class="vn">2</span>
+  <div class="vt">
+    <p class="base base-c">qui odio habetis bonum, et diligitis malum ;  qui violenter tollitis pelles eorum desuper eis,  et carnem eorum desuper ossibus eorum ;</p>
+    <p class="base base-p">Aber ihr hasset das Gute und liebet das Arge; ihr schindet ihnen die Haut ab und das Fleisch von ihren Beinen</p>
+    <p class="tra">Sie aber lassen das Gute dahinten und ziehen das Böse vor, reißen den Leuten die Haut vom Leibe und das Fleisch von den Knochen.</p>
+  </div>
+</div>
+<div class="vb" id="v3-3">
+  <span class="vn">3</span>
+  <div class="vt">
+    <p class="base base-c">qui comederunt carnem populi mei,  et pellem eorum desuper excoriaverunt,  et ossa eorum confregerunt,  et conciderunt sicut in lebete,  et quasi carnem in medio ollæ ?</p>
+    <p class="base base-p">und fresset das Fleisch meines Volks; und wenn ihr ihnen die Haut abgezogen habt, zerbrecht ihr ihnen auch die Beine und zerleget es wie in einen Topf und wie Fleisch in einen Kessel.</p>
+    <p class="tra">Sie nähren sich von dem Fleische meines Volks; sie ziehen ihnen die Haut vom Leibe und zerbrechen ihnen die Knochen, zerlegen sie wie einen Braten im Topf, wie Fleisch im Kessel.</p>
+  </div>
+</div>
+<div class="vb" id="v3-4">
+  <span class="vn">4</span>
+  <div class="vt">
+    <p class="base base-c">Tunc clamabunt ad Dominum, et non exaudiet eos,  et abscondet faciem suam ab eis in tempore illo,  sicut nequiter egerunt in adinventionibus suis.</p>
+    <p class="base base-p">Darum wenn ihr nun zum HERRN schreien werdet, wird er euch nicht erhoren, sondern wird sein Angesicht vor euch verbergen zur selbigen Zeit, wie ihr mit eurem bosen Wesen verdienet habt.</p>
+    <p class="tra">Dann werden sie zu Jahwe schreien, aber er wird sie nicht erhören und wird sein Angesicht vor ihnen verbergen in jener Zeit, dieweil sie schlimme Thaten verübt haben.</p>
+  </div>
+</div>
+<div class="vb" id="v3-5">
+  <span class="vn">5</span>
+  <div class="vt">
+    <p class="base base-c">Hæc dicit Dominus super prophetas,  qui seducunt populum meum :  qui mordent dentibus suis,  et prædicant pacem ;  et si quis non dederit in ore eorum quippiam,  sanctificant super eum prælium.</p>
+    <p class="base base-p">So spricht der HERR wider die Propheten, so mein Volk verfuhren: Sie predigen, es solle wohlgehen, wo man ihnen zu fressen gebe; wo man ihnen aber nichts ins Maul gibt, da predigen sie, es müsse ein Krieg kommen.</p>
+    <p class="tra">So spricht Jahwe wider die Propheten, die mein Volk in die Irre geführt haben, die, wenn ihre Zähne zu beißen haben, “Heil!” rufen, aber gegen den, der ihnen nichts in den Mund giebt, den Krieg erklären.</p>
+  </div>
+</div>
+<div class="vb" id="v3-6">
+  <span class="vn">6</span>
+  <div class="vt">
+    <p class="base base-c">Propterea nox vobis pro visione erit,  et tenebræ vobis pro divinatione ;  et occumbet sol super prophetas,  et obtenebrabitur super eos dies.</p>
+    <p class="base base-p">Darum soli euer Gesicht zur Nacht und euer Wahrsagen zur Finsternis werden. Die Sonne soil uber den Propheten untergehen und der Tag über ihnen finster werden.</p>
+    <p class="tra">Darum soll euch Nacht ohne Gesichte werden und Finsternis, daß ihr nicht wahrsagen könnt; die Sonne soll den Propheten untergehen, und der Tag sich ihnen verfinstern.</p>
+  </div>
+</div>
+<div class="vb" id="v3-7">
+  <span class="vn">7</span>
+  <div class="vt">
+    <p class="base base-c">Et confundentur qui vident visiones,  et confundentur divini ;  et operient omnes vultos suos,  quia non est responsum Dei.</p>
+    <p class="base base-p">Und die Schauer sollen zuschanden und die Wahrsager zu Spott werden, und müssen ihr Maul alle verhullen, weil da kein Gotteswort sein wird.</p>
+    <p class="tra">Da werden dann die Seher zu Schanden werden, und die Wahrsager sich schämen müssen; sie alle werden ihren Bart verhüllen, denn die göttliche Antwort bleibt aus!</p>
+  </div>
+</div>
+<div class="vb" id="v3-8">
+  <span class="vn">8</span>
+  <div class="vt">
+    <p class="base base-c">Verumtamen ego repletus sum fortitudine spiritus Domini,  judicio, et virtute,  ut annuntiem Jacob scelus suum,  et Israël peccatum suum.</p>
+    <p class="base base-p">Ich aber bin voll Kraft und Geistes des HERRN, voll Rechts und Starke, dafi ich Jakob sein Ubertreten und Israel seine Sunde anzeigen darf.</p>
+    <p class="tra">Dagegen bin ich mit Kraft erfüllt, nämlich mit dem Geiste Jahwes, und mit Recht und Stärke, um Jakob seinen Abfall kund zu thun und Israel seine Sünde.</p>
+  </div>
+</div>
+<div class="vb" id="v3-9">
+  <span class="vn">9</span>
+  <div class="vt">
+    <p class="base base-c">Audite hoc, principes domus Jacob,  et judices domus Israël,  qui abominamini judicium,  et omnia recta pervertitis :</p>
+    <p class="base base-p">So horet doch dies, ihr Haupter im Hause Jakob und ihr Fursten im Hause Israel, die ihr das Recht verschmahet und alles, was aufrichtig ist, verkehret,</p>
+    <p class="tra">Hört doch dieses, ihr Häupter des Hauses Jakob und ihr Gebieter des Hauses Israel, die ihr das Recht verabscheut und alles Gerade krumm macht,</p>
+  </div>
+</div>
+<div class="vb" id="v3-10">
+  <span class="vn">10</span>
+  <div class="vt">
+    <p class="base base-c">qui ædificatis Sion in sanguinibus,  et Jerusalem in iniquitate.</p>
+    <p class="base base-p">die ihr Zion mit Blut bauet und Jerusalem mit Unrecht.</p>
+    <p class="tra">die ihr zion mit Blutvergießen baut und Jerusalem mit Frevel.</p>
+  </div>
+</div>
+<div class="vb" id="v3-11">
+  <span class="vn">11</span>
+  <div class="vt">
+    <p class="base base-c">Principes ejus in muneribus judicabant,  et sacerdotes ejus in mercede docebant,  et prophetæ ejus in pecunia divinabant :  et super Dominum requiescebant, dicentes :  Numquid non Dominus in medio nostrum ?  non venient super nos mala.</p>
+    <p class="base base-p">Ihre Haupter richten um Geschenke, ihre Priester lehren um Lohn, und ihre Propheten wahrsagen um Geld, verlassen sich auf den HERRN und sprechen: Ist nicht der HERR unter uns? Es kann kein Unglück fiber uns kommen.</p>
+    <p class="tra">Seine Häupter sprechen für Geschenke Recht, und ihre Priester erteilen Weisung für Lohn; ihre Propheten wahrsagen für Geld und verlassen sich dabei auf Jahwe, indem sie denken: Wir haben doch Jahwe in unserer Mitte, uns kann kein Unglück treffen!</p>
+  </div>
+</div>
+<div class="vb" id="v3-12">
+  <span class="vn">12</span>
+  <div class="vt">
+    <p class="base base-c">Propter hoc, causa vestri, Sion quasi ager arabitur,  et Jerusalem quasi acervus lapidum erit,  et mons templi in excelsa silvarum.</p>
+    <p class="base base-p">Darum wird Zion um euretwillen wie ein Feld zerpflüget und Jerusalem zum Steinhaufen und der Berg des Tempels zu einer wilden Hohe werden.</p>
+    <p class="tra">Darum soll euretwegen Zion zum Feld umgepflügt und Jerusalem ein Trümmerhaufen und der Tempelberg zur bewaldeten Höhe werden!</p>
+  </div>
+</div>
+</section>
+
+<section class="chap" id="c4">
+  <div class="chhead">
+    <span class="chrom">IV</span>
+    <span class="chlbl chlbl-c">Caput IV</span>
+    <span class="chlbl chlbl-p">Das 4. Capitel</span>
+  </div>
+<div class="vb first" id="v4-1">
+  <span class="vn">1</span>
+  <div class="vt">
+    <p class="base base-c">Et erit : in novissimo dierum  erit mons domus Domini præparatus in vertice montium,  et sublimis super colles :  et fluent ad eum populi,</p>
+    <p class="base base-p">In den letzten Tagen aber wird der Berg, darauf des HERRN Haus stehet, gewiß sein, hoher denn alle Berge, und über die Hügel erhaben sein.</p>
+    <p class="tra">In der letzten Zeit aber wird der Berg mit dem Tempel Jahwes festgegründet stehen als der höchste unter den Bergen und über die Hügel erhaben sein, und Völker werden zu ihm strömen,</p>
+  </div>
+</div>
+<div class="vb" id="v4-2">
+  <span class="vn">2</span>
+  <div class="vt">
+    <p class="base base-c">et properabunt gentes multæ, et dicent :  Venite, ascendamus ad montem Domini,  et ad domum Dei Jacob :  et docebit nos de viis suis,  et ibimus in semitis ejus,  quia de Sion egredietur lex,  et verbum Domini de Jerusalem.</p>
+    <p class="base base-p">Und die Volker werden herzulaufen, und viel Heiden werden gehen und sagen: Kommt, laßt uns hinauf zum Berge des HERRN gehen und zum Hause des Gottes Jakobs, dafi er uns lehre seine Wege, und wir auf seiner Stralie wandeln! Denn aus Zion wird das Gesetz ausgehen und des HERRN Wort aus Jerusalem.</p>
+    <p class="tra">und viele Nationen sich aufmachen und sprechen: Auf, laßt uns hinaufsteigen zum Berge Jahwes und zum Tempel des Gottes Jakobs, damit er uns über seine Wege belehre, und wir auf seinen Pfaden wandeln! Denn von Zion wird Lehre ausgehen, und das Wort Jahwes von Jerusalem.</p>
+  </div>
+</div>
+<div class="vb" id="v4-3">
+  <span class="vn">3</span>
+  <div class="vt">
+    <p class="base base-c">Et judicabit inter populos multos,  et corripiet gentes fortes usque in longinquum :  et concident gladios suos in vomeres,  et hastas suas in ligones :  non sumet gens adversus gentem gladium,  et non discent ultra belligerare.</p>
+    <p class="base base-p">Er wird unter großen Volkern richten und viel Heiden strafen in fernen Landen. Sie werden ihre Schwerter zu Pflugscharen und ihre Spieße zu Sicheln machen. Es wird kein Volk wider das andere ein Schwert aufheben und werden nicht mehr kriegen lernen.</p>
+    <p class="tra">Und er wird zwischen vielen Völkern richten und starken Nationen bis in weite Ferne Recht sprechen; und sie werden ihre Schwerter zu Karsten umschmieden und ihre Spieße zu Winzermessern. Kein Volk wird mehr gegen das andere das Schwert erheben, und nicht mehr werden sie den Krieg erlernen.</p>
+  </div>
+</div>
+<div class="vb" id="v4-4">
+  <span class="vn">4</span>
+  <div class="vt">
+    <p class="base base-c">Et sedebit vir subtus vitem suam et subtus ficum suam,  et non erit qui deterreat,  quia os Domini exercituum locutum est.</p>
+    <p class="base base-p">Ein jeglicher wird unter seinem Weinstock und Feigenbaum wohnen ohne Scheu; denn der Mund des HERRN Zebaoth hat's geredet.</p>
+    <p class="tra">Ein jeder wird unter seinem Weinstock und unter seinem Feigenbaume sitzen, ohne daß sie jemand aufschreckt! Denn der Mund Jahwes der Heerscharen hat es geredet.</p>
+  </div>
+</div>
+<div class="vb" id="v4-5">
+  <span class="vn">5</span>
+  <div class="vt">
+    <p class="base base-c">Quia omnes populi ambulabunt  unusquisque in nomine dei sui ;  nos autem ambulabimus  in nomine Domini Dei nostri,  in æternum et ultra.</p>
+    <p class="base base-p">Denn ein jeglich Volk wird wandeln im Namen seines Gottes; aber wir werden wandeln im Namen des HERRN, unsers Gottes, immer und ewiglich.</p>
+    <p class="tra">Wenn alle die anderen Völker im Namen ihres Gottes wandeln, so wandeln wir im Namen Jahwes, unseres Gottes, immer und ewiglich!</p>
+  </div>
+</div>
+<div class="vb" id="v4-6">
+  <span class="vn">6</span>
+  <div class="vt">
+    <p class="base base-c">In die illa, dicit Dominus,  congregabo claudicantem,  et eam quam ejeceram colligam,  et quam afflixeram :</p>
+    <p class="base base-p">Zur selbigen Zeit, spricht der HERR, will ich die Lahme versammeln und die Verstoßene zuhauf bringen, und die ich geplaget habe.</p>
+    <p class="tra">An jenem Tag, ist der Spruch Jahwes, will ich sammeln, was abseits geraten, und zusammenbringen, was versprengt ward, und die, denen ich Schaden gethan habe,</p>
+  </div>
+</div>
+<div class="vb" id="v4-7">
+  <span class="vn">7</span>
+  <div class="vt">
+    <p class="base base-c">et ponam claudicantem in reliquias,  et eam quæ laboraverat, in gentem robustam :  et regnabit Dominus super eos in monte Sion,  ex hoc nunc et usque in æternum.</p>
+    <p class="base base-p">Und will die Lahme machen, dafi sie Erben haben soil, und die Verstoßene zum großen Volk machen; und der HERR wird Konig uber sie sein auf dem Berge Zion von nun an bis in Ewigkeit.</p>
+    <p class="tra">und will, was abseits geraten, am Leben erhalten, und was in die Ferne gekommen, zu einem zahlreichen Volke machen. Und Jahwe selbst wird König über sie sein auf dem Berge Zion von nun an auf ewig.</p>
+  </div>
+</div>
+<div class="vb" id="v4-8">
+  <span class="vn">8</span>
+  <div class="vt">
+    <p class="base base-c">Et tu, turris gregis nebulosa filiæ Sion,  usque ad te veniet,  et veniet potestas prima,  regnum filiæ Jerusalem.</p>
+    <p class="base base-p">Und du Turm Eder, eine Feste der Tochter Zion, es wird deine guldene Rose kommen, die vorige Herrschaft, das Konigreich der Tochter Jerusalem.</p>
+    <p class="tra">An dich aber, Herdenthurm, Hügel der Zionsbewohner, an dich wird kommen und gelangen die frühere Herrschaft, das Königtum der Bewohner Jerusalems!</p>
+  </div>
+</div>
+<div class="vb" id="v4-9">
+  <span class="vn">9</span>
+  <div class="vt">
+    <p class="base base-c">Nunc quare mœrore contraheris ?  numquid rex non est tibi,  aut consiliarius tuus periit,  quia comprehendit te dolor sicut parturientem ?</p>
+    <p class="base base-p">Warum hangst du dich denn jetzt an andere Freunde? 1st der Konig nicht bei dir, und sind deine Ratgeber alle hinweg, daß dich also das Weh ankommen ist wie eine in Kindesnoten?</p>
+    <p class="tra">Weshalb schreist du so laut? Giebt es keinen König in dir, oder ist dein Berater umgekommen, daß dich Wehen erfassen wie eine Gebärende?</p>
+  </div>
+</div>
+<div class="vb" id="v4-10">
+  <span class="vn">10</span>
+  <div class="vt">
+    <p class="base base-c">Dole et satage, filia Sion, quasi parturiens,  quia nunc egredieris de civitate,  et habitabis in regione,  et venies usque ad Babylonem :  ibi liberaberis,  ibi redimet te Dominus de manu inimicorum tuorum.</p>
+    <p class="base base-p">Lieber, leide doch solch Weh und krachze, du Tochter Zion, wie eine in Kindesnoten! Denn du mufit zwar zur Stadt hinaus und auf dem Felde wohnen und gen Babel kommen; aber doch wirst du von dannen wieder errettet werden. Daselbst wird dich der HERR erlosen von deinen Feinden.</p>
+    <p class="tra">Winde dich und kreiße, Zion, wie eine Begärende! Denn nun wirst du zur Stadt hinaus müssen und auf freiem Felde lagern und bis Babel gelangen. Dort wirst du Rettung erfahren, dort wird dich Jahwe aus der Hand deiner Feinde erlösen!</p>
+  </div>
+</div>
+<div class="vb" id="v4-11">
+  <span class="vn">11</span>
+  <div class="vt">
+    <p class="base base-c">Et nunc congregatæ sunt super te gentes multæ, quæ dicunt :  Lapidetur, et aspiciat in Sion oculus noster.</p>
+    <p class="base base-p">Denn es werden schier sich viel Heiden wider dich rotten und sprechen: Sie ist verbannet; wirwollen unsere Lust an Zion sehen.</p>
+    <p class="tra">Jetzt aber haben sich viele Völker wider dich versammelt, die da sprechen: Sie werde entweiht, damit sich unsere Augen an Zion weiden!</p>
+  </div>
+</div>
+<div class="vb" id="v4-12">
+  <span class="vn">12</span>
+  <div class="vt">
+    <p class="base base-c">Ipsi autem non cognoverunt cogitationes Domini,  et non intellexerunt consilium ejus,  quia congregavit eos quasi fœnum areæ.</p>
+    <p class="base base-p">Aber sie wissen des HERRN Gedanken nicht und merken seinen Ratschlag nicht, daß er sie zuhauf gebracht hat wie Garben auf der Tenne.</p>
+    <p class="tra">Sie aber wissen nichts von den Gedanken Jahwes und verstehn seinen Ratschluß nicht, daß er sie zusammengebracht hat wie Garben auf die Tenne!</p>
+  </div>
+</div>
+<div class="vb" id="v4-13">
+  <span class="vn">13</span>
+  <div class="vt">
+    <p class="base base-c">Surge, et tritura, filia Sion,  quia cornu tuum ponam ferreum,  et ungulas tuas ponam æreas ;  et comminues populos multos,  et interficies Domino rapinas eorum,  et fortitudinem eorum Domino universæ terræ.</p>
+    <p class="base base-p">Darum mache dich auf und dresche, du Tochter Zion! Denn ich will direiserne Horner und eherne Klauen machen, und sollst viel Volker zerschmeilien; so will ich ihr Gut dem HERRN verbannen und ihre Habe dem Herrscher der ganzen Welt.</p>
+    <p class="tra">Auf und drisch, Zionsvolk! Denn ich will dein Horn eisern machen und deine Klauen will ich ehern machen, damit du viele Völker zermalmest. Alsdann wirst du Jahwe ihren Raub weihen und ihre Schätze dem Herrn der ganzen Erde.</p>
+  </div>
+</div>
+</section>
+
+<section class="chap" id="c5">
+  <div class="chhead">
+    <span class="chrom">V</span>
+    <span class="chlbl chlbl-c">Caput V</span>
+    <span class="chlbl chlbl-p">Das 5. Capitel</span>
+  </div>
+<div class="vb first" id="v5-1">
+  <span class="vn">1</span>
+  <div class="vt">
+    <p class="base base-c">Nunc vastaberis, filia latronis.  Obsidionem posuerunt super nos :  in virga percutient maxillam judicis Israël.</p>
+    <p class="base base-p">Und du, Bethlehem Ephrata, die du klein bist unter den Tausenden in Juda, aus dir soil mir der kommen, der in Israel HERR sei, welches Ausgang von Anfang und von Ewigkeit her gewesen ist.</p>
+    <p class="tra">Doch du, Bethlehem Ephrath, obgleich du nur klein bist in der Reihe der Gaustädte Judas, du sollst mir die Heimat dessen sein, der Herrscher über Israel werden soll, und dessen Herkunft der Vergangenheit, den Tagen der Vorzeit, angehört.</p>
+  </div>
+</div>
+<div class="vb" id="v5-2">
+  <span class="vn">2</span>
+  <div class="vt">
+    <p class="base base-c">Et tu, Bethlehem Ephrata,  parvulus es in millibus Juda ;  ex te mihi egredietur qui sit dominator in Israël,  et egressus ejus ab initio,  a diebus æternitatis.</p>
+    <p class="base base-p">Indes lalit er sie plagen bis auf die Zeit, daß die, so gebaren soil, geboren habe. Da werden dann die ubrigen seiner Bruder wiederkommen zu den Kindern Israel.</p>
+    <p class="tra">Darum wird er sie preisgeben bis zu der Zeit, da eine, die gebären soll, geboren hat, und seine übrigen Volksgenossen werden zurückkehren samt den Israeliten.</p>
+  </div>
+</div>
+<div class="vb" id="v5-3">
+  <span class="vn">3</span>
+  <div class="vt">
+    <p class="base base-c">Propter hoc dabit eos usque ad tempus in quo parturiens pariet,  et reliquiæ fratrum ejus convertentur ad filios Israël.</p>
+    <p class="base base-p">Er aber wird auftreten und weiden in Kraft des HERRN und im Siege des Namens seines Gottes. Und sie werden wohnen; denn er wird zur selbigen Zeit herrlich werden; soweit die Welt ist.</p>
+    <p class="tra">Dann wird er dastehen und sie weiden in der Kraft Jahwes, in dem majestätischen Namen Jahwes, seines Gottes, so daß sie sicher wohnen. Denn dann wird er groß dastehen bis an die Enden der Erde,</p>
+  </div>
+</div>
+<div class="vb" id="v5-4">
+  <span class="vn">4</span>
+  <div class="vt">
+    <p class="base base-c">Et stabit, et pascet in fortitudine Domini,  in sublimitate nominis Domini Dei sui :  et convertentur,  quia nunc magnificabitur usque ad terminos terræ.</p>
+    <p class="base base-p">Dazu werden wir auch Frieden haben vor dem Assur, der jetzt in unser Land gefallen ist und unsere Hauser zertreten hat. Denn es werden sieben Hirten und acht Fursten uber ihn erwecket werden,</p>
+    <p class="tra">und er wird der Friede sein! Wenn die Assyrier in unser Land einfallen und unsere Heimat betreten, so werden wir ihnen sieben Hirten entgegenstellen und acht fürstliche Männer,</p>
+  </div>
+</div>
+<div class="vb" id="v5-5">
+  <span class="vn">5</span>
+  <div class="vt">
+    <p class="base base-c">Et erit iste pax :  cum venerit Assyrius in terram nostram,  et quando calcaverit domibus nostris,  et suscitabimus super eum septem pastores  et octo primates homines ;</p>
+    <p class="base base-p">die das Land Assur verderben mit dem Schwert und das Land Nimrods mit ihren blolien Waffen. Also werden wir von Assur gerettet werden, der in unser Land gefallen ist und unsere Grenze zertreten hat.</p>
+    <p class="tra">die sollen das Land der Assyrier mit dem Schwerte weiden und das Land Nimrods mit gezückten Degen. Und so wird er vor den Assyrieren erretten, wenn sie in unser Land einfallen und unser Gebiet betreten.</p>
+  </div>
+</div>
+<div class="vb" id="v5-6">
+  <span class="vn">6</span>
+  <div class="vt">
+    <p class="base base-c">et pascent terram Assur in gladio,  et terram Nemrod in lanceis ejus,  et liberabit ab Assur cum venerit in terram nostram,  et cum calcaverit in finibus nostris.</p>
+    <p class="base base-p">Es werden auch die Ubrigen aus Jakob unter vielen Volkern sein wie ein Tau vom HERRN und wie die Tropflein aufs Gras, das auf niemand harret noch auf Menschen wartet.</p>
+    <p class="tra">Dann wird es mit dem Überreste Jakobs unter den Heiden inmitten vieler Völker ergehen, wie mit dem Tau, der von Jahwe kommt, mit den Regentropfen, die auf die Pflanzen fallen, die auf niemanden harren und nicht auf Menschen warten.</p>
+  </div>
+</div>
+<div class="vb" id="v5-7">
+  <span class="vn">7</span>
+  <div class="vt">
+    <p class="base base-c">Et erunt reliquiæ Jacob in medio populorum multorum  quasi ros a Domino,  et quasi stillæ super herbam,  quæ non exspectat virum,  et non præstolatur filios hominum.</p>
+    <p class="base base-p">Ja, die Ubrigen aus Jakob werden unter den Heiden bei vielen Volkern sein wie ein Lowe unter den Tieren im Walde, wie ein junger Lowe unter einer Herde Schafe, welchem niemand wehren kann, wenn er dadurchgehet, zertritt und zerreifiet.</p>
+    <p class="tra">Dann wird der Überrest Jakobs unter den Heiden inmitten vieler Völker werden wie ein Löwe unter den Tieren der Wildnis, wie ein Jungleu unter Schafherden, der, wenn der hindurchgeht, niedertritt und dahinrafft, ohne daß jemand zu retten vermag.</p>
+  </div>
+</div>
+<div class="vb" id="v5-8">
+  <span class="vn">8</span>
+  <div class="vt">
+    <p class="base base-c">Et erunt reliquiæ Jacob in gentibus,  in medio populorum multorum,  quasi leo in jumentis silvarum,  et quasi catulus leonis in gregibus pecorum,  qui cum transierit, et conculcaverit, et ceperit,  non est qui eruat.</p>
+    <p class="base base-p">Denn deine Hand wird siegen wider alle deine Widerwartigen, daß alle deine Feinde müssen ausgerottet werden.</p>
+    <p class="tra">Du wirst deine Bedränger siegreich überwinden, und alle deine Feinde werden vertilgt werden!</p>
+  </div>
+</div>
+<div class="vb" id="v5-9">
+  <span class="vn">9</span>
+  <div class="vt">
+    <p class="base base-c">Exaltabitur manus tua super hostes tuos,  et omnes inimici tui interibunt.</p>
+    <p class="base base-p">Zur selbigen Zeit, spricht der HERR, will ich deine Rosse von dir tun und deine Wagen umbringen;</p>
+    <p class="tra">An jenem Tag, ist der Spruch Jahwes, will ich deine Rosse aus dir vertilgen und deine Kriegswagen hinwegschaffen,</p>
+  </div>
+</div>
+<div class="vb" id="v5-10">
+  <span class="vn">10</span>
+  <div class="vt">
+    <p class="base base-c">Et erit in die illa, dicit Dominus :  auferam equos tuos de medio tui,  et disperdam quadrigas tuas.</p>
+    <p class="base base-p">und will die Stadte deines Landes ausrotten und alle deine Festen zerbrechen;</p>
+    <p class="tra">die festen Städte deines Landes vertilgen und alle deine Festungen zerstören,</p>
+  </div>
+</div>
+<div class="vb" id="v5-11">
+  <span class="vn">11</span>
+  <div class="vt">
+    <p class="base base-c">Et perdam civitates terræ tuæ,  et destruam omnes munitiones tuas :  et auferam maleficia de manu tua,  et divinationes non erunt in te :</p>
+    <p class="base base-p">und will die Zauberer bei dir ausrotten, daß keine Zeichendeuter bei dir bleiben sollen.</p>
+    <p class="tra">die Zauberdinge aus deiner Hand vertilgen, und Beschwörer soll es bei dir nicht mehr geben.</p>
+  </div>
+</div>
+<div class="vb" id="v5-12">
+  <span class="vn">12</span>
+  <div class="vt">
+    <p class="base base-c">et perire faciam sculptilia tua et statuas tuas de medio tui,  et non adorabis ultra opera manuum tuarum :</p>
+    <p class="base base-p">Ich will deine Bilder und Gotzen von dir ausrotten, daß du nicht mehr sollst anbeten deiner Hande Werk,</p>
+    <p class="tra">Ich will deine Schnitzbilder und deine Malsteine aus dir vertilgen, und du sollst fortan nicht mehr das Werk deiner Hände anbeten.</p>
+  </div>
+</div>
+<div class="vb" id="v5-13">
+  <span class="vn">13</span>
+  <div class="vt">
+    <p class="base base-c">et evellam lucos tuos de medio tui,  et conteram civitates tuas.</p>
+    <p class="base base-p">und will deine Haine zerbrechen und deine Stadte vertilgen.</p>
+    <p class="tra">Ich will deine Ascheren aus dir ausreißen und deine Götzenbilder vernichten</p>
+  </div>
+</div>
+<div class="vb" id="v5-14">
+  <span class="vn">14</span>
+  <div class="vt">
+    <p class="base base-c">Et faciam, in furore et in indignatione, ultionem  in omnibus gentibus quæ non audierunt.</p>
+    <p class="base base-p">Und ich will Rache üben mit Grimm und Zorn an alien Heiden, so nicht gehorchen wollen.</p>
+    <p class="tra">und will in Zorn und Grimm Rache üben an den Völkern, die nicht gehorsam gewesen sind.</p>
+  </div>
+</div>
+</section>
+
+<section class="chap" id="c6">
+  <div class="chhead">
+    <span class="chrom">VI</span>
+    <span class="chlbl chlbl-c">Caput VI</span>
+    <span class="chlbl chlbl-p">Das 6. Capitel</span>
+  </div>
+<div class="vb first" id="v6-1">
+  <span class="vn">1</span>
+  <div class="vt">
+    <p class="base base-c">Audite quæ Dominus loquitur :  Surge, contende judicio adversum montes,  et audiant colles vocem tuam.</p>
+    <p class="base base-p">Horet doch, was der HERR sagt: Mache dich auf und schilt die Berge und lali die Hugel deine Stimme horen!</p>
+    <p class="tra">Hört doch, was Jahwe spricht: Auf, rechte vor den Bergen, daß die Höhen deine Stimme hören!</p>
+  </div>
+</div>
+<div class="vb" id="v6-2">
+  <span class="vn">2</span>
+  <div class="vt">
+    <p class="base base-c">Audiant montes judicium Domini,  et fortia fundamenta terræ ;  quia judicium Domini cum populo suo,  et cum Israël dijudicabitur.</p>
+    <p class="base base-p">Horet, ihr Berge, wie der HERR strafen will, samt den starken Grundfesten der Erde! Denn der HERR will sein Volk schelten und will Israel strafen.</p>
+    <p class="tra">Hört, ihr Berge, den Rechtsstreit Jahwes, und merkt auf, ihr Grundfesten der Erde! Denn Jahwe hat einen Rechtsstreit mit seinem Volk und geht mit Israel ins Gericht.</p>
+  </div>
+</div>
+<div class="vb" id="v6-3">
+  <span class="vn">3</span>
+  <div class="vt">
+    <p class="base base-c">Popule meus, quid feci tibi ?  aut quid molestus fui tibi ? Responde mihi.</p>
+    <p class="base base-p">Was hab ich dir getan, mein Volk, und womit habe ich dich beleidiget? Das sage mir!</p>
+    <p class="tra">“Mein Volk, was habe ich dir gethan und womit bin ich dir lästig gefallen? Sage gegen mich aus!</p>
+  </div>
+</div>
+<div class="vb" id="v6-4">
+  <span class="vn">4</span>
+  <div class="vt">
+    <p class="base base-c">Quia eduxi te de terra Ægypti,  et de domo servientium liberavi te,  et misi ante faciem tuam Moysen, et Aaron, et Mariam.</p>
+    <p class="base base-p">Hab ich dich doch aus Agyptenland gefuhret und aus dem Diensthause erloset und vor dir hergesandt Mose, Aaron und Mirjam.</p>
+    <p class="tra">Habe ich dich doch aus Ägypten hergeführt und dich aus dem Lande, wo du Sklave warst, befreit und ließ Mose, Aaron und Mirjam dir als Führer vorangehn.</p>
+  </div>
+</div>
+<div class="vb" id="v6-5">
+  <span class="vn">5</span>
+  <div class="vt">
+    <p class="base base-c">Popule meus, memento, quæso,  quid cogitaverit Balach, rex Moab,  et quid responderit ei Balaam, filius Beor,  de Setim usque ad Galgalam,  ut cognosceres justitias Domini.</p>
+    <p class="base base-p">Mein Volk, denke doch daran, was Balak, der Konig in Moab, vorhatte, und was ihm Bileam, der Sohn Beors, antwortete, von Sittim an bis gen Gilgal; daran ihrja merken solltet, wie der HERR euch alles Gute getan hat.</p>
+    <p class="tra">Mein Volk, denke doch daran, was Balak, der König von Moab, im Sinne hatte, und was Bileam, der Sohn Beors, ihm antwortete; denke doch an die Ereignisse von Sittim an bis Gilgal, damit du die Gnadenerweisungen Jahwes erkennst!”</p>
+  </div>
+</div>
+<div class="vb" id="v6-6">
+  <span class="vn">6</span>
+  <div class="vt">
+    <p class="base base-c">Quid dignum offeram Domino ?  curvabo genu Deo excelso ?  Numquid offeram ei holocautomata et vitulos anniculos ?</p>
+    <p class="base base-p">Womit soil ich den HERRN versohnen? Mit Bucken vor dem hohen Gott? Soil ich mit Brandopfern und jahrigen Kalbern ihn versohnen?</p>
+    <p class="tra">“Womit soll ich vor Jahwe treten, mich beugen vor dem Gott in der Höhe? Soll ich etwa mit Brandopfern vor ihn treten, mit einjährigen Kälbern?</p>
+  </div>
+</div>
+<div class="vb" id="v6-7">
+  <span class="vn">7</span>
+  <div class="vt">
+    <p class="base base-c">numquid placari potest Dominus in millibus arietum,  aut in multis millibus hircorum pinguium ?  numquid dabo primogenitum meum pro scelere meo,  fructum ventris mei pro peccato animæ meæ ?</p>
+    <p class="base base-p">Meinest du, der HERR habe Gefallen an viel tausend Widdern Oder am 01, wenn es gleich unzahlige Strome voll waren? Oder soil ich meinen ersten Sohn fur meine Ubertretung geben Oder meines Leibes Frucht fur die Sünde meiner Seele?</p>
+    <p class="tra">Gefallen Jahwe etwa tausende von Böcken, unzählige Bäche Öls? Soll ich ihm etwa meinen Erstgeborenen als Sühne für mich geben, meine Leibesfrucht als Buße für mein Leben?”</p>
+  </div>
+</div>
+<div class="vb" id="v6-8">
+  <span class="vn">8</span>
+  <div class="vt">
+    <p class="base base-c">Indicabo tibi, o homo, quid sit bonum,  et quid Dominus requirat a te :  utique facere judicium,  et diligere misericordiam,  et sollicitum ambulare cum Deo tuo.</p>
+    <p class="base base-p">Es ist dir gesagt, Mensch, was gut ist, und was der HERR von dir fordert, namlich Gottes Wort halten und Liebe üben und demutig sein vordeinem Gott.</p>
+    <p class="tra">Er hat dir gesagt, o Mensch, was frommt! Und was fordert Jahwe von dir außer Recht zu thun, dich der Liebe zu befleißigen und demütig zu wandeln vor deinem Gott?</p>
+  </div>
+</div>
+<div class="vb" id="v6-9">
+  <span class="vn">9</span>
+  <div class="vt">
+    <p class="base base-c">Vox Domini ad civitatem clamat,  et salus erit timentibus nomen tuum :  audite, tribus, et quis approbabit illud ?</p>
+    <p class="base base-p">Es wird des HERRN Stimme über die Stadt rufen; aber wer deinen Namen furchtet, dem wird's gelingen. Horet, ihr Stamme, was geprediget wird!</p>
+    <p class="tra">Horch! Jahwe ruft beständig der Stadt zu, und Heilsames vernehmen, die seinen Namen fürchten.</p>
+  </div>
+</div>
+<div class="vb" id="v6-10">
+  <span class="vn">10</span>
+  <div class="vt">
+    <p class="base base-c">Adhuc ignis in domo impii thesauri iniquitatis,  et mensura minor iræ plena.</p>
+    <p class="base base-p">Noch bleibet unrecht Gut in des Gottlosen Hause und derfeindselige, geringe Epha.</p>
+    <p class="tra">Sind im Hause des Gottlosen unrecht erworbene Schätze und ein fluchwürdiges, zu mageres Epha?</p>
+  </div>
+</div>
+<div class="vb" id="v6-11">
+  <span class="vn">11</span>
+  <div class="vt">
+    <p class="base base-c">Numquid justificabo stateram impiam,  et saccelli pondera dolosa ?</p>
+    <p class="base base-p">Oder sollt ich die unrechte Waage und falsch Gewicht im Sackel billigen,</p>
+    <p class="tra">Kann einer rein dastehn bei falscher Wage und einem Beutel mit falschen Gewichtsteinen?</p>
+  </div>
+</div>
+<div class="vb" id="v6-12">
+  <span class="vn">12</span>
+  <div class="vt">
+    <p class="base base-c">In quibus divites ejus repleti sunt iniquitate,  et habitantes in ea loquebantur mendacium,  et lingua eorum fraudulenta in ore eorum.</p>
+    <p class="base base-p">durch welche ihre Reichen viel Unrechts tun? Und ihre Einwohner gehen mit Lugen um und haben falsche Zungen in ihrem Halse.</p>
+    <p class="tra">wenn die Reichen in ihr von gewaltthätigen Anschlägen erfüllt sind, ihre Bewohner Lügen reden, und die Zunge in ihrem Munde betrügerisch ist?</p>
+  </div>
+</div>
+<div class="vb" id="v6-13">
+  <span class="vn">13</span>
+  <div class="vt">
+    <p class="base base-c">Et ego ergo cœpi percutere te perditione super peccatis tuis.</p>
+    <p class="base base-p">Darum will ich dich auch anfahen zu plagen und dich um deiner Sunde willen wüst machen.</p>
+    <p class="tra">So will denn auch ich beginnen, dich zu schlagen, Verheerung zu stiften wegen deiner Sünden.</p>
+  </div>
+</div>
+<div class="vb" id="v6-14">
+  <span class="vn">14</span>
+  <div class="vt">
+    <p class="base base-c">Tu comedes, et non saturaberis,  et humiliatio tua in medio tui :  et apprehendes, et non salvabis,  et quos salvaveris, in gladium dabo.</p>
+    <p class="base base-p">Du sollst nicht genug zu essen haben und sollst verschmachten. Und was du erhaschest, soil doch nicht davonkommen; und was davonkommt, will ich doch dem Schwert überantworten.</p>
+    <p class="tra">Wenn du issest, sollst du nicht satt werden, sondern dein Hunger in dir andauern. Wenn du beiseite schaffst, sollst du doch nichts erübrigen, sondern was du erübrigst, werde ich dem Schwerte preisgeben.</p>
+  </div>
+</div>
+<div class="vb" id="v6-15">
+  <span class="vn">15</span>
+  <div class="vt">
+    <p class="base base-c">Tu seminabis, et non metes :  tu calcabis olivam, et non ungeris oleo ;  et mustum, et non bibes vinum.</p>
+    <p class="base base-p">Du sollst saen und nicht ernten; du sollst 01 keltern und dich mit demselben nicht salben, und Most keltern und nicht Wein trinken.</p>
+    <p class="tra">Wenn du säest, sollst du nicht ernten! Wenn du Oliven kelterst, sollst du dich nicht mit Öl davon salben, und wenn du Most kelterst, sollst du keinen Wein davon trinken!</p>
+  </div>
+</div>
+<div class="vb" id="v6-16">
+  <span class="vn">16</span>
+  <div class="vt">
+    <p class="base base-c">Et custodisti præcepta Amri,  et omne opus domus Achab,  et ambulasti in voluntatibus eorum :  ut darem te in perditionem,  et habitantes in ea in sibilum,  et opprobrium populi mei portabitis.</p>
+    <p class="base base-p">Denn man halt die Weise Amris und alle Werke des Hauses Ahab und folgt ihrem Rat. Darum will ich dich zur Wuste machen und ihre Einwohner, daß man sie anpfeifen soil; und sollt meines Volks Schmach tragen.</p>
+    <p class="tra">So hast du auf die Satzungen Omris gehalten und auf das ganze Treiben des Hauses Ahabs; so seid ihr nach ihrer Denkart gewandelt, damit ich dich zu einer Wüstenei mache und deren Bewohner zum Gespött - ja, den Hohn der Völker sollt ihr tragen!</p>
+  </div>
+</div>
+</section>
+
+<section class="chap" id="c7">
+  <div class="chhead">
+    <span class="chrom">VII</span>
+    <span class="chlbl chlbl-c">Caput VII</span>
+    <span class="chlbl chlbl-p">Das 7. Capitel</span>
+  </div>
+<div class="vb first" id="v7-1">
+  <span class="vn">1</span>
+  <div class="vt">
+    <p class="base base-c">Væ mihi, quia factus sum sicut qui colligit in autumno racemos vindemiæ !  non est botrus ad comedendum,  præcoquas ficus desideravit anima mea.</p>
+    <p class="base base-p">Ach, es gehet mir wie einem, der im Weinberge nachlieset, da man keine Trauben findet zu essen, und wollte doch gerne der besten Fruchte haben.</p>
+    <p class="tra">Weh mir! Denn es ist mir ergangen wie bei der Obstlese, wie bei der Nachlese in der Weinernte: Keine Traube mehr zum Essen, keine Frühfeige, nach der mich's gelüstete!</p>
+  </div>
+</div>
+<div class="vb" id="v7-2">
+  <span class="vn">2</span>
+  <div class="vt">
+    <p class="base base-c">Periit sanctus de terra,  et rectus in hominibus non est :  omnes in sanguine insidiantur ;  vir fratrem suum ad mortem venatur.</p>
+    <p class="base base-p">Die frommen Leute sind weg in diesem Lande; und die Gerechten sind nicht mehr unter den Leuten. Sie lauern alle aufs Blut; ein jeglicherjagt den andern, daß er ihn verderbe,</p>
+    <p class="tra">Die Frommen sind aus dem Lande geschwunden, Redliche giebt es nicht mehr unter den Menschen; sie alle liegen auf der Lauer nach Blutthaten, einer stellt dem andern mit dem Netze nach.</p>
+  </div>
+</div>
+<div class="vb" id="v7-3">
+  <span class="vn">3</span>
+  <div class="vt">
+    <p class="base base-c">Malum manuum suarum dicunt bonum :  princeps postulat, et judex in reddendo est ;  et magnus locutus est desiderium animæ suæ,  et conturbaverunt eam.</p>
+    <p class="base base-p">und meinen, sie tun wohl daran, wenn sie Boses tun. Was der Furst will, das spricht der Richter, daß er ihm wieder einen Dienst tun soil. Die Gewaltigen raten nach ihrem Mutwillen, Schaden zu tun, und drehen es, wie sie wollen.</p>
+    <p class="tra">Auf das Böse sind ihre Hände aus, es eifrig zu verrichten. Der Obere fordert, und der Richter richtet für Bezahlung, und der Große redet seines Herzens Gelüste frei heraus, und so flechten sie es zusammen.</p>
+  </div>
+</div>
+<div class="vb" id="v7-4">
+  <span class="vn">4</span>
+  <div class="vt">
+    <p class="base base-c">Qui optimus in eis est, quasi paliurus,  et qui rectus, quasi spina de sepe.  Dies speculationis tuæ, visitatio tua venit :  nunc erit vastitas eorum.</p>
+    <p class="base base-p">Der Beste unter ihnen ist wie ein Dorn und der Redlichste wie eine Hecke. Aber wenn der Tag deiner Prediger kommen wird, wenn du heimgesucht sollst werden, da werden sie dann nicht wissen, wo aus.</p>
+    <p class="tra">Der Beste von ihnen gleicht einem Stechdorn, der Rechtschaffene ist schlimmer als eine Hecke. Der Tag, dem die Worte deiner Späher galten, deine Heimsuchung zieht heran! Dann kommt ihre Bestürzung!</p>
+  </div>
+</div>
+<div class="vb" id="v7-5">
+  <span class="vn">5</span>
+  <div class="vt">
+    <p class="base base-c">Nolite credere amico,  et nolite confidere in duce :  ab ea quæ dormit in sinu tuo custodi claustra oris tui.</p>
+    <p class="base base-p">Niemand glaube seinem Nachsten, niemand verlasse sich auf Fursten! Bewahre die Tür deines Mundes vor der, die in deinen Armen schlaft!</p>
+    <p class="tra">Traut nicht mehr auf einen Freund! Verlaßt euch nicht mehr auf einen Vertrauten! Hüte die Pforten deines Mundes selbst vor der, die an deinem Busen liegt!</p>
+  </div>
+</div>
+<div class="vb" id="v7-6">
+  <span class="vn">6</span>
+  <div class="vt">
+    <p class="base base-c">Quia filius contumeliam facit patri,  et filia consurgit adversus matrem suam :  nurus adversus socrum suam,  et inimici hominis domestici ejus.</p>
+    <p class="base base-p">Denn der Sohn verachtet den Vater, die Tochter setzt sich wider die Mutter, die Schnur ist wider die Schwieger; und des Menschen Feinde sind sein eigen Hausgesinde.</p>
+    <p class="tra">Denn der Sohn verunehrt den Vater, die Tochter lehnt sich gegen ihre Mutter, die Schwiegertochter gegen ihre Schwiegermutter auf: Des Mannes Feinde sind die eigenen Hausgenossen!</p>
+  </div>
+</div>
+<div class="vb" id="v7-7">
+  <span class="vn">7</span>
+  <div class="vt">
+    <p class="base base-c">Ego autem ad Dominum aspiciam ;  exspectabo Deum, salvatorem meum :  audiet me Deus meus.</p>
+    <p class="base base-p">Ich aber will auf den HERRN schauen und des Gottes meines Heils erwarten; mein Gott wird mich horen.</p>
+    <p class="tra">Ich aber will ausspähen nach Jahwe, will harren auf den Gott, der mein Heil! Mein Gott wird mich hören!</p>
+  </div>
+</div>
+<div class="vb" id="v7-8">
+  <span class="vn">8</span>
+  <div class="vt">
+    <p class="base base-c">Ne læteris, inimica mea, super me, quia cecidi :  consurgam cum sedero in tenebris :  Dominus lux mea est.</p>
+    <p class="base base-p">Freue dich nicht, meine Feindin, daß ich daniederliege! Ich werde wieder aufkommen. Und so ich im Finstern sitze, so ist doch der HERR mein Licht.</p>
+    <p class="tra">Freue dich nur nicht über mich, meine Feindin! Denn bin ich gefallen, so stehe ich auch wieder auf; sitze ich in Finsternis, so ist doch Jahwe mein Licht!</p>
+  </div>
+</div>
+<div class="vb" id="v7-9">
+  <span class="vn">9</span>
+  <div class="vt">
+    <p class="base base-c">Iram Domini portabo,  quoniam peccavi ei,  donec causam meam judicet,  et faciat judicium meum.  Educet me in lucem :  videbo justitiam ejus.</p>
+    <p class="base base-p">Ich will des HERRN Zorn tragen, denn ich habe wider ihn gesundiget, bis er meine Sache ausfuhre und mir Recht schaffe. Er wird mich ans Licht bringen, daß ich meine Lust an seiner Gnade sehe.</p>
+    <p class="tra">Den Unwillen Jahwes will ich tragen, weil ich mich an ihm versündigt habe, bis er sich meiner Sache annimmt und mir Recht schafft. Er wird mich zum Lichte führen; ich werde mich erquicken an seiner Gerechtigkeit.</p>
+  </div>
+</div>
+<div class="vb" id="v7-10">
+  <span class="vn">10</span>
+  <div class="vt">
+    <p class="base base-c">Et aspiciet inimica mea,  et operietur confusione,  quæ dicit ad me : Ubi est Dominus Deus tuus ?  Oculi mei videbunt in eam :  nunc erit in conculcationem ut lutum platearum.</p>
+    <p class="base base-p">Meine Feindin wird's sehen müssen und mit aller Schande bestehen, die jetzt zu mir sagt: Wo ist der HERR, dein Gott? Meine Augen werden's sehen, daß sie dann wie ein Kot auf der Gasse zertreten wird.</p>
+    <p class="tra">Meine Feindin soll es sehen und mit Schande bedeckt werden, sie, die jetzt zu mir spricht: Wo ist nun Jahwe, dein Gott? Meine Augen werden ihre Lust an ihr sehen; dann wird sie wie Straßenkot zertreten werden.</p>
+  </div>
+</div>
+<div class="vb" id="v7-11">
+  <span class="vn">11</span>
+  <div class="vt">
+    <p class="base base-c">Dies, ut ædificentur maceriæ tuæ ;  in die illa longe fiet lex.</p>
+    <p class="base base-p">Zu der Zeit werden deine Mauern gebauet werden und Gottes Wort weit auskommen.</p>
+    <p class="tra">Es kommt ein Tag, da man deine Mauern wiederherstellt; jenes Tags werden deine Grenzen weit hinausrücken.</p>
+  </div>
+</div>
+<div class="vb" id="v7-12">
+  <span class="vn">12</span>
+  <div class="vt">
+    <p class="base base-c">In die illa et usque ad te veniet de Assur,  et usque ad civitates munitas,  et a civitatibus munitis usque ad flumen,  et ad mare de mari,  et ad montem de monte.</p>
+    <p class="base base-p">Und zur selbigen Zeit werden sie von Assur und von festen Stadten zu dir kommen, von den festen Stadten bis an das Wasser, von einem Meer zum andern, von einem Gebirge zum andern.</p>
+    <p class="tra">Jenes Tags wird man zu dir kommen von Assyrien bis Ägypten und von Ägypten bis an den Euphratstrom, von Meer zu Meer und von Berg zu Berg.</p>
+  </div>
+</div>
+<div class="vb" id="v7-13">
+  <span class="vn">13</span>
+  <div class="vt">
+    <p class="base base-c">Et terra erit in desolationem propter habitatores suos,  et propter fructum cogitationum eorum.</p>
+    <p class="base base-p">Denn das Land wird wüst sein seiner Einwohner halben, um der Frucht willen ihrer Werke.</p>
+    <p class="tra">Die Erde aber wird wegen ihrer Bewohner zur Wüste werden um der Früchte ihres Thuns willen.</p>
+  </div>
+</div>
+<div class="vb" id="v7-14">
+  <span class="vn">14</span>
+  <div class="vt">
+    <p class="base base-c">Pasce populum tuum in virga tua,  gregem hæreditatis tuæ, habitantes solos, in saltu, in medio Carmeli.  Pascentur Basan et Galaad juxta dies antiquos.</p>
+    <p class="base base-p">Du aberweide dein Volk mit deinem Stabe, die Herde deines Erbteils, die da wohnen beide, im Walde alleine und auf dem Felde; lati sie zu Basan und Gilead weiden wie vor alters!</p>
+    <p class="tra">Weide dein Volk mit deinem Stab als die Schafe, die dein Eigentum sind, die mitten im Fruchtgefilde einsam die Wildnis bewohnen. Mögen sie in Basan und Gilead weiden, wie in den Tagen der Vorzeit.</p>
+  </div>
+</div>
+<div class="vb" id="v7-15">
+  <span class="vn">15</span>
+  <div class="vt">
+    <p class="base base-c">Secundum dies egressionis tuæ de terra Ægypti,  ostendam ei mirabilia.</p>
+    <p class="base base-p">Ich will sie Wunder sehen lassen, gleichwie zu der Zeit, da sie aus Agyptenland zogen,</p>
+    <p class="tra">Wie damals, als du aus Ägypten zogst, gieb ihm Wunder zu schauen!</p>
+  </div>
+</div>
+<div class="vb" id="v7-16">
+  <span class="vn">16</span>
+  <div class="vt">
+    <p class="base base-c">Videbunt gentes,  et confundentur super omni fortitudine sua.  Ponent manum super os,  aures eorum surdæ erunt.</p>
+    <p class="base base-p">daß die Heiden sehen, und alle ihre Gewaltigen sich schamen sollen und die Hand auf ihren Mund legen und ihre Ohren zuhalten.</p>
+    <p class="tra">Das sollen die Heiden sehen und zu Schanden werden mit all' ihrer Macht; sie müssen die Hand auf den Mund legen, ihre Ohren sollen taub werden.</p>
+  </div>
+</div>
+<div class="vb" id="v7-17">
+  <span class="vn">17</span>
+  <div class="vt">
+    <p class="base base-c">Lingent pulverem sicut serpentes ;  velut reptilia terræ perturbabuntur in ædibus suis.  Dominum Deum nostrum formidabunt,  et timebunt te.</p>
+    <p class="base base-p">Sie sollen Staub lecken wie die Schlangen und wie das Gewürm auf Erden erzittern in ihren Lochern. Sie werden sich furchten vor dem HERRN, unserm Gott, und vor dir sich entsetzen.</p>
+    <p class="tra">Sie sollen Staub lecken wie die Schlangen, wie die, die am Boden kriechen; zitternd sollen sie aus ihren Schlupfwinkeln hervorkommen, angstvoll auf Jahwe, unseren Gott, blicken und sich vor dir fürchten!</p>
+  </div>
+</div>
+<div class="vb" id="v7-18">
+  <span class="vn">18</span>
+  <div class="vt">
+    <p class="base base-c">Quis, Deus, similis tui,  qui aufers iniquitatem,  et transis peccatum reliquiarum hæreditatis tuæ ?  Non immittet ultra furorem suum,  quoniam volens misericordiam est.</p>
+    <p class="base base-p">Wo ist solch ein Gott, wie du bist? der die Sunde vergibt und erlasset die Missetat den Ubrigen seines Erbteils; der seinen Zorn nicht ewiglich behalt; denn er ist barmherzig.</p>
+    <p class="tra">Wer ist ein Gott wie du, der dem Überreste seines Erbteils seine Sünde vergiebt und seinen Abfall übersieht, der nicht für immer im Zorne verharrt, sondern sich freut, Gnade zu üben?</p>
+  </div>
+</div>
+<div class="vb" id="v7-19">
+  <span class="vn">19</span>
+  <div class="vt">
+    <p class="base base-c">Revertetur, et miserebitur nostri ;  deponet iniquitates nostras,  et projiciet in profundum maris omnia peccata nostra.</p>
+    <p class="base base-p">Erwird sich unser wieder erbarmen, unsere Missetat dampfen und alle unsere Sünden in die Tiefe des Meers werfen.</p>
+    <p class="tra">Er wird sich unserer wieder erbarmen, wird unsere Verschuldungen niederschlagen. Ja, du wirst alle unsere Sünden werfen in die Tiefen des Meers!</p>
+  </div>
+</div>
+<div class="vb" id="v7-20">
+  <span class="vn">20</span>
+  <div class="vt">
+    <p class="base base-c">Dabis veritatem Jacob,  misericordiam Abraham,  quæ jurasti patribus nostris a diebus antiquis.</p>
+    <p class="base base-p">Du wirst dem Jakob die Treue und Abraham die Gnade halten, wie du unsern Vatern vorlangst geschworen hast.</p>
+    <p class="tra">Du wirst an Jakob die Treue erweisen, an Abraham die Gnade, die du unseren Vätern zugeschworen hast von längst vergangenen Tagen her.</p>
+  </div>
+</div>
+</section>
+</main>
+
+<nav class="bnav">
+  <a href="032-jon.html">&#8592; Ionas</a>
+  <a href="../index.html" class="center">? &nbsp; Inhaltsverzeichnis</a>
+  <a href="034-nah.html">Nahum &#8594;</a>
+</nav>
+
+<script>
+(function(){
+  var c = localStorage.getItem('biblia_conf') || 'catholic';
+  document.body.dataset.conf = c;
+})();
+</script>
+
+<script>
+(function(){
+  var BM_KEY = 'KX_bookmark';
+  var toast, toastTimer;
+  function showToast(txt) {
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:rgba(244,229,204,.96);color:#4b341f;font-family:sans-serif;font-size:.78rem;letter-spacing:.08em;padding:9px 20px;border-radius:10px;border:1px solid #cfb790;pointer-events:none;z-index:999;transition:opacity .3s,transform .3s;box-shadow:0 12px 24px rgba(0,0,0,.24)';
+      document.body.appendChild(toast);
+    }
+    toast.textContent = txt;
+    toast.style.opacity = '1';
+    toast.style.transform = 'translateX(-50%) translateY(0)';
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ toast.style.opacity = '0'; toast.style.transform = 'translateX(-50%) translateY(6px)'; }, 1800);
+  }
+  document.addEventListener('click', function(e) {
+    var el = e.target;
+    while (el && el !== document.body) {
+      if (el.matches && el.matches('.verse, .vb')) break;
+      el = el.parentElement;
+    }
+    if (!el || el === document.body) return;
+    if (e.target.tagName === 'A') return;
+    var id = el.id;
+    if (!id) return;
+    var data = { url: location.pathname + '#' + id, title: document.title, id: id, ts: Date.now() };
+    try { localStorage.setItem(BM_KEY, JSON.stringify(data)); } catch(_){}
+    showToast('✦ Lesezeichen gesetzt');
+  });
+})();
+</script>
+</body>
+</html>

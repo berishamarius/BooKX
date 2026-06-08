@@ -1,699 +1,679 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Sophonias · Italiano · Biblia Catholica</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
-<style>
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
-body{
-  background:#2C0810;
-  background-image:radial-gradient(ellipse at 50% 20%,#4A1020 0%,#1A0407 100%);
-  font-family:'EB Garamond',serif;
-  color:#E8C547;
-  font-size:17px;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Sophonias · Italiano · Biblia Catholica</title>
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
+
+:root {
+  --gold:        #C8A96E;
+  --gold-light:  #EDD58A;
+  --gold-dark:   #8B6914;
+  --navy:        #1A1F3A;
+  --navy-mid:    #252B4A;
+  --navy-light:  #2E3560;
+  --parchment:   #F5E9CC;
+  --parchment-d: #EDD9A3;
+  --cream:       #FDF6E3;
+  --latin-color: #6B1E0E;
+  --trans-color: #0F1D2E;
+  --border:      rgba(200,169,110,.35);
+  --font-title:  'Cinzel Decorative', 'Cinzel', Georgia, serif;
+  --font-sub:    'Cinzel', Georgia, serif;
+  --font-body:   'EB Garamond', Georgia, serif;
 }
-.bhead{
-  background:#1A0407;
-  padding:36px 28px 28px;
-  text-align:center;
-  border-bottom:4px solid #B8962E;
-  position:relative;overflow:hidden;
+
+*,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+html { font-size:16px; scroll-behavior:smooth; }
+body { background:var(--cream); color:var(--trans-color); font-family:var(--font-body); }
+
+/* ── NAV ─────────────────────────────────────────────── */
+.nav-bar {
+  background:var(--navy); padding:10px 28px;
+  display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  border-bottom:2px solid var(--gold);
+  position:sticky; top:0; z-index:100;
+  box-shadow:0 3px 12px rgba(0,0,0,.45);
 }
-.bhead::before{content:'';position:absolute;inset:14px;border:none;pointer-events:none;}
-.bhead::after{content:'';position:absolute;inset:22px;border:none;pointer-events:none;}
-.btestament{
-  display:inline-block;
-  border:1px solid rgba(200,160,48,.32);
-  color:rgba(200,160,48,.52);
-  font-family:'Cinzel',serif;font-size:.55rem;
-  letter-spacing:.3em;padding:4px 18px;
-  border-radius:2px;margin-bottom:16px;
-  position:relative;
+.nav-bar a {
+  color:var(--gold); text-decoration:none;
+  font-family:var(--font-sub); font-size:.75rem; letter-spacing:.05em;
+  transition:color .15s;
 }
-.blatin{
-  display:none;
-  font-family:'UnifrakturMaguntia',cursive;
-  font-size:clamp(1.9rem,7vw,3.4rem);
-  color:#EDD882;
-  text-shadow:0 3px 20px rgba(0,0,0,.55);
-  letter-spacing:.04em;position:relative;
+.nav-bar a:hover { color:var(--gold-light); }
+.nav-bar .home { font-weight:700; font-size:.82rem; }
+.nav-bar .spacer { flex:1; }
+.nav-bar .pos { color:rgba(200,169,110,.45); font-size:.7rem; font-family:var(--font-sub); }
+
+/* ── BUCHKOPF ────────────────────────────────────────── */
+.book-header {
+  background:linear-gradient(160deg,var(--navy) 0%,var(--navy-mid) 55%,var(--navy-light) 100%);
+  padding:44px 36px 34px; text-align:center;
+  border-bottom:4px solid var(--gold);
+  position:relative; overflow:hidden;
 }
-body:not([data-conf]) .blatin-c,
-body[data-conf="catholic"] .blatin-c{display:block;}
-body[data-conf="protestant"] .blatin-p{display:block;}
-.btrans{
-  font-family:'Cinzel',serif;
-  font-size:.88rem;
-  color:#C8A030;margin-top:10px;
-  letter-spacing:.16em;position:relative;
-}
-.bmeta{
-  font-family:'Cinzel',serif;font-size:.62rem;
-  color:rgba(200,160,48,.4);margin-top:6px;
-  letter-spacing:.08em;position:relative;
-}
-.content{
-  max-width:960px;
-  margin:36px auto 36px;
-  padding:48px 72px 100px;
-  background:#1a0407;
+.book-header::before {
+  content:'';
+  position:absolute; inset:0;
   background-image:
-    radial-gradient(ellipse at top left,rgba(184,150,46,.06) 0%,transparent 55%),
-    radial-gradient(ellipse at bottom right,rgba(184,150,46,.05) 0%,transparent 55%);
-  box-shadow:0 8px 80px rgba(0,0,0,.55),0 2px 12px rgba(0,0,0,.35),inset 0 0 0 1px rgba(184,150,46,.18);
-  border-left:4px solid #B8962E;
-  border-right:4px solid #B8962E;
-  border-top:2px solid rgba(184,150,46,.4);
-  border-bottom:2px solid rgba(184,150,46,.4);
-  position:relative;overflow:clip;
-}
-.content::before{
-  content:'';position:absolute;inset:12px;
-  border:1px solid rgba(184,150,46,.08);
+    repeating-linear-gradient( 45deg,transparent,transparent 30px,rgba(200,169,110,.038) 30px,rgba(200,169,110,.038) 31px),
+    repeating-linear-gradient(-45deg,transparent,transparent 30px,rgba(200,169,110,.038) 30px,rgba(200,169,110,.038) 31px);
   pointer-events:none;
 }
-.chap{margin-top:0;}
-.chhead{
-  text-align:center;padding:40px 0 20px;margin-bottom:16px;position:relative;
+.testament-badge {
+  display:inline-block;
+  border:1px solid rgba(200,169,110,.4); color:rgba(200,169,110,.65);
+  font-family:var(--font-sub); font-size:.62rem; letter-spacing:.25em;
+  padding:4px 14px; border-radius:2px; margin-bottom:14px; position:relative;
 }
-.chhead::before{
-  content:'* * *';display:block;font-size:.7rem;
-  color:rgba(184,150,46,.45);letter-spacing:.35em;margin-bottom:16px;
+.book-name-latin {
+  font-family:var(--font-title); font-size:3rem; color:var(--gold-light);
+  text-shadow:0 3px 18px rgba(0,0,0,.55); letter-spacing:.08em; position:relative;
 }
-.chhead::after{
-  content:'';display:block;width:200px;height:1px;margin:14px auto 0;
-  background:linear-gradient(to right,transparent,#B8962E,transparent);
+.book-name-trans {
+  font-family:var(--font-sub); font-size:1.1rem; color:var(--gold);
+  margin-top:8px; letter-spacing:.12em; position:relative;
 }
-.chrom{
-  font-family:'Cinzel Decorative',serif;font-size:4rem;color:#8B6914;
-  display:block;text-shadow:0 2px 18px rgba(184,150,46,.2);line-height:1;
+.book-meta {
+  font-size:.74rem; color:rgba(200,169,110,.5); margin-top:7px;
+  font-family:var(--font-sub); letter-spacing:.07em; position:relative;
 }
-.chlbl{
-  font-family:'Cinzel',serif;font-size:.58rem;
-  color:rgba(184,150,46,.42);letter-spacing:.32em;
-  display:none;margin-top:8px;
-}
-body:not([data-conf]) .chlbl-c,
-body[data-conf="catholic"] .chlbl-c{display:block;}
-body[data-conf="protestant"] .chlbl-p{display:block;}
-.vb{
-  display:flex;padding:20px 6px;
-  border-bottom:1px solid rgba(184,150,46,.12);
-  background:none;border-radius:2px;transition:background .15s;
-}
-.vb:hover{background:rgba(184,150,46,.04);}
-.vn{
-  flex-shrink:0;width:38px;padding-top:4px;
-  font-family:'Cinzel',serif;font-size:.56rem;
-  color:rgba(184,150,46,.52);text-align:right;
-  padding-right:12px;line-height:2.4;
-}
-.vt{flex:1;padding:0 20px 0 4px;}
-.base{
-  font-family:'EB Garamond',serif;font-size:1.2rem;font-weight:500;
-  line-height:2.1;color:#E8C547;display:none;
-}
-body:not([data-conf]) .base-c,
-body[data-conf="catholic"] .base-c{display:block;}
-body[data-conf="protestant"] .base-p{display:block;}
-.tra{
-  font-family:'EB Garamond',serif;font-style:italic;
-  font-size:.93rem;color:#F5F2EA;line-height:1.82;
-  margin-top:6px;display:block;
-}
-.vb.first .base-c::first-letter,
-.vb.first .base-p::first-letter{
-  font-family:'Cinzel Decorative',serif;font-size:4em;
-  float:left;line-height:.7;padding-right:.08em;margin-top:.07em;
-  color:#B8962E;text-shadow:1px 2px 6px rgba(0,0,0,.12);
-}
-body[data-conf="protestant"] .vb.first .base-p::first-letter{
-  font-family:'UnifrakturMaguntia',cursive;font-size:4em;
-  float:left;line-height:.7;padding-right:.08em;margin-top:.07em;
-  color:#B8962E;text-shadow:1px 2px 6px rgba(0,0,0,.12);
-}
-.bnav{
-  display:flex;justify-content:space-between;align-items:center;
-  background:#2C0810;border-top:3px solid #B8962E;
-  padding:12px 24px;gap:12px;
-}
-.bnav a,.bnav .dim{
-  color:#C8A030;text-decoration:none;
-  font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:.07em;
-  padding:6px 16px;
-  border:1px solid rgba(200,160,48,.28);
-  border-radius:2px;transition:background .18s;
-}
-.bnav a:hover{background:rgba(200,160,48,.12);}
-.bnav .dim{color:rgba(200,160,48,.2);border-color:rgba(200,160,48,.1);}
-.bnav .center{
-  font-family:'Cinzel',serif;font-size:.68rem;
-  color:rgba(200,160,48,.65);text-align:center;
-  letter-spacing:.06em;text-decoration:none;
-  border:1px solid rgba(200,160,48,.28);border-radius:2px;
-  padding:6px 20px;transition:background .18s;
-}
-.bnav .center:hover{background:rgba(200,160,48,.1);}
-body[data-conf="protestant"] .base-p{
-  font-family:'UnifrakturMaguntia',cursive;
-  font-size:1.08rem;letter-spacing:.01em;
-}
-@media print{
-  .bnav{display:none;}
-  .bhead{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-  .vb{break-inside:avoid;}
-}
-@media(max-width:600px){
-  .blatin{font-size:1.8rem;}
-  .base{font-size:1rem;}
-  .tra{font-size:.84rem;}
-  .content{width:100%;max-width:none;padding:14px 12px 44px;margin:0;border-left:none;border-right:none;border-top:none;border-bottom:none;border-radius:0;box-shadow:none;overflow:visible;}
-  .chrom{font-size:1.8rem;}
-  .content::before{display:none;}
-  .vb{padding:16px 2px;}
-  .vn{width:28px;padding-right:8px;}
-}
-.b-wm{position:sticky;top:calc(50vh - 37.5vmin);width:50vmin;height:75vmin;margin:0 auto -75vmin;display:block;pointer-events:none;z-index:0;user-select:none;}
-.b-wm svg{width:100%;height:auto;display:block;}
-.b-wm path{fill:none;stroke:rgba(184,150,46,.06);stroke-width:1.5;stroke-linecap:square;}
 
+/* ── ORNAMENT-TRENNLINIE ─────────────────────────────── */
+.ornament-bar {
+  text-align:center; padding:16px 0 4px;
+  color:var(--gold); font-size:1.1rem; letter-spacing:.7em;
+}
 
-body[data-conf="protestant"] .blatin-p{font-family:'Cinzel',serif!important;font-size:clamp(1.4rem,5vw,2.4rem)!important;letter-spacing:.14em;}
+/* ── HAUPT-CONTAINER ─────────────────────────────────── */
+.content { max-width:960px; margin:0 auto; padding:0 24px 80px; }
+
+/* ── KAPITEL-MARKER ──────────────────────────────────── */
+.chapter-marker {
+  display:flex; align-items:center; gap:16px;
+  padding:28px 6px 12px; margin-bottom:4px;
+  border-bottom:2px solid var(--border);
+}
+.ch-roman {
+  font-family:var(--font-title); font-size:2.2rem; color:var(--gold);
+  min-width:56px; text-align:center; flex-shrink:0;
+  text-shadow:0 1px 8px rgba(200,169,110,.3);
+}
+.ch-label {
+  font-family:var(--font-sub); font-size:.72rem; color:rgba(200,169,110,.6);
+  letter-spacing:.22em; text-transform:uppercase;
+}
+
+/* ── VERS-BLOCK ──────────────────────────────────────── */
+.verse-block {
+  display:flex; gap:0; border-bottom:1px solid rgba(200,169,110,.15);
+}
+.verse-block:nth-child(odd)  { background:var(--cream); }
+.verse-block:nth-child(even) { background:var(--parchment); }
+
+.verse-num-col {
+  flex-shrink:0; width:42px; padding:16px 6px 16px 0; text-align:right;
+}
+.verse-num {
+  display:inline-block; width:28px; height:28px; border-radius:50%;
+  background:var(--gold-dark); color:var(--cream);
+  font-family:var(--font-sub); font-size:.64rem; font-weight:700;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 1px 5px rgba(0,0,0,.25);
+}
+
+.verse-texts { flex:1; padding:16px 16px 18px 8px; }
+
+/* ── LATEINISCHER TEXT (oben / primär) ───────────────── */
+.latin {
+  font-family:var(--font-body); font-size:1.12rem; line-height:1.9;
+  color:var(--latin-color); font-weight:500;
+  border-left:3px solid var(--gold); padding-left:12px;
+  margin-bottom:8px;
+}
+
+/* ── ÜBERSETZUNGS-TEXT (unten / sekundär) ────────────── */
+.trans-label {
+  font-family:var(--font-sub); font-size:.6rem; letter-spacing:.17em;
+  text-transform:uppercase; color:var(--gold-dark); margin-bottom:5px; opacity:.78;
+}
+.trans {
+  font-family:var(--font-body); font-size:1.04rem; line-height:1.85;
+  color:var(--trans-color); font-style:italic;
+  padding-left:15px;
+}
+
+/* Erste Vers jedes Kapitels: Drop-Cap */
+.verse-block:first-of-type .latin::first-letter {
+  font-size:4.2em; float:left; line-height:.72;
+  padding-right:.08em; margin-top:.06em;
+  font-family:var(--font-title); color:var(--gold);
+}
+
+/* ── NAVIGATION ZWISCHEN BÜCHERN ─────────────────────── */
+.book-nav {
+  display:flex; justify-content:space-between; align-items:center;
+  background:var(--navy); border-top:3px solid var(--gold);
+  padding:12px 26px; gap:12px;
+}
+.book-nav a {
+  color:var(--gold); text-decoration:none;
+  font-family:var(--font-sub); font-size:.78rem; letter-spacing:.07em;
+  padding:6px 14px; border:1px solid rgba(200,169,110,.3); border-radius:3px;
+  transition:background .18s;
+}
+.book-nav a:hover { background:rgba(200,169,110,.15); }
+.book-nav .center {
+  font-family:var(--font-sub); font-size:.7rem; color:rgba(200,169,110,.55);
+  letter-spacing:.1em; text-align:center;
+}
+
+/* ── FUßZEILE ────────────────────────────────────────── */
+.page-footer {
+  background:var(--navy); border-top:2px solid rgba(200,169,110,.3);
+  padding:18px 28px; text-align:center;
+  color:rgba(200,169,110,.45); font-family:var(--font-sub);
+  font-size:.68rem; letter-spacing:.1em;
+}
+
+/* ── DRUCK ───────────────────────────────────────────── */
+@media print {
+  .nav-bar, .book-nav { display:none; }
+  .verse-block { break-inside:avoid; }
+  .book-header { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+}
+
+/* ── MOBIL ───────────────────────────────────────────── */
+@media (max-width:640px) {
+  .book-name-latin { font-size:2.1rem; }
+  .ch-roman { font-size:1.6rem; }
+  .latin { font-size:.98rem; }
+  .trans { font-size:.93rem; }
+  .content { padding:0 12px 60px; }
+}
 </style>
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><path d='M32,4V60M12,18H52' stroke='%23C8A030' stroke-width='8' fill='none' stroke-linecap='square'/></svg>">
-<link rel="apple-touch-icon" sizes="180x180" href="../../Die%20Heilige%20Bibel%20rot%20Icon.png">
-<meta name="theme-color" content="#2a0810">
 </head>
 <body>
 
-<header class="bhead">
-  <div class="btestament">VETUS TESTAMENTUM</div>
-  <div class="blatin blatin-c">SOPHONIAS</div>
-  <div class="blatin blatin-p">SOFONIA</div>
-  <div class="btrans">Zephaniah &#160;&#183;&#160; Italiano</div>
-  <div class="bmeta">3 Capita · 53 Versus</div>
-</header>
+  <nav class="nav-bar">
+    <a class="home" href="../../../index.html">✞ BIBLIA CATHOLICA</a>
+    <a href="../index.html">🇮🇹 Italiano</a>
+    <span class="spacer"></span>
+    <span class="pos">036 / 066</span>
+  </nav>
 
-<main class="content">
-<div class="b-wm"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 14"><path d="M5,0V14M0,4H10"/></svg></div>
+  <header class="book-header">
+    <div class="testament-badge">VETUS TESTAMENTUM</div>
+    <div class="book-name-latin">SOPHONIAS</div>
+    <div class="book-name-trans">Zephaniah</div>
+    <div class="book-meta">Vulgata Clementina · Giovanni Diodati (1649) · 3 Capita · 53 Versus</div>
+  </header>
 
-<section class="chap" id="c1">
-  <div class="chhead">
-    <span class="chrom">I</span>
-    <span class="chlbl chlbl-c">Caput I</span>
-    <span class="chlbl chlbl-p">Caput I</span>
-  </div>
-<div class="vb first" id="v1-1">
-  <span class="vn">1</span>
-  <div class="vt">
-    <p class="base base-c">Verbum Domini quod factum est ad Sophoniam, filium Chusi, filii Godoliæ, filii Amariæ, filii Ezeciæ, in diebus Josiæ, filii Amon, regis Judæ.</p>
-    <p class="base base-p">Dies ist das Wort des HERRN, welches geschah zu Zephanja, dem Sohn Chusis, des Sohns Gedaljas, des Sohns Amarjas, des Sohns Hiskias, zur Zeit Josias, des Sohns Amons, des Königs Judas:</p>
-    <p class="tra">La parola del Signore, che fu indirizzata a Sofonia, figliuolo di Cusi, figliuolo di Ghedalia, figliuolo di Amaria, figliuolo di Ezechia, a’ dì di Giosia, figliuolo di Amon, re di Giuda.</p>
-  </div>
-</div>
-<div class="vb" id="v1-2">
-  <span class="vn">2</span>
-  <div class="vt">
-    <p class="base base-c">Congregans congregabo omnia a facie terr&Atilde;&#166;, dicit Dominus :</p>
-    <p class="base base-p">Ich will alles aus dem Lande wegnehmen, spricht der HERR.</p>
-    <p class="tra">Io farò del tutto perire ogni cosa d’in su la faccia della terra, dice il Signore.</p>
-  </div>
-</div>
-<div class="vb" id="v1-3">
-  <span class="vn">3</span>
-  <div class="vt">
-    <p class="base base-c">congregans hominem et pecus,  congregans volatilia c&Atilde;&#166;li et pisces maris :  et ruin&Atilde;&#166; impiorum erunt,  et disperdam homines a facie terr&Atilde;&#166;, dicit Dominus.</p>
-    <p class="base base-p">Ich will beide, Menschen und Vieh, beide, Vogel des Himmels und Fische im Meer, wegnehmen samt den Argernissen und den Gottlosen; ja, ich will die Menschen ausreuten aus dem Lande, spricht der HERR.</p>
-    <p class="tra">Io farò perir gli uomini, e gli animali; io farò perir gli uccelli del cielo, e i pesci del mare; e gl’intoppi, insieme con gli empi; e sterminerò gli uomini d’in su la faccia della terra, dice il Signore.</p>
-  </div>
-</div>
-<div class="vb" id="v1-4">
-  <span class="vn">4</span>
-  <div class="vt">
-    <p class="base base-c">Et extendam manum meam super Judam  et super omnes habitantes Jerusalem :  et disperdam de loco hoc reliquias Baal,  et nomina &Atilde;&#166;dituorum cum sacerdotibus ;</p>
-    <p class="base base-p">Ich will meine Hand ausstrecken über Juda und über alle, die zu Jerusalem wohnen; also will ich das brige von Baal ausreuten, dazu den Namen der Kamarim und Priester aus diesem Ort</p>
-    <p class="tra">E stenderò la mia mano sopra Giuda, e sopra tutti gli abitanti di Gerusalemme; e sterminerò di questo luogo il rimanente de’ Baali, il nome de’ Camari, insieme co’ sacerdoti.</p>
-  </div>
-</div>
-<div class="vb" id="v1-5">
-  <span class="vn">5</span>
-  <div class="vt">
-    <p class="base base-c">et eos qui adorant super tecta militiam c&Atilde;&#166;li,  et adorant et jurant in Domino,  et jurant in Melchom ;</p>
-    <p class="base base-p">und die, so auf den Dachern des Himmels Heer anbeten, die es anbeten und schworen doch bei dem HERRN und zugleich bei Malchom,</p>
-    <p class="tra">E quelli parimente che adorano l’esercito del cielo sopra i tetti; e quelli ancora che adorano il Signore, e gli giurano; e quelli che giurano per Malcam;</p>
-  </div>
-</div>
-<div class="vb" id="v1-6">
-  <span class="vn">6</span>
-  <div class="vt">
-    <p class="base base-c">et qui avertuntur de post tergum Domini,  et qui non qu&Atilde;&#166;sierunt Dominum,  nec investigaverunt eum.</p>
-    <p class="base base-p">und die vom HERRN abfallen und die nach dem HERRN nichts fragen und ihn nicht achten.</p>
-    <p class="tra">e quelli che si ritraggono indietro dal Signore, e quelli che non cercano il Signore, e non lo richieggono.</p>
-  </div>
-</div>
-<div class="vb" id="v1-7">
-  <span class="vn">7</span>
-  <div class="vt">
-    <p class="base base-c">Silete a facie Domini Dei,  quia juxta est dies Domini :  quia pr&Atilde;&#166;paravit Dominus hostiam ;  sanctificavit vocatos suos.</p>
-    <p class="base base-p">Seid stille vor dem Herrn HERRN; denn des HERRN Tag ist nahe! Denn der HERR hat ein Schlachtopfer zubereitet und seine Gaste dazu geladen.</p>
-    <p class="tra">Silenzio, per la presenza del Signore Iddio! conciossiachè il giorno del Signore sia vicino; perciocchè il Signore ha apparecchiato un sacrificio, egli ha ordinati i suoi convitati.</p>
-  </div>
-</div>
-<div class="vb" id="v1-8">
-  <span class="vn">8</span>
-  <div class="vt">
-    <p class="base base-c">Et erit : in die hosti&Atilde;&#166; Domini,  visitabo super principes,  et super filios regis,  et super omnes qui induti sunt veste peregrina ;</p>
-    <p class="base base-p">Und am Tage des Schlachtopfers des HERRN will ich heimsuchen die Frsten und des Königs Kinder und alle, die ein fremd Kleid tragen.</p>
-    <p class="tra">Ed avverrà, nel giorno del sacrificio del Signore, che io farò punizione de’ principi, e de’ figliuoli del re, e di tutti quelli che si vestono di vestimenti strani.</p>
-  </div>
-</div>
-<div class="vb" id="v1-9">
-  <span class="vn">9</span>
-  <div class="vt">
-    <p class="base base-c">et visitabo super omnem qui arroganter ingreditur super limen in die illa,  qui complent domum Domini Dei sui iniquitate et dolo.</p>
-    <p class="base base-p">Auch will ich zur selbigen Zeit die heimsuchen, so über die Schwelle springen, die ihrer Herren Haus fullen mit Rauben und Trugen.</p>
-    <p class="tra">In quel giorno ancora farò punizione di tutti coloro che saltano sopra la soglia; che riempiono le case de’ lor signori di rapina, e di frode.</p>
-  </div>
-</div>
-<div class="vb" id="v1-10">
-  <span class="vn">10</span>
-  <div class="vt">
-    <p class="base base-c">Et erit in die illa, dicit Dominus,  vox clamoris a porta piscium,  et ululatus a Secunda,  et contritio magna a collibus.</p>
-    <p class="base base-p">Zur selbigen Zeit, spricht der HERR, wird sich ein laut Geschrei erheben von dem Fischtor an und ein Geheul von dem andern Tor und ein grower Jammer auf den Hgeln.</p>
-    <p class="tra">E in quel giorno, dice il Signore, vi sarà una voce di grido verso la porta de’ pesci, ed un urlo verso la seconda porta, ed un gran fracasso verso i colli.</p>
-  </div>
-</div>
-<div class="vb" id="v1-11">
-  <span class="vn">11</span>
-  <div class="vt">
-    <p class="base base-c">Ululate, habitatores Pil&Atilde;&#166; :  conticuit omnis populus Chanaan,  disperierunt omnes involuti argento.</p>
-    <p class="base base-p">Heulet, die ihr in der Muhle wohnet! Denn das ganze Kramervolk ist dahin, und alle, die Geld sammeln, sind ausgerottet.</p>
-    <p class="tra">Urlate, abitanti del Mortaio; perciocchè tutto il popolo de’ mercatanti è perito, tutti i portatori di danari sono sterminati.</p>
-  </div>
-</div>
-<div class="vb" id="v1-12">
-  <span class="vn">12</span>
-  <div class="vt">
-    <p class="base base-c">Et erit in tempore illo :  scrutabor Jerusalem in lucernis,  et visitabo super viros defixos in f&Atilde;&#166;cibus suis,  qui dicunt in cordibus suis :  Non faciet bene Dominus, et non faciet male.</p>
-    <p class="base base-p">Zur selbigen Zeit will ich Jerusalem mit Laternen durchsuchen und will heimsuchen die Leute, die auf ihren Hefen liegen und sprechen in ihrem Herzen: Der HERR wird weder Gutes noch Boses tun.</p>
-    <p class="tra">Ed avverrà in quel tempo, che io investigherò Gerusalemme con delle lucerne, e farò punizione degli uomini che si sono rappresi sopra le lor fecce; che dicono nel cuor loro: Il Signore non fa nè bene nè male.</p>
-  </div>
-</div>
-<div class="vb" id="v1-13">
-  <span class="vn">13</span>
-  <div class="vt">
-    <p class="base base-c">Et erit fortitudo eorum in direptionem,  et domus eorum in desertum :  et &Atilde;&#166;dificabunt domos, et non habitabunt ;  et plantabunt vineas, et non bibent vinum earum.</p>
-    <p class="base base-p">Und sollen ihre Guterzum Raube werden und ihre Hauser zur Wuste. Sie werden Hauser bauen und nicht drinnen wohnen; sie werden Weinberge pflanzen und keinen Wein davon trinken.</p>
-    <p class="tra">E le lor facoltà saranno in preda, e le lor case in desolazione; ed avranno edificate delle case, e non vi abiteranno; e piantate delle vigne, e non ne berranno il vino.</p>
-  </div>
-</div>
-<div class="vb" id="v1-14">
-  <span class="vn">14</span>
-  <div class="vt">
-    <p class="base base-c">Juxta est dies Domini magnus :  juxta est, et velox nimis.  Vox diei Domini amara :  tribulabitur ibi fortis.</p>
-    <p class="base base-p">Denn des HERRN grower Tag ist nahe; erist nahe und eilet sehr. Wenn das Geschrei vom Tage des HERRN kommen wird, so werden die Starken alsdann bitterlich schreien.</p>
-    <p class="tra">Il gran giorno del Signore è vicino; egli è vicino, e si affretta molto; la voce del giorno del Signore sarà di persone che grideranno amaramente.</p>
-  </div>
-</div>
-<div class="vb" id="v1-15">
-  <span class="vn">15</span>
-  <div class="vt">
-    <p class="base base-c">Dies ir&Atilde;&#166; dies illa,  dies tribulationis et angusti&Atilde;&#166;,  dies calamitatis et miseri&Atilde;&#166;,  dies tenebrarum et caliginis,  dies nebul&Atilde;&#166; et turbinis,</p>
-    <p class="base base-p">Denn dieser Tag ist ein Tag des Grimmes, ein Tag der Trubsal und Angst, ein Tag des Wetters und Ungestms, ein Tag der Finsternis und Dunkels, ein Tag der Wolken und Nebel,</p>
-    <p class="tra">I capitani sono già là. Quel giorno sarà giorno d’indegnazione; giorno di distretta, e d’angoscia; giorno di tumulto, e di fracasso; giorno di tenebre, e di caligine; giorno di nebbia, e di folta oscurità;</p>
-  </div>
-</div>
-<div class="vb" id="v1-16">
-  <span class="vn">16</span>
-  <div class="vt">
-    <p class="base base-c">dies tub&Atilde;&#166; et clangoris super civitates munitas,  et super angulos excelsos.</p>
-    <p class="base base-p">ein Tag der Posaunen und Trommeten wider die festen Stadte und hohen Schlosser.</p>
-    <p class="tra">giorno di tromba, e di stormo, sopra le città forti, e sopra gli alti cantoni.</p>
-  </div>
-</div>
-<div class="vb" id="v1-17">
-  <span class="vn">17</span>
-  <div class="vt">
-    <p class="base base-c">Et tribulabo homines, et ambulabunt ut c&Atilde;&#166;ci,  quia Domino peccaverunt ;  et effundetur sanguis eorum sicut humus,  et corpora eorum sicut stercora.</p>
-    <p class="base base-p">Ich will den Leuten bange machen, daß sie umhergehen sollen wie die Blinden, darum daß sie wider den HERRN gesndiget haben. Ihr Blut soli vergossen werden, als ware es Staub, und ihr Leib, als ware es Kot.</p>
-    <p class="tra">Ed io metterò gli uomini in distretta, e cammineranno come ciechi; perciocchè han peccato contro al Signore; e il lor sangue sarà sparso come polvere, e la lor carne come sterchi.</p>
-  </div>
-</div>
-<div class="vb" id="v1-18">
-  <span class="vn">18</span>
-  <div class="vt">
-    <p class="base base-c">Sed et argentum eorum et aurum eorum non poterit liberare eos  in die ir&Atilde;&#166; Domini :  in igne zeli ejus devorabitur omnis terra,  quia consummationem cum festinatione faciet  cunctis habitantibus terram.</p>
-    <p class="base base-p">Es wird sie ihr Silber und Gold nicht erretten mogen am Tage des Zorns des HERRN, sondern das ganze Land soll durch das Feuer seines Eifers verzehret werden; denn er wird's plotzlich ein Ende machen mit alien, die im Lande wohnen.</p>
-    <p class="tra">Nè il loro argento, nè il loro oro, non li potrà scampare nel giorno dell’indegnazione del Signore; e tutto il paese sarà consumato per lo fuoco della sua gelosia; perciocchè egli farà una finale, ed anche affrettata distruzione di tutti gli abitanti del paese.</p>
-  </div>
-</div>
-</section>
+  <div class="ornament-bar">❧ ✦ ❧ ✦ ❧</div>
 
-<section class="chap" id="c2">
-  <div class="chhead">
-    <span class="chrom">II</span>
-    <span class="chlbl chlbl-c">Caput II</span>
-    <span class="chlbl chlbl-p">Caput II</span>
-  </div>
-<div class="vb" id="v2-1">
-  <span class="vn">1</span>
-  <div class="vt">
-    <p class="base base-c">Convenite, congregamini, gens non amabilis,</p>
-    <p class="base base-p">Sammelt euch und kommet her, ihr feindseliges Volk,</p>
-    <p class="tra">Adunatevi come della stoppia; adunatevi, o nazione rincrescevole.</p>
-  </div>
-</div>
-<div class="vb" id="v2-2">
-  <span class="vn">2</span>
-  <div class="vt">
-    <p class="base base-c">priusquam pariat jussio quasi pulverem transeuntem diem,  antequam veniat super vos ira furoris Domini,  antequam veniat super vos dies indignationis Domini.</p>
-    <p class="base base-p">ehe denn das Urteil ausgehe, daß ihr, wie die Spreu bei Tage, dahinfahret, ehe denn des HERRN grimmiger Zorn ber euch komme, ehe der T ag des HERRN Zorns über euch komme.</p>
-    <p class="tra">Avanti che il decreto partorisca, e il giorno sia passato a guisa di pula; avanti che venga sopra voi l’ardor dell’ira del Signore; avanti che venga sopra voi il giorno dell’ira del Signore;</p>
-  </div>
-</div>
-<div class="vb" id="v2-3">
-  <span class="vn">3</span>
-  <div class="vt">
-    <p class="base base-c">Qu&Atilde;&#166;rite Dominum, omnes mansueti terr&Atilde;&#166;,  qui judicium ejus estis operati ;  qu&Atilde;&#166;rite justum, qu&Atilde;&#166;rite mansuetum,  si quomodo abscondamini in die furoris Domini.</p>
-    <p class="base base-p">Suchet den HERRN, alle ihr Elenden im Lande, die ihr seine Rechte haltet! Suchet Gerechtigkeit, suchet Demut, auf daß ihr am Tage des HERRN Zorns moget verborgen werden.</p>
-    <p class="tra">voi, tutti i mansueti del paese, che fate ciò ch’egli ordina, cercate il Signore; cercate giustizia, procacciate mansuetudine; forse sarete nascosti nel giorno dell’ira del Signore.</p>
-  </div>
-</div>
-<div class="vb" id="v2-4">
-  <span class="vn">4</span>
-  <div class="vt">
-    <p class="base base-c">Quia Gaza destructa erit,  et Ascalon in desertum :  Azotum in meridie ejicient,  et Accaron eradicabitur.</p>
-    <p class="base base-p">Denn Gasa mu verlassen werden und Askalon wust werden; Asdod soll im Mittag vertrieben werden und Akaron ausgewurzelt werden.</p>
-    <p class="tra">Perciocchè Gaza sarà abbandonata, ed Aschelon sarà messa in desolazione; Asdod sarà scacciata in pien mezzodì, ed Ecron sarà diradicato.</p>
-  </div>
-</div>
-<div class="vb" id="v2-5">
-  <span class="vn">5</span>
-  <div class="vt">
-    <p class="base base-c">V&Atilde;&#166; qui habitatis funiculum maris, gens perditorum !  verbum Domini super vos, Chanaan, terra Philisthinorum ;  et disperdam te, ita ut non sit inhabitator.</p>
-    <p class="base base-p">Wehe denen, so am Meer hinab wohnen, den Kriegern! Des HERRN Wort wird ber euch kommen. Du, Kanaan, der Philister Land, ich will, dich umbringen, daß niemand mehrda wohnen soil.</p>
-    <p class="tra">Guai a quelli che abitano nella contrada della marine, alla nazione de’ Cheretei! la parola del Signore è contro a voi, o Cananei, o paese de’ Filistei; ed io ti distruggerò, talchè in te non abiterà più alcuno.</p>
-  </div>
-</div>
-<div class="vb" id="v2-6">
-  <span class="vn">6</span>
-  <div class="vt">
-    <p class="base base-c">Et erit funiculus maris requies pastorum, et caul&Atilde;&#166; pecorum ;</p>
-    <p class="base base-p">Es sollen am Meer hinab eitel Hirtenhauser und Schafhrden sein.</p>
-    <p class="tra">E la contrada della marina sarà tutta mandre, e capanne di pastori, e stabbi di gregge.</p>
-  </div>
-</div>
-<div class="vb" id="v2-7">
-  <span class="vn">7</span>
-  <div class="vt">
-    <p class="base base-c">et erit funiculus ejus qui remanserit de domo Juda : ibi pascentur,  in domibus Ascalonis ad vesperam requiescent,  quia visitabit eos Dominus Deus eorum,  et avertet captivitatem eorum.</p>
-    <p class="base base-p">Und dasselbe soll den brigen vom Hause Juda zuteil werden, daß sie darauf weiden sollen. Des Abends sollen sie sich in den Hausern Askalons lagern, wenn sie nun der HERR, ihr Gott, wiederum heimgesucht und ihr Gefangnis gewendet hat.</p>
-    <p class="tra">E quella contrada sarà per lo rimanente della casa di Giuda; essi pastureranno in que’ luoghi; la sera giaceranno nelle case di Aschelon; perciocchè il Signore Iddio loro li visiterà, e li ritrarrà di cattività.</p>
-  </div>
-</div>
-<div class="vb" id="v2-8">
-  <span class="vn">8</span>
-  <div class="vt">
-    <p class="base base-c">Audivi opprobrium Moab,  et blasphemias filiorum Ammon,  qu&Atilde;&#166; exprobraverunt populo meo,  et magnificati sunt super terminos eorum.</p>
-    <p class="base base-p">Ich habe die Schmach Moabs und das Lastern der Kinder Ammon gehoret, damit sie mein Volk geschmahet und auf desselbigen Grenzen sich gerhmet haben.</p>
-    <p class="tra">Io ho udito il vituperio di Moab, e gli oltraggi de’ figliuoli di Ammon, i quali han fatto vituperio al mio popolo, e si sono ingranditi sopra i lor confini.</p>
-  </div>
-</div>
-<div class="vb" id="v2-9">
-  <span class="vn">9</span>
-  <div class="vt">
-    <p class="base base-c">Propterea vivo ego, dicit Dominus exercituum, Deus Isra&Atilde;&#171;l,  quia Moab ut Sodoma erit,  et filii Ammon quasi Gomorrha :  siccitas spinarum, et acervi salis,  et desertum usque in &Atilde;&#166;ternum :  reliqui&Atilde;&#166; populi mei diripient eos,  et residui gentis me&Atilde;&#166; possidebunt illos.</p>
-    <p class="base base-p">Wohlan, so wahr ich lebe, spricht der HERR Zebaoth, der Gott Israels: Moab soll wie Sodom und die Kinder Ammon wie Gomorrha werden , ja, wie ein Nesselstrauch und Salzgrube und eine ewige Wstnis. Die brigen meines Volks sollen sie rauben und die Uberbliebenen meines Volks sollen sie erben.</p>
-    <p class="tra">Perciò, come io vivo, dice il Signor degli eserciti, l’Iddio d’Israele, Moab sarà come Sodoma, e i figliuoli di Ammon come Gomorra: un luogo abbandonato alle lappole, e una salina, e un deserto in perpetuo; il rimanente del mio popolo li prederà, e il resto della mia nazione li possederà.</p>
-  </div>
-</div>
-<div class="vb" id="v2-10">
-  <span class="vn">10</span>
-  <div class="vt">
-    <p class="base base-c">Hoc eis eveniet pro superbia sua,  quia blasphemaverunt et magnificati sunt  super populum Domini exercituum.</p>
-    <p class="base base-p">Das soll ihnen begegnen für ihre Hoffart, daß sie des HERRN Zebaoth Volk geschmahet und sich gerhmet haben.</p>
-    <p class="tra">Questo avverrà loro per la loro alterezza; perciocchè han fatto vituperio al popolo del Signor degli eserciti, e si sono elevati contro a lui.</p>
-  </div>
-</div>
-<div class="vb" id="v2-11">
-  <span class="vn">11</span>
-  <div class="vt">
-    <p class="base base-c">Horribilis Dominus super eos,  et attenuabit omnes deos terr&Atilde;&#166; :  et adorabunt eum viri de loco suo,  omnes insul&Atilde;&#166; gentium.</p>
-    <p class="base base-p">Schrecklich wird der HERR über sie sein; denn er wird alle Gotter auf Erden vertilgen. Und sollen ihn anbeten alle Inseln unter den Heiden, ein jeglicher an seinem Ort.</p>
-    <p class="tra">Il Signore sarà terribile contro a loro; perciocchè egli farà venir meno tutti gl’iddii della terra; e ciascuno dal suo luogo l’adorerà, tutte le isole delle genti.</p>
-  </div>
-</div>
-<div class="vb" id="v2-12">
-  <span class="vn">12</span>
-  <div class="vt">
-    <p class="base base-c">Sed et vos, &Atilde;&#134;thiopes, interfecti gladio meo eritis.</p>
-    <p class="base base-p">Auch sollt ihr Mohren durch mein Schwert erschlagen werden.</p>
-    <p class="tra">Anche voi, Etiopi, sarete uccisi con la mia spada.</p>
-  </div>
-</div>
-<div class="vb" id="v2-13">
-  <span class="vn">13</span>
-  <div class="vt">
-    <p class="base base-c">Et extendet manum suam super aquilonem, et perdet Assur,  et ponet speciosam in solitudinem,  et in invium, et quasi desertum.</p>
-    <p class="base base-p">Und erwird seine Hand strecken über Mitternacht und Assur umbringen. Ninive wird er ode machen, drr wie eine Wste,</p>
-    <p class="tra">Egli stenderà eziandio le sua mano sopra il Settentrione, e distruggerà Assur, e metterà Ninive in desolazione, in luogo arido, come un deserto.</p>
-  </div>
-</div>
-<div class="vb" id="v2-14">
-  <span class="vn">14</span>
-  <div class="vt">
-    <p class="base base-c">Et accubabunt in medio ejus greges, omnes besti&Atilde;&#166; gentium ;  et onocrotalus et ericius in liminibus ejus morabuntur :  vox cantantis in fenestra,  corvus in superliminari,  quoniam attenuabo robur ejus.</p>
-    <p class="base base-p">daß drinnen sich lagern werden allerlei Tiere unter den Heiden; auch Rohrdommeln und Igel werden wohnen auf ihren Trmen und werden in den Fenstern singen und die Raben auf den Balken; denn die Zedernbretter sollen abgerissen werden.</p>
-    <p class="tra">E le gregge, tutte le bestie delle genti giaceranno nel mezzo di lei; e il pellicano, e la civetta albergheranno ne’ frontispizii de’ lor portali; canteranno con la lor voce sopra le finestre; desolazione sarà nelle soglie; perciocchè quella sarà spogliata de’ suoi cedri.</p>
-  </div>
-</div>
-<div class="vb" id="v2-15">
-  <span class="vn">15</span>
-  <div class="vt">
-    <p class="base base-c">H&Atilde;&#166;c est civitas gloriosa habitans in confidentia,  qu&Atilde;&#166; dicebat in corde suo :  Ego sum, et extra me non est alia amplius :  quomodo facta est in desertum cubile besti&Atilde;&#166; ?  omnis qui transit per eam sibilabit,  et movebit manum suam.</p>
-    <p class="base base-p">Das ist die frohliche Stadt, die so sicher wohnete und sprach in ihrem Herzen: Ich bin's, und keine mehr! Wie ist sie so wst worden, daß die Tiere drinnen wohnen! Und wer vorübergehet, pfeifet sie an und kiappet mit der Hand über sie.</p>
-    <p class="tra">Tal sarà la città trionfante, che abitava in sicurtà, che diceva nel cuor suo: Io son dessa, e non vi è altri che me. Come è ella stata ridotta in desolazione, in ricetto di bestie! chiunque passerà presso di essa zufolerà, e moverà la mano.</p>
-  </div>
-</div>
-</section>
+  <main class="content">
 
-<section class="chap" id="c3">
-  <div class="chhead">
-    <span class="chrom">III</span>
-    <span class="chlbl chlbl-c">Caput III</span>
-    <span class="chlbl chlbl-p">Caput III</span>
-  </div>
-<div class="vb" id="v3-1">
-  <span class="vn">1</span>
-  <div class="vt">
-    <p class="base base-c">Væ provocatrix, et redempta civitas, columba !</p>
-    <p class="base base-p">Wehe der scheulichen, unflatigen, tyrannischen Stadt!</p>
-    <p class="tra">Guai alla ribella, e contaminata; alla città d’oppressione!</p>
-  </div>
-</div>
-<div class="vb" id="v3-2">
-  <span class="vn">2</span>
-  <div class="vt">
-    <p class="base base-c">non audivit vocem,  et non suscepit disciplinam ;  in Domino non est confisa,  ad Deum suum non appropinquavit.</p>
-    <p class="base base-p">Sie will nicht gehorchen noch sich zuchtigen lassen; sie will auf den HERRN nicht trauen noch sich zu ihrem Gott halten.</p>
-    <p class="tra">Ella non ha ascoltata la voce, non ha ricevuta correzione, non si è confidata nel Signore, non si è accostata al suo Dio.</p>
-  </div>
-</div>
-<div class="vb" id="v3-3">
-  <span class="vn">3</span>
-  <div class="vt">
-    <p class="base base-c">Principes ejus in medio ejus quasi leones rugientes ;  judices ejus lupi vespere, non relinquebant in mane.</p>
-    <p class="base base-p">Ihre Fursten sind unter ihnen brullende Lowen und ihre Richter Wolfe am Abend, die nichts lassen bis auf den Morgen uberbleiben.</p>
-    <p class="tra">I suoi principi son dentro di lei leoni ruggenti; i suoi rettori son lupi della sera, che non han la mattina rotto alcun osso;</p>
-  </div>
-</div>
-<div class="vb" id="v3-4">
-  <span class="vn">4</span>
-  <div class="vt">
-    <p class="base base-c">Prophet&Atilde;&#166; ejus vesani, viri infideles ;  sacerdotes ejus polluerunt sanctum,  injuste egerunt contra legem.</p>
-    <p class="base base-p">Ihre Propheten sind leichtfertig und Verachter. Ihre Priester entweihen das Heiligtum und deuten das Gesetzfreventlich.</p>
-    <p class="tra">i suoi profeti son temerari, uomini dislealissimi; i suoi sacerdoti han contaminate le cose sante, han fatta violenza alla Legge.</p>
-  </div>
-</div>
-<div class="vb" id="v3-5">
-  <span class="vn">5</span>
-  <div class="vt">
-    <p class="base base-c">Dominus justus in medio ejus non faciet iniquitatem ;  mane, mane judicium suum dabit in lucem, et non abscondetur ;  nescivit autem iniquus confusionem.</p>
-    <p class="base base-p">Aber der HERR, der unter ihnen ist, lehret wohl recht und tut kein Arges. Er lat alle Morgen seine Rechte offentlich lehren und lat nicht ab; aber die bosen Leute wollen sich nicht schamen lernen.</p>
-    <p class="tra">Il Signore giusto è nel mezzo di lei; egli non fa alcuna iniquità; ogni mattina egli reca fuori alla luce il suo giudicio, egli non manca; ma il perverso non sa vergognarsi.</p>
-  </div>
-</div>
-<div class="vb" id="v3-6">
-  <span class="vn">6</span>
-  <div class="vt">
-    <p class="base base-c">Disperdidi gentes,  et dissipati sunt anguli earum ;  desertas feci vias eorum,  dum non est qui transeat ;  desolat&Atilde;&#166; sunt civitates eorum,  non remanente viro, neque ullo habitatore.</p>
-    <p class="base base-p">Darum will ich diese Leute ausrotten, ihre Schlosser verwsten und ihre Gassen so leer machen, daß niemand darauf gehen soil; ihre Stadte sollen zerstoret werden, daß niemand mehr da wohne.</p>
-    <p class="tra">Io ho sterminate le genti, le lor fortezze sono state distrutte; io ho deserte le loro strade, talchè non vi passa più alcuno; le lor città sono state desolate, talchè non vi è più alcuno, non vi è più abitatore.</p>
-  </div>
-</div>
-<div class="vb" id="v3-7">
-  <span class="vn">7</span>
-  <div class="vt">
-    <p class="base base-c">Dixi : Attamen timebis me,  suscipies disciplinam ;  et non peribit habitaculum ejus,  propter omnia in quibus visitavi eam :  verumtamen diluculo surgentes corruperunt omnes cogitationes suas.</p>
-    <p class="base base-p">Ich lie dir sagen: Mich sollst du fürchten und dich lassen zuchtigen, so wrde ihre Wohnung nicht ausgerottet und der keines kommen, damit ich sie heimsuchen werde. Aber sie sind fleiig, allerlei Bosheit zu ben.</p>
-    <p class="tra">Io diceva: Tu mi temerai pure, tu riceverai pur correzione; e la sua stanza non sarà distrutta, con tutta la punizione che io ho fatta di lei; ma essi si son levati da mattina, hanno corrotte tutte le loro opere.</p>
-  </div>
-</div>
-<div class="vb" id="v3-8">
-  <span class="vn">8</span>
-  <div class="vt">
-    <p class="base base-c">Quapropter exspecta me, dicit Dominus,  in die resurrectionis me&Atilde;&#166; in futurum :  quia judicium meum ut congregem gentes,  et colligam regna,  et effundam super eos indignationem meam,  omnem iram furoris mei :  in igne enim zeli mei devorabitur omnis terra.</p>
-    <p class="base base-p">Darum, spricht der HERR, musset ihr wiederum mein auch harren, bis ich mich aufmache zu seiner Zeit, da ich auch rechten werde und die Heiden versammeln und die Konigreiche zuhauf bringen, meinen Zorn ber sie zu schutten, ja, alien Zorn meines Grimmes. Denn alle Welt soll durch meines Eifers Feuer verzehret werden.</p>
-    <p class="tra">Tuttavolta, aspettatemi, dice il Signore, nel giorno che io mi leverò per ispogliare; conciossiachè il mio decreto sia di adunar le genti, di raccogliere i regni, per ispander sopra loro la mia indegnazione, tutto l’ardore della mia ira; perciocchè tutta la terra sarà consumata per lo fuoco della mia gelosia.</p>
-  </div>
-</div>
-<div class="vb" id="v3-9">
-  <span class="vn">9</span>
-  <div class="vt">
-    <p class="base base-c">Quia tunc reddam populis labium electum,  ut invocent omnes in nomine Domini,  et serviant ei humero uno.</p>
-    <p class="base base-p">Alsdann will ich den Vdlkern anders predigen lassen mit freundlichen Lippen, daß sie alle sollen des HERRN Namen anrufen und ihm dienen eintrachtiglich.</p>
-    <p class="tra">Perciocchè allora muterò le labbra de’ popoli in labbra pure; acciocchè tutti quanti invochino il Nome del Signore, e lo servano di pari consentimento.</p>
-  </div>
-</div>
-<div class="vb" id="v3-10">
-  <span class="vn">10</span>
-  <div class="vt">
-    <p class="base base-c">Ultra flumina &Atilde;&#134;thiopi&Atilde;&#166;, inde supplices mei ;  filii dispersorum meorum deferent munus mihi.</p>
-    <p class="base base-p">Man wird mir meine Anbeter, nämlich die Zerstreuten von jenseit des Wassers im Mohrenlande, herbringen zum Geschenk.</p>
-    <p class="tra">Di là da’ fiumi d’Etiopia i miei supplicanti, la moltitudine de’ miei dispersi, porteranno le mie offerte.</p>
-  </div>
-</div>
-<div class="vb" id="v3-11">
-  <span class="vn">11</span>
-  <div class="vt">
-    <p class="base base-c">In die illa non confunderis super cunctis adinventionibus tuis,  quibus pr&Atilde;&#166;varicata es in me,  quia tunc auferam de medio tui magniloquos superbi&Atilde;&#166; tu&Atilde;&#166;,  et non adjicies exaltari amplius in monte sancto meo.</p>
-    <p class="base base-p">Zur selbigen Zeit wirst du dich nicht mehr schamen alles deines Tuns, damit du wider mich bertreten hast; denn ich will die stolzen Heiligen von dir tun, daß du nicht mehr sollst dich erheben um meines heiligen Berges willen.</p>
-    <p class="tra">In quel giorno tu non sarai confusa per tutte le tue opere, con le quali hai misfatto contro a me; perciocchè allora io torrò del mezzo di te i tuoi superbi trionfanti, e tu non superbirai più per lo monte mio santo;</p>
-  </div>
-</div>
-<div class="vb" id="v3-12">
-  <span class="vn">12</span>
-  <div class="vt">
-    <p class="base base-c">Et derelinquam in medio tui populum pauperem et egenum :  et sperabunt in nomine Domini.</p>
-    <p class="base base-p">Ich will in dir lassen uberbleiben ein arm, gering Volk; die werden auf des HERRN Namen trauen.</p>
-    <p class="tra">e lascerò di resto dentro di te un popolo umile, e povero, il quale spererà nel Nome del Signore.</p>
-  </div>
-</div>
-<div class="vb" id="v3-13">
-  <span class="vn">13</span>
-  <div class="vt">
-    <p class="base base-c">Reliqui&Atilde;&#166; Isra&Atilde;&#171;l non facient iniquitatem,  nec loquentur mendacium,  et non invenietur in ore eorum lingua dolosa,  quoniam ipsi pascentur, et accubabunt,  et non erit qui exterreat.</p>
-    <p class="base base-p">Die Ubrigen in Israel werden kein Boses tun noch falsch reden, und man wird in ihrem Munde keine betrugliche Zunge finden, sondern sie sollen weiden und ruhen, ohne alle Furcht.</p>
-    <p class="tra">Il rimanente d’Israele non commetterà iniquità, e non proferirà menzogna, e non si troverà nella lor bocca lingua frodolente; perciocchè pastureranno, e giaceranno, e non vi sarà alcuno che li spaventi.</p>
-  </div>
-</div>
-<div class="vb" id="v3-14">
-  <span class="vn">14</span>
-  <div class="vt">
-    <p class="base base-c">Lauda, filia Sion ; jubila, Isra&Atilde;&#171;l :  l&Atilde;&#166;tare, et exsulta in omni corde, filia Jerusalem.</p>
-    <p class="base base-p">Jauchze, du Tochter Zion! Rufe, Israel! Freue dich und sei frohlich von ganzem Flerzen, du Tochter Jerusalem!</p>
-    <p class="tra">Giubila, figliuola di Sion; da’ voci d’allegrezza, o Israele; rallegrati, e festeggia di tutto il cuor tuo, figliuola di Gerusalemme.</p>
-  </div>
-</div>
-<div class="vb" id="v3-15">
-  <span class="vn">15</span>
-  <div class="vt">
-    <p class="base base-c">Abstulit Dominus judicium tuum ;  avertit inimicos tuos.  Rex Isra&Atilde;&#171;l Dominus in medio tui :  non timebis malum ultra.</p>
-    <p class="base base-p">Dennder HERR hat deine Strafe weggenommen und deine Feinde abgewendet. Der HERR, der Konig Israels, ist bei dir, dati du dich vor keinem Unglck mehr fürchten darfst.</p>
-    <p class="tra">Il Signore ha rimossi i tuoi giudicii, ha sgombrati i tuoi nemici; il Re d’Israele, il Signore, è dentro di te, tu non vedrai più il male.</p>
-  </div>
-</div>
-<div class="vb" id="v3-16">
-  <span class="vn">16</span>
-  <div class="vt">
-    <p class="base base-c">In die illa dicetur Jerusalem :  Noli timere ; Sion : Non dissolvantur manus tu&Atilde;&#166;.</p>
-    <p class="base base-p">Zurselbigen Zeitwird man sprechen zu Jerusalem: Furchte dich nicht! und zu Zion: La, deine Hande nicht la(2&amp;gt; werden!</p>
-    <p class="tra">In quel giorno si dirà a Gerusalemme: Non temere; Sion, non sieno le tue mani rimesse.</p>
-  </div>
-</div>
-<div class="vb" id="v3-17">
-  <span class="vn">17</span>
-  <div class="vt">
-    <p class="base base-c">Dominus Deus tuus in medio tui fortis, ipse salvabit :  gaudebit super te in l&Atilde;&#166;titia,  silebit in dilectione sua,  exsultabit super te in laude.</p>
-    <p class="base base-p">Denn der HERR, dein Gott, ist bei dir, ein starker Heiland; er wird sich ber dich freuen und dir freundlich sein und vergeben und wird über dir mit Schall frohlich sein.</p>
-    <p class="tra">Il Signore Iddio tuo, che è dentro di te, il Possente, ti salverà; egli gioirà di te di grande allegrezza: egli si acqueterà nel suo amore, egli festeggerà di te con grida di allegrezza.</p>
-  </div>
-</div>
-<div class="vb" id="v3-18">
-  <span class="vn">18</span>
-  <div class="vt">
-    <p class="base base-c">Nugas, qui a lege recesserant,  congregabo, quia ex te erant :  ut non ultra habeas super eis opprobrium.</p>
-    <p class="base base-p">Die, so durch Satzungen geangstet waren, will ich wegschaffen, dati sie von dir kommen, welche Satzungen ihre Last waren, davon sie Schmach hatten.</p>
-    <p class="tra">Io raccoglierò quelli che essendo dilungati da te, erano attristati per le solennità, di ciò che, in luogo di offerte, non vi era se non obbrobrio.</p>
-  </div>
-</div>
-<div class="vb" id="v3-19">
-  <span class="vn">19</span>
-  <div class="vt">
-    <p class="base base-c">Ecce ego interficiam omnes qui afflixerunt te in tempore illo :  et salvabo claudicantem,  et eam qu&Atilde;&#166; ejecta fuerat congregabo :  et ponam eos in laudem, et in nomen,  in omni terra confusionis eorum,</p>
-    <p class="base base-p">Siehe, ich will's mit alien denen ausmachen zur selbigen Zeit, die dich beleidigen; und will der Hinkenden helfen und die Verstoliene sammeln; und will sie zu Lob und Ehren machen in alien Landen, darin man sie verachtet.</p>
-    <p class="tra">Ecco, in quel tempo io fiaccherò tutti quelli che ti avranno afflitta; e salverò le zoppe, e raccoglierò le scacciate; e le porrò in lode, e in fama, in tutti i paesi dove saranno state in vituperio.</p>
-  </div>
-</div>
-<div class="vb" id="v3-20">
-  <span class="vn">20</span>
-  <div class="vt">
-    <p class="base base-c">in tempore illo quo adducam vos,  et in tempore quo congregabo vos.  Dabo enim vos in nomen,  et in laudem omnibus populis terr&Atilde;&#166;,  cum convertero captivitatem vestram coram oculis vestris,  dicit Dominus.</p>
-    <p class="base base-p">Zurselbigen Zeit will ich euch hereinbringen und euch zur selbigen Zeit versammeln. Denn ich will euch zu Lob und Ehren machen unter alien Volkern auf Erden, wenn ich euer Gefangnis wenden werde vor euren Augen, spricht der HERR.</p>
-    <p class="tra">In quel tempo io vi ricondurrò, e in quello stesso tempo vi raccoglierò; perciocchè io vi metterò in fama, e in lode, fra tutti i popoli della terra; quando io vi avrò tratti di cattività, davanti agli occhi vostri, ha detto il Signore.</p>
-  </div>
-</div>
-</section>
+  <section class="chapter" id="ch1">
+    <div class="chapter-marker">
+      <span class="ch-roman">I</span>
+      <span class="ch-label">Caput 1</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v1-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Verbum Domini quod factum est ad Sophoniam, filium Chusi, filii Godoliæ, filii Amariæ, filii Ezeciæ, in diebus Josiæ, filii Amon, regis Judæ.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">La parola del Signore, che fu indirizzata a Sofonia, figliuolo di Cusi, figliuolo di Ghedalia, figliuolo di Amaria, figliuolo di Ezechia, a’ dì di Giosia, figliuolo di Amon, re di Giuda.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Congregans congregabo omnia a facie terræ, dicit Dominus :</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">IO farò del tutto perire ogni cosa d’in su la faccia della terra, dice il Signore.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">congregans hominem et pecus,  congregans volatilia cæli et pisces maris :  et ruinæ impiorum erunt,  et disperdam homines a facie terræ, dicit Dominus.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Io farò perir gli uomini, e gli animali; io farò perir gli uccelli del cielo, e i pesci del mare; e gl’intoppi, insieme con gli empi; e sterminerò gli uomini d’in su la faccia della terra, dice il Signore.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et extendam manum meam super Judam  et super omnes habitantes Jerusalem :  et disperdam de loco hoc reliquias Baal,  et nomina ædituorum cum sacerdotibus ;</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">E stenderò la mia mano sopra Giuda, e sopra tutti gli abitanti di Gerusalemme; e sterminerò di questo luogo il rimanente de’ Baali, il nome de’ Camari, insieme co’ sacerdoti.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">et eos qui adorant super tecta militiam cæli,  et adorant et jurant in Domino,  et jurant in Melchom ;</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">E quelli parimente che adorano l’esercito del cielo sopra i tetti; e quelli ancora che adorano il Signore, e gli giurano; e quelli che giurano per Malcam;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">et qui avertuntur de post tergum Domini,  et qui non quæsierunt Dominum,  nec investigaverunt eum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">e quelli che si ritraggono indietro dal Signore, e quelli che non cercano il Signore, e non lo richieggono.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Silete a facie Domini Dei,  quia juxta est dies Domini :  quia præparavit Dominus hostiam ;  sanctificavit vocatos suos.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Silenzio, per la presenza del Signore Iddio! conciossiachè il giorno del Signore sia vicino; perciocchè il Signore ha apparecchiato un sacrificio, egli ha ordinati i suoi convitati.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et erit : in die hostiæ Domini,  visitabo super principes,  et super filios regis,  et super omnes qui induti sunt veste peregrina ;</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Ed avverrà, nel giorno del sacrificio del Signore, che io farò punizione de’ principi, e de’ figliuoli del re, e di tutti quelli che si vestono di vestimenti strani.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">et visitabo super omnem qui arroganter ingreditur super limen in die illa,  qui complent domum Domini Dei sui iniquitate et dolo.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">In quel giorno ancora farò punizione di tutti coloro che saltano sopra la soglia; che riempiono le case de’ lor signori di rapina, e di frode.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et erit in die illa, dicit Dominus,  vox clamoris a porta piscium,  et ululatus a Secunda,  et contritio magna a collibus.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">E in quel giorno, dice il Signore, vi sarà una voce di grido verso la porta de’ pesci, ed un urlo verso la seconda porta, ed un gran fracasso verso i colli.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ululate, habitatores Pilæ :  conticuit omnis populus Chanaan,  disperierunt omnes involuti argento.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Urlate, abitanti del Mortaio; perciocchè tutto il popolo de’ mercatanti è perito, tutti i portatori di danari sono sterminati.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et erit in tempore illo :  scrutabor Jerusalem in lucernis,  et visitabo super viros defixos in fæcibus suis,  qui dicunt in cordibus suis :  Non faciet bene Dominus, et non faciet male.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Ed avverrà in quel tempo, che io investigherò Gerusalemme con delle lucerne, e farò punizione degli uomini che si sono rappresi sopra le lor fecce; che dicono nel cuor loro: Il Signore non fa nè bene nè male.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et erit fortitudo eorum in direptionem,  et domus eorum in desertum :  et ædificabunt domos, et non habitabunt ;  et plantabunt vineas, et non bibent vinum earum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">E le lor facoltà saranno in preda, e le lor case in desolazione; ed avranno edificate delle case, e non vi abiteranno; e piantate delle vigne, e non ne berranno il vino.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Juxta est dies Domini magnus :  juxta est, et velox nimis.  Vox diei Domini amara :  tribulabitur ibi fortis.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Il gran giorno del Signore è vicino; egli è vicino, e si affretta molto; la voce del giorno del Signore sarà di persone che grideranno amaramente.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Dies iræ dies illa,  dies tribulationis et angustiæ,  dies calamitatis et miseriæ,  dies tenebrarum et caliginis,  dies nebulæ et turbinis,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">I capitani sono già là. Quel giorno sarà giorno d’indegnazione; giorno di distretta, e d’angoscia; giorno di tumulto, e di fracasso; giorno di tenebre, e di caligine; giorno di nebbia, e di folta oscurità;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">dies tubæ et clangoris super civitates munitas,  et super angulos excelsos.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">giorno di tromba, e di stormo, sopra le città forti, e sopra gli alti cantoni.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et tribulabo homines, et ambulabunt ut cæci,  quia Domino peccaverunt ;  et effundetur sanguis eorum sicut humus,  et corpora eorum sicut stercora.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Ed io metterò gli uomini in distretta, e cammineranno come ciechi; perciocchè han peccato contro al Signore; e il lor sangue sarà sparso come polvere, e la lor carne come sterchi.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sed et argentum eorum et aurum eorum non poterit liberare eos  in die iræ Domini :  in igne zeli ejus devorabitur omnis terra,  quia consummationem cum festinatione faciet  cunctis habitantibus terram.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Nè il loro argento, nè il loro oro, non li potrà scampare nel giorno dell’indegnazione del Signore; e tutto il paese sarà consumato per lo fuoco della sua gelosia; perciocchè egli farà una finale, ed anche affrettata distruzione di tutti gli abitanti del paese.</div>
+      </div>
+    </div>
+  </section>
 
-</main>
+  <section class="chapter" id="ch2">
+    <div class="chapter-marker">
+      <span class="ch-roman">II</span>
+      <span class="ch-label">Caput 2</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v2-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Convenite, congregamini, gens non amabilis,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">ADUNATEVI come della stoppia; adunatevi, o nazione rincrescevole.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">priusquam pariat jussio quasi pulverem transeuntem diem,  antequam veniat super vos ira furoris Domini,  antequam veniat super vos dies indignationis Domini.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Avanti che il decreto partorisca, e il giorno sia passato a guisa di pula; avanti che venga sopra voi l’ardor dell’ira del Signore; avanti che venga sopra voi il giorno dell’ira del Signore;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quærite Dominum, omnes mansueti terræ,  qui judicium ejus estis operati ;  quærite justum, quærite mansuetum,  si quomodo abscondamini in die furoris Domini.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">voi, tutti i mansueti del paese, che fate ciò ch’egli ordina, cercate il Signore; cercate giustizia, procacciate mansuetudine; forse sarete nascosti nel giorno dell’ira del Signore.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quia Gaza destructa erit,  et Ascalon in desertum :  Azotum in meridie ejicient,  et Accaron eradicabitur.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Perciocchè Gaza sarà abbandonata, ed Aschelon sarà messa in desolazione; Asdod sarà scacciata in pien mezzodì, ed Ecron sarà diradicato.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Væ qui habitatis funiculum maris, gens perditorum !  verbum Domini super vos, Chanaan, terra Philisthinorum ;  et disperdam te, ita ut non sit inhabitator.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Guai a quelli che abitano nella contrada della marine, alla nazione de’ Cheretei! la parola del Signore è contro a voi, o Cananei, o paese de’ Filistei; ed io ti distruggerò, talchè in te non abiterà più alcuno.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et erit funiculus maris requies pastorum, et caulæ pecorum ;</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">E la contrada della marina sarà tutta mandre, e capanne di pastori, e stabbi di gregge.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">et erit funiculus ejus qui remanserit de domo Juda : ibi pascentur,  in domibus Ascalonis ad vesperam requiescent,  quia visitabit eos Dominus Deus eorum,  et avertet captivitatem eorum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">E quella contrada sarà per lo rimanente della casa di Giuda; essi pastureranno in que’ luoghi; la sera giaceranno nelle case di Aschelon; perciocchè il Signore Iddio loro li visiterà, e li ritrarrà di cattività.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Audivi opprobrium Moab,  et blasphemias filiorum Ammon,  quæ exprobraverunt populo meo,  et magnificati sunt super terminos eorum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Io ho udito il vituperio di Moab, e gli oltraggi de’ figliuoli di Ammon, i quali han fatto vituperio al mio popolo, e si sono ingranditi sopra i lor confini.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Propterea vivo ego, dicit Dominus exercituum, Deus Israël,  quia Moab ut Sodoma erit,  et filii Ammon quasi Gomorrha :  siccitas spinarum, et acervi salis,  et desertum usque in æternum :  reliquiæ populi mei diripient eos,  et residui gentis meæ possidebunt illos.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Perciò, come io vivo, dice il Signor degli eserciti, l’Iddio d’Israele, Moab sarà come Sodoma, e i figliuoli di Ammon come Gomorra: un luogo abbandonato alle lappole, e una salina, e un deserto in perpetuo; il rimanente del mio popolo li prederà, e il resto della mia nazione li possederà.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hoc eis eveniet pro superbia sua,  quia blasphemaverunt et magnificati sunt  super populum Domini exercituum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Questo avverrà loro per la loro alterezza; perciocchè han fatto vituperio al popolo del Signor degli eserciti, e si sono elevati contro a lui.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">Horribilis Dominus super eos,  et attenuabit omnes deos terræ :  et adorabunt eum viri de loco suo,  omnes insulæ gentium.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Il Signore sarà terribile contro a loro; perciocchè egli farà venir meno tutti gl’iddii della terra; e ciascuno dal suo luogo l’adorerà, tutte le isole delle genti.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Sed et vos, Æthiopes, interfecti gladio meo eritis.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Anche voi, Etiopi, sarete uccisi con la mia spada.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et extendet manum suam super aquilonem, et perdet Assur,  et ponet speciosam in solitudinem,  et in invium, et quasi desertum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Egli stenderà eziandio le sua mano sopra il Settentrione, e distruggerà Assur, e metterà Ninive in desolazione, in luogo arido, come un deserto.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et accubabunt in medio ejus greges, omnes bestiæ gentium ;  et onocrotalus et ericius in liminibus ejus morabuntur :  vox cantantis in fenestra,  corvus in superliminari,  quoniam attenuabo robur ejus.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">E le gregge, tutte le bestie delle genti giaceranno nel mezzo di lei; e il pellicano, e la civetta albergheranno ne’ frontispizii de’ lor portali; canteranno con la lor voce sopra le finestre; desolazione sarà nelle soglie; perciocchè quella sarà spogliata de’ suoi cedri.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v2-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Hæc est civitas gloriosa habitans in confidentia,  quæ dicebat in corde suo :  Ego sum, et extra me non est alia amplius :  quomodo facta est in desertum cubile bestiæ ?  omnis qui transit per eam sibilabit,  et movebit manum suam.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Tal sarà la città trionfante, che abitava in sicurtà, che diceva nel cuor suo: Io son dessa, e non vi è altri che me. Come è ella stata ridotta in desolazione, in ricetto di bestie! chiunque passerà presso di essa zufolerà, e moverà la mano.</div>
+      </div>
+    </div>
+  </section>
 
-<nav class="bnav">
-  <a href="035-hab.html">← Habacuc</a>
-  <a href="../index.html" class="center"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 14" width="13" height="18" style="vertical-align:middle;stroke:currentColor;stroke-width:1.8;fill:none;stroke-linecap:square"><path d="M5,0V14M0,4H10"/></svg> &nbsp; Inhaltsverzeichnis</a>
-  <a href="037-hag.html">Aggaeus →</a>
-</nav>
+  <section class="chapter" id="ch3">
+    <div class="chapter-marker">
+      <span class="ch-roman">III</span>
+      <span class="ch-label">Caput 3</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v3-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Væ provocatrix, et redempta civitas, columba !</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">GUAI alla ribella, e contaminata; alla città d’oppressione!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">non audivit vocem,  et non suscepit disciplinam ;  in Domino non est confisa,  ad Deum suum non appropinquavit.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Ella non ha ascoltata la voce, non ha ricevuta correzione, non si è confidata nel Signore, non si è accostata al suo Dio.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Principes ejus in medio ejus quasi leones rugientes ;  judices ejus lupi vespere, non relinquebant in mane.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">I suoi principi son dentro di lei leoni ruggenti; i suoi rettori son lupi della sera, che non han la mattina rotto alcun osso;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Prophetæ ejus vesani, viri infideles ;  sacerdotes ejus polluerunt sanctum,  injuste egerunt contra legem.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">i suoi profeti son temerari, uomini dislealissimi; i suoi sacerdoti han contaminate le cose sante, han fatta violenza alla Legge.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Dominus justus in medio ejus non faciet iniquitatem ;  mane, mane judicium suum dabit in lucem, et non abscondetur ;  nescivit autem iniquus confusionem.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Il Signore giusto è nel mezzo di lei; egli non fa alcuna iniquità; ogni mattina egli reca fuori alla luce il suo giudicio, egli non manca; ma il perverso non sa vergognarsi.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Disperdidi gentes,  et dissipati sunt anguli earum ;  desertas feci vias eorum,  dum non est qui transeat ;  desolatæ sunt civitates eorum,  non remanente viro, neque ullo habitatore.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Io ho sterminate le genti, le lor fortezze sono state distrutte; io ho deserte le loro strade, talchè non vi passa più alcuno; le lor città sono state desolate, talchè non vi è più alcuno, non vi è più abitatore.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Dixi : Attamen timebis me,  suscipies disciplinam ;  et non peribit habitaculum ejus,  propter omnia in quibus visitavi eam :  verumtamen diluculo surgentes corruperunt omnes cogitationes suas.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Io diceva: Tu mi temerai pure, tu riceverai pur correzione; e la sua stanza non sarà distrutta, con tutta la punizione che io ho fatta di lei; ma essi si son levati da mattina, hanno corrotte tutte le loro opere.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quapropter exspecta me, dicit Dominus,  in die resurrectionis meæ in futurum :  quia judicium meum ut congregem gentes,  et colligam regna,  et effundam super eos indignationem meam,  omnem iram furoris mei :  in igne enim zeli mei devorabitur omnis terra.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Tuttavolta, aspettatemi, dice il Signore, nel giorno che io mi leverò per ispogliare; conciossiachè il mio decreto sia di adunar le genti, di raccogliere i regni, per ispander sopra loro la mia indegnazione, tutto l’ardore della mia ira; perciocchè tutta la terra sarà consumata per lo fuoco della mia gelosia.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quia tunc reddam populis labium electum,  ut invocent omnes in nomine Domini,  et serviant ei humero uno.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Perciocchè allora muterò le labbra de’ popoli in labbra pure; acciocchè tutti quanti invochino il Nome del Signore, e lo servano di pari consentimento.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ultra flumina Æthiopiæ, inde supplices mei ;  filii dispersorum meorum deferent munus mihi.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Di là da’ fiumi d’Etiopia i miei supplicanti, la moltitudine de’ miei dispersi, porteranno le mie offerte.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">In die illa non confunderis super cunctis adinventionibus tuis,  quibus prævaricata es in me,  quia tunc auferam de medio tui magniloquos superbiæ tuæ,  et non adjicies exaltari amplius in monte sancto meo.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">In quel giorno tu non sarai confusa per tutte le tue opere, con le quali hai misfatto contro a me; perciocchè allora io torrò del mezzo di te i tuoi superbi trionfanti, e tu non superbirai più per lo monte mio santo;</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et derelinquam in medio tui populum pauperem et egenum :  et sperabunt in nomine Domini.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">e lascerò di resto dentro di te un popolo umile, e povero, il quale spererà nel Nome del Signore.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Reliquiæ Israël non facient iniquitatem,  nec loquentur mendacium,  et non invenietur in ore eorum lingua dolosa,  quoniam ipsi pascentur, et accubabunt,  et non erit qui exterreat.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Il rimanente d’Israele non commetterà iniquità, e non proferirà menzogna, e non si troverà nella lor bocca lingua frodolente; perciocchè pastureranno, e giaceranno, e non vi sarà alcuno che li spaventi.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">Lauda, filia Sion ; jubila, Israël :  lætare, et exsulta in omni corde, filia Jerusalem.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Giubila, figliuola di Sion; da’ voci d’allegrezza, o Israele; rallegrati, e festeggia di tutto il cuor tuo, figliuola di Gerusalemme.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Abstulit Dominus judicium tuum ;  avertit inimicos tuos.  Rex Israël Dominus in medio tui :  non timebis malum ultra.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Il Signore ha rimossi i tuoi giudicii, ha sgombrati i tuoi nemici; il Re d’Israele, il Signore, è dentro di te, tu non vedrai più il male.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">In die illa dicetur Jerusalem :  Noli timere ; Sion : Non dissolvantur manus tuæ.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">In quel giorno si dirà a Gerusalemme: Non temere; Sion, non sieno le tue mani rimesse.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Dominus Deus tuus in medio tui fortis, ipse salvabit :  gaudebit super te in lætitia,  silebit in dilectione sua,  exsultabit super te in laude.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Il Signore Iddio tuo, che è dentro di te, il Possente, ti salverà; egli gioirà di te di grande allegrezza: egli si acqueterà nel suo amore, egli festeggerà di te con grida di allegrezza.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Nugas, qui a lege recesserant,  congregabo, quia ex te erant :  ut non ultra habeas super eis opprobrium.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Io raccoglierò quelli che essendo dilungati da te, erano attristati per le solennità, di ciò che, in luogo di offerte, non vi era se non obbrobrio.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ecce ego interficiam omnes qui afflixerunt te in tempore illo :  et salvabo claudicantem,  et eam quæ ejecta fuerat congregabo :  et ponam eos in laudem, et in nomen,  in omni terra confusionis eorum,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Ecco, in quel tempo io fiaccherò tutti quelli che ti avranno afflitta; e salverò le zoppe, e raccoglierò le scacciate; e le porrò in lode, e in fama, in tutti i paesi dove saranno state in vituperio.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v3-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">in tempore illo quo adducam vos,  et in tempore quo congregabo vos.  Dabo enim vos in nomen,  et in laudem omnibus populis terræ,  cum convertero captivitatem vestram coram oculis vestris,  dicit Dominus.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">In quel tempo io vi ricondurrò, e in quello stesso tempo vi raccoglierò; perciocchè io vi metterò in fama, e in lode, fra tutti i popoli della terra; quando io vi avrò tratti di cattività, davanti agli occhi vostri, ha detto il Signore.</div>
+      </div>
+    </div>
+  </section>
+  </main>
 
-<script>
-(function(){
-  var c = localStorage.getItem('biblia_conf') || 'protestant';
-  document.body.dataset.conf = c;
-})();
-</script>
-<script>
-(function(){
-  var BM_KEY = 'KX_bookmark';
-  var toast, toastTimer;
-  function showToast(txt) {
-    if (!toast) {
-      toast = document.createElement('div');
-      toast.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:rgba(86,24,31,.95);color:#f1d7c8;font-family:sans-serif;font-size:.78rem;letter-spacing:.08em;padding:9px 20px;border-radius:10px;border:1px solid #9c4a44;pointer-events:none;z-index:999;transition:opacity .3s,transform .3s;box-shadow:0 12px 24px rgba(0,0,0,.24)';
-      document.body.appendChild(toast);
-    }
-    toast.textContent = txt;
-    toast.style.opacity = '1';
-    toast.style.transform = 'translateX(-50%) translateY(0)';
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(function(){ toast.style.opacity = '0'; toast.style.transform = 'translateX(-50%) translateY(6px)'; }, 1800);
-  }
-  document.addEventListener('click', function(e) {
-    var el = e.target;
-    while (el && el !== document.body) {
-      if (el.matches && el.matches('.verse, .vb')) break;
-      el = el.parentElement;
-    }
-    if (!el || el === document.body) return;
-    if (e.target.tagName === 'A') return;
-    var id = el.id;
-    if (!id) return;
-    var data = { url: location.pathname + '#' + id, title: document.title, id: id, ts: Date.now() };
-    try { localStorage.setItem(BM_KEY, JSON.stringify(data)); } catch(_){}
-    showToast('\u2746 Lesezeichen gesetzt');
-  });
-})();
-</script>
+  <nav class="book-nav">
+    <a href="035-hab.html">← Habacuc</a>
+    <span class="center">Sophonias · Italiano</span>
+    <a href="037-hag.html">Aggaeus →</a>
+  </nav>
+
+  <footer class="page-footer">
+    BIBLIA CATHOLICA INTERLINEARIS &nbsp;·&nbsp; Vulgata Clementina &amp; Giovanni Diodati (1649)
+    &nbsp;·&nbsp; Gemeinfreie Texte / Public Domain
+  </footer>
+
 </body>
 </html>

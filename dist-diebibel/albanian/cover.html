@@ -1,109 +1,36 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="sq">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Bibla e Shenjtë · Shqip</title>
+<title>Bibla e Shenjtï¿½ &middot; Die Heilige Bibel</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 html,body{min-height:100vh;background:#2a0810;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;padding:20px 0;}
+body::before{content:'';position:fixed;inset:16px;border:1px solid rgba(200,160,48,.3);pointer-events:none;z-index:5;}
+body::after{content:'';position:fixed;inset:28px;border:1px solid rgba(200,160,48,.12);pointer-events:none;z-index:5;}
 .book{width:min(500px,90vw);position:relative;z-index:1;display:block;text-decoration:none;cursor:pointer;}
-.book img{width:100%;height:auto;display:block;box-shadow:0 20px 60px rgba(0,0,0,.7);}
+.book img{width:100%;height:auto;display:block;box-shadow:none;}
 .btn-wrap{text-align:center;position:relative;z-index:1;}
 .btn{display:inline-block;padding:13px 56px;color:#EDD882;text-decoration:none;font-family:'Cinzel',serif;font-size:.82rem;font-weight:600;letter-spacing:.28em;border:2px solid rgba(200,160,48,.8);background:#5a0818;transition:all .22s;}
 .btn:hover{background:#7a1028;border-color:#EDD882;}
-
-.frame-top,.frame-bot{position:fixed;left:0;right:0;height:19px;background:#2a0810;pointer-events:none;z-index:10;}
-.frame-top{top:0;border-bottom:1px solid rgba(200,160,48,.65);}
-.frame-bot{bottom:0;border-top:1px solid rgba(200,160,48,.65);}
+.corner{position:fixed;width:56px;height:56px;pointer-events:none;z-index:6;}
+.c-tl{top:14px;left:14px;border-top:2px solid rgba(200,160,48,.55);border-left:2px solid rgba(200,160,48,.55);}
+.c-tr{top:14px;right:14px;border-top:2px solid rgba(200,160,48,.55);border-right:2px solid rgba(200,160,48,.55);}
+.c-bl{bottom:14px;left:14px;border-bottom:2px solid rgba(200,160,48,.55);border-left:2px solid rgba(200,160,48,.55);}
+.c-br{bottom:14px;right:14px;border-bottom:2px solid rgba(200,160,48,.55);border-right:2px solid rgba(200,160,48,.55);}
 </style>
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><path d='M32,4V60M12,18H52' stroke='%23C8A030' stroke-width='8' fill='none' stroke-linecap='square'/></svg>">
-
 </head>
 <body>
-<div class="frame-top"></div>
-<div class="frame-bot"></div>
 <a class="book" href="index.html">
-  <img src="../../../Die Heilige Bibel - Rot.png" alt="Bibla e Shenjtë">
+  <img src="../../../Die Heilige Bibel - Rot.png" alt="Bibla e Shenjtï¿½">
 </a>
-
-
-
-
-
-<style>
-.verse-tools {
-  display: inline-flex;
-  gap: 6px;
-  margin-left: 8px;
-  font-size: 0.75rem;
-}
-.verse-copy-btn, .verse-share-btn {
-  padding: 3px 8px;
-  border: 1px solid #b8962e;
-  background: rgba(184, 150, 46, 0.08);
-  color: #b8962e;
-  border-radius: 2px;
-  cursor: pointer;
-  font-family: inherit;
-  transition: all 0.2s;
-}
-.verse-copy-btn:hover, .verse-share-btn:hover {
-  background: rgba(184, 150, 46, 0.2);
-}
-</style>
-
-<script>
-window.bibleTools = {
-  getReference(el) {
-    const verseEl = el.closest('[data-verse]') || el.closest('.verse') || el.parentElement;
-    const ref = verseEl?.getAttribute('data-verse') || '';
-    return ref;
-  },
-  
-  copyVerse(el) {
-    const verseEl = el.closest('[data-verse]') || el.closest('.verse') || el.parentElement;
-    if (!verseEl) return alert('Vers nicht gefunden');
-    const text = verseEl.textContent.trim();
-    const reference = window.bibleTools.getReference(verseEl) || 'Bible Verse';
-    const fullText = text + '\n\n— ' + reference + '\n' + window.location.href;
-    navigator.clipboard.writeText(fullText).then(() => {
-      el.textContent = '✓ Copied';
-      setTimeout(() => { el.textContent = '📋 Copy'; }, 2000);
-    }).catch(e => alert('Error: ' + e.message));
-  },
-  
-  shareVerse(el) {
-    const verseEl = el.closest('[data-verse]') || el.closest('.verse') || el.parentElement;
-    if (!verseEl) return alert('Vers nicht gefunden');
-    const text = verseEl.textContent.trim();
-    const reference = window.bibleTools.getReference(verseEl) || 'Bible';
-    const url = window.location.href;
-    
-    if (navigator.share) {
-      navigator.share({ text: text, title: reference, url: url }).catch(e => {});
-    } else {
-      const subject = 'Bible - ' + reference;
-      const body = encodeURIComponent(text + '\n\n— ' + reference + '\n' + url);
-      window.open('mailto:?subject=' + encodeURIComponent(subject) + '&body=' + body);
-    }
-  }
-};
-
-// Inject buttons into verses
-document.addEventListener('DOMContentLoaded', function() {
-  document.querySelectorAll('[data-verse], .verse, .vrs').forEach(v => {
-    if (v.querySelector('.verse-tools')) return;
-    const tools = document.createElement('span');
-    tools.className = 'verse-tools';
-    tools.innerHTML = '<button class="verse-copy-btn" onclick="window.bibleTools.copyVerse(this)">📋 Copy</button>' +
-                      '<button class="verse-share-btn" onclick="window.bibleTools.shareVerse(this)">↗ Share</button>';
-    v.appendChild(tools);
-  });
-});
-</script>
+<div class="corner c-tl"></div>
+<div class="corner c-tr"></div>
+<div class="corner c-bl"></div>
+<div class="corner c-br"></div>
 </body>
 </html>

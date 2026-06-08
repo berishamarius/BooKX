@@ -1,427 +1,407 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Abdias · Italiano · Biblia Catholica</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
-<style>
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
-body{
-  background:#2C0810;
-  background-image:radial-gradient(ellipse at 50% 20%,#4A1020 0%,#1A0407 100%);
-  font-family:'EB Garamond',serif;
-  color:#E8C547;
-  font-size:17px;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Abdias · Italiano · Biblia Catholica</title>
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
+
+:root {
+  --gold:        #C8A96E;
+  --gold-light:  #EDD58A;
+  --gold-dark:   #8B6914;
+  --navy:        #1A1F3A;
+  --navy-mid:    #252B4A;
+  --navy-light:  #2E3560;
+  --parchment:   #F5E9CC;
+  --parchment-d: #EDD9A3;
+  --cream:       #FDF6E3;
+  --latin-color: #6B1E0E;
+  --trans-color: #0F1D2E;
+  --border:      rgba(200,169,110,.35);
+  --font-title:  'Cinzel Decorative', 'Cinzel', Georgia, serif;
+  --font-sub:    'Cinzel', Georgia, serif;
+  --font-body:   'EB Garamond', Georgia, serif;
 }
-.bhead{
-  background:#1A0407;
-  padding:36px 28px 28px;
-  text-align:center;
-  border-bottom:4px solid #B8962E;
-  position:relative;overflow:hidden;
+
+*,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+html { font-size:16px; scroll-behavior:smooth; }
+body { background:var(--cream); color:var(--trans-color); font-family:var(--font-body); }
+
+/* ── NAV ─────────────────────────────────────────────── */
+.nav-bar {
+  background:var(--navy); padding:10px 28px;
+  display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  border-bottom:2px solid var(--gold);
+  position:sticky; top:0; z-index:100;
+  box-shadow:0 3px 12px rgba(0,0,0,.45);
 }
-.bhead::before{content:'';position:absolute;inset:14px;border:none;pointer-events:none;}
-.bhead::after{content:'';position:absolute;inset:22px;border:none;pointer-events:none;}
-.btestament{
-  display:inline-block;
-  border:1px solid rgba(200,160,48,.32);
-  color:rgba(200,160,48,.52);
-  font-family:'Cinzel',serif;font-size:.55rem;
-  letter-spacing:.3em;padding:4px 18px;
-  border-radius:2px;margin-bottom:16px;
-  position:relative;
+.nav-bar a {
+  color:var(--gold); text-decoration:none;
+  font-family:var(--font-sub); font-size:.75rem; letter-spacing:.05em;
+  transition:color .15s;
 }
-.blatin{
-  display:none;
-  font-family:'UnifrakturMaguntia',cursive;
-  font-size:clamp(1.9rem,7vw,3.4rem);
-  color:#EDD882;
-  text-shadow:0 3px 20px rgba(0,0,0,.55);
-  letter-spacing:.04em;position:relative;
+.nav-bar a:hover { color:var(--gold-light); }
+.nav-bar .home { font-weight:700; font-size:.82rem; }
+.nav-bar .spacer { flex:1; }
+.nav-bar .pos { color:rgba(200,169,110,.45); font-size:.7rem; font-family:var(--font-sub); }
+
+/* ── BUCHKOPF ────────────────────────────────────────── */
+.book-header {
+  background:linear-gradient(160deg,var(--navy) 0%,var(--navy-mid) 55%,var(--navy-light) 100%);
+  padding:44px 36px 34px; text-align:center;
+  border-bottom:4px solid var(--gold);
+  position:relative; overflow:hidden;
 }
-body:not([data-conf]) .blatin-c,
-body[data-conf="catholic"] .blatin-c{display:block;}
-body[data-conf="protestant"] .blatin-p{display:block;}
-.btrans{
-  font-family:'Cinzel',serif;
-  font-size:.88rem;
-  color:#C8A030;margin-top:10px;
-  letter-spacing:.16em;position:relative;
-}
-.bmeta{
-  font-family:'Cinzel',serif;font-size:.62rem;
-  color:rgba(200,160,48,.4);margin-top:6px;
-  letter-spacing:.08em;position:relative;
-}
-.content{
-  max-width:960px;
-  margin:36px auto 36px;
-  padding:48px 72px 100px;
-  background:#1a0407;
+.book-header::before {
+  content:'';
+  position:absolute; inset:0;
   background-image:
-    radial-gradient(ellipse at top left,rgba(184,150,46,.06) 0%,transparent 55%),
-    radial-gradient(ellipse at bottom right,rgba(184,150,46,.05) 0%,transparent 55%);
-  box-shadow:0 8px 80px rgba(0,0,0,.55),0 2px 12px rgba(0,0,0,.35),inset 0 0 0 1px rgba(184,150,46,.18);
-  border-left:4px solid #B8962E;
-  border-right:4px solid #B8962E;
-  border-top:2px solid rgba(184,150,46,.4);
-  border-bottom:2px solid rgba(184,150,46,.4);
-  position:relative;overflow:clip;
-}
-.content::before{
-  content:'';position:absolute;inset:12px;
-  border:1px solid rgba(184,150,46,.08);
+    repeating-linear-gradient( 45deg,transparent,transparent 30px,rgba(200,169,110,.038) 30px,rgba(200,169,110,.038) 31px),
+    repeating-linear-gradient(-45deg,transparent,transparent 30px,rgba(200,169,110,.038) 30px,rgba(200,169,110,.038) 31px);
   pointer-events:none;
 }
-.chap{margin-top:0;}
-.chhead{
-  text-align:center;padding:40px 0 20px;margin-bottom:16px;position:relative;
+.testament-badge {
+  display:inline-block;
+  border:1px solid rgba(200,169,110,.4); color:rgba(200,169,110,.65);
+  font-family:var(--font-sub); font-size:.62rem; letter-spacing:.25em;
+  padding:4px 14px; border-radius:2px; margin-bottom:14px; position:relative;
 }
-.chhead::before{
-  content:'* * *';display:block;font-size:.7rem;
-  color:rgba(184,150,46,.45);letter-spacing:.35em;margin-bottom:16px;
+.book-name-latin {
+  font-family:var(--font-title); font-size:3rem; color:var(--gold-light);
+  text-shadow:0 3px 18px rgba(0,0,0,.55); letter-spacing:.08em; position:relative;
 }
-.chhead::after{
-  content:'';display:block;width:200px;height:1px;margin:14px auto 0;
-  background:linear-gradient(to right,transparent,#B8962E,transparent);
+.book-name-trans {
+  font-family:var(--font-sub); font-size:1.1rem; color:var(--gold);
+  margin-top:8px; letter-spacing:.12em; position:relative;
 }
-.chrom{
-  font-family:'Cinzel Decorative',serif;font-size:4rem;color:#8B6914;
-  display:block;text-shadow:0 2px 18px rgba(184,150,46,.2);line-height:1;
+.book-meta {
+  font-size:.74rem; color:rgba(200,169,110,.5); margin-top:7px;
+  font-family:var(--font-sub); letter-spacing:.07em; position:relative;
 }
-.chlbl{
-  font-family:'Cinzel',serif;font-size:.58rem;
-  color:rgba(184,150,46,.42);letter-spacing:.32em;
-  display:none;margin-top:8px;
-}
-body:not([data-conf]) .chlbl-c,
-body[data-conf="catholic"] .chlbl-c{display:block;}
-body[data-conf="protestant"] .chlbl-p{display:block;}
-.vb{
-  display:flex;padding:20px 6px;
-  border-bottom:1px solid rgba(184,150,46,.12);
-  background:none;border-radius:2px;transition:background .15s;
-}
-.vb:hover{background:rgba(184,150,46,.04);}
-.vn{
-  flex-shrink:0;width:38px;padding-top:4px;
-  font-family:'Cinzel',serif;font-size:.56rem;
-  color:rgba(184,150,46,.52);text-align:right;
-  padding-right:12px;line-height:2.4;
-}
-.vt{flex:1;padding:0 20px 0 4px;}
-.base{
-  font-family:'EB Garamond',serif;font-size:1.2rem;font-weight:500;
-  line-height:2.1;color:#E8C547;display:none;
-}
-body:not([data-conf]) .base-c,
-body[data-conf="catholic"] .base-c{display:block;}
-body[data-conf="protestant"] .base-p{display:block;}
-.tra{
-  font-family:'EB Garamond',serif;font-style:italic;
-  font-size:.93rem;color:#F5F2EA;line-height:1.82;
-  margin-top:6px;display:block;
-}
-.vb.first .base-c::first-letter,
-.vb.first .base-p::first-letter{
-  font-family:'Cinzel Decorative',serif;font-size:4em;
-  float:left;line-height:.7;padding-right:.08em;margin-top:.07em;
-  color:#B8962E;text-shadow:1px 2px 6px rgba(0,0,0,.12);
-}
-body[data-conf="protestant"] .vb.first .base-p::first-letter{
-  font-family:'UnifrakturMaguntia',cursive;font-size:4em;
-  float:left;line-height:.7;padding-right:.08em;margin-top:.07em;
-  color:#B8962E;text-shadow:1px 2px 6px rgba(0,0,0,.12);
-}
-.bnav{
-  display:flex;justify-content:space-between;align-items:center;
-  background:#2C0810;border-top:3px solid #B8962E;
-  padding:12px 24px;gap:12px;
-}
-.bnav a,.bnav .dim{
-  color:#C8A030;text-decoration:none;
-  font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:.07em;
-  padding:6px 16px;
-  border:1px solid rgba(200,160,48,.28);
-  border-radius:2px;transition:background .18s;
-}
-.bnav a:hover{background:rgba(200,160,48,.12);}
-.bnav .dim{color:rgba(200,160,48,.2);border-color:rgba(200,160,48,.1);}
-.bnav .center{
-  font-family:'Cinzel',serif;font-size:.68rem;
-  color:rgba(200,160,48,.65);text-align:center;
-  letter-spacing:.06em;text-decoration:none;
-  border:1px solid rgba(200,160,48,.28);border-radius:2px;
-  padding:6px 20px;transition:background .18s;
-}
-.bnav .center:hover{background:rgba(200,160,48,.1);}
-body[data-conf="protestant"] .base-p{
-  font-family:'UnifrakturMaguntia',cursive;
-  font-size:1.08rem;letter-spacing:.01em;
-}
-@media print{
-  .bnav{display:none;}
-  .bhead{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-  .vb{break-inside:avoid;}
-}
-@media(max-width:600px){
-  .blatin{font-size:1.8rem;}
-  .base{font-size:1rem;}
-  .tra{font-size:.84rem;}
-  .content{width:100%;max-width:none;padding:14px 12px 44px;margin:0;border-left:none;border-right:none;border-top:none;border-bottom:none;border-radius:0;box-shadow:none;overflow:visible;}
-  .chrom{font-size:1.8rem;}
-  .content::before{display:none;}
-  .vb{padding:16px 2px;}
-  .vn{width:28px;padding-right:8px;}
-}
-.b-wm{position:sticky;top:calc(50vh - 37.5vmin);width:50vmin;height:75vmin;margin:0 auto -75vmin;display:block;pointer-events:none;z-index:0;user-select:none;}
-.b-wm svg{width:100%;height:auto;display:block;}
-.b-wm path{fill:none;stroke:rgba(184,150,46,.06);stroke-width:1.5;stroke-linecap:square;}
 
+/* ── ORNAMENT-TRENNLINIE ─────────────────────────────── */
+.ornament-bar {
+  text-align:center; padding:16px 0 4px;
+  color:var(--gold); font-size:1.1rem; letter-spacing:.7em;
+}
 
-body[data-conf="protestant"] .blatin-p{font-family:'Cinzel',serif!important;font-size:clamp(1.4rem,5vw,2.4rem)!important;letter-spacing:.14em;}
+/* ── HAUPT-CONTAINER ─────────────────────────────────── */
+.content { max-width:960px; margin:0 auto; padding:0 24px 80px; }
+
+/* ── KAPITEL-MARKER ──────────────────────────────────── */
+.chapter-marker {
+  display:flex; align-items:center; gap:16px;
+  padding:28px 6px 12px; margin-bottom:4px;
+  border-bottom:2px solid var(--border);
+}
+.ch-roman {
+  font-family:var(--font-title); font-size:2.2rem; color:var(--gold);
+  min-width:56px; text-align:center; flex-shrink:0;
+  text-shadow:0 1px 8px rgba(200,169,110,.3);
+}
+.ch-label {
+  font-family:var(--font-sub); font-size:.72rem; color:rgba(200,169,110,.6);
+  letter-spacing:.22em; text-transform:uppercase;
+}
+
+/* ── VERS-BLOCK ──────────────────────────────────────── */
+.verse-block {
+  display:flex; gap:0; border-bottom:1px solid rgba(200,169,110,.15);
+}
+.verse-block:nth-child(odd)  { background:var(--cream); }
+.verse-block:nth-child(even) { background:var(--parchment); }
+
+.verse-num-col {
+  flex-shrink:0; width:42px; padding:16px 6px 16px 0; text-align:right;
+}
+.verse-num {
+  display:inline-block; width:28px; height:28px; border-radius:50%;
+  background:var(--gold-dark); color:var(--cream);
+  font-family:var(--font-sub); font-size:.64rem; font-weight:700;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 1px 5px rgba(0,0,0,.25);
+}
+
+.verse-texts { flex:1; padding:16px 16px 18px 8px; }
+
+/* ── LATEINISCHER TEXT (oben / primär) ───────────────── */
+.latin {
+  font-family:var(--font-body); font-size:1.12rem; line-height:1.9;
+  color:var(--latin-color); font-weight:500;
+  border-left:3px solid var(--gold); padding-left:12px;
+  margin-bottom:8px;
+}
+
+/* ── ÜBERSETZUNGS-TEXT (unten / sekundär) ────────────── */
+.trans-label {
+  font-family:var(--font-sub); font-size:.6rem; letter-spacing:.17em;
+  text-transform:uppercase; color:var(--gold-dark); margin-bottom:5px; opacity:.78;
+}
+.trans {
+  font-family:var(--font-body); font-size:1.04rem; line-height:1.85;
+  color:var(--trans-color); font-style:italic;
+  padding-left:15px;
+}
+
+/* Erste Vers jedes Kapitels: Drop-Cap */
+.verse-block:first-of-type .latin::first-letter {
+  font-size:4.2em; float:left; line-height:.72;
+  padding-right:.08em; margin-top:.06em;
+  font-family:var(--font-title); color:var(--gold);
+}
+
+/* ── NAVIGATION ZWISCHEN BÜCHERN ─────────────────────── */
+.book-nav {
+  display:flex; justify-content:space-between; align-items:center;
+  background:var(--navy); border-top:3px solid var(--gold);
+  padding:12px 26px; gap:12px;
+}
+.book-nav a {
+  color:var(--gold); text-decoration:none;
+  font-family:var(--font-sub); font-size:.78rem; letter-spacing:.07em;
+  padding:6px 14px; border:1px solid rgba(200,169,110,.3); border-radius:3px;
+  transition:background .18s;
+}
+.book-nav a:hover { background:rgba(200,169,110,.15); }
+.book-nav .center {
+  font-family:var(--font-sub); font-size:.7rem; color:rgba(200,169,110,.55);
+  letter-spacing:.1em; text-align:center;
+}
+
+/* ── FUßZEILE ────────────────────────────────────────── */
+.page-footer {
+  background:var(--navy); border-top:2px solid rgba(200,169,110,.3);
+  padding:18px 28px; text-align:center;
+  color:rgba(200,169,110,.45); font-family:var(--font-sub);
+  font-size:.68rem; letter-spacing:.1em;
+}
+
+/* ── DRUCK ───────────────────────────────────────────── */
+@media print {
+  .nav-bar, .book-nav { display:none; }
+  .verse-block { break-inside:avoid; }
+  .book-header { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+}
+
+/* ── MOBIL ───────────────────────────────────────────── */
+@media (max-width:640px) {
+  .book-name-latin { font-size:2.1rem; }
+  .ch-roman { font-size:1.6rem; }
+  .latin { font-size:.98rem; }
+  .trans { font-size:.93rem; }
+  .content { padding:0 12px 60px; }
+}
 </style>
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><path d='M32,4V60M12,18H52' stroke='%23C8A030' stroke-width='8' fill='none' stroke-linecap='square'/></svg>">
-<link rel="apple-touch-icon" sizes="180x180" href="../../Die%20Heilige%20Bibel%20rot%20Icon.png">
-<meta name="theme-color" content="#2a0810">
 </head>
 <body>
 
-<header class="bhead">
-  <div class="btestament">VETUS TESTAMENTUM</div>
-  <div class="blatin blatin-c">ABDIAS</div>
-  <div class="blatin blatin-p">ABDIA</div>
-  <div class="btrans">Obadiah &#160;&#183;&#160; Italiano</div>
-  <div class="bmeta">1 Capita · 21 Versus</div>
-</header>
+  <nav class="nav-bar">
+    <a class="home" href="../../../index.html">✞ BIBLIA CATHOLICA</a>
+    <a href="../index.html">🇮🇹 Italiano</a>
+    <span class="spacer"></span>
+    <span class="pos">031 / 066</span>
+  </nav>
 
-<main class="content">
-<div class="b-wm"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 14"><path d="M5,0V14M0,4H10"/></svg></div>
+  <header class="book-header">
+    <div class="testament-badge">VETUS TESTAMENTUM</div>
+    <div class="book-name-latin">ABDIAS</div>
+    <div class="book-name-trans">Obadiah</div>
+    <div class="book-meta">Vulgata Clementina · Giovanni Diodati (1649) · 1 Capita · 21 Versus</div>
+  </header>
 
-<section class="chap" id="c1">
-  <div class="chhead">
-    <span class="chrom">I</span>
-    <span class="chlbl chlbl-c">Caput I</span>
-    <span class="chlbl chlbl-p">Caput I</span>
-  </div>
-<div class="vb first" id="v1-1">
-  <span class="vn">1</span>
-  <div class="vt">
-    <p class="base base-c">Visio Abdiæ.   Hæc dicit Dominus Deus ad Edom :  Auditum audivimus a Domino,  et legatum ad gentes misit :  surgite, et consurgamus adversus eum in prælium.</p>
-    <p class="base base-p">Dies ist das Gesicht Obadjas. So spricht der Herr HERR von Edom: Wir haben vom HERRN gehoret, daß eine Botschaft unter die Heiden gesandt sei: Wohlauf, und lat uns wider sie streiten!</p>
-    <p class="tra">La visione di Abdia. COSÌ ha detto il Signore Iddio ad Edom: Noi abbiamo udito un grido da parte del Signore, ed un ambasciatore è stato mandato fra le genti, dicendo: Movetevi, e leviamoci i contro a lei in battaglia.</p>
-  </div>
-</div>
-<div class="vb" id="v1-2">
-  <span class="vn">2</span>
-  <div class="vt">
-    <p class="base base-c">Ecce parvulum dedi te in gentibus :  contemptibilis tu es valde.</p>
-    <p class="base base-p">Siehe, ich habe dich gering gemacht unter den Heiden und sehr verachtet.</p>
-    <p class="tra">Ecco, io ti ho fatto piccolo fra le genti; tu sei grandemente sprezzato.</p>
-  </div>
-</div>
-<div class="vb" id="v1-3">
-  <span class="vn">3</span>
-  <div class="vt">
-    <p class="base base-c">Superbia cordis tui extulit te,  habitantem in scissuris petrarum,  exaltantem solium tuum ;  qui dicis in corde tuo :  Quis detrahet me in terram ?</p>
-    <p class="base base-p">Der Hochmut deines Herzens hat dich betrogen, weil du in der Felsen Klften wohnest, in deinen hohen Schlossern, und sprichst in deinem Herzen: Werwill mich zu Boden stoen?</p>
-    <p class="tra">La superbia del cuor tuo ti ha ingannato, o tu che abiti nelle fessure delle rocce, che son l’alta tua stanza; che dici nel cuor tuo: Chi mi trarrà giù in terra?</p>
-  </div>
-</div>
-<div class="vb" id="v1-4">
-  <span class="vn">4</span>
-  <div class="vt">
-    <p class="base base-c">Si exaltatus fueris ut aquila,  et si inter sidera posueris nidum tuum,  inde detraham te, dicit Dominus.</p>
-    <p class="base base-p">Wenn du denn gleich in die Hohe fuhrestwie ein Adler und machtest dein Nest zwischen den Sternen, dennoch will ich dich von dannen heruntersturzen, spricht der HERR.</p>
-    <p class="tra">Avvegnachè tu avessi innalzato il tuo nido come l’aquila, e l’avessi posto fra le stelle; pur ti trarrò giù di là, dice il Signore.</p>
-  </div>
-</div>
-<div class="vb" id="v1-5">
-  <span class="vn">5</span>
-  <div class="vt">
-    <p class="base base-c">Si fures introissent ad te,  si latrones per noctem,  quomodo conticuisses ?  nonne furati essent sufficientia sibi ?  Si vindemiatores introissent ad te,  numquid saltem racemum reliquissent tibi ?</p>
-    <p class="base base-p">Wenn Diebe oder Verstorer zu Nacht über dich kommen werden, wie sollst du so zunichte werden! Ja, sie sollen genug stehlen; und wenn die Weinleser über dich kommen, so sollen sie dir kein Nachlesen uberbleiben lassen.</p>
-    <p class="tra">Se quelli che son venuti a te fosser ladri, o ladroni notturni, come saresti stato distrutto? non avrebbero essi rubato quanto fosse lor bastato? se de’ vendemmiatori fosser venuti a te, non ti avrebbero essi lasciati alcuni grappoli?</p>
-  </div>
-</div>
-<div class="vb" id="v1-6">
-  <span class="vn">6</span>
-  <div class="vt">
-    <p class="base base-c">Quomodo scrutati sunt Esau ;  investigaverunt abscondita ejus ?</p>
-    <p class="base base-p">Wie sollen sie den Esau ausforschen und seine Schatze suchen!</p>
-    <p class="tra">Come sono stati investigati, e ricercati i nascondimenti di Esaù!</p>
-  </div>
-</div>
-<div class="vb" id="v1-7">
-  <span class="vn">7</span>
-  <div class="vt">
-    <p class="base base-c">Usque ad terminum emiserunt te :  omnes viri f&Aring;&#147;deris tui illuserunt tibi :  invaluerunt adversum te viri pacis tu&Atilde;&#166;,  qui comedunt tecum, ponent insidias subter te ;  non est prudentia in eo.</p>
-    <p class="base base-p">Alle deine eigenen Bundesgenossen werden dich zum Lande hinausstoen; die, Leute, auf die du deinen Trost setzest, werden dich betrugen und uberwaltigen; die dein Brot essen, werden dich verraten, ehe du es merken wirst.</p>
-    <p class="tra">Tutti i tuoi collegati ti hanno accompagnato fino a’ confini; quelli co’ quali tu vivevi in buona pace ti hanno ingannato, e ti hanno vinto; hanno messo il tuo pane per una trappola sotto di te; non vi è in lui alcuno intendimento.</p>
-  </div>
-</div>
-<div class="vb" id="v1-8">
-  <span class="vn">8</span>
-  <div class="vt">
-    <p class="base base-c">Numquid non in die illa, dicit Dominus,  perdam sapientes de Idum&Atilde;&#166;a,  et prudentiam de monte Esau ?</p>
-    <p class="base base-p">Was gilt's? spricht der HERR, ich will zur selbigen Zeit die Weisen zu Edom zunichte machen und die Klugheit auf dem Gebirge Esau.</p>
-    <p class="tra">In quel giorno, dice il Signore, non farò io perir di Edom i savi, e del monte di Esaù l’intendimento?</p>
-  </div>
-</div>
-<div class="vb" id="v1-9">
-  <span class="vn">9</span>
-  <div class="vt">
-    <p class="base base-c">Et timebunt fortes tui a meridie,  ut intereat vir de monte Esau.</p>
-    <p class="base base-p">Denn deine Starken zu Theman sollen zagen, auf daß sie alle auf dem Gebirge Esau durch den Mord ausgerottet werden</p>
-    <p class="tra">I tuoi uomini prodi saranno eziandio spaventati, o Teman; acciocchè sia sterminato ogni uomo dal monte di Esaù, per uccisione.</p>
-  </div>
-</div>
-<div class="vb" id="v1-10">
-  <span class="vn">10</span>
-  <div class="vt">
-    <p class="base base-c">Propter interfectionem,  et propter iniquitatem in fratrem tuum Jacob,  operiet te confusio, et peribis in &Atilde;&#166;ternum.</p>
-    <p class="base base-p">um des Frevels willen, an deinem Brüder Jakob begangen.</p>
-    <p class="tra">Per la violenza fatta al tuo fratello Giacobbe, vergogna ti coprirà, e sarai sterminato in perpetuo.</p>
-  </div>
-</div>
-<div class="vb" id="v1-11">
-  <span class="vn">11</span>
-  <div class="vt">
-    <p class="base base-c">In die cum stares adversus eum,  quando capiebant alieni exercitum ejus,  et extranei ingrediebantur portas ejus,  et super Jerusalem mittebant sortem,  tu quoque eras quasi unus ex eis.</p>
-    <p class="base base-p">Zu der Zeit, da du wider ihn stundest, da die Fremden sein Heer gefangen wegfuhreten und Auslander zu seinen Toren einzogen und über Jerusalem das Los warfen, da warest du gleich wie derselbigen einer. Darum sollst du zu alien Schanden werden und ewiglich ausgerottet sein.</p>
-    <p class="tra">Nel giorno, che tu gli stavi dirincontro; nel giorno, che gli stranieri menavano in cattività il suo esercito, e i forestieri entravano dentro alle sue porte, e traevano le sorti sopra Gerusalemme, anche tu eri come l’un di loro.</p>
-  </div>
-</div>
-<div class="vb" id="v1-12">
-  <span class="vn">12</span>
-  <div class="vt">
-    <p class="base base-c">Et non despicies in die fratris tui,  in die peregrinationis ejus :  et non l&Atilde;&#166;taberis super filios Juda  in die perditionis eorum :  et non magnificabis os tuum  in die angusti&Atilde;&#166;.</p>
-    <p class="base base-p">Du sollst nicht mehr so deine Lustsehen an deinem Brüder zur Zeit seines Elendes und sollst dich nicht freuen über die Kinder Juda zur Zeit ihres Jammers und sollst mit deinem Maul nicht so stolz reden zur Zeit ihrer Angst.</p>
-    <p class="tra">Or non istare a riguardare, nel giorno del tuo fratello, nel giorno ch’egli è condotto in terra strana; e non rallegrarti de’ figliuoli di Giuda, nel giorno che periscono; e non allargar la bocca, nel giorno della lor distretta.</p>
-  </div>
-</div>
-<div class="vb" id="v1-13">
-  <span class="vn">13</span>
-  <div class="vt">
-    <p class="base base-c">Neque ingredieris portam populi mei  in die ruin&Atilde;&#166; eorum ;  neque despicies et tu in malis ejus  in die vastitatis illius.  Et non emitteris adversus exercitum ejus  in die vastitatis illius,</p>
-    <p class="base base-p">Du sollst nicht zum Tor meines Volks einziehen zur Zeit ihres Jammers; du sollst nicht deine Lust sehen an ihrem Ungluck zur Zeit ihres Jammers; du sollst nicht wider sein Heer schicken zur Zeit seines Jammers;</p>
-    <p class="tra">Non entrar nella porta del mio popolo, nel giorno della loro calamità; e non istare ancora tu a riguardare il suo male, nel giorno della sua calamità; e non metter le mani sopra i suoi beni, nel giorno della sua calamità.</p>
-  </div>
-</div>
-<div class="vb" id="v1-14">
-  <span class="vn">14</span>
-  <div class="vt">
-    <p class="base base-c">neque stabis in exitibus  ut interficias eos qui fugerint,  et non concludes reliquos ejus  in die tribulationis.</p>
-    <p class="base base-p">du sollst nicht stehen an den Wegscheiden, seine Entronnenen zu morden; du sollst seine Ubrigen nicht verraten zur Zeit der Angst.</p>
-    <p class="tra">E non istartene in su le forche delle strade, per ammazzar quelli d’esso che si salvano; e non mettere in mano de’ nemici quelli d’esso che scampano, nel giorno della distretta.</p>
-  </div>
-</div>
-<div class="vb" id="v1-15">
-  <span class="vn">15</span>
-  <div class="vt">
-    <p class="base base-c">Quoniam juxta est dies Domini super omnes gentes :  sicut fecisti, fiet tibi ;  retributionem tuam convertet in caput tuum.</p>
-    <p class="base base-p">Denn der Tag des HERRN istnahe über alle Heiden. Wie du getan hast, soll dirwiedergeschehen, und wie du verdienet hast, so soll dir's wieder auf deinen Kopf kommen.</p>
-    <p class="tra">Perciocchè il giorno del Signore contro a tutte le nazioni è vicino; come tu hai fatto, così sarà fatto a te; la tua retribuzione ti ritornerà in sul capo.</p>
-  </div>
-</div>
-<div class="vb" id="v1-16">
-  <span class="vn">16</span>
-  <div class="vt">
-    <p class="base base-c">Quomodo enim bibistis super montem sanctum meum,  bibent omnes gentes jugiter :  et bibent, et absorbebunt,  et erunt quasi non sint.</p>
-    <p class="base base-p">Denn wie ihr auf meinem heiligen Berge getrunken habt, so sollen alle Heiden taglich trinken; ja, sie sollen's aussaufen und verschlingen, daß es sei, ais ware nie nichts dagewesen.</p>
-    <p class="tra">Perciocchè, siccome voi avete bevuto in sul monte mio santo, così berranno tutte le nazioni continuamente; anzi berranno, e inghiottiranno, e saranno come se non fossero state.</p>
-  </div>
-</div>
-<div class="vb" id="v1-17">
-  <span class="vn">17</span>
-  <div class="vt">
-    <p class="base base-c">Et in monte Sion erit salvatio, et erit sanctus ;   et possidebit domus Jacob eos qui se possederant.</p>
-    <p class="base base-p">Aber auf dem Berge Zion sollen noch etliche errettet werden, die sollen Heiligtum sein; und das Haus Jakob soll seine Besitzer besitzen.</p>
-    <p class="tra">Ma nel monte di Sion vi sarà qualche scampo, e quello sarà santo; e la casa di Giacobbe possederà le sue possessioni.</p>
-  </div>
-</div>
-<div class="vb" id="v1-18">
-  <span class="vn">18</span>
-  <div class="vt">
-    <p class="base base-c">Et erit domus Jacob ignis,  et domus Joseph flamma,  et domus Esau stipula :  et succendentur in eis, et devorabunt eos,  et non erunt reliqui&Atilde;&#166; domus Esau,  quia Dominus locutus est.</p>
-    <p class="base base-p">Und das Haus Jakob soll ein Feuer werden und das Haus Joseph eine Flamme, aber das Haus Esau Stroh. Das werden sie anzunden und verzehren, daß dem Hause Esau nichts berbleibe; denn der HERR hat's geredet.</p>
-    <p class="tra">E la casa di Giacobbe sarà un fuoco, e la casa di Giuseppe una fiamma; e la casa di Esaù sarà come stoppia; essi si apprenderanno in loro, e li consumeranno; e la casa di Esaù non avrà alcuno che resti in vita; perciocchè il Signore ha parlato.</p>
-  </div>
-</div>
-<div class="vb" id="v1-19">
-  <span class="vn">19</span>
-  <div class="vt">
-    <p class="base base-c">Et h&Atilde;&#166;reditabunt hi, qui ad austrum sunt, montem Esau,  et qui in campestribus, Philisthiim :  et possidebunt regionem Ephraim et regionem Samari&Atilde;&#166;,  et Benjamin possidebit Galaad.</p>
-    <p class="base base-p">Und die gegen Mittag werden das Gebirge Esau und die in Grunden werden die Philister besitzen; ja, sie werden das Feld Ephraim und das Feld Samaria besitzen und Benjamin das Gebirge Gilead.</p>
-    <p class="tra">E possederanno la parte meridionale col monte di Esaù; e il piano col paese de’ Filistei; possederanno ancora il territorio di Efraim, e il territorio di Samaria; e Beniamino con Galaad.</p>
-  </div>
-</div>
-<div class="vb" id="v1-20">
-  <span class="vn">20</span>
-  <div class="vt">
-    <p class="base base-c">Et transmigratio exercitus hujus filiorum Isra&Atilde;&#171;l,  omnia loca Chanan&Atilde;&#166;orum usque ad Sareptam :  et transmigratio Jerusalem, qu&Atilde;&#166; in Bosphoro est,  possidebit civitates austri.</p>
-    <p class="base base-p">Und die Vertriebenen dieses Heers der Kinder Israel, so unter den Kanaanitern bis gen Zarpath sind, und die Vertriebenen der Stadt Jerusalem, die zu Sepharad sind, werden die Stadte gegen Mittag besitzen.</p>
-    <p class="tra">E questo esercito de’ figliuoli d’Israele, che è stato menato in cattività, possederà quello ch’era de’ Cananei, fino in Sarepta; e que’ di Gerusalemme, che sono stati menati in cattività, che sono in Sefarad, possederanno le città del Mezzodì.</p>
-  </div>
-</div>
-<div class="vb" id="v1-21">
-  <span class="vn">21</span>
-  <div class="vt">
-    <p class="base base-c">Et ascendent salvatores in montem Sion judicare montem Esau,  et erit Domino regnum.</p>
-    <p class="base base-p">Und werden Heilande heraufkommen auf den Berg Zion, das Gebirge Esau zu richten. Also wird das Konigreich des HERRN sein.</p>
-    <p class="tra">E de’ liberatori saliranno nel monte di Sion, per giudicare il monte di Esaù; e il regno sarà del Signore.</p>
-  </div>
-</div>
-</section>
+  <div class="ornament-bar">❧ ✦ ❧ ✦ ❧</div>
 
-</main>
+  <main class="content">
 
-<nav class="bnav">
-  <a href="030-amo.html">← Amos</a>
-  <a href="../index.html" class="center"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 14" width="13" height="18" style="vertical-align:middle;stroke:currentColor;stroke-width:1.8;fill:none;stroke-linecap:square"><path d="M5,0V14M0,4H10"/></svg> &nbsp; Inhaltsverzeichnis</a>
-  <a href="032-jon.html">Ionas →</a>
-</nav>
+  <section class="chapter" id="ch1">
+    <div class="chapter-marker">
+      <span class="ch-roman">I</span>
+      <span class="ch-label">Caput 1</span>
+    </div>
+    
+    <div class="verse-block chapter-first-verse" id="v1-1">
+      <div class="verse-num-col"><div class="verse-num">1</div></div>
+      <div class="verse-texts">
+        <div class="latin">Visio Abdiæ.   Hæc dicit Dominus Deus ad Edom :  Auditum audivimus a Domino,  et legatum ad gentes misit :  surgite, et consurgamus adversus eum in prælium.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">La visione di Abdia. COSÌ ha detto il Signore Iddio ad Edom: Noi abbiamo udito un grido da parte del Signore, ed un ambasciatore è stato mandato fra le genti, dicendo: Movetevi, e leviamoci i contro a lei in battaglia.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-2">
+      <div class="verse-num-col"><div class="verse-num">2</div></div>
+      <div class="verse-texts">
+        <div class="latin">Ecce parvulum dedi te in gentibus :  contemptibilis tu es valde.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Ecco, io ti ho fatto piccolo fra le genti; tu sei grandemente sprezzato.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-3">
+      <div class="verse-num-col"><div class="verse-num">3</div></div>
+      <div class="verse-texts">
+        <div class="latin">Superbia cordis tui extulit te,  habitantem in scissuris petrarum,  exaltantem solium tuum ;  qui dicis in corde tuo :  Quis detrahet me in terram ?</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">La superbia del cuor tuo ti ha ingannato, o tu che abiti nelle fessure delle rocce, che son l’alta tua stanza; che dici nel cuor tuo: Chi mi trarrà giù in terra?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-4">
+      <div class="verse-num-col"><div class="verse-num">4</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si exaltatus fueris ut aquila,  et si inter sidera posueris nidum tuum,  inde detraham te, dicit Dominus.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Avvegnachè tu avessi innalzato il tuo nido come l’aquila, e l’avessi posto fra le stelle; pur ti trarrò giù di là, dice il Signore.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-5">
+      <div class="verse-num-col"><div class="verse-num">5</div></div>
+      <div class="verse-texts">
+        <div class="latin">Si fures introissent ad te,  si latrones per noctem,  quomodo conticuisses ?  nonne furati essent sufficientia sibi ?  Si vindemiatores introissent ad te,  numquid saltem racemum reliquissent tibi ?</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Se quelli che son venuti a te fosser ladri, o ladroni notturni, come saresti stato distrutto? non avrebbero essi rubato quanto fosse lor bastato? se de’ vendemmiatori fosser venuti a te, non ti avrebbero essi lasciati alcuni grappoli?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-6">
+      <div class="verse-num-col"><div class="verse-num">6</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quomodo scrutati sunt Esau ;  investigaverunt abscondita ejus ?</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Come sono stati investigati, e ricercati i nascondimenti di Esaù!</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-7">
+      <div class="verse-num-col"><div class="verse-num">7</div></div>
+      <div class="verse-texts">
+        <div class="latin">Usque ad terminum emiserunt te :  omnes viri fœderis tui illuserunt tibi :  invaluerunt adversum te viri pacis tuæ,  qui comedunt tecum, ponent insidias subter te ;  non est prudentia in eo.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Tutti i tuoi collegati ti hanno accompagnato fino a’ confini; quelli co’ quali tu vivevi in buona pace ti hanno ingannato, e ti hanno vinto; hanno messo il tuo pane per una trappola sotto di te; non vi è in lui alcuno intendimento.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-8">
+      <div class="verse-num-col"><div class="verse-num">8</div></div>
+      <div class="verse-texts">
+        <div class="latin">Numquid non in die illa, dicit Dominus,  perdam sapientes de Idumæa,  et prudentiam de monte Esau ?</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">In quel giorno, dice il Signore, non farò io perir di Edom i savi, e del monte di Esaù l’intendimento?</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-9">
+      <div class="verse-num-col"><div class="verse-num">9</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et timebunt fortes tui a meridie,  ut intereat vir de monte Esau.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">I tuoi uomini prodi saranno eziandio spaventati, o Teman; acciocchè sia sterminato ogni uomo dal monte di Esaù, per uccisione.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-10">
+      <div class="verse-num-col"><div class="verse-num">10</div></div>
+      <div class="verse-texts">
+        <div class="latin">Propter interfectionem,  et propter iniquitatem in fratrem tuum Jacob,  operiet te confusio, et peribis in æternum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Per la violenza fatta al tuo fratello Giacobbe, vergogna ti coprirà, e sarai sterminato in perpetuo.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-11">
+      <div class="verse-num-col"><div class="verse-num">11</div></div>
+      <div class="verse-texts">
+        <div class="latin">In die cum stares adversus eum,  quando capiebant alieni exercitum ejus,  et extranei ingrediebantur portas ejus,  et super Jerusalem mittebant sortem,  tu quoque eras quasi unus ex eis.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Nel giorno, che tu gli stavi dirincontro; nel giorno, che gli stranieri menavano in cattività il suo esercito, e i forestieri entravano dentro alle sue porte, e traevano le sorti sopra Gerusalemme, anche tu eri come l’un di loro.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-12">
+      <div class="verse-num-col"><div class="verse-num">12</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et non despicies in die fratris tui,  in die peregrinationis ejus :  et non lætaberis super filios Juda  in die perditionis eorum :  et non magnificabis os tuum  in die angustiæ.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Or non istare a riguardare, nel giorno del tuo fratello, nel giorno ch’egli è condotto in terra strana; e non rallegrarti de’ figliuoli di Giuda, nel giorno che periscono; e non allargar la bocca, nel giorno della lor distretta.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-13">
+      <div class="verse-num-col"><div class="verse-num">13</div></div>
+      <div class="verse-texts">
+        <div class="latin">Neque ingredieris portam populi mei  in die ruinæ eorum ;  neque despicies et tu in malis ejus  in die vastitatis illius.  Et non emitteris adversus exercitum ejus  in die vastitatis illius,</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Non entrar nella porta del mio popolo, nel giorno della loro calamità; e non istare ancora tu a riguardare il suo male, nel giorno della sua calamità; e non metter le mani sopra i suoi beni, nel giorno della sua calamità.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-14">
+      <div class="verse-num-col"><div class="verse-num">14</div></div>
+      <div class="verse-texts">
+        <div class="latin">neque stabis in exitibus  ut interficias eos qui fugerint,  et non concludes reliquos ejus  in die tribulationis.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">E non istartene in su le forche delle strade, per ammazzar quelli d’esso che si salvano; e non mettere in mano de’ nemici quelli d’esso che scampano, nel giorno della distretta.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-15">
+      <div class="verse-num-col"><div class="verse-num">15</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quoniam juxta est dies Domini super omnes gentes :  sicut fecisti, fiet tibi ;  retributionem tuam convertet in caput tuum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Perciocchè il giorno del Signore contro a tutte le nazioni è vicino; come tu hai fatto, così sarà fatto a te; la tua retribuzione ti ritornerà in sul capo.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-16">
+      <div class="verse-num-col"><div class="verse-num">16</div></div>
+      <div class="verse-texts">
+        <div class="latin">Quomodo enim bibistis super montem sanctum meum,  bibent omnes gentes jugiter :  et bibent, et absorbebunt,  et erunt quasi non sint.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Perciocchè, siccome voi avete bevuto in sul monte mio santo, così berranno tutte le nazioni continuamente; anzi berranno, e inghiottiranno, e saranno come se non fossero state.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-17">
+      <div class="verse-num-col"><div class="verse-num">17</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et in monte Sion erit salvatio, et erit sanctus ;   et possidebit domus Jacob eos qui se possederant.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">Ma nel monte di Sion vi sarà qualche scampo, e quello sarà santo; e la casa di Giacobbe possederà le sue possessioni.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-18">
+      <div class="verse-num-col"><div class="verse-num">18</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et erit domus Jacob ignis,  et domus Joseph flamma,  et domus Esau stipula :  et succendentur in eis, et devorabunt eos,  et non erunt reliquiæ domus Esau,  quia Dominus locutus est.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">E la casa di Giacobbe sarà un fuoco, e la casa di Giuseppe una fiamma; e la casa di Esaù sarà come stoppia; essi si apprenderanno in loro, e li consumeranno; e la casa di Esaù non avrà alcuno che resti in vita; perciocchè il Signore ha parlato.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-19">
+      <div class="verse-num-col"><div class="verse-num">19</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et hæreditabunt hi, qui ad austrum sunt, montem Esau,  et qui in campestribus, Philisthiim :  et possidebunt regionem Ephraim et regionem Samariæ,  et Benjamin possidebit Galaad.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">E possederanno la parte meridionale col monte di Esaù; e il piano col paese de’ Filistei; possederanno ancora il territorio di Efraim, e il territorio di Samaria; e Beniamino con Galaad.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-20">
+      <div class="verse-num-col"><div class="verse-num">20</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et transmigratio exercitus hujus filiorum Israël,  omnia loca Chananæorum usque ad Sareptam :  et transmigratio Jerusalem, quæ in Bosphoro est,  possidebit civitates austri.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">E questo esercito de’ figliuoli d’Israele, che è stato menato in cattività, possederà quello ch’era de’ Cananei, fino in Sarepta; e que’ di Gerusalemme, che sono stati menati in cattività, che sono in Sefarad, possederanno le città del Mezzodì.</div>
+      </div>
+    </div>
+    <div class="verse-block" id="v1-21">
+      <div class="verse-num-col"><div class="verse-num">21</div></div>
+      <div class="verse-texts">
+        <div class="latin">Et ascendent salvatores in montem Sion judicare montem Esau,  et erit Domino regnum.</div>
+        <div class="trans-label">✦ Italiano</div>
+        <div class="trans">E de’ liberatori saliranno nel monte di Sion, per giudicare il monte di Esaù; e il regno sarà del Signore.</div>
+      </div>
+    </div>
+  </section>
+  </main>
 
-<script>
-(function(){
-  var c = localStorage.getItem('biblia_conf') || 'protestant';
-  document.body.dataset.conf = c;
-})();
-</script>
-<script>
-(function(){
-  var BM_KEY = 'KX_bookmark';
-  var toast, toastTimer;
-  function showToast(txt) {
-    if (!toast) {
-      toast = document.createElement('div');
-      toast.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:rgba(86,24,31,.95);color:#f1d7c8;font-family:sans-serif;font-size:.78rem;letter-spacing:.08em;padding:9px 20px;border-radius:10px;border:1px solid #9c4a44;pointer-events:none;z-index:999;transition:opacity .3s,transform .3s;box-shadow:0 12px 24px rgba(0,0,0,.24)';
-      document.body.appendChild(toast);
-    }
-    toast.textContent = txt;
-    toast.style.opacity = '1';
-    toast.style.transform = 'translateX(-50%) translateY(0)';
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(function(){ toast.style.opacity = '0'; toast.style.transform = 'translateX(-50%) translateY(6px)'; }, 1800);
-  }
-  document.addEventListener('click', function(e) {
-    var el = e.target;
-    while (el && el !== document.body) {
-      if (el.matches && el.matches('.verse, .vb')) break;
-      el = el.parentElement;
-    }
-    if (!el || el === document.body) return;
-    if (e.target.tagName === 'A') return;
-    var id = el.id;
-    if (!id) return;
-    var data = { url: location.pathname + '#' + id, title: document.title, id: id, ts: Date.now() };
-    try { localStorage.setItem(BM_KEY, JSON.stringify(data)); } catch(_){}
-    showToast('\u2746 Lesezeichen gesetzt');
-  });
-})();
-</script>
+  <nav class="book-nav">
+    <a href="030-amo.html">← Amos</a>
+    <span class="center">Abdias · Italiano</span>
+    <a href="032-jon.html">Ionas →</a>
+  </nav>
+
+  <footer class="page-footer">
+    BIBLIA CATHOLICA INTERLINEARIS &nbsp;·&nbsp; Vulgata Clementina &amp; Giovanni Diodati (1649)
+    &nbsp;·&nbsp; Gemeinfreie Texte / Public Domain
+  </footer>
+
 </body>
 </html>
