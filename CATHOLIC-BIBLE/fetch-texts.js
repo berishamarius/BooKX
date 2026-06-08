@@ -60,8 +60,10 @@ const TRANSLATIONS = [
   { code: 'tagalog',    sc: 'TagAngBiblia',   lang: 'tl', name: 'Ang Biblia (1905)'                     },
   { code: 'ukrainian',  sc: 'ukrogienko',    lang: 'uk', name: 'Біблія Огієнка (1930)',  api: 'getbible' },
   { code: 'albanian',   sc: 'alb',            lang: 'sq', name: 'Albanian Bible (PD)',    api: 'getbible' },
-  { code: 'italian',    sc: 'giovanni',       lang: 'it', name: 'Giovanni Diodati (1649)',api: 'getbible' },
-  { code: 'croatian',   sc: 'croatia',        lang: 'hr', name: 'Hrvatska Biblija (PD)', api: 'getbible' },
+  { code: 'italian',    sc: 'giovanni',       lang: 'it',  name: 'Giovanni Diodati (1649)',             api: 'getbible' },
+  { code: 'syriac',     sc: 'Peshitta',       lang: 'syr', name: 'Peshitta (Ancient Syriac)',           api: 'scrollmapper', dir: 'rtl' },
+  { code: 'armenian',   sc: 'ArmEastern',     lang: 'hy',  name: 'Armenian Apostolic (Eastern)',        api: 'scrollmapper', dir: 'ltr' },
+  { code: 'arabic',     sc: 'VanDyck',        lang: 'ar',  name: 'Van Dyck Bible (1865)',              api: 'getbible', dir: 'rtl' },
 ];
 
 // ═══════════════════════════════════════════════════════

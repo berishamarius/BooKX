@@ -28,6 +28,10 @@ const TRANSLATIONS = [
   { name: 'Bengalisch',  id: 161, flag: '🇧🇩', country: 'Bangladesch',  scholar: 'Taisirul Quran (Tawheed Publication)' },
   { name: 'Hindi',       id: 122, flag: '🇮🇳', country: 'Indien',       scholar: 'Maulana Azizul Haque al-Umari' },
   { name: 'Hausa',       id: 32,  flag: '🇳🇬', country: 'Nigeria',      scholar: 'Abubakar Mahmoud Gumi' },
+  { name: 'Spanisch',    id: 83,  flag: '🇪🇸', country: 'Spanien',      scholar: 'Sheikh Isa Garcia' },
+  { name: 'Französisch', id: 31,  flag: '🇫🇷', country: 'Frankreich',   scholar: 'Muhammad Hamidullah' },
+  { name: 'Tagalog',     id: 211, flag: '🇵🇭', country: 'Philippinen',  scholar: 'Dar Al-Salam Center' },
+  { name: 'Chinesisch',  id: 56,  flag: '🇨🇳', country: 'China',        scholar: 'Ma Jian (Fahd Complex)' },
 ];
 
 function apiGet(url) {
