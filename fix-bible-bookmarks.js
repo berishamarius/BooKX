@@ -19,7 +19,9 @@ const TOAST={
   albanian:   '✦ Faqerojt\u00ebsi i ruajtur',
   croatian:   '✦ Oznaka sa\u010duvana',
   kjv:        '✦ Bookmark saved',
-  tagalog:    '✦ Bookmark nai-save'
+  tagalog:    '✦ Bookmark na-save',
+  syriac:     '✦ \u0723\u071d\u0721\u072c\u0710 \u0722\u071b\u072a\u072c',
+  armenian:   '✦ \u054d\u0565\u0572\u0574\u0561\u0563\u056b\u0580 \u057a\u0561\u0570\u057e\u0561\u056e'
 };
 
 function makeBmScript(toastText){

@@ -91,9 +91,9 @@ function injectBible() {
     const langDir = path.join(baseDir, lang);
     if (!fs.lstatSync(langDir).isDirectory()) return;
     
-    // Inject into index.html and all Bible files
-    const files = fs.readdirSync(langDir).filter(f => f.endsWith('.html'));
-    files.forEach(file => {
+    // Inject into index.html and all files in root
+    const rootFiles = fs.readdirSync(langDir).filter(f => f.endsWith('.html'));
+    rootFiles.forEach(file => {
       const filePath = path.join(langDir, file);
       try {
         let content = fs.readFileSync(filePath, 'utf8');
@@ -109,6 +109,28 @@ function injectBible() {
         console.error('Error in ' + file + ':', e.message);
       }
     });
+    
+    // Also inject into bücher/ directory files
+    const bucherDir = path.join(langDir, 'bücher');
+    if (fs.existsSync(bucherDir)) {
+      const bucherFiles = fs.readdirSync(bucherDir).filter(f => f.endsWith('.html'));
+      bucherFiles.forEach(file => {
+        const filePath = path.join(bucherDir, file);
+        try {
+          let content = fs.readFileSync(filePath, 'utf8');
+          if (content.includes('verse-tools')) return;
+          
+          const injectPoint = content.lastIndexOf('</body>');
+          if (injectPoint !== -1) {
+            const newContent = content.slice(0, injectPoint) + COPY_SHARE_HTML + content.slice(injectPoint);
+            fs.writeFileSync(filePath, newContent, 'utf8');
+            count++;
+          }
+        } catch (e) {
+          console.error('Error in ' + file + ':', e.message);
+        }
+      });
+    }
   });
   
   console.log(`✓ Bible: ${count} Seiten aktualisiert mit Copy/Share`);

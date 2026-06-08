@@ -4,19 +4,24 @@ const fs=require('fs');
 const path=require('path');
 
 const TOAST={
-  Albanisch:   '✦ Faqerojt\u00ebsi u ruajt',
-  Bengalisch:  '✦ \u09ac\u09c1\u0995\u09ae\u09be\u09b0\u09cd\u0995 \u09b8\u0982\u09b0\u0995\u09cd\u09b7\u09bf\u09a4',
-  Bosnisch:    '✦ Oznaka sa\u010duvana',
-  Chinesisch:  '✦ \u4e66\u7b7e\u5df2\u4fdd\u5b58',
-  Englisch:    '✦ Bookmark saved',
-  Hausa:       '✦ Alamar an ajiye',
-  Hindi:       '✦ \u092c\u0941\u0915\u092e\u093e\u0930\u094d\u0915 \u0938\u0939\u0947\u091c\u093e',
-  Indonesisch: '✦ Bookmark tersimpan',
-  Persisch:    '✦ \u0646\u0634\u0627\u0646\u06a9 \u0630\u062e\u06cc\u0631\u0647 \u0634\u062f',
-  Russisch:    '✦ \u0417\u0430\u043a\u043b\u0430\u0434\u043a\u0430 \u0441\u043e\u0445\u0440\u0430\u043d\u0435\u043d\u0430',
-  Türkisch:    '✦ Yer imi kaydedildi',
-  Urdu:        '✦ \u0628\u06a9 \u0645\u0627\u0631\u06a9 \u0645\u062d\u0641\u0648\u0638 \u06c1\u0648\u0627',
-  Uygurisch:   '✦ \u0628\u06d5\u062a\u0643\u06c8\u0686 \u0633\u0627\u0642\u0644\u0627\u0646\u062f\u0649'
+  Albanisch:     '✦ Faqerojt\u00ebsi u ruajt',
+  Bengalisch:    '✦ \u09ac\u09c1\u0995\u09ae\u09be\u09b0\u09cd\u0995 \u09b8\u0982\u09b0\u0995\u09cd\u09b7\u09bf\u09a4',
+  Bosnisch:      '✦ Oznaka sa\u010duvana',
+  Chinesisch:    '✦ \u4e66\u7b7e\u5df2\u4fdd\u5b58',
+  Englisch:      '✦ Bookmark saved',
+  Französisch:   '✦ Signet enregistr\u00e9',
+  Hausa:         '✦ Alamar an ajiye',
+  Hindi:         '✦ \u092c\u0941\u0915\u092e\u093e\u0930\u094d\u0915 \u0938\u0939\u0947\u091c\u093e',
+  Indonesisch:   '✦ Bookmark tersimpan',
+  Kasachisch:    '✦ \u0411\u0435\u0442\u0431\u0435\u043b\u0433\u0456 \u0441\u0430\u049b\u0442\u0430\u043b\u0434\u044b',
+  Persisch:      '✦ \u0646\u0634\u0627\u0646\u06a9 \u0630\u062e\u06cc\u0631\u0647 \u0634\u062f',
+  Russisch:      '✦ \u0417\u0430\u043a\u043b\u0430\u0434\u043a\u0430 \u0441\u043e\u0445\u0440\u0430\u043d\u0435\u043d\u0430',
+  Spanisch:      '✦ Marcador guardado',
+  Tagalog:       '✦ Bookmark na-save',
+  Thailändisch:  '✦ \u0e1a\u0e38\u0e4a\u0e01\u0e21\u0e32\u0e23\u0e4c\u0e01\u0e1a\u0e31\u0e19\u0e17\u0e36\u0e01\u0e41\u0e25\u0e49\u0e27',
+  Türkisch:      '✦ Yer imi kaydedildi',
+  Urdu:          '✦ \u0628\u06a9 \u0645\u0627\u0631\u06a9 \u0645\u062d\u0641\u0648\u0638 \u06c1\u0648\u0627',
+  Uygurisch:     '✦ \u0628\u06d5\u062a\u0643\u06c8\u0686 \u0633\u0627\u0642\u0644\u0627\u0646\u062f\u0649'
 };
 
 function makeBmScript(toastText){

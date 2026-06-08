@@ -4642,5 +4642,109 @@ body[data-conf="protestant"] .base-p { display:block; }
   document.body.dataset.conf = c;
 })();
 </script>
+<script>
+(function(){
+  var BM_KEY = 'KX_bookmark';
+  var toast, toastTimer;
+  function showToast(txt) {
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:rgba(86,24,31,.95);color:#f1d7c8;font-family:sans-serif;font-size:.78rem;letter-spacing:.08em;padding:9px 20px;border-radius:10px;border:1px solid #9c4a44;pointer-events:none;z-index:999;transition:opacity .3s,transform .3s;box-shadow:0 12px 24px rgba(0,0,0,.24)';
+      document.body.appendChild(toast);
+    }
+    toast.textContent = txt;
+    toast.style.opacity = '1';
+    toast.style.transform = 'translateX(-50%) translateY(0)';
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ toast.style.opacity = '0'; toast.style.transform = 'translateX(-50%) translateY(6px)'; }, 1800);
+  }
+  document.addEventListener('click', function(e) {
+    var el = e.target;
+    while (el && el !== document.body) {
+      if (el.matches && el.matches('.verse, .vb')) break;
+      el = el.parentElement;
+    }
+    if (!el || el === document.body) return;
+    if (e.target.tagName === 'A') return;
+    var id = el.id;
+    if (!id) return;
+    var data = { url: location.pathname + '#' + id, title: document.title, id: id, ts: Date.now() };
+    try { localStorage.setItem(BM_KEY, JSON.stringify(data)); } catch(_){}
+    showToast('✦ Marcador salvo');
+  });
+})();
+</script>
+
+<style>
+.verse-tools {
+  display: inline-flex;
+  gap: 6px;
+  margin-left: 8px;
+  font-size: 0.75rem;
+}
+.verse-copy-btn, .verse-share-btn {
+  padding: 3px 8px;
+  border: 1px solid #b8962e;
+  background: rgba(184, 150, 46, 0.08);
+  color: #b8962e;
+  border-radius: 2px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s;
+}
+.verse-copy-btn:hover, .verse-share-btn:hover {
+  background: rgba(184, 150, 46, 0.2);
+}
+</style>
+
+<script>
+window.bibleTools = {
+  getReference(el) {
+    const verseEl = el.closest('[data-verse]') || el.closest('.verse') || el.parentElement;
+    const ref = verseEl?.getAttribute('data-verse') || '';
+    return ref;
+  },
+  
+  copyVerse(el) {
+    const verseEl = el.closest('[data-verse]') || el.closest('.verse') || el.parentElement;
+    if (!verseEl) return alert('Vers nicht gefunden');
+    const text = verseEl.textContent.trim();
+    const reference = window.bibleTools.getReference(verseEl) || 'Bible Verse';
+    const fullText = text + '\n\n— ' + reference + '\n' + window.location.href;
+    navigator.clipboard.writeText(fullText).then(() => {
+      el.textContent = '✓ Copied';
+      setTimeout(() => { el.textContent = '📋 Copy'; }, 2000);
+    }).catch(e => alert('Error: ' + e.message));
+  },
+  
+  shareVerse(el) {
+    const verseEl = el.closest('[data-verse]') || el.closest('.verse') || el.parentElement;
+    if (!verseEl) return alert('Vers nicht gefunden');
+    const text = verseEl.textContent.trim();
+    const reference = window.bibleTools.getReference(verseEl) || 'Bible';
+    const url = window.location.href;
+    
+    if (navigator.share) {
+      navigator.share({ text: text, title: reference, url: url }).catch(e => {});
+    } else {
+      const subject = 'Bible - ' + reference;
+      const body = encodeURIComponent(text + '\n\n— ' + reference + '\n' + url);
+      window.open('mailto:?subject=' + encodeURIComponent(subject) + '&body=' + body);
+    }
+  }
+};
+
+// Inject buttons into verses
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('[data-verse], .verse, .vrs').forEach(v => {
+    if (v.querySelector('.verse-tools')) return;
+    const tools = document.createElement('span');
+    tools.className = 'verse-tools';
+    tools.innerHTML = '<button class="verse-copy-btn" onclick="window.bibleTools.copyVerse(this)">📋 Copy</button>' +
+                      '<button class="verse-share-btn" onclick="window.bibleTools.shareVerse(this)">↗ Share</button>';
+    v.appendChild(tools);
+  });
+});
+</script>
 </body>
 </html>

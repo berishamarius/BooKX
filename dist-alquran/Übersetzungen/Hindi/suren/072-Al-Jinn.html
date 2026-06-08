@@ -2,9 +2,9 @@
 <html lang="hi" dir="ltr"><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>الجن · Al-Jinn · हिन्दी</title>
-  <meta name="author" content="KX KroniX Tech">
-  <meta name="copyright" content="KX Books · AL-QURAN Digital Edition · KX KroniX Tech. Alle Rechte vorbehalten.">
-  <meta name="generator" content="KX Books · AL-QURAN Digital Edition · KX KroniX Tech">  <meta name="publisher" content="KX Books by KX KroniX Tech">
+  
+  
+    
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Amiri+Quran&family=Scheherazade+New:wght@400;700&family=Noto+Serif:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
@@ -392,4 +392,109 @@ nav .orn{color:rgba(192,155,60,.55);font-family:'Scheherazade New',serif;}
   </a>
   <a href="073-Al-Muzzammil.html" class="bn bn-n">المزمل →</a>
 </div>
+<script>
+(function(){
+  var BM_KEY = 'KX_bookmark';
+  var toast, toastTimer;
+  function showToast(txt) {
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:rgba(16,10,6,.88);color:#d4a574;font-family:sans-serif;font-size:.78rem;letter-spacing:.08em;padding:9px 20px;border-radius:10px;border:1px solid #9b7d5c;pointer-events:none;z-index:999;transition:opacity .3s,transform .3s;box-shadow:0 12px 24px rgba(0,0,0,.24)';
+      document.body.appendChild(toast);
+    }
+    toast.textContent = txt;
+    toast.style.opacity = '1';
+    toast.style.transform = 'translateX(-50%) translateY(0)';
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ toast.style.opacity = '0'; toast.style.transform = 'translateX(-50%) translateY(6px)'; }, 1800);
+  }
+  document.addEventListener('click', function(e) {
+    var el = e.target;
+    while (el && el !== document.body) {
+      if (el.matches && el.matches('.verse, .vb')) break;
+      el = el.parentElement;
+    }
+    if (!el || el === document.body) return;
+    if (e.target.tagName === 'A') return;
+    var id = el.id;
+    if (!id) return;
+    var data = { url: location.pathname + '#' + id, title: document.title, id: id, ts: Date.now() };
+    try { localStorage.setItem(BM_KEY, JSON.stringify(data)); } catch(_){}
+    showToast('✦ बुकमार्क सहेजा');
+  });
+})();
+</script>
+
+<style>
+.verse-tools {
+  display: inline-flex;
+  gap: 6px;
+  margin-left: 8px;
+  font-size: 0.8rem;
+}
+.verse-copy-btn, .verse-share-btn {
+  padding: 4px 10px;
+  border: 1px solid #b8962e;
+  background: rgba(184, 150, 46, 0.08);
+  color: #b8962e;
+  border-radius: 3px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s;
+}
+.verse-copy-btn:hover, .verse-share-btn:hover {
+  background: rgba(184, 150, 46, 0.2);
+}
+</style>
+
+<script>
+window.verseTools = {
+  getSuraVerse(el) {
+    const suraName = document.querySelector('h1, h2, .sura-title')?.textContent || 'Chapter';
+    const verseNum = el.getAttribute('data-verse-id') || el.closest('[data-verse-id]')?.getAttribute('data-verse-id') || 'X';
+    return { suraName, verseNum };
+  },
+  
+  copyVerse(el) {
+    const verseEl = el.closest('[data-verse-id]') || el.closest('.verse') || el.parentElement;
+    if (!verseEl) return alert('Vers nicht gefunden');
+    const text = verseEl.textContent.trim();
+    const { suraName, verseNum } = window.verseTools.getSuraVerse(verseEl);
+    const fullText = text + '\n\n— ' + suraName + ':' + verseNum + '\n' + window.location.href;
+    navigator.clipboard.writeText(fullText).then(() => {
+      el.textContent = '✓ Kopiert!';
+      setTimeout(() => { el.textContent = '📋 Copy'; }, 2000);
+    }).catch(e => alert('Fehler: ' + e.message));
+  },
+  
+  shareVerse(el) {
+    const verseEl = el.closest('[data-verse-id]') || el.closest('.verse') || el.parentElement;
+    if (!verseEl) return alert('Vers nicht gefunden');
+    const text = verseEl.textContent.trim();
+    const { suraName, verseNum } = window.verseTools.getSuraVerse(verseEl);
+    const reference = suraName + ':' + verseNum;
+    const url = window.location.href;
+    
+    if (navigator.share) {
+      navigator.share({ text: text, title: reference, url: url }).catch(e => {});
+    } else {
+      const subject = 'Qur'an - ' + reference;
+      const body = encodeURIComponent(text + '\n\n— ' + reference + '\n' + url);
+      window.open('mailto:?subject=' + encodeURIComponent(subject) + '&body=' + body);
+    }
+  }
+};
+
+// Inject buttons into all verses
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('[data-verse-id], .verse, .ayat, .vers').forEach(v => {
+    if (v.querySelector('.verse-tools')) return;
+    const tools = document.createElement('span');
+    tools.className = 'verse-tools';
+    tools.innerHTML = '<button class="verse-copy-btn" onclick="window.verseTools.copyVerse(this)">📋 Copy</button>' +
+                      '<button class="verse-share-btn" onclick="window.verseTools.shareVerse(this)">↗ Share</button>';
+    v.appendChild(tools);
+  });
+});
+</script>
 </body></html>
