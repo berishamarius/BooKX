@@ -99,7 +99,7 @@ function injectQuranPages() {
     if (!fs.existsSync(surahDir)) return;
     
     fs.readdirSync(surahDir).forEach(file => {
-      if (!file.endswith('.html')) return;
+      if (!file.endsWith('.html')) return;
       const filePath = path.join(surahDir, file);
       let content = fs.readFileSync(filePath, 'utf8');
       
