@@ -248,7 +248,8 @@ header{padding:28px 24px 28px;text-align:center;position:relative;z-index:1;}
     </a>
 </div>
 <style id="bm-main-style">
-.bm-badge{position:absolute;top:8px;right:8px;width:30px;height:30px;background:rgba(192,155,60,.95);border-radius:5px;display:flex;align-items:center;justify-content:center;z-index:6;pointer-events:none;box-shadow:0 2px 10px rgba(192,155,60,.5);}
+.bm-badge{position:absolute;top:8px;right:8px;width:30px;height:30px;background:rgba(192,155,60,.95);border-radius:5px;display:flex;align-items:center;justify-content:center;z-index:6;pointer-events:auto;box-shadow:0 2px 10px rgba(192,155,60,.5);text-decoration:none;cursor:pointer;transition:background .2s;}
+.bm-badge:hover{background:rgba(201,168,76,1);}
 .tile.has-bm .cover-wrap{box-shadow:0 8px 20px rgba(0,0,0,.55),0 0 28px rgba(192,155,60,.55),0 0 55px rgba(192,155,60,.22)!important;border-color:rgba(192,155,60,.85)!important;}
 </style>
 <script id="bm-main-script">
@@ -263,16 +264,14 @@ header{padding:28px 24px 28px;text-align:center;position:relative;z-index:1;}
       if(!lang)return;
       var old=tile.querySelector('.bm-badge');if(old)old.remove();
       tile.classList.remove('has-bm');
-      if(!tile.getAttribute('data-orig-href'))tile.setAttribute('data-orig-href',tile.getAttribute('href'));
       if(bm&&bm.url&&bm.url.indexOf('/'+lang+'/')>=0){
         tile.classList.add('has-bm');
-        tile.href=bm.url;
-        var badge=document.createElement('div');
+        var badge=document.createElement('a');
         badge.className='bm-badge';
+        badge.href=bm.url+'?bookmark=1';
+        badge.onclick=function(e){e.stopPropagation();};
         badge.innerHTML='<svg viewBox="0 0 12 16" width="14" height="18"><path d="M2 0h8a2 2 0 0 1 2 2v13l-6-4-6 4V2a2 2 0 0 1 2-2z" fill="#0f2f1a"/></svg>';
         var wrap=tile.querySelector('.cover-wrap');if(wrap)wrap.appendChild(badge);
-      }else{
-        tile.href=tile.getAttribute('data-orig-href');
       }
     });
   }

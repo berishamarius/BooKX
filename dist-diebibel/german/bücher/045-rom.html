@@ -3890,13 +3890,18 @@ body[data-conf="protestant"] .base-p { display:block; }
     toast.textContent=txt;toast.style.opacity='1';toast.style.transform='translateX(-50%) translateY(0)';
     clearTimeout(toastTimer);toastTimer=setTimeout(function(){toast.style.opacity='0';toast.style.transform='translateX(-50%) translateY(6px)';},1800);
   }
+  var params=new URLSearchParams(location.search);
+  if(params.get('bookmark')==='1'){
+    var bm;try{bm=JSON.parse(localStorage.getItem(BM_KEY));}catch(_){}
+    if(bm&&bm.id){setTimeout(function(){var el=document.getElementById(bm.id);if(el){el.scrollIntoView({behavior:'smooth',block:'center'});showToast('Zu Lesezeichen gesprungen');}},200);}
+  }
   document.addEventListener('click',function(e){
     var el=e.target;
     while(el&&el!==document.body){if(el.matches&&el.matches('.verse,.vb'))break;el=el.parentElement;}
     if(!el||el===document.body)return;
     if(e.target.tagName==='A')return;
     var id=el.id;if(!id)return;
-    var data={url:location.pathname+'#'+id,title:document.title,id:id,ts:Date.now()};
+    var data={url:location.pathname,title:document.title,id:id,ts:Date.now()};
     try{localStorage.setItem(BM_KEY,JSON.stringify(data));}catch(_){}
     showToast('Lesezeichen gesetzt');
   });
