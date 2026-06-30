@@ -1,0 +1,152 @@
+# Fix cover.html encoding + add Serbian/Greek
+$coverPath = 'C:\Users\beris_xrgc50t\KX KroniX\BooKX\dist-diebibel\cover.html'
+
+$html = @"
+<!DOCTYPE html>
+<html lang="de"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Holy Bible · All Languages</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{min-height:100svh;background:#2a0810;color:#EDD882;font-family:'EB Garamond',serif;overflow-x:hidden;}
+header{padding:28px 24px 28px;text-align:center;position:sticky;top:0;z-index:99;background:#2a0810;border-bottom:1px solid rgba(200,160,48,.3);box-shadow:0 2px 8px rgba(0,0,0,.3);}
+header::after{content:'';position:absolute;bottom:-20px;left:0;right:0;height:20px;background:linear-gradient(to bottom,#2a0810,transparent);pointer-events:none;z-index:1;}
+.ttl{font-family:'UnifrakturMaguntia',cursive;font-size:clamp(2rem,6vw,3.2rem);color:#EDD882;line-height:1.3;}
+.sub{font-family:'Cinzel',serif;font-size:.75rem;letter-spacing:.22em;color:rgba(200,160,48,.55);text-transform:uppercase;display:block;margin-top:10px;}
+.rule{width:120px;height:1px;background:linear-gradient(to right,transparent,rgba(200,160,48,.4),transparent);margin:18px auto 0;}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,220px));justify-content:center;gap:20px;padding:24px 20px 80px;max-width:520px;margin:0 auto;position:relative;z-index:1;}
+@media(max-width:480px){.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;padding:16px 12px 80px;}}
+.tile{display:flex;flex-direction:column;align-items:center;text-decoration:none;width:100%;transition:transform .2s;}
+.tile:hover{transform:translateY(-4px);}
+.cover-wrap{position:relative;width:100%;border:1px solid rgba(200,160,48,.25);box-shadow:0 8px 20px rgba(0,0,0,.45);background:#2C0810;}
+.cover-wrap img{width:100%;height:auto;display:block;}
+.tile-native{margin-top:8px;font-size:.85rem;color:#EDD882;text-align:center;line-height:1.4;}
+.tile-de{font-size:.62rem;color:rgba(200,160,48,.55);text-align:center;margin-top:2px;letter-spacing:.06em;}
+.footer-bar::before{content:'';position:absolute;top:-20px;left:0;right:0;height:20px;background:linear-gradient(to top,#2a0810,transparent);pointer-events:none;z-index:1;}
+.footer-bar{position:sticky;bottom:0;z-index:100;background:#2a0810;border-top:1px solid rgba(200,160,48,.3);padding:20px 24px;text-align:center;box-shadow:0 -2px 8px rgba(0,0,0,.3);}
+.footer-bar p{font-family:'Cinzel',serif;font-size:.6rem;color:rgba(200,160,48,.4);letter-spacing:.1em;}
+body::before{content:'';position:fixed;inset:16px;border:1px solid rgba(200,160,48,.3);pointer-events:none;z-index:102;}
+body::after{content:'';position:fixed;inset:28px;border:1px solid rgba(200,160,48,.12);pointer-events:none;z-index:102;}
+.corner{position:fixed;width:56px;height:56px;pointer-events:none;z-index:103;}
+.c-tl{top:14px;left:14px;border-top:2px solid rgba(200,160,48,.55);border-left:2px solid rgba(200,160,48,.55);}
+.c-tr{top:14px;right:14px;border-top:2px solid rgba(200,160,48,.55);border-right:2px solid rgba(200,160,48,.55);}
+.c-bl{bottom:14px;left:14px;border-bottom:2px solid rgba(200,160,48,.55);border-left:2px solid rgba(200,160,48,.55);}
+.c-br{bottom:14px;right:14px;border-bottom:2px solid rgba(200,160,48,.55);border-right:2px solid rgba(200,160,48,.55);}
+</style>
+</head><body>
+<header>
+  <div class="ttl">The Holy Bible</div>
+  <div class="sub">All Languages</div>
+  <div class="rule"></div>
+</header>
+<div class="grid">
+    <a class="tile" href="kjv/index.html">
+      <div class="cover-wrap"><img src="../../Die Heilige Bibel - Rot.png" alt="English"></div>
+      <span class="tile-native">English</span>
+      <span class="tile-de">King James</span>
+    </a>
+    <a class="tile" href="german/index.html">
+      <div class="cover-wrap"><img src="../../Die Heilige Bibel - Rot.png" alt="Deutsch"></div>
+      <span class="tile-native">Deutsch</span>
+      <span class="tile-de">Textbibel</span>
+    </a>
+    <a class="tile" href="french/index.html">
+      <div class="cover-wrap"><img src="../../Die Heilige Bibel - Rot.png" alt="Français"></div>
+      <span class="tile-native">Français</span>
+      <span class="tile-de">Crampon</span>
+    </a>
+    <a class="tile" href="spanish/index.html">
+      <div class="cover-wrap"><img src="../../Die Heilige Bibel - Rot.png" alt="Español"></div>
+      <span class="tile-native">Español</span>
+      <span class="tile-de">Reina-Valera</span>
+    </a>
+    <a class="tile" href="portuguese/index.html">
+      <div class="cover-wrap"><img src="../../Die Heilige Bibel - Rot.png" alt="Português"></div>
+      <span class="tile-native">Português</span>
+      <span class="tile-de">Bíblia Livre</span>
+    </a>
+    <a class="tile" href="polish/index.html">
+      <div class="cover-wrap"><img src="../../Die Heilige Bibel - Rot.png" alt="Polski"></div>
+      <span class="tile-native">Polski</span>
+      <span class="tile-de">Gdańska</span>
+    </a>
+    <a class="tile" href="russian/index.html">
+      <div class="cover-wrap"><img src="../../Die Heilige Bibel - Rot.png" alt="Русский"></div>
+      <span class="tile-native">Русский</span>
+      <span class="tile-de">Синодальный</span>
+    </a>
+    <a class="tile" href="croatian/index.html">
+      <div class="cover-wrap"><img src="../../Die Heilige Bibel - Rot.png" alt="Hrvatski"></div>
+      <span class="tile-native">Hrvatski</span>
+      <span class="tile-de">Šarića</span>
+    </a>
+    <a class="tile" href="dutch/index.html">
+      <div class="cover-wrap"><img src="../../Die Heilige Bibel - Rot.png" alt="Nederlands"></div>
+      <span class="tile-native">Nederlands</span>
+      <span class="tile-de">Statenvertaling</span>
+    </a>
+    <a class="tile" href="hungarian/index.html">
+      <div class="cover-wrap"><img src="../../Die Heilige Bibel - Rot.png" alt="Magyar"></div>
+      <span class="tile-native">Magyar</span>
+      <span class="tile-de">Károli</span>
+    </a>
+    <a class="tile" href="czech/index.html">
+      <div class="cover-wrap"><img src="../../Die Heilige Bibel - Rot.png" alt="Čeština"></div>
+      <span class="tile-native">Čeština</span>
+      <span class="tile-de">Kralická</span>
+    </a>
+    <a class="tile" href="swedish/index.html">
+      <div class="cover-wrap"><img src="../../Die Heilige Bibel - Rot.png" alt="Svenska"></div>
+      <span class="tile-native">Svenska</span>
+      <span class="tile-de">Svenska Bibeln</span>
+    </a>
+    <a class="tile" href="tagalog/index.html">
+      <div class="cover-wrap"><img src="../../Die Heilige Bibel - Rot.png" alt="Filipino"></div>
+      <span class="tile-native">Filipino</span>
+      <span class="tile-de">Ang Biblia</span>
+    </a>
+    <a class="tile" href="ukrainian/index.html">
+      <div class="cover-wrap"><img src="../../Die Heilige Bibel - Rot.png" alt="Українська"></div>
+      <span class="tile-native">Українська</span>
+      <span class="tile-de">Огієнко</span>
+    </a>
+    <a class="tile" href="albanian/index.html">
+      <div class="cover-wrap"><img src="../../Die Heilige Bibel - Rot.png" alt="Shqip"></div>
+      <span class="tile-native">Shqip</span>
+      <span class="tile-de">UFSHB</span>
+    </a>
+    <a class="tile" href="italian/index.html">
+      <div class="cover-wrap"><img src="../../Die Heilige Bibel - Rot.png" alt="Italiano"></div>
+      <span class="tile-native">Italiano</span>
+      <span class="tile-de">Riveduta</span>
+    </a>
+    <a class="tile" href="armenian/index.html">
+      <div class="cover-wrap"><img src="../../Die Heilige Bibel - Rot.png" alt="Հայերեն"></div>
+      <span class="tile-native">Հայերեն</span>
+      <span class="tile-de">Eastern</span>
+    </a>
+    <a class="tile" href="serbian/index.html">
+      <div class="cover-wrap"><img src="../../Die Heilige Bibel - Rot.png" alt="Српски"></div>
+      <span class="tile-native">Српски</span>
+      <span class="tile-de">Даничић-Караджић</span>
+    </a>
+    <a class="tile" href="greek/index.html">
+      <div class="cover-wrap"><img src="../../Die Heilige Bibel - Rot.png" alt="Ελληνικά"></div>
+      <span class="tile-native">Ελληνικά</span>
+      <span class="tile-de">Septuaginta</span>
+    </a>
+</div>
+
+<div class="corner c-tl"></div>
+<div class="corner c-tr"></div>
+<div class="corner c-bl"></div>
+<div class="corner c-br"></div>
+</body>
+</html>
+"@
+
+[System.IO.File]::WriteAllText($coverPath, $html, [System.Text.Encoding]::UTF8)
+Write-Host "✓ cover.html fixed with UTF-8 encoding + Serbian + Greek"
