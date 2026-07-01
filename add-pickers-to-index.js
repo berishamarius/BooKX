@@ -1,8 +1,6 @@
 const fs = require('fs');
 const path = require('path');
 
-const ORTHODOX_LANGUAGES = ['german', 'russian', 'ukrainian', 'croatian'];
-
 const ALL_LANGUAGES = [
   'german', 'italian', 'french', 'spanish', 'portuguese', 'dutch',
   'czech', 'polish', 'swedish', 'russian', 'ukrainian', 'hungarian',
@@ -23,7 +21,6 @@ const pickerHTML = `
       <span class="label">Protestant</span>
       <span class="count">66 Books</span>
     </button>
-    {{ORTHODOX_BUTTON}}
   </div>
 
   <div class="text-layer-picker">
@@ -174,14 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
             link.style.display = '';
           }
         } else if (canon === 'catholic') {
-          // Hide Orthodox-only books (74-79)
-          if (bookNum >= 74 && bookNum <= 79) {
-            link.style.display = 'none';
-          } else {
-            link.style.display = '';
-          }
-        } else if (canon === 'orthodox') {
-          // Show all 79 books
+          // Show all books (including deuterocanonical)
           link.style.display = '';
         }
       });
@@ -226,13 +216,6 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 `;
 
-const orthodoxButton = `
-    <button class="picker-btn orthodox" data-canon="orthodox">
-      <span class="cross">☦</span>
-      <span class="label">Orthodox</span>
-      <span class="count">79 Books</span>
-    </button>`;
-
 let updatedCount = 0;
 
 for (const lang of ALL_LANGUAGES) {
@@ -248,22 +231,15 @@ for (const lang of ALL_LANGUAGES) {
   // Remove existing pickers if present
   html = html.replace(/<div class="pickers-container">[\s\S]*?<\/script>/g, '');
   
-  // Determine if this language should have Orthodox button
-  const isOrthodox = ORTHODOX_LANGUAGES.includes(lang);
-  const finalPicker = pickerHTML.replace(
-    '{{ORTHODOX_BUTTON}}',
-    isOrthodox ? orthodoxButton : ''
-  );
-  
   // Insert picker after header but before books list
   if (html.includes('</header>')) {
     html = html.replace(
       /<\/header>/,
-      `</header>\n${finalPicker}`
+      `</header>\n${pickerHTML}`
     );
     
     fs.writeFileSync(indexPath, html, 'utf8');
-    console.log(`✓ Added pickers to ${lang}/index.html (Orthodox: ${isOrthodox ? 'YES' : 'NO'})`);
+    console.log(`✓ Added pickers to ${lang}/index.html`);
     updatedCount++;
   } else {
     console.log(`⚠️  Could not find </header> in ${lang}/index.html`);
