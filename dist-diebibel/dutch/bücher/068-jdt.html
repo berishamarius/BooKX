@@ -43,7 +43,7 @@ body{
   pointer-events:none;
 }
 .btestament{
-  display:inline-block;
+  display:none;
   border:1px solid rgba(200,160,48,.32);
   color:rgba(200,160,48,.52);
   font-family:'Cinzel',serif;font-size:.55rem;
@@ -51,6 +51,10 @@ body{
   border-radius:2px;margin-bottom:16px;
   position:relative;
 }
+body:not([data-conf]) .btestament-c,
+body[data-conf="catholic"] .btestament-c{display:inline-block;}
+body[data-conf="protestant"] .btestament-p{display:inline-block;}
+body[data-conf="orthodox"] .btestament-o{display:inline-block;}
 .blatin{
   display:none;
   font-family:'UnifrakturMaguntia',cursive;
@@ -295,6 +299,7 @@ body[data-conf='orthodox'] .base-o { display:block; }
   <div class="btestament">LIBRI DEUTEROCANONOCI</div>
   <div class="blatin blatin-c">IUDITH</div>
   <div class="blatin blatin-p">JUDIT</div>
+  <div class="blatin blatin-o">ΙΟΥΔΙΘ</div>
   <div class="btrans">Judit &nbsp;&middot;&nbsp; <em>Nederlands</em></div>
   <div class="bmeta">16 Capita &nbsp;&middot;&nbsp; 346 Versus</div>
 </header>
@@ -3257,5 +3262,37 @@ body[data-conf='orthodox'] .base-o { display:block; }
 
 
 
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // Read active layers from localStorage (set by index.html picker)
+  const activeLayersKey = 'activeLayers';
+  const activeLayers = JSON.parse(localStorage.getItem(activeLayersKey) || '["latin", "german", "greek"]');
+  
+  // Hide/show text layers based on settings
+  const style = document.createElement('style');
+  const rules = [];
+  
+  if (!activeLayers.includes('latin')) {
+    rules.push('.base-c { display: none !important; }');
+  }
+  if (!activeLayers.includes('german')) {
+    rules.push('.base-p { display: none !important; }');
+  }
+  if (!activeLayers.includes('greek')) {
+    rules.push('.base-o { display: none !important; }');
+  }
+  
+  style.textContent = rules.join('\n');
+  document.head.appendChild(style);
+  
+  // Listen for localStorage changes from other tabs/pages
+  window.addEventListener('storage', (e) => {
+    if (e.key === activeLayersKey) {
+      location.reload();
+    }
+  });
+});
+</script>
 </body>
 </html>

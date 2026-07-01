@@ -295,6 +295,7 @@ body[data-conf='orthodox'] .base-o { display:block; }
   <div class="btestament">LIBRI DEUTEROCANONOCI</div>
   <div class="blatin blatin-c">SAPIENTIA</div>
   <div class="blatin blatin-p">SABEDORIA</div>
+  <div class="blatin blatin-o">ΣΟΦΙΑ ΣΟΛΟΜΩΝΤΟΣ</div>
   <div class="btrans">Sabedoria &nbsp;&middot;&nbsp; <em>Português</em></div>
   <div class="bmeta">19 Capita &nbsp;&middot;&nbsp; 439 Versus</div>
 </header>
@@ -4025,5 +4026,37 @@ body[data-conf='orthodox'] .base-o { display:block; }
 
 
 
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // Read active layers from localStorage (set by index.html picker)
+  const activeLayersKey = 'activeLayers';
+  const activeLayers = JSON.parse(localStorage.getItem(activeLayersKey) || '["latin", "german", "greek"]');
+  
+  // Hide/show text layers based on settings
+  const style = document.createElement('style');
+  const rules = [];
+  
+  if (!activeLayers.includes('latin')) {
+    rules.push('.base-c { display: none !important; }');
+  }
+  if (!activeLayers.includes('german')) {
+    rules.push('.base-p { display: none !important; }');
+  }
+  if (!activeLayers.includes('greek')) {
+    rules.push('.base-o { display: none !important; }');
+  }
+  
+  style.textContent = rules.join('\n');
+  document.head.appendChild(style);
+  
+  // Listen for localStorage changes from other tabs/pages
+  window.addEventListener('storage', (e) => {
+    if (e.key === activeLayersKey) {
+      location.reload();
+    }
+  });
+});
+</script>
 </body>
 </html>
