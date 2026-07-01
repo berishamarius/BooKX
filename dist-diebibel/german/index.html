@@ -9,14 +9,26 @@
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
 <style>
 .conf-btn{
-  font-variant-emoji:text;
+  font-variant-emoji:text !important;
+  -webkit-font-variant-emoji:text !important;
   font-size:0.9rem;
   padding:8px 14px;
 }
 @media(max-width:768px){
   .conf-btn{
-    font-size:0.8rem;
-    padding:6px 10px;
+    font-size:0.7rem;
+    padding:5px 8px;
+  }
+}
+@media(max-width:480px){
+  .conf-btn{
+    font-size:0.6rem;
+    padding:4px 6px;
+    letter-spacing:0.08em;
+  }
+  .conf-bar{
+    padding:12px 8px 0;
+    gap:2px;
   }
 }
 
@@ -103,6 +115,7 @@ header::after{
 .sec-t{font-family:'UnifrakturMaguntia',cursive;font-size:2.4rem;color:#3A0A12;display:none;margin-bottom:6px;}
 body:not([data-conf]) .sec-t-c,body[data-conf="catholic"] .sec-t-c{display:block;}
 body[data-conf="protestant"] .sec-t-p{display:block;}
+body[data-conf="orthodox"] .sec-t-c{display:block;}
 .sec-rule{width:140px;height:1px;margin:10px auto;background:linear-gradient(to right,transparent,#B8962E 20%,#EDD882 50%,#B8962E 80%,transparent);}
 .sec-s{font-family:'Cinzel',serif;font-size:.58rem;color:#8B6914;letter-spacing:.28em;margin-top:4px;display:block;margin-bottom:28px;}
 
@@ -145,12 +158,8 @@ body[data-conf="protestant"] .sec-t-p{display:block;}
 }
 .tlat{
   font-family:'Cinzel Decorative',serif;font-size:1.25rem;
-  color:#3A0A12;flex-shrink:0;display:none;
+  color:#3A0A12;flex-shrink:0;
 }
-body:not([data-conf]) .tlat-c,
-body[data-conf='catholic'] .tlat-c{display:block;}
-body[data-conf='protestant'] .tlat-p{display:block;}
-body[data-conf='orthodox'] .tlat-o{display:block;}
 .tname{
   font-family:'EB Garamond',serif;font-size:1rem;font-style:italic;
   color:#6B5E40;
@@ -200,12 +209,27 @@ body[data-conf="protestant"] .toc-item[data-testament="DK"] { display:none; }
   body{overflow-x:hidden;}
   .toc-grid{overflow-x:hidden;}
   .book-list{overflow-x:hidden;}
+  .index-body{padding:32px 24px 60px;}
+  .toc-item{padding:10px 2px;}
+  .tnr{min-width:40px;padding-right:12px;font-size:0.65rem;}
+  .tlat{font-size:1rem;}
+  .tname{font-size:0.85rem;margin-left:8px;}
+  .tdots{margin:0 8px;}
+  .tchap{font-size:0.6rem;}
+  .tarr{margin-left:8px;}
 }
 @media(max-width:480px){
   body{font-size:15px;overflow-x:hidden;}
   .toc-grid{grid-template-columns:1fr !important;overflow-x:hidden;}
-  .toc-item{overflow-x:hidden;}
+  .toc-item{overflow-x:hidden;padding:8px 0;}
   .book-list{overflow-x:hidden;width:calc(100vw - 16px);}
+  .index-body{padding:24px 12px 50px;}
+  .tnr{min-width:35px;padding-right:8px;font-size:0.58rem;}
+  .tlat{font-size:0.9rem;}
+  .tname{font-size:0.75rem;margin-left:6px;}
+  .tdots{margin:0 6px;}
+  .tchap{font-size:0.55rem;}
+  .tarr{margin-left:6px;font-size:0.85rem;}
 }
 </style>
 
@@ -213,8 +237,8 @@ body[data-conf="protestant"] .toc-item[data-testament="DK"] { display:none; }
 </head>
 <body>
 <nav class="topbar">
-  <a href="../index.html">&#8592; Übersicht</a>
-  <a href="../back-cover.html" style="margin-left:auto">Rückseite &#8594;</a>
+  <a href="../cover.html">&#8592; Zurück</a>
+  <a href="back-cover.html" style="margin-left:auto">Gebet &#8594;</a>
 </nav>
 
 <header>
@@ -225,226 +249,6 @@ body[data-conf="protestant"] .toc-item[data-testament="DK"] { display:none; }
   <div class="hlang">DEUTSCH</div>
 
 </header>
-
-<div class="pickers-container">
-  <div class="canon-picker">
-    <button class="picker-btn catholic active" data-canon="catholic">
-      <span class="cross">✟</span>
-      <span class="label">Catholic</span>
-      <span class="count">73 Books</span>
-    </button>
-    <button class="picker-btn protestant" data-canon="protestant">
-      <span class="cross">†</span>
-      <span class="label">Protestant</span>
-      <span class="count">66 Books</span>
-    </button>
-    
-    <button class="picker-btn orthodox" data-canon="orthodox">
-      <span class="cross">☦</span>
-      <span class="label">Orthodox</span>
-      <span class="count">79 Books</span>
-    </button>
-  </div>
-
-  <div class="text-layer-picker">
-    <button class="layer-btn latin active" data-layer="latin">
-      <span class="layer-icon">L</span>
-      <span>Latin</span>
-    </button>
-    <button class="layer-btn german active" data-layer="german">
-      <span class="layer-icon">D</span>
-      <span>Deutsch</span>
-    </button>
-    <button class="layer-btn greek active" data-layer="greek">
-      <span class="layer-icon">Ω</span>
-      <span>Greek</span>
-    </button>
-  </div>
-</div>
-
-<style>
-.pickers-container {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  margin: 24px auto;
-  max-width: 900px;
-  padding: 0 20px;
-}
-
-.canon-picker, .text-layer-picker {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-.picker-btn, .layer-btn {
-  background: linear-gradient(135deg, #1A0407 0%, #2C0810 100%);
-  border: 1.5px solid rgba(200, 160, 48, 0.3);
-  border-radius: 6px;
-  padding: 10px 18px;
-  color: rgba(237, 216, 130, 0.75);
-  font-family: 'Cinzel', serif;
-  font-size: 0.85rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  letter-spacing: 0.05em;
-}
-
-.picker-btn {
-  flex-direction: column;
-  gap: 4px;
-  min-width: 110px;
-}
-
-.picker-btn .cross {
-  font-size: 1.4rem;
-  opacity: 0.6;
-}
-
-.picker-btn .label {
-  font-size: 0.9rem;
-  font-weight: 500;
-}
-
-.picker-btn .count {
-  font-size: 0.7rem;
-  opacity: 0.5;
-  letter-spacing: 0.08em;
-}
-
-.layer-btn {
-  min-width: 100px;
-  justify-content: center;
-}
-
-.layer-icon {
-  font-size: 1.1rem;
-  opacity: 0.7;
-  font-weight: 600;
-}
-
-.picker-btn:hover, .layer-btn:hover {
-  border-color: rgba(200, 160, 48, 0.6);
-  background: linear-gradient(135deg, #2C0810 0%, #4A1020 100%);
-  color: #EDD882;
-}
-
-.picker-btn.active, .layer-btn.active {
-  background: linear-gradient(135deg, #4A1020 0%, #5C1828 100%);
-  border-color: #B8962E;
-  color: #EDD882;
-  box-shadow: 0 0 12px rgba(184, 150, 46, 0.2);
-}
-
-.picker-btn.active .cross,
-.layer-btn.active .layer-icon {
-  opacity: 1;
-  color: #C8A030;
-}
-
-@media (max-width: 768px) {
-  .pickers-container {
-    gap: 12px;
-    margin: 16px auto;
-  }
-  
-  .picker-btn, .layer-btn {
-    padding: 8px 14px;
-    font-size: 0.75rem;
-    min-width: 90px;
-  }
-  
-  .picker-btn .cross {
-    font-size: 1.2rem;
-  }
-  
-  .layer-icon {
-    font-size: 1rem;
-  }
-}
-</style>
-
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  // Canon picker logic
-  const canonBtns = document.querySelectorAll('.picker-btn');
-  const bookLinks = document.querySelectorAll('.book-tile');
-  
-  canonBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const canon = btn.dataset.canon;
-      
-      canonBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      
-      bookLinks.forEach(link => {
-        const href = link.getAttribute('href');
-        const bookNum = parseInt(href.match(/\d+/)[0]);
-        
-        if (canon === 'protestant') {
-          // Hide all deuterocanonical books (67-79)
-          if (bookNum >= 67 && bookNum <= 79) {
-            link.style.display = 'none';
-          } else {
-            link.style.display = '';
-          }
-        } else if (canon === 'catholic') {
-          // Hide Orthodox-only books (74-79)
-          if (bookNum >= 74 && bookNum <= 79) {
-            link.style.display = 'none';
-          } else {
-            link.style.display = '';
-          }
-        } else if (canon === 'orthodox') {
-          // Show all 79 books
-          link.style.display = '';
-        }
-      });
-    });
-  });
-  
-  // Text layer picker logic
-  const layerBtns = document.querySelectorAll('.layer-btn');
-  
-  layerBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const layer = btn.dataset.layer;
-      btn.classList.toggle('active');
-      
-      // Store state in localStorage
-      const activeLayersKey = 'activeLayers';
-      let activeLayers = JSON.parse(localStorage.getItem(activeLayersKey) || '["latin", "german", "greek"]');
-      
-      if (btn.classList.contains('active')) {
-        if (!activeLayers.includes(layer)) {
-          activeLayers.push(layer);
-        }
-      } else {
-        activeLayers = activeLayers.filter(l => l !== layer);
-      }
-      
-      localStorage.setItem(activeLayersKey, JSON.stringify(activeLayers));
-    });
-  });
-  
-  // Restore layer state from localStorage
-  const activeLayersKey = 'activeLayers';
-  const activeLayers = JSON.parse(localStorage.getItem(activeLayersKey) || '["latin", "german", "greek"]');
-  
-  layerBtns.forEach(btn => {
-    const layer = btn.dataset.layer;
-    if (!activeLayers.includes(layer)) {
-      btn.classList.remove('active');
-    }
-  });
-});
-</script>
-
 
 <main class="index-body">
 <div class="b-wm"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 14"><path d="M5,0V14M0,4H10"/></svg></div>
@@ -461,13 +265,14 @@ document.addEventListener('DOMContentLoaded', () => {
 <div class="sec-head">
   <span class="sec-t sec-t-c">Vetus Testamentum</span>
   <span class="sec-t sec-t-p">Altes Testament</span>
+  <span class="sec-t sec-t-o">Παλαιὰ Διαθήκη</span>
   <div class="sec-rule"></div>
   <span class="sec-s">V E T E R I S &nbsp; T E S T A M E N T I &nbsp;-&nbsp; 39 &nbsp; L I B R I</span>
 </div>
 
   <a href="bücher/001-gen.html" class="toc-item" data-testament="VT">
     <span class="tnr">001</span>
-    <span class="tlat tlat-c">Genesis</span><span class="tlat tlat-p">Das Erste Buch Mose</span><span class="tlat tlat-o">Γένεσις</span>
+    <span class="tlat">Genesis</span>
     <span class="tname">Genesis</span>
     <span class="tdots"></span>
     <span class="tchap">50 Cap.</span>
@@ -475,7 +280,7 @@ document.addEventListener('DOMContentLoaded', () => {
   </a>
   <a href="bücher/002-exo.html" class="toc-item" data-testament="VT">
     <span class="tnr">002</span>
-    <span class="tlat tlat-c">Exodus</span><span class="tlat tlat-p">Das Zweite Buch Mose</span><span class="tlat tlat-o">Ἔξοδος</span>
+    <span class="tlat">Exodus</span>
     <span class="tname">Exodus</span>
     <span class="tdots"></span>
     <span class="tchap">40 Cap.</span>
@@ -483,7 +288,7 @@ document.addEventListener('DOMContentLoaded', () => {
   </a>
   <a href="bücher/003-lev.html" class="toc-item" data-testament="VT">
     <span class="tnr">003</span>
-    <span class="tlat tlat-c">Leviticus</span><span class="tlat tlat-p">Das Dritte Buch Mose</span><span class="tlat tlat-o">Λευιτικόν</span>
+    <span class="tlat">Leviticus</span>
     <span class="tname">Levitikus</span>
     <span class="tdots"></span>
     <span class="tchap">27 Cap.</span>
@@ -491,7 +296,7 @@ document.addEventListener('DOMContentLoaded', () => {
   </a>
   <a href="bücher/004-num.html" class="toc-item" data-testament="VT">
     <span class="tnr">004</span>
-    <span class="tlat tlat-c">Numeri</span><span class="tlat tlat-p">Das Vierte Buch Mose</span><span class="tlat tlat-o">Ἀριθμοί</span>
+    <span class="tlat">Numeri</span>
     <span class="tname">Numeri</span>
     <span class="tdots"></span>
     <span class="tchap">36 Cap.</span>
@@ -499,7 +304,7 @@ document.addEventListener('DOMContentLoaded', () => {
   </a>
   <a href="bücher/005-deu.html" class="toc-item" data-testament="VT">
     <span class="tnr">005</span>
-    <span class="tlat tlat-c">Deuteronomium</span><span class="tlat tlat-p">Das Fünfte Buch Mose</span><span class="tlat tlat-o">Δευτερονόμιον</span>
+    <span class="tlat">Deuteronomium</span>
     <span class="tname">Deuteronomium</span>
     <span class="tdots"></span>
     <span class="tchap">34 Cap.</span>
@@ -507,7 +312,7 @@ document.addEventListener('DOMContentLoaded', () => {
   </a>
   <a href="bücher/006-jos.html" class="toc-item" data-testament="VT">
     <span class="tnr">006</span>
-    <span class="tlat tlat-c">Iosue</span><span class="tlat tlat-p">Josua</span><span class="tlat tlat-o">Ἰησοῦς Ναυῆ</span>
+    <span class="tlat">Iosue</span>
     <span class="tname">Josua</span>
     <span class="tdots"></span>
     <span class="tchap">24 Cap.</span>
@@ -515,7 +320,7 @@ document.addEventListener('DOMContentLoaded', () => {
   </a>
   <a href="bücher/007-jdg.html" class="toc-item" data-testament="VT">
     <span class="tnr">007</span>
-    <span class="tlat tlat-c">Iudicum</span><span class="tlat tlat-p">Richter</span><span class="tlat tlat-o">Κριταί</span>
+    <span class="tlat">Iudicum</span>
     <span class="tname">Richter</span>
     <span class="tdots"></span>
     <span class="tchap">21 Cap.</span>
@@ -523,7 +328,7 @@ document.addEventListener('DOMContentLoaded', () => {
   </a>
   <a href="bücher/008-rut.html" class="toc-item" data-testament="VT">
     <span class="tnr">008</span>
-    <span class="tlat tlat-c">Ruth</span><span class="tlat tlat-p">Ruth</span><span class="tlat tlat-o">Ῥούθ</span>
+    <span class="tlat">Ruth</span>
     <span class="tname">Rut</span>
     <span class="tdots"></span>
     <span class="tchap">4 Cap.</span>
@@ -531,7 +336,7 @@ document.addEventListener('DOMContentLoaded', () => {
   </a>
   <a href="bücher/009-1sa.html" class="toc-item" data-testament="VT">
     <span class="tnr">009</span>
-    <span class="tlat tlat-c">I Regum</span><span class="tlat tlat-p">1. Könige</span><span class="tlat tlat-o">Βασιλειῶν Γʹ</span>
+    <span class="tlat">I Regum</span>
     <span class="tname">1. Samuel</span>
     <span class="tdots"></span>
     <span class="tchap">31 Cap.</span>
@@ -539,7 +344,7 @@ document.addEventListener('DOMContentLoaded', () => {
   </a>
   <a href="bücher/010-2sa.html" class="toc-item" data-testament="VT">
     <span class="tnr">010</span>
-    <span class="tlat tlat-c">II Regum</span><span class="tlat tlat-p">2. Könige</span><span class="tlat tlat-o">Βασιλειῶν Δʹ</span>
+    <span class="tlat">II Regum</span>
     <span class="tname">2. Samuel</span>
     <span class="tdots"></span>
     <span class="tchap">24 Cap.</span>
@@ -563,7 +368,7 @@ document.addEventListener('DOMContentLoaded', () => {
   </a>
   <a href="bücher/013-1ch.html" class="toc-item" data-testament="VT">
     <span class="tnr">013</span>
-    <span class="tlat tlat-c">I Paralipomenon</span><span class="tlat tlat-p">1. Chronik</span><span class="tlat tlat-o">Παραλειπομένων Αʹ</span>
+    <span class="tlat">I Paralipomenon</span>
     <span class="tname">1. Chronik</span>
     <span class="tdots"></span>
     <span class="tchap">29 Cap.</span>
@@ -571,7 +376,7 @@ document.addEventListener('DOMContentLoaded', () => {
   </a>
   <a href="bücher/014-2ch.html" class="toc-item" data-testament="VT">
     <span class="tnr">014</span>
-    <span class="tlat tlat-c">II Paralipomenon</span><span class="tlat tlat-p">2. Chronik</span><span class="tlat tlat-o">Παραλειπομένων Βʹ</span>
+    <span class="tlat">II Paralipomenon</span>
     <span class="tname">2. Chronik</span>
     <span class="tdots"></span>
     <span class="tchap">36 Cap.</span>
@@ -595,7 +400,7 @@ document.addEventListener('DOMContentLoaded', () => {
   </a>
   <a href="bücher/017-est.html" class="toc-item" data-testament="VT">
     <span class="tnr">017</span>
-    <span class="tlat tlat-c">Esther</span><span class="tlat tlat-p">Esther</span><span class="tlat tlat-o">Ἐσθήρ</span>
+    <span class="tlat">Esther</span>
     <span class="tname">Ester</span>
     <span class="tdots"></span>
     <span class="tchap">16 Cap.</span>
@@ -603,7 +408,7 @@ document.addEventListener('DOMContentLoaded', () => {
   </a>
   <a href="bücher/018-job.html" class="toc-item" data-testament="VT">
     <span class="tnr">018</span>
-    <span class="tlat tlat-c">Iob</span><span class="tlat tlat-p">Hiob</span><span class="tlat tlat-o">Ἰώβ</span>
+    <span class="tlat">Iob</span>
     <span class="tname">Hiob</span>
     <span class="tdots"></span>
     <span class="tchap">42 Cap.</span>
@@ -611,7 +416,7 @@ document.addEventListener('DOMContentLoaded', () => {
   </a>
   <a href="bücher/019-psa.html" class="toc-item" data-testament="VT">
     <span class="tnr">019</span>
-    <span class="tlat tlat-c">Psalmi</span><span class="tlat tlat-p">Psalmen</span><span class="tlat tlat-o">Ψαλμοί</span>
+    <span class="tlat">Psalmi</span>
     <span class="tname">Psalmen</span>
     <span class="tdots"></span>
     <span class="tchap">150 Cap.</span>
@@ -619,7 +424,7 @@ document.addEventListener('DOMContentLoaded', () => {
   </a>
   <a href="bücher/020-pro.html" class="toc-item" data-testament="VT">
     <span class="tnr">020</span>
-    <span class="tlat tlat-c">Proverbia</span><span class="tlat tlat-p">Sprüche</span><span class="tlat tlat-o">Παροιμίαι</span>
+    <span class="tlat">Proverbia</span>
     <span class="tname">Sprichwörter</span>
     <span class="tdots"></span>
     <span class="tchap">31 Cap.</span>
@@ -627,7 +432,7 @@ document.addEventListener('DOMContentLoaded', () => {
   </a>
   <a href="bücher/021-ecc.html" class="toc-item" data-testament="VT">
     <span class="tnr">021</span>
-    <span class="tlat tlat-c">Ecclesiastes</span><span class="tlat tlat-p">Prediger</span><span class="tlat tlat-o">Ἐκκλησιαστής</span>
+    <span class="tlat">Ecclesiastes</span>
     <span class="tname">Kohelet</span>
     <span class="tdots"></span>
     <span class="tchap">12 Cap.</span>
@@ -635,7 +440,7 @@ document.addEventListener('DOMContentLoaded', () => {
   </a>
   <a href="bücher/022-sng.html" class="toc-item" data-testament="VT">
     <span class="tnr">022</span>
-    <span class="tlat tlat-c">Canticum Canticorum</span><span class="tlat tlat-p">Hoheslied</span><span class="tlat tlat-o">Ἆισμα Ἀισμάτων</span>
+    <span class="tlat">Canticum Canticorum</span>
     <span class="tname">Hoheslied</span>
     <span class="tdots"></span>
     <span class="tchap">8 Cap.</span>
@@ -643,7 +448,7 @@ document.addEventListener('DOMContentLoaded', () => {
   </a>
   <a href="bücher/023-isa.html" class="toc-item" data-testament="VT">
     <span class="tnr">023</span>
-    <span class="tlat tlat-c">Isaias</span><span class="tlat tlat-p">Jesaja</span><span class="tlat tlat-o">Ἠσαΐας</span>
+    <span class="tlat">Isaias</span>
     <span class="tname">Jesaja</span>
     <span class="tdots"></span>
     <span class="tchap">66 Cap.</span>
@@ -651,7 +456,7 @@ document.addEventListener('DOMContentLoaded', () => {
   </a>
   <a href="bücher/024-jer.html" class="toc-item" data-testament="VT">
     <span class="tnr">024</span>
-    <span class="tlat tlat-c">Ieremias</span><span class="tlat tlat-p">Jeremia</span><span class="tlat tlat-o">Ἱερεμίας</span>
+    <span class="tlat">Ieremias</span>
     <span class="tname">Jeremia</span>
     <span class="tdots"></span>
     <span class="tchap">52 Cap.</span>
@@ -667,7 +472,7 @@ document.addEventListener('DOMContentLoaded', () => {
   </a>
   <a href="bücher/026-eze.html" class="toc-item" data-testament="VT">
     <span class="tnr">026</span>
-    <span class="tlat tlat-c">Ezechiel</span><span class="tlat tlat-p">Hesekiel</span><span class="tlat tlat-o">Ἰεζεκιήλ</span>
+    <span class="tlat">Ezechiel</span>
     <span class="tname">Ezechiel</span>
     <span class="tdots"></span>
     <span class="tchap">48 Cap.</span>
@@ -675,7 +480,7 @@ document.addEventListener('DOMContentLoaded', () => {
   </a>
   <a href="bücher/027-dan.html" class="toc-item" data-testament="VT">
     <span class="tnr">027</span>
-    <span class="tlat tlat-c">Daniel</span><span class="tlat tlat-p">Daniel</span><span class="tlat tlat-o">Δανιήλ</span>
+    <span class="tlat">Daniel</span>
     <span class="tname">Daniel</span>
     <span class="tdots"></span>
     <span class="tchap">14 Cap.</span>
@@ -683,7 +488,7 @@ document.addEventListener('DOMContentLoaded', () => {
   </a>
   <a href="bücher/028-hos.html" class="toc-item" data-testament="VT">
     <span class="tnr">028</span>
-    <span class="tlat tlat-c">Osee</span><span class="tlat tlat-p">Hosea</span><span class="tlat tlat-o">Ὠσηέ</span>
+    <span class="tlat">Osee</span>
     <span class="tname">Hosea</span>
     <span class="tdots"></span>
     <span class="tchap">14 Cap.</span>
@@ -691,7 +496,7 @@ document.addEventListener('DOMContentLoaded', () => {
   </a>
   <a href="bücher/029-joe.html" class="toc-item" data-testament="VT">
     <span class="tnr">029</span>
-    <span class="tlat tlat-c">Ioel</span><span class="tlat tlat-p">Joel</span><span class="tlat tlat-o">Ἰωήλ</span>
+    <span class="tlat">Ioel</span>
     <span class="tname">Joel</span>
     <span class="tdots"></span>
     <span class="tchap">3 Cap.</span>
@@ -699,7 +504,7 @@ document.addEventListener('DOMContentLoaded', () => {
   </a>
   <a href="bücher/030-amo.html" class="toc-item" data-testament="VT">
     <span class="tnr">030</span>
-    <span class="tlat tlat-c">Amos</span><span class="tlat tlat-p">Amos</span><span class="tlat tlat-o">Ἀμώς</span>
+    <span class="tlat">Amos</span>
     <span class="tname">Amos</span>
     <span class="tdots"></span>
     <span class="tchap">9 Cap.</span>
@@ -707,7 +512,7 @@ document.addEventListener('DOMContentLoaded', () => {
   </a>
   <a href="bücher/031-oba.html" class="toc-item" data-testament="VT">
     <span class="tnr">031</span>
-    <span class="tlat tlat-c">Abdias</span><span class="tlat tlat-p">Obadja</span><span class="tlat tlat-o">Ἀβδιού</span>
+    <span class="tlat">Abdias</span>
     <span class="tname">Obadja</span>
     <span class="tdots"></span>
     <span class="tchap">1 Cap.</span>
@@ -715,7 +520,7 @@ document.addEventListener('DOMContentLoaded', () => {
   </a>
   <a href="bücher/032-jon.html" class="toc-item" data-testament="VT">
     <span class="tnr">032</span>
-    <span class="tlat tlat-c">Ionas</span><span class="tlat tlat-p">Jona</span><span class="tlat tlat-o">Ἰωνᾶς</span>
+    <span class="tlat">Ionas</span>
     <span class="tname">Jona</span>
     <span class="tdots"></span>
     <span class="tchap">4 Cap.</span>
@@ -731,7 +536,7 @@ document.addEventListener('DOMContentLoaded', () => {
   </a>
   <a href="bücher/034-nah.html" class="toc-item" data-testament="VT">
     <span class="tnr">034</span>
-    <span class="tlat tlat-c">Nahum</span><span class="tlat tlat-p">Nahum</span><span class="tlat tlat-o">Ναούμ</span>
+    <span class="tlat">Nahum</span>
     <span class="tname">Nahum</span>
     <span class="tdots"></span>
     <span class="tchap">3 Cap.</span>
@@ -739,7 +544,7 @@ document.addEventListener('DOMContentLoaded', () => {
   </a>
   <a href="bücher/035-hab.html" class="toc-item" data-testament="VT">
     <span class="tnr">035</span>
-    <span class="tlat tlat-c">Habacuc</span><span class="tlat tlat-p">Habakuk</span><span class="tlat tlat-o">Ἀμβακούμ</span>
+    <span class="tlat">Habacuc</span>
     <span class="tname">Habakuk</span>
     <span class="tdots"></span>
     <span class="tchap">3 Cap.</span>
@@ -747,7 +552,7 @@ document.addEventListener('DOMContentLoaded', () => {
   </a>
   <a href="bücher/036-zep.html" class="toc-item" data-testament="VT">
     <span class="tnr">036</span>
-    <span class="tlat tlat-c">Sophonias</span><span class="tlat tlat-p">Zephanja</span><span class="tlat tlat-o">Σοφονίας</span>
+    <span class="tlat">Sophonias</span>
     <span class="tname">Zefanja</span>
     <span class="tdots"></span>
     <span class="tchap">3 Cap.</span>
@@ -763,7 +568,7 @@ document.addEventListener('DOMContentLoaded', () => {
   </a>
   <a href="bücher/038-zec.html" class="toc-item" data-testament="VT">
     <span class="tnr">038</span>
-    <span class="tlat tlat-c">Zacharias</span><span class="tlat tlat-p">Sacharja</span><span class="tlat tlat-o">Ζαχαρίας</span>
+    <span class="tlat">Zacharias</span>
     <span class="tname">Sacharja</span>
     <span class="tdots"></span>
     <span class="tchap">14 Cap.</span>
@@ -771,7 +576,7 @@ document.addEventListener('DOMContentLoaded', () => {
   </a>
   <a href="bücher/039-mal.html" class="toc-item" data-testament="VT">
     <span class="tnr">039</span>
-    <span class="tlat tlat-c">Malachias</span><span class="tlat tlat-p">Maleachi</span><span class="tlat tlat-o">Μαλαχίας</span>
+    <span class="tlat">Malachias</span>
     <span class="tname">Maleachi</span>
     <span class="tdots"></span>
     <span class="tchap">4 Cap.</span>
@@ -783,7 +588,6 @@ document.addEventListener('DOMContentLoaded', () => {
 <div class="sec-head">
   <span class="sec-t sec-t-c">Novum Testamentum</span>
   <span class="sec-t sec-t-p">Neues Testament</span>
-  <span class="sec-t sec-t-o">Καινὴ Διαθήκη</span>
   <div class="sec-rule"></div>
   <span class="sec-s">N O V I &nbsp; T E S T A M E N T I &nbsp;-&nbsp; 27 &nbsp; L I B R I</span>
 </div>
@@ -822,7 +626,7 @@ document.addEventListener('DOMContentLoaded', () => {
   </a>
   <a href="bücher/044-act.html" class="toc-item" data-testament="NT">
     <span class="tnr">044</span>
-    <span class="tlat tlat-c">Actus Apostolorum</span><span class="tlat tlat-p">Apostelgeschichte</span><span class="tlat tlat-o">Πράξεις Ἀποστόλων</span>
+    <span class="tlat">Actus Apostolorum</span>
     <span class="tname">Apostelgeschichte</span>
     <span class="tdots"></span>
     <span class="tchap">28 Cap.</span>
@@ -998,7 +802,7 @@ document.addEventListener('DOMContentLoaded', () => {
   </a>
   <a href="bücher/066-rev.html" class="toc-item" data-testament="NT">
     <span class="tnr">066</span>
-    <span class="tlat tlat-c">Apocalypsis</span><span class="tlat tlat-p">Offenbarung</span><span class="tlat tlat-o">Ἀποκάλυψις</span>
+    <span class="tlat">Apocalypsis</span>
     <span class="tname">Offenbarung</span>
     <span class="tdots"></span>
     <span class="tchap">22 Cap.</span>
@@ -1011,14 +815,13 @@ document.addEventListener('DOMContentLoaded', () => {
 <div class="sec-head">
   <span class="sec-t sec-t-c">Libri Deuterocanonoci</span>
   <span class="sec-t sec-t-p">Deuterokanonische Bücher</span>
-  <span class="sec-t sec-t-o">Δευτεροκανονικά</span>
   <div class="sec-rule"></div>
   <span class="sec-s">L I B R I &nbsp; D E U T E R O C A N O N I C I &nbsp;–&nbsp; 7 &nbsp; L I B R I</span>
 </div>
 
   <a href="bücher/067-tob.html" class="toc-item" data-testament="DK">
     <span class="tnr">067</span>
-    <span class="tlat tlat-c">Tobias</span><span class="tlat tlat-p">Tobit</span><span class="tlat tlat-o">Τωβίτ</span>
+    <span class="tlat">Tobias</span>
     <span class="tname">Tobias</span>
     <span class="tdots"></span>
     <span class="tchap">14 Cap.</span>
@@ -1026,7 +829,7 @@ document.addEventListener('DOMContentLoaded', () => {
   </a>
   <a href="bücher/068-jdt.html" class="toc-item" data-testament="DK">
     <span class="tnr">068</span>
-    <span class="tlat tlat-c">Iudith</span><span class="tlat tlat-p">Judit</span><span class="tlat tlat-o">Ἰουδίθ</span>
+    <span class="tlat">Iudith</span>
     <span class="tname">Judit</span>
     <span class="tdots"></span>
     <span class="tchap">16 Cap.</span>
@@ -1034,7 +837,7 @@ document.addEventListener('DOMContentLoaded', () => {
   </a>
   <a href="bücher/069-1ma.html" class="toc-item" data-testament="DK">
     <span class="tnr">069</span>
-    <span class="tlat tlat-c">I Machabaeorum</span><span class="tlat tlat-p">1. Makkabäer</span><span class="tlat tlat-o">Μακκαβαίων Αʹ</span>
+    <span class="tlat">I Machabaeorum</span>
     <span class="tname">1. Makkabäer</span>
     <span class="tdots"></span>
     <span class="tchap">16 Cap.</span>
@@ -1042,7 +845,7 @@ document.addEventListener('DOMContentLoaded', () => {
   </a>
   <a href="bücher/070-2ma.html" class="toc-item" data-testament="DK">
     <span class="tnr">070</span>
-    <span class="tlat tlat-c">II Machabaeorum</span><span class="tlat tlat-p">2. Makkabäer</span><span class="tlat tlat-o">Μακκαβαίων Βʹ</span>
+    <span class="tlat">II Machabaeorum</span>
     <span class="tname">2. Makkabäer</span>
     <span class="tdots"></span>
     <span class="tchap">15 Cap.</span>
@@ -1050,7 +853,7 @@ document.addEventListener('DOMContentLoaded', () => {
   </a>
   <a href="bücher/071-wis.html" class="toc-item" data-testament="DK">
     <span class="tnr">071</span>
-    <span class="tlat tlat-c">Sapientia</span><span class="tlat tlat-p">Weisheit</span><span class="tlat tlat-o">Σοφία Σολομῶντος</span>
+    <span class="tlat">Sapientia</span>
     <span class="tname">Weisheit</span>
     <span class="tdots"></span>
     <span class="tchap">19 Cap.</span>
@@ -1058,7 +861,7 @@ document.addEventListener('DOMContentLoaded', () => {
   </a>
   <a href="bücher/072-sir.html" class="toc-item" data-testament="DK">
     <span class="tnr">072</span>
-    <span class="tlat tlat-c">Ecclesiasticus</span><span class="tlat tlat-p">Sirach</span><span class="tlat tlat-o">Σοφία Σειράχ</span>
+    <span class="tlat">Ecclesiasticus</span>
     <span class="tname">Sirach</span>
     <span class="tdots"></span>
     <span class="tchap">51 Cap.</span>
@@ -1066,7 +869,7 @@ document.addEventListener('DOMContentLoaded', () => {
   </a>
   <a href="bücher/073-bar.html" class="toc-item" data-testament="DK">
     <span class="tnr">073</span>
-    <span class="tlat tlat-c">Baruch</span><span class="tlat tlat-p">Baruch</span><span class="tlat tlat-o">Βαρούχ</span>
+    <span class="tlat">Baruch</span>
     <span class="tname">Baruch</span>
     <span class="tdots"></span>
     <span class="tchap">6 Cap.</span>
